@@ -9,7 +9,7 @@ in stdenv.mkDerivation rec {
     inherit name;
     manifest = "https://github.com/LineageOS/android.git";
     rev = "lineage-${release}";
-    sha256 = "0y3bl8iinkq91r86zgr59bklvr814fzrnzf2w84k6xsh2mnpn8yg";
+    sha256 = "0kwk1cmk7wr26l8znvijh6ryfjs66alz3np34pcgvkd108i90gl4";
     localManifests = [ (./roomservice- + "${device}.xml") ];
       #  ++ lib.optional enableWireguard [ "./wireguard.xml" ];
     # repoRepoURL ? ""
@@ -17,7 +17,7 @@ in stdenv.mkDerivation rec {
     # referenceDir ? ""
   };
 
-  buildPhase = ''cat << W8M8 | ${los-env}/bin/los-build
+  buildPhase = ''cat << hack | ${los-env}/bin/los-build
     export LANG=C
     export ANDROID_JAVA_HOME=${pkgs.jdk.home}
     export BUILD_NUMBER=$(date --utc +%Y.%m.%d.%H.%M.%S)
@@ -31,9 +31,17 @@ in stdenv.mkDerivation rec {
     breakfast ${device}
     croot
     time brunch ${device}
-    cd out/target/product/${device}/
-    mkdir -p $out
-    cp lineage-${release}-*-${device}.zip $out/
     exit
+  '';
+
+  installPhase = ''
+    mkdir -p $out/misc
+    cd out/target/product/${device}/
+    # copy regular image + md5sum
+    cp -v lineage-${release}-*-UNOFFICIAL-${device}.zip* $out/
+    # ota file
+    cp -v lineage_${device}-ota*.zip $out/
+    # partition images
+    cp -v *.img kernel $out/misc/
   '';
 }
