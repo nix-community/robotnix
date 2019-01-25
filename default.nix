@@ -19,29 +19,29 @@ in stdenv.mkDerivation rec {
 
   buildPhase = ''cat << hack | ${los-env}/bin/los-build
     export LANG=C
-    export ANDROID_JAVA_HOME=${pkgs.jdk.home}
-    export BUILD_NUMBER=$(date --utc +%Y.%m.%d.%H.%M.%S)
+    export ANDROID_JAVA_HOME="${pkgs.jdk.home}"
+    export BUILD_NUMBER="$(date --utc +%Y.%m.%d.%H.%M.%S)"
     export DISPLAY_BUILD_NUMBER=true
     export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8G"
     # for jack
-    export HOME=$PWD
-    export USER=$(id -un)
+    export HOME="$PWD"
+    export USER="$(id -un)"
 
     source build/envsetup.sh
-    breakfast ${device}
+    breakfast "${device}"
     croot
-    time brunch ${device}
+    time brunch "${device}"
     exit
   '';
 
   installPhase = ''
-    mkdir -p $out/misc
-    cd out/target/product/${device}/
+    mkdir -p "$out/misc"
+    cd "out/target/product/${device}/"
     # copy regular image + md5sum
-    cp -v lineage-${release}-*-UNOFFICIAL-${device}.zip* $out/
+    cp -v "lineage-${release}-"*"-UNOFFICIAL-${device}.zip"* "$out/"
     # ota file
-    cp -v lineage_${device}-ota*.zip $out/
+    cp -v "lineage_${device}-ota"*".zip" "$out/"
     # partition images
-    cp -v *.img kernel $out/misc/
+    cp -v *.img kernel "$out/misc/"
   '';
 }
