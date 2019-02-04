@@ -2,7 +2,7 @@
 
 with pkgs;
 let
-  los-env = callPackage ./buildenv.nix {};
+  nixdroid-env = callPackage ./buildenv.nix {};
 in stdenv.mkDerivation rec {
   name = "lineageos-${release}-${device}";
   src = fetchRepoProject rec {

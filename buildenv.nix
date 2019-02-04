@@ -7,7 +7,7 @@ let
     minimal = true;
   };
 in pkgs.buildFHSUserEnv {
-  name = "los-build";
+  name = "nixdroid-build";
   targetPkgs = pkgs: with pkgs; [
       bc
       git
