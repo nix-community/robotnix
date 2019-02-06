@@ -5,7 +5,8 @@
   rev ? "${rom}-16.0",
   enableWireguard ? false,
   manifest ? "https://github.com/LineageOS/android.git",
-  sha256 ? "0iqjqi2vwi6lfrk0034fdb1v8927g0vak2qanljw6hvcad0fid6r"
+  sha256 ? "0iqjqi2vwi6lfrk0034fdb1v8927g0vak2qanljw6hvcad0fid6r",
+  savePartitionImages ? false
 }:
 
 with pkgs;
@@ -40,13 +41,16 @@ in stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-    mkdir -p "$out/misc"
+    mkdir -p "$out"
     cd "out/target/product/${device}/"
     # copy regular image + md5sum
     cp -v "${rev}-"*"-UNOFFICIAL-${device}.zip"* "$out/"
     # ota file
     cp -v "${rom}_${device}-ota"*".zip" "$out/"
-    # partition images
-    cp -v *.img kernel "$out/misc/"
+    ${lib.optionalString savePartitionImages ''
+      mkdir -p "$out/misc"
+      # partition images
+      cp -v *.img kernel "$out/misc/"
+    ''}
   '';
 }
