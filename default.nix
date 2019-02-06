@@ -4,7 +4,7 @@
   rom ? "lineage",
   rev ? "${rom}-16.0",
   enableWireguard ? false,
-  manifest ? "https://github.com/LineageOS/android.git",
+  manifest ? "https://github.com/LineageOS/android.git -g all,-darwin,-infra",
   sha256 ? "0iqjqi2vwi6lfrk0034fdb1v8927g0vak2qanljw6hvcad0fid6r",
   savePartitionImages ? false
 }:
