@@ -67,7 +67,6 @@ in stdenv.mkDerivation rec {
 
     source build/envsetup.sh
     breakfast "${device}"
-    croot
     brunch "${device}"
     exit
   '';
