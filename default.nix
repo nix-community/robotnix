@@ -55,7 +55,8 @@ in stdenv.mkDerivation rec {
   '';
 
 
-  buildPhase = ''cat << hack | ${nixdroid-env}/bin/nixdroid-build
+  buildPhase = ''
+    cat << EOF | ${nixdroid-env}/bin/nixdroid-build
     export LANG=C
     export ANDROID_JAVA_HOME="${pkgs.jdk.home}"
     export DISPLAY_BUILD_NUMBER=true
@@ -67,7 +68,8 @@ in stdenv.mkDerivation rec {
     source build/envsetup.sh
     breakfast "${device}"
     brunch "${device}"
-    exit
+
+    EOF
   '';
 
   installPhase = ''
