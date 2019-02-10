@@ -3,6 +3,7 @@
   device ? "payton",
   rom ? "lineage",
   rev ? "${rom}-16.0",
+  opengappsVariant ? null,
   enableWireguard ? false,
   manifest ? "https://github.com/LineageOS/android.git -g all,-darwin,-infra",
   sha256 ? "0iqjqi2vwi6lfrk0034fdb1v8927g0vak2qanljw6hvcad0fid6r",
@@ -18,6 +19,7 @@ in stdenv.mkDerivation rec {
     inherit name manifest sha256 rev;
     localManifests = lib.flatten [
       (./roomservice- + "${device}.xml")
+      (lib.optional (opengappsVariant != null) [ ./opengapps.xml ])
       (lib.optional enableWireguard [ ./wireguard.xml ])
     ];
   };
@@ -30,6 +32,14 @@ in stdenv.mkDerivation rec {
       echo "Tree for device ${device} not found"
       exit 1
     fi
+
+    ${lib.optionalString (opengappsVariant != null) ''
+      # Opengapps
+      (
+        echo 'GAPPS_VARIANT := ${opengappsVariant}'
+        echo '$(call inherit-product, vendor/opengapps/build/opengapps-packages.mk)'
+      ) >> "$deviceConfig"
+    ''}
 
     ${lib.optionalString enableWireguard ''
       # Wireguard

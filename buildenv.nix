@@ -1,5 +1,4 @@
 { pkgs ? import <nixpkgs> {} }:
- 
 let
   jdk =  pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/8.nix> {
     bootjdk = pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/bootstrap.nix> { version = "8"; };
@@ -39,6 +38,7 @@ in pkgs.buildFHSUserEnv {
       ncurses5
       which
       rsync
+      lzip
     ];
   multiPkgs = pkgs: with pkgs; [ zlib ];
 }
