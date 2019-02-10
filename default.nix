@@ -15,8 +15,9 @@ let
   nixdroid-env = callPackage ./buildenv.nix {};
 in stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
-  src = fetchRepoProject rec {
-    inherit name manifest sha256 rev;
+  src = fetchRepoProject {
+    inherit manifest sha256 rev;
+    name = "${name}-src";
     localManifests = lib.flatten [
       (./roomservice- + "${device}.xml")
       (lib.optional (opengappsVariant != null) [ ./opengapps.xml ])
