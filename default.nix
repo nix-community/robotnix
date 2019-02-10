@@ -58,7 +58,6 @@ in stdenv.mkDerivation rec {
   buildPhase = ''cat << hack | ${nixdroid-env}/bin/nixdroid-build
     export LANG=C
     export ANDROID_JAVA_HOME="${pkgs.jdk.home}"
-    export BUILD_NUMBER="$(date --utc +%Y.%m.%d.%H.%M.%S)"
     export DISPLAY_BUILD_NUMBER=true
     export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8G"
     # for jack
