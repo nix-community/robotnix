@@ -16,12 +16,33 @@ in stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
   src = fetchRepoProject rec {
     inherit name manifest sha256 rev;
-    localManifests = [ (./roomservice- + "${device}.xml") ];
-      #  ++ lib.optional enableWireguard [ "./wireguard.xml" ];
-    # repoRepoURL ? ""
-    # repoRepoRev ? ""
-    # referenceDir ? ""
+    localManifests = lib.flatten [
+      (./roomservice- + "${device}.xml")
+      (lib.optional enableWireguard [ ./wireguard.xml ])
+    ];
   };
+
+  prePatch = ''
+    # Find device tree
+    boardConfig="$(ls "device/"*"/${device}/BoardConfig.mk")"
+    deviceConfig="$(ls "device/"*"/${device}/device.mk")"
+    if ! [ -f "$boardConfig" ]; then
+      echo "Tree for device ${device} not found"
+      exit 1
+    fi
+
+    ${lib.optionalString enableWireguard ''
+      # Wireguard
+      kernelTree="$(grep 'TARGET_KERNEL_SOURCE := ' "$boardConfig" | cut -d' ' -f3)"
+      wireguardHome="$kernelTree/net/wireguard"
+      mkdir -p "$wireguardHome"
+      mv wireguard/*/* "$wireguardHome"
+      touch "$wireguardHome/.check"
+
+      sed -i 's/tristate/bool/;s/default m/default y/;' "$wireguardHome/Kconfig"
+    ''}
+  '';
+
 
   buildPhase = ''cat << hack | ${nixdroid-env}/bin/nixdroid-build
     export LANG=C
