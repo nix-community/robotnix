@@ -13,4 +13,4 @@ done < <(curl -A "$USER_AGENT" -LSs --connect-timeout 30 https://build.wireguard
 [[ -n $VERSION ]]
 
 
-sed -i "s/revision=\"[^m\"]*\"/revision=\"refs/tags/$VERSION\"/g" wireguard.xml
+sed -i "s:revision=\"[^m\"]*\":revision=\"refs/tags/$VERSION\":g" wireguard.xml
