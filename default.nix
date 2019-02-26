@@ -1,29 +1,32 @@
 {
-  pkgs ? import <nixpkgs> {},
+  pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; },
   device ? "payton",
   rom ? "lineage",
   rev ? "${rom}-16.0",
   opengappsVariant ? null,
   enableWireguard ? false,
-  manifest ? "https://github.com/LineageOS/android.git -g all,-darwin,-infra",
+  manifest ? "https://github.com/LineageOS/android.git",
+  extraFlags ? "-g all,-darwin,-infra --no-repo-verify",
   sha256 ? "0iqjqi2vwi6lfrk0034fdb1v8927g0vak2qanljw6hvcad0fid6r",
   savePartitionImages ? false
 }:
 
-with pkgs;
+with pkgs; with lib;
 let
   nixdroid-env = callPackage ./buildenv.nix {};
+  repo2nix = import (import ./repo2nix.nix {
+    inherit manifest rev extraFlags sha256;
+    name = "nixdroid-${rev}-${device}";
+    localManifests = flatten [
+      (./roomservice- + "${device}.xml")
+      (optional (opengappsVariant != null) [ ./opengapps.xml ])
+      (optional enableWireguard [ ./wireguard.xml ])
+    ];
+  } + /srcs.nix);
 in stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
-  src = fetchRepoProject {
-    inherit manifest sha256 rev;
-    name = "${name}-src";
-    localManifests = lib.flatten [
-      (./roomservice- + "${device}.xml")
-      (lib.optional (opengappsVariant != null) [ ./opengapps.xml ])
-      (lib.optional enableWireguard [ ./wireguard.xml ])
-    ];
-  };
+  srcs = repo2nix.sources;
+  unpackPhase = repo2nix.unpackPhase;
 
   prePatch = ''
     # Find device tree
