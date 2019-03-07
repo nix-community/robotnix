@@ -85,4 +85,7 @@ in stdenv.mkDerivation rec {
       cp -v *.img kernel "$out/misc/"
     ''}
   '';
+
+  fixupPhase = ":";
+  configurePhase = ":";
 }
