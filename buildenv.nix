@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; } }:
 let
   jdk =  pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/8.nix> {
     bootjdk = pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/bootstrap.nix> { version = "8"; };
@@ -19,8 +19,8 @@ in pkgs.buildFHSUserEnv {
       # boringssl
       gnumake
       nettools
-      # androidenv.buildTools
       androidenv.platformTools
+      androidenv.androidsdk_latest
       jdk
       schedtool
       utillinux
