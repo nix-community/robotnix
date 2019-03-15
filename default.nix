@@ -28,7 +28,10 @@ let
 in stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
   srcs = repo2nix.sources;
-  unpackPhase = repo2nix.unpackPhase;
+  unpackPhase = ''
+    ${optionalString (builtins.hasAttr "coreutils-copy_file_read" pkgs) "export PATH=${pkgs.coreutils-copy_file_read}/bin/:$PATH"}
+    ${repo2nix.unpackPhase}
+  '';
 
   prePatch = ''
     # Find device tree
