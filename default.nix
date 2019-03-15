@@ -6,7 +6,7 @@
   opengappsVariant ? null,
   enableWireguard ? false,
   manifest ? "https://github.com/LineageOS/android.git",
-  extraFlags ? "-g all,-darwin,-infra --no-repo-verify",
+  extraFlags ? "-g all,-darwin,-infra,-vts,-sts --no-repo-verify",
   sha256 ? "0iqjqi2vwi6lfrk0034fdb1v8927g0vak2qanljw6hvcad0fid6r",
   savePartitionImages ? false
 }:
