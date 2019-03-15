@@ -4,6 +4,7 @@
   rom ? "lineage",
   rev ? "${rom}-16.0",
   opengappsVariant ? null,
+  keyStorePath ? null,
   enableWireguard ? false,
   manifest ? "https://github.com/LineageOS/android.git",
   extraFlags ? "-g all,-darwin,-infra,-vts,-sts --no-repo-verify",
@@ -23,6 +24,7 @@ let
       (optional enableWireguard [ ./wireguard.xml ])
     ];
   } + /srcs.nix);
+  signBuild = (keyStorePath != null);
 in stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
   srcs = repo2nix.sources;
@@ -60,6 +62,7 @@ in stdenv.mkDerivation rec {
 
   buildPhase = ''
     cat << EOF | ${nixdroid-env}/bin/nixdroid-build
+    set -x
     export LANG=C
     export ANDROID_JAVA_HOME="${pkgs.jdk.home}"
     export DISPLAY_BUILD_NUMBER=true
@@ -70,19 +73,21 @@ in stdenv.mkDerivation rec {
 
     source build/envsetup.sh
     breakfast "${device}"
-    brunch "${device}"
+    mka otatools-package target-files-package dist
+    # TODO: incremental (-i) OTA
+    ${optionalString signBuild "cp -R ${keyStorePath} .keystore"}   # copy the keystore, because some of the scripts want to chmod etc.
+    ./build/tools/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d .keystore"} out/dist/*-target_files-*.zip signed-target_files.zip
+    ./build/tools/releasetools/ota_from_target_files.py ${optionalString signBuild "-k .keystore/releasekey"} --backup=true signed-target_files.zip signed-ota_update.zip
 
-    EOF
+EOF
   '';
 
   installPhase = ''
     mkdir -p "$out"
-    cd "out/target/product/${device}/"
-    # copy regular image + md5sum
-    cp -v "${rev}-"*"-UNOFFICIAL-${device}.zip"* "$out/"
     # ota file
-    cp -v "${rom}_${device}-ota"*".zip" "$out/"
-    ${lib.optionalString savePartitionImages ''
+    cp -v signed-ota_update.zip "$out/"
+    ${optionalString savePartitionImages ''
+      cd "out/target/product/${device}/"
       mkdir -p "$out/misc"
       # partition images
       cp -v *.img kernel "$out/misc/"
