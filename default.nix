@@ -7,7 +7,7 @@
   keyStorePath ? null,
   enableWireguard ? false,
   manifest ? "https://github.com/LineageOS/android.git",
-  extraFlags ? "-g all,-darwin,-infra,-vts,-sts --no-repo-verify",
+  extraFlags ? "-g all,-darwin,-infra,-sts --no-repo-verify",
   sha256 ? "0iqjqi2vwi6lfrk0034fdb1v8927g0vak2qanljw6hvcad0fid6r",
   savePartitionImages ? false
 }:
@@ -42,7 +42,7 @@ in stdenv.mkDerivation rec {
       exit 1
     fi
 
-    ${lib.optionalString (opengappsVariant != null) ''
+    ${optionalString (opengappsVariant != null) ''
       # Opengapps
       (
         echo 'GAPPS_VARIANT := ${opengappsVariant}'
@@ -50,7 +50,7 @@ in stdenv.mkDerivation rec {
       ) >> "$deviceConfig"
     ''}
 
-    ${lib.optionalString enableWireguard ''
+    ${optionalString enableWireguard ''
       # Wireguard
       kernelTree="$(grep 'TARGET_KERNEL_SOURCE := ' "$boardConfig" | cut -d' ' -f3)"
       wireguardHome="$kernelTree/net/wireguard"
@@ -65,7 +65,6 @@ in stdenv.mkDerivation rec {
 
   buildPhase = ''
     cat << EOF | ${nixdroid-env}/bin/nixdroid-build
-    set -x
     export LANG=C
     export ANDROID_JAVA_HOME="${pkgs.jdk.home}"
     export DISPLAY_BUILD_NUMBER=true
