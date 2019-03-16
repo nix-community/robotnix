@@ -30,14 +30,12 @@ let
   ] ++ extraRepoInitFlags;
 
   local_manifests = copyPathsToStore localManifests;
-
 in stdenvNoCC.mkDerivation {
-  name = "repo2nix-${rev}";
+  name = "repo2nix-${rev}-srcs.nix";
 
   inherit cacert manifest rev repoRepoURL repoRepoRev referenceDir; # TODO
 
   outputHashAlgo = "sha256";
-  outputHashMode = "recursive";
   outputHash = sha256;
 
   preferLocalBuild = true;
@@ -55,9 +53,6 @@ in stdenvNoCC.mkDerivation {
     # Path must be absolute (e.g. for GnuPG: ~/.repoconfig/gnupg/pubring.kbx)
     export HOME="$(pwd)"
 
-    mkdir $out
-    cd $out
-
     mkdir .repo
     ${optionalString (local_manifests != []) ''
       mkdir .repo/local_manifests
@@ -67,7 +62,7 @@ in stdenvNoCC.mkDerivation {
     ''}
 
     repo init ${concatStringsSep " " repoInitFlags}
-    repo nix > srcs.nix
+    repo nix > "$out"
 
     rm -rf .repo*
   '';

@@ -23,7 +23,7 @@ let
       (optional (opengappsVariant != null) [ ./opengapps.xml ])
       (optional enableWireguard [ ./wireguard.xml ])
     ];
-  } + /srcs.nix);
+  });
   signBuild = (keyStorePath != null);
 in stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
