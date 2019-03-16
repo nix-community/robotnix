@@ -85,7 +85,7 @@ EOF
   '';
 
   installPhase = ''
-    mkdir -p "$out"
+    mkdir -p "$out"/nix-support
     # ota file
     cp -v signed-ota_update.zip "$out/"
     ${optionalString savePartitionImages ''
@@ -94,6 +94,7 @@ EOF
       # partition images
       cp -v *.img kernel "$out/misc/"
     ''}
+    echo "file zip $out/signed-ota_update.zip" > $out/nix-support/hydra-build-products
   '';
 
   fixupPhase = ":";
