@@ -1,0 +1,16 @@
+{
+	"enabled": 1,
+	"hidden": true,
+	"description": "NixDroid Jobsets",
+	"nixexprinput": "nixdroid",
+	"nixexprpath": "hydra/hydra.nix",
+	"checkinterval": 300,
+	"schedulingshares": 5000,
+	"enableemail": false,
+	"emailoverride": "",
+	"keepnr": 3,
+	"inputs": {
+		"nixdroid": { "type": "git", "value": "https://github.com/ajs124/NixDroid dev", "emailresponsible": false }
+	}
+}
+

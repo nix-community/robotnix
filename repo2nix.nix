@@ -31,9 +31,7 @@ let
 
   local_manifests = copyPathsToStore localManifests;
 in stdenvNoCC.mkDerivation {
-  name = "repo2nix-${rev}-srcs.nix";
-
-  inherit cacert manifest rev repoRepoURL repoRepoRev referenceDir; # TODO
+  inherit cacert name manifest rev repoRepoURL repoRepoRev referenceDir;
 
   outputHashAlgo = "sha256";
   outputHash = sha256;

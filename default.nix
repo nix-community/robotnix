@@ -1,23 +1,27 @@
 {
   pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; },
-  device ? "payton",
-  rom ? "lineage",
-  rev ? "${rom}-16.0",
+  device ? null,
+  rev ? "lineage-16.0",
   opengappsVariant ? null,
   keyStorePath ? null,
   enableWireguard ? false,
   manifest ? "https://github.com/LineageOS/android.git",
   extraFlags ? "-g all,-darwin,-infra,-sts --no-repo-verify",
-  sha256 ? "0iqjqi2vwi6lfrk0034fdb1v8927g0vak2qanljw6hvcad0fid6r",
+  sha256 ? null,
+  sha256Path ? null,
   savePartitionImages ? false
 }:
-
 with pkgs; with lib;
+
+assert (device != null);
+assert ((sha256 != null) || (sha256Path != null));
+
 let
   nixdroid-env = callPackage ./buildenv.nix {};
   repo2nix = import (import ./repo2nix.nix {
-    inherit manifest rev extraFlags sha256;
-    name = "nixdroid-${rev}-${device}";
+    inherit manifest rev extraFlags;
+    sha256 = if (sha256 != null) then sha256 else readFile sha256Path;
+    name = "repo2nix-${rev}-${device}";
     localManifests = flatten [
       (./roomservice- + "${device}.xml")
       (optional (opengappsVariant != null) [ ./opengapps.xml ])
