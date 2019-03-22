@@ -6,52 +6,22 @@ let
     schedulingshares = 1000;
     keepnr = 3;
   };
+  mkInput = t: v: e: { type = t; value = v; emailresponsible = e; };
   defaultInputs = args: {
-    nixdroid = {
-      type = "git";
-      value = "https://github.com/ajs124/NixDroid dev";
-      emailresponsible = true;
-    };
-    nixpkgs = {
-      type = "git";
-      value = "https://github.com/nixos/nixpkgs-channels nixos-18.09";
-      emailresponsible = false;
-    };
-    rev = {
-      type = "string";
-      value = optConf args "rev" "lineage-16.0";
-      emailresponsible = false;
-    };
-    keyStorePath = {
-      type = "string";
-      value = "/var/lib/nixdroid/keystore";
-      emailresponsible = false;
-    };
-    device = {
-      type = "string";
-      value = args.device;
-      emailresponsible = false;
-    };
-    manifest = {
-      type = "string";
-      value = optConf args "manifest" "https://github.com/LineageOS/android.git";
-      emailresponsible = false;
-    };
-    sha256Path = {
-      type = "path";
-      value = "/var/lib/nixdroid/hashes/" + args.device + ".sha256";
-      emailresponsible = false;
-    };
+    nixdroid = mkInput "git" "https://github.com/ajs124/NixDroid dev" true;
+    nixpkgs = mkInput "git" "https://github.com/nixos/nixpkgs-channels nixos-18.09" false;
+    rev = mkInput "string" (optConf args "rev" "lineage-16.0") false;
+    keyStorePath = mkInput "string" "/var/lib/nixdroid/keystore" false;
+    device = mkInput "string" args.device false;
+    manifest = mkInput "string" (optConf args "manifest" "https://github.com/LineageOS/android.git") false;
+    sha256Path = mkInput "path" ("/var/lib/nixdroid/hashes/" + args.device + ".sha256") false;
+    extraFlags = mkInput "string" (optConf args "extraFlags" "-g all,-darwin,-infra,-sts --no-repo-verify") false;
     localManifests = {
-      type = "expr";
+      type = "string";
       value = [ (../roomservice- + "${args.device}.xml") ] ++
         (if (hasAttr "enableWireguard" args && args.enableWireguard) then [ ../wireguard.xml ] else []) ++
         (if (hasAttr "opengappsVariant" args) then [ ../opengapps.xml ] else []);
       emailresponsible = false;
-    };
-    extraFlags = {
-      type = "string";
-      value = optConf args "extraFlags" "-g all,-darwin,-infra,-sts --no-repo-verify";
     };
   };
   optConf = set: attr: default: if (hasAttr attr set) then set.${attr} else default;
