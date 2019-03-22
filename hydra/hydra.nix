@@ -1,22 +1,11 @@
-{ nixdroid, ... }: with builtins; let
-  defaultJobset = {
-    enabled = 1;
-    hidden = false;
-    nixexprinput = "nixdroid";
-    nixexprpath = "release.nix";
-    checkinterval = 300;
-    schedulingshares = 1000;
-    enableemail = false;
-    emailoverride = "";
-    keepnr = 3;
-  };
+{ }: with builtins;
+let
   defaultNixDroid = {
     nixexprpath = "release.nix";
     checkinterval = 300;
     schedulingshares = 1000;
     keepnr = 3;
   };
-  optConf = set: attr: default: if (hasAttr attr set) then set.${attr} else default;
   defaultInputs = args: {
     nixdroid = {
       type = "git";
@@ -65,7 +54,19 @@
       value = optConf args "extraFlags" "-g all,-darwin,-infra,-sts --no-repo-verify";
     };
   };
-
+  optConf = set: attr: default: if (hasAttr attr set) then set.${attr} else default;
+in {
+  defaultJobset = {
+    enabled = 1;
+    hidden = false;
+    nixexprinput = "nixdroid";
+    nixexprpath = "release.nix";
+    checkinterval = 300;
+    schedulingshares = 1000;
+    enableemail = false;
+    emailoverride = "";
+    keepnr = 3;
+  };
   jobsets = {
     "los-15.1-hammerhead" = defaultNixDroid // {
       description = "LineageOS 15.1 for Hammerhead";
@@ -100,33 +101,5 @@
     #     opengappsVariant = "pico";
     #   };
     # };
-  };
-in {
-  jobsets = derivation {
-    name = "spec.json";
-    system = currentSystem;
-
-    builder = "/bin/sh";
-    args = [ (toFile "builder.sh" ''
-      echo '${toJSON (mapAttrs (k: v: defaultJobset // v) jobsets)}' > $out
-    '') ];
-  };
-  prefetchers = derivation {
-    name = "nixdroid-prefetch.sh";
-    system = currentSystem;
-
-    builder = "/bin/sh";
-    args = let
-      mapAttrsToList = f: attrs: map (k: f k attrs.${k}) (attrNames attrs);
-      relevantAttrs = [ "repoRepoURL" "repoRepoRev" "referenceDir" "extraFlags" "localManifests" "device" "rev" "manifest" ]; # sha256
-      filterRelevantAttrs = s: listToAttrs (concatMap (k: if any (x: x == k) relevantAttrs then [{ name = k; value = s.${k}; }] else []) (attrNames s));
-      prefetchers = mapAttrsToList (x: y:
-        "nix-prefetch -f ${nixdroid}/repo2nix.nix --input json <<< '\"'\"'"  # Fuck escaping quotes
-          + toJSON (mapAttrs (k: v: v.value) (filterRelevantAttrs jobsets."${x}".inputs)) + "'\"'\"'") jobsets;
-    in [ (toFile "builder.sh" ''
-      echo $'#!/usr/bin/env nix-shell
-      #!nix-shell -i sh -p nix-prefetch
-      ${concatStringsSep "\n" prefetchers}' > $out
-    '')];
   };
 }
