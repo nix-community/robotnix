@@ -10,7 +10,7 @@ in {
     filteredJobsets = filterAttrs (k: v: k != "prefetch") h.jobsets;
     prefetchers = mapAttrsToList (x: y:
       "${nix-prefetch}/bin/nix-prefetch -f ${nixdroid}/repo2nix.nix --input json <<< '\"'\"'"  # Fuck escaping quotes
-        + toJSON (mapAttrs (k: v: v.value) (filterRelevantAttrs h.jobsets."${x}".inputs)) + "'\"'\"'" + " > ${h.jobsets.${x}.inputs.sha256Path.value}") filteredJobsets;
+        + toJSON (mapAttrs (k: v: v.value) (filterRelevantAttrs h.jobsets."${x}".inputs)) + "'\"'\"'" + '' | tr -d "\n" > ${h.jobsets.${x}.inputs.sha256Path.value}'') filteredJobsets;
   in
     # FIXME drop the NIX_PATH override
     pkgs.runCommand "nixdroid-prefetch.sh" {} ''
