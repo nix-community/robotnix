@@ -1,6 +1,8 @@
 {
   pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; },
   device, rev, manifest, localManifests,
+  opengappsVariant ? null,
+  enableWireguard ? false,
   keyStorePath ? null,
   extraFlags ? "--no-repo-verify",
   sha256 ? null,

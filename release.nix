@@ -1,5 +1,5 @@
-{ opengappsVariant, rev, keyStorePath, device, sha256Path, enableWireguard, ... }: {
+{ device, rev, manifest, localManifests, opengappsVariant, enableWireguard, keyStorePath, extraFlags, sha256Path, ... }: {
     ota = import ./default.nix {
-        inherit opengappsVariant rev keyStorePath device sha256Path enableWireguard;
+        inherit device rev manifest localManifests opengappsVariant enableWireguard keyStorePath extraFlags sha256Path;
     };
 }

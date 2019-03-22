@@ -16,10 +16,12 @@ let
     manifest = mkInput "string" (optConf args "manifest" "https://github.com/LineageOS/android.git") false;
     sha256Path = mkInput "path" ("/var/lib/nixdroid/hashes/" + args.device + ".sha256") false;
     extraFlags = mkInput "string" (optConf args "extraFlags" "-g all,-darwin,-infra,-sts --no-repo-verify") false;
+    opengappsVariant = mkInput "string" (optConf args "opengappsVariant" null) false;
+    enableWireguard = mkInput "boolean" (optConf args "enableWireguard" "false") false;
     localManifests = {
       type = "string";
-      value = [ (../roomservice- + "${args.device}.xml") ] ++
-        (if (hasAttr "enableWireguard" args && args.enableWireguard) then [ ../wireguard.xml ] else []) ++
+      value = [ (../roomservice- + "${args.device}.xml") ] ++  # enableWireguard is a string, because hydra expects it to be one
+        (if (hasAttr "enableWireguard" args && args.enableWireguard == "true") then [ ../wireguard.xml ] else []) ++
         (if (hasAttr "opengappsVariant" args) then [ ../opengapps.xml ] else []);
       emailresponsible = false;
     };
@@ -51,7 +53,7 @@ in {
       inputs = defaultInputs {
         device = "payton";
         rev = "lineage-15.1";
-        enableWireguard = true;
+        enableWireguard = "true";
         opengappsVariant = "nano";
       };
     };
@@ -59,7 +61,7 @@ in {
       description = "LineageOS 16.0 for OnePlus 3";
       inputs = defaultInputs {
         device = "oneplus3";
-        enableWireguard = true;
+        enableWireguard = "true";
         opengappsVariant = "nano";
       };
     };
@@ -67,7 +69,7 @@ in {
     #   description = "LineageOS 16.0 for Bacon";
     #   inputs = defaultInputs {
     #     device = "bacon";
-    #     enableWireguard = true;
+    #     enableWireguard = "true";
     #     opengappsVariant = "pico";
     #   };
     # };
