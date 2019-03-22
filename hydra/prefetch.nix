@@ -13,10 +13,12 @@ in {
         + toJSON (mapAttrs (k: v: v.value) (filterRelevantAttrs h.jobsets."${x}".inputs)) + "'\"'\"'" + '' | tr -d "\n" > ${h.jobsets.${x}.inputs.sha256Path.value}'') filteredJobsets;
   in
     # FIXME drop the NIX_PATH override
-    pkgs.runCommand "nixdroid-prefetch.sh" {} ''
+    pkgs.runCommand "nixdroid-prefetch" {} ''
+      mkdir -p $out/nix-support
       echo $'#!/bin/sh
       export NIX_PATH=nixpkgs=/nix/var/nix/profiles/per-user/root/channels/unstable/
-      ${concatStringsSep "\n" prefetchers}' > $out
-      chmod +x $out
+      ${concatStringsSep "\n" prefetchers}' > $out/sh
+      chmod +x $out/sh
+      echo "file sh $out/sh" > $out/nix-support/hydra-build-products
     '';
 }
