@@ -8,7 +8,7 @@ in {
     filterRelevantAttrs = s: listToAttrs (concatMap (k: if any (x: x == k) relevantAttrs then [{ name = k; value = s.${k}; }] else []) (attrNames s));
     prefetchers = mapAttrsToList (x: y:
       "${nix-prefetch}/bin/nix-prefetch -f ${nixdroid}/repo2nix.nix --input json <<< '\"'\"'"  # Fuck escaping quotes
-        + toJSON (mapAttrs (k: v: v.value) (filterRelevantAttrs h.jobsets."${x}".inputs)) + "'\"'\"'") h.jobsets;
+        + toJSON (mapAttrs (k: v: v.value) (filterRelevantAttrs h.jobsets."${x}".inputs)) + "'\"'\"'" + " > ${h.jobsets.${x}.inputs.sha256Path.value}") h.jobsets;
   in
     # FIXME drop the NIX_PATH override
     pkgs.runCommand "nixdroid-prefetch.sh" {} ''
