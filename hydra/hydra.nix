@@ -7,8 +7,9 @@ let
     keepnr = 3;
   };
   mkInput = t: v: e: { type = t; value = v; emailresponsible = e; };
+  nixdroid = mkInput "git" "https://github.com/ajs124/NixDroid dev" true;
   defaultInputs = args: {
-    nixdroid = mkInput "git" "https://github.com/ajs124/NixDroid dev" true;
+    inherit nixdroid;
     nixpkgs = mkInput "git" "https://github.com/nixos/nixpkgs-channels nixos-18.09" false;
     rev = mkInput "string" (optConf args "rev" "lineage-16.0") false;
     keyStorePath = mkInput "string" "/var/lib/nixdroid/keystore" false;
@@ -65,6 +66,14 @@ in {
         device = "oneplus3";
         enableWireguard = "true";
         opengappsVariant = "nano";
+      };
+    };
+    prefetch = {
+      description = "prefetch script for other jobsets hashes";
+      nixexprpath = "hydra/prefetch.nix";
+      hidden = true;
+      inputs = {
+        inherit nixdroid;
       };
     };
     # "los-16.0-bacon" = defaultNixDroid // {
