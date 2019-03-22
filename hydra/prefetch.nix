@@ -1,4 +1,4 @@
-{ nixdroid, pkgs ? import <unstable/nixpkgs> {}, ... }: with builtins; let
+{ nixdroid, pkgs ? import <nixpkgs> {}, ... }: with builtins; let
   h = import ./hydra.nix { isHydra = false; };
   nix-prefetch = pkgs.callPackage ../nix-prefetch.nix {};
 in {

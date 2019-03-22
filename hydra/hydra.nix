@@ -74,6 +74,7 @@ in {
       hidden = true;
       inputs = {
         inherit nixdroid;
+        nixpkgs = mkInput "git" "https://github.com/nixos/nixpkgs-channels nixos-unstable" false;
       };
     };
     # "los-16.0-bacon" = defaultNixDroid // {
