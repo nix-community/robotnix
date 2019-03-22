@@ -1,6 +1,6 @@
 { nixdroid, ... }: with builtins;
 let
-  h = import ./hydra.nix {};
+  h = import ./hydra.nix { isHydra = true; };
 in {
   jobsets = derivation {
     name = "spec.json";

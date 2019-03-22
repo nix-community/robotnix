@@ -1,4 +1,4 @@
-{ }: with builtins;
+{ isHydra }: with builtins;
 let
   defaultNixDroid = {
     nixexprpath = "release.nix";
@@ -18,11 +18,13 @@ let
     extraFlags = mkInput "string" (optConf args "extraFlags" "-g all,-darwin,-infra,-sts --no-repo-verify") false;
     opengappsVariant = mkInput "string" (optConf args "opengappsVariant" null) false;
     enableWireguard = mkInput "boolean" (optConf args "enableWireguard" "false") false;
-    localManifests = {
+    localManifests = let
+      list = [ (../roomservice- + "${args.device}.xml") ] ++  # enableWireguard is a string, because hydra expects it to be one
+          (if (hasAttr "enableWireguard" args && args.enableWireguard == "true") then [ ../wireguard.xml ] else []) ++
+          (if (hasAttr "opengappsVariant" args) then [ ../opengapps.xml ] else []);
+      in {
       type = "nix";
-      value = "[" + (../roomservice- + "${args.device}.xml") + " " +  # enableWireguard is a string, because hydra expects it to be one
-        (if (hasAttr "enableWireguard" args && args.enableWireguard == "true") then ../wireguard.xml else "") + " " +
-        (if (hasAttr "opengappsVariant" args) then ../opengapps.xml else "") + "]";
+      value = if isHydra then "[ " + toString list + " ]" else list;  # hydra does not take lists, only nix expressions
       emailresponsible = false;
     };
   };
