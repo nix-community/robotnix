@@ -1,32 +1,19 @@
 {
   pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; },
-  device ? null,
-  rev ? "lineage-16.0",
-  opengappsVariant ? null,
+  device, rev, manifest, localManifests,
   keyStorePath ? null,
-  enableWireguard ? false,
-  manifest ? "https://github.com/LineageOS/android.git",
-  extraFlags ? "-g all,-darwin,-infra,-sts --no-repo-verify",
+  extraFlags ? "--no-repo-verify",
   sha256 ? null,
   sha256Path ? null,
   savePartitionImages ? false
 }:
 with pkgs; with lib;
 
-assert (device != null);
-assert ((sha256 != null) || (sha256Path != null));
-
 let
   nixdroid-env = callPackage ./buildenv.nix {};
   repo2nix = import (import ./repo2nix.nix {
-    inherit manifest rev extraFlags;
+    inherit device manifest localManifests rev extraFlags;
     sha256 = if (sha256 != null) then sha256 else readFile sha256Path;
-    name = "repo2nix-${rev}-${device}";
-    localManifests = flatten [
-      (./roomservice- + "${device}.xml")
-      (optional (opengappsVariant != null) [ ./opengapps.xml ])
-      (optional enableWireguard [ ./wireguard.xml ])
-    ];
   });
   signBuild = (keyStorePath != null);
 in stdenv.mkDerivation rec {

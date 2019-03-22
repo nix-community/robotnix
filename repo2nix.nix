@@ -1,6 +1,6 @@
 {
  pkgs ? import <nixpkgs> {},
- name, manifest, rev, sha256
+ device, rev, manifest, sha256
 # Optional parameters:
 , repoRepoURL ? "https://github.com/ajs124/tools_repo"
 , repoRepoRev ? "master"
@@ -31,7 +31,7 @@ let
 
   local_manifests = copyPathsToStore localManifests;
 in stdenvNoCC.mkDerivation {
-  inherit cacert name manifest rev repoRepoURL repoRepoRev referenceDir;
+  name = "repo2nix-${rev}-${device}";
 
   outputHashAlgo = "sha256";
   outputHash = sha256;
