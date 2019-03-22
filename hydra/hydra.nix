@@ -20,9 +20,9 @@ let
     enableWireguard = mkInput "boolean" (optConf args "enableWireguard" "false") false;
     localManifests = {
       type = "nix";
-      value = [ (../roomservice- + "${args.device}.xml") ] ++  # enableWireguard is a string, because hydra expects it to be one
-        (if (hasAttr "enableWireguard" args && args.enableWireguard == "true") then [ ../wireguard.xml ] else []) ++
-        (if (hasAttr "opengappsVariant" args) then [ ../opengapps.xml ] else []);
+      value = "[" + (../roomservice- + "${args.device}.xml") + " " +  # enableWireguard is a string, because hydra expects it to be one
+        (if (hasAttr "enableWireguard" args && args.enableWireguard == "true") then ../wireguard.xml else "") + " " +
+        (if (hasAttr "opengappsVariant" args) then ../opengapps.xml else "") + "]";
       emailresponsible = false;
     };
   };
