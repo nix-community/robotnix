@@ -12,8 +12,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "msteen";
     repo = "nix-prefetch";
-    rev = "4d1a7888997e71881c4e8171c0347f52e3c2e934";
-    sha256 = "16c3migl0ilcmrk06cwdn9258c6y8bq3a2qjz7vwm3xqrxdh0qjy";
+    rev = "97ad594899d1c4c9f67b12b0b6b9063e0a98eccf";
+    sha256 = "0cqy3h4hygi3rbx0gcnf010d6n878pdakr6w10h86vfw9lpyg5s3";
   };
 
   nativeBuildInputs = [
