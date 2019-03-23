@@ -19,6 +19,7 @@ let
     extraFlags = mkInput "string" (optConf args "extraFlags" "-g all,-darwin,-infra,-sts --no-repo-verify") false;
     opengappsVariant = mkInput "string" (optConf args "opengappsVariant" null) false;
     enableWireguard = mkInput "boolean" (optConf args "enableWireguard" "false") false;
+    usePatchedCoreutils = mkInput "boolean" "true" false;
     localManifests = let
       list = [ (../roomservice- + "${args.device}.xml") ] ++  # enableWireguard is a string, because hydra expects it to be one
           (if (hasAttr "enableWireguard" args && args.enableWireguard == "true") then [ ../wireguard.xml ] else []) ++

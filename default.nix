@@ -7,7 +7,8 @@
   extraFlags ? "--no-repo-verify",
   sha256 ? null,
   sha256Path ? null,
-  savePartitionImages ? false
+  savePartitionImages ? false,
+  usePatchedCoreutils ? false
 }:
 with pkgs; with lib;
 
@@ -22,7 +23,8 @@ in stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
   srcs = repo2nix.sources;
   unpackPhase = ''
-    ${optionalString (builtins.hasAttr "coreutils-copy_file_read" pkgs) "export PATH=${pkgs.coreutils-copy_file_read}/bin/:$PATH"}
+    ${optionalString usePatchedCoreutils "export PATH=${callPackage ./misc/coreutils.nix {}}/bin/:$PATH"}
+    echo $PATH
     ${repo2nix.unpackPhase}
   '';
 

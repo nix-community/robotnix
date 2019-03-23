@@ -1,0 +1,41 @@
+diff --git a/src/copy.c b/src/copy.c
+index a9c17a359..0ea003d30 100644
+--- a/src/copy.c
++++ b/src/copy.c
+@@ -328,19 +328,17 @@ sparse_copy (int src_fd, int dest_fd, char *buf, size_t buf_size,
+     return true;
+ }
+ 
+-/* Perform the O(1) btrfs clone operation, if possible.
+-   Upon success, return 0.  Otherwise, return -1 and set errno.  */
++/* Perform copy_file_range, if possible.
++   Upon success, return 0.  Otherwise, return -1.  */
+ static inline int
+-clone_file (int dest_fd, int src_fd)
++clone_file (int dest_fd, int src_fd, size_t len)
+ {
+-#ifdef FICLONE
+-  return ioctl (dest_fd, FICLONE, src_fd);
+-#else
+-  (void) dest_fd;
+-  (void) src_fd;
+-  errno = ENOTSUP;
++  size_t copied;
++
++  copied = copy_file_range (src_fd, NULL, dest_fd, NULL, len, 0);
++  if (copied == len)
++    return 0;
+   return -1;
+-#endif
+ }
+ 
+ /* Write N_BYTES zero bytes to file descriptor FD.  Return true if successful.
+@@ -1286,7 +1284,7 @@ copy_reg (char const *src_name, char const *dst_name,
+   /* --attributes-only overrides --reflink.  */
+   if (data_copy_required && x->reflink_mode)
+     {
+-      bool clone_ok = clone_file (dest_desc, source_desc) == 0;
++      bool clone_ok = clone_file (dest_desc, source_desc, src_open_sb.st_size) == 0;
+       if (clone_ok || x->reflink_mode == REFLINK_ALWAYS)
+         {
+           if (!clone_ok)
