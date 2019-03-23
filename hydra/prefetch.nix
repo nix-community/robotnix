@@ -1,6 +1,6 @@
 { nixdroid, pkgs ? import <nixpkgs> {}, ... }: with builtins; let
   h = import ./hydra.nix { isHydra = false; };
-  nix-prefetch = pkgs.callPackage ../nix-prefetch.nix {};
+  nix-prefetch = pkgs.callPackage ../misc/nix-prefetch.nix {};
 in {
   prefetchers = let
     mapAttrsToList = f: attrs: map (k: f k attrs.${k}) (attrNames attrs);
