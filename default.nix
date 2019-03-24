@@ -1,6 +1,6 @@
 {
   pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; },
-  device, rev, manifest, localManifests,
+  device, rev, manifest, localManifests, otaURL,
   opengappsVariant ? null,
   enableWireguard ? false,
   keyStorePath ? null,
@@ -8,7 +8,8 @@
   sha256 ? null,
   sha256Path ? null,
   savePartitionImages ? false,
-  usePatchedCoreutils ? false
+  usePatchedCoreutils ? false,
+  romtype ? "NIGHTLY"  # one of RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
 }:
 with pkgs; with lib;
 
@@ -19,6 +20,16 @@ let
     sha256 = if (sha256 != null) then sha256 else readFile sha256Path;
   });
   signBuild = (keyStorePath != null);
+  otaZipFileName = "signed-ota_update.zip";
+  json = [ {
+    datetime = "DATE_HERE";
+    filename = otaZipFileName;
+    id = "ID_HERE";
+    romtype = romtype;
+    size = "SIZE_HERE";  # this is (probably) verndor specific -.-
+    url = otaURL + otaZipFileName;
+    version = "VERSION_HERE";  # this is definitely specific -.-
+  } ]; # TBH, this whole Updater thing is different from rom to rom. yay.
 in { ota = stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
   srcs = repo2nix.sources;
@@ -55,6 +66,9 @@ in { ota = stdenv.mkDerivation rec {
 
       sed -i 's/tristate/bool/;s/default m/default y/;' "$wireguardHome/Kconfig"
     ''}
+
+    # insert updater url property before last line into buildinfo.sh
+    sed '$iecho "ro.lineage.updater.uri=${otaURL}"' build/tools/buildinfo.sh
   '';
 
 
@@ -67,6 +81,7 @@ in { ota = stdenv.mkDerivation rec {
     # for jack
     export HOME="$PWD"
     export USER="$(id -un)"
+    export RELEASE_TYPE="${romtype}"  # FIXME: does this work on non-lineage roms?
 
     source build/envsetup.sh
     breakfast "${device}"
@@ -74,7 +89,14 @@ in { ota = stdenv.mkDerivation rec {
     # TODO: incremental (-i) OTA
     ${optionalString signBuild "cp -R ${keyStorePath} .keystore"}   # copy the keystore, because some of the scripts want to chmod etc.
     ./build/tools/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d .keystore"} out/dist/*-target_files-*.zip signed-target_files.zip
-    ./build/tools/releasetools/ota_from_target_files.py ${optionalString signBuild "-k .keystore/releasekey"} --backup=true signed-target_files.zip signed-ota_update.zip
+    ./build/tools/releasetools/ota_from_target_files.py ${optionalString signBuild "-k .keystore/releasekey"} --backup=true signed-target_files.zip ${otaZipFileName}
+
+    echo '${builtins.toJSON json}' > $out/json
+    substituteInPlace $out/json \
+      --replace DATE_HERE $(date +%s) \
+      --replace SIZE_HERE $(du ${otaZipFileName}) \
+      --replace ID_HERE $(sha256sum ${otaZipFileName} | cut -d " " -f 1) \
+      --replace VERSION_HERE $(cut -d "-" -f 2 <<< ${rev})
 
 EOF
   '';
@@ -82,14 +104,16 @@ EOF
   installPhase = ''
     mkdir -p "$out"/nix-support
     # ota file
-    cp -v signed-ota_update.zip "$out/"
+    cp -v ${otaZipFileName} "$out/"
     ${optionalString savePartitionImages ''
       cd "out/target/product/${device}/"
       mkdir -p "$out/misc"
       # partition images
       cp -v *.img kernel "$out/misc/"
     ''}
-    echo "file zip $out/signed-ota_update.zip" > $out/nix-support/hydra-build-products
+    echo "file zip $out/${otaZipFileName}" > $out/nix-support/hydra-build-products
+    echo "file json $out/json" >> $out/nix-support/hydra-build-products
+
   '';
 
   fixupPhase = ":";
