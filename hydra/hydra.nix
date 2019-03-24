@@ -1,7 +1,7 @@
 { isHydra }: with builtins;
 let
   defaultNixDroid = {
-    nixexprpath = "release.nix";
+    nixexprpath = "default.nix";
     checkinterval = 300;
     schedulingshares = 1000;
     keepnr = 3;
@@ -42,7 +42,7 @@ in {
     enabled = 1;
     hidden = false;
     nixexprinput = "nixdroid";
-    nixexprpath = "release.nix";
+    nixexprpath = "default.nix";
     checkinterval = 300;
     schedulingshares = 1000;
     enableemail = false;

@@ -19,7 +19,7 @@ let
     sha256 = if (sha256 != null) then sha256 else readFile sha256Path;
   });
   signBuild = (keyStorePath != null);
-in stdenv.mkDerivation rec {
+in { ota = stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
   srcs = repo2nix.sources;
   unpackPhase = ''
@@ -94,4 +94,4 @@ EOF
 
   fixupPhase = ":";
   configurePhase = ":";
-}
+};}
