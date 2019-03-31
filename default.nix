@@ -73,7 +73,7 @@ in { ota = stdenv.mkDerivation rec {
 
 
   buildPhase = ''
-    cat << EOF | ${nixdroid-env}/bin/nixdroid-build
+    cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
     export LANG=C
     export ANDROID_JAVA_HOME="${pkgs.jdk.home}"
     export DISPLAY_BUILD_NUMBER=true
@@ -98,7 +98,7 @@ in { ota = stdenv.mkDerivation rec {
       --replace ID_HERE $(sha256sum ${otaZipFileName} | cut -d " " -f 1) \
       --replace VERSION_HERE $(cut -d "-" -f 2 <<< ${rev})
 
-EOF
+    EOF
   '';
 
   installPhase = ''
