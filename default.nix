@@ -68,7 +68,7 @@ in { ota = stdenv.mkDerivation rec {
     ''}
 
     # insert updater url property before last line into buildinfo.sh
-    sed '$iecho "ro.lineage.updater.uri=${otaURL}"' build/tools/buildinfo.sh
+    sed -i '$iecho "ro.lineage.updater.uri=${otaURL}"' build/tools/buildinfo.sh
   '';
 
 
