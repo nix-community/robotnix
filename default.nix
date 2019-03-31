@@ -91,19 +91,21 @@ in { ota = stdenv.mkDerivation rec {
     ./build/tools/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d .keystore"} out/dist/*-target_files-*.zip signed-target_files.zip
     ./build/tools/releasetools/ota_from_target_files.py ${optionalString signBuild "-k .keystore/releasekey"} --backup=true signed-target_files.zip ${otaZipFileName}
 
-    echo '${builtins.toJSON json}' > $out/json
-    substituteInPlace $out/json \
-      --replace DATE_HERE $(date +%s) \
-      --replace SIZE_HERE $(du ${otaZipFileName}) \
-      --replace ID_HERE $(sha256sum ${otaZipFileName} | cut -d " " -f 1) \
-      --replace VERSION_HERE $(cut -d "-" -f 2 <<< ${rev})
-
     EOF
   '';
 
   installPhase = ''
     mkdir -p "$out"/nix-support
-    # ota file
+
+    # ota json
+    echo '${builtins.toJSON json}' > $out/json
+    substituteInPlace $out/json \
+      --replace DATE_HERE $(date +%s) \
+      --replace SIZE_HERE $(du ${otaZipFileName} | cut -d$'\t' -f 1) \
+      --replace ID_HERE $(sha256sum ${otaZipFileName} | cut -d " " -f 1) \
+      --replace VERSION_HERE $(cut -d "-" -f 2 <<< ${rev})
+
+    # ota zip
     cp -v ${otaZipFileName} "$out/"
     ${optionalString savePartitionImages ''
       cd "out/target/product/${device}/"
