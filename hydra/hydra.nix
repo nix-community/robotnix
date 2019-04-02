@@ -2,7 +2,7 @@
 let
   defaultNixDroid = {
     nixexprpath = "default.nix";
-    checkinterval = 300;
+    checkinterval = 172800;
     schedulingshares = 1000;
     keepnr = 3;
   };
