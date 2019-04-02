@@ -26,7 +26,7 @@ let
     opengappsVariant = mkInput "string" (optConf args "opengappsVariant" null) false;
     enableWireguard = mkInput "boolean" (optConf args "enableWireguard" "false") false;
     usePatchedCoreutils = mkInput "boolean" "true" false;
-    otaURL = mkInput "string" "https://ipv2.de/nixdroid/" false;
+    otaURL = mkInput "string" "https://ipv2.de/nixdroid/${args.device}/" false;
     localManifests = let
       list = [ (../roomservice + "/${args.rom}/${args.device}.xml") ] ++  # enableWireguard is a string, because hydra expects it to be one
           (if (hasAttr "enableWireguard" args && args.enableWireguard == "true") then [ ../roomservice/misc/wireguard.xml ] else []) ++
