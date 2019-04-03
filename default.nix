@@ -26,10 +26,10 @@ let
     filename = otaZipFileName;
     id = "ID_HERE";
     romtype = romtype;
-    size = "SIZE_HERE";  # this is (probably) verndor specific -.-
+    size = "SIZE_HERE";  # this is (probably) vendor specific
     url = otaURL + otaZipFileName;
-    version = "VERSION_HERE";  # this is definitely specific -.-
-  } ]; # TBH, this whole Updater thing is different from rom to rom. yay.
+    version = "VERSION_HERE";  # this is definitely vendor specific
+  } ]; # TBH, this whole updater thing is different from ROM to ROM
 in { ota = stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
   srcs = repo2nix.sources;
@@ -68,7 +68,7 @@ in { ota = stdenv.mkDerivation rec {
     ''}
 
     # insert updater url property before last line into buildinfo.sh
-    sed -i '$iecho "ro.lineage.updater.uri=${otaURL}"' build/tools/buildinfo.sh
+    sed -i '$iecho "lineage.updater.uri=${otaURL}"' build/tools/buildinfo.sh
   '';
 
 
