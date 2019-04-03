@@ -21,7 +21,7 @@ let
   });
   signBuild = (keyStorePath != null);
   otaZipFileName = "signed-ota_update.zip";
-  json = [ {
+  json = { response = [ {
     datetime = "DATE_HERE";
     filename = otaZipFileName;
     id = "ID_HERE";
@@ -29,7 +29,7 @@ let
     size = "SIZE_HERE";  # this is (probably) vendor specific
     url = otaURL + otaZipFileName;
     version = "VERSION_HERE";  # this is definitely vendor specific
-  } ]; # TBH, this whole updater thing is different from ROM to ROM
+  } ]; }; # TBH, this whole updater thing is different from ROM to ROM
 in { ota = stdenv.mkDerivation rec {
   name = "nixdroid-${rev}-${device}";
   srcs = repo2nix.sources;
