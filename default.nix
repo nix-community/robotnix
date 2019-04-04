@@ -100,7 +100,7 @@ in { ota = stdenv.mkDerivation rec {
     # ota json
     echo '${builtins.toJSON json}' > $out/json
     substituteInPlace $out/json \
-      --replace DATE_HERE $(date +%s) \
+      --replace DATE_HERE $(grep ro.build.date.utc out/target/product/${device}/system/build.prop | cut -d = -f 2) \
       --replace SIZE_HERE $(du ${otaZipFileName} | cut -d$'\t' -f 1) \
       --replace ID_HERE $(sha256sum ${otaZipFileName} | cut -d " " -f 1) \
       --replace VERSION_HERE $(cut -d "-" -f 2 <<< ${rev})
