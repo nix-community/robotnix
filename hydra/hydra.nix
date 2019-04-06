@@ -60,12 +60,12 @@ in {
         opengappsVariant = "pico";
       };
     };
-    "los-15.1-payton" = defaultNixDroid // {
-      description = "LineageOS 15.1 for Payton";
+    "los-16.0-payton" = defaultNixDroid // {
+      description = "LineageOS 16.0 for Payton";
       inputs = defaultInputs {
         device = "payton";
         rom = "LineageOS";
-        rev = "lineage-15.1";
+        rev = "lineage-16.0";
         enableWireguard = "true";
         opengappsVariant = "nano";
       };
