@@ -7,7 +7,7 @@ let
     keepnr = 3;
   };
   mkInput = t: v: e: { type = t; value = v; emailresponsible = e; };
-  nixdroid = mkInput "git" "https://github.com/ajs124/NixDroid dev" true;
+  nixdroid = mkInput "git" "https://github.com/ajs124/NixDroid" true;
   manifests = {
     LineageOS = "https://github.com/LineageOS/android";
     ResurrectionRemix = "https://github.com/ResurrectionRemix/platform_manifest";
