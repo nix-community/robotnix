@@ -1,5 +1,6 @@
 { nixdroid, pkgs ? import <nixpkgs> {}, ... }: with builtins; let
   h = import ./hydra.nix { isHydra = false; };
+  hydraURL = "http://guava.wg/hydra";
   nix-prefetch = pkgs.callPackage ../misc/nix-prefetch.nix {};
 in {
   prefetchers = let
@@ -10,9 +11,9 @@ in {
     filteredJobsets = filterAttrs (k: v: k != "prefetch") h.jobsets;
     prefetchers = mapAttrsToList (x: y:
       "${nix-prefetch}/bin/nix-prefetch -f ${nixdroid}/repo2nix.nix --input json <<< '\"'\"'"  # Fuck escaping quotes
-        + toJSON (mapAttrs (k: v: v.value) (filterRelevantAttrs h.jobsets."${x}".inputs)) + "'\"'\"'" + '' | tr -d "\n" > ${h.jobsets.${x}.inputs.sha256Path.value}'') filteredJobsets;
+      + toJSON (mapAttrs (k: v: v.value) (filterRelevantAttrs h.jobsets."${x}".inputs)) + "'\"'\"'" + '' | tr -d "\n" > ${h.jobsets.${x}.inputs.sha256Path.value}''
+      + "\n${pkgs.curl}/bin/curl '\"'\"'${hydraURL}/api/push?jobsets=nixdroid%3A${x}&amp;force=1'\"'\"'") filteredJobsets;
   in
-    # FIXME drop the NIX_PATH override
     pkgs.runCommand "nixdroid-prefetch" {} ''
       mkdir -p $out/nix-support
       echo $'#!/bin/sh
