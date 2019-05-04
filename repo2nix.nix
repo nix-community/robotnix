@@ -29,7 +29,8 @@ let
     "--depth=1"
   ] ++ extraRepoInitFlags;
 
-  local_manifests = copyPathsToStore localManifests;
+  #local_manifests = copyPathsToStore localManifests;
+  local_manifests = localManifests;
 in stdenvNoCC.mkDerivation {
   name = "repo2nix-${rev}-${device}";
 

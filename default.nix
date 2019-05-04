@@ -1,6 +1,10 @@
 {
   pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; },
-  device, rev, manifest, localManifests, otaURL,
+  device, rev, manifest, localManifests,
+  buildID ? "nixdroid", # Preferably match the upstream vendor buildID
+  buildType ? "user", # one of "user" "eng" "userdebug"
+  additionalProductPackages ? [],
+  vendorImg ? null,
   opengappsVariant ? null,
   enableWireguard ? false,
   keyStorePath ? null,
@@ -13,6 +17,8 @@
 }:
 with pkgs; with lib;
 
+# Trying to support pixel (xl) 1-3 devices.
+
 let
   nixdroid-env = callPackage ./buildenv.nix {};
   repo2nix = import (import ./repo2nix.nix {
@@ -20,104 +26,142 @@ let
     sha256 = if (sha256 != null) then sha256 else readFile sha256Path;
   });
   signBuild = (keyStorePath != null);
-  otaZipFileName = "signed-ota_update.zip";
-  json = { response = [ {
-    datetime = "DATE_HERE";
-    filename = otaZipFileName;
-    id = "ID_HERE";
-    romtype = romtype;
-    size = "SIZE_HERE";  # this is (probably) vendor specific
-    url = otaURL + otaZipFileName;
-    version = "VERSION_HERE";  # this is definitely vendor specific
-  } ]; }; # TBH, this whole updater thing is different from ROM to ROM
-in { ota = stdenv.mkDerivation rec {
-  name = "nixdroid-${rev}-${device}";
-  srcs = repo2nix.sources;
-  unpackPhase = ''
-    ${optionalString usePatchedCoreutils "export PATH=${callPackage ./misc/coreutils.nix {}}/bin/:$PATH"}
-    echo $PATH
-    ${repo2nix.unpackPhase}
+  flex = callPackage ./flex-2.5.39.nix {};
+in rec {
+  # Hacky way to get an individual source dir from repo2nix.
+  sourceDir = dirName: lib.findFirst (s: lib.hasSuffix ("-" + (builtins.replaceStrings ["/"] ["="] dirName)) s.outPath) null repo2nix.sources;
+  vendorFiles = callPackage ./android-prepare-vendor {
+    inherit device buildID;
+    img = vendorImg;
+  };
+  # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
+  androidBuild = stdenvNoCC.mkDerivation rec {
+    name = "nixdroid-${rev}-${device}";
+    srcs = repo2nix.sources;
+
+    outputs = [ "out" "bin" ]; # This derivation builds AOSP release tools and target-files
+
+    unpackPhase = ''
+      ${optionalString usePatchedCoreutils "export PATH=${callPackage ./misc/coreutils.nix {}}/bin/:$PATH"}
+      echo $PATH
+      ${repo2nix.unpackPhase}
+    '' + optionalString (vendorImg != null) "cp --reflink=auto -r ${vendorFiles}/* .";
+
+    # Fix a locale issue with included flex program
+    #mkdir -p packages/apps/F-Droid/app/build/outputs/apk/full/release/
+    #cp ${fdroidPrivExtApk} packages/apps/F-Droid/app/build/outputs/apk/full/release/app-full-release-unsigned.apk
+    prePatch = ''
+      ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39
+
+      substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java \
+        --replace BuildConfig.APPLICATION_ID "\"org.fdroid.fdroid.privileged\""
+    '' + concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages;
+
+    ANDROID_JAVA_HOME="${pkgs.jdk.home}";
+    BUILD_NUMBER=buildID;
+    DISPLAY_BUILD_NUMBER="true";
+    ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8G";
+
+    # Alternative is to just "make target-files-package brillo_update_payload
+    # Parts from https://github.com/GrapheneOS/script/blob/pie/release.sh
+    buildPhase = ''
+      cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
+      source build/envsetup.sh
+      choosecombo release "aosp_${device}" ${buildType}
+      make otatools-package target-files-package dist
+      EOF
+    '';
+
+    # Kinda ugly to just throw all this in $bin/
+    # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
+    installPhase = ''
+      mkdir -p $out $bin
+      cp --reflink=auto -r out/target/product/${device}/obj/PACKAGING/target_files_intermediates/aosp_${device}-target_files-${buildID}.zip $out/
+      cp --reflink=auto -r out/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
+    '';
+
+    configurePhase = ":";
+    dontMoveLib64 = true;
+  };
+
+  marlinKernel = builtins.fetchGit {
+    url = "https://android.googlesource.com/kernel/msm";
+    # Have to use ref = $shortrev... since rev in builtins.fetchGit requires full revision length.
+    rev = "665c9a1d4de133b320772698066d8ec060a218f6"; # tag: android-9.0.0_r0.71, tag: android-9.0.0_r0.64, origin/android-msm-marlin-3.18-pie-qpr2
+#    ref = import (runCommand "marlinKernelRev" {} ''
+#        shortrev=$(grep -a 'Linux version' ${sourceDir "device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
+#        echo \"$shortrev\" > $out
+#      '');
+  };
+
+  # Tools that were built for the host in the process of building the target files.
+  # Do the patchShebangs / patchelf stuff in this derivation so it failing for any reason doesn't stop the main androidBuild
+  androidHostTools = stdenv.mkDerivation {
+    name = "android-host-tools-${rev}";
+    src = androidBuild.bin;
+    nativeBuildInputs = [ autoPatchelfHook ];
+    buildInputs = [ python ncurses5 ]; # One of the utilities needs libncurses.so.5 but it's not in the lib/ dir of the androidBuild files.
+    installPhase = ''
+      mkdir -p $out
+      cp --reflink=auto -r * $out
+    '';
+    dontMoveLib64 = true;
+  };
+
+  jdk =  pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/8.nix> {
+    bootjdk = pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/bootstrap.nix> { version = "8"; };
+    inherit (pkgs.gnome2) GConf gnome_vfs;
+    minimal = true;
+  };
+  buildTools = stdenv.mkDerivation {
+    name = "android-build-tools-${rev}";
+    src = sourceDir "build/make";
+    nativeBuildInputs = [ python ];
+    postPatch = ''
+      substituteInPlace ./tools/releasetools/common.py \
+        --replace "out/host/linux-x86" "${androidHostTools}" \
+        --replace "java_path = \"java\"" "java_path = \"${jdk}/bin/java\""
+      substituteInPlace ./tools/releasetools/build_image.py \
+        --replace "system/extras/verity/build_verity_metadata.py" "$out/build_verity_metadata.py"
+    '';
+    installPhase = ''
+      mkdir -p $out
+      cp --reflink=auto -r ./tools/* $out
+      cp --reflink=auto ${sourceDir "system/extras"}/verity/{build_verity_metadata.py,boot_signer,verity_signer} $out # Some extra random utilities from elsewhere
+    '';
+  };
+
+  # Make this into a script that can be run outside of nixpkgs
+  signedTargetFiles = runCommand "${device}-signed_target_files-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
+    mkdir -p build/target/product/
+    ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security # Make sure it can access the default keys if needed
+    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d .keystore"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip $out
   '';
-
-  prePatch = ''
-    # Find device tree
-    boardConfig="$(ls "device/"*"/${device}/BoardConfig.mk")"
-    deviceConfig="$(ls "device/"*"/${device}/device.mk")"
-    if ! [ -f "$boardConfig" ]; then
-      echo "Tree for device ${device} not found"
-      exit 1
-    fi
-
-    ${optionalString (opengappsVariant != null) ''
-      # Opengapps
-      (
-        echo 'GAPPS_VARIANT := ${opengappsVariant}'
-        echo '$(call inherit-product, vendor/opengapps/build/opengapps-packages.mk)'
-      ) >> "$deviceConfig"
-    ''}
-
-    ${optionalString enableWireguard ''
-      # Wireguard
-      kernelTree="$(grep 'TARGET_KERNEL_SOURCE := ' "$boardConfig" | cut -d' ' -f3)"
-      wireguardHome="$kernelTree/net/wireguard"
-      mkdir -p "$wireguardHome"
-      mv wireguard/*/* "$wireguardHome"
-      touch "$wireguardHome/.check"
-
-      sed -i 's/tristate/bool/;s/default m/default y/;' "$wireguardHome/Kconfig"
-    ''}
-
-    # insert updater url property before last line into buildinfo.sh
-    sed -i '$iecho "lineage.updater.uri=${otaURL}"' build/tools/buildinfo.sh
+  ota = runCommand "${device}-ota_update-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
+    mkdir -p build/target/product/
+    ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security # Make sure it can access the default keys if needed
+    ${buildTools}/releasetools/ota_from_target_files.py ${optionalString signBuild "-k .keystore/releasekey"} ${signedTargetFiles} $out
   '';
+  img = runCommand "${device}-img-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; }
+    "${buildTools}/releasetools/img_from_target_files.py ${signedTargetFiles} $out";
+  factoryImg = runCommand "${device}-${toLower buildID}-factory.zip" { nativeBuildInputs = [ pkgs.zip unzip ]; } ''
+      DEVICE=${device};
+      PRODUCT=${device};
+      BUILD=${buildID};
+      VERSION=${toLower buildID};
 
+      get_radio_image() {
+        grep -Po "require version-$1=\K.+" ${vendorFiles}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
+      }
+      BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
+      RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
-  buildPhase = ''
-    cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
-    export LANG=C
-    export ANDROID_JAVA_HOME="${pkgs.jdk.home}"
-    export DISPLAY_BUILD_NUMBER=true
-    export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8G"
-    # for jack
-    export HOME="$PWD"
-    export USER="$(id -un)"
-    export RELEASE_TYPE="${romtype}"  # FIXME: does this work on non-lineage roms?
+      ln -s ${signedTargetFiles} $PRODUCT-target_files-$BUILD.zip
+      ln -s ${img} $PRODUCT-img-$BUILD.zip
 
-    source build/envsetup.sh
-    breakfast "${device}"
-    mka otatools-package target-files-package dist
-    # TODO: incremental (-i) OTA
-    ${optionalString signBuild "cp -R ${keyStorePath} .keystore"}   # copy the keystore, because some of the scripts want to chmod etc.
-    ./build/tools/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d .keystore"} out/dist/*-target_files-*.zip signed-target_files.zip
-    ./build/tools/releasetools/ota_from_target_files.py ${optionalString signBuild "-k .keystore/releasekey"} --backup=true signed-target_files.zip ${otaZipFileName}
+      source ${sourceDir "device/common"}/generate-factory-images-common.sh
+      cp --reflink=auto ${device}-${toLower buildID}-*.zip $out
+    '';
+}
 
-    EOF
-  '';
-
-  installPhase = ''
-    mkdir -p "$out"/nix-support
-
-    # ota json
-    echo '${builtins.toJSON json}' > $out/json
-    substituteInPlace $out/json \
-      --replace DATE_HERE $(grep ro.build.date.utc out/target/product/${device}/system/build.prop | cut -d = -f 2) \
-      --replace SIZE_HERE $(du -b ${otaZipFileName} | cut -d$'\t' -f 1) \
-      --replace ID_HERE $(sha256sum ${otaZipFileName} | cut -d " " -f 1) \
-      --replace VERSION_HERE $(cut -d "-" -f 2 <<< ${rev})
-
-    # ota zip
-    cp -v ${otaZipFileName} "$out/"
-    ${optionalString savePartitionImages ''
-      cd "out/target/product/${device}/"
-      mkdir -p "$out/misc"
-      # partition images
-      cp -v *.img kernel "$out/misc/"
-    ''}
-    echo "file zip $out/${otaZipFileName}" > $out/nix-support/hydra-build-products
-    echo "file json $out/json" >> $out/nix-support/hydra-build-products
-
-  '';
-
-  fixupPhase = ":";
-  configurePhase = ":";
-};}
+# Update with just img using: fastboot -w update <...>.img
