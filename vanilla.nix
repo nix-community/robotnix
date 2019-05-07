@@ -1,11 +1,11 @@
 with (import <nixpkgs> {});
 import ./default.nix rec {
   device = "marlin"; # Pixel XL
-  rev = "android-9.0.0_r35";
-  buildID = "PQ2A.190405.003";
-  buildType = "userdebug";
+  rev = "android-9.0.0_r36";
+  buildID = "PQ3A.190505.001";
+  buildType = "user";
   manifest = "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
-  sha256 = "0y7jn3bf58n8wlyd21kd9wn8ljwj4hqb9srfln4q5xn6r68n2czp";
+  sha256 = "1fskk125zh0dy4f45z2fblik4sqjgc0w8amclw6a281kpyhji4zp";
   localManifests = [
     (writeTextFile {
       name = "fdroid.xml";
@@ -23,7 +23,7 @@ import ./default.nix rec {
   ];
   additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" ];
   vendorImg = fetchurl {
-    url = https://dl.google.com/dl/android/aosp/marlin-pq2a.190405.003-factory-d30b60f0.zip;
-    sha256 = "01mic9phhsi0x7kv8l1jc01caqbxj65r4nshml6l6l38f7q602yk";
+    url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190505.001-factory-5dac573c.zip";
+    sha256 = "0cd3zhvw9z8jjhrx43i9lhr0v7qff63vzw4wis5ir2mrxly5gb2x";
   };
 }
