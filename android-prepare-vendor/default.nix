@@ -1,8 +1,9 @@
 { stdenv, lib, callPackage, fetchurl, autoPatchelfHook, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
-  device, buildID, img
+  device, img
 }:
 
 let
+  buildID = "nixdroid"; # Doesn't have to match the real buildID
   simg2img = callPackage ./simg2img.nix {};
   dexrepair = callPackage ./dexrepair.nix {};
 

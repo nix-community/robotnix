@@ -31,7 +31,7 @@ in rec {
   # Hacky way to get an individual source dir from repo2nix.
   sourceDir = dirName: lib.findFirst (s: lib.hasSuffix ("-" + (builtins.replaceStrings ["/"] ["="] dirName)) s.outPath) null repo2nix.sources;
   vendorFiles = callPackage ./android-prepare-vendor {
-    inherit device buildID;
+    inherit device;
     img = vendorImg;
   };
   # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
