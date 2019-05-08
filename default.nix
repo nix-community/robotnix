@@ -68,7 +68,7 @@ in rec {
       ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39
 
       substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel XL@"
-      substituteInPlace  device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
+      substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
       substituteInPlace device/google/marlin/aosp_sailfish.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel"
       substituteInPlace device/google/marlin/aosp_sailfish.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
 
