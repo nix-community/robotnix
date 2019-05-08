@@ -53,6 +53,17 @@ in rec {
     prePatch = ''
       ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39
 
+      substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel XL@"
+      substituteInPlace  device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
+      substituteInPlace device/google/marlin/aosp_sailfish.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel"
+      substituteInPlace device/google/marlin/aosp_sailfish.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
+
+      substituteInPlace device/google/taimen/aosp_taimen.mk --replace "PRODUCT_MODEL := AOSP on taimen" "PRODUCT_MODEL := Pixel 2 XL"
+      substituteInPlace device/google/muskie/aosp_walleye.mk --replace "PRODUCT_MODEL := AOSP on walleye" "PRODUCT_MODEL := Pixel 2"
+
+      substituteInPlace device/google/crosshatch/aosp_crosshatch.mk --replace "PRODUCT_MODEL := AOSP on crosshatch" "PRODUCT_MODEL := Pixel 3 XL"
+      substituteInPlace device/google/crosshatch/aosp_blueline.mk --replace "PRODUCT_MODEL := AOSP on blueline" "PRODUCT_MODEL := Pixel 3"
+
       substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java \
         --replace BuildConfig.APPLICATION_ID "\"org.fdroid.fdroid.privileged\""
     '' + concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages;
