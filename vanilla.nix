@@ -22,6 +22,7 @@ import ./default.nix rec {
     })
   ];
   additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" ];
+  removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
   vendorImg = fetchurl {
     url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190505.001-factory-5dac573c.zip";
     sha256 = "0cd3zhvw9z8jjhrx43i9lhr0v7qff63vzw4wis5ir2mrxly5gb2x";

@@ -3,7 +3,8 @@
   device, rev, manifest, localManifests,
   buildID ? "nixdroid", # Preferably match the upstream vendor buildID
   buildType ? "user", # one of "user" "eng" "userdebug"
-  additionalProductPackages ? [],
+  additionalProductPackages ? [], # A list of strings denoting product packages that should be included in build
+  removedProductPackages ? [], # A list of strings denoting product packages that should be removed from default build
   vendorImg ? null,
   opengappsVariant ? null,
   enableWireguard ? false,
@@ -79,7 +80,12 @@ in rec {
 
       substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java \
         --replace BuildConfig.APPLICATION_ID "\"org.fdroid.fdroid.privileged\""
-    '' + concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages;
+
+      cp ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
+    '' + concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages
+       + concatMapStringsSep "\n" (name: "sed -i /${name} \\/d' build/make/target/product/*.mk") removedProductPackages;
+    # TODO: The " \\" in the above sed is a bit flaky, and would require the line to end in " \\"
+    # come up with something more robust.
 
     ANDROID_JAVA_HOME="${pkgs.jdk.home}";
     BUILD_NUMBER=buildID;
