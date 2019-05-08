@@ -27,6 +27,19 @@ let
   });
   signBuild = (keyStorePath != null);
   flex = callPackage ./flex-2.5.39.nix {};
+  avbMode = {
+    marlin = "verity_only";
+    sailfish = "verity_only";
+    taimen = "vbmeta_simple";
+    walleye = "vbmeta_simple";
+    crosshatch = "vbmeta_chained";
+    blueline = "vbmeta_chained";
+  }.${device};
+  avbFlags = {
+    verity_only = "--replace_verity_public_key ${keyStorePath}/verity_key.pub --replace_verity_private_key ${keyStorePath}/verity --replace_verity_keyid" "${keyStorePath}/verity.x509.pem";
+    vbmeta_simple = "--avb_vbmeta_key ${keyStorePath}/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
+    vbmeta_chained = "--avb_vbmeta_key ${keyStorePath}/avb.pem --avb_vbmeta_algortihm SHA256_RSA2048 --avb_system_key ${keyStorePath}/avb.pem --avb_system_algorithm SHA256_RSA2048";
+  }.${avbMode};
 in rec {
   # Hacky way to get an individual source dir from repo2nix.
   sourceDir = dirName: lib.findFirst (s: lib.hasSuffix ("-" + (builtins.replaceStrings ["/"] ["="] dirName)) s.outPath) null repo2nix.sources;
@@ -50,7 +63,7 @@ in rec {
     # Fix a locale issue with included flex program
     #mkdir -p packages/apps/F-Droid/app/build/outputs/apk/full/release/
     #cp ${fdroidPrivExtApk} packages/apps/F-Droid/app/build/outputs/apk/full/release/app-full-release-unsigned.apk
-    prePatch = ''
+    postPatch = ''
       ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39
 
       substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel XL@"
@@ -95,14 +108,30 @@ in rec {
     dontMoveLib64 = true;
   };
 
-  marlinKernel = builtins.fetchGit {
-    url = "https://android.googlesource.com/kernel/msm";
-    # Have to use ref = $shortrev... since rev in builtins.fetchGit requires full revision length.
-    rev = "665c9a1d4de133b320772698066d8ec060a218f6"; # tag: android-9.0.0_r0.71, tag: android-9.0.0_r0.64, origin/android-msm-marlin-3.18-pie-qpr2
-#    ref = import (runCommand "marlinKernelRev" {} ''
-#        shortrev=$(grep -a 'Linux version' ${sourceDir "device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
-#        echo \"$shortrev\" > $out
-#      '');
+  # TODO: Any reason to use nixpkgs kernel stuff?
+  marlinKernel = stdenvNoCC.mkDerivation {
+    name = "kernel-marlin-${rev}";
+    src = builtins.fetchGit {
+      url = "https://android.googlesource.com/kernel/msm";
+      # Have to use ref = $shortrev... since rev in builtins.fetchGit requires full revision length.
+      ref = "android-9.0.0_r0.74"; # branch: android-msm-marlin-3.18-pie-qpr3
+  #    ref = import (runCommand "marlinKernelRev" {} ''
+  #        shortrev=$(grep -a 'Linux version' ${sourceDir "device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
+  #        echo \"$shortrev\" > $out
+  #      '');
+    };
+
+    prePatch = lib.optionalString (keyStorePath != null) "cp ${keyStorePath}/verity_user.der.x509 .";
+
+    buildPhase = ''
+      make ARCH=arm64 marlin_defconfig
+      make CONFIG_COMPAT_VDSO=n CROSS_COMPILE=${sourceDir "prebuilts/gcc"}/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-;
+    '';
+
+    installPhase = ''
+      mkdir -p $out
+      cp arch/arm64/boot/Image.lz4-dtb $out
+    '';
   };
 
   # Tools that were built for the host in the process of building the target files.
@@ -146,12 +175,12 @@ in rec {
   signedTargetFiles = runCommand "${device}-signed_target_files-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
     mkdir -p build/target/product/
     ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security # Make sure it can access the default keys if needed
-    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d .keystore"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip $out
+    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d ${keyStorePath} ${avbFlags}"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip $out
   '';
   ota = runCommand "${device}-ota_update-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
     mkdir -p build/target/product/
     ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security # Make sure it can access the default keys if needed
-    ${buildTools}/releasetools/ota_from_target_files.py ${optionalString signBuild "-k .keystore/releasekey"} ${signedTargetFiles} $out
+    ${buildTools}/releasetools/ota_from_target_files.py ${optionalString signBuild "-k ${keyStorePath}/releasekey"} ${signedTargetFiles} $out
   '';
   img = runCommand "${device}-img-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; }
     "${buildTools}/releasetools/img_from_target_files.py ${signedTargetFiles} $out";
