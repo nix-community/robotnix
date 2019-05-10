@@ -1,7 +1,7 @@
 {
   pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; },
   device, rev, manifest, localManifests,
-  buildID ? "nixdroid", # Preferably match the upstream vendor buildID
+  buildID ? "nixdroid", # Preferably relate to the upstream vendor buildID
   buildType ? "user", # one of "user" "eng" "userdebug"
   additionalProductPackages ? [], # A list of strings denoting product packages that should be included in build
   removedProductPackages ? [], # A list of strings denoting product packages that should be removed from default build
@@ -37,9 +37,9 @@ let
     blueline = "vbmeta_chained";
   }.${device};
   avbFlags = {
-    verity_only = "--replace_verity_public_key ${keyStorePath}/verity_key.pub --replace_verity_private_key ${keyStorePath}/verity --replace_verity_keyid" "${keyStorePath}/verity.x509.pem";
-    vbmeta_simple = "--avb_vbmeta_key ${keyStorePath}/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
-    vbmeta_chained = "--avb_vbmeta_key ${keyStorePath}/avb.pem --avb_vbmeta_algortihm SHA256_RSA2048 --avb_system_key ${keyStorePath}/avb.pem --avb_system_algorithm SHA256_RSA2048";
+    verity_only = "--replace_verity_public_key $KEYSTOREPATH/verity_key.pub --replace_verity_private_key $KEYSTOREPATH/verity --replace_verity_keyid $KEYSTOREPATH/verity.x509.pem";
+    vbmeta_simple = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
+    vbmeta_chained = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algortihm SHA256_RSA2048 --avb_system_key $KEYSTOREPATH/avb.pem --avb_system_algorithm SHA256_RSA2048";
   }.${avbMode};
 in rec {
   # Hacky way to get an individual source dir from repo2nix.
@@ -48,6 +48,14 @@ in rec {
     inherit device;
     img = vendorImg;
   };
+  # TODO: Move this out into a "chromium" webview module
+  config_webview_packages = writeText "config_webview_packages.xml" ''
+    <?xml version="1.0" encoding="utf-8"?>
+    <webviewproviders>
+      <webviewprovider description="Chromium" packageName="org.chromium.chrome" availableByDefault="true">
+      </webviewprovider>
+    </webviewproviders>
+  '';
   # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
   androidBuild = stdenvNoCC.mkDerivation rec {
     name = "nixdroid-${rev}-${device}";
@@ -81,9 +89,21 @@ in rec {
       substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java \
         --replace BuildConfig.APPLICATION_ID "\"org.fdroid.fdroid.privileged\""
 
-      cp ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
-    '' + concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages
-       + concatMapStringsSep "\n" (name: "sed -i /${name} \\/d' build/make/target/product/*.mk") removedProductPackages;
+      #cp ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
+
+      # disable QuickSearchBox widget on home screen
+      substituteInPlace packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java \
+        --replace "QSB_ON_FIRST_SCREEN = true;" "QSB_ON_FIRST_SCREEN = false;"
+      # fix compile error with uninitialized variable
+      substituteInPlace packages/apps/Launcher3/src/com/android/launcher3/provider/ImportDataTask.java \
+        --replace "boolean createEmptyRowOnFirstScreen;" "boolean createEmptyRowOnFirstScreen = false;"
+
+      ${concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages}
+      ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' build/make/target/product/*.mk") removedProductPackages}
+
+      ${optionalString (signBuild && ((device == "marlin") || (device == "sailfish")))
+        "cp -fv ${marlinKernel}/Image.lz4-dtb device/google/marlin-kernel/Image.lz4-dtb"}
+      '';
     # TODO: The " \\" in the above sed is a bit flaky, and would require the line to end in " \\"
     # come up with something more robust.
 
@@ -114,29 +134,48 @@ in rec {
     dontMoveLib64 = true;
   };
 
+  prebuiltGCC = stdenv.mkDerivation {
+    name = "prebuilt-gcc";
+    src = sourceDir "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9";
+    nativeBuildInputs = [ python autoPatchelfHook ];
+    installPhase = ''
+      cp -r $src $out
+    '';
+  };
+
   # TODO: Any reason to use nixpkgs kernel stuff?
-  marlinKernel = stdenvNoCC.mkDerivation {
-    name = "kernel-marlin-${rev}";
+  marlinKernel = stdenv.mkDerivation {
+    name = "kernel-${device}-${rev}";
     src = builtins.fetchGit {
       url = "https://android.googlesource.com/kernel/msm";
-      # Have to use ref = $shortrev... since rev in builtins.fetchGit requires full revision length.
-      ref = "android-9.0.0_r0.74"; # branch: android-msm-marlin-3.18-pie-qpr3
+      rev = "021e5400cb88fe15bc0c007e5847a0ec78c1831e";
+      #ref = "tags/android-9.0.0_r0.74"; # branch: android-msm-marlin-3.18-pie-qpr3
   #    ref = import (runCommand "marlinKernelRev" {} ''
   #        shortrev=$(grep -a 'Linux version' ${sourceDir "device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
   #        echo \"$shortrev\" > $out
   #      '');
     };
 
-    prePatch = lib.optionalString (keyStorePath != null) "cp ${keyStorePath}/verity_user.der.x509 .";
+    prePatch = lib.optionalString (keyStorePath != null) ''
+      openssl x509 -outform der -in ${./keys/verity.x509.pem} -out verity_user.der.x509
+    '';
 
-    buildPhase = ''
+    nativeBuildInputs = [ perl bc nettools openssl rsync gmp libmpc mpfr lz4 ];
+
+    enableParallelBuilding = true;
+    makeFlags = [
+      "ARCH=arm64"
+      "CONFIG_COMPAT_VDSO=n"
+      "CROSS_COMPILE=${prebuiltGCC}/bin/aarch64-linux-android-"
+    ];
+
+    preBuild = ''
       make ARCH=arm64 marlin_defconfig
-      make CONFIG_COMPAT_VDSO=n CROSS_COMPILE=${sourceDir "prebuilts/gcc"}/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-;
     '';
 
     installPhase = ''
       mkdir -p $out
-      cp arch/arm64/boot/Image.lz4-dtb $out
+      cp arch/arm64/boot/Image.lz4-dtb $out/Image.lz4-dtb
     '';
   };
 
@@ -177,6 +216,41 @@ in rec {
     '';
   };
 
+  # Get a bunch of utilities to generate keys
+  keyTools = runCommandCC "android-key-tools-${rev}" { nativeBuildInputs = [ python pkgconfig ]; buildInputs = [ boringssl ]; } ''
+    mkdir -p $out/bin
+
+    cp ${sourceDir "development"}/tools/make_key $out/bin/make_key
+    substituteInPlace $out/bin/make_key --replace openssl ${getBin openssl}/bin/openssl
+
+    cc -o $out/bin/generate_verity_key \
+      ${sourceDir "system/extras"}/verity/generate_verity_key.c \
+      ${sourceDir "system/core"}/libcrypto_utils/android_pubkey.c \
+      -I ${sourceDir "system/core"}/libcrypto_utils/include/ \
+      -I ${boringssl}/include ${boringssl}/lib/libssl.a ${boringssl}/lib/libcrypto.a -lpthread
+
+    cp ${sourceDir "external/avb"}/avbtool $out/bin/avbtool
+    patchShebangs $out/bin
+  '';
+
+  # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
+  generateKeysScript = writeScript "generate_keys.sh" ''
+    #!${runtimeShell}
+
+    export PATH=${getBin openssl}/bin:${keyTools}/bin:$PATH
+
+    for key in {releasekey,platform,shared,media,verity,avb}; do
+      # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
+      ! make_key "$key" "$1" || exit 1
+    done
+
+    # Generate both verity and AVB keys. While not strictly necessary, there is
+    # no harm in doing so--and the user may want to use the same keys for
+    # multiple devices supporting different AVB modes.
+    generate_verity_key -convert verity.x509.pem verity_key || exit 1
+    avbtool extract_public_key --key avb.pk8 --output avb_pkmd.bin || exit 1
+  '';
+
   # Make this into a script that can be run outside of nixpkgs
   signedTargetFiles = runCommand "${device}-signed_target_files-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
     mkdir -p build/target/product/
@@ -191,23 +265,47 @@ in rec {
   img = runCommand "${device}-img-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; }
     "${buildTools}/releasetools/img_from_target_files.py ${signedTargetFiles} $out";
   factoryImg = runCommand "${device}-${toLower buildID}-factory.zip" { nativeBuildInputs = [ pkgs.zip unzip ]; } ''
-      DEVICE=${device};
-      PRODUCT=${device};
-      BUILD=${buildID};
-      VERSION=${toLower buildID};
+    DEVICE=${device};
+    PRODUCT=${device};
+    BUILD=${buildID};
+    VERSION=${toLower buildID};
 
-      get_radio_image() {
-        grep -Po "require version-$1=\K.+" ${vendorFiles}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
-      }
-      BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
-      RADIO=$(get_radio_image baseband google_devices/$DEVICE)
+    get_radio_image() {
+      grep -Po "require version-$1=\K.+" ${vendorFiles}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
+    }
+    BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
+    RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
-      ln -s ${signedTargetFiles} $PRODUCT-target_files-$BUILD.zip
-      ln -s ${img} $PRODUCT-img-$BUILD.zip
+    ln -s ${signedTargetFiles} $PRODUCT-target_files-$BUILD.zip
+    ln -s ${img} $PRODUCT-img-$BUILD.zip
 
-      source ${sourceDir "device/common"}/generate-factory-images-common.sh
-      cp --reflink=auto ${device}-${toLower buildID}-*.zip $out
-    '';
+    source ${sourceDir "device/common"}/generate-factory-images-common.sh
+    cp --reflink=auto ${device}-${toLower buildID}-*.zip $out
+  '';
+
+  releaseScript = writeScript "release.sh" ''
+    #!${runtimeShell}
+
+    export PATH=${androidHostTools}/bin:${openssl}/bin:${pkgs.zip}/bin:${unzip}/bin:${jdk}/bin:$PATH
+    KEYSTOREPATH=$1
+
+    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip ${device}-signed_target_files-${buildID}.zip
+    ${buildTools}/releasetools/ota_from_target_files.py ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${device}-signed_target_files-${buildID}.zip ${device}-ota_update-${buildID}.zip
+    ${buildTools}/releasetools/img_from_target_files.py ${device}-signed_target_files-${buildID}.zip ${device}-img-${buildID}.zip
+
+    DEVICE=${device};
+    PRODUCT=${device};
+    BUILD=${buildID};
+    VERSION=${toLower buildID};
+
+    get_radio_image() {
+      grep -Po "require version-$1=\K.+" ${vendorFiles}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
+    }
+    BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
+    RADIO=$(get_radio_image baseband google_devices/$DEVICE)
+
+    source ${sourceDir "device/common"}/generate-factory-images-common.sh
+  '';
 }
 
 # Update with just img using: fastboot -w update <...>.img
