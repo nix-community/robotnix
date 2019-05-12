@@ -23,10 +23,12 @@ import ./default.nix rec {
   ];
   additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" ];
   #removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
-  removedProductPackages = [ "Browser2" "Calendar2" "QuickSearchBox" ];
+  removedProductPackages = [ "Calendar2" "QuickSearchBox" ];
   vendorImg = fetchurl {
     url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190505.001-factory-5dac573c.zip";
     sha256 = "0cd3zhvw9z8jjhrx43i9lhr0v7qff63vzw4wis5ir2mrxly5gb2x";
   };
-  keyStorePath = "testing";
+  msmKernelRev = "021e5400cb88fe15bc0c007e5847a0ec78c1831e";
+  verityx509 = ./keys/verity.x509.pem; # Only needed for marlin/sailfish
+  enableWireguard = true; # My version doesn't use the roomservice stuff
 }

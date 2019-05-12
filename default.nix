@@ -6,15 +6,15 @@
   additionalProductPackages ? [], # A list of strings denoting product packages that should be included in build
   removedProductPackages ? [], # A list of strings denoting product packages that should be removed from default build
   vendorImg ? null,
+  msmKernelRev ? null,
+  verityx509 ? null,
   opengappsVariant ? null,
   enableWireguard ? false,
-  keyStorePath ? null,
   extraFlags ? "--no-repo-verify",
   sha256 ? null,
   sha256Path ? null,
   savePartitionImages ? false,
   usePatchedCoreutils ? false,
-  romtype ? "NIGHTLY"  # one of RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
 }:
 with pkgs; with lib;
 
@@ -26,21 +26,33 @@ let
     inherit device manifest localManifests rev extraFlags;
     sha256 = if (sha256 != null) then sha256 else readFile sha256Path;
   });
-  signBuild = (keyStorePath != null);
   flex = callPackage ./flex-2.5.39.nix {};
+  deviceFamily = {
+    marlin = "marlin"; # Pixel XL
+    sailfish = "marlin"; # Pixel
+    taimen = "taimen"; # Pixel 2 XL
+    walleye = "taimen"; # Pixel 2
+    crosshatch = "crosshatch"; # Pixel 3 XL
+    blueline = "crosshatch"; # Pixel 3
+  }.${device};
+  kernelConfigName = {
+    marlin = "marlin";
+    taimen = "wahoo";
+    crosshatch = "b1c1";
+  }.${deviceFamily};
   avbMode = {
     marlin = "verity_only";
-    sailfish = "verity_only";
     taimen = "vbmeta_simple";
-    walleye = "vbmeta_simple";
     crosshatch = "vbmeta_chained";
-    blueline = "vbmeta_chained";
-  }.${device};
+  }.${deviceFamily};
   avbFlags = {
     verity_only = "--replace_verity_public_key $KEYSTOREPATH/verity_key.pub --replace_verity_private_key $KEYSTOREPATH/verity --replace_verity_keyid $KEYSTOREPATH/verity.x509.pem";
     vbmeta_simple = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
     vbmeta_chained = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algortihm SHA256_RSA2048 --avb_system_key $KEYSTOREPATH/avb.pem --avb_system_algorithm SHA256_RSA2048";
   }.${avbMode};
+  signBuild = (deviceFamily == "marlin" && verityx509 != null);
+  # TODO: Maybe just always rebuild kernel? What's the harm?
+  useCustomKernel = (deviceFamily == "marlin" && signBuild) || enableWireguard;
 in rec {
   # Hacky way to get an individual source dir from repo2nix.
   sourceDir = dirName: lib.findFirst (s: lib.hasSuffix ("-" + (builtins.replaceStrings ["/"] ["="] dirName)) s.outPath) null repo2nix.sources;
@@ -75,7 +87,7 @@ in rec {
     postPatch = ''
       ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39
 
-      substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel XL@"
+      substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel XL"
       substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
       substituteInPlace device/google/marlin/aosp_sailfish.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel"
       substituteInPlace device/google/marlin/aosp_sailfish.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
@@ -100,9 +112,6 @@ in rec {
 
       ${concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages}
       ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' build/make/target/product/*.mk") removedProductPackages}
-
-      ${optionalString (signBuild && ((device == "marlin") || (device == "sailfish")))
-        "cp -fv ${marlinKernel}/Image.lz4-dtb device/google/marlin-kernel/Image.lz4-dtb"}
       '';
     # TODO: The " \\" in the above sed is a bit flaky, and would require the line to end in " \\"
     # come up with something more robust.
@@ -117,8 +126,10 @@ in rec {
     buildPhase = ''
       cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
       source build/envsetup.sh
+      ${optionalString useCustomKernel
+        "export TARGET_PREBUILT_KERNEL=${customKernel}/Image.lz4-dtb" }
       choosecombo release "aosp_${device}" ${buildType}
-      make otatools-package target-files-package dist
+      make otatools-package target-files-package
       EOF
     '';
 
@@ -136,19 +147,27 @@ in rec {
 
   prebuiltGCC = stdenv.mkDerivation {
     name = "prebuilt-gcc";
-    src = sourceDir "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9";
+    src = sourceDir "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"; # TODO: Check that this path is in each pixel tree
     nativeBuildInputs = [ python autoPatchelfHook ];
     installPhase = ''
       cp -r $src $out
     '';
   };
 
+  # TODO: Could just use the version in nixpkgs?
+  wireguardsrc = fetchzip {
+    url = "https://git.zx2c4.com/WireGuard/snapshot/WireGuard-0.0.20190406.tar.xz";
+    sha256 = "1rqyyyx7j41vpp4jigagqs2qdyfngh15y48ghdqfrkv7v93vwdak";
+  };
+
+  # New style AOSP has kernels outside of main source tree
+  # https://source.android.com/setup/build/building-kernels
   # TODO: Any reason to use nixpkgs kernel stuff?
-  marlinKernel = stdenv.mkDerivation {
+  customKernel = stdenv.mkDerivation {
     name = "kernel-${device}-${rev}";
     src = builtins.fetchGit {
       url = "https://android.googlesource.com/kernel/msm";
-      rev = "021e5400cb88fe15bc0c007e5847a0ec78c1831e";
+      rev = msmKernelRev;
       #ref = "tags/android-9.0.0_r0.74"; # branch: android-msm-marlin-3.18-pie-qpr3
   #    ref = import (runCommand "marlinKernelRev" {} ''
   #        shortrev=$(grep -a 'Linux version' ${sourceDir "device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
@@ -156,8 +175,15 @@ in rec {
   #      '');
     };
 
-    prePatch = lib.optionalString (keyStorePath != null) ''
-      openssl x509 -outform der -in ${./keys/verity.x509.pem} -out verity_user.der.x509
+    postPatch = lib.optionalString (verityx509 != null) ''
+      openssl x509 -outform der -in ${verityx509} -out verity_user.der.x509
+    '' + lib.optionalString enableWireguard ''
+      # From android_kernel_wireguard/patch-kernel.sh
+      sed -i "/^obj-\\\$(CONFIG_NETFILTER).*+=/a obj-\$(CONFIG_WIREGUARD) += wireguard/" net/Makefile
+      sed -i "/^if INET\$/a source \"net/wireguard/Kconfig\"" net/Kconfig
+      cp -r ${wireguardsrc}/src net/wireguard
+      chmod u+w -R net/wireguard
+      sed -i 's/tristate/bool/;s/default m/default y/;' net/wireguard/Kconfig
     '';
 
     nativeBuildInputs = [ perl bc nettools openssl rsync gmp libmpc mpfr lz4 ];
@@ -170,7 +196,7 @@ in rec {
     ];
 
     preBuild = ''
-      make ARCH=arm64 marlin_defconfig
+      make ARCH=arm64 ${kernelConfigName}_defconfig
     '';
 
     installPhase = ''
@@ -254,7 +280,7 @@ in rec {
   # Make this into a script that can be run outside of nixpkgs
   signedTargetFiles = runCommand "${device}-signed_target_files-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
     mkdir -p build/target/product/
-    ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security # Make sure it can access the default keys if needed
+    ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security
     ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d ${keyStorePath} ${avbFlags}"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip $out
   '';
   ota = runCommand "${device}-ota_update-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
@@ -283,15 +309,22 @@ in rec {
     cp --reflink=auto ${device}-${toLower buildID}-*.zip $out
   '';
 
+  # TODO: Would be nice to have this script accept two arguments: keydir and target-files, so it could protentially be used against multiple target-files.
+  # However, it currently depends on androidHostTools, which depends on androidBuild. So a change to target files would also require a rebuild of this anyway, which seems kindof dumb.
+  # TODO: Do this in a temporary directory? It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
   releaseScript = writeScript "release.sh" ''
     #!${runtimeShell}
 
     export PATH=${androidHostTools}/bin:${openssl}/bin:${pkgs.zip}/bin:${unzip}/bin:${jdk}/bin:$PATH
     KEYSTOREPATH=$1
 
-    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip ${device}-signed_target_files-${buildID}.zip
-    ${buildTools}/releasetools/ota_from_target_files.py ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${device}-signed_target_files-${buildID}.zip ${device}-ota_update-${buildID}.zip
-    ${buildTools}/releasetools/img_from_target_files.py ${device}-signed_target_files-${buildID}.zip ${device}-img-${buildID}.zip
+    # sign_target_files_apks.py and others below requires this directory to be here.
+    mkdir -p build/target/product/
+    ln -sf ${sourceDir "build/make"}/target/product/security build/target/product/security
+
+    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip ${device}-target_files-${buildID}.zip
+    ${buildTools}/releasetools/ota_from_target_files.py ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${device}-target_files-${buildID}.zip ${device}-ota_update-${buildID}.zip
+    ${buildTools}/releasetools/img_from_target_files.py ${device}-target_files-${buildID}.zip ${device}-img-${buildID}.zip
 
     DEVICE=${device};
     PRODUCT=${device};
@@ -305,6 +338,8 @@ in rec {
     RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
     source ${sourceDir "device/common"}/generate-factory-images-common.sh
+
+    rm -r build # Unsafe?
   '';
 }
 
