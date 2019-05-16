@@ -1,4 +1,4 @@
-{ stdenv, lib, callPackage, fetchurl, autoPatchelfHook, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
+{ stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
   device, img
 }:
 
@@ -28,24 +28,18 @@ let
       mkdir -p $out
       cp -r * $out
     '';
-
-#    fixupPhase = ''
-#      patchelf --set-interpreter $(cat ${stdenv.cc}/nix-support/dynamic-linker) $out/bin/oatdump
-#    '';
-
   };
-  # TODO: Make sure if can use java if it doesn't use oatdump.
+  # TODO: Make sure it can use java if it doesn't use oatdump.
 in
 (stdenv.mkDerivation {
   name = "android-prepare-vendor-${device}-${buildID}";
 
-#  src = fetchFromGitHub {
-#    owner = "anestisb";
-#    repo = "android-prepare-vendor";
-#    rev = "4b07df4239a64419029a011eae903359803f9034"; # Latest as of 2019-04-27
-#    sha256 = "0j8gzs0zv1r3206rd04flsm08z2ljz2kk2scgmzqbl37xavfwhn8";
-#  };
-  src = lib.cleanSource ../../android-prepare-vendor;
+  src = fetchFromGitHub {
+    owner = "anestisb";
+    repo = "android-prepare-vendor";
+    rev = "4b07df4239a64419029a011eae903359803f9034"; # Latest as of 2019-04-27
+    sha256 = "0j8gzs0zv1r3206rd04flsm08z2ljz2kk2scgmzqbl37xavfwhn8";
+  };
 
   nativeBuildInputs = [ zip unzip simg2img dexrepair e2fsprogs jq openjdk wget utillinux perl which ];
 
@@ -55,6 +49,9 @@ in
     # TODO: Hardcoded api version
     mkdir -p hostTools/Linux/api-${api}/
     cp -r ${oatdump}/* hostTools/Linux/api-${api}/
+
+    # Disable oatdump update check
+    substituteInPlace execute-all.sh --replace "needs_oatdump_update() {" "needs_oatdump_update() { return 1"
   '';
 
   # TODO: Include a note that they need to accept download ToS
