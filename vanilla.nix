@@ -22,8 +22,8 @@ import ./default.nix rec {
     })
   ];
   additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" ];
-  #removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
-  removedProductPackages = [ "Calendar2" "QuickSearchBox" ];
+  removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
+  #removedProductPackages = [ "Calendar2" "QuickSearchBox" ];
   vendorImg = fetchurl {
     url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190505.001-factory-5dac573c.zip";
     sha256 = "0cd3zhvw9z8jjhrx43i9lhr0v7qff63vzw4wis5ir2mrxly5gb2x";
@@ -31,4 +31,9 @@ import ./default.nix rec {
   msmKernelRev = "021e5400cb88fe15bc0c007e5847a0ec78c1831e";
   verityx509 = ./keys/verity.x509.pem; # Only needed for marlin/sailfish
   enableWireguard = true; # My version doesn't use the roomservice stuff
+  monochromeApk = fetchurl {
+    url = "https://github.com/andi34/prebuilts_chromium/raw/master/MonochromePublic.apk";
+    sha256 = "175cw8z06lx52204affpb4a9kmjrkqb0byhky817mb85cg1dh3dz";
+  };
+  releaseUrl = "http://30.0.0.222/android";
 }

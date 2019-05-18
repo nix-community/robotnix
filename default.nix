@@ -15,6 +15,8 @@
   sha256Path ? null,
   savePartitionImages ? false,
   usePatchedCoreutils ? false,
+  monochromeApk ? null,
+  releaseUrl ? null,
 }:
 with pkgs; with lib;
 
@@ -101,8 +103,13 @@ in rec {
       substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java \
         --replace BuildConfig.APPLICATION_ID "\"org.fdroid.fdroid.privileged\""
 
-      #cp ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
-
+      '' + lib.optionalString (monochromeApk != null) ''
+      cp -v ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
+      cp -v ${monochromeApk} external/chromium/prebuilt/arm64/
+      '' + lib.optionalString (releaseUrl != null) ''
+      substituteInPlace packages/apps/Updater/res/values/config.xml --replace "s3bucket" "${releaseUrl}"
+      '' +
+      ''
       # disable QuickSearchBox widget on home screen
       substituteInPlace packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java \
         --replace "QSB_ON_FIRST_SCREEN = true;" "QSB_ON_FIRST_SCREEN = false;"
