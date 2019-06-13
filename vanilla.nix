@@ -1,11 +1,11 @@
 with (import <nixpkgs> {});
 import ./default.nix rec {
   device = "marlin"; # Pixel XL
-  rev = "android-9.0.0_r36";
-  buildID = "PQ3A.190505.001.1";
+  rev = "android-9.0.0_r40";
+  buildID = "PQ3A.190605.003.2";
   buildType = "user";
   manifest = "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
-  sha256 = "1fskk125zh0dy4f45z2fblik4sqjgc0w8amclw6a281kpyhji4zp";
+  sha256 = "19p94prr9vhyszvvf9sbjlhykz9f73as5k0qxvclaac4kfd20gmb";
   localManifests = [
     (writeTextFile { # TODO: Why can't I get rid of writeTextFile here?
       name = "grapheneos.xml";
@@ -19,19 +19,21 @@ import ./default.nix rec {
       });
     })
   ];
-  additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" ];
+  additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" "Chromium" ];
   removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
-  #removedProductPackages = [ "Calendar2" "QuickSearchBox" ];
   vendorImg = fetchurl {
-    url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190505.001-factory-5dac573c.zip";
-    sha256 = "0cd3zhvw9z8jjhrx43i9lhr0v7qff63vzw4wis5ir2mrxly5gb2x";
+    url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190605.003-factory-14ebecf7.zip";
+    sha256 = "1gyhkl79vs63dg42rkwy3ki3nr6d884ihw0lm3my5nyzkzvyrsql";
   };
-  msmKernelRev = "021e5400cb88fe15bc0c007e5847a0ec78c1831e";
+  msmKernelRev = "521aab6c130d4ed21c67437cea44af4653583760";
   verityx509 = ./keys/verity.x509.pem; # Only needed for marlin/sailfish
-  enableWireguard = true; # My version doesn't use the roomservice stuff
+
+  #enableWireguard = true; # My version doesn't use the roomservice stuff
+  # The apk needs root to use the kernel features anyway...
+
   monochromeApk = fetchurl {
     url = "https://github.com/andi34/prebuilts_chromium/raw/master/MonochromePublic.apk";
     sha256 = "175cw8z06lx52204affpb4a9kmjrkqb0byhky817mb85cg1dh3dz";
   };
-  releaseUrl = "http://30.0.0.222/android";
+  releaseUrl = "https://daniel.fullmer.me/android/"; # Needs trailing slash
 }

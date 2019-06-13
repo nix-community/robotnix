@@ -161,7 +161,7 @@ in rec {
     src = builtins.fetchGit {
       url = "https://android.googlesource.com/kernel/msm";
       rev = msmKernelRev;
-      #ref = "tags/android-9.0.0_r0.74"; # branch: android-msm-marlin-3.18-pie-qpr3
+      #ref = "tags/android-9.0.0_r0.91"; # TODO: Doesn't work until this is merged: https://github.com/NixOS/nix/pull/2582
   #    ref = import (runCommand "marlinKernelRev" {} ''
   #        shortrev=$(grep -a 'Linux version' ${sourceDir "device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
   #        echo \"$shortrev\" > $out
