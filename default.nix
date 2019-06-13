@@ -263,8 +263,8 @@ in rec {
       ! make_key "$key" "$1" || exit 1
     done
 
-    # Generate both verity and AVB keys. While not strictly necessary, there is
-    # no harm in doing so--and the user may want to use the same keys for
+    # Generate both verity and AVB keys. While not strictly necessary, I don't
+    # see any harm in doing so--and the user may want to use the same keys for
     # multiple devices supporting different AVB modes.
     generate_verity_key -convert verity.x509.pem verity_key || exit 1
     avbtool extract_public_key --key avb.pk8 --output avb_pkmd.bin || exit 1
@@ -279,7 +279,7 @@ in rec {
   ota = runCommand "${device}-ota_update-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
     mkdir -p build/target/product/
     ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security # Make sure it can access the default keys if needed
-    ${buildTools}/releasetools/ota_from_target_files.py ${optionalString signBuild "-k ${keyStorePath}/releasekey"} ${signedTargetFiles} $out
+    ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k ${keyStorePath}/releasekey"} ${signedTargetFiles} $out
   '';
   img = runCommand "${device}-img-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; }
     "${buildTools}/releasetools/img_from_target_files.py ${signedTargetFiles} $out";
@@ -316,7 +316,7 @@ in rec {
     ln -sf ${sourceDir "build/make"}/target/product/security build/target/product/security
 
     ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip ${device}-target_files-${buildID}.zip
-    ${buildTools}/releasetools/ota_from_target_files.py ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${device}-target_files-${buildID}.zip ${device}-ota_update-${buildID}.zip
+    ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${device}-target_files-${buildID}.zip ${device}-ota_update-${buildID}.zip
     ${buildTools}/releasetools/img_from_target_files.py ${device}-target_files-${buildID}.zip ${device}-img-${buildID}.zip
 
     DEVICE=${device};
