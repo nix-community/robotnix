@@ -1,0 +1,24 @@
+diff -Naur aosp/packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java aosp-new/packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java
+--- aosp/packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java	2019-06-12 15:22:17.157485437 -0400
++++ aosp-new/packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java	2019-06-12 15:23:00.917071221 -0400
+@@ -39,7 +39,7 @@
+     public static final boolean LAUNCHER3_SPRING_ICONS = true;
+ 
+     // Feature flag to enable moving the QSB on the 0th screen of the workspace.
+-    public static final boolean QSB_ON_FIRST_SCREEN = true;
++    public static final boolean QSB_ON_FIRST_SCREEN = false;
+     // When enabled the all-apps icon is not added to the hotseat.
+     public static final boolean NO_ALL_APPS_ICON = true;
+ 
+diff -Naur aosp/packages/apps/Launcher3/src/com/android/launcher3/provider/ImportDataTask.java aosp-new/packages/apps/Launcher3/src/com/android/launcher3/provider/ImportDataTask.java
+--- aosp/packages/apps/Launcher3/src/com/android/launcher3/provider/ImportDataTask.java	2019-06-12 15:22:17.184485796 -0400
++++ aosp-new/packages/apps/Launcher3/src/com/android/launcher3/provider/ImportDataTask.java	2019-06-12 15:23:33.468510261 -0400
+@@ -132,7 +132,7 @@
+         String profileId = Long.toString(UserManagerCompat.getInstance(mContext)
+                 .getSerialNumberForUser(Process.myUserHandle()));
+ 
+-        boolean createEmptyRowOnFirstScreen;
++        boolean createEmptyRowOnFirstScreen = false;
+         if (FeatureFlags.QSB_ON_FIRST_SCREEN) {
+             try (Cursor c = mContext.getContentResolver().query(mOtherFavoritesUri, null,
+                     // get items on the first row of the first screen

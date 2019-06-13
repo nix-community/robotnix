@@ -1,0 +1,70 @@
+diff -Naur aosp/device/google/crosshatch/aosp_blueline.mk aosp-new/device/google/crosshatch/aosp_blueline.mk
+--- aosp/device/google/crosshatch/aosp_blueline.mk	2019-06-12 15:08:46.446473089 -0400
++++ aosp-new/device/google/crosshatch/aosp_blueline.mk	2019-06-12 15:12:00.807386904 -0400
+@@ -33,7 +33,7 @@
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_blueline
+ PRODUCT_DEVICE := blueline
+-PRODUCT_MODEL := AOSP on blueline
++PRODUCT_MODEL := Pixel 3
+ 
+ # Audio XMLs
+ PRODUCT_COPY_FILES += \
+diff -Naur aosp/device/google/crosshatch/aosp_crosshatch.mk aosp-new/device/google/crosshatch/aosp_crosshatch.mk
+--- aosp/device/google/crosshatch/aosp_crosshatch.mk	2019-06-12 15:08:46.444473059 -0400
++++ aosp-new/device/google/crosshatch/aosp_crosshatch.mk	2019-06-12 15:11:48.759206014 -0400
+@@ -33,7 +33,7 @@
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_crosshatch
+ PRODUCT_DEVICE := crosshatch
+-PRODUCT_MODEL := AOSP on crosshatch
++PRODUCT_MODEL := Pixel 3 XL
+ 
+ # Audio XMLs
+ PRODUCT_COPY_FILES += \
+diff -Naur aosp/device/google/marlin/aosp_marlin.mk aosp-new/device/google/marlin/aosp_marlin.mk
+--- aosp/device/google/marlin/aosp_marlin.mk	2019-06-12 15:06:33.434485524 -0400
++++ aosp-new/device/google/marlin/aosp_marlin.mk	2019-06-12 15:10:19.511867098 -0400
+@@ -24,8 +24,8 @@
+ PRODUCT_NAME := aosp_marlin
+ PRODUCT_DEVICE := marlin
+ PRODUCT_BRAND := Android
+-PRODUCT_MODEL := AOSP on msm8996
+-PRODUCT_MANUFACTURER := google
++PRODUCT_MODEL := Pixel XL
++PRODUCT_MANUFACTURER := Google
+ PRODUCT_RESTRICT_VENDOR_FILES := true
+ 
+ PRODUCT_COPY_FILES += device/google/marlin/fstab.common:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.marlin
+diff -Naur aosp/device/google/marlin/aosp_sailfish.mk aosp-new/device/google/marlin/aosp_sailfish.mk
+--- aosp/device/google/marlin/aosp_sailfish.mk	2019-06-12 15:06:33.429485449 -0400
++++ aosp-new/device/google/marlin/aosp_sailfish.mk	2019-06-12 15:10:37.744140466 -0400
+@@ -24,8 +24,8 @@
+ PRODUCT_NAME := aosp_sailfish
+ PRODUCT_DEVICE := sailfish
+ PRODUCT_BRAND := Android
+-PRODUCT_MODEL := AOSP on msm8996
+-PRODUCT_MANUFACTURER := google
++PRODUCT_MODEL := Pixel
++PRODUCT_MANUFACTURER := Google
+ PRODUCT_RESTRICT_VENDOR_FILES := true
+ 
+ PRODUCT_COPY_FILES += device/google/marlin/fstab.common:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.sailfish
+diff -Naur aosp/device/google/muskie/aosp_walleye.mk aosp-new/device/google/muskie/aosp_walleye.mk
+--- aosp/device/google/muskie/aosp_walleye.mk	2019-06-12 15:08:17.384038292 -0400
++++ aosp-new/device/google/muskie/aosp_walleye.mk	2019-06-12 15:11:31.831951925 -0400
+@@ -39,4 +39,4 @@
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_walleye
+ PRODUCT_DEVICE := walleye
+-PRODUCT_MODEL := AOSP on walleye
++PRODUCT_MODEL := Pixel 2
+diff -Naur aosp/device/google/taimen/aosp_taimen.mk aosp-new/device/google/taimen/aosp_taimen.mk
+--- aosp/device/google/taimen/aosp_taimen.mk	2019-06-12 15:07:48.109600606 -0400
++++ aosp-new/device/google/taimen/aosp_taimen.mk	2019-06-12 15:11:04.128536218 -0400
+@@ -39,4 +39,4 @@
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_taimen
+ PRODUCT_DEVICE := taimen
+-PRODUCT_MODEL := AOSP on taimen
++PRODUCT_MODEL := Pixel 2 XL

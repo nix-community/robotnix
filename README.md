@@ -16,3 +16,7 @@ You are free to use the `update-wireguard` script (on your regular system), whic
 * Document (e.g. which patches to nix are needed why)
 
 * While the hash thing is kind of fixed, there is definitely room for improvement.
+
+To run
+nix-build ./vanilla.nix -A generateKeysScript
+./result "/C=US/O=Daniel Fullmer/CN=NixDroidOS/emailAddress=cgibreak@gmail.com"

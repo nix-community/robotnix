@@ -83,40 +83,26 @@ in rec {
       ${repo2nix.unpackPhase}
     '' + optionalString (vendorImg != null) "cp --reflink=auto -r ${vendorFiles}/* .";
 
+    patches = [
+      ./patches/fix-device-names.patch
+      ./patches/fdroid.patch
+      ./patches/disable-quicksearch.patch
+    ] ++ lib.optional (releaseUrl != null) (pkgs.substituteAll {
+      src = ./patches/updater.patch;
+      inherit releaseUrl;
+    });
+
     # Fix a locale issue with included flex program
     #mkdir -p packages/apps/F-Droid/app/build/outputs/apk/full/release/
     #cp ${fdroidPrivExtApk} packages/apps/F-Droid/app/build/outputs/apk/full/release/app-full-release-unsigned.apk
     postPatch = ''
       ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39
 
-      substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel XL"
-      substituteInPlace device/google/marlin/aosp_marlin.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
-      substituteInPlace device/google/marlin/aosp_sailfish.mk --replace "PRODUCT_MODEL := AOSP on msm8996" "PRODUCT_MODEL := Pixel"
-      substituteInPlace device/google/marlin/aosp_sailfish.mk --replace "PRODUCT_MANUFACTURER := google" "PRODUCT_MANUFACTURER := Google"
-
-      substituteInPlace device/google/taimen/aosp_taimen.mk --replace "PRODUCT_MODEL := AOSP on taimen" "PRODUCT_MODEL := Pixel 2 XL"
-      substituteInPlace device/google/muskie/aosp_walleye.mk --replace "PRODUCT_MODEL := AOSP on walleye" "PRODUCT_MODEL := Pixel 2"
-
-      substituteInPlace device/google/crosshatch/aosp_crosshatch.mk --replace "PRODUCT_MODEL := AOSP on crosshatch" "PRODUCT_MODEL := Pixel 3 XL"
-      substituteInPlace device/google/crosshatch/aosp_blueline.mk --replace "PRODUCT_MODEL := AOSP on blueline" "PRODUCT_MODEL := Pixel 3"
-
-      substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java \
-        --replace BuildConfig.APPLICATION_ID "\"org.fdroid.fdroid.privileged\""
-
       '' + lib.optionalString (monochromeApk != null) ''
       cp -v ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
-      cp -v ${monochromeApk} external/chromium/prebuilt/arm64/
-      '' + lib.optionalString (releaseUrl != null) ''
-      substituteInPlace packages/apps/Updater/res/values/config.xml --replace "s3bucket" "${releaseUrl}"
+      cp -v ${monochromeApk} external/chromium/prebuilt/arm64/MonochromePublic.apk
       '' +
       ''
-      # disable QuickSearchBox widget on home screen
-      substituteInPlace packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java \
-        --replace "QSB_ON_FIRST_SCREEN = true;" "QSB_ON_FIRST_SCREEN = false;"
-      # fix compile error with uninitialized variable
-      substituteInPlace packages/apps/Launcher3/src/com/android/launcher3/provider/ImportDataTask.java \
-        --replace "boolean createEmptyRowOnFirstScreen;" "boolean createEmptyRowOnFirstScreen = false;"
-
       ${concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages}
       ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' build/make/target/product/*.mk") removedProductPackages}
       '';

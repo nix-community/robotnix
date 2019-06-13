@@ -1,0 +1,12 @@
+diff -Naur aosp/packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java aosp-new/packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
+--- aosp/packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java	2019-06-12 15:15:59.615977830 -0400
++++ aosp-new/packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java	2019-06-12 15:18:43.931453260 -0400
+@@ -231,7 +231,7 @@
+                  * The client app used to set this to F-Droid, but we need it to be set to
+                  * this package's package name to be able to uninstall from here.
+                  */
+-                pm.setInstallerPackageName(packageName, BuildConfig.APPLICATION_ID);
++                pm.setInstallerPackageName(packageName, "org.fdroid.fdroid.privileged");
+                 // Create a PendingIntent and use it to generate the IntentSender
+                 Intent broadcastIntent = new Intent(BROADCAST_ACTION_UNINSTALL);
+                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
