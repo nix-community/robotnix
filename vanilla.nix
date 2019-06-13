@@ -5,12 +5,13 @@ import ./default.nix rec {
   buildID = "PQ3A.190605.003.2";
   buildType = "user";
   manifest = "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
-  sha256 = "19p94prr9vhyszvvf9sbjlhykz9f73as5k0qxvclaac4kfd20gmb";
+  sha256 = "0bmy1zm5mjwkly5jrcc0byr2mfm23z2akglz8q5pys0c5rnhyhzz";
   localManifests = [
     ./roomservice/grapheneos.xml # Updater and external chromium
     ./roomservice/misc/fdroid.xml
+    ./roomservice/misc/backup.xml
   ];
-  additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" "Chromium" ];
+  additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" "Chromium" "Backup" ];
   removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
   vendorImg = fetchurl {
     url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190605.003-factory-14ebecf7.zip";
