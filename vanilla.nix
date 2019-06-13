@@ -7,17 +7,8 @@ import ./default.nix rec {
   manifest = "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
   sha256 = "19p94prr9vhyszvvf9sbjlhykz9f73as5k0qxvclaac4kfd20gmb";
   localManifests = [
-    (writeTextFile { # TODO: Why can't I get rid of writeTextFile here?
-      name = "grapheneos.xml";
-      text = builtins.readFile ./roomservice/grapheneos.xml;
-    })
-    (writeTextFile {
-      name = "fdroid.xml";
-      text = (import ./roomservice/misc/fdroid.xml.nix {
-        fdroidClientVersion = "1.5.1"; # FDROID_CLIENT_VERSION
-        fdroidPrivExtVersion = "0.2.9"; # FDROID_PRIV_EXT_VERISON
-      });
-    })
+    ./roomservice/grapheneos.xml # Updater and external chromium
+    ./roomservice/misc/fdroid.xml
   ];
   additionalProductPackages = [ "Updater" "F-DroidPrivilegedExtension" "Chromium" ];
   removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];

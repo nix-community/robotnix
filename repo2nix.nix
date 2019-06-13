@@ -28,9 +28,6 @@ let
     "--manifest-branch=${rev}"
     "--depth=1"
   ] ++ extraRepoInitFlags;
-
-  #local_manifests = copyPathsToStore localManifests;
-  local_manifests = localManifests;
 in stdenvNoCC.mkDerivation {
   name = "repo2nix-${rev}-${device}";
 
@@ -52,13 +49,13 @@ in stdenvNoCC.mkDerivation {
     # Path must be absolute (e.g. for GnuPG: ~/.repoconfig/gnupg/pubring.kbx)
     export HOME="$(pwd)"
 
-    mkdir .repo
-    ${optionalString (local_manifests != []) ''
-      mkdir .repo/local_manifests
-      for local_manifest in ${concatMapStringsSep " " toString local_manifests}; do
-        cp $local_manifest .repo/local_manifests/$(stripHash $local_manifest; echo $strippedName)
-      done
-    ''}
+    mkdir -p .repo/local_manifests
+
+    '' +
+    (concatMapStringsSep "\n"
+      (localManifest: "cp ${localManifest} .repo/local_manifests/$(stripHash ${localManifest}; echo $strippedName)")
+      localManifests)
+    + ''
 
     repo init ${concatStringsSep " " repoInitFlags}
     repo nix > "$out"
