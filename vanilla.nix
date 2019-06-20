@@ -20,8 +20,8 @@ import ./default.nix rec {
   msmKernelRev = "521aab6c130d4ed21c67437cea44af4653583760";
   verityx509 = ./keys/verity.x509.pem; # Only needed for marlin/sailfish
 
-  #enableWireguard = true; # My version doesn't use the roomservice stuff
   # The apk needs root to use the kernel features anyway...
+  #enableWireguard = true;
 
   monochromeApk = ./MonochromePublic.apk;
 

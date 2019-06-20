@@ -1,7 +1,7 @@
 {
   pkgs ? import <nixpkgs> { config = { android_sdk.accept_license = true; allowUnfree = true; }; },
   device, rev, manifest, localManifests,
-  buildID ? "nixdroid", # Preferably relate to the upstream vendor buildID
+  buildID ? "nixdroid", # Set this to something useful. Needs to be unique for each build for the updater to work
   buildType ? "user", # one of "user" "eng" "userdebug"
   additionalProductPackages ? [], # A list of strings denoting product packages that should be included in build
   removedProductPackages ? [], # A list of strings denoting product packages that should be removed from default build
@@ -155,7 +155,6 @@ in rec {
 
   # New style AOSP has kernels outside of main source tree
   # https://source.android.com/setup/build/building-kernels
-  # TODO: Any reason to use nixpkgs kernel stuff?
   customKernel = stdenv.mkDerivation {
     name = "kernel-${device}-${rev}";
     src = builtins.fetchGit {
@@ -268,38 +267,6 @@ in rec {
     # multiple devices supporting different AVB modes.
     generate_verity_key -convert verity.x509.pem verity_key || exit 1
     avbtool extract_public_key --key avb.pk8 --output avb_pkmd.bin || exit 1
-  '';
-
-  # Make this into a script that can be run outside of nixpkgs
-  signedTargetFiles = runCommand "${device}-signed_target_files-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
-    mkdir -p build/target/product/
-    ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security
-    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d ${keyStorePath} ${avbFlags}"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip $out
-  '';
-  ota = runCommand "${device}-ota_update-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; } ''
-    mkdir -p build/target/product/
-    ln -s ${sourceDir "build/make"}/target/product/security build/target/product/security # Make sure it can access the default keys if needed
-    ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k ${keyStorePath}/releasekey"} ${signedTargetFiles} $out
-  '';
-  img = runCommand "${device}-img-${buildID}.zip" { nativeBuildInputs = [ androidHostTools openssl pkgs.zip unzip jdk ]; }
-    "${buildTools}/releasetools/img_from_target_files.py ${signedTargetFiles} $out";
-  factoryImg = runCommand "${device}-${toLower buildID}-factory.zip" { nativeBuildInputs = [ pkgs.zip unzip ]; } ''
-    DEVICE=${device};
-    PRODUCT=${device};
-    BUILD=${buildID};
-    VERSION=${toLower buildID};
-
-    get_radio_image() {
-      grep -Po "require version-$1=\K.+" ${vendorFiles}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
-    }
-    BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
-    RADIO=$(get_radio_image baseband google_devices/$DEVICE)
-
-    ln -s ${signedTargetFiles} $PRODUCT-target_files-$BUILD.zip
-    ln -s ${img} $PRODUCT-img-$BUILD.zip
-
-    source ${sourceDir "device/common"}/generate-factory-images-common.sh
-    cp --reflink=auto ${device}-${toLower buildID}-*.zip $out
   '';
 
   # TODO: Would be nice to have this script accept two arguments: keydir and target-files, so it could protentially be used against multiple target-files.

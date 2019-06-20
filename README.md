@@ -11,12 +11,28 @@ This has only been tested for LineageOS 15.1 and 16.0 for Moto X4 (payton), OneP
 As the Wireguard tries to fetch the latest version during the build and internet access is not possible during a Nix build, the version number is hard coded in `wireguard.xml`.
 You are free to use the `update-wireguard` script (on your regular system), which fetches the latest Wireguard version and writes it into the manifest.
 
+
+#### Building the vanilla AOSP ROM:
+
+Generate keys to sign your build:
+
+```console
+$ nix-build ./vanilla.nix -A generateKeysScript -o generate-keys
+$ mkdir keys
+$ cd keys
+$ ../generate-keys "/CN=NixDroidOS" # Use appropriate x509 cert fields
+$ cd ..
+```
+
+Build and sign your release:
+
+```console
+$ nix-build ./vanilla.nix -A releaseScript -o release
+$ ./release ./keys
+```
+
 #### TODO:
 
 * Document (e.g. which patches to nix are needed why)
 
 * While the hash thing is kind of fixed, there is definitely room for improvement.
-
-To run
-nix-build ./vanilla.nix -A generateKeysScript
-./result "/C=US/O=Daniel Fullmer/CN=NixDroidOS/emailAddress=cgibreak@gmail.com"
