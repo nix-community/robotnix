@@ -28,7 +28,7 @@ let
     inherit device manifest localManifests rev extraFlags;
     sha256 = if (sha256 != null) then sha256 else readFile sha256Path;
   });
-  flex = callPackage ./flex-2.5.39.nix {};
+  flex = callPackage ./misc/flex-2.5.39.nix {};
   deviceFamily = {
     marlin = "marlin"; # Pixel XL
     sailfish = "marlin"; # Pixel
