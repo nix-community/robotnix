@@ -16,6 +16,8 @@
   savePartitionImages ? false,
   usePatchedCoreutils ? false,
   monochromeApk ? null,
+  systemWebViewApk ? null, # TODO: Either this or monochromeApk
+  webViewName ? "Chromium",
   releaseUrl ? null,
 }:
 with pkgs; with lib;
@@ -66,10 +68,35 @@ in rec {
   config_webview_packages = writeText "config_webview_packages.xml" ''
     <?xml version="1.0" encoding="utf-8"?>
     <webviewproviders>
-      <webviewprovider description="Chromium" packageName="org.chromium.chrome" availableByDefault="true">
-      </webviewprovider>
+      ${optionalString (systemWebViewApk != null) ''
+        <webviewprovider description="${webViewName}" packageName="com.android.webview" availableByDefault="true">
+        </webviewprovider>
+      ''}
+      ${optionalString (monochromeApk != null) ''
+        <webviewprovider description="${webViewName}" packageName="org.chromium.chrome" availableByDefault="true">
+        </webviewprovider>
+      ''}
     </webviewproviders>
   '';
+  chromiumAndroidmk = writeText "Android.mk" ''
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := Chromium
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MULTILIB := both
+LOCAL_CERTIFICATE := $(DEFAULT_SYSTEM_DEV_CERTIFICATE)
+LOCAL_REQUIRED_MODULES := \
+    libwebviewchromium_loader \
+    libwebviewchromium_plat_support
+
+LOCAL_MODULE_TARGET_ARCH := arm64
+LOCAL_SRC_FILES := ${optionalString (systemWebViewApk != null) "prebuilt/arm64/SystemWebView.apk"} ${optionalString (monochromeApk != null) "prebuilt/arm64/MonochromePublic.apk"}
+
+include $(BUILD_PREBUILT)
+  '';
+
   # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
   androidBuild = stdenvNoCC.mkDerivation rec {
     name = "nixdroid-${rev}-${device}";
@@ -98,9 +125,13 @@ in rec {
     postPatch = ''
       ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39
 
-      '' + lib.optionalString (monochromeApk != null) ''
+      '' + lib.optionalString (systemWebViewApk != null || monochromeApk != null) ''
       cp -v ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
-      cp -v ${monochromeApk} external/chromium/prebuilt/arm64/MonochromePublic.apk
+      mkdir -p external/chromium/prebuilt/arm64
+      cp -v ${chromiumAndroidmk} external/chromium/Android.mk
+      ${optionalString (monochromeApk != null) "cp -v ${monochromeApk} external/chromium/prebuilt/arm64/MonochromePublic.apk"}
+      ${optionalString (systemWebViewApk != null) "cp -v ${systemWebViewApk} external/chromium/prebuilt/arm64/SystemWebView.apk"}
+      chmod u+rwX -R external/chromium/
       '' +
       ''
       ${concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") additionalProductPackages}
