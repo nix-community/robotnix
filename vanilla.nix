@@ -2,7 +2,7 @@ with (import <nixpkgs> {});
 import ./default.nix rec {
   device = "marlin"; # Pixel XL
   rev = "android-9.0.0_r40";
-  buildID = "2019.06.24"; # A preferably unique string representing this build.
+  buildID = "2019.06.26"; # A preferably unique string representing this build.
   buildType = "user";
   manifest = "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
   sha256 = "1p4d20yh44dkryimkkl8y76yr3wswq7rf343294z472l7zgl6yiz";
@@ -25,8 +25,8 @@ import ./default.nix rec {
 
   #monochromeApk = ./MonochromePublic.apk;
   systemWebViewApk = fetchurl {
-    url = "https://github.com/bromite/bromite/releases/download/75.0.3770.86/arm64_SystemWebView.apk";
-    sha256 = "1ic8zzrk4jm7pm35zq6v4ss7lrn4i7ydb1nyyy5gqhj3yn35b6l7";
+    url = "https://github.com/bromite/bromite/releases/download/75.0.3770.109/arm64_SystemWebView.apk";
+    sha256 = "1jlhf3np7a9zy0gjsgkhykik4cfs5ldmhgb4cfqnpv4niyqa9xxx";
   };
   webViewName = "Bromite";
 
