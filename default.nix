@@ -308,13 +308,24 @@ include $(BUILD_PREBUILT)
 
     export PATH=${androidHostTools}/bin:${openssl}/bin:${pkgs.zip}/bin:${unzip}/bin:${jdk}/bin:$PATH
     KEYSTOREPATH=$1
+    PREVIOUS_TARGET_FILES=$2
 
     # sign_target_files_apks.py and others below requires this directory to be here.
     mkdir -p build/target/product/
     ln -sf ${sourceDir "build/make"}/target/product/security build/target/product/security
 
+    echo Signing target files
     ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${androidBuild.out}/aosp_${device}-target_files-${buildID}.zip ${device}-target_files-${buildID}.zip
+
+    echo Building OTA zip
     ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${device}-target_files-${buildID}.zip ${device}-ota_update-${buildID}.zip
+
+    echo Building incremental OTA zip
+    if [[ ! -z "$PREVIOUS_TARGET_FILES" ]]; then
+      ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} -i "$PREVIOUS_TARGET_FILES" ${device}-target_files-${buildID}.zip ${device}-incremental-$INCREMENTAL_BUILDID-${buildID}.zip
+    fi
+
+    echo Building .img file
     ${buildTools}/releasetools/img_from_target_files.py ${device}-target_files-${buildID}.zip ${device}-img-${buildID}.zip
 
     DEVICE=${device};
@@ -328,6 +339,7 @@ include $(BUILD_PREBUILT)
     BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
     RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
+    echo Building factory image
     source ${sourceDir "device/common"}/generate-factory-images-common.sh
 
     rm -r build # Unsafe?
