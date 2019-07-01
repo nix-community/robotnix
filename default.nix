@@ -7,6 +7,7 @@
   removedProductPackages ? [], # A list of strings denoting product packages that should be removed from default build
   vendorImg ? null,
   msmKernelRev ? null,
+  kernelSrc ? null,
   verityx509 ? null,
   opengappsVariant ? null,
   enableWireguard ? false,
@@ -19,6 +20,7 @@
   systemWebViewApk ? null, # TODO: Either this or monochromeApk
   webViewName ? "Chromium",
   releaseUrl ? null,
+  additionalPatches ? [],
 }:
 with pkgs; with lib;
 
@@ -110,11 +112,7 @@ include $(BUILD_PREBUILT)
       ${repo2nix.unpackPhase}
     '' + optionalString (vendorImg != null) "cp --reflink=auto -r ${vendorFiles}/* .";
 
-    patches = [
-      ./patches/fix-device-names.patch
-      ./patches/fdroid.patch
-      ./patches/disable-quicksearch.patch
-    ] ++ lib.optional (releaseUrl != null) (pkgs.substituteAll {
+    patches = additionalPatches ++ lib.optional (releaseUrl != null) (pkgs.substituteAll {
       src = ./patches/updater.patch;
       inherit releaseUrl;
     });
@@ -188,15 +186,7 @@ include $(BUILD_PREBUILT)
   # https://source.android.com/setup/build/building-kernels
   customKernel = stdenv.mkDerivation {
     name = "kernel-${device}-${rev}";
-    src = builtins.fetchGit {
-      url = "https://android.googlesource.com/kernel/msm";
-      rev = msmKernelRev;
-      #ref = "tags/android-9.0.0_r0.91"; # TODO: Doesn't work until this is merged: https://github.com/NixOS/nix/pull/2582
-  #    ref = import (runCommand "marlinKernelRev" {} ''
-  #        shortrev=$(grep -a 'Linux version' ${sourceDir "device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
-  #        echo \"$shortrev\" > $out
-  #      '');
-    };
+    src = kernelSrc;
 
     postPatch = lib.optionalString (verityx509 != null) ''
       openssl x509 -outform der -in ${verityx509} -out verity_user.der.x509
@@ -343,6 +333,8 @@ include $(BUILD_PREBUILT)
     source ${sourceDir "device/common"}/generate-factory-images-common.sh
 
     rm -r build # Unsafe?
+
+    ${pkgs.python3}/bin/python ${./generate_metadata.py} ${device}-ota_update-${buildID}.zip
   '';
 }
 
