@@ -1,0 +1,13 @@
+diff --git a/app/build.gradle b/app/build.gradle
+index 565962d2c..e838155cd 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -26,7 +26,7 @@ android {
+ 
+     defaultConfig {
+         versionCode 1006052
+-        versionName getVersionName()
++        versionName '@version@'
+ 
+         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+         /*

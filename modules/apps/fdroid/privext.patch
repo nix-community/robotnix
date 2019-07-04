@@ -6,7 +6,7 @@ diff -Naur aosp/packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/f
                   * this package's package name to be able to uninstall from here.
                   */
 -                pm.setInstallerPackageName(packageName, BuildConfig.APPLICATION_ID);
-+                pm.setInstallerPackageName(packageName, "org.fdroid.fdroid.privileged");
++                pm.setInstallerPackageName(packageName, getPackageName());
                  // Create a PendingIntent and use it to generate the IntentSender
                  Intent broadcastIntent = new Intent(BROADCAST_ACTION_UNINSTALL);
                  PendingIntent pendingIntent = PendingIntent.getBroadcast(
