@@ -24,7 +24,10 @@ buildGradle rec {
     sha256 = "054qbrxl7ycn2qls41g45lc6j877w15ji4wjdm6hd2wgh9w87y9l";
   };
 
-  patches = [ (substituteAll { src = ./version.patch; inherit version; }) ];
+  patches = [
+    (substituteAll { src = ./version.patch; inherit version; })
+    ./grapheneos.patch
+  ];
 
   gradleFlags = [ "assembleRelease" ];
 

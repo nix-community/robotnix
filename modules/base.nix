@@ -77,6 +77,18 @@ in
       }));
     };
 
+    certs = {
+      verity = mkOption {
+        type = types.path;
+        description = "x509 certificate for dm-verity (for marlin-based devices)";
+      };
+
+      platform = mkOption {
+        type = types.path;
+        description = "x509 certificate for platform key";
+      };
+    };
+
     build = mkOption {
       internal = true;
       default = {};

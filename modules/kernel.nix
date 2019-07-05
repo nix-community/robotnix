@@ -26,11 +26,6 @@ in
       default = null;
       type = types.path;
     };
-
-    kernel.verityCert = mkOption {
-      type = types.path;
-      description = "x509 certificate for dm-verity (for marlin-based devices)";
-    };
   };
 
   config = {
@@ -39,7 +34,7 @@ in
       inherit (config.kernel) src;
 
       postPatch = lib.optionalString (config.deviceFamily == "marlin") ''
-        openssl x509 -outform der -in ${config.kernel.verityCert} -out verity_user.der.x509
+        openssl x509 -outform der -in ${config.certs.verity} -out verity_user.der.x509
       '';
 
       nativeBuildInputs = with pkgs; [ perl bc nettools openssl rsync gmp libmpc mpfr lz4 ];

@@ -2,8 +2,11 @@ with (import <nixpkgs> {});
 {
   imports = [ ./modules/profiles/grapheneos.nix ];
   device = "marlin";
-  buildID = "2019.07.02.1";
-  kernel.verityCert = ./keys/verity.x509.pem;  # Only necessary for marlin (Pixel XL) since the kernel build needs to include this cert
+  buildID = "2019.07.04.1";
+  certs = {
+    verity = ./keys/verity.x509.pem;  # Only necessary for marlin (Pixel XL) since the kernel build needs to include this cert
+    platform = ./keys/platform.x509.pem;  # Used by fdroid privileged extension to whitelist org.fdroid.fdroid
+  };
   apps = {
     webview = {
       enable = true;
