@@ -14,6 +14,7 @@ lib.evalModules {
     ./modules/apps/webview.nix
     ./modules/base.nix
     ./modules/kernel.nix
+    ./modules/microg.nix
     ./modules/release.nix
     ./modules/source.nix
     ./modules/vendor.nix

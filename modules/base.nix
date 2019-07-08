@@ -119,10 +119,7 @@ in
         ''; # TODO: Cleanup the above
 
         patches = config.patches;
-#        ++ lib.optional (releaseUrl != null) (pkgs.substituteAll {
-#          src = ./patches/updater.patch;
-#          inherit releaseUrl;
-#        });
+        patchFlags = [ "-p1" "--no-backup-if-mismatch" ]; # Patches that don't apply exactly will create .orig files, which the android build system doesn't like seeing.
 
         # Fix a locale issue with included flex program
         postPatch = ''
