@@ -17,7 +17,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    apps.prebuilt."F-Droid".apk = "${fdroid}/apk/full/release/app-full-release-unsigned.apk packages/apps/F-Droid/FDroid.apk";
+    apps.prebuilt."F-Droid".apk = "${fdroid}/apk/full/release/app-full-release-unsigned.apk";
 
     overlays."packages/apps/F-DroidPrivilegedExtension".contents = [ privext ];
 
