@@ -24,4 +24,5 @@ with (import <nixpkgs> {});
     backup.enable = true;
     fdroid.enable = true;
   };
+  vendor.full = true; # Needed for Google Fi
 }

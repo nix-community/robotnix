@@ -18,11 +18,17 @@ in
       description = "A .img from upstream whose vendor contents should be extracted and included in the build";
     };
 
+    vendor.full = mkOption {
+      default = false;
+      type = types.bool;
+      description = "Include non-essential OEM blobs to be compatible with GApps";
+    };
+
     vendor.files = mkOption {
       internal = true;
       default = pkgs.callPackage ../android-prepare-vendor {
         inherit (config) device;
-        inherit (config.vendor) img;
+        inherit (config.vendor) img full;
       };
     };
   };

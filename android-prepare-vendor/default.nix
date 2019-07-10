@@ -1,5 +1,5 @@
 { stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
-  device, img
+  device, img, full ? false
 }:
 
 let
@@ -55,10 +55,9 @@ in
   '';
 
   # TODO: Include a note that they need to accept download ToS
-  # Parameterize full / not full
   buildPhase = ''
     mkdir -p tmp
-    ./execute-all.sh --full --yes --output tmp --device "${device}" --buildID "${buildID}" -i "${img}" --debugfs
+    ./execute-all.sh ${lib.optionalString full "--full"} --yes --output tmp --device "${device}" --buildID "${buildID}" -i "${img}" --debugfs
   '';
 
   installPhase = ''
