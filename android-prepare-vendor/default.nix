@@ -32,13 +32,14 @@ let
   # TODO: Make sure it can use java if it doesn't use oatdump.
 in
 (stdenv.mkDerivation {
-  name = "android-prepare-vendor-${device}-${buildID}";
+  pname = "android-prepare-vendor-${device}";
+  version = "2019-07-13";
 
   src = fetchFromGitHub {
     owner = "anestisb";
     repo = "android-prepare-vendor";
-    rev = "4b07df4239a64419029a011eae903359803f9034"; # Latest as of 2019-04-27
-    sha256 = "0j8gzs0zv1r3206rd04flsm08z2ljz2kk2scgmzqbl37xavfwhn8";
+    rev = "e853d17c89f6962d3fd6f408db8576e6b445f643";
+    sha256 = "1aicx4lh1gvrbq4llh0dqifhp3y5d4g44r271b2qbg3vpkz48alb";
   };
 
   nativeBuildInputs = [ zip unzip simg2img dexrepair e2fsprogs jq openjdk wget utillinux perl which ];
