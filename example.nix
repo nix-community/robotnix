@@ -24,6 +24,10 @@ with (import <nixpkgs> {});
 
     backup.enable = true;
     fdroid.enable = true;
+
+    # See the NixOS module in https://github.com/danielfullmer/nixos-config/modules/attestation-server.nix
+    auditor.enable = true;
+    auditor.domain = "attestation.daniel.fullmer.me";
   };
   vendor.full = true; # Needed for Google Fi
 }

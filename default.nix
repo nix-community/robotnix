@@ -7,6 +7,7 @@ lib.evalModules {
   modules = [
     { _module.args.pkgs = pkgs; _module.args.lib = lib; }
     configuration 
+    ./modules/apps/auditor.nix
     ./modules/apps/backup.nix
     ./modules/apps/fdroid.nix
     ./modules/apps/prebuilt.nix

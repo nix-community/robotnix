@@ -1,0 +1,58 @@
+From 02a85c43d908c4180be3f9f10049d7960e2dbafc Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 14 Jul 2019 16:17:57 -0400
+Subject: [PATCH 3/3] Custom fingerprints
+
+---
+ .../app/attestation/auditor/AttestationProtocol.java   | 10 +++++++++-
+ app/src/main/res/values/strings.xml                    |  1 +
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
+index 1a2bf19..2bd7475 100644
+--- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
++++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
+@@ -224,7 +224,7 @@ class AttestationProtocol {
+     private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
+             "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
+     private static final String ATTESTATION_APP_SIGNATURE_DIGEST_RELEASE =
+-            "990E04F0864B19F14F84E0E432F7A393F297AB105A22C1E1B10B442A4A62C42C";
++            "@platformFingerprint@";
+     private static final int OS_VERSION_MINIMUM = 80000;
+     private static final int OS_PATCH_LEVEL_MINIMUM = 201801;
+     private static final int VENDOR_PATCH_LEVEL_MINIMUM = 201808;
+@@ -293,6 +293,11 @@ class AttestationProtocol {
+                     new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_calyx))
+             .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
+                     new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
++            // NixDroidOS (TODO: support multiple devices. Needs different key for each device?)
++            .put("@taimen_avbFingerprint@",
++                    new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_nixdroid))
++            .put("@crosshatch_avbFingerprint@",
++                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_nixdroid))
+             .build();
+     private static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
+             .<String, DeviceInfo>builder()
+@@ -378,6 +383,9 @@ class AttestationProtocol {
+             // CalyxOS
+             .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
+                     new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
++            // NixDroidOS
++            .put("@crosshatch_avbFingerprint@",
++                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_nixdroid))
+             .build();
+     private static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
+             .<String, DeviceInfo>builder()
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 5c770c7..48d13ce 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -113,4 +113,5 @@
+     <string name="os_stock">Stock</string>
+     <string name="os_graphene">GrapheneOS</string>
+     <string name="os_calyx">CalyxOS</string>
++    <string name="os_nixdroid">NixDroidOS</string>
+ </resources>
+-- 
+2.22.0
+

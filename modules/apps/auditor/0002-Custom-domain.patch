@@ -1,0 +1,25 @@
+From 7225362d055d63631cdad94df24f6c606822dbe4 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 14 Jul 2019 15:53:34 -0400
+Subject: [PATCH 2/3] Custom domain
+
+---
+ app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java b/app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java
+index 08dadac..e1ae13f 100644
+--- a/app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java
++++ b/app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java
+@@ -32,7 +32,7 @@ public class RemoteVerifyJob extends JobService {
+     private static final String TAG = "RemoteVerifyJob";
+     private static final int PERIODIC_JOB_ID = 0;
+     private static final int FIRST_RUN_JOB_ID = 1;
+-    static final String DOMAIN = "attestation.app";
++    static final String DOMAIN = "@domain@";
+     private static final String CHALLENGE_URL = "https://" + DOMAIN + "/challenge";
+     private static final String VERIFY_URL = "https://" + DOMAIN + "/verify";
+     private static final int CONNECT_TIMEOUT = 60000;
+-- 
+2.22.0
+
