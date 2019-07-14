@@ -3,10 +3,11 @@ with (import <nixpkgs> {});
   imports = [ ./modules/profiles/grapheneos.nix ];
   device = "marlin";
   buildID = "2019.07.13.1"; # Don't forget to update for each unique build
-  certs = {
-    verity = ./keys/verity.x509.pem;  # Only necessary for marlin (Pixel XL) since the kernel build needs to include this cert
-    platform = ./keys/platform.x509.pem;  # Used by fdroid privileged extension to whitelist org.fdroid.fdroid
-  };
+
+  certs.verity.x509 = ./keys/verity.x509.pem;  # Only necessary for marlin (Pixel XL) since the kernel build needs to include this cert
+  certs.platform.x509 = ./keys/platform.x509.pem;  # Used by fdroid privileged extension to whitelist org.fdroid.fdroid
+  avb.pkmd = ./keys/avb_pkmd.bin; # Only needed for Pixel 2/3 (XL)
+
   apps = {
     webview = {
       enable = true;

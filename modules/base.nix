@@ -5,6 +5,25 @@ let
   usePatchedCoreutils = false;
   nixdroid-env = pkgs.callPackage ../buildenv.nix {};
   flex = pkgs.callPackage ../misc/flex-2.5.39.nix {};
+
+  # Using IFD here, because its too damn convenient
+  certFingerprint = x509: import (pkgs.runCommand "cert-fingerprint" {} ''
+    ${pkgs.openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${x509} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
+  '');
+
+  certOptions = certName: {
+    x509 = mkOption {
+      type = types.path;
+      description = "x509 certificate for ${certName} key";
+    };
+
+    fingerprint = mkOption {
+      type = types.str;
+      description = "SHA256 fingerprint for ${certName} key";
+      internal = true;
+      default = certFingerprint config.certs.${certName}.x509;
+    };
+  };
 in
 {
   options = {
@@ -78,14 +97,23 @@ in
     };
 
     certs = {
-      verity = mkOption {
+      platform = certOptions "platform";
+      verity = certOptions "verity";
+    };
+
+    avb = {
+      pkmd = mkOption {
         type = types.path;
-        description = "x509 certificate for dm-verity (for marlin-based devices)";
+        description = "avb_pkmd.bin file";
       };
 
-      platform = mkOption {
-        type = types.path;
-        description = "x509 certificate for platform key";
+      fingerprint = mkOption {
+        type = types.str;
+        internal = true;
+        # TODO: Is there a nix-native way to get this information?
+        default = import (pkgs.runCommand "avb-fingerprint" {} ''
+          sha256sum ${config.avb.pkmd} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out
+        '');
       };
     };
 

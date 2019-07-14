@@ -21,14 +21,8 @@ in
     overlays."packages/apps/F-DroidPrivilegedExtension".contents = [ privext ];
 
     postPatch = ''
-      fdpe_hash() {
-        ${pkgs.jdk}/bin/keytool -list -printcert -file "$1" | grep 'SHA256:' | tr --delete ':' | cut --delimiter ' ' --fields 3
-      }
-
-      # Could do this in a derivation but trying to avoid unnecessary IFD
-      platform_hash=$(fdpe_hash "${config.certs.platform}")
       substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java \
-       --replace 43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab "$platform_hash"
+       --replace 43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab "${config.certs.platform.fingerprint}"
     '';
 
     additionalProductPackages = [ "F-DroidPrivilegedExtension" ];
