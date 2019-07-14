@@ -12,7 +12,7 @@ let
   androidsdk = (composeAndroidPackages androidArgs).androidsdk;
 in
 buildGradle rec {
-  pname = "F-Droid";
+  name = "F-Droid-${version}.apk";
   version = "1.6.2";
 
   envSpec = ./gradle-env.json;
@@ -35,7 +35,6 @@ buildGradle rec {
   nativeBuildInputs = [ jdk gradle ];
 
   installPhase = ''
-    mkdir -p $out
-    cp --no-preserve=all -r app/build/outputs/* $out
+    cp app/build/outputs/apk/full/release/app-full-release-unsigned.apk $out
   '';
 }

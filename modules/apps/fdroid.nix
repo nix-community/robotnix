@@ -3,7 +3,6 @@
 with lib;
 let
   cfg = config.apps.fdroid;
-  fdroid = pkgs.callPackage ./fdroid {};
   privext = pkgs.fetchFromGitLab {
     owner = "fdroid";
     repo = "privileged-extension";
@@ -17,7 +16,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    apps.prebuilt."F-Droid".apk = "${fdroid}/apk/full/release/app-full-release-unsigned.apk";
+    apps.prebuilt."F-Droid".apk = pkgs.callPackage ./fdroid {};
 
     overlays."packages/apps/F-DroidPrivilegedExtension".contents = [ privext ];
 
