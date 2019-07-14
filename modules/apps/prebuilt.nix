@@ -85,9 +85,9 @@ in
 
   config = {
     overlays = listToAttrs (map (prebuilt: {
-      name = "packages/apps/${prebuilt.name}";
+      name = "external/${prebuilt.name}";
       value = {
-          contents = [ (pkgs.runCommand "packages_apps_${prebuilt.name}" {} ''
+          contents = [ (pkgs.runCommand "external_${prebuilt.name}" {} ''
             mkdir -p $out
             cp ${androidmk prebuilt} $out/Android.mk
             cp ${prebuilt.apk} $out/${prebuilt.name}.apk
