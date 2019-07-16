@@ -24,7 +24,7 @@ let
 
   buildTools = pkgs.stdenv.mkDerivation {
     name = "android-build-tools-${config.buildID}";
-    src = config.build.sourceDir "build/make";
+    src = config.source.dirs."build/make";
     nativeBuildInputs = with pkgs; [ python ];
     postPatch = ''
       substituteInPlace ./tools/releasetools/common.py \
@@ -36,7 +36,7 @@ let
     installPhase = ''
       mkdir -p $out
       cp --reflink=auto -r ./tools/* $out
-      cp --reflink=auto ${config.build.sourceDir "system/extras"}/verity/{build_verity_metadata.py,boot_signer,verity_signer} $out # Some extra random utilities from elsewhere
+      cp --reflink=auto ${config.source.dirs."system/extras"}/verity/{build_verity_metadata.py,boot_signer,verity_signer} $out # Some extra random utilities from elsewhere
     '';
   };
 
@@ -44,16 +44,16 @@ let
   keyTools = pkgs.runCommandCC "android-key-tools-${config.buildID}" { nativeBuildInputs = with pkgs; [ python pkgconfig ]; buildInputs = with pkgs; [ boringssl ]; } ''
     mkdir -p $out/bin
 
-    cp ${config.build.sourceDir "development"}/tools/make_key $out/bin/make_key
+    cp ${config.source.dirs."development"}/tools/make_key $out/bin/make_key
     substituteInPlace $out/bin/make_key --replace openssl ${getBin pkgs.openssl}/bin/openssl
 
     cc -o $out/bin/generate_verity_key \
-      ${config.build.sourceDir "system/extras"}/verity/generate_verity_key.c \
-      ${config.build.sourceDir "system/core"}/libcrypto_utils/android_pubkey.c \
-      -I ${config.build.sourceDir "system/core"}/libcrypto_utils/include/ \
+      ${config.source.dirs."system/extras"}/verity/generate_verity_key.c \
+      ${config.source.dirs."system/core"}/libcrypto_utils/android_pubkey.c \
+      -I ${config.source.dirs."system/core"}/libcrypto_utils/include/ \
       -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
 
-    cp ${config.build.sourceDir "external/avb"}/avbtool $out/bin/avbtool
+    cp ${config.source.dirs."external/avb"}/avbtool $out/bin/avbtool
     patchShebangs $out/bin
   '';
 in
@@ -68,7 +68,7 @@ in
 
     # sign_target_files_apks.py and others below requires this directory to be here.
     mkdir -p build/target/product/
-    ln -sf ${config.build.sourceDir "build/make"}/target/product/security build/target/product/security
+    ln -sf ${config.source.dirs."build/make"}/target/product/security build/target/product/security
 
     echo Signing target files
     ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${config.build.android.out}/aosp_${config.device}-target_files-${config.buildID}.zip ${config.device}-target_files-${config.buildID}.zip || exit 1
@@ -97,7 +97,7 @@ in
     export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
     echo Building factory image
-    ${pkgs.runtimeShell} ${config.build.sourceDir "device/common"}/generate-factory-images-common.sh
+    ${pkgs.runtimeShell} ${config.source.dirs."device/common"}/generate-factory-images-common.sh
 
     rm -r build # Unsafe?
 

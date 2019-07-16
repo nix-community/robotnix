@@ -118,17 +118,10 @@ in
       # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
       android = pkgs.stdenvNoCC.mkDerivation rec {
         name = "nixdroid-${config.device}-${config.buildID}";
-        srcs = config.build.repo2nix.sources;
+        src = config.build.source;
 
         outputs = [ "out" "bin" ]; # This derivation builds AOSP release tools and target-files
 
-        unpackPhase = ''
-          ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
-          echo $PATH
-          ${config.build.repo2nix.unpackPhase}
-
-          ${config.postUnpack}
-        '';
 
         patches = config.patches;
         patchFlags = [ "-p1" "--no-backup-if-mismatch" ]; # Patches that don't apply exactly will create .orig files, which the android build system doesn't like seeing.

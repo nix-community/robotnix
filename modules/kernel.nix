@@ -9,7 +9,7 @@ let
   }.${config.deviceFamily};
   prebuiltGCC = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc";
-    src = config.build.sourceDir "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9";
+    src = config.source.dirs."prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9";
     nativeBuildInputs = with pkgs; [ python autoPatchelfHook ];
     installPhase = ''
       cp -r $src $out

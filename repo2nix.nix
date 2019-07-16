@@ -1,12 +1,12 @@
 {
  pkgs ? import <nixpkgs> {},
- device, rev, manifest, sha256
-# Optional parameters:
-, repoRepoURL ? "https://github.com/ajs124/tools_repo"
-, repoRepoRev ? "master"
-, referenceDir ? ""
-, extraFlags ? "--no-repo-verify"
-, localManifests ? []
+ manifest, rev, sha256
+ # Optional parameters:
+ , repoRepoURL ? /home/danielrf/src/tools_repo
+ , repoRepoRev ? "master"
+ , referenceDir ? ""
+ , extraFlags ? "--no-repo-verify"
+ , localManifests ? []
 }:
 
 assert repoRepoRev != "" -> repoRepoURL != "";
@@ -29,7 +29,7 @@ let
     "--depth=1"
   ] ++ extraRepoInitFlags;
 in stdenvNoCC.mkDerivation {
-  name = "repo2nix-${rev}-${device}";
+  name = "repo2json-${rev}";
 
   outputHashAlgo = "sha256";
   outputHash = sha256;
@@ -51,14 +51,14 @@ in stdenvNoCC.mkDerivation {
 
     mkdir -p .repo/local_manifests
 
-    '' +
+  '' +
     (concatMapStringsSep "\n"
-      (localManifest: "cp ${localManifest} .repo/local_manifests/$(stripHash ${localManifest}; echo $strippedName)")
-      localManifests)
-    + ''
+    (localManifest: "cp ${localManifest} .repo/local_manifests/$(stripHash ${localManifest}; echo $strippedName)")
+    localManifests)
+  + ''
 
     repo init ${concatStringsSep " " repoInitFlags}
-    repo nix > "$out"
+    repo dumpjson > "$out"
 
     rm -rf .repo*
   '';

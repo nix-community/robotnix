@@ -16,18 +16,18 @@ let
   };
 in
 {
-  manifest = {
+  source.manifest = {
     url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
     rev = mkDefault releases.${tag}.rev;
     sha256 = mkDefault releases.${tag}.sha256;
   };
 
-  kernel.src = mkDefault (config.build.sourceDir "kernel/google/${config.deviceFamily}");
+  kernel.src = mkDefault (config.source.dirs."kernel/google/${config.deviceFamily}");
 
-  apps.webview.enable = mkDefault true;
+#  apps.webview.enable = mkDefault true;
   # TODO: Build and include vanadium
   removedProductPackages = [ "Vanadium" ];
 
-  apps.updater.enable = mkDefault true;
-  apps.updater.src = mkDefault null; # Already included in platform manifest
+#  apps.updater.enable = mkDefault true;
+#  apps.updater.src = mkDefault null; # Already included in platform manifest
 }
