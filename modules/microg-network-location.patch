@@ -1,0 +1,12 @@
+diff -Naur aosp/frameworks/base/packages/SettingsProvider/res/values/defaults.xml aosp-new/frameworks/base/packages/SettingsProvider/res/values/defaults.xml
+--- aosp/frameworks/base/packages/SettingsProvider/res/values/defaults.xml	2019-07-17 14:09:48.205229496 -0400
++++ aosp-new/frameworks/base/packages/SettingsProvider/res/values/defaults.xml	2019-07-17 14:08:45.348108295 -0400
+@@ -44,7 +44,7 @@
+          Network location is off by default because it requires
+          user opt-in via Setup Wizard or Settings.
+     -->
+-    <string name="def_location_providers_allowed" translatable="false">gps</string>
++    <string name="def_location_providers_allowed" translatable="false">gps,network</string>
+     <bool name="assisted_gps_enabled">true</bool>
+     <bool name="def_netstats_enabled">true</bool>
+     <bool name="def_usb_mass_storage_enabled">true</bool>
