@@ -7,7 +7,7 @@ in
 {
   options = {
     apps.auditor = {
-      enable = mkEnableOption "F-Droid";
+      enable = mkEnableOption "Auditor";
 
       domain = mkOption {
         type = types.str;
