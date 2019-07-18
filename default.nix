@@ -18,6 +18,7 @@ lib.evalModules {
     ./modules/kernel.nix
     ./modules/microg.nix
     ./modules/release.nix
+    ./modules/resources.nix
     ./modules/source.nix
     ./modules/vendor.nix
   ];

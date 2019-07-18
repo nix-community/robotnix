@@ -35,4 +35,6 @@ in
   removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
 
   patches = [ ../../patches/disable-quicksearch.patch ../../patches/fix-device-names.patch ];
+
+  resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
 }

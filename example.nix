@@ -2,7 +2,7 @@ with (import <nixpkgs> {});
 {
   imports = [ ./modules/profiles/grapheneos.nix ];
   device = "marlin";
-  buildID = "2019.07.17.1"; # Don't forget to update for each unique build
+  buildID = "2019.07.18.1"; # Don't forget to update for each unique build
 
   certs.verity.x509 = ./keys/verity.x509.pem;  # Only necessary for marlin (Pixel XL) since the kernel build needs to include this cert
   certs.platform.x509 = ./keys/platform.x509.pem;  # Used by fdroid privileged extension to whitelist org.fdroid.fdroid

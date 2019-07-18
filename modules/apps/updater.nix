@@ -31,6 +31,6 @@ in
 
     additionalProductPackages = [ "Updater" ];
 
-    patches = [ (pkgs.substituteAll { src = ./updater.patch; inherit (cfg) url; }) ];
+    resources."packages/apps/Updater".url = cfg.url;
   };
 }
