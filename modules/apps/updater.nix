@@ -27,7 +27,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    overlays = mkIf (cfg.src != null) { "packages/apps/Updater".contents = [ cfg.src ]; };
+    overlays."packages/apps/Updater" = mkIf (cfg.src != null) [ cfg.src ];
 
     additionalProductPackages = [ "Updater" ];
 

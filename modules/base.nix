@@ -65,6 +65,11 @@ in
       type = types.listOf types.path;
     };
 
+    postUnpack = mkOption {
+      default = "";
+      type = types.lines;
+    };
+
     postPatch = mkOption {
       default = "";
       type = types.lines;
@@ -78,22 +83,6 @@ in
     removedProductPackages = mkOption {
       default = [];
       type = types.listOf types.str;
-    };
-
-    overlays = mkOption {
-      default = {};
-      type = types.attrsOf (types.submodule ({ name, ... }: {
-        options = {
-          relativePath = mkOption {
-            default = name;
-            type = types.str;
-          };
-          contents = mkOption {
-            type = types.listOf types.path;
-            description = "List of store paths whose content that should be merged into the AOSP source tree at the relative path location.";
-          };
-        };
-      }));
     };
 
     certs = {
@@ -138,13 +127,8 @@ in
           echo $PATH
           ${config.build.repo2nix.unpackPhase}
 
-          ${concatMapStringsSep "\n" (overlay: "
-          mkdir -p ./${overlay.relativePath}
-            ${concatMapStringsSep "\n" (content: "
-            cp --no-preserve=all --reflink=auto -rv ${content}/* ./${overlay.relativePath}
-            ") overlay.contents}
-          ") (attrValues config.overlays)}
-        ''; # TODO: Cleanup the above
+          ${config.postUnpack}
+        '';
 
         patches = config.patches;
         patchFlags = [ "-p1" "--no-backup-if-mismatch" ]; # Patches that don't apply exactly will create .orig files, which the android build system doesn't like seeing.

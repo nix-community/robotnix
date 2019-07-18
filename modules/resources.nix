@@ -56,7 +56,7 @@ in
       echo PRODUCT_PACKAGE_OVERLAYS += nixdroid >> build/make/target/product/core.mk
     '';
 
-    overlays.nixdroid.contents = [ (pkgs.symlinkJoin {
+    overlays.nixdroid = [ (pkgs.symlinkJoin {
       name = "nixdroid-overlay";
       paths = mapAttrsToList (relativePath: packageResources: (pkgs.writeTextFile {
         name = "${replaceStrings ["/"] ["="] relativePath}-resources";

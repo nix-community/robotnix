@@ -34,6 +34,6 @@ in
   };
 
   config = mkIf (config.vendor.img != null) {
-    overlays."".contents = [ config.vendor.files ];
+    overlays."" = [ config.vendor.files ];
   };
 }

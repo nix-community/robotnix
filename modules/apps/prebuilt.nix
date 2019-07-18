@@ -86,14 +86,12 @@ in
   config = {
     overlays = listToAttrs (map (prebuilt: {
       name = "external/${prebuilt.name}";
-      value = {
-          contents = [ (pkgs.runCommand "external_${prebuilt.name}" {} ''
+      value = [ (pkgs.runCommand "external_${prebuilt.name}" {} ''
             mkdir -p $out
             cp ${androidmk prebuilt} $out/Android.mk
             cp ${prebuilt.apk} $out/${prebuilt.name}.apk
             ${optionalString (prebuilt.privappPermissions != []) "cp ${privapp-permissions prebuilt} $out/privapp-permissions-${prebuilt.packageName}.xml"}
           '') ];
-        };
       }) (attrValues config.apps.prebuilt));
 
     additionalProductPackages = map (prebuilt: prebuilt.name) (attrValues config.apps.prebuilt);

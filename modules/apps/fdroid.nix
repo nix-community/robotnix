@@ -18,7 +18,7 @@ in
   config = mkIf cfg.enable {
     apps.prebuilt."F-Droid".apk = pkgs.callPackage ./fdroid {};
 
-    overlays."packages/apps/F-DroidPrivilegedExtension".contents = [ privext ];
+    overlays."packages/apps/F-DroidPrivilegedExtension" = [ privext ];
 
     postPatch = ''
       substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java \

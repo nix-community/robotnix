@@ -16,7 +16,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    overlays."packages/apps/Backup".contents = [ src ];
+    overlays."packages/apps/Backup" = [ src ];
 
     additionalProductPackages = [ "Backup" ];
   };

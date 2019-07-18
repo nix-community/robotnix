@@ -17,6 +17,7 @@ lib.evalModules {
     ./modules/hosts.nix
     ./modules/kernel.nix
     ./modules/microg.nix
+    ./modules/overlays.nix
     ./modules/release.nix
     ./modules/resources.nix
     ./modules/source.nix
