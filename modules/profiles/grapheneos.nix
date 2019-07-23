@@ -8,10 +8,10 @@ let
     bonito = "PQ3B.190705.003.2019.07.16.22";
   }.${config.deviceFamily};
   releases = {
-    # TODO: Add all releases
+    # TODO: Add all releases. And autoupdate regularly
     "PQ3A.190705.001.2019.07.16.22" = {
       rev = "1bd882ec78e3740ef981004919cbfe6386e218c3";
-      sha256 = "1jy47x1qg87yv190jssqpdmx4w1632g0jnnhiszcmdqkkhwr9pwd";
+      sha256 = "1fnzh7pvvdiy9ywi7kirmdkzkxkfx18xcdyz6pck75isgbnpkvwd";
     };
   };
 in
@@ -22,12 +22,15 @@ in
     sha256 = mkDefault releases.${tag}.sha256;
   };
 
-  kernel.src = mkDefault (config.source.dirs."kernel/google/${config.deviceFamily}");
+  kernel.src = mkDefault config.source.dirs."kernel/google/${config.deviceFamily}".contents;
 
-#  apps.webview.enable = mkDefault true;
+  apps.webview.enable = mkDefault true;
   # TODO: Build and include vanadium
   removedProductPackages = [ "Vanadium" ];
 
-#  apps.updater.enable = mkDefault true;
-#  apps.updater.src = mkDefault null; # Already included in platform manifest
+  apps.updater.enable = mkDefault true;
+  apps.updater.src = mkDefault config.source.dirs."packages/apps/Updater".contents;
+  source.dirs."packages/apps/Updater".enable = false;
+
+  source.dirs."external/Auditor".enable = mkIf config.apps.auditor.enable false; # Don't include upstream if we use the patched version
 }

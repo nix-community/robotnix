@@ -53,16 +53,16 @@ in
 
   config = {
     postPatch = ''
-      echo PRODUCT_PACKAGE_OVERLAYS += nixdroid >> build/make/target/product/core.mk
+      echo PRODUCT_PACKAGE_OVERLAYS += nixdroid/overlay >> build/make/target/product/core.mk
     '';
 
-    overlays.nixdroid = [ (pkgs.symlinkJoin {
+    source.dirs."nixdroid/overlay".contents = (pkgs.symlinkJoin {
       name = "nixdroid-overlay";
       paths = mapAttrsToList (relativePath: packageResources: (pkgs.writeTextFile {
         name = "${replaceStrings ["/"] ["="] relativePath}-resources";
         text = configXML relativePath packageResources;
         destination = "/${relativePath}/res/values/default.xml"; # I think it's ok that the name doesn't match the original--since they all get merged anyway
       })) config.resources;
-    }) ];
+    });
   };
 }

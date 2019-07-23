@@ -30,25 +30,50 @@ in
           type = types.str;
         };
       };
-      dirs = mkOption {
-        #type = types.attrsOf types.path;
-        default = mapAttrs' (name: p: nameValuePair p.relpath (projectSource p)) json;
+
+      json = mkOption {
+        default = json;
         internal = true;
+      };
+
+      dirs = mkOption {
+        default = {};
+        type = types.attrsOf (types.submodule ({ name, ... }: {
+          options = {
+            enable = mkOption {
+              default = true;
+              type = types.bool;
+              description = "Include this directory in the android build source tree";
+            };
+
+            path = mkOption {
+              default = name;
+              type = types.str;
+            };
+
+            contents = mkOption {
+              type = types.path;
+            };
+          };
+        }));
       };
     };
   };
 
-  config.build = {
-    source = pkgs.runCommand "${config.device}-${config.buildID}-src" {} (''
+  config = {
+    source.dirs = mapAttrs' (name: p: nameValuePair p.relpath { contents = mkDefault (projectSource p); }) config.source.json;
+
+    unpackScript = (''
       mkdir -p $out
 
       '' +
-      (concatStringsSep "\n" (mapAttrsToList (dirname: src: ''
-        mkdir -p $out/$(dirname ${dirname})
-        cp --reflink=auto -r ${src} $out/${dirname}
-      '') config.source.dirs)) +
+      (concatStringsSep "" (map (d: optionalString d.enable ''
+        mkdir -p $out/$(dirname ${d.path})
+        echo "${d.contents} -> ${d.path}"
+        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} $out/${d.path}
+      '') (attrValues config.source.dirs))) +
       # Get linkfiles and copyfiles too. XXX: Hack
-      (concatStringsSep "\n" (mapAttrsToList (name: p:
+      (concatStringsSep "" (mapAttrsToList (name: p:
         ((concatMapStringsSep "\n" (c: ''
             mkdir -p $out/$(dirname ${c.dest})
             cp --reflink=auto $out/${p.relpath}/${c.src} $out/${c.dest}
@@ -57,6 +82,6 @@ in
             mkdir -p $(dirname ${c.dest})
             ln -s ./${c.src_rel_to_dest} $out/${c.dest}
           '') p.linkfiles))
-       ) json )));
+    ) config.source.json )));
   };
 }
