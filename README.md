@@ -13,15 +13,15 @@ Generate keys to sign your build:
 
 ```console
 $ nix-build ./default.nix --arg configuration "import ./example.nix" -A generateKeysScript -o generate-keys
-$ mkdir keys
-$ cd keys
+$ mkdir keys/marlin
+$ cd keys/marlin
 $ ../generate-keys "/CN=NixDroidOS" # Use appropriate x509 cert fields
-$ cd ..
+$ cd ../..
 ```
 
 Build and sign your release:
 
 ```console
 $ nix-build ./default.nix --arg configuration "import ./example.nix" -A releaseScript -o release
-$ ./release ./keys
+$ ./release ./keys/marlin
 ```

@@ -105,20 +105,21 @@ in
   '';
 
   # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
+  # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
   config.build.generateKeysScript = pkgs.writeScript "generate_keys.sh" ''
     #!${pkgs.runtimeShell}
 
     export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
-    for key in {releasekey,platform,shared,media,verity,avb}; do
+    for key in {releasekey,platform,shared,media${optionalString (avbMode == "verity_only") ",verity"}}; do
       # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
       ! make_key "$key" "$1" || exit 1
     done
 
-    # Generate both verity and AVB keys. While not strictly necessary, I don't
-    # see any harm in doing so--and the user may want to use the same keys for
-    # multiple devices supporting different AVB modes.
-    generate_verity_key -convert verity.x509.pem verity_key || exit 1
-    avbtool extract_public_key --key avb.pk8 --output avb_pkmd.bin || exit 1
+    ${optionalString (avbMode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
+    ${optionalString (avbMode != "verity_only") ''
+      openssl genrsa -out avb.pem 2048 || exit 1
+      avbtool extract_public_key --key avb.pem --output avb_pkmd.bin || exit 1
+    ''}
   '';
 }
