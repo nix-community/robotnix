@@ -14,6 +14,7 @@ with lib;
       (mapAttrsToList (path: overlays: optionalString (length overlays != 0) ''
         mkdir -p ./${path}
         ${concatMapStringsSep "\n" (overlay: "cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -rv ${overlay}/* ./${path}") overlays}
+        chmod -R u+w ./${path}
       '') config.overlays);
   };
 }
