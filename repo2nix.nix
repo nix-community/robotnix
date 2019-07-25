@@ -1,6 +1,6 @@
 {
  pkgs ? import <nixpkgs> {},
- device, rev, manifest, sha256
+ rev, manifest, sha256
 # Optional parameters:
 , repoRepoURL ? "https://github.com/ajs124/tools_repo"
 , repoRepoRev ? "master"
@@ -29,7 +29,7 @@ let
     "--depth=1"
   ] ++ extraRepoInitFlags;
 in stdenvNoCC.mkDerivation {
-  name = "repo2nix-${rev}-${device}";
+  name = "repo2nix-${rev}";
 
   outputHashAlgo = "sha256";
   outputHash = sha256;

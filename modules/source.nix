@@ -18,7 +18,6 @@ with lib;
 
   config.build = {
     repo2nix = import (import ../repo2nix.nix {
-      inherit (config) device;
       manifest = config.manifest.url;
       inherit (config.manifest) rev sha256;
       extraFlags = "--no-repo-verify";
