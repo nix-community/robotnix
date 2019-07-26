@@ -12,7 +12,7 @@ let
   avbFlags = {
     verity_only = "--replace_verity_public_key $KEYSTOREPATH/verity_key.pub --replace_verity_private_key $KEYSTOREPATH/verity --replace_verity_keyid $KEYSTOREPATH/verity.x509.pem";
     vbmeta_simple = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
-    vbmeta_chained = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algortihm SHA256_RSA2048 --avb_system_key $KEYSTOREPATH/avb.pem --avb_system_algorithm SHA256_RSA2048";
+    vbmeta_chained = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048 --avb_system_key $KEYSTOREPATH/avb.pem --avb_system_algorithm SHA256_RSA2048";
   }.${avbMode};
 
   # Signing target files fails in signapk.jar with error -6 unless using this jdk
@@ -23,7 +23,7 @@ let
   };
 
   buildTools = pkgs.stdenv.mkDerivation {
-    name = "android-build-tools-${config.buildID}";
+    name = "android-build-tools-${config.buildNumber}";
     src = config.build.sourceDir "build/make";
     nativeBuildInputs = with pkgs; [ python ];
     postPatch = ''
@@ -41,7 +41,7 @@ let
   };
 
   # Get a bunch of utilities to generate keys
-  keyTools = pkgs.runCommandCC "android-key-tools-${config.buildID}" { nativeBuildInputs = with pkgs; [ python pkgconfig ]; buildInputs = with pkgs; [ boringssl ]; } ''
+  keyTools = pkgs.runCommandCC "android-key-tools-${config.buildNumber}" { nativeBuildInputs = with pkgs; [ python pkgconfig ]; buildInputs = with pkgs; [ boringssl ]; } ''
     mkdir -p $out/bin
 
     cp ${config.build.sourceDir "development"}/tools/make_key $out/bin/make_key
@@ -71,23 +71,23 @@ in
     ln -sf ${config.build.sourceDir "build/make"}/target/product/security build/target/product/security
 
     echo Signing target files
-    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${config.build.android.out}/aosp_${config.device}-target_files-${config.buildID}.zip ${config.device}-target_files-${config.buildID}.zip || exit 1
+    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${config.build.android.out}/aosp_${config.device}-target_files-${config.buildNumber}.zip ${config.device}-target_files-${config.buildNumber}.zip || exit 1
 
     echo Building OTA zip
-    ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${config.device}-target_files-${config.buildID}.zip ${config.device}-ota_update-${config.buildID}.zip || exit 1
+    ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${config.device}-target_files-${config.buildNumber}.zip ${config.device}-ota_update-${config.buildNumber}.zip || exit 1
 
     echo Building incremental OTA zip
     if [[ ! -z "$PREVIOUS_BUILDID" ]]; then
-      ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} -i ${config.device}-target_files-$PREVIOUS_BUILDID.zip ${config.device}-target_files-${config.buildID}.zip ${config.device}-incremental-$PREVIOUS_BUILDID-${config.buildID}.zip || exit 1
+      ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} -i ${config.device}-target_files-$PREVIOUS_BUILDID.zip ${config.device}-target_files-${config.buildNumber}.zip ${config.device}-incremental-$PREVIOUS_BUILDID-${config.buildNumber}.zip || exit 1
     fi
 
     echo Building .img file
-    ${buildTools}/releasetools/img_from_target_files.py ${config.device}-target_files-${config.buildID}.zip ${config.device}-img-${config.buildID}.zip || exit 1
+    ${buildTools}/releasetools/img_from_target_files.py ${config.device}-target_files-${config.buildNumber}.zip ${config.device}-img-${config.buildNumber}.zip || exit 1
 
     export DEVICE=${config.device};
     export PRODUCT=${config.device};
-    export BUILD=${config.buildID};
-    export VERSION=${toLower config.buildID};
+    export BUILD=${config.buildNumber};
+    export VERSION=${toLower config.buildNumber};
 
     # TODO: What if we don't have vendor.files?
     get_radio_image() {
@@ -101,7 +101,7 @@ in
 
     rm -r build # Unsafe?
 
-    ${pkgs.python3}/bin/python ${../generate_metadata.py} ${config.device}-ota_update-${config.buildID}.zip
+    ${pkgs.python3}/bin/python ${../generate_metadata.py} ${config.device}-ota_update-${config.buildNumber}.zip
   '';
 
   # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
