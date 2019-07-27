@@ -3,8 +3,9 @@ with (import <nixpkgs> {});
   imports = [ ./modules/profiles/grapheneos.nix ];
 
   # Don't forget to update these for each unique build
-  buildNumber = "2019.07.25.1";
-  buildDateTime = 1564112776;
+  buildNumber = "2019.07.26.1";
+  buildDateTime = 1564183883;
+
 
   # Custom hosts file
   hosts = fetchurl { # 2019-07-17
@@ -34,4 +35,6 @@ with (import <nixpkgs> {});
     auditor.enable = true;
     auditor.domain = "attestation.daniel.fullmer.me";
   };
+
+  microg.enable = true;
 }

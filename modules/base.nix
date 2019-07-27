@@ -152,8 +152,8 @@ in
 
         ANDROID_JAVA_HOME="${pkgs.jdk.home}";
         BUILD_NUMBER=config.buildNumber;
-        #DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER
         BUILD_DATETIME=config.buildDateTime;
+        #DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
         ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8G";
 
         # Alternative is to just "make target-files-package brillo_update_payload
