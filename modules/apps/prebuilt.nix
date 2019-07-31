@@ -2,7 +2,8 @@
 
 with lib;
 let
-  privapp-permissions = prebuilt: pkgs.writeText "privapp-permissions-${prebuilt.packageName}.xml" ''
+  cfg = config.apps.prebuilt;
+  privapp-permissions = prebuilt: ''
     <?xml version="1.0" encoding="utf-8"?>
     <permissions>
       <privapp-permissions package="${prebuilt.packageName}">
@@ -12,18 +13,7 @@ let
   '';
   androidmk = prebuilt: pkgs.writeText "Android.mk" (''
     LOCAL_PATH := $(call my-dir)
-    '' + (optionalString (prebuilt.privappPermissions != []) ''
-    include $(CLEAR_VARS)
 
-    LOCAL_MODULE := privapp-permissions-${prebuilt.packageName}.xml
-    LOCAL_MODULE_TAGS := optional
-    LOCAL_MODULE_CLASS := ETC
-    LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/permissions
-    LOCAL_SRC_FILES := $(LOCAL_MODULE)
-
-    include $(BUILD_PREBUILT)
-    '') +
-    ''
     include $(CLEAR_VARS)
 
     LOCAL_MODULE := ${prebuilt.name}
@@ -34,7 +24,6 @@ let
 
     LOCAL_PRIVILEGED_MODULE := ${if prebuilt.privileged then "true" else "false"}
     LOCAL_CERTIFICATE := ${prebuilt.certificate}
-    LOCAL_REQUIRED_MODULES := ${optionalString (prebuilt.privappPermissions != []) "privapp-permissions-${prebuilt.packageName}.xml"}
 
     include $(BUILD_PREBUILT)
     '');
@@ -90,10 +79,14 @@ in
             mkdir -p $out
             cp ${androidmk prebuilt} $out/Android.mk
             cp ${prebuilt.apk} $out/${prebuilt.name}.apk
-            ${optionalString (prebuilt.privappPermissions != []) "cp ${privapp-permissions prebuilt} $out/privapp-permissions-${prebuilt.packageName}.xml"}
           '') ];
-      }) (attrValues config.apps.prebuilt));
+      }) (attrValues cfg));
 
-    additionalProductPackages = map (prebuilt: prebuilt.name) (attrValues config.apps.prebuilt);
+    etc = listToAttrs (map (prebuilt: {
+        name = "permissions/${prebuilt.packageName}.xml";
+        value = { text = privapp-permissions prebuilt; };
+      }) (filter (prebuilt: prebuilt.privappPermissions != []) (attrValues cfg)));
+
+    additionalProductPackages = map (prebuilt: prebuilt.name) (attrValues cfg);
   };
 }
