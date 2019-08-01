@@ -3,12 +3,7 @@
 with lib;
 let
   cfg = config.apps.backup;
-  src = (pkgs.fetchFromGitHub {
-    owner = "stevesoltys";
-    repo = "backup";
-    rev = "0.3.0";
-    sha256 = "14dc2s4x75hj6hfz4v8dr0m6zh7m8c7zwqlmq9qviql1fa6hslvx";
-  });
+  backup = pkgs.callPackage ./backup {};
 in
 {
   options = {
@@ -16,8 +11,20 @@ in
   };
 
   config = mkIf cfg.enable {
-    overlays."packages/apps/Backup" = [ src ];
+    apps.prebuilt.Backup = {
+      apk = backup;
+      packageName = "com.stevesoltys.backup";
+      privileged = true; # Is this needed? it's not in the upstream repo.
+      privappPermissions = [ "BACKUP" ];
+      extraConfig = "LOCAL_DEX_PREOPT := false";
+    };
 
-    additionalProductPackages = [ "Backup" ];
+    etc."sysconfig/com.stevesoltys.backup.xml".text = ''
+      <?xml version="1.0" encoding="utf-8"?>
+      <config>
+        <backup-transport-whitelisted-service
+          service="com.stevesoltys.backup/.transport.ConfigurableBackupTransportService"/>
+      </config>
+    '';
   };
 }
