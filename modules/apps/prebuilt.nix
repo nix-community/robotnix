@@ -24,6 +24,7 @@ let
 
     LOCAL_PRIVILEGED_MODULE := ${if prebuilt.privileged then "true" else "false"}
     LOCAL_CERTIFICATE := ${prebuilt.certificate}
+    ${prebuilt.extraConfig}
 
     include $(BUILD_PREBUILT)
     '');
@@ -66,6 +67,11 @@ in
               "not for use by third-party applications".
             '';
             example = ''[ "INSTALL_PACKAGES" ]'';
+          };
+
+          extraConfig = mkOption {
+            default = "";
+            type = types.lines;
           };
         };
       }));
