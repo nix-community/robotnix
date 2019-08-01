@@ -3,8 +3,8 @@ with (import <nixpkgs> {});
   imports = [ ./modules/profiles/grapheneos.nix ];
 
   # Don't forget to update these for each unique build
-  buildNumber = "2019.07.26.1";
-  buildDateTime = 1564183883;
+  buildNumber = "2019.07.31.1";
+  buildDateTime = 1564601006;
 
 
   # Custom hosts file
@@ -37,4 +37,6 @@ with (import <nixpkgs> {});
   };
 
   microg.enable = true;
+  # Using cloud messaging, so enabling: https://source.android.com/devices/tech/power/platform_mgmt#integrate-doze
+  resources."frameworks/base/core/res".config_enableAutoPowerModes = true;
 }
