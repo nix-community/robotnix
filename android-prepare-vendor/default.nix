@@ -1,10 +1,9 @@
-{ stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
+{ stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, simg2img, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
   device, img, full ? false
 }:
 
 let
   buildID = "nixdroid"; # Doesn't have to match the real buildID
-  simg2img = callPackage ./simg2img.nix {};
   dexrepair = callPackage ./dexrepair.nix {};
 
   # TODO: This is for API-28. Need to make this work for all of them. Preferably without downloading each one
