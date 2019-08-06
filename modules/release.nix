@@ -23,7 +23,7 @@ let
   buildTools = pkgs.stdenv.mkDerivation {
     name = "android-build-tools-${config.buildNumber}";
     src = config.build.sourceDir "build/make";
-    nativeBuildInputs = with pkgs; [ python ];
+    buildInputs = with pkgs; [ python ];
     postPatch = ''
       substituteInPlace ./tools/releasetools/common.py \
         --replace "out/host/linux-x86" "${config.build.hostTools}" \
@@ -39,7 +39,7 @@ let
   };
 
   # Get a bunch of utilities to generate keys
-  keyTools = pkgs.runCommandCC "android-key-tools-${config.buildNumber}" { nativeBuildInputs = with pkgs; [ python pkgconfig ]; buildInputs = with pkgs; [ boringssl ]; } ''
+  keyTools = pkgs.runCommandCC "android-key-tools-${config.buildNumber}" { buildInputs = with pkgs; [ python pkgconfig boringssl ]; } ''
     mkdir -p $out/bin
 
     cp ${config.build.sourceDir "development"}/tools/make_key $out/bin/make_key

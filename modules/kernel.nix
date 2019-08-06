@@ -5,7 +5,7 @@ let
   prebuiltGCC = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc";
     src = config.build.sourceDir "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9";
-    nativeBuildInputs = with pkgs; [ python autoPatchelfHook ];
+    buildInputs = with pkgs; [ python autoPatchelfHook ];
     installPhase = ''
       cp -r . $out
     '';
@@ -13,7 +13,7 @@ let
   prebuiltGCCarm32 = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc-arm32";
     src = config.build.sourceDir "prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9";
-    nativeBuildInputs = with pkgs; [ python autoPatchelfHook ];
+    buildInputs = with pkgs; [ python autoPatchelfHook ];
     installPhase = ''
       cp -r . $out
     '';
@@ -21,7 +21,7 @@ let
   prebuiltClang = pkgs.stdenv.mkDerivation {
     name = "prebuilt-clang";
     src = (config.build.sourceDir "prebuilts/clang/host/linux-x86") + /clang-4393122; # Parameterize this number?
-    nativeBuildInputs = with pkgs; [ python autoPatchelfHook zlib ncurses5 libedit ];
+    buildInputs = with pkgs; [ python autoPatchelfHook zlib ncurses5 libedit ];
     installPhase = ''
       cp -r . $out
       cp ${pkgs.libedit}/lib/libedit.so.0 $out/lib64/libedit.so.2 # ABI is the same--but distros have inconsistent numbering
@@ -30,7 +30,7 @@ let
   prebuiltMisc = pkgs.stdenv.mkDerivation {
     name = "prebuilt-misc";
     src = config.build.sourceDir "prebuilts/misc";
-    nativeBuildInputs = with pkgs; [ python autoPatchelfHook ];
+    buildInputs = with pkgs; [ python autoPatchelfHook ];
     installPhase = ''
       mkdir -p $out/bin
       cp linux-x86/dtc/* $out/bin
