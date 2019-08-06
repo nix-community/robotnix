@@ -1,5 +1,3 @@
-
-with (import <nixpkgs> {});
 {
   imports = [ ./example.nix ];
   device = "marlin";

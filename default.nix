@@ -1,5 +1,5 @@
 { configuration,
-  pkgs ? import <nixpkgs> { config={android_sdk.accept_license=true;}; },
+  pkgs ? import ./pkgs.nix,
   lib ? pkgs.stdenv.lib
 }:
 

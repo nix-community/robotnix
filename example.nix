@@ -1,4 +1,4 @@
-with (import <nixpkgs> {});
+with (import ./pkgs.nix);
 {
   imports = [ ./modules/profiles/grapheneos.nix ];
 

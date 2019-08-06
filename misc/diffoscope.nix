@@ -1,5 +1,5 @@
 let
-  pkgs = import <nixpkgs> {};
+  pkgs = import ../pkgs.nix {};
   python3Packages = pkgs.python3Packages.override {
     overrides = self: super: {
       guestfs = super.guestfs.override { libguestfs = pkgs.libguestfs-with-appliance; };

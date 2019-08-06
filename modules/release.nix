@@ -14,8 +14,8 @@ let
   }.${avbMode};
 
   # Signing target files fails in signapk.jar with error -6 unless using this jdk
-  jdk =  pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/8.nix> {
-    bootjdk = pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/bootstrap.nix> { version = "8"; };
+  jdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/8.nix) {
+    bootjdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/bootstrap.nix) { version = "8"; };
     inherit (pkgs.gnome2) GConf gnome_vfs;
     minimal = true;
   };

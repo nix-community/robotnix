@@ -1,5 +1,5 @@
 {
- pkgs ? import <nixpkgs> {},
+ pkgs ? import ./pkgs.nix,
  rev, manifest, sha256
 # Optional parameters:
 , repoRepoURL ? "https://github.com/ajs124/tools_repo"

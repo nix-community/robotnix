@@ -1,4 +1,3 @@
-with (import <nixpkgs> {});
 {
   imports = [ ./example.nix ];
   device = "crosshatch";
