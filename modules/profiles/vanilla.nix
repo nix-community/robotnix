@@ -2,6 +2,7 @@
 with lib;
 let
   # https://source.android.com/setup/start/build-numbers
+  # TODO: Update. Make an autoupdate script too.
   releases = rec {
     marlin = {
       rev = "android-9.0.0_r43";

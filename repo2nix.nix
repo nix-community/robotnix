@@ -29,7 +29,7 @@ let
     "--depth=1"
   ] ++ extraRepoInitFlags;
 in stdenvNoCC.mkDerivation {
-  name = "repo2nix-${rev}";
+  name = "repo2nix-${replaceStrings ["/"] ["="] rev}";
 
   outputHashAlgo = "sha256";
   outputHash = sha256;

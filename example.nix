@@ -3,16 +3,8 @@ with (import ./pkgs.nix);
   imports = [ ./modules/profiles/grapheneos.nix ];
 
   # Don't forget to update these for each unique build
-  buildNumber = "2019.07.31.1";
-  buildDateTime = 1564601006;
-
-
-  # Custom hosts file
-  hosts = fetchurl { # 2019-07-17
-    url = "https://raw.githubusercontent.com/StevenBlack/hosts/e54e1d624ce335ba9611d7de5f108dd1f87b308d/hosts";
-    sha256 = "0jkc376y938f3b7s1dmfbg1cf087rdmkv5f0469h60dbmryvxm10";
-  };
-  vendor.full = true; # Needed for Google Fi
+  buildNumber = "2019.08.5.1";
+  buildDateTime = 1565017192;
 
   apps = {
     webview = {
@@ -35,6 +27,14 @@ with (import ./pkgs.nix);
     auditor.enable = true;
     auditor.domain = "attestation.daniel.fullmer.me";
   };
+
+  # Custom hosts file
+  hosts = fetchurl { # 2019-07-17
+    url = "https://raw.githubusercontent.com/StevenBlack/hosts/e54e1d624ce335ba9611d7de5f108dd1f87b308d/hosts";
+    sha256 = "0jkc376y938f3b7s1dmfbg1cf087rdmkv5f0469h60dbmryvxm10";
+  };
+  vendor.full = true; # Needed for Google Fi
+
 
   microg.enable = true;
   # Using cloud messaging, so enabling: https://source.android.com/devices/tech/power/platform_mgmt#integrate-doze

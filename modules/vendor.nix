@@ -5,12 +5,12 @@ with lib;
 let
   vendorImgs = {
     marlin = pkgs.fetchurl {
-      url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190705.001-factory-522f27c4.zip";
-      sha256 = "522f27c4d50055f6402ca9d4d62fb07425e3af7c4766b647a4096ce3041984ba";
+      url = "https://dl.google.com/dl/android/aosp/marlin-pq3a.190801.002-factory-13dbb265.zip";
+      sha256 = "13dbb265fb7ab74473905705d2e34d019ffc0bae601d1193e71661133aba9653";
     };
     crosshatch = pkgs.fetchurl {
-      url = "https://dl.google.com/dl/android/aosp/crosshatch-pq3a.190705.003-factory-e59cf7a4.zip";
-      sha256 = "e59cf7a412e48d0f78463a67dc0085d98b811026d7c593b8d61925c2d9895e02";
+      url = "https://dl.google.com/dl/android/aosp/crosshatch-pq3a.190801.002-factory-15db810d.zip";
+      sha256 = "15db810de7d3aa3ad660ffe6bcd572178c8d7c3fa363fef308cde29e0225b6c1";
     };
   };
 in
