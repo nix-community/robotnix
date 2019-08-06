@@ -20,8 +20,8 @@ with (import <nixpkgs> {});
       description = "Bromite";
       packageName = "com.android.webview";
       apk = fetchurl {
-        url = "https://github.com/bromite/bromite/releases/download/75.0.3770.139/arm64_SystemWebView.apk";
-        sha256 = "0kxlvc3asvi4dhqkps0nhmfljk5mq5lc6vihj2acc3z7r7gy9yx4";
+        url = "https://github.com/bromite/bromite/releases/download/76.0.3809.91/arm64_SystemWebView.apk";
+        sha256 = "1il2qv8aknpll9g1an28qzk08iqfhmjypaypm422c2d592p9h482";
       };
     };
 
