@@ -1,12 +1,32 @@
-with (import <nixpkgs> {});
+with (import ./pkgs.nix);
 {
   imports = [ ./modules/profiles/grapheneos.nix ];
-  device = "marlin";
-  buildID = "2019.07.18.1"; # Don't forget to update for each unique build
 
-  certs.verity.x509 = ./keys/verity.x509.pem;  # Only necessary for marlin (Pixel XL) since the kernel build needs to include this cert
-  certs.platform.x509 = ./keys/platform.x509.pem;  # Used by fdroid privileged extension to whitelist org.fdroid.fdroid
-  avb.pkmd = ./keys/avb_pkmd.bin; # Only needed for Pixel 2/3 (XL)
+  # Don't forget to update these for each unique build
+  buildNumber = "2019.08.5.1";
+  buildDateTime = 1565017192;
+
+  apps = {
+    webview = {
+      enable = true;
+      description = "Bromite";
+      packageName = "com.android.webview";
+      apk = fetchurl {
+        url = "https://github.com/bromite/bromite/releases/download/76.0.3809.91/arm64_SystemWebView.apk";
+        sha256 = "1il2qv8aknpll9g1an28qzk08iqfhmjypaypm422c2d592p9h482";
+      };
+    };
+
+    updater.enable = true;
+    updater.url = "https://daniel.fullmer.me/android/";
+
+    backup.enable = true; # Set to default using: adb shell bmgr transport com.stevesoltys.backup.transport.ConfigurableBackupTransport
+    fdroid.enable = true;
+
+    # See the NixOS module in https://github.com/danielfullmer/nixos-config/modules/attestation-server.nix
+    auditor.enable = true;
+    auditor.domain = "attestation.daniel.fullmer.me";
+  };
 
   # Custom hosts file
   hosts = fetchurl { # 2019-07-17
@@ -15,25 +35,8 @@ with (import <nixpkgs> {});
   };
   vendor.full = true; # Needed for Google Fi
 
-  apps = {
-    webview = {
-      enable = true;
-      description = "Bromite";
-      packageName = "com.android.webview";
-      apk = fetchurl {
-        url = "https://github.com/bromite/bromite/releases/download/75.0.3770.139/arm64_SystemWebView.apk";
-        sha256 = "0kxlvc3asvi4dhqkps0nhmfljk5mq5lc6vihj2acc3z7r7gy9yx4";
-      };
-    };
 
-    updater.enable = true;
-    updater.url = "https://daniel.fullmer.me/android/";
-
-    backup.enable = true;
-    fdroid.enable = true;
-
-    # See the NixOS module in https://github.com/danielfullmer/nixos-config/modules/attestation-server.nix
-    auditor.enable = true;
-    auditor.domain = "attestation.daniel.fullmer.me";
-  };
+  microg.enable = true;
+  # Using cloud messaging, so enabling: https://source.android.com/devices/tech/power/platform_mgmt#integrate-doze
+  resources."frameworks/base/core/res".config_enableAutoPowerModes = true;
 }

@@ -1,10 +1,9 @@
-{ stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
+{ stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, simg2img, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
   device, img, full ? false
 }:
 
 let
   buildID = "nixdroid"; # Doesn't have to match the real buildID
-  simg2img = callPackage ./simg2img.nix {};
   dexrepair = callPackage ./dexrepair.nix {};
 
   # TODO: This is for API-28. Need to make this work for all of them. Preferably without downloading each one
@@ -44,7 +43,7 @@ in
 
   nativeBuildInputs = [ zip unzip simg2img dexrepair e2fsprogs jq openjdk wget utillinux perl which ];
 
-  patchPhase = ''
+  prePatch = ''
     patchShebangs ./execute-all.sh
     patchShebangs ./scripts
     # TODO: Hardcoded api version
@@ -55,10 +54,12 @@ in
     substituteInPlace execute-all.sh --replace "needs_oatdump_update() {" "needs_oatdump_update() { return 1"
   '';
 
-  # TODO: Include a note that they need to accept download ToS
+  patches = [ ./reproducibility.patch ];
+
+  # Set timestamp for reproducibility
   buildPhase = ''
     mkdir -p tmp
-    ./execute-all.sh ${lib.optionalString full "--full"} --yes --output tmp --device "${device}" --buildID "${buildID}" -i "${img}" --debugfs
+    ./execute-all.sh ${lib.optionalString full "--full"} --yes --output tmp --device "${device}" --buildID "${buildID}" -i "${img}" --debugfs --timestamp 1
   '';
 
   installPhase = ''

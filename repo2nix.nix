@@ -1,12 +1,12 @@
 {
- pkgs ? import <nixpkgs> {},
+ pkgs ? import ./pkgs.nix,
  manifest, rev, sha256
- # Optional parameters:
- , repoRepoURL ? /home/danielrf/src/tools_repo
- , repoRepoRev ? "master"
- , referenceDir ? ""
- , extraFlags ? "--no-repo-verify"
- , localManifests ? []
+# Optional parameters:
+, repoRepoURL ? /home/danielrf/src/tools_repo
+, repoRepoRev ? "master"
+, referenceDir ? ""
+, extraFlags ? "--no-repo-verify"
+, localManifests ? []
 }:
 
 assert repoRepoRev != "" -> repoRepoURL != "";
@@ -29,7 +29,7 @@ let
     "--depth=1"
   ] ++ extraRepoInitFlags;
 in stdenvNoCC.mkDerivation {
-  name = "repo2json-${rev}";
+  name = "repo2json-${replaceStrings ["/"] ["="] rev}";
 
   outputHashAlgo = "sha256";
   outputHash = sha256;

@@ -1,28 +1,39 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let
-  tag = {
-    marlin = "PQ3A.190705.001.2019.07.16.22";
-    taimen = "PQ3A.190705.001.2019.07.16.22";
-    crosshatch = "PQ3A.190705.003.2019.07.16.22";
-    bonito = "PQ3B.190705.003.2019.07.16.22";
-  }.${config.deviceFamily};
-  releases = {
-    # TODO: Add all releases. And autoupdate regularly
-    "PQ3A.190705.001.2019.07.16.22" = {
-      rev = "1bd882ec78e3740ef981004919cbfe6386e218c3";
-      sha256 = "1fnzh7pvvdiy9ywi7kirmdkzkxkfx18xcdyz6pck75isgbnpkvwd";
+  release = rec {
+    marlin = {
+      tag = "PQ3A.190801.002.2019.08.05.19";
+      sha256 = "1gm367ddi4z1wvbzgl1dkdw933fxz6zy9w5qjdarfhx765xvm427";
     };
+    taimen = marlin;
+    crosshatch = marlin;
+    bonito = {
+      tag = "PQ3B.190801.002.2019.08.05.19";
+      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+    };
+  }.${config.deviceFamily};
+  crosshatchKernel = pkgs.fetchFromGitHub {
+    owner = "GrapheneOS";
+    repo = "kernel_google_crosshatch";
+    rev = release.tag;
+    sha256 = "1r3pj5fv2a2zy1kjm9cc49j5vmscvwpvlx5hffhc9r8jbc85acgi";
+    fetchSubmodules = true;
   };
 in
 {
   source.manifest = {
     url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
-    rev = mkDefault releases.${tag}.rev;
-    sha256 = mkDefault releases.${tag}.sha256;
+    rev = mkDefault "refs/tags/${release.tag}";
+    sha256 = mkDefault release.sha256;
   };
 
-  kernel.src = mkDefault config.source.dirs."kernel/google/${config.deviceFamily}".contents;
+  # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
+  kernel.src = mkDefault (if config.deviceFamily == "crosshatch" then crosshatchKernel else config.source.dirs."kernel/google/${config.deviceFamily}".contents);
+  kernel.configName = mkIf (config.deviceFamily == "crosshatch") config.device; # GrapheneOS uses different config names than upstream
+
+  # See https://stackoverflow.com/questions/55078766/mdss-pll-trace-h-file-not-found-error-compiling-kernel-4-9-for-android?noredirect=1 and https://lwn.net/Articles/383362/
+  kernel.patches = mkIf (config.deviceFamily == "crosshatch") [ ./crosshatch-kernel.patch ];
 
   apps.webview.enable = mkDefault true;
   # TODO: Build and include vanadium

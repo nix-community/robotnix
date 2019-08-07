@@ -1,5 +1,5 @@
 { configuration,
-  pkgs ? import <nixpkgs> {},
+  pkgs ? import ./pkgs.nix,
   lib ? pkgs.stdenv.lib
 }:
 
@@ -14,6 +14,7 @@ lib.evalModules {
     ./modules/apps/updater.nix
     ./modules/apps/webview.nix
     ./modules/base.nix
+    ./modules/etc.nix
     ./modules/hosts.nix
     ./modules/kernel.nix
     ./modules/microg.nix

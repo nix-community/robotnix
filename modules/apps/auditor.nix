@@ -22,7 +22,7 @@ in
       inherit (cfg) domain;
       platformFingerprint = config.certs.platform.fingerprint; # Could parameterize this over config.apps.prebuilt.Auditor.certificate -- but who cares?
       deviceFamily = config.deviceFamily;
-      avbFingerprint = config.certs.avb.fingerprint;
+      avbFingerprint = config.avb.fingerprint;
     };
   };
 }

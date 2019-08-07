@@ -1,0 +1,19 @@
+--- result/drivers/clk/qcom/mdss/Makefile	1969-12-31 19:00:01.000000000 -0500
++++ kernelsrc/drivers/clk/qcom/mdss/Makefile	2019-07-25 14:37:28.390073265 -0400
+@@ -7,3 +7,5 @@
+ # TODO: remove me b/62058353
+ subdir-ccflags-y += \
+ 	-Wno-unused-function \
++
++CFLAGS_mdss-dsi-pll-10nm.o = -I$(src)
+diff -Naur result/drivers/platform/msm/ipa/ipa_v2/Makefile kernelsrc/drivers/platform/msm/ipa/ipa_v2/Makefile
+--- result/drivers/platform/msm/ipa/ipa_v2/Makefile	1969-12-31 19:00:01.000000000 -0500
++++ kernelsrc/drivers/platform/msm/ipa/ipa_v2/Makefile	2019-07-25 14:39:12.144679168 -0400
+@@ -5,3 +5,7 @@
+ 	ipa_wdi3_i.o
+ 
+ obj-$(CONFIG_RMNET_IPA) += rmnet_ipa.o ipa_qmi_service_v01.o ipa_qmi_service.o rmnet_ipa_fd_ioctl.o
++
++CFLAGS_ipa_dp.o = -I$(src)
++CFLAGS_ipa.o = -I$(src)
++CFLAGS_rmnet_ipa.o = -I$(src)

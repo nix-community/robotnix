@@ -2,30 +2,28 @@
 
 with lib;
 let
-  signBuild = true;
-
   avbMode = {
     marlin = "verity_only";
     taimen = "vbmeta_simple";
     crosshatch = "vbmeta_chained";
   }.${config.deviceFamily};
   avbFlags = {
-    verity_only = "--replace_verity_public_key $KEYSTOREPATH/verity_key.pub --replace_verity_private_key $KEYSTOREPATH/verity --replace_verity_keyid $KEYSTOREPATH/verity.x509.pem";
-    vbmeta_simple = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
-    vbmeta_chained = "--avb_vbmeta_key $KEYSTOREPATH/avb.pem --avb_vbmeta_algortihm SHA256_RSA2048 --avb_system_key $KEYSTOREPATH/avb.pem --avb_system_algorithm SHA256_RSA2048";
+    verity_only = "--replace_verity_public_key $KEYSDIR/verity_key.pub --replace_verity_private_key $KEYSDIR/verity --replace_verity_keyid $KEYSDIR/verity.x509.pem";
+    vbmeta_simple = "--avb_vbmeta_key $KEYSDIR/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
+    vbmeta_chained = "--avb_vbmeta_key $KEYSDIR/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048 --avb_system_key $KEYSDIR/avb.pem --avb_system_algorithm SHA256_RSA2048";
   }.${avbMode};
 
   # Signing target files fails in signapk.jar with error -6 unless using this jdk
-  jdk =  pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/8.nix> {
-    bootjdk = pkgs.callPackage <nixpkgs/pkgs/development/compilers/openjdk/bootstrap.nix> { version = "8"; };
+  jdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/8.nix) {
+    bootjdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/bootstrap.nix) { version = "8"; };
     inherit (pkgs.gnome2) GConf gnome_vfs;
     minimal = true;
   };
 
   buildTools = pkgs.stdenv.mkDerivation {
-    name = "android-build-tools-${config.buildID}";
-    src = config.source."build/make".contents;
-    nativeBuildInputs = with pkgs; [ python ];
+    name = "android-build-tools-${config.buildNumber}";
+    src = config.source.dirs."build/make".contents;
+    buildInputs = with pkgs; [ python ];
     postPatch = ''
       substituteInPlace ./tools/releasetools/common.py \
         --replace "out/host/linux-x86" "${config.build.hostTools}" \
@@ -41,7 +39,7 @@ let
   };
 
   # Get a bunch of utilities to generate keys
-  keyTools = pkgs.runCommandCC "android-key-tools-${config.buildID}" { nativeBuildInputs = with pkgs; [ python pkgconfig ]; buildInputs = with pkgs; [ boringssl ]; } ''
+  keyTools = pkgs.runCommandCC "android-key-tools-${config.buildNumber}" { buildInputs = with pkgs; [ python pkgconfig boringssl ]; } ''
     mkdir -p $out/bin
 
     cp ${config.source."development".contents}/tools/make_key $out/bin/make_key
@@ -56,69 +54,132 @@ let
     cp ${config.source."external/avb".contents}/avbtool $out/bin/avbtool
     patchShebangs $out/bin
   '';
-in
-{
-  # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
-  config.build.releaseScript = pkgs.writeScript "release.sh" ''
-    #!${pkgs.runtimeShell}
 
-    export PATH=${config.build.hostTools}/bin:${pkgs.openssl}/bin:${pkgs.zip}/bin:${pkgs.unzip}/bin:${jdk}/bin:$PATH
-    KEYSTOREPATH=$1
-    PREVIOUS_BUILDID=$2
+  # Use bash substitution to only set options if KEYSDIR is set
+  signedTargetFilesScript = { out }: ''
+    ${buildTools}/releasetools/sign_target_files_apks.py ''${KEYSDIR:+-o -d $KEYSDIR ${avbFlags}} ${config.build.android.out}/aosp_${config.device}-target_files-${config.buildNumber}.zip ${out} || exit 1
+  '';
 
-    # sign_target_files_apks.py and others below requires this directory to be here.
+  otaScript = { signedTargetFiles, out }: ''
+    ${buildTools}/releasetools/ota_from_target_files.py --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} ${signedTargetFiles} ${out} || exit 1
+  '';
+
+  imgScript = { signedTargetFiles, out }: ''
+    ${buildTools}/releasetools/img_from_target_files.py ${signedTargetFiles} ${out} || exit 1
+  '';
+
+  wrapScript = { commands, keysDir ? "" }: ''
+    export PATH=${config.build.hostTools}/bin:${pkgs.openssl}/bin:${pkgs.zip}/bin:${pkgs.unzip}/bin:${jdk}/bin:${pkgs.getopt}/bin:${pkgs.which}/bin:${pkgs.hexdump}/bin:${pkgs.perl}/bin:$PATH
+
+    # sign_target_files_apks.py and others require this directory to be here.
     mkdir -p build/target/product/
-    ln -sf ${config.source."build/make".contents}/target/product/security build/target/product/security
+    ln -sf ${config.source.dirs."build/make".contents}/target/product/security build/target/product/security
 
-    echo Signing target files
-    ${buildTools}/releasetools/sign_target_files_apks.py ${optionalString signBuild "-o -d $KEYSTOREPATH ${avbFlags}"} ${config.build.android.out}/aosp_${config.device}-target_files-${config.buildID}.zip ${config.device}-target_files-${config.buildID}.zip || exit 1
-
-    echo Building OTA zip
-    ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} ${config.device}-target_files-${config.buildID}.zip ${config.device}-ota_update-${config.buildID}.zip || exit 1
-
-    echo Building incremental OTA zip
-    if [[ ! -z "$PREVIOUS_BUILDID" ]]; then
-      ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSTOREPATH/releasekey"} -i ${config.device}-target_files-$PREVIOUS_BUILDID.zip ${config.device}-target_files-${config.buildID}.zip ${config.device}-incremental-$PREVIOUS_BUILDID-${config.buildID}.zip || exit 1
+    # build-tools releasetools/common.py hilariously tries to modify the
+    # permissions of the source file in ZipWrite. Since signing uses this
+    # function with a key, we need to make a temporary copy of our keys so the
+    # sandbox doesn't complain if it doesn't have permissions to do so.
+    KEYSDIR=${keysDir}
+    if [[ "$KEYSDIR" ]]; then
+      mkdir -p keys_copy
+      cp -r $KEYSDIR/* keys_copy/
+      KEYSDIR=keys_copy
     fi
 
-    echo Building .img file
-    ${buildTools}/releasetools/img_from_target_files.py ${config.device}-target_files-${config.buildID}.zip ${config.device}-img-${config.buildID}.zip || exit 1
+    ${commands}
 
-    export DEVICE=${config.device};
-    export PRODUCT=${config.device};
-    export BUILD=${config.buildID};
-    export VERSION=${toLower config.buildID};
-
-    # TODO: What if we don't have vendor.files?
-    get_radio_image() {
-      grep -Po "require version-$1=\K.+" ${config.vendor.files}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
-    }
-    export BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
-    export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
-
-    echo Building factory image
-    ${pkgs.runtimeShell} ${config.source."device/common".contents}/generate-factory-images-common.sh
-
-    rm -r build # Unsafe?
-
-    ${pkgs.python3}/bin/python ${../generate_metadata.py} ${config.device}-ota_update-${config.buildID}.zip
+    rm -r build  # Unsafe
+    if [[ "$KEYSDIR" ]]; then rm -rf keys_copy; fi
   '';
+in
+{
+  config.build = {
+    # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
+    # TODO: Currently can only build here with keys enabled
+    signedTargetFiles = pkgs.runCommand "${config.device}-signed_target_files-${config.buildNumber}.zip" {}
+      (wrapScript {
+        commands = signedTargetFilesScript { out="$out"; };
+        keysDir = "/keys/${config.device}";
+      });
+    ota = pkgs.runCommand "${config.device}-ota_update-${config.buildNumber}.zip" {}
+      (wrapScript {
+        commands = otaScript { signedTargetFiles=config.build.signedTargetFiles; out="$out"; };
+        keysDir = "/keys/${config.device}";
+      });
+    img = pkgs.runCommand "${config.device}-img-${config.buildNumber}.zip" {}
+      (wrapScript {
+        commands = imgScript { signedTargetFiles=config.build.signedTargetFiles; out="$out"; };
+      }); # No neeed to keys here
+    otaMetadata = pkgs.runCommand "${config.device}-stable" {} ''
+      ${pkgs.python3}/bin/python ${../generate_metadata.py} ${config.build.ota} > $out
+    '';
 
-  # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
-  config.build.generateKeysScript = pkgs.writeScript "generate_keys.sh" ''
-    #!${pkgs.runtimeShell}
+    otaDir = pkgs.linkFarm "${config.device}-otaDir" (with config.build; [ { name=ota.name; path=ota; } { name=otaMetadata.name; path=otaMetadata;} ]);
 
-    export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
+    # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
+    # Maybe just remove this script? It's definitely complicated--and often untested
+    releaseScript = pkgs.writeScript "release.sh" (''
+      #!${pkgs.runtimeShell}
+      '' + (wrapScript { keysDir="$1"; commands=''
+      PREV_BUILDNUMBER=$2
 
-    for key in {releasekey,platform,shared,media,verity,avb}; do
-      # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
-      ! make_key "$key" "$1" || exit 1
-    done
+      echo Signing target files
+      ${signedTargetFilesScript {
+        out="${config.device}-target_files-${config.buildNumber}.zip";
+      }}
 
-    # Generate both verity and AVB keys. While not strictly necessary, I don't
-    # see any harm in doing so--and the user may want to use the same keys for
-    # multiple devices supporting different AVB modes.
-    generate_verity_key -convert verity.x509.pem verity_key || exit 1
-    avbtool extract_public_key --key avb.pk8 --output avb_pkmd.bin || exit 1
-  '';
+      echo Building OTA zip
+      ${otaScript {
+        signedTargetFiles="${config.device}-target_files-${config.buildNumber}.zip";
+        out="${config.device}-ota_update-${config.buildNumber}.zip";
+      }}
+
+      echo Building incremental OTA zip
+      if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
+        ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSDIR/releasekey"} -i ${config.device}-target_files-$PREV_BUILDNUMBER.zip ${config.device}-target_files-${config.buildNumber}.zip ${config.device}-incremental-$PREV_BUILDNUMBER-${config.buildNumber}.zip || exit 1
+      fi
+
+      echo Building .img file
+      ${imgScript {
+        signedTargetFiles="${config.device}-target_files-${config.buildNumber}.zip";
+        out="${config.device}-img-${config.buildNumber}.zip";
+      }}
+
+      export DEVICE=${config.device};
+      export PRODUCT=${config.device};
+      export BUILD=${config.buildNumber};
+      export VERSION=${toLower config.buildNumber};
+
+      # TODO: What if we don't have vendor.files?
+      get_radio_image() {
+        grep -Po "require version-$1=\K.+" ${config.vendor.files}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
+      }
+      export BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
+      export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
+
+      echo Building factory image
+      ${pkgs.runtimeShell} ${config.source.dirs."device/common".contents}/generate-factory-images-common.sh
+
+      ${pkgs.python3}/bin/python ${../generate_metadata.py} ${config.device}-ota_update-${config.buildNumber}.zip > ${config.device}-stable
+    ''; }));
+
+    # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
+    # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
+    generateKeysScript = pkgs.writeScript "generate_keys.sh" ''
+      #!${pkgs.runtimeShell}
+
+      export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
+
+      for key in {releasekey,platform,shared,media${optionalString (avbMode == "verity_only") ",verity"}}; do
+        # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
+        ! make_key "$key" "$1" || exit 1
+      done
+
+      ${optionalString (avbMode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
+      ${optionalString (avbMode != "verity_only") ''
+        openssl genrsa -out avb.pem 2048 || exit 1
+        avbtool extract_public_key --key avb.pem --output avb_pkmd.bin || exit 1
+      ''}
+    '';
+  };
 }

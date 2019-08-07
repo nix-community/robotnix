@@ -1,0 +1,16 @@
+diff --git a/diffoscope/external_tools.py b/diffoscope/external_tools.py
+index 89ed90c..fc8b5e4 100644
+--- a/diffoscope/external_tools.py
++++ b/diffoscope/external_tools.py
+@@ -284,7 +284,10 @@ EXTERNAL_TOOLS = {
+ # May be populated at runtime by remapped names like
+ # readelf -> arm-none-eabi-readelf, etc
+ # diff -> gdiff, etc
+-REMAPPED_TOOL_NAMES = {}
++REMAPPED_TOOL_NAMES = {
++    'readelf': 'aarch64-unknown-linux-gnu-readelf',
++    'objdump': 'aarch64-unknown-linux-gnu-objdump',
++}
+ 
+ # GNU programs whose names differ on some non-GNU systems such as FreeBSD etc
+ # AND where the CLI or output of the programs differ from the non-GNU system

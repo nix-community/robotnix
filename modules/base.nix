@@ -44,9 +44,14 @@ in
       type = types.str;
     };
 
-    buildID = mkOption {
+    buildNumber = mkOption {
       type = types.str;
-      description = "Set this to something meaningful. Needs to be unique for each build for the updater to work";
+      description = "Set this to something meaningful, like the date. Needs to be unique for each build for the updater to work";
+    };
+
+    buildDateTime = mkOption {
+      type = types.int;
+      description = "Seconds since the epoch that this build is taking place. Needs to be monotone increasing for the updater to work. e.g. output of \"date +%s\"";
     };
 
     buildType = mkOption {
@@ -117,7 +122,7 @@ in
     build = {
       # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
       android = pkgs.stdenvNoCC.mkDerivation rec {
-        name = "nixdroid-${config.device}-${config.buildID}";
+        name = "nixdroid-${config.device}-${config.buildNumber}";
         srcs = [];
 
         outputs = [ "out" "bin" ]; # This derivation builds AOSP release tools and target-files
@@ -144,8 +149,9 @@ in
         # come up with something more robust.
 
         ANDROID_JAVA_HOME="${pkgs.jdk.home}";
-        BUILD_NUMBER=config.buildID;
-        DISPLAY_BUILD_NUMBER="true";
+        BUILD_NUMBER=config.buildNumber;
+        BUILD_DATETIME=config.buildDateTime;
+        #DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
         ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8G";
 
         # Alternative is to just "make target-files-package brillo_update_payload
@@ -153,7 +159,6 @@ in
         buildPhase = ''
           cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
           source build/envsetup.sh
-          export TARGET_PREBUILT_KERNEL=${config.kernel.lz4-dtb}
           choosecombo release "aosp_${config.device}" ${config.buildType}
           make otatools-package target-files-package
           EOF
@@ -163,7 +168,7 @@ in
         # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
         installPhase = ''
           mkdir -p $out $bin
-          cp --reflink=auto -r out/target/product/${config.device}/obj/PACKAGING/target_files_intermediates/aosp_${config.device}-target_files-${config.buildID}.zip $out/
+          cp --reflink=auto -r out/target/product/${config.device}/obj/PACKAGING/target_files_intermediates/aosp_${config.device}-target_files-${config.buildNumber}.zip $out/
           cp --reflink=auto -r out/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
         '';
 

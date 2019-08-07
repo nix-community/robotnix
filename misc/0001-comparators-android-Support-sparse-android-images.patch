@@ -1,0 +1,63 @@
+From 088aa70337147ffee1829c4ec871989ac256a71b Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Thu, 1 Aug 2019 17:43:56 -0400
+Subject: [PATCH] comparators/android: Support sparse android images
+
+---
+ diffoscope/comparators/__init__.py |  1 +
+ diffoscope/comparators/android.py  | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+diff --git a/diffoscope/comparators/__init__.py b/diffoscope/comparators/__init__.py
+index 14d4e23..9e1bcc1 100644
+--- a/diffoscope/comparators/__init__.py
++++ b/diffoscope/comparators/__init__.py
+@@ -93,6 +93,7 @@ class ComparatorManager(object):
+         ('cbfs.CbfsFile',),
+         ('git.GitIndexFile',),
+         ('android.AndroidBootImgFile',),
++        ('android.AndroidSparseImgFile',),
+         ('openssh.PublicKeyFile',),
+         ('gif.GifFile',),
+         ('pcap.PcapFile',),
+diff --git a/diffoscope/comparators/android.py b/diffoscope/comparators/android.py
+index 85ce479..d95c805 100644
+--- a/diffoscope/comparators/android.py
++++ b/diffoscope/comparators/android.py
+@@ -86,3 +86,33 @@ class AndroidBootImgFile(File):
+ 
+     def compare_details(self, other, source=None):
+         return [Difference.from_command(AbootimgInfo, self.path, other.path)]
++
++#####
++
++class AndroidSparseImgContainer(Archive):
++    @property
++    def path(self):
++        return self._path
++
++    def open_archive(self):
++        return self
++
++    def close_archive(self):
++        pass
++
++    @tool_required('simg2img')
++    def extract(self, member_name, dest_dir):
++        assert member_name == 'content'
++        dest_path = self.get_path_name(dest_dir)
++        logger.debug('simg2img extracting to %s', dest_path)
++        subprocess.check_call(["simg2img", self.source.path, dest_path])
++        return dest_path
++
++    def get_member_names(self):
++        return [ 'content' ]
++
++
++class AndroidSparseImgFile(File):
++    DESCRIPTION = "Android images"
++    FILE_TYPE_RE = re.compile(r'^Android sparse image\b')
++    CONTAINER_CLASS = AndroidSparseImgContainer
+-- 
+2.22.0
+
