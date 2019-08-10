@@ -26,5 +26,8 @@ in
           service="com.stevesoltys.backup/.transport.ConfigurableBackupTransportService"/>
       </config>
     '';
+
+    # Set as default
+    resources."frameworks/base/packages/SettingsProvider".def_backup_transport = "com.stevesoltys.backup/.transport.ConfigurableBackupTransportService";
   };
 }

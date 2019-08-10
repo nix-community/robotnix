@@ -20,7 +20,7 @@ with (import ./pkgs.nix);
     updater.enable = true;
     updater.url = "https://daniel.fullmer.me/android/";
 
-    backup.enable = true; # Set to default using: adb shell bmgr transport com.stevesoltys.backup.transport.ConfigurableBackupTransport
+    backup.enable = true;
     fdroid.enable = true;
 
     # See the NixOS module in https://github.com/danielfullmer/nixos-config/modules/attestation-server.nix
