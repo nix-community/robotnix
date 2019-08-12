@@ -54,11 +54,10 @@ in
   };
 
   config = {
-    overlays."nixdroid-etcfiles" = [ (pkgs.runCommand "nixdroid-etcfiles" {} (''
-        mkdir -p $out
-        cp ${androidmk} $out/Android.mk
-      '' + (concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (attrValues config.etc))))
-    ];
+    source.dirs."nixdroid/etcfiles".contents = (pkgs.runCommand "nixdroid-etcfiles" {} (''
+      mkdir -p $out
+      cp ${androidmk} $out/Android.mk
+    '' + (concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (attrValues config.etc))));
 
     additionalProductPackages = map (f: f.moduleName) (attrValues config.etc);
   };

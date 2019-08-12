@@ -79,14 +79,16 @@ in
   };
 
   config = {
-    overlays = listToAttrs (map (prebuilt: {
-      name = "external/${prebuilt.name}";
-      value = [ (pkgs.runCommand "external_${prebuilt.name}" {} ''
-            mkdir -p $out
-            cp ${androidmk prebuilt} $out/Android.mk
-            cp ${prebuilt.apk} $out/${prebuilt.name}.apk
-          '') ];
-      }) (attrValues cfg));
+    source.dirs = listToAttrs (map (prebuilt: {
+      name = "nixdroid/external/${prebuilt.name}";
+      value = {
+        contents = pkgs.runCommand "external_${prebuilt.name}" {} ''
+          mkdir -p $out
+          cp ${androidmk prebuilt} $out/Android.mk
+          cp ${prebuilt.apk} $out/${prebuilt.name}.apk
+        '';
+      };
+    }) (attrValues cfg));
 
     etc = listToAttrs (map (prebuilt: {
         name = "permissions/${prebuilt.packageName}.xml";

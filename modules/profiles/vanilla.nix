@@ -20,7 +20,7 @@ let
   };
 in
 {
-  manifest = {
+  source.manifest = {
     url = mkDefault "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
     rev = mkDefault releases.${config.deviceFamily}.rev;
     sha256 = mkDefault releases.${config.deviceFamily}.sha256;
@@ -33,7 +33,7 @@ in
     ref = "tags/android-9.0.0_r0.95";
   });
   #    ref = import (runCommand "marlinKernelRev" {} ''
-  #        shortrev=$(grep -a 'Linux version' ${sourceDir "device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
+  #        shortrev=$(grep -a 'Linux version' ${config.source.dirs."device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
   #        echo \"$shortrev\" > $out
   #      '');
 

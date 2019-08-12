@@ -38,6 +38,7 @@ in
   };
 
   config = mkIf (config.vendor.img != null) {
-    overlays."" = [ config.vendor.files ];
+    source.dirs."vendor/google_devices/${config.device}".contents = "${config.vendor.files}/vendor/google_devices/${config.device}";
+    source.dirs."vendor_overlay/google_devices/${config.device}".contents = "${config.vendor.files}/vendor_overlay/google_devices/${config.device}";
   };
 }

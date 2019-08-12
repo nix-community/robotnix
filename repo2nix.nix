@@ -1,8 +1,8 @@
 {
  pkgs ? import ./pkgs.nix,
- rev, manifest, sha256
+ manifest, rev, sha256
 # Optional parameters:
-, repoRepoURL ? "https://github.com/ajs124/tools_repo"
+, repoRepoURL ? /home/danielrf/src/tools_repo
 , repoRepoRev ? "master"
 , referenceDir ? ""
 , extraFlags ? "--no-repo-verify"
@@ -29,7 +29,7 @@ let
     "--depth=1"
   ] ++ extraRepoInitFlags;
 in stdenvNoCC.mkDerivation {
-  name = "repo2nix-${replaceStrings ["/"] ["="] rev}";
+  name = "repo2json-${replaceStrings ["/"] ["="] rev}";
 
   outputHashAlgo = "sha256";
   outputHash = sha256;
@@ -51,14 +51,14 @@ in stdenvNoCC.mkDerivation {
 
     mkdir -p .repo/local_manifests
 
-    '' +
+  '' +
     (concatMapStringsSep "\n"
-      (localManifest: "cp ${localManifest} .repo/local_manifests/$(stripHash ${localManifest}; echo $strippedName)")
-      localManifests)
-    + ''
+    (localManifest: "cp ${localManifest} .repo/local_manifests/$(stripHash ${localManifest}; echo $strippedName)")
+    localManifests)
+  + ''
 
     repo init ${concatStringsSep " " repoInitFlags}
-    repo nix > "$out"
+    repo dumpjson > "$out"
 
     rm -rf .repo*
   '';

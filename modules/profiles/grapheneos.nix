@@ -4,7 +4,7 @@ let
   release = rec {
     marlin = {
       tag = "PQ3A.190801.002.2019.08.05.19";
-      sha256 = "0bkhs3ncfx7s334hg1f3gambsvifv6nah440s84rslb0gvhj89kf";
+      sha256 = "1gm367ddi4z1wvbzgl1dkdw933fxz6zy9w5qjdarfhx765xvm427";
     };
     taimen = marlin;
     crosshatch = marlin;
@@ -22,14 +22,14 @@ let
   };
 in
 {
-  manifest = {
+  source.manifest = {
     url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
     rev = mkDefault "refs/tags/${release.tag}";
     sha256 = mkDefault release.sha256;
   };
 
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
-  kernel.src = mkDefault (if config.deviceFamily == "crosshatch" then crosshatchKernel else config.build.sourceDir "kernel/google/${config.deviceFamily}");
+  kernel.src = mkDefault (if config.deviceFamily == "crosshatch" then crosshatchKernel else config.source.dirs."kernel/google/${config.deviceFamily}".contents);
   kernel.configName = mkIf (config.deviceFamily == "crosshatch") config.device; # GrapheneOS uses different config names than upstream
 
   # See https://stackoverflow.com/questions/55078766/mdss-pll-trace-h-file-not-found-error-compiling-kernel-4-9-for-android?noredirect=1 and https://lwn.net/Articles/383362/
@@ -40,5 +40,8 @@ in
   removedProductPackages = [ "Vanadium" ];
 
   apps.updater.enable = mkDefault true;
-  apps.updater.src = mkDefault null; # Already included in platform manifest
+  apps.updater.src = mkDefault config.source.dirs."packages/apps/Updater".contents;
+  source.dirs."packages/apps/Updater".enable = false;
+
+  source.dirs."external/Auditor".enable = mkIf config.apps.auditor.enable false; # Don't include upstream if we use the patched version
 }

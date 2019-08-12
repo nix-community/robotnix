@@ -70,7 +70,7 @@ in
       type = types.listOf types.path;
     };
 
-    postUnpack = mkOption {
+    unpackScript = mkOption {
       default = "";
       type = types.lines;
     };
@@ -123,16 +123,14 @@ in
       # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
       android = pkgs.stdenvNoCC.mkDerivation rec {
         name = "nixdroid-${config.device}-${config.buildNumber}";
-        srcs = config.build.repo2nix.sources;
+        srcs = [];
 
         outputs = [ "out" "bin" ]; # This derivation builds AOSP release tools and target-files
 
         unpackPhase = ''
           ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
-          echo $PATH
-          ${config.build.repo2nix.unpackPhase}
 
-          ${config.postUnpack}
+          source ${pkgs.writeText "unpack.sh" config.unpackScript}
         '';
 
         patches = config.patches;
