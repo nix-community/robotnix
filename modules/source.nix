@@ -57,11 +57,34 @@ in
           };
         }));
       };
+
+      excludeGroups = mkOption {
+        default = [];
+        type = types.listOf types.str;
+        description = "project groups to exclude from source tree";
+      };
+
+      includeGroups = mkOption {
+        default = [];
+        type = types.listOf types.str;
+        description = "project groups to include in source tree (overrides excludeGroups)";
+      };
     };
   };
 
   config = {
-    source.dirs = mapAttrs' (name: p: nameValuePair p.relpath { contents = mkDefault (projectSource p); }) config.source.json;
+    source.excludeGroups = mkDefault [
+      "darwin" # Linux-only for now
+      "mips" "hikey"
+      "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
+    ];
+    source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.configName ]; # But include the one we care about. Also include deviceFamily and kernel.configName, which might be an alternate name
+
+    source.dirs = mapAttrs' (name: p:
+      nameValuePair p.relpath {
+        enable = mkDefault ((any (g: elem g p.groups) config.source.includeGroups) || (!(any (g: elem g p.groups) config.source.excludeGroups)));
+        contents = mkDefault (projectSource p);
+      }) config.source.json;
 
     unpackScript = (''
       mkdir -p $out

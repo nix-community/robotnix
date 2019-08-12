@@ -22,6 +22,8 @@ let
   };
 in
 {
+  imports = [ ./exclude.nix ];
+
   source.manifest = {
     url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
     rev = mkDefault "refs/tags/${release.tag}";
@@ -31,6 +33,11 @@ in
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
   kernel.src = mkDefault (if config.deviceFamily == "crosshatch" then crosshatchKernel else config.source.dirs."kernel/google/${config.deviceFamily}".contents);
   kernel.configName = mkIf (config.deviceFamily == "crosshatch") config.device; # GrapheneOS uses different config names than upstream
+
+  source.dirs."kernel/google/marlin".enable = (config.deviceFamily == "marlin");
+  source.dirs."kernel/google/wahoo".enable = (config.deviceFamily == "wahoo");
+  source.dirs."kernel/google/crosshatch".enable = (config.deviceFamily == "crosshatch");
+  source.dirs."kernel/google/bonito".enable = (config.deviceFamily == "bonito");
 
   # See https://stackoverflow.com/questions/55078766/mdss-pll-trace-h-file-not-found-error-compiling-kernel-4-9-for-android?noredirect=1 and https://lwn.net/Articles/383362/
   kernel.patches = mkIf (config.deviceFamily == "crosshatch") [ ./crosshatch-kernel.patch ];
@@ -44,4 +51,6 @@ in
   source.dirs."packages/apps/Updater".enable = false;
 
   source.dirs."external/Auditor".enable = mkIf config.apps.auditor.enable false; # Don't include upstream if we use the patched version
+
+  source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own version
 }

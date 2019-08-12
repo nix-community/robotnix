@@ -17,6 +17,8 @@ let
   }.${config.deviceFamily};
 in
 {
+  imports = [ ./exclude.nix ];
+
   source.manifest = {
     url = mkDefault "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
     rev = mkDefault "refs/tags/${release.tag}";
@@ -31,7 +33,11 @@ in
     ref = "android-msm-marlin-3.18-pie-qpr3";
   });
 
-  removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
+  removedProductPackages = [ "webview" "Browser2" "Calendar" "QuickSearchBox" ];
+  source.dirs."external/chromium-webview".enable = false;
+  source.dirs."packages/apps/Calendar".enable = false;
+  source.dirs."packages/apps/QuickSearchBox".enable = false;
+  source.dirs."packages/apps/Browser2".enable = false;
 
   patches = [ ../../patches/disable-quicksearch.patch ../../patches/fix-device-names.patch ];
 
