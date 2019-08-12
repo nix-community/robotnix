@@ -34,7 +34,7 @@ let
     installPhase = ''
       mkdir -p $out
       cp --reflink=auto -r ./tools/* $out
-      cp --reflink=auto ${config.source."system/extras".contents}/verity/{build_verity_metadata.py,boot_signer,verity_signer} $out # Some extra random utilities from elsewhere
+      cp --reflink=auto ${config.source.dirs."system/extras".contents}/verity/{build_verity_metadata.py,boot_signer,verity_signer} $out # Some extra random utilities from elsewhere
     '';
   };
 
@@ -42,13 +42,13 @@ let
   keyTools = pkgs.runCommandCC "android-key-tools-${config.buildNumber}" { buildInputs = with pkgs; [ python pkgconfig boringssl ]; } ''
     mkdir -p $out/bin
 
-    cp ${config.source."development".contents}/tools/make_key $out/bin/make_key
+    cp ${config.source.dirs."development".contents}/tools/make_key $out/bin/make_key
     substituteInPlace $out/bin/make_key --replace openssl ${getBin pkgs.openssl}/bin/openssl
 
     cc -o $out/bin/generate_verity_key \
-      ${config.source."system/extras".contents}/verity/generate_verity_key.c \
-      ${config.source."system/core".contents}/libcrypto_utils/android_pubkey.c \
-      -I ${config.source."system/core".contents}/libcrypto_utils/include/ \
+      ${config.source.dirs."system/extras".contents}/verity/generate_verity_key.c \
+      ${config.source.dirs."system/core".contents}/libcrypto_utils/android_pubkey.c \
+      -I ${config.source.dirs."system/core".contents}/libcrypto_utils/include/ \
       -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
 
     cp ${config.source."external/avb".contents}/avbtool $out/bin/avbtool
