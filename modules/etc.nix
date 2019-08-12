@@ -39,6 +39,7 @@ in
 
           moduleName = mkOption {
             type = types.str;
+            internal = true;
           };
         };
 
