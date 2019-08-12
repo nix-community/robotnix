@@ -33,14 +33,6 @@ in
 
     deviceFamily = mkOption {
       internal = true;
-      default = {
-        marlin = "marlin"; # Pixel XL
-        sailfish = "marlin"; # Pixel
-        taimen = "taimen"; # Pixel 2 XL
-        walleye = "taimen"; # Pixel 2
-        crosshatch = "crosshatch"; # Pixel 3 XL
-        blueline = "crosshatch"; # Pixel 3
-      }.${config.device};
       type = types.str;
     };
 
@@ -119,6 +111,15 @@ in
   };
 
   config = {
+    deviceFamily = mkDefault {
+      marlin = "marlin"; # Pixel XL
+      sailfish = "marlin"; # Pixel
+      taimen = "taimen"; # Pixel 2 XL
+      walleye = "taimen"; # Pixel 2
+      crosshatch = "crosshatch"; # Pixel 3 XL
+      blueline = "crosshatch"; # Pixel 3
+    }.${config.device};
+
     build = {
       # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
       android = pkgs.stdenvNoCC.mkDerivation rec {

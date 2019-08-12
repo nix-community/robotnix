@@ -17,7 +17,6 @@ in
 {
   options = {
     vendor.img = mkOption {
-      default = vendorImgs."${config.deviceFamily}";
       type = types.path;
       description = "A .img from upstream whose vendor contents should be extracted and included in the build";
     };
@@ -37,7 +36,10 @@ in
     };
   };
 
-  config = mkIf (config.vendor.img != null) {
+  # TODO: Allow not setting this
+  config = {
+    vendor.img = mkDefault vendorImgs."${config.deviceFamily}";
+
     source.dirs."vendor/google_devices/${config.device}".contents = "${config.vendor.files}/vendor/google_devices/${config.device}";
     source.dirs."vendor_overlay/google_devices/${config.device}".contents = "${config.vendor.files}/vendor_overlay/google_devices/${config.device}";
   };

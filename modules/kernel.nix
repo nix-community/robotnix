@@ -42,11 +42,7 @@ in
   options = {
     kernel = {
       configName = mkOption {
-        default = {
-          marlin = "marlin";
-          taimen = "wahoo";
-          crosshatch = "b1c1";
-        }.${config.deviceFamily};
+        internal = true;
         type = types.str;
       };
 
@@ -61,13 +57,20 @@ in
       };
 
       relpath = mkOption {
-        default = "device/google/${replaceStrings [ "taimen" ] [ "wahoo" ] config.deviceFamily}-kernel";
         type = types.str;
       };
     };
   };
 
   config = {
+    kernel.configName = mkDefault {
+      marlin = "marlin";
+      taimen = "wahoo";
+      crosshatch = "b1c1";
+    }.${config.deviceFamily};
+
+    kernel.relpath = mkDefault ("device/google/${replaceStrings [ "taimen" ] [ "wahoo" ] config.deviceFamily}-kernel");
+
     build.kernel = pkgs.stdenv.mkDerivation {
       name = "kernel-${config.device}";
       inherit (config.kernel) src;
