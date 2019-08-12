@@ -109,6 +109,8 @@ in
       walleye = "taimen"; # Pixel 2
       crosshatch = "crosshatch"; # Pixel 3 XL
       blueline = "crosshatch"; # Pixel 3
+      bonito = "bonito"; # Pixel 3a XL
+      sargo = "bonito"; # Pixel 3a
     }.${config.device};
 
     build = {

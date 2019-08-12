@@ -9,10 +9,10 @@ let
       sha256 = "08hjjmyrr4isb1hl3wixyysp9792bh2pp0ifh9w9p5v90nx7s1sz";
     };
     taimen = marlin;
-    crosshatch = marlin ;
+    crosshatch = marlin;
     bonito = {
       tag = "android-9.0.0_r47"; # PQ3B.190801.002
-      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+      sha256 = "0wqcy2708i8znr3xqkmafrk5dvf9z222f3705j3l2jdb67aqim49";
     };
   }.${config.deviceFamily};
 in

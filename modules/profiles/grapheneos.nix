@@ -10,7 +10,7 @@ let
     crosshatch = marlin;
     bonito = {
       tag = "PQ3B.190801.002.2019.08.05.19";
-      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+      sha256 = "1s3gk2wwy677vbcdjj3ad4kbydb2f6kwymxbb7xwa97cbyjwjpvj";
     };
   }.${config.deviceFamily};
   crosshatchKernel = pkgs.fetchFromGitHub {
