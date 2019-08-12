@@ -57,6 +57,9 @@ in stdenvNoCC.mkDerivation {
     localManifests)
   + ''
 
+    # XXX: Hack since android.googlesource.com and recent curl version don't play nicely.
+    ${pkgs.git}/bin/git config --global http.version HTTP/1.1
+
     repo init ${concatStringsSep " " repoInitFlags}
     repo dumpjson > "$out"
 

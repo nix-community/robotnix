@@ -3,39 +3,33 @@ with lib;
 let
   # https://source.android.com/setup/start/build-numbers
   # TODO: Update. Make an autoupdate script too.
-  releases = rec {
+  release = rec {
     marlin = {
-      rev = "android-9.0.0_r43";
-      sha256 = "014z7xzn7gbj3bcmmjnzrclnf91ys978d6g849x5dpw0bi0hkzpc";
+      tag = "android-9.0.0_r46"; # PQ3A.190801.002
+      sha256 = "08hjjmyrr4isb1hl3wixyysp9792bh2pp0ifh9w9p5v90nx7s1sz";
     };
     taimen = marlin;
-    crosshatch = {
-      rev = "android-9.0.0_r44";
-      sha256 = "0dgxay2q4bq8wxdjvxmf25m90hb1l98aajja9wyp3b06jyn1y0md";
-    };
+    crosshatch = marlin ;
     bonito = {
-      rev = "android-9.0.0_r45";
+      tag = "android-9.0.0_r47"; # PQ3B.190801.002
       sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
     };
-  };
+  }.${config.deviceFamily};
 in
 {
   source.manifest = {
     url = mkDefault "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
-    rev = mkDefault releases.${config.deviceFamily}.rev;
-    sha256 = mkDefault releases.${config.deviceFamily}.sha256;
+    rev = mkDefault "refs/tags/${release.tag}";
+    sha256 = mkDefault release.sha256;
   };
 
-  # Non-marlin kernels are split up into multiple repos, could be fetched with repo2nix, but it's still messy.
+  # TODO: Only build kernel for marlin since it needs verity key in build. In future, extend this to all devices.
   kernel.src = mkIf (config.deviceFamily == "marlin") (builtins.fetchGit {
     url = "https://android.googlesource.com/kernel/msm";
-    rev = "a2426c4f8f23a3c14d387d50251de176be4d5b1a"; # as of 2019-7-3, this is android-msm-marlin-3.18-pie-qpr3
-    ref = "tags/android-9.0.0_r0.95";
+    #rev = "a2426c4f8f23a3c14d387d50251de176be4d5b1a"; # as of 2019-7-3, this is android-msm-marlin-3.18-pie-qpr3
+    #ref = "tags/android-9.0.0_r0.95";
+    ref = "android-msm-marlin-3.18-pie-qpr3";
   });
-  #    ref = import (runCommand "marlinKernelRev" {} ''
-  #        shortrev=$(grep -a 'Linux version' ${config.source.dirs."device/google/marlin-kernel"}/.prebuilt_info/kernel/prebuilt_info_Image_lz4-dtb.asciipb | cut -d " " -f 6 | cut -d '-' -f 2 | sed 's/^g//g')
-  #        echo \"$shortrev\" > $out
-  #      '');
 
   removedProductPackages = [ "webview" "Browser2" "Calendar2" "QuickSearchBox" ];
 
