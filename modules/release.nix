@@ -111,7 +111,7 @@ in
         commands = imgScript { signedTargetFiles=config.build.signedTargetFiles; out="$out"; };
       }); # No neeed to keys here
     otaMetadata = pkgs.runCommand "${config.device}-stable" {} ''
-      ${pkgs.python3}/bin/python ${../generate_metadata.py} ${config.build.ota} > $out
+      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.build.ota} > $out
     '';
 
     otaDir = pkgs.linkFarm "${config.device}-otaDir" (with config.build; [ { name=ota.name; path=ota; } { name=otaMetadata.name; path=otaMetadata;} ]);
@@ -160,7 +160,7 @@ in
       echo Building factory image
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".contents}/generate-factory-images-common.sh
 
-      ${pkgs.python3}/bin/python ${../generate_metadata.py} ${config.device}-ota_update-${config.buildNumber}.zip > ${config.device}-stable
+      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.device}-ota_update-${config.buildNumber}.zip > ${config.device}-stable
     ''; }));
 
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool

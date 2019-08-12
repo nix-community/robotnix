@@ -30,7 +30,7 @@ in
 
     vendor.files = mkOption {
       internal = true;
-      default = pkgs.callPackage ../android-prepare-vendor {
+      default = pkgs.callPackage ./android-prepare-vendor {
         inherit (config) device;
         inherit (config.vendor) img full;
       };

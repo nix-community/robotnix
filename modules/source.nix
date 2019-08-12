@@ -2,7 +2,7 @@
 
 with lib;
 let
-  repo2nix = import ../repo2nix.nix;
+  repo2nix = import ./repo2nix.nix;
   jsonFile = repo2nix {
     manifest = config.source.manifest.url;
     inherit (config.source.manifest) rev sha256;
