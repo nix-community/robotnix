@@ -2,7 +2,7 @@
  pkgs ? import ./pkgs.nix,
  manifest, rev, sha256
 # Optional parameters:
-, repoRepoURL ? /home/danielrf/src/tools_repo
+, repoRepoURL ? "https://github.com/danielfullmer/tools_repo"
 , repoRepoRev ? "master"
 , referenceDir ? ""
 , extraFlags ? "--no-repo-verify"
