@@ -120,7 +120,7 @@ in
       '';
     };
 
-    postPatch = mkIf (config.kernel.src != null) ''
+    source.postPatch = mkIf (config.kernel.src != null) ''
       rm -rf ${config.kernel.relpath}
       mkdir -p ${config.kernel.relpath}
       cp -v ${config.build.kernel}/* ${config.kernel.relpath}/

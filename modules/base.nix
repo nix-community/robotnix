@@ -57,21 +57,6 @@ in
       type = types.listOf types.path;
     };
 
-    patches = mkOption {
-      default = [];
-      type = types.listOf types.path;
-    };
-
-    unpackScript = mkOption {
-      default = "";
-      type = types.lines;
-    };
-
-    postPatch = mkOption {
-      default = "";
-      type = types.lines;
-    };
-
     additionalProductPackages = mkOption {
       default = [];
       type = types.listOf types.str;
@@ -131,10 +116,10 @@ in
         unpackPhase = ''
           ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
 
-          source ${pkgs.writeText "unpack.sh" config.unpackScript}
+          source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
         '';
 
-        patches = config.patches;
+        patches = config.source.patches;
         patchFlags = [ "-p1" "--no-backup-if-mismatch" ]; # Patches that don't apply exactly will create .orig files, which the android build system doesn't like seeing.
 
         # Fix a locale issue with included flex program
@@ -144,7 +129,7 @@ in
           ${concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") config.additionalProductPackages}
           ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' build/make/target/product/*.mk") config.removedProductPackages}
 
-          ${config.postPatch}
+          ${config.source.postPatch}
         '';
         # TODO: The " \\" in the above sed is a bit flaky, and would require the line to end in " \\"
         # come up with something more robust.

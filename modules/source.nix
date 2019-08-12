@@ -69,18 +69,35 @@ in
         type = types.listOf types.str;
         description = "project groups to include in source tree (overrides excludeGroups)";
       };
+
+      patches = mkOption {
+        default = [];
+        type = types.listOf types.path;
+      };
+
+      unpackScript = mkOption {
+        default = "";
+        internal = true;
+        type = types.lines;
+      };
+
+      postPatch = mkOption {
+        default = "";
+        internal = true;
+        type = types.lines;
+      };
     };
   };
 
-  config = {
-    source.excludeGroups = mkDefault [
+  config.source = {
+    excludeGroups = mkDefault [
       "darwin" # Linux-only for now
       "mips" "hikey"
       "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
     ];
-    source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.configName ]; # But include the one we care about. Also include deviceFamily and kernel.configName, which might be an alternate name
+    includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.configName ]; # But include the one we care about. Also include deviceFamily and kernel.configName, which might be an alternate name
 
-    source.dirs = mapAttrs' (name: p:
+    dirs = mapAttrs' (name: p:
       nameValuePair p.relpath {
         enable = mkDefault ((any (g: elem g p.groups) config.source.includeGroups) || (!(any (g: elem g p.groups) config.source.excludeGroups)));
         contents = mkDefault (projectSource p);

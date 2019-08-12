@@ -11,7 +11,7 @@ with lib;
   };
 
   config = mkIf (config.hosts != null) {
-    postPatch = ''
+    source.postPatch = ''
       cp -v ${config.hosts} system/core/rootdir/etc/hosts
     '';
   };

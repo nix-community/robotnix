@@ -20,13 +20,12 @@ in
 
     source.dirs."packages/apps/F-DroidPrivilegedExtension".contents = privext;
 
-    postPatch = ''
+    source.patches = [ ./fdroid/privext.patch ];
+    source.postPatch = ''
       substituteInPlace packages/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java \
        --replace 43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab "${config.certs.platform.fingerprint}"
     '';
 
     additionalProductPackages = [ "F-DroidPrivilegedExtension" ];
-
-    patches = [ ./fdroid/privext.patch ];
   };
 }

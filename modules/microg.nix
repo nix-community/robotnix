@@ -11,7 +11,7 @@ in
   };
 
   config = mkIf config.microg.enable {
-    patches = [ ./microg-sigspoof.patch ];
+    source.patches = [ ./microg-sigspoof.patch ];
     resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = "gps,network";
 
     # Preferably build this stuff ourself.

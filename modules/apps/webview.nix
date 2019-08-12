@@ -53,7 +53,7 @@ in
   config = mkIf cfg.enable {
     additionalProductPackages = [ "Chromium" ];
 
-    postPatch = ''
+    source.postPatch = ''
       cp --no-preserve=all -v ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
       mkdir -p external/chromium/prebuilt/arm64
       cp --no-preserve=all -v ${chromiumAndroidmk} external/chromium/Android.mk

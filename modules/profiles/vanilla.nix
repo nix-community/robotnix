@@ -39,7 +39,7 @@ in
   source.dirs."packages/apps/QuickSearchBox".enable = false;
   source.dirs."packages/apps/Browser2".enable = false;
 
-  patches = [ ../../patches/disable-quicksearch.patch ../../patches/fix-device-names.patch ];
+  source.patches = [ ../../patches/disable-quicksearch.patch ../../patches/fix-device-names.patch ];
 
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
 }
