@@ -4,12 +4,13 @@ with lib;
 {
   options = {
     hosts = mkOption {
-      type = types.path;
+      default = null;
+      type = types.nullOr types.path;
       description = "Custom hosts file";
     };
   };
 
-  config = {
+  config = mkIf (config.hosts != null) {
     postPatch = ''
       cp -v ${config.hosts} system/core/rootdir/etc/hosts
     '';
