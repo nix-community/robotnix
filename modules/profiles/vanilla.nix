@@ -15,6 +15,12 @@ let
       sha256 = "0wqcy2708i8znr3xqkmafrk5dvf9z222f3705j3l2jdb67aqim49";
     };
   }.${config.deviceFamily};
+  kernelTag = {
+    marlin = "android-9.0.0_r0.111";
+    taimen = "android-9.0.0_r0.112";
+    crosshatch = "android-9.0.0_r0.113";
+    bonito = "android-9.0.0_r0.114";
+  }.${config.deviceFamily};
 in
 {
   imports = [ ./exclude.nix ];
@@ -25,13 +31,14 @@ in
     sha256 = mkDefault release.sha256;
   };
 
-  # TODO: Only build kernel for marlin since it needs verity key in build. In future, extend this to all devices.
-  kernel.src = mkIf (config.deviceFamily == "marlin") (builtins.fetchGit {
+  # TODO: Only build kernel for marlin since it needs verity key in build.
+  # Kernel sources for crosshatch and bonito require multiple repos--which
+  # could normally be fetched with repo at https://android.googlesource.com/kernel/manifest
+  # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
+  kernel.src = mkIf (config.deviceFamily == "marlin") builtins.fetchGit {
     url = "https://android.googlesource.com/kernel/msm";
-    #rev = "a2426c4f8f23a3c14d387d50251de176be4d5b1a"; # as of 2019-7-3, this is android-msm-marlin-3.18-pie-qpr3
-    #ref = "tags/android-9.0.0_r0.95";
-    ref = "android-msm-marlin-3.18-pie-qpr3";
-  });
+    ref = "refs/tags/${kernelTag}";
+  };
 
   removedProductPackages = [ "webview" "Browser2" "Calendar" "QuickSearchBox" ];
   source.dirs."external/chromium-webview".enable = false;

@@ -58,6 +58,7 @@ in
 
       relpath = mkOption {
         type = types.str;
+        description = "Relative path in source tree to place kernel build artifacts";
       };
     };
   };
@@ -67,6 +68,7 @@ in
       marlin = "marlin";
       taimen = "wahoo";
       crosshatch = "b1c1";
+      bonito = "bonito";
     }.${config.deviceFamily};
 
     kernel.relpath = mkDefault ("device/google/${replaceStrings [ "taimen" ] [ "wahoo" ] config.deviceFamily}-kernel");

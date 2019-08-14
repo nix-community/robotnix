@@ -13,11 +13,16 @@ let
       sha256 = "1s3gk2wwy677vbcdjj3ad4kbydb2f6kwymxbb7xwa97cbyjwjpvj";
     };
   }.${config.deviceFamily};
-  crosshatchKernel = pkgs.fetchFromGitHub {
+
+  # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
+  kernelSrc = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
-    repo = "kernel_google_crosshatch";
+    repo = "kernel_google_${config.deviceFamily}";
     rev = release.tag;
-    sha256 = "1r3pj5fv2a2zy1kjm9cc49j5vmscvwpvlx5hffhc9r8jbc85acgi";
+    sha256 = {
+      crosshatch = "1r3pj5fv2a2zy1kjm9cc49j5vmscvwpvlx5hffhc9r8jbc85acgi";
+      bonito = "071kxvmch43747a3vprf0igh5qprafdi4rjivny8yvv41q649m4z";
+    }.${config.deviceFamily};
     fetchSubmodules = true;
   };
 in
@@ -31,16 +36,19 @@ in
   };
 
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
-  kernel.src = mkDefault (if config.deviceFamily == "crosshatch" then crosshatchKernel else config.source.dirs."kernel/google/${config.deviceFamily}".contents);
-  kernel.configName = mkIf (config.deviceFamily == "crosshatch") config.device; # GrapheneOS uses different config names than upstream
+  kernel.src = mkDefault (if (elem config.deviceFamily ["crosshatch" "bonito"])
+    then kernelSrc
+    else config.source.dirs."kernel/google/${replaceStrings ["taimen"] ["wahoo"] config.deviceFamily}".contents);
+  kernel.configName = mkIf (elem config.deviceFamily ["taimen" "crosshatch"]) config.device; # GrapheneOS uses different config names than upstream
 
-  source.dirs."kernel/google/marlin".enable = (config.deviceFamily == "marlin");
-  source.dirs."kernel/google/wahoo".enable = (config.deviceFamily == "wahoo");
-  source.dirs."kernel/google/crosshatch".enable = (config.deviceFamily == "crosshatch");
-  source.dirs."kernel/google/bonito".enable = (config.deviceFamily == "bonito");
+  # No need to include these in AOSP build since we build separately
+  source.dirs."kernel/google/marlin".enable = false;
+  source.dirs."kernel/google/wahoo".enable = false;
+  source.dirs."kernel/google/crosshatch".enable = false;
+  source.dirs."kernel/google/bonito".enable = false;
 
   # See https://stackoverflow.com/questions/55078766/mdss-pll-trace-h-file-not-found-error-compiling-kernel-4-9-for-android?noredirect=1 and https://lwn.net/Articles/383362/
-  kernel.patches = mkIf (config.deviceFamily == "crosshatch") [ ./crosshatch-kernel.patch ];
+  kernel.patches = mkIf (elem config.deviceFamily ["crosshatch" "bonito"]) [ ./crosshatch-kernel.patch ];
 
   apps.webview.enable = mkDefault true;
   # TODO: Build and include vanadium
