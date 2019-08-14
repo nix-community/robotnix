@@ -110,7 +110,7 @@ in
         cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}
       '') (attrValues config.source.dirs))) +
       # Get linkfiles and copyfiles too. XXX: Hack
-      (concatStringsSep "" (mapAttrsToList (name: p:
+      (concatStringsSep "" (mapAttrsToList (name: p: optionalString config.source.dirs.${p.relpath}.enable
         ((concatMapStringsSep "\n" (c: ''
             mkdir -p $(dirname ${c.dest})
             cp --reflink=auto ${p.relpath}/${c.src} ${c.dest}
@@ -119,7 +119,7 @@ in
             mkdir -p $(dirname ${c.dest})
             ln -s ./${c.src_rel_to_dest} ${c.dest}
           '') p.linkfiles))
-      ) config.source.json )) + ''
+      ) config.source.json)) + ''
       chmod -R u+w *
     '');
   };
