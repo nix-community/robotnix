@@ -5,7 +5,7 @@ let
   repo2nix = import ./repo2nix.nix;
   jsonFile = repo2nix {
     manifest = config.source.manifest.url;
-    inherit (config.source.manifest) rev sha256;
+    inherit (config.source.manifest) rev sha256 localManifests;
     extraFlags = "--no-repo-verify";
   };
   json = builtins.fromJSON (builtins.readFile jsonFile);
@@ -23,11 +23,18 @@ in
         url = mkOption {
           type = types.str;
         };
+
         rev = mkOption {
           type = types.str;
         };
+
         sha256 = mkOption {
           type = types.str;
+        };
+
+        localManifests = mkOption {
+          default = [];
+          type = types.listOf types.path;
         };
       };
 
