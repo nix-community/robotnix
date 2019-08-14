@@ -1,11 +1,11 @@
 # NixDroid
 
-This is a fork focusing on recent vanilla AOSP.
-It also has preliminary support for building GrapheneOS, but currently can't build their chromium fork.
-This fork additionally uses a NixOS-style module system for configuring the build.
+This is a fork of the original NixDroid, focusing on recent customized vanilla-ish AOSP targeting Pixel devices.
+This fork additionall uses a NixOS-style module system for configuring the build.
+It also has partial support for building GrapheneOS, but currently doesn't build Vanadium (GrapheneOS's chromium fork).
 
 To begin, create a configuration file, see `example.nix`, `marlin.nix`, and `crosshatch.nix` for inspiration.
-This has only been tested on marlin (Pixel XL), but should support all Pixel devices with minor changes.
+This has only been tested on marlin (Pixel XL) and crosshatch (Pixel 3 XL), but should support all Pixel devices with (hopefully) minor changes.
 
 #### Building the vanilla AOSP ROM:
 
@@ -26,16 +26,12 @@ $ nix-build ./default.nix --arg configuration "import ./marlin.nix" -A config.bu
 $ ./release ./keys/marlin
 ```
 
-### Building final products in nix with a sandbox exception for secret keys
+An alternative to using the releaseScript above is to build the final products using nix with a sandbox exception for secret keys, so the build process can sign things itself.
+
 ```console
 $ nix-build ./default.nix --arg configuration "import ./marlin.nix" -A config.build.img --option extra-sandbox-paths /keys=$(pwd)/keys
 ```
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 The root user is always trusted, however, running `sudo nix-build ...` would use root's git cache for `builtins.fetchgit`, which would effectively re-download the source again.
 
-Other options include `ota`, and `otaDir`.
-
-chgrp nixbld is one option
-
-Why do we pass the entire keys direcory in when we only need one specific device's keys?
-building a linkFarm of otaDirs for multiple devices can still alll use the same /keys dir
+Other built targets include `config.build.ota`, and `config.build.otaDir`.

@@ -136,7 +136,7 @@ in
 
       echo Building incremental OTA zip
       if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
-        ${buildTools}/releasetools/ota_from_target_files.py --block ${optionalString signBuild "-k $KEYSDIR/releasekey"} -i ${config.device}-target_files-$PREV_BUILDNUMBER.zip ${config.device}-target_files-${config.buildNumber}.zip ${config.device}-incremental-$PREV_BUILDNUMBER-${config.buildNumber}.zip || exit 1
+        ${buildTools}/releasetools/ota_from_target_files.py --block ''${KEYSDIR:+"-k $KEYSDIR/releasekey} -i ${config.device}-target_files-$PREV_BUILDNUMBER.zip ${config.device}-target_files-${config.buildNumber}.zip ${config.device}-incremental-$PREV_BUILDNUMBER-${config.buildNumber}.zip || exit 1
       fi
 
       echo Building .img file
