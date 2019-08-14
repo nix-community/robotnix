@@ -28,17 +28,18 @@ in
     };
 
     vendor.files = mkOption {
+      type = types.path;
       internal = true;
-      default = pkgs.callPackage ./android-prepare-vendor {
-        inherit (config) device;
-        inherit (config.vendor) img full;
-      };
     };
   };
 
   # TODO: Allow not setting this
   config = {
     vendor.img = mkDefault vendorImgs."${config.deviceFamily}";
+    vendor.files = mkDefault (pkgs.callPackage ./android-prepare-vendor {
+      inherit (config) device;
+      inherit (config.vendor) img full;
+    });
 
     source.dirs."vendor/google_devices/${config.device}".contents = "${config.vendor.files}/vendor/google_devices/${config.device}";
     source.dirs."vendor_overlay/google_devices/${config.device}".contents = "${config.vendor.files}/vendor_overlay/google_devices/${config.device}";
