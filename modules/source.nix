@@ -103,25 +103,24 @@ in
         contents = mkDefault (projectSource p);
       }) config.source.json;
 
-    unpackScript = (''
-      mkdir -p $out
-
-      '' +
+    unpackScript = (
       (concatStringsSep "" (map (d: optionalString d.enable ''
-        mkdir -p $out/$(dirname ${d.path})
+        mkdir -p $(dirname ${d.path})
         echo "${d.contents} -> ${d.path}"
-        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} $out/${d.path}
+        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}
       '') (attrValues config.source.dirs))) +
       # Get linkfiles and copyfiles too. XXX: Hack
       (concatStringsSep "" (mapAttrsToList (name: p:
         ((concatMapStringsSep "\n" (c: ''
-            mkdir -p $out/$(dirname ${c.dest})
-            cp --reflink=auto $out/${p.relpath}/${c.src} $out/${c.dest}
+            mkdir -p $(dirname ${c.dest})
+            cp --reflink=auto ${p.relpath}/${c.src} ${c.dest}
           '') p.copyfiles) +
         (concatMapStringsSep "\n" (c: ''
             mkdir -p $(dirname ${c.dest})
-            ln -s ./${c.src_rel_to_dest} $out/${c.dest}
+            ln -s ./${c.src_rel_to_dest} ${c.dest}
           '') p.linkfiles))
-    ) config.source.json )));
+      ) config.source.json )) + ''
+      chmod -R u+w *
+    '');
   };
 }
