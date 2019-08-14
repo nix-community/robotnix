@@ -24,7 +24,7 @@ let
     buildInputs = with pkgs; [ python autoPatchelfHook zlib ncurses5 libedit ];
     installPhase = ''
       cp -r . $out
-      cp ${pkgs.libedit}/lib/libedit.sc.0 $out/lib64/libedit.so.2 # ABI is the same--but distros have inconsistent numbering
+      cp ${pkgs.libedit}/lib/libedit.so.0 $out/lib64/libedit.so.2 # ABI is the same--but distros have inconsistent numbering
     '';
   };
   prebuiltMisc = pkgs.stdenv.mkDerivation {
