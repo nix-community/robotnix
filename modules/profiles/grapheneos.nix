@@ -27,7 +27,7 @@ let
   };
 in
 {
-  imports = [ ./exclude.nix ];
+  imports = [ ./common.nix ];
 
   source.manifest = {
     url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";

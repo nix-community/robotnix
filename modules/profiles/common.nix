@@ -2,6 +2,13 @@
 
 with lib;
 {
+  source.excludeGroups = mkDefault [
+    "darwin" # Linux-only for now
+    "mips" "hikey"
+    "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
+  ];
+  source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.configName ]; # But include the one we care about. Also include deviceFamily and kernel.configName, which might be an alternate name
+
   # Disable some unused directories to save time downloading / extracting
   source.dirs = listToAttrs (map (dir: nameValuePair dir { enable = false; })
     [ "developers/samples/android"

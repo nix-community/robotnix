@@ -97,13 +97,6 @@ in
   };
 
   config.source = {
-    excludeGroups = mkDefault [
-      "darwin" # Linux-only for now
-      "mips" "hikey"
-      "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
-    ];
-    includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.configName ]; # But include the one we care about. Also include deviceFamily and kernel.configName, which might be an alternate name
-
     dirs = mapAttrs' (name: p:
       nameValuePair p.relpath {
         enable = mkDefault ((any (g: elem g p.groups) config.source.includeGroups) || (!(any (g: elem g p.groups) config.source.excludeGroups)));

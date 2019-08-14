@@ -23,7 +23,7 @@ let
   }.${config.deviceFamily};
 in
 {
-  imports = [ ./exclude.nix ];
+  imports = [ ./common.nix ];
 
   source.manifest = {
     url = mkDefault "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
