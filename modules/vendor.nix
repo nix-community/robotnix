@@ -41,7 +41,9 @@ in
       inherit (config.vendor) img full;
     });
 
-    source.dirs."vendor/google_devices/${config.device}".contents = "${config.vendor.files}/vendor/google_devices/${config.device}";
-    source.dirs."vendor_overlay/google_devices/${config.device}".contents = "${config.vendor.files}/vendor_overlay/google_devices/${config.device}";
+    # Using unpackScript instead of source.dirs since vendor_overlay/google_devices/${config.device} is not guaranteed to exist
+    source.unpackScript = mkAfter ''
+      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.vendor.files}/* .
+    '';
   };
 }
