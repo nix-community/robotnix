@@ -10,24 +10,6 @@ let
       </webviewprovider>
     </webviewproviders>
   '';
-  chromiumAndroidmk = pkgs.writeText "Android.mk" ''
-LOCAL_PATH := $(call my-dir)
-
-include $(CLEAR_VARS)
-
-LOCAL_MODULE := Chromium
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MULTILIB := both
-LOCAL_CERTIFICATE := $(DEFAULT_SYSTEM_DEV_CERTIFICATE)
-LOCAL_REQUIRED_MODULES := \
-    libwebviewchromium_loader \
-    libwebviewchromium_plat_support
-
-LOCAL_MODULE_TARGET_ARCH := arm64
-LOCAL_SRC_FILES := prebuilt/arm64/SystemWebView.apk
-
-include $(BUILD_PREBUILT)
-  '';
 in
 {
   options = {
@@ -51,13 +33,21 @@ in
   };
 
   config = mkIf cfg.enable {
-    additionalProductPackages = [ "Chromium" ];
+    apps.prebuilt.CustomWebview = {
+      inherit (cfg) apk;
+
+      # Extra stuff from the Android.mk from the example webview module in AOSP. Unsure if these are needed.
+      extraConfig = ''
+        LOCAL_MULTILIB := both
+        LOCAL_REQUIRED_MODULES := \
+          libwebviewchromium_loader \
+          libwebviewchromium_plat_support
+        LOCAL_MODULE_TARGET_ARCH := arm64
+      '';
+    };
 
     source.postPatch = ''
       cp --no-preserve=all -v ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
-      mkdir -p external/chromium/prebuilt/arm64
-      cp --no-preserve=all -v ${chromiumAndroidmk} external/chromium/Android.mk
-      cp --no-preserve=all -v ${cfg.apk} external/chromium/prebuilt/arm64/SystemWebView.apk
     '';
   };
 }
