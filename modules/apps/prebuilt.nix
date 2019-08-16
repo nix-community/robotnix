@@ -33,7 +33,9 @@ in
   options = {
     apps.prebuilt = mkOption {
       default = {};
-      type = types.attrsOf (types.submodule ({ name, ... }: {
+      type = let
+        _config = config;
+      in types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
           name = mkOption {
             default = name;
@@ -42,6 +44,11 @@ in
 
           apk = mkOption {
             type = types.path;
+          };
+
+          signedApk = mkOption {
+            type = types.path;
+            internal = true;
           };
 
           packageName = mkOption { # Only used with privapp permissions
@@ -74,6 +81,19 @@ in
             type = types.lines;
           };
         };
+
+        config = {
+          # Uses the sandbox exception in /keys
+          signedApk = mkDefault (if config.certificate == "PRESIGNED"
+            then config.apk
+            else pkgs.runCommand "${config.name}-signed.apk" { nativeBuildInputs = [ pkgs.jre ]; } ''
+              cp ${config.apk} $out
+              ${head pkgs.androidenv.androidPkgs_9_0.build-tools}/libexec/android-sdk/build-tools/28.0.3/apksigner sign \
+                --key /keys/${_config.device}/${config.certificate}.pk8 \
+                --cert /keys/${_config.device}/${config.certificate}.x509.pem \
+                $out
+            '');
+        };
       }));
     };
   };
@@ -96,5 +116,10 @@ in
       }) (filter (prebuilt: prebuilt.privappPermissions != []) (attrValues cfg)));
 
     additionalProductPackages = map (prebuilt: prebuilt.name) (attrValues cfg);
+
+    # Convenience derivation to get all prebuilt apks -- for use in custom fdroid repo?
+    build.prebuiltApks = pkgs.linkFarm "${config.device}-prebuilt-apks"
+      (map (p: { name="${p.name}.apk"; path=p.signedApk; })
+      (filter (p: p.name != "CustomWebview") (attrValues cfg)));
   };
 }
