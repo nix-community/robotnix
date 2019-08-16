@@ -1,7 +1,7 @@
 # NixDroid
 
 This is a fork of the original NixDroid, focusing on recent customized vanilla-ish AOSP targeting Pixel devices.
-This fork additionall uses a NixOS-style module system for configuring the build.
+This fork additionally uses a NixOS-style module system for configuring the build.
 It also has partial support for building GrapheneOS, but currently doesn't build Vanadium (GrapheneOS's chromium fork).
 
 To begin, create a configuration file, see `example.nix`, `marlin.nix`, and `crosshatch.nix` for inspiration.
