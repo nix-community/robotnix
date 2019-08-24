@@ -107,7 +107,7 @@ in
       (concatStringsSep "" (map (d: optionalString d.enable ''
         mkdir -p $(dirname ${d.path})
         echo "${d.contents} -> ${d.path}"
-        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}
+        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}/
       '') (attrValues config.source.dirs))) +
       # Get linkfiles and copyfiles too. XXX: Hack
       (concatStringsSep "" (mapAttrsToList (name: p: optionalString config.source.dirs.${p.relpath}.enable

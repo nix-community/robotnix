@@ -3,8 +3,8 @@ with (import ./pkgs.nix);
   imports = [ ./modules/profiles/grapheneos.nix ];
 
   # Don't forget to update these for each unique build
-  buildNumber = "2019.08.15.1";
-  buildDateTime = 1565829429;
+  buildNumber = "2019.08.22.1";
+  buildDateTime = 1566529623;
 
   apps = {
     webview = {

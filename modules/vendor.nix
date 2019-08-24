@@ -44,6 +44,7 @@ in
     # Using unpackScript instead of source.dirs since vendor_overlay/google_devices/${config.device} is not guaranteed to exist
     source.unpackScript = mkAfter ''
       cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.vendor.files}/* .
+      chmod u+w -R *
     '';
   };
 }
