@@ -23,7 +23,7 @@ in
     source.patches = [ ./fdroid/privext.patch ];
     source.postPatch = ''
       substituteInPlace nixdroid/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java \
-       --replace 43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab "${config.certs.platform.fingerprint}"
+       --replace 43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab "${config.build.fingerprints "platform"}"
     '';
 
     additionalProductPackages = [ "F-DroidPrivilegedExtension" ];

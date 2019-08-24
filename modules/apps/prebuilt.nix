@@ -28,6 +28,14 @@ let
 
     include $(BUILD_PREBUILT)
     '');
+
+  signApk = {name, apk, keyPath}: pkgs.runCommand "${name}-signed.apk" { nativeBuildInputs = [ pkgs.jre ]; } ''
+    cp ${apk} $out
+    ${head pkgs.androidenv.androidPkgs_9_0.build-tools}/libexec/android-sdk/build-tools/28.0.3/apksigner sign \
+      --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
+  '';
+
+  deviceCertificates = [ "release" "platform" "media" "shared" ]; # Cert names used by AOSP
 in
 {
   options = {
@@ -84,15 +92,11 @@ in
 
         config = {
           # Uses the sandbox exception in /keys
-          signedApk = mkDefault (if config.certificate == "PRESIGNED"
-            then config.apk
-            else pkgs.runCommand "${config.name}-signed.apk" { nativeBuildInputs = [ pkgs.jre ]; } ''
-              cp ${config.apk} $out
-              ${head pkgs.androidenv.androidPkgs_9_0.build-tools}/libexec/android-sdk/build-tools/28.0.3/apksigner sign \
-                --key /keys/${_config.device}/${config.certificate}.pk8 \
-                --cert /keys/${_config.device}/${config.certificate}.x509.pem \
-                $out
-            '');
+          signedApk = mkDefault (
+            if config.certificate == "PRESIGNED" then config.apk else (signApk {
+              inherit (config) name apk;
+              keyPath = _config.build.sandboxKeyPath config.certificate;
+            }));
         };
       }));
     };
@@ -102,10 +106,15 @@ in
     source.dirs = listToAttrs (map (prebuilt: {
       name = "nixdroid/prebuilt/${prebuilt.name}";
       value = {
-        contents = pkgs.runCommand "prebuilt_${prebuilt.name}" {} ''
+        contents = let
+          # Don't use the signed version if it's an apk that is going to get signed when signing target-files.
+          apk = if builtins.elem prebuilt.certificate deviceCertificates
+                then prebuilt.apk
+                else prebuilt.signedApk;
+        in pkgs.runCommand "prebuilt_${prebuilt.name}" {} ''
           mkdir -p $out
           cp ${androidmk prebuilt} $out/Android.mk
-          cp ${prebuilt.apk} $out/${prebuilt.name}.apk
+          cp ${apk} $out/${prebuilt.name}.apk
         '';
       };
     }) (attrValues cfg));

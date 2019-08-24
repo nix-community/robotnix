@@ -5,25 +5,6 @@ let
   usePatchedCoreutils = false;
   nixdroid-env = pkgs.callPackage ../buildenv.nix {};
   flex = pkgs.callPackage ../misc/flex-2.5.39.nix {};
-
-  # Using IFD here, because its too damn convenient
-  certFingerprint = x509: import (pkgs.runCommand "cert-fingerprint" {} ''
-    ${pkgs.openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${x509} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
-  '');
-
-  certOptions = certName: {
-    x509 = mkOption {
-      type = types.path;
-      description = "x509 certificate for ${certName} key";
-    };
-
-    fingerprint = mkOption {
-      type = types.str;
-      description = "SHA256 fingerprint for ${certName} key";
-      internal = true;
-      default = certFingerprint config.certs.${certName}.x509;
-    };
-  };
 in
 {
   options = {
@@ -73,9 +54,9 @@ in
       description = "PRODUCT_PACKAGES to remove from build";
     };
 
-    certs = {
-      platform = certOptions "platform";
-      verity = certOptions "verity";
+    keyStorePath = mkOption {
+      type = types.str;
+      description = "Absolute path to generated keys for signing";
     };
 
     avb = {
@@ -87,10 +68,6 @@ in
       fingerprint = mkOption {
         type = types.str;
         internal = true;
-        # TODO: Is there a nix-native way to get this information?
-        default = import (pkgs.runCommand "avb-fingerprint" {} ''
-          sha256sum ${config.avb.pkmd} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out
-        '');
       };
     };
 
@@ -114,6 +91,27 @@ in
     }.${config.device};
 
     build = {
+      # TODO: Is there a nix-native way to get this information instead of using IFD
+      _keyPath = keyStorePath: name:
+        let deviceCertificates = [ "release" "platform" "media" "shared" ]; # Cert names used by AOSP
+        in if builtins.elem name deviceCertificates
+          then "${keyStorePath}/${config.device}/${name}"
+          else "${keyStorePath}/${name}";
+      keyPath = name: config.build._keyPath config.keyStorePath name;
+      sandboxKeyPath = name: config.build._keyPath "/keys" name;
+
+      x509 = name: /. + "${config.build.keyPath name}.x509.pem";
+      fingerprints = name:
+        let
+          avb_pkmd = /. + "${config.keyStorePath}/${config.device}/avb_pkmd.bin";
+      in if (name == "avb")
+        then (import (pkgs.runCommand "avb-fingerprint" {} ''
+          sha256sum ${avb_pkmd} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out
+        ''))
+        else (import (pkgs.runCommand "cert-fingerprint" {} ''
+          ${pkgs.openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${config.build.x509 name} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
+        ''));
+
       # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
       android = pkgs.stdenvNoCC.mkDerivation rec {
         name = "nixdroid-${config.device}-${config.buildNumber}";

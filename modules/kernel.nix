@@ -89,7 +89,7 @@ in
       patches = config.kernel.patches;
 
       postPatch = lib.optionalString (config.deviceFamily == "marlin") ''
-        openssl x509 -outform der -in ${config.certs.verity.x509} -out verity_user.der.x509
+        openssl x509 -outform der -in ${config.build.x509 "verity"} -out verity_user.der.x509
       '';
 
       nativeBuildInputs = with pkgs; [
