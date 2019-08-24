@@ -55,10 +55,10 @@ in
   removedProductPackages = [ "Vanadium" ];
 
   apps.updater.enable = mkDefault true;
-  apps.updater.src = mkDefault config.source.dirs."packages/apps/Updater".contents;
-  source.dirs."packages/apps/Updater".enable = false;
 
-  source.dirs."external/Auditor".enable = mkIf config.apps.auditor.enable false; # Don't include upstream if we use the patched version
+  # Don't include upstream if we use the patched version
+  source.dirs."packages/apps/Updater".enable = mkIf config.apps.updater.enable false;
+  source.dirs."external/Auditor".enable = mkIf config.apps.auditor.enable false;
 
   source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own version
 }

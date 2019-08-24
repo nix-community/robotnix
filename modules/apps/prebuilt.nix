@@ -100,9 +100,9 @@ in
 
   config = {
     source.dirs = listToAttrs (map (prebuilt: {
-      name = "nixdroid/external/${prebuilt.name}";
+      name = "nixdroid/prebuilt/${prebuilt.name}";
       value = {
-        contents = pkgs.runCommand "external_${prebuilt.name}" {} ''
+        contents = pkgs.runCommand "prebuilt_${prebuilt.name}" {} ''
           mkdir -p $out
           cp ${androidmk prebuilt} $out/Android.mk
           cp ${prebuilt.apk} $out/${prebuilt.name}.apk

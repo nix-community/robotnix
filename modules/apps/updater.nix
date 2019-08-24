@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.apps.updater;
 
-  updater = pkgs.fetchFromGitHub {
+  src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "platform_packages_apps_Updater";
     rev = "d3ee2c407d15b34923aaeb376e2cab09d9d7fd14"; # 2019-06-20
@@ -20,20 +20,14 @@ in
         type = types.str;
         description = "URL for OTA updates (requires trailing slash)";
       };
-
-      src = mkOption {
-        default = updater;
-        type = types.path;
-        internal = true;
-      };
     };
   };
 
   config = mkIf cfg.enable {
-    source.dirs."packages/apps/Updater".contents = cfg.src;
+    source.dirs."nixdroid/apps/Updater".contents = src;
 
     additionalProductPackages = [ "Updater" ];
 
-    resources."packages/apps/Updater".url = cfg.url;
+    resources."nixdroid/apps/Updater".url = cfg.url;
   };
 }
