@@ -58,7 +58,9 @@ in
 
   # Don't include upstream if we use the patched version
   source.dirs."packages/apps/Updater".enable = mkIf config.apps.updater.enable false;
-  source.dirs."external/Auditor".enable = mkIf config.apps.auditor.enable false;
+
+  # Leave the existing auditor in the build--just in case the use wants to
+  # audit devices using the official upstream build
 
   source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own version
 }

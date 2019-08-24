@@ -18,11 +18,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    apps.prebuilt.Auditor.apk = pkgs.callPackage ./auditor {
-      inherit (cfg) domain;
-      platformFingerprint = config.certs.platform.fingerprint; # Could parameterize this over config.apps.prebuilt.Auditor.certificate -- but who cares?
-      deviceFamily = config.deviceFamily;
-      avbFingerprint = config.avb.fingerprint;
+    apps.prebuilt.CustomAuditor = {
+      # TODO: Generate this one with a script
+      # Needs a special auditor key that is the same across devices.
+      certificate = "auditor";
+      apk = pkgs.callPackage ./auditor {
+        inherit (cfg) domain;
+        signatureFingerprint = config.build.fingerprints "auditor";
+        deviceFamily = config.deviceFamily;
+        avbFingerprint = config.build.fingerprints "avb";
+      };
     };
   };
 }

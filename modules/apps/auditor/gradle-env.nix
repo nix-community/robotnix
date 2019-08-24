@@ -115,15 +115,16 @@ let
     (_: p: mkProjectEnv p)
     (let
     # Reach into the dependency spec and manually add a missing dependency: aapt2
+    # TODO: Figure out why it isn't included normally
       oldSpec = builtins.fromJSON (builtins.readFile ./gradle-env.json);
-      aaptVersion = "3.4.1-5326820";
+      aaptVersion = "3.4.2-5326820";
     in lib.recursiveUpdate oldSpec { "".dependencies.project = oldSpec."".dependencies.project ++ [
       {
         name = "com.android.tools.build-aapt2-${aaptVersion}-jar";
         filename = "aapt2-${aaptVersion}-linux.jar";
         path = "com/android/tools/build/aapt2/${aaptVersion}";
         urls = [ "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/${aaptVersion}/aapt2-${aaptVersion}-linux.jar" ];
-        sha256 = "0cqsjnrs6wfrsk07yisd2pqyh7kpb3nacxdb6gl3fvw8hslm5220";
+        sha256 = "1arck96l9m19q217ajm7f3zg113d6p6p32mxvnl39v8kx2zya2lf";
       }
     ]; });
 

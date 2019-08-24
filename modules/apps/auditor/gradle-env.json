@@ -4,84 +4,84 @@
     "version": "unspecified",
     "path": "",
     "gradle": {
-      "version": "5.5",
+      "version": "5.5.1",
       "type": "bin",
-      "url": "https://services.gradle.org/distributions/gradle-5.5-bin.zip",
-      "sha256": "8d78b2ed63e7f07ad169c1186d119761c4773e681f332cfe1901045b1b0141bc",
+      "url": "https://services.gradle.org/distributions/gradle-5.5.1-bin.zip",
+      "sha256": "222a03fcf2fcaf3691767ce9549f78ebd4a77e73f9e23a396899fb70b420cd00",
       "nativeVersion": "0.17"
     },
     "dependencies": {
       "plugin": [],
       "buildscript": [
         {
-          "name": "androidx.databinding-databinding-common-3.4.1-jar",
-          "filename": "databinding-common-3.4.1.jar",
-          "path": "androidx/databinding/databinding-common/3.4.1",
+          "name": "androidx.databinding-databinding-common-3.4.2-jar",
+          "filename": "databinding-common-3.4.2.jar",
+          "path": "androidx/databinding/databinding-common/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-common/3.4.1/databinding-common-3.4.1.jar",
-            "https://jcenter.bintray.com/androidx/databinding/databinding-common/3.4.1/databinding-common-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-common/3.4.2/databinding-common-3.4.2.jar",
+            "https://jcenter.bintray.com/androidx/databinding/databinding-common/3.4.2/databinding-common-3.4.2.jar"
           ],
-          "sha256": "1cf7b687176f0aa755f778994f2c25f5eca9528ef10eccd74f43c47c2b0f9b82"
+          "sha256": "52886c0ef6cfa492d07b40c3952201d6d2f0cfc680144fbefc69d2d5cb786c25"
         },
         {
-          "name": "androidx.databinding-databinding-compiler-common-3.4.1-jar",
-          "filename": "databinding-compiler-common-3.4.1.jar",
-          "path": "androidx/databinding/databinding-compiler-common/3.4.1",
+          "name": "androidx.databinding-databinding-compiler-common-3.4.2-jar",
+          "filename": "databinding-compiler-common-3.4.2.jar",
+          "path": "androidx/databinding/databinding-compiler-common/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler-common/3.4.1/databinding-compiler-common-3.4.1.jar",
-            "https://jcenter.bintray.com/androidx/databinding/databinding-compiler-common/3.4.1/databinding-compiler-common-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler-common/3.4.2/databinding-compiler-common-3.4.2.jar",
+            "https://jcenter.bintray.com/androidx/databinding/databinding-compiler-common/3.4.2/databinding-compiler-common-3.4.2.jar"
           ],
-          "sha256": "06d203ba0caa6561bb0b455616cd53cd767d1ec63b82876152fb1bc6963aad98"
+          "sha256": "770b6a82da0684f93d037ed5d241248cb25862ed14ecd7d9ec8c756153266051"
         },
         {
-          "name": "com.android.databinding-baseLibrary-3.4.1-jar",
-          "filename": "baseLibrary-3.4.1.jar",
-          "path": "com/android/databinding/baseLibrary/3.4.1",
+          "name": "com.android.databinding-baseLibrary-3.4.2-jar",
+          "filename": "baseLibrary-3.4.2.jar",
+          "path": "com/android/databinding/baseLibrary/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/databinding/baseLibrary/3.4.1/baseLibrary-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/databinding/baseLibrary/3.4.1/baseLibrary-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/databinding/baseLibrary/3.4.2/baseLibrary-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/databinding/baseLibrary/3.4.2/baseLibrary-3.4.2.jar"
           ],
-          "sha256": "b0b84dc4d83e840fa3353b7b25e1973afd3645a2ee4d3b17d70785aa4ba8e272"
+          "sha256": "5e4f3b90995be63f3c8eeecce120c588a98c6aad3b54f60ad4c80b5418c4b012"
         },
         {
-          "name": "com.android.tools.analytics-library-crash-26.4.1-jar",
-          "filename": "crash-26.4.1.jar",
-          "path": "com/android/tools/analytics-library/crash/26.4.1",
+          "name": "com.android.tools.analytics-library-crash-26.4.2-jar",
+          "filename": "crash-26.4.2.jar",
+          "path": "com/android/tools/analytics-library/crash/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/crash/26.4.1/crash-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/crash/26.4.1/crash-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/crash/26.4.2/crash-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/crash/26.4.2/crash-26.4.2.jar"
           ],
-          "sha256": "ac0599da314bca3ad4a0c358fc2763ad81ee84cd97147dd6c323e29d1a8714db"
+          "sha256": "22189a009a57c1741f74deeae5442a101c1c5c8bd6c6404e8e87a7d7f58044e4"
         },
         {
-          "name": "com.android.tools.analytics-library-protos-26.4.1-jar",
-          "filename": "protos-26.4.1.jar",
-          "path": "com/android/tools/analytics-library/protos/26.4.1",
+          "name": "com.android.tools.analytics-library-protos-26.4.2-jar",
+          "filename": "protos-26.4.2.jar",
+          "path": "com/android/tools/analytics-library/protos/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.4.1/protos-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/protos/26.4.1/protos-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.4.2/protos-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/protos/26.4.2/protos-26.4.2.jar"
           ],
-          "sha256": "b2f871fa927d27bf7894d28b8398c42a1bc4ba3085e97ed73001dcc902a90735"
+          "sha256": "39f429bc72340a45ea1b77ade9a4aa11ecebcb2a9dd0bb3619bfedc40800af0e"
         },
         {
-          "name": "com.android.tools.analytics-library-shared-26.4.1-jar",
-          "filename": "shared-26.4.1.jar",
-          "path": "com/android/tools/analytics-library/shared/26.4.1",
+          "name": "com.android.tools.analytics-library-shared-26.4.2-jar",
+          "filename": "shared-26.4.2.jar",
+          "path": "com/android/tools/analytics-library/shared/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.4.1/shared-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/shared/26.4.1/shared-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.4.2/shared-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/shared/26.4.2/shared-26.4.2.jar"
           ],
-          "sha256": "2168b02e5bf6711118d4151218fa155156608c59f6e05b771aa6d8b8d6f20702"
+          "sha256": "a3ee9f50da48f12d3677f18372fffdcf51f3c340335e335fb71365c92e31d1de"
         },
         {
-          "name": "com.android.tools.analytics-library-tracker-26.4.1-jar",
-          "filename": "tracker-26.4.1.jar",
-          "path": "com/android/tools/analytics-library/tracker/26.4.1",
+          "name": "com.android.tools.analytics-library-tracker-26.4.2-jar",
+          "filename": "tracker-26.4.2.jar",
+          "path": "com/android/tools/analytics-library/tracker/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.4.1/tracker-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/tracker/26.4.1/tracker-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.4.2/tracker-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/tracker/26.4.2/tracker-26.4.2.jar"
           ],
-          "sha256": "972c7f722cf84d22111f029ff662bb2a5baa4ace562d5b140a5b7482ff153c20"
+          "sha256": "b888eba61ebe734f8e50b60fa1bf38d9144dc031abb3704d6f2b4e445a53196e"
         },
         {
           "name": "com.android.tools.build.jetifier-jetifier-core-1.0.0-beta04-jar",
@@ -114,54 +114,54 @@
           "sha256": "a503219b89b0aaf7b7c6c9b3b17d69e655a6c619072b684a1ea4fbf1d7dc49da"
         },
         {
-          "name": "com.android.tools.build-apksig-3.4.1-jar",
-          "filename": "apksig-3.4.1.jar",
-          "path": "com/android/tools/build/apksig/3.4.1",
+          "name": "com.android.tools.build-apksig-3.4.2-jar",
+          "filename": "apksig-3.4.2.jar",
+          "path": "com/android/tools/build/apksig/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.1/apksig-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.1/apksig-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.2/apksig-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.2/apksig-3.4.2.jar"
           ],
-          "sha256": "2a5cd4e913001de7a2204263938f39d9b3ca31f14c614831c298b582749390d8"
+          "sha256": "7cb448a8317dc3b82629898c211895862453eee62acb12ad23c32ccdc2c942e2"
         },
         {
-          "name": "com.android.tools.build-apkzlib-3.4.1-jar",
-          "filename": "apkzlib-3.4.1.jar",
-          "path": "com/android/tools/build/apkzlib/3.4.1",
+          "name": "com.android.tools.build-apkzlib-3.4.2-jar",
+          "filename": "apkzlib-3.4.2.jar",
+          "path": "com/android/tools/build/apkzlib/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.1/apkzlib-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.1/apkzlib-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.2/apkzlib-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.2/apkzlib-3.4.2.jar"
           ],
-          "sha256": "c0bd655dc86e3f87f5d8d9a66b3bcab47a363cb02d874879a507484f268e384c"
+          "sha256": "e00dbbd0997beba194e18d2a62647e42b2e62192652796bcbe5ea9b06687ba5c"
         },
         {
-          "name": "com.android.tools.build-builder-model-3.4.1-jar",
-          "filename": "builder-model-3.4.1.jar",
-          "path": "com/android/tools/build/builder-model/3.4.1",
+          "name": "com.android.tools.build-builder-model-3.4.2-jar",
+          "filename": "builder-model-3.4.2.jar",
+          "path": "com/android/tools/build/builder-model/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.4.1/builder-model-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/builder-model/3.4.1/builder-model-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.4.2/builder-model-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/builder-model/3.4.2/builder-model-3.4.2.jar"
           ],
-          "sha256": "374fda7befa190373b4d0e2745d8efc73e6b76c6bffa5c1e786362e2c9f662f1"
+          "sha256": "ddb36ca7fe72024bd53fbdd2700f1a9a9af5b1502062d59952eb3da7584fe413"
         },
         {
-          "name": "com.android.tools.build-builder-test-api-3.4.1-jar",
-          "filename": "builder-test-api-3.4.1.jar",
-          "path": "com/android/tools/build/builder-test-api/3.4.1",
+          "name": "com.android.tools.build-builder-test-api-3.4.2-jar",
+          "filename": "builder-test-api-3.4.2.jar",
+          "path": "com/android/tools/build/builder-test-api/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.4.1/builder-test-api-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/builder-test-api/3.4.1/builder-test-api-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.4.2/builder-test-api-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/builder-test-api/3.4.2/builder-test-api-3.4.2.jar"
           ],
-          "sha256": "860ef353a74d1ae7a2eda2c3f0cf14296445a0356d2aaed61b9fd2a608757c24"
+          "sha256": "40c62a008da4fa933cb20135227409d2953ed88ed68195e0f631d326c5675c46"
         },
         {
-          "name": "com.android.tools.build-builder-3.4.1-jar",
-          "filename": "builder-3.4.1.jar",
-          "path": "com/android/tools/build/builder/3.4.1",
+          "name": "com.android.tools.build-builder-3.4.2-jar",
+          "filename": "builder-3.4.2.jar",
+          "path": "com/android/tools/build/builder/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.4.1/builder-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/builder/3.4.1/builder-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.4.2/builder-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/builder/3.4.2/builder-3.4.2.jar"
           ],
-          "sha256": "73b17cf1fcd87784aed15167aa4db8d62f8e8ca4d437e84c7e6c3e72889849ba"
+          "sha256": "3d104b1e0083aac49f5ea8d5e0e0cd740dd333bef2683a3214e1cd1953ffd661"
         },
         {
           "name": "com.android.tools.build-bundletool-0.7.2-jar",
@@ -174,34 +174,34 @@
           "sha256": "420bb34c44c9e3341583fa90bb4ad331db0b2ed902a5e75b9a420f4edd9f7894"
         },
         {
-          "name": "com.android.tools.build-gradle-api-3.4.1-jar",
-          "filename": "gradle-api-3.4.1.jar",
-          "path": "com/android/tools/build/gradle-api/3.4.1",
+          "name": "com.android.tools.build-gradle-api-3.4.2-jar",
+          "filename": "gradle-api-3.4.2.jar",
+          "path": "com/android/tools/build/gradle-api/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.4.1/gradle-api-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/gradle-api/3.4.1/gradle-api-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.4.2/gradle-api-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/gradle-api/3.4.2/gradle-api-3.4.2.jar"
           ],
-          "sha256": "133ca5bd918dd2fc7dce6c797169a7dd8f850fa1f7c87967ba6a32f6e2928083"
+          "sha256": "e6cddde562483c96b699be25fc91a78e141397e51a382eedae9b2c0e22ea22f5"
         },
         {
-          "name": "com.android.tools.build-gradle-3.4.1-jar",
-          "filename": "gradle-3.4.1.jar",
-          "path": "com/android/tools/build/gradle/3.4.1",
+          "name": "com.android.tools.build-gradle-3.4.2-jar",
+          "filename": "gradle-3.4.2.jar",
+          "path": "com/android/tools/build/gradle/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.4.1/gradle-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/gradle/3.4.1/gradle-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.4.2/gradle-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/gradle/3.4.2/gradle-3.4.2.jar"
           ],
-          "sha256": "c9260d8924f3c636f5e4587bfd19f8c36114ea2e47b279bfe3de0456e17ba26b"
+          "sha256": "536afc619d2678b80bd7d0b5674be249f05fad349a8717998b69d48f66062fb5"
         },
         {
-          "name": "com.android.tools.build-manifest-merger-26.4.1-jar",
-          "filename": "manifest-merger-26.4.1.jar",
-          "path": "com/android/tools/build/manifest-merger/26.4.1",
+          "name": "com.android.tools.build-manifest-merger-26.4.2-jar",
+          "filename": "manifest-merger-26.4.2.jar",
+          "path": "com/android/tools/build/manifest-merger/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.4.1/manifest-merger-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.4.1/manifest-merger-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.4.2/manifest-merger-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.4.2/manifest-merger-26.4.2.jar"
           ],
-          "sha256": "495ba49fe08befa0715670597d246c6714753dd8e3475ced6cb0587a5293041c"
+          "sha256": "86a43c18ab36ae51b997784880492336c009891a05df7b40a574da51031c3f63"
         },
         {
           "name": "com.android.tools.build-transform-api-2.0.0-deprecated-use-gradle-api-jar",
@@ -214,94 +214,94 @@
           "sha256": "4de4a3d05e1c534c2db9e4588bf34082bb2bd232d8abb9727c430290ce225740"
         },
         {
-          "name": "com.android.tools.ddms-ddmlib-26.4.1-jar",
-          "filename": "ddmlib-26.4.1.jar",
-          "path": "com/android/tools/ddms/ddmlib/26.4.1",
+          "name": "com.android.tools.ddms-ddmlib-26.4.2-jar",
+          "filename": "ddmlib-26.4.2.jar",
+          "path": "com/android/tools/ddms/ddmlib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.4.1/ddmlib-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.4.1/ddmlib-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.4.2/ddmlib-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.4.2/ddmlib-26.4.2.jar"
           ],
-          "sha256": "b2751535bd173c9acdb8a3475b563046903ecc06bc1767e9b23a417877588875"
+          "sha256": "330e3eb76d2f96e3931a8cccdbf16435e92b3398dcaa8b65c8cd1034864de720"
         },
         {
-          "name": "com.android.tools.layoutlib-layoutlib-api-26.4.1-jar",
-          "filename": "layoutlib-api-26.4.1.jar",
-          "path": "com/android/tools/layoutlib/layoutlib-api/26.4.1",
+          "name": "com.android.tools.layoutlib-layoutlib-api-26.4.2-jar",
+          "filename": "layoutlib-api-26.4.2.jar",
+          "path": "com/android/tools/layoutlib/layoutlib-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.4.1/layoutlib-api-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/26.4.1/layoutlib-api-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.4.2/layoutlib-api-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/26.4.2/layoutlib-api-26.4.2.jar"
           ],
-          "sha256": "85686d58cefc254e16ece2061a357ffe5a4cc5ca02117eefb4210d470e4536d0"
+          "sha256": "52fbb3614feee0d5d474c35f8c533ff3fa090cbf0df46c06e4cf353cae1c3652"
         },
         {
-          "name": "com.android.tools.lint-lint-gradle-api-26.4.1-jar",
-          "filename": "lint-gradle-api-26.4.1.jar",
-          "path": "com/android/tools/lint/lint-gradle-api/26.4.1",
+          "name": "com.android.tools.lint-lint-gradle-api-26.4.2-jar",
+          "filename": "lint-gradle-api-26.4.2.jar",
+          "path": "com/android/tools/lint/lint-gradle-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.4.1/lint-gradle-api-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle-api/26.4.1/lint-gradle-api-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.4.2/lint-gradle-api-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle-api/26.4.2/lint-gradle-api-26.4.2.jar"
           ],
-          "sha256": "82ee87dd110c106f082c90382e2f7166d323e115b8648493d38766db28a74131"
+          "sha256": "90c6a1a650a257abb5d445dde9c172d55e6d28ce943a35b4e263c4cb3dcc96b0"
         },
         {
-          "name": "com.android.tools-annotations-26.4.1-jar",
-          "filename": "annotations-26.4.1.jar",
-          "path": "com/android/tools/annotations/26.4.1",
+          "name": "com.android.tools-annotations-26.4.2-jar",
+          "filename": "annotations-26.4.2.jar",
+          "path": "com/android/tools/annotations/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.4.1/annotations-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/annotations/26.4.1/annotations-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.4.2/annotations-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/annotations/26.4.2/annotations-26.4.2.jar"
           ],
-          "sha256": "31094a7780c0b26d84696c5bb36db2845ab9c1e3c298f48b143e50d37c26bba0"
+          "sha256": "1877849936f48cd65857bf448743f9a0bf93ed47fe57527d9ad8af875024888d"
         },
         {
-          "name": "com.android.tools-common-26.4.1-jar",
-          "filename": "common-26.4.1.jar",
-          "path": "com/android/tools/common/26.4.1",
+          "name": "com.android.tools-common-26.4.2-jar",
+          "filename": "common-26.4.2.jar",
+          "path": "com/android/tools/common/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.4.1/common-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/common/26.4.1/common-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.4.2/common-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/common/26.4.2/common-26.4.2.jar"
           ],
-          "sha256": "cff995122e072053eb327ec3abffdcab103abe5a018de8013f8b319ae53a614d"
+          "sha256": "bbda65fe64198125142ecc2079b62835f50ae105e51f34f8349ac129b72efd7c"
         },
         {
-          "name": "com.android.tools-dvlib-26.4.1-jar",
-          "filename": "dvlib-26.4.1.jar",
-          "path": "com/android/tools/dvlib/26.4.1",
+          "name": "com.android.tools-dvlib-26.4.2-jar",
+          "filename": "dvlib-26.4.2.jar",
+          "path": "com/android/tools/dvlib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.4.1/dvlib-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/dvlib/26.4.1/dvlib-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.4.2/dvlib-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/dvlib/26.4.2/dvlib-26.4.2.jar"
           ],
-          "sha256": "c2a4745f7b00dc5ddfd3e5ff29ac5c8b1633bba146bf039226c75d655ff2d74a"
+          "sha256": "f34fa4196d78b1c36db2e016303d59935fdc2b1abd0b4e40b95fa63d6087c582"
         },
         {
-          "name": "com.android.tools-repository-26.4.1-jar",
-          "filename": "repository-26.4.1.jar",
-          "path": "com/android/tools/repository/26.4.1",
+          "name": "com.android.tools-repository-26.4.2-jar",
+          "filename": "repository-26.4.2.jar",
+          "path": "com/android/tools/repository/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.4.1/repository-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/repository/26.4.1/repository-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.4.2/repository-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/repository/26.4.2/repository-26.4.2.jar"
           ],
-          "sha256": "34c82aceb4f5ec63ceddc9622f268a6a97ab3763119213a5911eba3de09bb8ee"
+          "sha256": "5183d0d2493d588d7960f954221a29130b67f1ac5f78c2d6f69195346b69617a"
         },
         {
-          "name": "com.android.tools-sdk-common-26.4.1-jar",
-          "filename": "sdk-common-26.4.1.jar",
-          "path": "com/android/tools/sdk-common/26.4.1",
+          "name": "com.android.tools-sdk-common-26.4.2-jar",
+          "filename": "sdk-common-26.4.2.jar",
+          "path": "com/android/tools/sdk-common/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.4.1/sdk-common-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/sdk-common/26.4.1/sdk-common-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.4.2/sdk-common-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/sdk-common/26.4.2/sdk-common-26.4.2.jar"
           ],
-          "sha256": "526a70dc939f550a18c8f30678f76bf80c85792525378bd1c6eb1eeafa00087b"
+          "sha256": "df1e814bdcee8f60c1057a3df2b2cd6c089623414017283740eb50152f1e70c5"
         },
         {
-          "name": "com.android.tools-sdklib-26.4.1-jar",
-          "filename": "sdklib-26.4.1.jar",
-          "path": "com/android/tools/sdklib/26.4.1",
+          "name": "com.android.tools-sdklib-26.4.2-jar",
+          "filename": "sdklib-26.4.2.jar",
+          "path": "com/android/tools/sdklib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.4.1/sdklib-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/sdklib/26.4.1/sdklib-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.4.2/sdklib-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/sdklib/26.4.2/sdklib-26.4.2.jar"
           ],
-          "sha256": "b94a1a377da3c55b205b85400f8234bf3c897d0b3f0e47d32cd1ed4fb754b913"
+          "sha256": "ebec9d8e0a140b376aade276b08572cb1f8cf954249b469bee6dce6fd5a45cd4"
         },
         {
           "name": "com.google.auto.value-auto-value-1.5.2-jar",
@@ -814,74 +814,74 @@
           "sha256": "dd8971c74a4e697899a8e95caae4ea8760ea6c486dc6b97b1795e75760420461"
         },
         {
-          "name": "androidx.databinding-databinding-common-3.4.1-pom",
-          "filename": "databinding-common-3.4.1.pom",
-          "path": "androidx/databinding/databinding-common/3.4.1",
+          "name": "androidx.databinding-databinding-common-3.4.2-pom",
+          "filename": "databinding-common-3.4.2.pom",
+          "path": "androidx/databinding/databinding-common/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-common/3.4.1/databinding-common-3.4.1.pom",
-            "https://jcenter.bintray.com/androidx/databinding/databinding-common/3.4.1/databinding-common-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-common/3.4.2/databinding-common-3.4.2.pom",
+            "https://jcenter.bintray.com/androidx/databinding/databinding-common/3.4.2/databinding-common-3.4.2.pom"
           ],
-          "sha256": "5abb019954ff54ee4b782f8a1d303da8c1035baeaa606702019e0cda32ff1ae8"
+          "sha256": "fb5c804e2d81186e9e63e45b7e97eec54aa6f5d502b763abfbb0c57b62b86b4c"
         },
         {
-          "name": "androidx.databinding-databinding-compiler-common-3.4.1-pom",
-          "filename": "databinding-compiler-common-3.4.1.pom",
-          "path": "androidx/databinding/databinding-compiler-common/3.4.1",
+          "name": "androidx.databinding-databinding-compiler-common-3.4.2-pom",
+          "filename": "databinding-compiler-common-3.4.2.pom",
+          "path": "androidx/databinding/databinding-compiler-common/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler-common/3.4.1/databinding-compiler-common-3.4.1.pom",
-            "https://jcenter.bintray.com/androidx/databinding/databinding-compiler-common/3.4.1/databinding-compiler-common-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler-common/3.4.2/databinding-compiler-common-3.4.2.pom",
+            "https://jcenter.bintray.com/androidx/databinding/databinding-compiler-common/3.4.2/databinding-compiler-common-3.4.2.pom"
           ],
-          "sha256": "988668d7810d1957cc6602e3a9a134a20243b9907745ceaf68352f47791346d1"
+          "sha256": "6082c0a366fac7506c65d276ecbb25b3a053428a4c1f534cd2568c1f12f23e52"
         },
         {
-          "name": "com.android.databinding-baseLibrary-3.4.1-pom",
-          "filename": "baseLibrary-3.4.1.pom",
-          "path": "com/android/databinding/baseLibrary/3.4.1",
+          "name": "com.android.databinding-baseLibrary-3.4.2-pom",
+          "filename": "baseLibrary-3.4.2.pom",
+          "path": "com/android/databinding/baseLibrary/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/databinding/baseLibrary/3.4.1/baseLibrary-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/databinding/baseLibrary/3.4.1/baseLibrary-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/databinding/baseLibrary/3.4.2/baseLibrary-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/databinding/baseLibrary/3.4.2/baseLibrary-3.4.2.pom"
           ],
-          "sha256": "7a1ff2a0a3b7e21a58fbd8334fdbd144599e15efd9bc5fbc46a1127611c3f4d7"
+          "sha256": "63da0e18ab10800d448b0d8ab2171bf9a2e273d06300a7c79fd39d7fa6effee1"
         },
         {
-          "name": "com.android.tools.analytics-library-crash-26.4.1-pom",
-          "filename": "crash-26.4.1.pom",
-          "path": "com/android/tools/analytics-library/crash/26.4.1",
+          "name": "com.android.tools.analytics-library-crash-26.4.2-pom",
+          "filename": "crash-26.4.2.pom",
+          "path": "com/android/tools/analytics-library/crash/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/crash/26.4.1/crash-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/crash/26.4.1/crash-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/crash/26.4.2/crash-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/crash/26.4.2/crash-26.4.2.pom"
           ],
-          "sha256": "faa9aa152b476e8ed3f2b2b30237318c732aab998e7613a1765d72b6280bcf3b"
+          "sha256": "aea2ab26c83212e1b81b5d2e91056ea41b1dbbc2f0801bbb3921a405da6bf685"
         },
         {
-          "name": "com.android.tools.analytics-library-protos-26.4.1-pom",
-          "filename": "protos-26.4.1.pom",
-          "path": "com/android/tools/analytics-library/protos/26.4.1",
+          "name": "com.android.tools.analytics-library-protos-26.4.2-pom",
+          "filename": "protos-26.4.2.pom",
+          "path": "com/android/tools/analytics-library/protos/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.4.1/protos-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/protos/26.4.1/protos-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.4.2/protos-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/protos/26.4.2/protos-26.4.2.pom"
           ],
-          "sha256": "81b9509f21d670832e5b3d4f2135720e39a1dfb1537058ac978474ad0f548e3a"
+          "sha256": "ff1ca6ebc2153aaf2ec92880c3240971b4aee894b19bd145f6385fbb18808029"
         },
         {
-          "name": "com.android.tools.analytics-library-shared-26.4.1-pom",
-          "filename": "shared-26.4.1.pom",
-          "path": "com/android/tools/analytics-library/shared/26.4.1",
+          "name": "com.android.tools.analytics-library-shared-26.4.2-pom",
+          "filename": "shared-26.4.2.pom",
+          "path": "com/android/tools/analytics-library/shared/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.4.1/shared-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/shared/26.4.1/shared-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.4.2/shared-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/shared/26.4.2/shared-26.4.2.pom"
           ],
-          "sha256": "ba0b26217fa9d482fb4795506bb73fb81c0f328ac0e7e5914a62e4b85c9fed21"
+          "sha256": "95cadcfabab9a6a7e8a2146938de653b559161c098d82a9d34621bbd2b8cdab9"
         },
         {
-          "name": "com.android.tools.analytics-library-tracker-26.4.1-pom",
-          "filename": "tracker-26.4.1.pom",
-          "path": "com/android/tools/analytics-library/tracker/26.4.1",
+          "name": "com.android.tools.analytics-library-tracker-26.4.2-pom",
+          "filename": "tracker-26.4.2.pom",
+          "path": "com/android/tools/analytics-library/tracker/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.4.1/tracker-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/tracker/26.4.1/tracker-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.4.2/tracker-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/tracker/26.4.2/tracker-26.4.2.pom"
           ],
-          "sha256": "9f59bf0e53a839f38da0c19803049ebbf1a2ff5f027da426f195c2159e6a534e"
+          "sha256": "ccfc624a522641d858e7a6477abb698889bd81de584d04b705a737bd59d7c784"
         },
         {
           "name": "com.android.tools.build.jetifier-jetifier-core-1.0.0-beta04-pom",
@@ -914,54 +914,54 @@
           "sha256": "31e5f0e56b59a7c1433ab4a0396fd6178ef28def6cf6eb58e235d7cf40efd01d"
         },
         {
-          "name": "com.android.tools.build-apksig-3.4.1-pom",
-          "filename": "apksig-3.4.1.pom",
-          "path": "com/android/tools/build/apksig/3.4.1",
+          "name": "com.android.tools.build-apksig-3.4.2-pom",
+          "filename": "apksig-3.4.2.pom",
+          "path": "com/android/tools/build/apksig/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.1/apksig-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.1/apksig-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.2/apksig-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.2/apksig-3.4.2.pom"
           ],
-          "sha256": "ad670afbdc19dbc182db6610228964ac3caf607979bd3a667911c458f271ce1e"
+          "sha256": "bf7a23f999b0ad601ff9bf7b1e3987993587e51527e1b00991f4cc85370b2fc1"
         },
         {
-          "name": "com.android.tools.build-apkzlib-3.4.1-pom",
-          "filename": "apkzlib-3.4.1.pom",
-          "path": "com/android/tools/build/apkzlib/3.4.1",
+          "name": "com.android.tools.build-apkzlib-3.4.2-pom",
+          "filename": "apkzlib-3.4.2.pom",
+          "path": "com/android/tools/build/apkzlib/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.1/apkzlib-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.1/apkzlib-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.2/apkzlib-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.2/apkzlib-3.4.2.pom"
           ],
-          "sha256": "c32e10de899bcc582998647c16d72284e3b95c8fda0ac2b318f7fc020e5f958a"
+          "sha256": "256d360aa2524cebf97cf245b93e175b7062719c68d015297cfef37cfe9930ab"
         },
         {
-          "name": "com.android.tools.build-builder-model-3.4.1-pom",
-          "filename": "builder-model-3.4.1.pom",
-          "path": "com/android/tools/build/builder-model/3.4.1",
+          "name": "com.android.tools.build-builder-model-3.4.2-pom",
+          "filename": "builder-model-3.4.2.pom",
+          "path": "com/android/tools/build/builder-model/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.4.1/builder-model-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/builder-model/3.4.1/builder-model-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.4.2/builder-model-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/builder-model/3.4.2/builder-model-3.4.2.pom"
           ],
-          "sha256": "ce748aa19e510e63b5c44c0f57fd3cf163b90d55fb1fee4fb4e74c3887c017f5"
+          "sha256": "677521e59c49c5e9c99ae390bab53139d062f05764d7363894c1e1864ef0aff5"
         },
         {
-          "name": "com.android.tools.build-builder-test-api-3.4.1-pom",
-          "filename": "builder-test-api-3.4.1.pom",
-          "path": "com/android/tools/build/builder-test-api/3.4.1",
+          "name": "com.android.tools.build-builder-test-api-3.4.2-pom",
+          "filename": "builder-test-api-3.4.2.pom",
+          "path": "com/android/tools/build/builder-test-api/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.4.1/builder-test-api-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/builder-test-api/3.4.1/builder-test-api-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.4.2/builder-test-api-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/builder-test-api/3.4.2/builder-test-api-3.4.2.pom"
           ],
-          "sha256": "0bee76e81b2f621a7a212f6fc8f05e545946c2e1b26733577245a7407d59564a"
+          "sha256": "7d96325cc2fef2fa3898d121e936528f987caddbbab7cfddb524c6995b09ab1f"
         },
         {
-          "name": "com.android.tools.build-builder-3.4.1-pom",
-          "filename": "builder-3.4.1.pom",
-          "path": "com/android/tools/build/builder/3.4.1",
+          "name": "com.android.tools.build-builder-3.4.2-pom",
+          "filename": "builder-3.4.2.pom",
+          "path": "com/android/tools/build/builder/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.4.1/builder-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/builder/3.4.1/builder-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.4.2/builder-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/builder/3.4.2/builder-3.4.2.pom"
           ],
-          "sha256": "a24fc23bc3dc943f4c4d92b46d365e5143a7ac29102dc621860589cac0751e0e"
+          "sha256": "0e7df1472a90a67d611f17528dfc2b6bcbc9fa7f799573ba79ec4407305a2ad8"
         },
         {
           "name": "com.android.tools.build-bundletool-0.7.2-pom",
@@ -974,34 +974,34 @@
           "sha256": "e917f5fc3bef4e31107c1aaa0e47781e788be9d86682288f44cd4a3ad17b3459"
         },
         {
-          "name": "com.android.tools.build-gradle-api-3.4.1-pom",
-          "filename": "gradle-api-3.4.1.pom",
-          "path": "com/android/tools/build/gradle-api/3.4.1",
+          "name": "com.android.tools.build-gradle-api-3.4.2-pom",
+          "filename": "gradle-api-3.4.2.pom",
+          "path": "com/android/tools/build/gradle-api/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.4.1/gradle-api-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/gradle-api/3.4.1/gradle-api-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.4.2/gradle-api-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/gradle-api/3.4.2/gradle-api-3.4.2.pom"
           ],
-          "sha256": "e9829377c31d084b9995baadcea58ddb5ab72b68fb36755bae77f9494faf1e62"
+          "sha256": "cc23bd10f9843e57f6f2bb1f5731ac32e1d73696927f93c3ea2972d76de3b017"
         },
         {
-          "name": "com.android.tools.build-gradle-3.4.1-pom",
-          "filename": "gradle-3.4.1.pom",
-          "path": "com/android/tools/build/gradle/3.4.1",
+          "name": "com.android.tools.build-gradle-3.4.2-pom",
+          "filename": "gradle-3.4.2.pom",
+          "path": "com/android/tools/build/gradle/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.4.1/gradle-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/gradle/3.4.1/gradle-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.4.2/gradle-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/gradle/3.4.2/gradle-3.4.2.pom"
           ],
-          "sha256": "dd83a93fc1abedbb7c282ec0600911c0ccb1c32f5b1e7e5ae29ab2b6e15bff9a"
+          "sha256": "e1d38f808e126ada6b7f77cc1d66e7fce01d1e03941d14e38062d41b7ab37953"
         },
         {
-          "name": "com.android.tools.build-manifest-merger-26.4.1-pom",
-          "filename": "manifest-merger-26.4.1.pom",
-          "path": "com/android/tools/build/manifest-merger/26.4.1",
+          "name": "com.android.tools.build-manifest-merger-26.4.2-pom",
+          "filename": "manifest-merger-26.4.2.pom",
+          "path": "com/android/tools/build/manifest-merger/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.4.1/manifest-merger-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.4.1/manifest-merger-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.4.2/manifest-merger-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.4.2/manifest-merger-26.4.2.pom"
           ],
-          "sha256": "ae52ab718a1487c433c508403583c9442d29c26b021672ea469ca0aadab32543"
+          "sha256": "d2575b5e4a009a32dddfbae58fc882d54345ca29e1e9d550ac689ab637524b01"
         },
         {
           "name": "com.android.tools.build-transform-api-2.0.0-deprecated-use-gradle-api-pom",
@@ -1014,94 +1014,94 @@
           "sha256": "7c62f3856e8abca1d79257925f26c12668693f5d95904056bbac88605cfd8575"
         },
         {
-          "name": "com.android.tools.ddms-ddmlib-26.4.1-pom",
-          "filename": "ddmlib-26.4.1.pom",
-          "path": "com/android/tools/ddms/ddmlib/26.4.1",
+          "name": "com.android.tools.ddms-ddmlib-26.4.2-pom",
+          "filename": "ddmlib-26.4.2.pom",
+          "path": "com/android/tools/ddms/ddmlib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.4.1/ddmlib-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.4.1/ddmlib-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.4.2/ddmlib-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.4.2/ddmlib-26.4.2.pom"
           ],
-          "sha256": "8cfc9d6bd64fb024e490475af1c0f80be33e633226e2c33a9008a45d080f89ff"
+          "sha256": "4aeb9585e81656f358fd1a7a45f8c711a9eef8a61ba88641e76f776cf4f1aa10"
         },
         {
-          "name": "com.android.tools.layoutlib-layoutlib-api-26.4.1-pom",
-          "filename": "layoutlib-api-26.4.1.pom",
-          "path": "com/android/tools/layoutlib/layoutlib-api/26.4.1",
+          "name": "com.android.tools.layoutlib-layoutlib-api-26.4.2-pom",
+          "filename": "layoutlib-api-26.4.2.pom",
+          "path": "com/android/tools/layoutlib/layoutlib-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.4.1/layoutlib-api-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/26.4.1/layoutlib-api-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.4.2/layoutlib-api-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/26.4.2/layoutlib-api-26.4.2.pom"
           ],
-          "sha256": "0a822c6678453a92ed655f3ab1e181a401526106a359850d430e72ff2ce22a9c"
+          "sha256": "d59ef58abb73f06650ce1d80641fe70a3908a071fc5f98267074e6e42f904360"
         },
         {
-          "name": "com.android.tools.lint-lint-gradle-api-26.4.1-pom",
-          "filename": "lint-gradle-api-26.4.1.pom",
-          "path": "com/android/tools/lint/lint-gradle-api/26.4.1",
+          "name": "com.android.tools.lint-lint-gradle-api-26.4.2-pom",
+          "filename": "lint-gradle-api-26.4.2.pom",
+          "path": "com/android/tools/lint/lint-gradle-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.4.1/lint-gradle-api-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle-api/26.4.1/lint-gradle-api-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.4.2/lint-gradle-api-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle-api/26.4.2/lint-gradle-api-26.4.2.pom"
           ],
-          "sha256": "6daceeace7c99886dd0046feb5a52137a0049c064a93f23a556dad577bcd8221"
+          "sha256": "a8496204c0e7def7adee23e3d0f7ff0117b92c4809ecc8d2c06fc6b18b53e7c6"
         },
         {
-          "name": "com.android.tools-annotations-26.4.1-pom",
-          "filename": "annotations-26.4.1.pom",
-          "path": "com/android/tools/annotations/26.4.1",
+          "name": "com.android.tools-annotations-26.4.2-pom",
+          "filename": "annotations-26.4.2.pom",
+          "path": "com/android/tools/annotations/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.4.1/annotations-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/annotations/26.4.1/annotations-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.4.2/annotations-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/annotations/26.4.2/annotations-26.4.2.pom"
           ],
-          "sha256": "cf2909f07a9c0da8d8709e845e8de5ad2b61dc36350304e01045bcabefc13343"
+          "sha256": "c17bdf198c7609ce6fc63169800b26e366ff3131b8360ca9979c8234eba90c44"
         },
         {
-          "name": "com.android.tools-common-26.4.1-pom",
-          "filename": "common-26.4.1.pom",
-          "path": "com/android/tools/common/26.4.1",
+          "name": "com.android.tools-common-26.4.2-pom",
+          "filename": "common-26.4.2.pom",
+          "path": "com/android/tools/common/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.4.1/common-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/common/26.4.1/common-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.4.2/common-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/common/26.4.2/common-26.4.2.pom"
           ],
-          "sha256": "1dfdebc860583535ca541663d81f5ddf52e1389b2e6ec78edd77b55bea2e6d2c"
+          "sha256": "612f0dcf0c4675737ae8e214bb5b16b8536aaa3cfb786dfa93245e6e8b450e73"
         },
         {
-          "name": "com.android.tools-dvlib-26.4.1-pom",
-          "filename": "dvlib-26.4.1.pom",
-          "path": "com/android/tools/dvlib/26.4.1",
+          "name": "com.android.tools-dvlib-26.4.2-pom",
+          "filename": "dvlib-26.4.2.pom",
+          "path": "com/android/tools/dvlib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.4.1/dvlib-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/dvlib/26.4.1/dvlib-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.4.2/dvlib-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/dvlib/26.4.2/dvlib-26.4.2.pom"
           ],
-          "sha256": "8eed0f1fd602e5bdda9e1e769874f4928af9fb41cf1392433905c66ccb311374"
+          "sha256": "fe401446f64f3531565ce332b09b0de5ca53134b3263ce931896f3f5d94460bf"
         },
         {
-          "name": "com.android.tools-repository-26.4.1-pom",
-          "filename": "repository-26.4.1.pom",
-          "path": "com/android/tools/repository/26.4.1",
+          "name": "com.android.tools-repository-26.4.2-pom",
+          "filename": "repository-26.4.2.pom",
+          "path": "com/android/tools/repository/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.4.1/repository-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/repository/26.4.1/repository-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.4.2/repository-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/repository/26.4.2/repository-26.4.2.pom"
           ],
-          "sha256": "748749609f753c6403c2c5537b954991a72cb9f8188c6e0a52b36790cfb09de0"
+          "sha256": "98702b96fb86f22c1f230316ae8172fd9e843929485bba86a1a01e97614a8434"
         },
         {
-          "name": "com.android.tools-sdk-common-26.4.1-pom",
-          "filename": "sdk-common-26.4.1.pom",
-          "path": "com/android/tools/sdk-common/26.4.1",
+          "name": "com.android.tools-sdk-common-26.4.2-pom",
+          "filename": "sdk-common-26.4.2.pom",
+          "path": "com/android/tools/sdk-common/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.4.1/sdk-common-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/sdk-common/26.4.1/sdk-common-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.4.2/sdk-common-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/sdk-common/26.4.2/sdk-common-26.4.2.pom"
           ],
-          "sha256": "2cfb457db44e7857d002b682fd6cab142abaa6cc8764dd2557ccd1c2ee8af889"
+          "sha256": "c7786e12c89c77e4daea2ebb991491821f90364cd5e06a02b56371a42084b3c0"
         },
         {
-          "name": "com.android.tools-sdklib-26.4.1-pom",
-          "filename": "sdklib-26.4.1.pom",
-          "path": "com/android/tools/sdklib/26.4.1",
+          "name": "com.android.tools-sdklib-26.4.2-pom",
+          "filename": "sdklib-26.4.2.pom",
+          "path": "com/android/tools/sdklib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.4.1/sdklib-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/sdklib/26.4.1/sdklib-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.4.2/sdklib-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/sdklib/26.4.2/sdklib-26.4.2.pom"
           ],
-          "sha256": "639907c400a23c122378462cb8675a01872b17dca7d30961b76fd4b3e05f0e88"
+          "sha256": "768b365f2486e344d012d5b4b9b195fde8bfb442c23dca89d258a7766cdba5c8"
         },
         {
           "name": "com.google.auto.value-auto-value-1.5.2-pom",
@@ -2706,524 +2706,524 @@
           "sha256": "1f72f836339d03c6eb013f65075e76ca87075a577578eb4f95f74a3a5d253128"
         },
         {
-          "name": "com.android.tools.analytics-library-protos-26.4.1-jar",
-          "filename": "protos-26.4.1.jar",
-          "path": "com/android/tools/analytics-library/protos/26.4.1",
+          "name": "com.android.tools.analytics-library-protos-26.4.2-jar",
+          "filename": "protos-26.4.2.jar",
+          "path": "com/android/tools/analytics-library/protos/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.4.1/protos-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/protos/26.4.1/protos-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.4.2/protos-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/protos/26.4.2/protos-26.4.2.jar"
           ],
-          "sha256": "b2f871fa927d27bf7894d28b8398c42a1bc4ba3085e97ed73001dcc902a90735"
+          "sha256": "39f429bc72340a45ea1b77ade9a4aa11ecebcb2a9dd0bb3619bfedc40800af0e"
         },
         {
-          "name": "com.android.tools.analytics-library-protos-26.4.1-pom",
-          "filename": "protos-26.4.1.pom",
-          "path": "com/android/tools/analytics-library/protos/26.4.1",
+          "name": "com.android.tools.analytics-library-protos-26.4.2-pom",
+          "filename": "protos-26.4.2.pom",
+          "path": "com/android/tools/analytics-library/protos/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.4.1/protos-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/protos/26.4.1/protos-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.4.2/protos-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/protos/26.4.2/protos-26.4.2.pom"
           ],
-          "sha256": "81b9509f21d670832e5b3d4f2135720e39a1dfb1537058ac978474ad0f548e3a"
+          "sha256": "ff1ca6ebc2153aaf2ec92880c3240971b4aee894b19bd145f6385fbb18808029"
         },
         {
-          "name": "com.android.tools.analytics-library-shared-26.4.1-jar",
-          "filename": "shared-26.4.1.jar",
-          "path": "com/android/tools/analytics-library/shared/26.4.1",
+          "name": "com.android.tools.analytics-library-shared-26.4.2-jar",
+          "filename": "shared-26.4.2.jar",
+          "path": "com/android/tools/analytics-library/shared/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.4.1/shared-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/shared/26.4.1/shared-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.4.2/shared-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/shared/26.4.2/shared-26.4.2.jar"
           ],
-          "sha256": "2168b02e5bf6711118d4151218fa155156608c59f6e05b771aa6d8b8d6f20702"
+          "sha256": "a3ee9f50da48f12d3677f18372fffdcf51f3c340335e335fb71365c92e31d1de"
         },
         {
-          "name": "com.android.tools.analytics-library-shared-26.4.1-pom",
-          "filename": "shared-26.4.1.pom",
-          "path": "com/android/tools/analytics-library/shared/26.4.1",
+          "name": "com.android.tools.analytics-library-shared-26.4.2-pom",
+          "filename": "shared-26.4.2.pom",
+          "path": "com/android/tools/analytics-library/shared/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.4.1/shared-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/shared/26.4.1/shared-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.4.2/shared-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/shared/26.4.2/shared-26.4.2.pom"
           ],
-          "sha256": "ba0b26217fa9d482fb4795506bb73fb81c0f328ac0e7e5914a62e4b85c9fed21"
+          "sha256": "95cadcfabab9a6a7e8a2146938de653b559161c098d82a9d34621bbd2b8cdab9"
         },
         {
-          "name": "com.android.tools.analytics-library-tracker-26.4.1-jar",
-          "filename": "tracker-26.4.1.jar",
-          "path": "com/android/tools/analytics-library/tracker/26.4.1",
+          "name": "com.android.tools.analytics-library-tracker-26.4.2-jar",
+          "filename": "tracker-26.4.2.jar",
+          "path": "com/android/tools/analytics-library/tracker/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.4.1/tracker-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/tracker/26.4.1/tracker-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.4.2/tracker-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/tracker/26.4.2/tracker-26.4.2.jar"
           ],
-          "sha256": "972c7f722cf84d22111f029ff662bb2a5baa4ace562d5b140a5b7482ff153c20"
+          "sha256": "b888eba61ebe734f8e50b60fa1bf38d9144dc031abb3704d6f2b4e445a53196e"
         },
         {
-          "name": "com.android.tools.analytics-library-tracker-26.4.1-pom",
-          "filename": "tracker-26.4.1.pom",
-          "path": "com/android/tools/analytics-library/tracker/26.4.1",
+          "name": "com.android.tools.analytics-library-tracker-26.4.2-pom",
+          "filename": "tracker-26.4.2.pom",
+          "path": "com/android/tools/analytics-library/tracker/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.4.1/tracker-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/analytics-library/tracker/26.4.1/tracker-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.4.2/tracker-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/analytics-library/tracker/26.4.2/tracker-26.4.2.pom"
           ],
-          "sha256": "9f59bf0e53a839f38da0c19803049ebbf1a2ff5f027da426f195c2159e6a534e"
+          "sha256": "ccfc624a522641d858e7a6477abb698889bd81de584d04b705a737bd59d7c784"
         },
         {
-          "name": "com.android.tools.build-apksig-3.4.1-jar",
-          "filename": "apksig-3.4.1.jar",
-          "path": "com/android/tools/build/apksig/3.4.1",
+          "name": "com.android.tools.build-apksig-3.4.2-jar",
+          "filename": "apksig-3.4.2.jar",
+          "path": "com/android/tools/build/apksig/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.1/apksig-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.1/apksig-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.2/apksig-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.2/apksig-3.4.2.jar"
           ],
-          "sha256": "2a5cd4e913001de7a2204263938f39d9b3ca31f14c614831c298b582749390d8"
+          "sha256": "7cb448a8317dc3b82629898c211895862453eee62acb12ad23c32ccdc2c942e2"
         },
         {
-          "name": "com.android.tools.build-apksig-3.4.1-pom",
-          "filename": "apksig-3.4.1.pom",
-          "path": "com/android/tools/build/apksig/3.4.1",
+          "name": "com.android.tools.build-apksig-3.4.2-pom",
+          "filename": "apksig-3.4.2.pom",
+          "path": "com/android/tools/build/apksig/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.1/apksig-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.1/apksig-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.2/apksig-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.2/apksig-3.4.2.pom"
           ],
-          "sha256": "ad670afbdc19dbc182db6610228964ac3caf607979bd3a667911c458f271ce1e"
+          "sha256": "bf7a23f999b0ad601ff9bf7b1e3987993587e51527e1b00991f4cc85370b2fc1"
         },
         {
-          "name": "com.android.tools.build-apkzlib-3.4.1-jar",
-          "filename": "apkzlib-3.4.1.jar",
-          "path": "com/android/tools/build/apkzlib/3.4.1",
+          "name": "com.android.tools.build-apkzlib-3.4.2-jar",
+          "filename": "apkzlib-3.4.2.jar",
+          "path": "com/android/tools/build/apkzlib/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.1/apkzlib-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.1/apkzlib-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.2/apkzlib-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.2/apkzlib-3.4.2.jar"
           ],
-          "sha256": "c0bd655dc86e3f87f5d8d9a66b3bcab47a363cb02d874879a507484f268e384c"
+          "sha256": "e00dbbd0997beba194e18d2a62647e42b2e62192652796bcbe5ea9b06687ba5c"
         },
         {
-          "name": "com.android.tools.build-apkzlib-3.4.1-pom",
-          "filename": "apkzlib-3.4.1.pom",
-          "path": "com/android/tools/build/apkzlib/3.4.1",
+          "name": "com.android.tools.build-apkzlib-3.4.2-pom",
+          "filename": "apkzlib-3.4.2.pom",
+          "path": "com/android/tools/build/apkzlib/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.1/apkzlib-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.1/apkzlib-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.2/apkzlib-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.2/apkzlib-3.4.2.pom"
           ],
-          "sha256": "c32e10de899bcc582998647c16d72284e3b95c8fda0ac2b318f7fc020e5f958a"
+          "sha256": "256d360aa2524cebf97cf245b93e175b7062719c68d015297cfef37cfe9930ab"
         },
         {
-          "name": "com.android.tools.build-builder-model-3.4.1-jar",
-          "filename": "builder-model-3.4.1.jar",
-          "path": "com/android/tools/build/builder-model/3.4.1",
+          "name": "com.android.tools.build-builder-model-3.4.2-jar",
+          "filename": "builder-model-3.4.2.jar",
+          "path": "com/android/tools/build/builder-model/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.4.1/builder-model-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/builder-model/3.4.1/builder-model-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.4.2/builder-model-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/builder-model/3.4.2/builder-model-3.4.2.jar"
           ],
-          "sha256": "374fda7befa190373b4d0e2745d8efc73e6b76c6bffa5c1e786362e2c9f662f1"
+          "sha256": "ddb36ca7fe72024bd53fbdd2700f1a9a9af5b1502062d59952eb3da7584fe413"
         },
         {
-          "name": "com.android.tools.build-builder-model-3.4.1-pom",
-          "filename": "builder-model-3.4.1.pom",
-          "path": "com/android/tools/build/builder-model/3.4.1",
+          "name": "com.android.tools.build-builder-model-3.4.2-pom",
+          "filename": "builder-model-3.4.2.pom",
+          "path": "com/android/tools/build/builder-model/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.4.1/builder-model-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/builder-model/3.4.1/builder-model-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.4.2/builder-model-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/builder-model/3.4.2/builder-model-3.4.2.pom"
           ],
-          "sha256": "ce748aa19e510e63b5c44c0f57fd3cf163b90d55fb1fee4fb4e74c3887c017f5"
+          "sha256": "677521e59c49c5e9c99ae390bab53139d062f05764d7363894c1e1864ef0aff5"
         },
         {
-          "name": "com.android.tools.build-builder-test-api-3.4.1-jar",
-          "filename": "builder-test-api-3.4.1.jar",
-          "path": "com/android/tools/build/builder-test-api/3.4.1",
+          "name": "com.android.tools.build-builder-test-api-3.4.2-jar",
+          "filename": "builder-test-api-3.4.2.jar",
+          "path": "com/android/tools/build/builder-test-api/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.4.1/builder-test-api-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/builder-test-api/3.4.1/builder-test-api-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.4.2/builder-test-api-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/builder-test-api/3.4.2/builder-test-api-3.4.2.jar"
           ],
-          "sha256": "860ef353a74d1ae7a2eda2c3f0cf14296445a0356d2aaed61b9fd2a608757c24"
+          "sha256": "40c62a008da4fa933cb20135227409d2953ed88ed68195e0f631d326c5675c46"
         },
         {
-          "name": "com.android.tools.build-builder-test-api-3.4.1-pom",
-          "filename": "builder-test-api-3.4.1.pom",
-          "path": "com/android/tools/build/builder-test-api/3.4.1",
+          "name": "com.android.tools.build-builder-test-api-3.4.2-pom",
+          "filename": "builder-test-api-3.4.2.pom",
+          "path": "com/android/tools/build/builder-test-api/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.4.1/builder-test-api-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/builder-test-api/3.4.1/builder-test-api-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.4.2/builder-test-api-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/builder-test-api/3.4.2/builder-test-api-3.4.2.pom"
           ],
-          "sha256": "0bee76e81b2f621a7a212f6fc8f05e545946c2e1b26733577245a7407d59564a"
+          "sha256": "7d96325cc2fef2fa3898d121e936528f987caddbbab7cfddb524c6995b09ab1f"
         },
         {
-          "name": "com.android.tools.build-builder-3.4.1-jar",
-          "filename": "builder-3.4.1.jar",
-          "path": "com/android/tools/build/builder/3.4.1",
+          "name": "com.android.tools.build-builder-3.4.2-jar",
+          "filename": "builder-3.4.2.jar",
+          "path": "com/android/tools/build/builder/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.4.1/builder-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/builder/3.4.1/builder-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.4.2/builder-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/builder/3.4.2/builder-3.4.2.jar"
           ],
-          "sha256": "73b17cf1fcd87784aed15167aa4db8d62f8e8ca4d437e84c7e6c3e72889849ba"
+          "sha256": "3d104b1e0083aac49f5ea8d5e0e0cd740dd333bef2683a3214e1cd1953ffd661"
         },
         {
-          "name": "com.android.tools.build-builder-3.4.1-pom",
-          "filename": "builder-3.4.1.pom",
-          "path": "com/android/tools/build/builder/3.4.1",
+          "name": "com.android.tools.build-builder-3.4.2-pom",
+          "filename": "builder-3.4.2.pom",
+          "path": "com/android/tools/build/builder/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.4.1/builder-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/builder/3.4.1/builder-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.4.2/builder-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/builder/3.4.2/builder-3.4.2.pom"
           ],
-          "sha256": "a24fc23bc3dc943f4c4d92b46d365e5143a7ac29102dc621860589cac0751e0e"
+          "sha256": "0e7df1472a90a67d611f17528dfc2b6bcbc9fa7f799573ba79ec4407305a2ad8"
         },
         {
-          "name": "com.android.tools.build-gradle-api-3.4.1-jar",
-          "filename": "gradle-api-3.4.1.jar",
-          "path": "com/android/tools/build/gradle-api/3.4.1",
+          "name": "com.android.tools.build-gradle-api-3.4.2-jar",
+          "filename": "gradle-api-3.4.2.jar",
+          "path": "com/android/tools/build/gradle-api/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.4.1/gradle-api-3.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/gradle-api/3.4.1/gradle-api-3.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.4.2/gradle-api-3.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/gradle-api/3.4.2/gradle-api-3.4.2.jar"
           ],
-          "sha256": "133ca5bd918dd2fc7dce6c797169a7dd8f850fa1f7c87967ba6a32f6e2928083"
+          "sha256": "e6cddde562483c96b699be25fc91a78e141397e51a382eedae9b2c0e22ea22f5"
         },
         {
-          "name": "com.android.tools.build-gradle-api-3.4.1-pom",
-          "filename": "gradle-api-3.4.1.pom",
-          "path": "com/android/tools/build/gradle-api/3.4.1",
+          "name": "com.android.tools.build-gradle-api-3.4.2-pom",
+          "filename": "gradle-api-3.4.2.pom",
+          "path": "com/android/tools/build/gradle-api/3.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.4.1/gradle-api-3.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/gradle-api/3.4.1/gradle-api-3.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.4.2/gradle-api-3.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/gradle-api/3.4.2/gradle-api-3.4.2.pom"
           ],
-          "sha256": "e9829377c31d084b9995baadcea58ddb5ab72b68fb36755bae77f9494faf1e62"
+          "sha256": "cc23bd10f9843e57f6f2bb1f5731ac32e1d73696927f93c3ea2972d76de3b017"
         },
         {
-          "name": "com.android.tools.build-manifest-merger-26.4.1-jar",
-          "filename": "manifest-merger-26.4.1.jar",
-          "path": "com/android/tools/build/manifest-merger/26.4.1",
+          "name": "com.android.tools.build-manifest-merger-26.4.2-jar",
+          "filename": "manifest-merger-26.4.2.jar",
+          "path": "com/android/tools/build/manifest-merger/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.4.1/manifest-merger-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.4.1/manifest-merger-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.4.2/manifest-merger-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.4.2/manifest-merger-26.4.2.jar"
           ],
-          "sha256": "495ba49fe08befa0715670597d246c6714753dd8e3475ced6cb0587a5293041c"
+          "sha256": "86a43c18ab36ae51b997784880492336c009891a05df7b40a574da51031c3f63"
         },
         {
-          "name": "com.android.tools.build-manifest-merger-26.4.1-pom",
-          "filename": "manifest-merger-26.4.1.pom",
-          "path": "com/android/tools/build/manifest-merger/26.4.1",
+          "name": "com.android.tools.build-manifest-merger-26.4.2-pom",
+          "filename": "manifest-merger-26.4.2.pom",
+          "path": "com/android/tools/build/manifest-merger/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.4.1/manifest-merger-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.4.1/manifest-merger-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.4.2/manifest-merger-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.4.2/manifest-merger-26.4.2.pom"
           ],
-          "sha256": "ae52ab718a1487c433c508403583c9442d29c26b021672ea469ca0aadab32543"
+          "sha256": "d2575b5e4a009a32dddfbae58fc882d54345ca29e1e9d550ac689ab637524b01"
         },
         {
-          "name": "com.android.tools.ddms-ddmlib-26.4.1-jar",
-          "filename": "ddmlib-26.4.1.jar",
-          "path": "com/android/tools/ddms/ddmlib/26.4.1",
+          "name": "com.android.tools.ddms-ddmlib-26.4.2-jar",
+          "filename": "ddmlib-26.4.2.jar",
+          "path": "com/android/tools/ddms/ddmlib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.4.1/ddmlib-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.4.1/ddmlib-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.4.2/ddmlib-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.4.2/ddmlib-26.4.2.jar"
           ],
-          "sha256": "b2751535bd173c9acdb8a3475b563046903ecc06bc1767e9b23a417877588875"
+          "sha256": "330e3eb76d2f96e3931a8cccdbf16435e92b3398dcaa8b65c8cd1034864de720"
         },
         {
-          "name": "com.android.tools.ddms-ddmlib-26.4.1-pom",
-          "filename": "ddmlib-26.4.1.pom",
-          "path": "com/android/tools/ddms/ddmlib/26.4.1",
+          "name": "com.android.tools.ddms-ddmlib-26.4.2-pom",
+          "filename": "ddmlib-26.4.2.pom",
+          "path": "com/android/tools/ddms/ddmlib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.4.1/ddmlib-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.4.1/ddmlib-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.4.2/ddmlib-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.4.2/ddmlib-26.4.2.pom"
           ],
-          "sha256": "8cfc9d6bd64fb024e490475af1c0f80be33e633226e2c33a9008a45d080f89ff"
+          "sha256": "4aeb9585e81656f358fd1a7a45f8c711a9eef8a61ba88641e76f776cf4f1aa10"
         },
         {
-          "name": "com.android.tools.external.com-intellij-intellij-core-26.4.1-jar",
-          "filename": "intellij-core-26.4.1.jar",
-          "path": "com/android/tools/external/com-intellij/intellij-core/26.4.1",
+          "name": "com.android.tools.external.com-intellij-intellij-core-26.4.2-jar",
+          "filename": "intellij-core-26.4.2.jar",
+          "path": "com/android/tools/external/com-intellij/intellij-core/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/external/com-intellij/intellij-core/26.4.1/intellij-core-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/external/com-intellij/intellij-core/26.4.1/intellij-core-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/external/com-intellij/intellij-core/26.4.2/intellij-core-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/external/com-intellij/intellij-core/26.4.2/intellij-core-26.4.2.jar"
           ],
-          "sha256": "f3cd36b60c283b603929042985e64f9ff557240679968d6d07d7f7f6f14424ab"
+          "sha256": "890258258338ddfdec138852d099fec389cdcdf1d0a9cb2d0775e4275cb3a05d"
         },
         {
-          "name": "com.android.tools.external.com-intellij-intellij-core-26.4.1-pom",
-          "filename": "intellij-core-26.4.1.pom",
-          "path": "com/android/tools/external/com-intellij/intellij-core/26.4.1",
+          "name": "com.android.tools.external.com-intellij-intellij-core-26.4.2-pom",
+          "filename": "intellij-core-26.4.2.pom",
+          "path": "com/android/tools/external/com-intellij/intellij-core/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/external/com-intellij/intellij-core/26.4.1/intellij-core-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/external/com-intellij/intellij-core/26.4.1/intellij-core-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/external/com-intellij/intellij-core/26.4.2/intellij-core-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/external/com-intellij/intellij-core/26.4.2/intellij-core-26.4.2.pom"
           ],
-          "sha256": "dfdf05ac46ef0cad77a4b2f66921312d3c301e542f47201b270965bf699eaf8a"
+          "sha256": "e772f888bf1cb338f5f6d7801516cb48e31b57f8d81ae07304b0ad1a2cb1c8dc"
         },
         {
-          "name": "com.android.tools.external.com-intellij-kotlin-compiler-26.4.1-jar",
-          "filename": "kotlin-compiler-26.4.1.jar",
-          "path": "com/android/tools/external/com-intellij/kotlin-compiler/26.4.1",
+          "name": "com.android.tools.external.com-intellij-kotlin-compiler-26.4.2-jar",
+          "filename": "kotlin-compiler-26.4.2.jar",
+          "path": "com/android/tools/external/com-intellij/kotlin-compiler/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/external/com-intellij/kotlin-compiler/26.4.1/kotlin-compiler-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/external/com-intellij/kotlin-compiler/26.4.1/kotlin-compiler-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/external/com-intellij/kotlin-compiler/26.4.2/kotlin-compiler-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/external/com-intellij/kotlin-compiler/26.4.2/kotlin-compiler-26.4.2.jar"
           ],
-          "sha256": "72615ad06ada2c13db75f33e1876e861a150023453f6dcd2c7d5e86e0a4ff097"
+          "sha256": "f97df41a49d2f9ec428d847b0691b55541d4b5d4db19d630cf8dc3f38cd34d4a"
         },
         {
-          "name": "com.android.tools.external.com-intellij-kotlin-compiler-26.4.1-pom",
-          "filename": "kotlin-compiler-26.4.1.pom",
-          "path": "com/android/tools/external/com-intellij/kotlin-compiler/26.4.1",
+          "name": "com.android.tools.external.com-intellij-kotlin-compiler-26.4.2-pom",
+          "filename": "kotlin-compiler-26.4.2.pom",
+          "path": "com/android/tools/external/com-intellij/kotlin-compiler/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/external/com-intellij/kotlin-compiler/26.4.1/kotlin-compiler-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/external/com-intellij/kotlin-compiler/26.4.1/kotlin-compiler-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/external/com-intellij/kotlin-compiler/26.4.2/kotlin-compiler-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/external/com-intellij/kotlin-compiler/26.4.2/kotlin-compiler-26.4.2.pom"
           ],
-          "sha256": "dd083f18be8544d5c3a9d914ba8b56fb886fd1b88a51971b31df6ca97e583f60"
+          "sha256": "7adec4d67ee1ea6cda230bdd549f275c4a5cf08230c9407f632953adc0e26434"
         },
         {
-          "name": "com.android.tools.external.org-jetbrains-uast-26.4.1-jar",
-          "filename": "uast-26.4.1.jar",
-          "path": "com/android/tools/external/org-jetbrains/uast/26.4.1",
+          "name": "com.android.tools.external.org-jetbrains-uast-26.4.2-jar",
+          "filename": "uast-26.4.2.jar",
+          "path": "com/android/tools/external/org-jetbrains/uast/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/external/org-jetbrains/uast/26.4.1/uast-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/external/org-jetbrains/uast/26.4.1/uast-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/external/org-jetbrains/uast/26.4.2/uast-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/external/org-jetbrains/uast/26.4.2/uast-26.4.2.jar"
           ],
-          "sha256": "9c7f09ea087369d74bebec094f9cc6cc6d5b58264f1075fc933636dc6700ac34"
+          "sha256": "187b199e1744bd3e922fb52d8f3366311468bd263aab24c65ee989d7ce8c55c3"
         },
         {
-          "name": "com.android.tools.external.org-jetbrains-uast-26.4.1-pom",
-          "filename": "uast-26.4.1.pom",
-          "path": "com/android/tools/external/org-jetbrains/uast/26.4.1",
+          "name": "com.android.tools.external.org-jetbrains-uast-26.4.2-pom",
+          "filename": "uast-26.4.2.pom",
+          "path": "com/android/tools/external/org-jetbrains/uast/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/external/org-jetbrains/uast/26.4.1/uast-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/external/org-jetbrains/uast/26.4.1/uast-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/external/org-jetbrains/uast/26.4.2/uast-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/external/org-jetbrains/uast/26.4.2/uast-26.4.2.pom"
           ],
-          "sha256": "1a5eb6b02f81744b8b3aa3be6157626157b0c066bb8cf303bc35c80a9faea5e9"
+          "sha256": "0f308532ff2c78cfbb61f563cf65e8cf408afb8a615598c512649a9c397177d4"
         },
         {
-          "name": "com.android.tools.layoutlib-layoutlib-api-26.4.1-jar",
-          "filename": "layoutlib-api-26.4.1.jar",
-          "path": "com/android/tools/layoutlib/layoutlib-api/26.4.1",
+          "name": "com.android.tools.layoutlib-layoutlib-api-26.4.2-jar",
+          "filename": "layoutlib-api-26.4.2.jar",
+          "path": "com/android/tools/layoutlib/layoutlib-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.4.1/layoutlib-api-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/26.4.1/layoutlib-api-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.4.2/layoutlib-api-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/26.4.2/layoutlib-api-26.4.2.jar"
           ],
-          "sha256": "85686d58cefc254e16ece2061a357ffe5a4cc5ca02117eefb4210d470e4536d0"
+          "sha256": "52fbb3614feee0d5d474c35f8c533ff3fa090cbf0df46c06e4cf353cae1c3652"
         },
         {
-          "name": "com.android.tools.layoutlib-layoutlib-api-26.4.1-pom",
-          "filename": "layoutlib-api-26.4.1.pom",
-          "path": "com/android/tools/layoutlib/layoutlib-api/26.4.1",
+          "name": "com.android.tools.layoutlib-layoutlib-api-26.4.2-pom",
+          "filename": "layoutlib-api-26.4.2.pom",
+          "path": "com/android/tools/layoutlib/layoutlib-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.4.1/layoutlib-api-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/26.4.1/layoutlib-api-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.4.2/layoutlib-api-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/26.4.2/layoutlib-api-26.4.2.pom"
           ],
-          "sha256": "0a822c6678453a92ed655f3ab1e181a401526106a359850d430e72ff2ce22a9c"
+          "sha256": "d59ef58abb73f06650ce1d80641fe70a3908a071fc5f98267074e6e42f904360"
         },
         {
-          "name": "com.android.tools.lint-lint-api-26.4.1-jar",
-          "filename": "lint-api-26.4.1.jar",
-          "path": "com/android/tools/lint/lint-api/26.4.1",
+          "name": "com.android.tools.lint-lint-api-26.4.2-jar",
+          "filename": "lint-api-26.4.2.jar",
+          "path": "com/android/tools/lint/lint-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-api/26.4.1/lint-api-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-api/26.4.1/lint-api-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-api/26.4.2/lint-api-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-api/26.4.2/lint-api-26.4.2.jar"
           ],
-          "sha256": "1f99d14a3f9345c6fc964e0d4751b58c3e68bf9bf4c9d27c69dd32e41de93839"
+          "sha256": "d12d58c8a2ccb68daa7cbd70a0904b8f05dfdfc6c3a1871923b1b903bf5bf4da"
         },
         {
-          "name": "com.android.tools.lint-lint-api-26.4.1-pom",
-          "filename": "lint-api-26.4.1.pom",
-          "path": "com/android/tools/lint/lint-api/26.4.1",
+          "name": "com.android.tools.lint-lint-api-26.4.2-pom",
+          "filename": "lint-api-26.4.2.pom",
+          "path": "com/android/tools/lint/lint-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-api/26.4.1/lint-api-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-api/26.4.1/lint-api-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-api/26.4.2/lint-api-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-api/26.4.2/lint-api-26.4.2.pom"
           ],
-          "sha256": "c66d10bb65de7ab86c83b828ca6965bd7609c1fdd921508d66f87328084a4ede"
+          "sha256": "d3cdb948a13f651daf42dba2b488e4cd76092cfc5c00993c653060fb298b7ec8"
         },
         {
-          "name": "com.android.tools.lint-lint-checks-26.4.1-jar",
-          "filename": "lint-checks-26.4.1.jar",
-          "path": "com/android/tools/lint/lint-checks/26.4.1",
+          "name": "com.android.tools.lint-lint-checks-26.4.2-jar",
+          "filename": "lint-checks-26.4.2.jar",
+          "path": "com/android/tools/lint/lint-checks/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-checks/26.4.1/lint-checks-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-checks/26.4.1/lint-checks-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-checks/26.4.2/lint-checks-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-checks/26.4.2/lint-checks-26.4.2.jar"
           ],
-          "sha256": "0153882c7d552c781c7a7e320b3eefb425377b84438447b6715094ceb1ae5d12"
+          "sha256": "8a0246f594d685bda999a66b2409cb4e0da59e59a66021c9293fdb40cc49d879"
         },
         {
-          "name": "com.android.tools.lint-lint-checks-26.4.1-pom",
-          "filename": "lint-checks-26.4.1.pom",
-          "path": "com/android/tools/lint/lint-checks/26.4.1",
+          "name": "com.android.tools.lint-lint-checks-26.4.2-pom",
+          "filename": "lint-checks-26.4.2.pom",
+          "path": "com/android/tools/lint/lint-checks/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-checks/26.4.1/lint-checks-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-checks/26.4.1/lint-checks-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-checks/26.4.2/lint-checks-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-checks/26.4.2/lint-checks-26.4.2.pom"
           ],
-          "sha256": "74d7e2efb935b84bb9b38d2d292efd6f623dd3f88df93c77db2099227a1a2ba7"
+          "sha256": "e9327b00b990f6b28f8cc974e98ea4436bbf03e2bc66ea4769970eb26dd840b5"
         },
         {
-          "name": "com.android.tools.lint-lint-gradle-api-26.4.1-jar",
-          "filename": "lint-gradle-api-26.4.1.jar",
-          "path": "com/android/tools/lint/lint-gradle-api/26.4.1",
+          "name": "com.android.tools.lint-lint-gradle-api-26.4.2-jar",
+          "filename": "lint-gradle-api-26.4.2.jar",
+          "path": "com/android/tools/lint/lint-gradle-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.4.1/lint-gradle-api-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle-api/26.4.1/lint-gradle-api-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.4.2/lint-gradle-api-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle-api/26.4.2/lint-gradle-api-26.4.2.jar"
           ],
-          "sha256": "82ee87dd110c106f082c90382e2f7166d323e115b8648493d38766db28a74131"
+          "sha256": "90c6a1a650a257abb5d445dde9c172d55e6d28ce943a35b4e263c4cb3dcc96b0"
         },
         {
-          "name": "com.android.tools.lint-lint-gradle-api-26.4.1-pom",
-          "filename": "lint-gradle-api-26.4.1.pom",
-          "path": "com/android/tools/lint/lint-gradle-api/26.4.1",
+          "name": "com.android.tools.lint-lint-gradle-api-26.4.2-pom",
+          "filename": "lint-gradle-api-26.4.2.pom",
+          "path": "com/android/tools/lint/lint-gradle-api/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.4.1/lint-gradle-api-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle-api/26.4.1/lint-gradle-api-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.4.2/lint-gradle-api-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle-api/26.4.2/lint-gradle-api-26.4.2.pom"
           ],
-          "sha256": "6daceeace7c99886dd0046feb5a52137a0049c064a93f23a556dad577bcd8221"
+          "sha256": "a8496204c0e7def7adee23e3d0f7ff0117b92c4809ecc8d2c06fc6b18b53e7c6"
         },
         {
-          "name": "com.android.tools.lint-lint-gradle-26.4.1-jar",
-          "filename": "lint-gradle-26.4.1.jar",
-          "path": "com/android/tools/lint/lint-gradle/26.4.1",
+          "name": "com.android.tools.lint-lint-gradle-26.4.2-jar",
+          "filename": "lint-gradle-26.4.2.jar",
+          "path": "com/android/tools/lint/lint-gradle/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle/26.4.1/lint-gradle-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle/26.4.1/lint-gradle-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle/26.4.2/lint-gradle-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle/26.4.2/lint-gradle-26.4.2.jar"
           ],
-          "sha256": "18d53d38efa50e3ed944dca70272d72e274d5f0aafdf3fe2a096568cefb63b25"
+          "sha256": "7e8e000f063f42f10ca209f51a48b332db1c4d3ac30979cc49c1877ef9e4b7f1"
         },
         {
-          "name": "com.android.tools.lint-lint-gradle-26.4.1-pom",
-          "filename": "lint-gradle-26.4.1.pom",
-          "path": "com/android/tools/lint/lint-gradle/26.4.1",
+          "name": "com.android.tools.lint-lint-gradle-26.4.2-pom",
+          "filename": "lint-gradle-26.4.2.pom",
+          "path": "com/android/tools/lint/lint-gradle/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle/26.4.1/lint-gradle-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle/26.4.1/lint-gradle-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle/26.4.2/lint-gradle-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint-gradle/26.4.2/lint-gradle-26.4.2.pom"
           ],
-          "sha256": "ab084eda6f98720f36e48c61e3e4b203d1a96eb091fc39b1b39c91c9d0153a7f"
+          "sha256": "9f370942017e7472655aaff53ad550429e459581adf0c78e5b1fb071f61cb9e3"
         },
         {
-          "name": "com.android.tools.lint-lint-26.4.1-jar",
-          "filename": "lint-26.4.1.jar",
-          "path": "com/android/tools/lint/lint/26.4.1",
+          "name": "com.android.tools.lint-lint-26.4.2-jar",
+          "filename": "lint-26.4.2.jar",
+          "path": "com/android/tools/lint/lint/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint/26.4.1/lint-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint/26.4.1/lint-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint/26.4.2/lint-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint/26.4.2/lint-26.4.2.jar"
           ],
-          "sha256": "c4f22a0a699ad095565becb227d7775b8b8b73b0de70f95621cd83088c1923bd"
+          "sha256": "5eeb74d75aad007428ce5077f2c5c721cc7a2bb702b0525fa9605efad3afd7e8"
         },
         {
-          "name": "com.android.tools.lint-lint-26.4.1-pom",
-          "filename": "lint-26.4.1.pom",
-          "path": "com/android/tools/lint/lint/26.4.1",
+          "name": "com.android.tools.lint-lint-26.4.2-pom",
+          "filename": "lint-26.4.2.pom",
+          "path": "com/android/tools/lint/lint/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint/26.4.1/lint-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/lint/lint/26.4.1/lint-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint/26.4.2/lint-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/lint/lint/26.4.2/lint-26.4.2.pom"
           ],
-          "sha256": "6583ae92837d74ebfeae5bc90f5069ac157839ed1bfaff8cad50a1643eb36ac5"
+          "sha256": "ac7e208ce2e2bfece25498538c6a16b501a4813818149fc1f0670778b7bd6b24"
         },
         {
-          "name": "com.android.tools-annotations-26.4.1-jar",
-          "filename": "annotations-26.4.1.jar",
-          "path": "com/android/tools/annotations/26.4.1",
+          "name": "com.android.tools-annotations-26.4.2-jar",
+          "filename": "annotations-26.4.2.jar",
+          "path": "com/android/tools/annotations/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.4.1/annotations-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/annotations/26.4.1/annotations-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.4.2/annotations-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/annotations/26.4.2/annotations-26.4.2.jar"
           ],
-          "sha256": "31094a7780c0b26d84696c5bb36db2845ab9c1e3c298f48b143e50d37c26bba0"
+          "sha256": "1877849936f48cd65857bf448743f9a0bf93ed47fe57527d9ad8af875024888d"
         },
         {
-          "name": "com.android.tools-annotations-26.4.1-pom",
-          "filename": "annotations-26.4.1.pom",
-          "path": "com/android/tools/annotations/26.4.1",
+          "name": "com.android.tools-annotations-26.4.2-pom",
+          "filename": "annotations-26.4.2.pom",
+          "path": "com/android/tools/annotations/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.4.1/annotations-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/annotations/26.4.1/annotations-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.4.2/annotations-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/annotations/26.4.2/annotations-26.4.2.pom"
           ],
-          "sha256": "cf2909f07a9c0da8d8709e845e8de5ad2b61dc36350304e01045bcabefc13343"
+          "sha256": "c17bdf198c7609ce6fc63169800b26e366ff3131b8360ca9979c8234eba90c44"
         },
         {
-          "name": "com.android.tools-common-26.4.1-jar",
-          "filename": "common-26.4.1.jar",
-          "path": "com/android/tools/common/26.4.1",
+          "name": "com.android.tools-common-26.4.2-jar",
+          "filename": "common-26.4.2.jar",
+          "path": "com/android/tools/common/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.4.1/common-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/common/26.4.1/common-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.4.2/common-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/common/26.4.2/common-26.4.2.jar"
           ],
-          "sha256": "cff995122e072053eb327ec3abffdcab103abe5a018de8013f8b319ae53a614d"
+          "sha256": "bbda65fe64198125142ecc2079b62835f50ae105e51f34f8349ac129b72efd7c"
         },
         {
-          "name": "com.android.tools-common-26.4.1-pom",
-          "filename": "common-26.4.1.pom",
-          "path": "com/android/tools/common/26.4.1",
+          "name": "com.android.tools-common-26.4.2-pom",
+          "filename": "common-26.4.2.pom",
+          "path": "com/android/tools/common/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.4.1/common-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/common/26.4.1/common-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.4.2/common-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/common/26.4.2/common-26.4.2.pom"
           ],
-          "sha256": "1dfdebc860583535ca541663d81f5ddf52e1389b2e6ec78edd77b55bea2e6d2c"
+          "sha256": "612f0dcf0c4675737ae8e214bb5b16b8536aaa3cfb786dfa93245e6e8b450e73"
         },
         {
-          "name": "com.android.tools-dvlib-26.4.1-jar",
-          "filename": "dvlib-26.4.1.jar",
-          "path": "com/android/tools/dvlib/26.4.1",
+          "name": "com.android.tools-dvlib-26.4.2-jar",
+          "filename": "dvlib-26.4.2.jar",
+          "path": "com/android/tools/dvlib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.4.1/dvlib-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/dvlib/26.4.1/dvlib-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.4.2/dvlib-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/dvlib/26.4.2/dvlib-26.4.2.jar"
           ],
-          "sha256": "c2a4745f7b00dc5ddfd3e5ff29ac5c8b1633bba146bf039226c75d655ff2d74a"
+          "sha256": "f34fa4196d78b1c36db2e016303d59935fdc2b1abd0b4e40b95fa63d6087c582"
         },
         {
-          "name": "com.android.tools-dvlib-26.4.1-pom",
-          "filename": "dvlib-26.4.1.pom",
-          "path": "com/android/tools/dvlib/26.4.1",
+          "name": "com.android.tools-dvlib-26.4.2-pom",
+          "filename": "dvlib-26.4.2.pom",
+          "path": "com/android/tools/dvlib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.4.1/dvlib-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/dvlib/26.4.1/dvlib-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.4.2/dvlib-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/dvlib/26.4.2/dvlib-26.4.2.pom"
           ],
-          "sha256": "8eed0f1fd602e5bdda9e1e769874f4928af9fb41cf1392433905c66ccb311374"
+          "sha256": "fe401446f64f3531565ce332b09b0de5ca53134b3263ce931896f3f5d94460bf"
         },
         {
-          "name": "com.android.tools-repository-26.4.1-jar",
-          "filename": "repository-26.4.1.jar",
-          "path": "com/android/tools/repository/26.4.1",
+          "name": "com.android.tools-repository-26.4.2-jar",
+          "filename": "repository-26.4.2.jar",
+          "path": "com/android/tools/repository/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.4.1/repository-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/repository/26.4.1/repository-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.4.2/repository-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/repository/26.4.2/repository-26.4.2.jar"
           ],
-          "sha256": "34c82aceb4f5ec63ceddc9622f268a6a97ab3763119213a5911eba3de09bb8ee"
+          "sha256": "5183d0d2493d588d7960f954221a29130b67f1ac5f78c2d6f69195346b69617a"
         },
         {
-          "name": "com.android.tools-repository-26.4.1-pom",
-          "filename": "repository-26.4.1.pom",
-          "path": "com/android/tools/repository/26.4.1",
+          "name": "com.android.tools-repository-26.4.2-pom",
+          "filename": "repository-26.4.2.pom",
+          "path": "com/android/tools/repository/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.4.1/repository-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/repository/26.4.1/repository-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.4.2/repository-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/repository/26.4.2/repository-26.4.2.pom"
           ],
-          "sha256": "748749609f753c6403c2c5537b954991a72cb9f8188c6e0a52b36790cfb09de0"
+          "sha256": "98702b96fb86f22c1f230316ae8172fd9e843929485bba86a1a01e97614a8434"
         },
         {
-          "name": "com.android.tools-sdk-common-26.4.1-jar",
-          "filename": "sdk-common-26.4.1.jar",
-          "path": "com/android/tools/sdk-common/26.4.1",
+          "name": "com.android.tools-sdk-common-26.4.2-jar",
+          "filename": "sdk-common-26.4.2.jar",
+          "path": "com/android/tools/sdk-common/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.4.1/sdk-common-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/sdk-common/26.4.1/sdk-common-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.4.2/sdk-common-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/sdk-common/26.4.2/sdk-common-26.4.2.jar"
           ],
-          "sha256": "526a70dc939f550a18c8f30678f76bf80c85792525378bd1c6eb1eeafa00087b"
+          "sha256": "df1e814bdcee8f60c1057a3df2b2cd6c089623414017283740eb50152f1e70c5"
         },
         {
-          "name": "com.android.tools-sdk-common-26.4.1-pom",
-          "filename": "sdk-common-26.4.1.pom",
-          "path": "com/android/tools/sdk-common/26.4.1",
+          "name": "com.android.tools-sdk-common-26.4.2-pom",
+          "filename": "sdk-common-26.4.2.pom",
+          "path": "com/android/tools/sdk-common/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.4.1/sdk-common-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/sdk-common/26.4.1/sdk-common-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.4.2/sdk-common-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/sdk-common/26.4.2/sdk-common-26.4.2.pom"
           ],
-          "sha256": "2cfb457db44e7857d002b682fd6cab142abaa6cc8764dd2557ccd1c2ee8af889"
+          "sha256": "c7786e12c89c77e4daea2ebb991491821f90364cd5e06a02b56371a42084b3c0"
         },
         {
-          "name": "com.android.tools-sdklib-26.4.1-jar",
-          "filename": "sdklib-26.4.1.jar",
-          "path": "com/android/tools/sdklib/26.4.1",
+          "name": "com.android.tools-sdklib-26.4.2-jar",
+          "filename": "sdklib-26.4.2.jar",
+          "path": "com/android/tools/sdklib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.4.1/sdklib-26.4.1.jar",
-            "https://jcenter.bintray.com/com/android/tools/sdklib/26.4.1/sdklib-26.4.1.jar"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.4.2/sdklib-26.4.2.jar",
+            "https://jcenter.bintray.com/com/android/tools/sdklib/26.4.2/sdklib-26.4.2.jar"
           ],
-          "sha256": "b94a1a377da3c55b205b85400f8234bf3c897d0b3f0e47d32cd1ed4fb754b913"
+          "sha256": "ebec9d8e0a140b376aade276b08572cb1f8cf954249b469bee6dce6fd5a45cd4"
         },
         {
-          "name": "com.android.tools-sdklib-26.4.1-pom",
-          "filename": "sdklib-26.4.1.pom",
-          "path": "com/android/tools/sdklib/26.4.1",
+          "name": "com.android.tools-sdklib-26.4.2-pom",
+          "filename": "sdklib-26.4.2.pom",
+          "path": "com/android/tools/sdklib/26.4.2",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.4.1/sdklib-26.4.1.pom",
-            "https://jcenter.bintray.com/com/android/tools/sdklib/26.4.1/sdklib-26.4.1.pom"
+            "https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.4.2/sdklib-26.4.2.pom",
+            "https://jcenter.bintray.com/com/android/tools/sdklib/26.4.2/sdklib-26.4.2.pom"
           ],
-          "sha256": "639907c400a23c122378462cb8675a01872b17dca7d30961b76fd4b3e05f0e88"
+          "sha256": "768b365f2486e344d012d5b4b9b195fde8bfb442c23dca89d258a7766cdba5c8"
         },
         {
           "name": "com.google.android.material-material-1.0.0-aar",
@@ -4186,24 +4186,24 @@
           "sha256": "321668fc474a73140eb9cc73c779f1ebb9f60948aade3beddee082ecefcf0259"
         },
         {
-          "name": "org.bouncycastle-bcpkix-jdk15on-1.61-jar",
-          "filename": "bcpkix-jdk15on-1.61.jar",
-          "path": "org/bouncycastle/bcpkix-jdk15on/1.61",
+          "name": "org.bouncycastle-bcpkix-jdk15on-1.62-jar",
+          "filename": "bcpkix-jdk15on-1.62.jar",
+          "path": "org/bouncycastle/bcpkix-jdk15on/1.62",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcpkix-jdk15on/1.61/bcpkix-jdk15on-1.61.jar",
-            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.61/bcpkix-jdk15on-1.61.jar"
+            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcpkix-jdk15on/1.62/bcpkix-jdk15on-1.62.jar",
+            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.62/bcpkix-jdk15on-1.62.jar"
           ],
-          "sha256": "326eb81c2a0cb0d665733a9cc7c03988081101ad17d1453b334368453658591f"
+          "sha256": "a3f033b5d761974e865ead3473656bb2e1a4049e3ef4eb0742225b1e1f4032db"
         },
         {
-          "name": "org.bouncycastle-bcpkix-jdk15on-1.61-pom",
-          "filename": "bcpkix-jdk15on-1.61.pom",
-          "path": "org/bouncycastle/bcpkix-jdk15on/1.61",
+          "name": "org.bouncycastle-bcpkix-jdk15on-1.62-pom",
+          "filename": "bcpkix-jdk15on-1.62.pom",
+          "path": "org/bouncycastle/bcpkix-jdk15on/1.62",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcpkix-jdk15on/1.61/bcpkix-jdk15on-1.61.pom",
-            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.61/bcpkix-jdk15on-1.61.pom"
+            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcpkix-jdk15on/1.62/bcpkix-jdk15on-1.62.pom",
+            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.62/bcpkix-jdk15on-1.62.pom"
           ],
-          "sha256": "5779a4577152f8031712c0bc2f2a696c69f9a694fb5709281beb0e5625f49f0a"
+          "sha256": "9f5df71e0240c9e8b001857066a3fe7ddfe5dc7cd6a0d91d76d2ea985870f856"
         },
         {
           "name": "org.bouncycastle-bcprov-jdk15on-1.56-jar",
@@ -4226,24 +4226,24 @@
           "sha256": "8fdc3336e7b01873193ba9c48b87de7d788dc0954d1eb45c322492627a4b5c6e"
         },
         {
-          "name": "org.bouncycastle-bcprov-jdk15on-1.61-jar",
-          "filename": "bcprov-jdk15on-1.61.jar",
-          "path": "org/bouncycastle/bcprov-jdk15on/1.61",
+          "name": "org.bouncycastle-bcprov-jdk15on-1.62-jar",
+          "filename": "bcprov-jdk15on-1.62.jar",
+          "path": "org/bouncycastle/bcprov-jdk15on/1.62",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcprov-jdk15on/1.61/bcprov-jdk15on-1.61.jar",
-            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.61/bcprov-jdk15on-1.61.jar"
+            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcprov-jdk15on/1.62/bcprov-jdk15on-1.62.jar",
+            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.62/bcprov-jdk15on-1.62.jar"
           ],
-          "sha256": "dba6e408f205215ad1a89b70b37353d3cdae4ec61037e1feee885704e2413458"
+          "sha256": "2fa0ab71b154da29ac134097bc6bbacd90987dd4c4005516159e6494d1d52ea2"
         },
         {
-          "name": "org.bouncycastle-bcprov-jdk15on-1.61-pom",
-          "filename": "bcprov-jdk15on-1.61.pom",
-          "path": "org/bouncycastle/bcprov-jdk15on/1.61",
+          "name": "org.bouncycastle-bcprov-jdk15on-1.62-pom",
+          "filename": "bcprov-jdk15on-1.62.pom",
+          "path": "org/bouncycastle/bcprov-jdk15on/1.62",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcprov-jdk15on/1.61/bcprov-jdk15on-1.61.pom",
-            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.61/bcprov-jdk15on-1.61.pom"
+            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcprov-jdk15on/1.62/bcprov-jdk15on-1.62.pom",
+            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.62/bcprov-jdk15on-1.62.pom"
           ],
-          "sha256": "2d52ed66715dcec6cd099537b843040ede78223ba8f482b8733d553266577ce0"
+          "sha256": "700fe796282c8fef38c62fc2c3def858ce449ab5f3c2208836361756d879be26"
         },
         {
           "name": "org.checkerframework-checker-compat-qual-2.5.5-jar",
