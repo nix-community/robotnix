@@ -51,7 +51,7 @@ let
       -I ${config.source.dirs."system/core".contents}/libcrypto_utils/include/ \
       -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
 
-    cp ${config.source."external/avb".contents}/avbtool $out/bin/avbtool
+    cp ${config.source.dirs."external/avb".contents}/avbtool $out/bin/avbtool
     patchShebangs $out/bin
   '';
 
