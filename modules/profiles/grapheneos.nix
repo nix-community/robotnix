@@ -3,14 +3,14 @@ with lib;
 let
   release = rec {
     marlin = {
-      tag = "PQ3A.190801.002.2019.08.05.19";
-      sha256 = "1gm367ddi4z1wvbzgl1dkdw933fxz6zy9w5qjdarfhx765xvm427";
+      tag = "PQ3A.190801.002.2019.08.25.15";
+      sha256 = "17776v5hxkz9qyijhaaqcmgdx6lhrm6kbc5ql9m3rq043av27ihw";
     };
     taimen = marlin;
     crosshatch = marlin;
     bonito = {
-      tag = "PQ3B.190801.002.2019.08.05.19";
-      sha256 = "1s3gk2wwy677vbcdjj3ad4kbydb2f6kwymxbb7xwa97cbyjwjpvj";
+      tag = "PQ3B.190801.002.2019.08.25.15";
+      sha256 = "1w4ymqhqwyy8gc01aq5gadg3ibf969mhnh5z655cv8qz21fpiiha";
     };
   }.${config.deviceFamily};
 
