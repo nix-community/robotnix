@@ -59,18 +59,6 @@ in
       description = "Absolute path to generated keys for signing";
     };
 
-    avb = {
-      pkmd = mkOption {
-        type = types.path;
-        description = "avb_pkmd.bin file";
-      };
-
-      fingerprint = mkOption {
-        type = types.str;
-        internal = true;
-      };
-    };
-
     build = mkOption {
       internal = true;
       default = {};
