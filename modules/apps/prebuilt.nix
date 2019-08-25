@@ -35,7 +35,8 @@ let
       --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
   '';
 
-  deviceCertificates = [ "release" "platform" "media" "shared" ]; # Cert names used by AOSP
+  # Cert names used by AOSP. Only some of these make sense to be used to sign packages
+  deviceCertificates = [ "release" "platform" "media" "shared" "verity" ];
 in
 {
   options = {

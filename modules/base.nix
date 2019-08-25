@@ -93,7 +93,7 @@ in
     build = {
       # TODO: Is there a nix-native way to get this information instead of using IFD
       _keyPath = keyStorePath: name:
-        let deviceCertificates = [ "release" "platform" "media" "shared" ]; # Cert names used by AOSP
+        let deviceCertificates = [ "release" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
         in if builtins.elem name deviceCertificates
           then "${keyStorePath}/${config.device}/${name}"
           else "${keyStorePath}/${name}";
