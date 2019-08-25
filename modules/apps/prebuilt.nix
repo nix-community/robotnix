@@ -23,7 +23,7 @@ let
     LOCAL_MODULE_TAGS := optional
 
     LOCAL_PRIVILEGED_MODULE := ${if prebuilt.privileged then "true" else "false"}
-    LOCAL_CERTIFICATE := ${prebuilt.certificate}
+    LOCAL_CERTIFICATE := ${if builtins.elem prebuilt.certificate deviceCertificates then prebuilt.certificate else "PRESIGNED"}
     ${prebuilt.extraConfig}
 
     include $(BUILD_PREBUILT)
@@ -67,7 +67,12 @@ in
 
           certificate = mkOption {
             default = "platform";
-            type = types.str; # platform|PRESIGNED| ...
+            type = types.str;
+            description = ''
+              Certificate name to sign apk with.  If it is a device certificate, the cert/key will be ''${keyStorePath}/''${device}/''${certificate}.{x509.pem,pk8}
+              Otherwise, it will be ''${keyStorePath}/''${certificate}.{x509.pem,pk8}
+              Finally, the special string "PRESIGNED" will just use the apk as-is.
+            '';
           };
 
           privileged = mkOption {
