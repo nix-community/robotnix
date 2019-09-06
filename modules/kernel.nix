@@ -2,6 +2,7 @@
 
 with lib;
 let
+  cfg = config.kernel;
   prebuiltGCC = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc";
     src = config.source.dirs."prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9".contents;
@@ -20,7 +21,7 @@ let
   };
   prebuiltClang = pkgs.stdenv.mkDerivation {
     name = "prebuilt-clang";
-    src = config.source.dirs."prebuilts/clang/host/linux-x86".contents + /clang-4393122; # Parameterize this number?
+    src = config.source.dirs."prebuilts/clang/host/linux-x86".contents + "/clang-${cfg.clangVersion}";
     buildInputs = with pkgs; [ python autoPatchelfHook zlib ncurses5 libedit ];
     installPhase = ''
       cp -r . $out
@@ -60,19 +61,20 @@ in
         type = types.str;
         description = "Relative path in source tree to place kernel build artifacts";
       };
+
+      compiler = mkOption {
+        default = "gcc";
+        type = types.strMatching "(gcc|clang)";
+      };
+
+      clangVersion = mkOption {
+        type = types.str;
+        description = "Version of prebuilt clang to use for kernel. See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md";
+      };
     };
   };
 
   config = {
-    kernel.configName = mkDefault {
-      marlin = "marlin";
-      taimen = "wahoo";
-      crosshatch = "b1c1";
-      bonito = "bonito";
-    }.${config.deviceFamily};
-
-    kernel.relpath = mkDefault ("device/google/${replaceStrings [ "taimen" ] [ "wahoo" ] config.deviceFamily}-kernel");
-
     build.kernel = pkgs.stdenv.mkDerivation {
       name = "kernel-${config.device}";
       inherit (config.kernel) src;
@@ -88,14 +90,15 @@ in
 
       patches = config.kernel.patches;
 
-      postPatch = lib.optionalString (config.deviceFamily == "marlin") ''
+      postPatch = lib.optionalString (config.avbMode == "verity_only") ''
+        rm -f verity_*.x509
         openssl x509 -outform der -in ${config.build.x509 "verity"} -out verity_user.der.x509
       '';
 
       nativeBuildInputs = with pkgs; [
         perl bc nettools openssl rsync gmp libmpc mpfr lz4
         prebuiltGCC prebuiltGCCarm32 prebuiltMisc
-      ] ++ lib.optionals (config.deviceFamily != "marlin") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ];
+      ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ];
 
       enableParallelBuilding = true;
       makeFlags = [
@@ -103,14 +106,14 @@ in
         "CONFIG_COMPAT_VDSO=n"
         "CROSS_COMPILE=aarch64-linux-android-"
         #"CROSS_COMPILE_ARM32=arm-linux-androideabi-"
-      ] ++ lib.optionals (config.deviceFamily != "marlin") [
+      ] ++ lib.optionals (cfg.compiler == "clang") [
         "CC=clang"
         "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils
       ];
 
       preBuild = ''
         make ARCH=arm64 ${config.kernel.configName}_defconfig
-      '' + optionalString (config.deviceFamily != "marlin") ''
+      '' + optionalString (cfg.compiler == "clang") ''
         export LD_LIBRARY_PATH="${prebuiltClang}/lib:$LD_LIBRARY_PATH"
       ''; # So it can load LLVMgold.so
 

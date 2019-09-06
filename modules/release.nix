@@ -2,16 +2,11 @@
 
 with lib;
 let
-  avbMode = {
-    marlin = "verity_only";
-    taimen = "vbmeta_simple";
-    crosshatch = "vbmeta_chained";
-  }.${config.deviceFamily};
   avbFlags = {
     verity_only = "--replace_verity_public_key $KEYSDIR/verity_key.pub --replace_verity_private_key $KEYSDIR/verity --replace_verity_keyid $KEYSDIR/verity.x509.pem";
     vbmeta_simple = "--avb_vbmeta_key $KEYSDIR/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
     vbmeta_chained = "--avb_vbmeta_key $KEYSDIR/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048 --avb_system_key $KEYSDIR/avb.pem --avb_system_algorithm SHA256_RSA2048";
-  }.${avbMode};
+  }.${config.avbMode};
 
   # Signing target files fails in signapk.jar with error -6 unless using this jdk
   jdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/8.nix) {
@@ -170,13 +165,13 @@ in
 
       export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
-      for key in {releasekey,platform,shared,media${optionalString (avbMode == "verity_only") ",verity"}}; do
+      for key in {releasekey,platform,shared,media${optionalString (config.avbMode == "verity_only") ",verity"}}; do
         # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
         ! make_key "$key" "$1" || exit 1
       done
 
-      ${optionalString (avbMode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
-      ${optionalString (avbMode != "verity_only") ''
+      ${optionalString (config.avbMode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
+      ${optionalString (config.avbMode != "verity_only") ''
         openssl genrsa -out avb.pem 2048 || exit 1
         avbtool extract_public_key --key avb.pem --output avb_pkmd.bin || exit 1
       ''}

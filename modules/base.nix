@@ -59,6 +59,11 @@ in
       description = "Absolute path to generated keys for signing";
     };
 
+    avbMode = mkOption {
+      type = types.strMatching "(verity_only|vbmeta_simple|vbmeta_chained)";
+      default  = "vbmeta_chained"; # TODO: Not sure what a good default would be for non pixel devices.
+    };
+
     build = mkOption {
       internal = true;
       default = {};
@@ -67,17 +72,6 @@ in
   };
 
   config = {
-    deviceFamily = mkDefault {
-      marlin = "marlin"; # Pixel XL
-      sailfish = "marlin"; # Pixel
-      taimen = "taimen"; # Pixel 2 XL
-      walleye = "taimen"; # Pixel 2
-      crosshatch = "crosshatch"; # Pixel 3 XL
-      blueline = "crosshatch"; # Pixel 3
-      bonito = "bonito"; # Pixel 3a XL
-      sargo = "bonito"; # Pixel 3a
-    }.${config.device};
-
     build = {
       # TODO: Is there a nix-native way to get this information instead of using IFD
       _keyPath = keyStorePath: name:

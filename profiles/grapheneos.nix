@@ -39,7 +39,7 @@ in
   kernel.src = mkDefault (if (elem config.deviceFamily ["crosshatch" "bonito"])
     then kernelSrc
     else config.source.dirs."kernel/google/${replaceStrings ["taimen"] ["wahoo"] config.deviceFamily}".contents);
-  kernel.configName = mkIf (elem config.deviceFamily ["taimen" "crosshatch"]) config.device; # GrapheneOS uses different config names than upstream
+  kernel.configName = mkIf (elem config.deviceFamily ["taimen" "crosshatch"]) (mkForce config.device); # GrapheneOS uses different config names than upstream
 
   # No need to include these in AOSP build since we build separately
   source.dirs."kernel/google/marlin".enable = false;
