@@ -1,5 +1,5 @@
-{ stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, simg2img, zip, unzip, e2fsprogs, jq, openjdk, wget, utillinux, perl, which,
-  device, img, full ? false
+{ stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, makeWrapper,
+  simg2img, zip, unzip, e2fsprogs, jq, jdk, wget, utillinux, perl, which
 }:
 
 let
@@ -31,7 +31,7 @@ let
   # TODO: Make sure it can use java if it doesn't use oatdump.
 in
 (stdenv.mkDerivation {
-  pname = "android-prepare-vendor-${device}";
+  pname = "android-prepare-vendor";
   version = "2019-07-13";
 
   src = fetchFromGitHub {
@@ -41,9 +41,11 @@ in
     sha256 = "1aicx4lh1gvrbq4llh0dqifhp3y5d4g44r271b2qbg3vpkz48alb";
   };
 
-  nativeBuildInputs = [ zip unzip simg2img dexrepair e2fsprogs jq openjdk wget utillinux perl which ];
+  nativeBuildInputs = [ makeWrapper ];
 
-  prePatch = ''
+  patches = [ ./reproducibility.patch ];
+
+  postPatch = ''
     patchShebangs ./execute-all.sh
     patchShebangs ./scripts
     # TODO: Hardcoded api version
@@ -52,19 +54,15 @@ in
 
     # Disable oatdump update check
     substituteInPlace execute-all.sh --replace "needs_oatdump_update() {" "needs_oatdump_update() { return 1"
-  '';
 
-  patches = [ ./reproducibility.patch ];
-
-  # Set timestamp for reproducibility
-  buildPhase = ''
-    mkdir -p tmp
-    ./execute-all.sh ${lib.optionalString full "--full"} --yes --output tmp --device "${device}" --buildID "${buildID}" -i "${img}" --debugfs --timestamp 1
+    for i in ./execute-all.sh ./scripts/download-nexus-image.sh ./scripts/extract-factory-images.sh ./scripts/generate-vendor.sh ./scripts/gen-prop-blobs-list.sh ./scripts/realpath.sh ./scripts/system-img-repair.sh; do
+        sed -i '2 i export PATH=$PATH:${stdenv.lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk wget utillinux perl which ]}' $i
+    done
   '';
 
   installPhase = ''
     mkdir -p $out
-    cp -r tmp/*/*/{vendor,vendor_overlay} $out/
+    cp -r * $out
   '';
 
   configurePhase = ":";
