@@ -1,6 +1,6 @@
 with (import ./pkgs.nix);
 {
-  imports = [ ./modules/profiles/grapheneos.nix ];
+  imports = [ ./profiles/grapheneos.nix ];
 
   # Don't forget to update these for each unique build
   buildNumber = "2019.08.24.1";
