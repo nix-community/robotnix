@@ -4,7 +4,6 @@ with lib;
 let
   usePatchedCoreutils = false;
   nixdroid-env = pkgs.callPackage ../buildenv.nix {};
-  flex = pkgs.callPackage ../misc/flex-2.5.39.nix {};
 in
 {
   options = {
@@ -54,6 +53,13 @@ in
       description = "PRODUCT_PACKAGES to remove from build";
     };
 
+    extraConfig = mkOption {
+      default = "";
+      type = types.lines;
+      description = "Additional configuration to be included in product .mk file";
+      internal = true;
+    };
+
     keyStorePath = mkOption {
       type = types.str;
       description = "Absolute path to generated keys for signing";
@@ -72,6 +78,30 @@ in
   };
 
   config = {
+    extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.additionalProductPackages;
+
+    # TODO: The " \\" in the below sed is a bit flaky, and would require the line to end in " \\"
+    # come up with something more robust.
+    source.postPatch = ''
+      ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' build/make/target/product/*.mk") config.removedProductPackages}
+
+      # this is newer location in master
+      mk_file=./build/make/target/product/handheld_system.mk
+      if [ ! -f ''${mk_file} ]; then
+        # this is older location
+        mk_file=./build/make/target/product/core.mk
+        if [ ! -f ''${mk_file} ]; then
+          echo "Expected handheld_system.mk or core.mk do not exist"
+          exit 1
+        fi
+      fi
+
+      mkdir -p nixdroid/
+      cp -f ${pkgs.writeText "config.mk" config.extraConfig} nixdroid/config.mk
+      chmod u+w nixdroid/config.mk
+      echo "\$(call inherit-product-if-exists, nixdroid/config.mk)" >> ''${mk_file}
+    '';
+
     build = {
       # TODO: Is there a nix-native way to get this information instead of using IFD
       _keyPath = keyStorePath: name:
@@ -107,20 +137,18 @@ in
           source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
         '';
 
+        # Just included for convenience when building outside of nix.
+        debugUnpackScript = config.build.debugUnpackScript;
+        # To easily build outside nix:
+        # nix-shell ... -A config.build.android
+        # source $debugUnpackScript       # should just create files under nixdroid/
+        # Apply any patches in $patches
+        # runHook postPatch
+
         patches = config.source.patches;
         patchFlags = [ "-p1" "--no-backup-if-mismatch" ]; # Patches that don't apply exactly will create .orig files, which the android build system doesn't like seeing.
 
-        # Fix a locale issue with included flex program
-        postPatch = ''
-          ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39
-
-          ${concatMapStringsSep "\n" (name: "echo PRODUCT_PACKAGES += ${name} >> build/make/target/product/core.mk") config.additionalProductPackages}
-          ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' build/make/target/product/*.mk") config.removedProductPackages}
-
-          ${config.source.postPatch}
-        '';
-        # TODO: The " \\" in the above sed is a bit flaky, and would require the line to end in " \\"
-        # come up with something more robust.
+        postPatch = config.source.postPatch;
 
         ANDROID_JAVA_HOME="${pkgs.jdk.home}";
         BUILD_NUMBER=config.buildNumber;

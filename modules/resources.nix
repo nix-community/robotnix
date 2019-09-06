@@ -51,12 +51,10 @@ in
     };
   };
 
-  config.source = {
-    postPatch = ''
-      echo PRODUCT_PACKAGE_OVERLAYS += nixdroid/overlay >> build/make/target/product/core.mk
-    '';
+  config = {
+    extraConfig = "PRODUCT_PACKAGE_OVERLAYS += nixdroid/overlay";
 
-    dirs."nixdroid/overlay".contents = (pkgs.symlinkJoin {
+    source.dirs."nixdroid/overlay".contents = (pkgs.symlinkJoin {
       name = "nixdroid-overlay";
       paths = mapAttrsToList (relativePath: packageResources: (pkgs.writeTextFile {
         name = "${replaceStrings ["/"] ["="] relativePath}-resources";

@@ -1,7 +1,13 @@
 { config, pkgs, lib, ... }:
 
 with lib;
+let
+  flex = pkgs.callPackage ../misc/flex-2.5.39.nix {};
+in
 {
+  # Android 9: Fix a locale issue with included flex program
+  source.postPatch = "ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39";
+
   source.excludeGroups = mkDefault [
     "darwin" # Linux-only for now
     "mips" "hikey"
