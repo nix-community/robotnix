@@ -1,6 +1,6 @@
-diff -Naur aosp/nixdroid/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java aosp-new/nixdroid/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
---- aosp/nixdroid/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java	2019-06-12 15:15:59.615977830 -0400
-+++ aosp-new/nixdroid/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java	2019-06-12 15:18:43.931453260 -0400
+diff -Naur a/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java b/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
+--- a/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java	2019-06-12 15:15:59.615977830 -0400
++++ b/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java	2019-06-12 15:18:43.931453260 -0400
 @@ -231,7 +231,7 @@
                   * The client app used to set this to F-Droid, but we need it to be set to
                   * this package's package name to be able to uninstall from here.

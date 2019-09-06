@@ -18,11 +18,14 @@ in
   config = mkIf cfg.enable {
     apps.prebuilt."F-Droid".apk = pkgs.callPackage ./fdroid {};
 
-    source.dirs."nixdroid/apps/F-DroidPrivilegedExtension".contents = privext;
+    source.dirs."nixdroid/apps/F-DroidPrivilegedExtension".contents = pkgs.runCommand "froid-privext-patched" {} ''
+      mkdir -p $out
+      cp -r ${privext}/* $out
+      chmod u+w -R $out
 
-    source.patches = [ ./fdroid/privext.patch ];
-    source.postPatch = ''
-      substituteInPlace nixdroid/apps/F-DroidPrivilegedExtension/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java \
+      cd $out
+      patch -p1 < ${./fdroid/privext.patch}
+      substituteInPlace app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java \
        --replace 43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab "${config.build.fingerprints "platform"}"
     '';
 
