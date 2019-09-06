@@ -43,7 +43,7 @@ in
 
   nativeBuildInputs = [ makeWrapper ];
 
-  patches = [ ./reproducibility.patch ];
+  patches = [ ./android-prepare-vendor.patch ];
 
   postPatch = ''
     patchShebangs ./execute-all.sh
@@ -51,9 +51,6 @@ in
     # TODO: Hardcoded api version
     mkdir -p hostTools/Linux/api-${api}/
     cp -r ${oatdump}/* hostTools/Linux/api-${api}/
-
-    # Disable oatdump update check
-    substituteInPlace execute-all.sh --replace "needs_oatdump_update() {" "needs_oatdump_update() { return 1"
 
     for i in ./execute-all.sh ./scripts/download-nexus-image.sh ./scripts/extract-factory-images.sh ./scripts/generate-vendor.sh ./scripts/gen-prop-blobs-list.sh ./scripts/realpath.sh ./scripts/system-img-repair.sh; do
         sed -i '2 i export PATH=$PATH:${stdenv.lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk wget utillinux perl which ]}' $i
