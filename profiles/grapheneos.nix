@@ -47,9 +47,6 @@ in
   source.dirs."kernel/google/crosshatch".enable = false;
   source.dirs."kernel/google/bonito".enable = false;
 
-  # See https://stackoverflow.com/questions/55078766/mdss-pll-trace-h-file-not-found-error-compiling-kernel-4-9-for-android?noredirect=1 and https://lwn.net/Articles/383362/
-  kernel.patches = mkIf (elem config.deviceFamily ["crosshatch" "bonito"]) [ ./crosshatch-kernel.patch ];
-
   apps.webview.enable = mkDefault true;
   # TODO: Build and include vanadium
   removedProductPackages = [ "Vanadium" ];

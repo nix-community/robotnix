@@ -102,6 +102,7 @@ in
 
       enableParallelBuilding = true;
       makeFlags = [
+        "O=out"
         "ARCH=arm64"
         "CONFIG_COMPAT_VDSO=n"
         "CROSS_COMPILE=aarch64-linux-android-"
@@ -112,16 +113,16 @@ in
       ];
 
       preBuild = ''
-        make ARCH=arm64 ${config.kernel.configName}_defconfig
+        make O=out ARCH=arm64 ${config.kernel.configName}_defconfig
       '' + optionalString (cfg.compiler == "clang") ''
         export LD_LIBRARY_PATH="${prebuiltClang}/lib:$LD_LIBRARY_PATH"
       ''; # So it can load LLVMgold.so
 
       installPhase = ''
         mkdir -p $out
-        cp arch/arm64/boot/Image.lz4-dtb $out/
+        cp out/arch/arm64/boot/Image.lz4-dtb $out/
       '' + optionalString (config.deviceFamily != "marlin") ''
-        cp arch/arm64/boot/dtbo.img $out/
+        cp out/arch/arm64/boot/dtbo.img $out/
       '';
     };
 
