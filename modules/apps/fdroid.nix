@@ -26,7 +26,7 @@ in
       cd $out
       patch -p1 < ${./fdroid/privext.patch}
       substituteInPlace app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java \
-       --replace 43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab "${config.build.fingerprints "platform"}"
+       --replace 43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab "${toLower (config.build.fingerprints "platform")}"
     '';
 
     additionalProductPackages = [ "F-DroidPrivilegedExtension" ];
