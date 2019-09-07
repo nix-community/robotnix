@@ -6,7 +6,7 @@ let
 in
 {
   # Android 9: Fix a locale issue with included flex program
-  source.postPatch = "ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39";
+  source.postPatch = mkIf (config.androidVersion == "9") "ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39";
 
   source.excludeGroups = mkDefault [
     "darwin" # Linux-only for now

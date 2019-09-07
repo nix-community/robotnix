@@ -36,6 +36,18 @@ in
       description = "one of \"user\", \"userdebug\", or \"eng\"";
     };
 
+    androidVersion = mkOption {
+      default = "9";
+      type = types.str;
+      description = "Used to select which android version to use";
+    };
+
+    apiLevel = mkOption {
+      default = "28";
+      type = types.str;
+      internal = true;
+    };
+
     localManifests = mkOption {
       default = [];
       type = types.listOf types.path;
@@ -70,6 +82,7 @@ in
       default  = "vbmeta_chained"; # TODO: Not sure what a good default would be for non pixel devices.
     };
 
+    # Random attrset to throw build products into
     build = mkOption {
       internal = true;
       default = {};
@@ -78,6 +91,8 @@ in
   };
 
   config = {
+    apiLevel = mkIf (config.androidVersion == "10") mkDefault "29";
+
     extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.additionalProductPackages;
 
     # TODO: The " \\" in the below sed is a bit flaky, and would require the line to end in " \\"
@@ -150,7 +165,7 @@ in
 
         postPatch = config.source.postPatch;
 
-        ANDROID_JAVA_HOME="${pkgs.jdk.home}";
+        ANDROID_JAVA_HOME="${pkgs.jdk.home}"; # This is already set in android 10. They use their own prebuilt jdk
         BUILD_NUMBER=config.buildNumber;
         BUILD_DATETIME=config.buildDateTime;
         DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu

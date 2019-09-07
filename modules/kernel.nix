@@ -22,7 +22,7 @@ let
   prebuiltClang = pkgs.stdenv.mkDerivation {
     name = "prebuilt-clang";
     src = config.source.dirs."prebuilts/clang/host/linux-x86".contents + "/clang-${cfg.clangVersion}";
-    buildInputs = with pkgs; [ python autoPatchelfHook zlib ncurses5 libedit ];
+    buildInputs = with pkgs; [ python autoPatchelfHook zlib ncurses5 libedit stdenv.cc.cc.lib ]; # Include cc.lib for libstdc++.so.6
     installPhase = ''
       cp -r . $out
       cp ${pkgs.libedit}/lib/libedit.so.0 $out/lib64/libedit.so.2 # ABI is the same--but distros have inconsistent numbering

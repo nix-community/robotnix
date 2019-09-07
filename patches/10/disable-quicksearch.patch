@@ -1,0 +1,13 @@
+diff --git a/src/com/android/launcher3/config/BaseFlags.java b/src/com/android/launcher3/config/BaseFlags.java
+index 45639e0a4..5e5590e0b 100644
+--- a/packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java
++++ b/packages/apps/Launcher3/src/com/android/launcher3/config/BaseFlags.java
+@@ -67,7 +67,7 @@ abstract class BaseFlags {
+     public static final boolean LAUNCHER3_PROMISE_APPS_IN_ALL_APPS = false;
+ 
+     // Enable moving the QSB on the 0th screen of the workspace
+-    public static final boolean QSB_ON_FIRST_SCREEN = true;
++    public static final boolean QSB_ON_FIRST_SCREEN = false;
+ 
+     public static final TogglableFlag EXAMPLE_FLAG = new TogglableFlag("EXAMPLE_FLAG", true,
+             "An example flag that doesn't do anything. Useful for testing");

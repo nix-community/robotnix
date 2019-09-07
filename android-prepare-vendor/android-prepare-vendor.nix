@@ -1,5 +1,6 @@
 { stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, makeWrapper,
-  simg2img, zip, unzip, e2fsprogs, jq, jdk, wget, utillinux, perl, which
+  simg2img, zip, unzip, e2fsprogs, jq, jdk, wget, utillinux, perl, which,
+  api ? "28"
 }:
 
 let
@@ -34,12 +35,18 @@ in
   pname = "android-prepare-vendor";
   version = "2019-07-13";
 
-  src = fetchFromGitHub {
+  # TODO: Unify these
+  src = if (api == "28") then (fetchFromGitHub {
     owner = "anestisb";
     repo = "android-prepare-vendor";
     rev = "e853d17c89f6962d3fd6f408db8576e6b445f643";
     sha256 = "1aicx4lh1gvrbq4llh0dqifhp3y5d4g44r271b2qbg3vpkz48alb";
-  };
+  }) else (fetchFromGitHub { # api == "29"
+    owner = "RattlesnakeOS";
+    repo = "android-prepare-vendor";
+    rev = "8bd8b4b0dd0272f25cc5060fb2cc4296c46b383a";
+    sha256 = "1fwdy6lv1jh2nr0dkrnnz6hn271jxrafcjlbjpvyl2zp8fwphafy";
+  });
 
   nativeBuildInputs = [ makeWrapper ];
 

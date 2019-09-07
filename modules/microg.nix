@@ -12,7 +12,7 @@ in
 
   config = mkIf config.microg.enable {
     source.patches = [ ./microg-sigspoof.patch ];
-    resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = "gps,network";
+    resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = mkIf (config.androidVersion == "10") "gps,network"; # Lots of stuff is currently broken with microg and android 10 anyway
 
     # Preferably build this stuff ourself.
     # Used https://github.com/lineageos4microg/android_prebuilts_prebuiltapks as source for Android.mk options

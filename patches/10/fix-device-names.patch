@@ -1,0 +1,102 @@
+
+project device/google/bonito/
+diff --git a/aosp_bonito.mk b/aosp_bonito.mk
+index df6bd1bf..e980feef 100644
+--- a/aosp_bonito.mk
++++ b/aosp_bonito.mk
+@@ -37,7 +37,7 @@ PRODUCT_MANUFACTURER := Google
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_bonito
+ PRODUCT_DEVICE := bonito
+-PRODUCT_MODEL := AOSP on bonito
++PRODUCT_MODEL := Pixel 3a XL
+ 
+ PRODUCT_COPY_FILES += \
+     device/sample/etc/apns-full-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
+diff --git a/aosp_sargo.mk b/aosp_sargo.mk
+index 2b003169..c1a0c8ae 100644
+--- a/aosp_sargo.mk
++++ b/aosp_sargo.mk
+@@ -37,7 +37,7 @@ PRODUCT_MANUFACTURER := Google
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_sargo
+ PRODUCT_DEVICE := sargo
+-PRODUCT_MODEL := AOSP on sargo
++PRODUCT_MODEL := Pixel 3a
+ 
+ PRODUCT_COPY_FILES += \
+     device/sample/etc/apns-full-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
+
+project device/google/crosshatch/
+diff --git a/aosp_blueline.mk b/aosp_blueline.mk
+index 9a38f9fb..4f657ae0 100644
+--- a/aosp_blueline.mk
++++ b/aosp_blueline.mk
+@@ -30,4 +30,4 @@ PRODUCT_MANUFACTURER := Google
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_blueline
+ PRODUCT_DEVICE := blueline
+-PRODUCT_MODEL := AOSP on blueline
++PRODUCT_MODEL := Pixel 3
+diff --git a/aosp_crosshatch.mk b/aosp_crosshatch.mk
+index 7db148cf..a54202c4 100644
+--- a/aosp_crosshatch.mk
++++ b/aosp_crosshatch.mk
+@@ -30,4 +30,4 @@ PRODUCT_MANUFACTURER := Google
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_crosshatch
+ PRODUCT_DEVICE := crosshatch
+-PRODUCT_MODEL := AOSP on crosshatch
++PRODUCT_MODEL := Pixel 3 XL
+
+project device/google/marlin/
+diff --git a/aosp_marlin.mk b/aosp_marlin.mk
+index 96cc5e95..1b9d9e7f 100644
+--- a/aosp_marlin.mk
++++ b/aosp_marlin.mk
+@@ -24,7 +24,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
+ PRODUCT_NAME := aosp_marlin
+ PRODUCT_DEVICE := marlin
+ PRODUCT_BRAND := Android
+-PRODUCT_MODEL := AOSP on msm8996
++PRODUCT_MODEL := Pixel XL
+ PRODUCT_MANUFACTURER := Google
+ PRODUCT_RESTRICT_VENDOR_FILES := true
+ 
+diff --git a/aosp_sailfish.mk b/aosp_sailfish.mk
+index b6e6427c..675f11a6 100644
+--- a/aosp_sailfish.mk
++++ b/aosp_sailfish.mk
+@@ -24,7 +24,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
+ PRODUCT_NAME := aosp_sailfish
+ PRODUCT_DEVICE := sailfish
+ PRODUCT_BRAND := Android
+-PRODUCT_MODEL := AOSP on msm8996
++PRODUCT_MODEL := Pixel
+ PRODUCT_MANUFACTURER := Google
+ PRODUCT_RESTRICT_VENDOR_FILES := true
+ 
+
+project device/google/muskie/
+diff --git a/aosp_walleye.mk b/aosp_walleye.mk
+index 888c67d..92d8633 100644
+--- a/aosp_walleye.mk
++++ b/aosp_walleye.mk
+@@ -39,4 +39,4 @@ PRODUCT_MANUFACTURER := Google
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_walleye
+ PRODUCT_DEVICE := walleye
+-PRODUCT_MODEL := AOSP on walleye
++PRODUCT_MODEL := Pixel 2
+
+project device/google/taimen/
+diff --git a/aosp_taimen.mk b/aosp_taimen.mk
+index 5653fd5..3729530 100644
+--- a/aosp_taimen.mk
++++ b/aosp_taimen.mk
+@@ -39,4 +39,4 @@ PRODUCT_MANUFACTURER := Google
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_taimen
+ PRODUCT_DEVICE := taimen
+-PRODUCT_MODEL := AOSP on taimen
++PRODUCT_MODEL := Pixel 2 XL

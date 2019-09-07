@@ -41,6 +41,11 @@ in pkgs.buildFHSUserEnv {
       which
       rsync
       lzip
+
+      # For android 10
+      freetype # Needed by jdk9 prebuilt
+      fontconfig
+      python3 # Fixes failure in: soong/host/linux-x86/bin/art-apex-tester/__main__.py
     ];
   multiPkgs = pkgs: with pkgs; [ zlib ];
 }
