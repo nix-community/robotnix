@@ -91,20 +91,22 @@ in
   config.build = {
     # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
     # TODO: Currently can only build here with keys enabled
-    signedTargetFiles = pkgs.runCommand "${config.device}-signed_target_files-${config.buildNumber}.zip" {}
+    signedTargetFiles = if config.signBuild
+      then pkgs.runCommand "${config.device}-signed_target_files-${config.buildNumber}.zip" {}
       (wrapScript {
         commands = signedTargetFilesScript { out="$out"; };
-        keysDir = "/keys/${config.device}";
-      });
+        keysDir = optionalString config.signBuild "/keys/${config.device}";
+      })
+      else config.build.android + "/aosp_${config.device}-target_files-${config.buildNumber}.zip";
     ota = pkgs.runCommand "${config.device}-ota_update-${config.buildNumber}.zip" {}
       (wrapScript {
         commands = otaScript { signedTargetFiles=config.build.signedTargetFiles; out="$out"; };
-        keysDir = "/keys/${config.device}";
+        keysDir = optionalString config.signBuild "/keys/${config.device}";
       });
     img = pkgs.runCommand "${config.device}-img-${config.buildNumber}.zip" {}
       (wrapScript {
         commands = imgScript { signedTargetFiles=config.build.signedTargetFiles; out="$out"; };
-      }); # No neeed to keys here
+      }); # No need for keys here
     otaMetadata = pkgs.runCommand "${config.device}-stable" {} ''
       ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.build.ota} > $out
     '';

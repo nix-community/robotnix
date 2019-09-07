@@ -4,6 +4,9 @@ with lib;
 let
   usePatchedCoreutils = false;
   nixdroid-env = pkgs.callPackage ../buildenv.nix {};
+
+  # TODO: Not exactly sure what i'm doing.
+  putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
 in
 {
   options = {
@@ -72,6 +75,12 @@ in
       internal = true;
     };
 
+    signBuild = mkOption {
+      default = true;
+      type = types.bool;
+      description = "Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.";
+    };
+
     keyStorePath = mkOption {
       type = types.str;
       description = "Absolute path to generated keys for signing";
@@ -92,6 +101,12 @@ in
 
   config = {
     apiLevel = mkIf (config.androidVersion == "10") mkDefault "29";
+
+    # Some derivations (like fdroid) need to know the fingerprints of the keys
+    # even if we aren't signing. Set test-keys in that case. This is not an
+    # unconditional default because we want the user to be foreced to set
+    # keyStorePath themselves if they select signBuild.
+    keyStorePath = mkIf (!config.signBuild) (config.source.dirs."build/make".contents + /target/product/security);
 
     extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.additionalProductPackages;
 
@@ -122,15 +137,17 @@ in
       _keyPath = keyStorePath: name:
         let deviceCertificates = [ "release" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
         in if builtins.elem name deviceCertificates
-          then "${keyStorePath}/${config.device}/${name}"
+          then (if config.signBuild
+            then "${keyStorePath}/${config.device}/${name}"
+            else "${keyStorePath}/${name}")
           else "${keyStorePath}/${name}";
       keyPath = name: config.build._keyPath config.keyStorePath name;
       sandboxKeyPath = name: config.build._keyPath "/keys" name;
 
-      x509 = name: /. + "${config.build.keyPath name}.x509.pem";
+      x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
       fingerprints = name:
         let
-          avb_pkmd = /. + "${config.keyStorePath}/${config.device}/avb_pkmd.bin";
+          avb_pkmd = putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin";
       in if (name == "avb")
         then (import (pkgs.runCommand "avb-fingerprint" {} ''
           sha256sum ${avb_pkmd} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out

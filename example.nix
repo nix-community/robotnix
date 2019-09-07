@@ -7,7 +7,6 @@ with (import ./pkgs.nix);
   buildDateTime = 1566621057;
 
   # A _string_ of the path for the key store.
-  # DO NOT use a nix path without quotes or else your private keys will end up in the world-readable nix store
   keyStorePath = "/var/secrets/android-keys";
 
   apps = {
