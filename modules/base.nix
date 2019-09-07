@@ -100,7 +100,7 @@ in
   };
 
   config = {
-    apiLevel = mkIf (config.androidVersion == "10") mkDefault "29";
+    apiLevel = mkIf (config.androidVersion == "10") "29";
 
     # Some derivations (like fdroid) need to know the fingerprints of the keys
     # even if we aren't signing. Set test-keys in that case. This is not an

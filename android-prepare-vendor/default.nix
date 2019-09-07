@@ -1,7 +1,7 @@
-{ lib, callPackage, runCommand }:
+{ lib, callPackage, runCommand, api }:
 
 rec {
-  android-prepare-vendor = callPackage ./android-prepare-vendor.nix {};
+  android-prepare-vendor = callPackage ./android-prepare-vendor.nix { inherit api; };
 
   buildVendorFiles =
     { device, img, full ? false, timestamp ? 1, buildID ? "nixdroid" }:

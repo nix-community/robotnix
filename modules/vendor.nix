@@ -23,7 +23,7 @@ with lib;
   };
 
   config = mkIf (config.vendor.img != null) {
-    vendor.files = (pkgs.callPackage ../android-prepare-vendor {}).buildVendorFiles {
+    vendor.files = (pkgs.callPackage ../android-prepare-vendor { api = config.apiLevel; }).buildVendorFiles {
       inherit (config) device;
       inherit (config.vendor) img full;
     };

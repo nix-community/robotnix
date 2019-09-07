@@ -8,7 +8,6 @@ let
   dexrepair = callPackage ./dexrepair.nix {};
 
   # TODO: This is for API-28. Need to make this work for all of them. Preferably without downloading each one
-  api = "28";
   oatdump = stdenv.mkDerivation {
     name = "oatdump-${api}";
 
@@ -44,8 +43,8 @@ in
   }) else (fetchFromGitHub { # api == "29"
     owner = "RattlesnakeOS";
     repo = "android-prepare-vendor";
-    rev = "8bd8b4b0dd0272f25cc5060fb2cc4296c46b383a";
-    sha256 = "1fwdy6lv1jh2nr0dkrnnz6hn271jxrafcjlbjpvyl2zp8fwphafy";
+    rev = "6f8cf1be159e67ef39242fbcae2458fa7251f6bd";
+    sha256 = "1ap7lghbrif49171hna23jim4jx2qbvnizgpi1dfhqf5bb79s8i0";
   });
 
   nativeBuildInputs = [ makeWrapper ];
