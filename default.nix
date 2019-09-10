@@ -14,6 +14,7 @@ lib.evalModules {
     ./modules/apps/updater.nix
     ./modules/apps/webview.nix
     ./modules/base.nix
+    ./modules/emulator.nix
     ./modules/etc.nix
     ./modules/hosts.nix
     ./modules/kernel.nix
