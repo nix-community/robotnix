@@ -37,7 +37,10 @@ mkMerge [
 
     kernel.configName = mkDefault config.deviceFamily;
     kernel.relpath = mkDefault "device/google/${config.deviceFamily}-kernel";
-    kernel.clangVersion = mkDefault "r349610";
+    kernel.clangVersion = mkDefault {
+      "9" = "4393122";
+      "10" = "r349610";
+    }.${config.androidVersion};
     kernel.compiler = mkDefault "clang";
     vendor.img = mkDefault (pkgs.fetchurl img.${config.deviceFamily}.${config.androidVersion});
   }
