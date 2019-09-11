@@ -124,13 +124,15 @@ in
     '');
   };
 
-    # Extract only files under nixdroid/ (for debugging with an external AOSP build)
-  config.build.debugUnpackScript = pkgs.writeText "unpack.sh" (
-      (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "nixdroid/" d.path)) ''
-        mkdir -p $(dirname ${d.path})
-        echo "${d.contents} -> ${d.path}"
-        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}/
-      '') (attrValues config.source.dirs))) + ''
-      chmod -R u+w nixdroid/
-    '');
+  # Extract only files under nixdroid/ (for debugging with an external AOSP build)
+  config.build.debugUnpackScript = pkgs.writeText "unpack.sh" (''
+    rm -rf nixdroid
+    '' +
+    (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "nixdroid/" d.path)) ''
+      mkdir -p $(dirname ${d.path})
+      echo "${d.contents} -> ${d.path}"
+      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}/
+    '') (attrValues config.source.dirs))) + ''
+    chmod -R u+w nixdroid/
+  '');
 }

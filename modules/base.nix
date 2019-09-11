@@ -171,11 +171,6 @@ in
 
         # Just included for convenience when building outside of nix.
         debugUnpackScript = config.build.debugUnpackScript;
-        # To easily build outside nix:
-        # nix-shell ... -A config.build.android
-        # source $debugUnpackScript       # should just create files under nixdroid/
-        # Apply any patches in $patches
-        # runHook postPatch
 
         patches = config.source.patches;
         patchFlags = [ "-p1" "--no-backup-if-mismatch" ]; # Patches that don't apply exactly will create .orig files, which the android build system doesn't like seeing.
