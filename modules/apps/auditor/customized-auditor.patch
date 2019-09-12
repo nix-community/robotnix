@@ -77,7 +77,7 @@ index c7127a0..60163ed 100644
                      new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_calyx))
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
-+            // NixDroidOS (TODO: support multiple devices. Needs different key for each device?)
++            // NixDroid (TODO: support multiple devices. Needs different key for each device?)
 +            .put("@taimen_avbFingerprint@",
 +                    new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_nixdroid))
 +            .put("@crosshatch_avbFingerprint@",
@@ -89,7 +89,7 @@ index c7127a0..60163ed 100644
              // CalyxOS
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
-+            // NixDroidOS
++            // NixDroid
 +            .put("@crosshatch_avbFingerprint@",
 +                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_nixdroid))
              .build();
@@ -103,7 +103,7 @@ index 0e86a7d..f2a53ae 100644
      <string name="os_stock">Stock</string>
      <string name="os_graphene">GrapheneOS</string>
      <string name="os_calyx">CalyxOS</string>
-+    <string name="os_nixdroid">NixDroidOS</string>
++    <string name="os_nixdroid">NixDroid</string>
  </resources>
 -- 
 2.22.0

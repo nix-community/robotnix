@@ -15,7 +15,7 @@ Generate keys to sign your build:
 $ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.generateKeysScript -o generate-keys
 $ mkdir keys/marlin
 $ cd keys/marlin
-$ ../generate-keys "/CN=NixDroidOS" # Use appropriate x509 cert fields
+$ ../generate-keys "/CN=NixDroid" # Use appropriate x509 cert fields
 $ cd ../..
 ```
 
