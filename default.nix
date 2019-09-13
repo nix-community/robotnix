@@ -16,6 +16,7 @@ lib.evalModules {
     ./modules/base.nix
     ./modules/emulator.nix
     ./modules/etc.nix
+    ./modules/google.nix
     ./modules/hosts.nix
     ./modules/kernel.nix
     ./modules/microg.nix

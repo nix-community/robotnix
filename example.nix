@@ -3,8 +3,8 @@ with (import ./pkgs.nix);
   imports = [ ./profiles/grapheneos.nix ];
 
   # Don't forget to update these for each unique build
-  buildNumber = "2019.08.24.1";
-  buildDateTime = 1566621057;
+  buildNumber = "2019.09.12.2";
+  buildDateTime = 1568321143;
 
   # A _string_ of the path for the key store.
   keyStorePath = "/var/secrets/android-keys";
@@ -36,10 +36,9 @@ with (import ./pkgs.nix);
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/449a0d7f613e6518ede4f3333e94f8071d3f1cd3/hosts";
     sha256 = "1mcn77l2m45qms7ynww2hzx0d6mja03bzj4di0s9j7spycp4540i";
   };
-  vendor.full = true; # Needed for Google Fi
-
-
   microg.enable = true;
   # Using cloud messaging, so enabling: https://source.android.com/devices/tech/power/platform_mgmt#integrate-doze
   resources."frameworks/base/core/res".config_enableAutoPowerModes = true;
+
+  google.fi.enable = true;
 }
