@@ -43,8 +43,8 @@ in
   }) else (fetchFromGitHub { # api == "29"
     owner = "RattlesnakeOS";
     repo = "android-prepare-vendor";
-    rev = "6f8cf1be159e67ef39242fbcae2458fa7251f6bd";
-    sha256 = "1ap7lghbrif49171hna23jim4jx2qbvnizgpi1dfhqf5bb79s8i0";
+    rev = "959ff35b781471c77f706e4eaa1bb8b1e52d0e20"; # 2019-09-13
+    sha256 = "1l4x4cwxx9rd503mpr1394rdn95jmm9zkjrjl043pqkc5mnwc571";
   });
 
   nativeBuildInputs = [ makeWrapper ];
