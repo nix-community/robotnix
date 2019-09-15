@@ -19,11 +19,6 @@ in
       description = "Include non-essential OEM blobs";
     };
 
-    vendor.files = mkOption {
-      type = types.path;
-      internal = true;
-    };
-
     vendor.systemBytecode = mkOption {
       type = types.listOf types.str;
       default = [];
@@ -36,34 +31,36 @@ in
   };
 
   config = mkIf (config.vendor.img != null) {
-    vendor.files = let
-      apvConfig = builtins.fromJSON (builtins.readFile "${android-prepare-vendor.android-prepare-vendor}/${config.device}/config.json");
-      # TODO: There's probably a better way to do this
-      mergedConfig = recursiveUpdate apvConfig {
-        "api-${config.apiLevel}".${if config.vendor.full then "full" else "naked"} = let
-          _config = apvConfig."api-${config.apiLevel}".${if config.vendor.full then "full" else "naked"};
-        in _config // {
-          system-bytecode = _config.system-bytecode ++ config.vendor.systemBytecode;
-          system-other = _config.system-other ++ config.vendor.systemOther;
+    build.vendor = {
+      files = let
+        apvConfig = builtins.fromJSON (builtins.readFile "${android-prepare-vendor.android-prepare-vendor}/${config.device}/config.json");
+        # TODO: There's probably a better way to do this
+        mergedConfig = recursiveUpdate apvConfig {
+          "api-${config.apiLevel}".${if config.vendor.full then "full" else "naked"} = let
+            _config = apvConfig."api-${config.apiLevel}".${if config.vendor.full then "full" else "naked"};
+          in _config // {
+            system-bytecode = _config.system-bytecode ++ config.vendor.systemBytecode;
+            system-other = _config.system-other ++ config.vendor.systemOther;
+          };
         };
-      };
-      mergedConfigFile = builtins.toFile "config.json" (builtins.toJSON mergedConfig);
-    in
-      android-prepare-vendor.buildVendorFiles {
-        inherit (config) device;
-        inherit (config.vendor) img full;
-        configFile = mergedConfigFile;
-      };
+        mergedConfigFile = builtins.toFile "config.json" (builtins.toJSON mergedConfig);
+      in
+        android-prepare-vendor.buildVendorFiles {
+          inherit (config) device;
+          inherit (config.vendor) img full;
+          configFile = mergedConfigFile;
+        };
 
-    # Just for ease in debugging
-    build.vendorUnpacked = android-prepare-vendor.unpackImg {
-      inherit (config) device;
-      inherit (config.vendor) img;
+      # Just for ease in debugging
+      unpacked = android-prepare-vendor.unpackImg {
+        inherit (config) device;
+        inherit (config.vendor) img;
+      };
     };
 
     # Using unpackScript instead of source.dirs since vendor_overlay/google_devices/${config.device} is not guaranteed to exist
     source.unpackScript = mkAfter ''
-      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.vendor.files}/* .
+      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.build.vendor.files}/* .
       chmod u+w -R *
     '';
   };

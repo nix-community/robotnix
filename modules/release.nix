@@ -149,7 +149,7 @@ in
 
       # TODO: What if we don't have vendor.files?
       get_radio_image() {
-        grep -Po "require version-$1=\K.+" ${config.vendor.files}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
+        grep -Po "require version-$1=\K.+" ${config.build.vendor.files}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
       }
       export BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
       export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
