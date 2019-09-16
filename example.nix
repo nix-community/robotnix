@@ -1,4 +1,7 @@
-with (import ./pkgs.nix);
+{ config, pkgs, lib, ... }:
+
+with pkgs;
+with lib;
 {
   imports = [ ./profiles/grapheneos.nix ];
 

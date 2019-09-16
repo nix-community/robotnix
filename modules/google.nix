@@ -18,7 +18,6 @@ in
   };
 
   # privapp-permissions-google.xml is already included with vendor.full
-
   config = mkMerge [
     (mkIf cfg.dialer.enable {
       vendor.full = true;
