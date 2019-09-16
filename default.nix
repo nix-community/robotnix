@@ -3,9 +3,15 @@
   lib ? pkgs.stdenv.lib
 }:
 
+let
+  nixdroidlib = import ./lib lib;
+in
 lib.evalModules {
   modules = [
-    { _module.args.pkgs = pkgs; _module.args.lib = lib; }
+    { _module.args.pkgs = pkgs;
+      _module.args.lib = lib;
+      _module.args.nixdroidlib = nixdroidlib;
+    }
     configuration 
     ./modules/apps/auditor.nix
     ./modules/apps/backup.nix

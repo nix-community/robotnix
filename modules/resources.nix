@@ -1,37 +1,15 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixdroidlib, ... }:
 
 # https://developer.android.com/guide/topics/resources/providing-resources
 # https://developer.android.com/guide/topics/resources/more-resources.html
 with lib;
 let
-  # Guess resource type. Should normally work fine, but can't detect color/dimension types
-  resourceType = r:
-    if isBool r then "bool"
-    else if isInt r then "integer"
-    else if isString r then "string"
-    else if isList r then
-      (assert (length r != 0); # Cannot autodetect type of empty list
-       if isInt (head r) then "integer-array"
-       else if isString (head r) then "string-array"
-       else assert false; "Unknown type"
-      )
-    else assert false; "Unknown type";
-  resourceValueXML = value: type: {
-    bool = if value then "true" else "false";
-    color = value; # define our own specialized type for these?
-    dimension = value;
-    integer = toString value;
-    string = value;
-    integer-array = concatMapStringsSep "" (i: "<item>${toString i}</item>") value;
-    string-array = concatMapStringsSep "" (i: "<item>${i}</item>") value;
-    # Ignoring other typed arrays for now
-  }.${type};
-  resourceXML = name: value: type: ''<${type} name="${name}">${resourceValueXML value type}</${type}>'';
+  # TODO: Unify with nixdroidlib.configXML (just need something nice for resourceTypeOverrides)
   configXML = relativePath: packageResources: ''
     <?xml version="1.0" encoding="utf-8"?>
     <resources>
       ${concatStringsSep "\n" (mapAttrsToList
-        (name: value: resourceXML name value (config.resourceTypeOverrides.${relativePath}.${name} or resourceType value))
+        (name: value: nixdroidlib.resourceXML name value (config.resourceTypeOverrides.${relativePath}.${name} or nixdroidlib.resourceType value))
        packageResources)}
     </resources>
   '';

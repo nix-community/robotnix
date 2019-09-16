@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixdroidlib, ... }:
 
 with lib;
 let
@@ -11,8 +11,46 @@ let
   };
 in
 {
-  options = {
-    apps.fdroid.enable = mkEnableOption "F-Droid";
+  options.apps.fdroid = {
+    enable = mkEnableOption "F-Droid";
+
+    # See apps/src/main/java/org/fdroid/fdroid/data/DBHelper.java in fdroid source
+    additionalRepos = mkOption {
+      default = {};
+      type = types.attrsOf (types.submodule ({ name, ... }: {
+        options = {
+          enable = mkEnableOption name;
+
+          name = mkOption {
+            default = name;
+            type = types.str;
+          };
+
+          url = mkOption {
+            type = types.str;
+          };
+
+          description = mkOption {
+            default = "";
+            type = types.str;
+          };
+
+          version = mkOption { # Not sure what this one is for exactly
+            default = 1;
+            type = types.int;
+          };
+
+          pushRequests = mkOption { # Repo metadata can specify apps to be installed/removed
+            type = types.strMatching "(ignore|prompt|always)";
+            default = "ignore";
+          };
+
+          pubkey = mkOption { # Wew these are long AF. TODO: Some way to generate these?
+            type = types.str;
+          };
+        };
+      }));
+    };
   };
 
   config = mkIf cfg.enable {
@@ -30,5 +68,20 @@ in
     '';
 
     additionalProductPackages = [ "F-DroidPrivilegedExtension" ];
+
+    etc = mkIf (cfg.additionalRepos != {}) {
+      "org.fdroid.fdroid/additional_repos.xml".text = nixdroidlib.configXML {
+        # Their XML schema is just a list of strings. Each 7 entries represents one repo.
+        additional_repos = flatten (mapAttrsToList (_: repo: with repo; (map (v: toString v) [
+          name
+          url
+          description
+          version
+          (if enable then "1" else "0")
+          pushRequests
+          pubkey
+        ])) cfg.additionalRepos);
+      };
+    };
   };
 }
