@@ -17,7 +17,8 @@ in
   source.excludeGroups = mkDefault [
     "darwin" # Linux-only for now
     "mips" "hikey"
-    "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
+#    #"marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
+#    # This breaks the device-name patch
   ];
   source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.configName ]; # But include the one we care about. Also include deviceFamily and kernel.configName, which might be an alternate name
 
@@ -29,9 +30,6 @@ in
       "device/generic/car"
       "device/generic/qemu"
       "prebuilts/qemu-kernel"
-
-      "device/generic/goldfish"
-      "device/generic/goldfish-opengl"
 
       "device/linaro/bootloader/arm-trusted-firmware"
       "device/linaro/bootloader/edk2"
@@ -52,10 +50,6 @@ in
       "device/google/accessory/demokit"
       "device/google/atv"
       "device/google/contexthub"
-      "device/google/cuttlefish"
-      "device/google/cuttlefish_common"
-      "device/google/cuttlefish_kernel"
-      "device/google/cuttlefish_sepolicy"
       "device/google/hikey-kernel"
     ]);
 }
