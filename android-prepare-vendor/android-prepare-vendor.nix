@@ -41,10 +41,10 @@ in
     rev = "e853d17c89f6962d3fd6f408db8576e6b445f643";
     sha256 = "1aicx4lh1gvrbq4llh0dqifhp3y5d4g44r271b2qbg3vpkz48alb";
   }) else (fetchFromGitHub { # api == "29"
-    owner = "RattlesnakeOS";
+    owner = "GrapheneOS";
     repo = "android-prepare-vendor";
-    rev = "959ff35b781471c77f706e4eaa1bb8b1e52d0e20"; # 2019-09-13
-    sha256 = "1l4x4cwxx9rd503mpr1394rdn95jmm9zkjrjl043pqkc5mnwc571";
+    rev = "05774a416f50f6453502aea2d046dcb51972ecc9"; # 2019-09-13
+    sha256 = "01nm9i3slr9amp1afim17snb3w31pwf0h6wgciw0x68w3a852c7z";
   });
 
   nativeBuildInputs = [ makeWrapper ];
