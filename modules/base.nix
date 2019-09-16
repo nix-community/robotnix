@@ -196,7 +196,7 @@ in
           cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
           source build/envsetup.sh
           choosecombo release "aosp_${config.device}" ${config.buildType}
-          make otatools-package target-files-package
+          make brillo_update_payload target-files-package -j$NIX_BUILD_CORES
           EOF
         '';
 
