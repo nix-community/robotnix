@@ -1,0 +1,24 @@
+diff -Naur a/aosp_blueline.mk b/aosp_blueline.mk
+--- a/aosp_blueline.mk	2019-06-12 15:08:46.446473089 -0400
++++ b/aosp_blueline.mk	2019-06-12 15:12:00.807386904 -0400
+@@ -33,7 +33,7 @@
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_blueline
+ PRODUCT_DEVICE := blueline
+-PRODUCT_MODEL := AOSP on blueline
++PRODUCT_MODEL := Pixel 3
+ 
+ # Audio XMLs
+ PRODUCT_COPY_FILES += \
+diff -Naur a/aosp_crosshatch.mk b/aosp_crosshatch.mk
+--- a/aosp_crosshatch.mk	2019-06-12 15:08:46.444473059 -0400
++++ b/aosp_crosshatch.mk	2019-06-12 15:11:48.759206014 -0400
+@@ -33,7 +33,7 @@
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_crosshatch
+ PRODUCT_DEVICE := crosshatch
+-PRODUCT_MODEL := AOSP on crosshatch
++PRODUCT_MODEL := Pixel 3 XL
+ 
+ # Audio XMLs
+ PRODUCT_COPY_FILES += \

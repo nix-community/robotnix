@@ -38,6 +38,7 @@ let
       bonito = "android-10.0.0_r0.4";
     };
   }.${config.androidVersion}.${config.deviceFamily};
+  deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
 in
 mkIf (config.flavor == "vanilla") {
   source.manifest = {
@@ -61,9 +62,10 @@ mkIf (config.flavor == "vanilla") {
   source.dirs."packages/apps/QuickSearchBox".enable = false;
   source.dirs."packages/apps/Browser2".enable = false;
 
-  source.patches = [ (../patches + "/${config.androidVersion}" + /disable-quicksearch.patch)
-                     (../patches + "/${config.androidVersion}" + /fix-device-names.patch)
-                   ];
+  source.patches = [ (../patches + "/${config.androidVersion}" + /disable-quicksearch.patch) ];
+  source.dirs."device/google/${deviceDirName}".patches = [
+    (../patches + "/${config.androidVersion}/${deviceDirName}-fix-device-names.patch")
+  ];
 
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
 }

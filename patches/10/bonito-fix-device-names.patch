@@ -1,0 +1,26 @@
+diff --git a/aosp_bonito.mk b/aosp_bonito.mk
+index df6bd1bf..e980feef 100644
+--- a/aosp_bonito.mk
++++ b/aosp_bonito.mk
+@@ -37,7 +37,7 @@ PRODUCT_MANUFACTURER := Google
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_bonito
+ PRODUCT_DEVICE := bonito
+-PRODUCT_MODEL := AOSP on bonito
++PRODUCT_MODEL := Pixel 3a XL
+ 
+ PRODUCT_COPY_FILES += \
+     device/sample/etc/apns-full-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
+diff --git a/aosp_sargo.mk b/aosp_sargo.mk
+index 2b003169..c1a0c8ae 100644
+--- a/aosp_sargo.mk
++++ b/aosp_sargo.mk
+@@ -37,7 +37,7 @@ PRODUCT_MANUFACTURER := Google
+ PRODUCT_BRAND := Android
+ PRODUCT_NAME := aosp_sargo
+ PRODUCT_DEVICE := sargo
+-PRODUCT_MODEL := AOSP on sargo
++PRODUCT_MODEL := Pixel 3a
+ 
+ PRODUCT_COPY_FILES += \
+     device/sample/etc/apns-full-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
