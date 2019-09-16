@@ -50,10 +50,11 @@ mkIf (config.flavor == "vanilla") {
   # Kernel sources for crosshatch and bonito require multiple repos--which
   # could normally be fetched with repo at https://android.googlesource.com/kernel/manifest
   # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
-  kernel.src = mkIf (config.avbMode == "verify_only") (builtins.fetchGit {
+  kernel.useCustom = mkDefault (config.signBuild && (config.deviceFamily == "marlin"));
+  kernel.src = builtins.fetchGit {
     url = "https://android.googlesource.com/kernel/msm";
     ref = "refs/tags/${kernelTag}";
-  });
+  };
 
   removedProductPackages = [ "webview" "Browser2" "Calendar" "QuickSearchBox" ];
   source.dirs."external/chromium-webview".enable = false;

@@ -34,6 +34,7 @@ mkIf (config.flavor == "grapheneos") {
   };
 
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
+  kernel.useCustom = mkDefault true;
   kernel.src = mkDefault (if (elem config.deviceFamily ["crosshatch" "bonito"])
     then kernelSrc
     else config.source.dirs."kernel/google/${replaceStrings ["taimen"] ["wahoo"] config.deviceFamily}".contents);

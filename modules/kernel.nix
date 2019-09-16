@@ -42,14 +42,18 @@ in
 {
   options = {
     kernel = {
+      useCustom = mkOption {
+        default = false;
+        type = types.bool;
+      };
+
       configName = mkOption {
         internal = true;
         type = types.str;
       };
 
       src = mkOption {
-        default = null;
-        type = types.nullOr types.path;
+        type = types.path;
       };
 
       patches = mkOption {
@@ -126,7 +130,7 @@ in
       '';
     };
 
-    source.postPatch = mkIf (config.kernel.src != null) ''
+    source.postPatch = mkIf config.kernel.useCustom ''
       rm -rf ${config.kernel.relpath}
       mkdir -p ${config.kernel.relpath}
       cp -v ${config.build.kernel}/* ${config.kernel.relpath}/
