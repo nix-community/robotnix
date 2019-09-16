@@ -1,0 +1,30 @@
+From 09383982891d69319ed422dd3abed727ba22b6d0 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Mon, 16 Sep 2019 09:55:01 -0400
+Subject: [PATCH] Path fixes for nixdroid
+
+---
+ tools/releasetools/common.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/releasetools/common.py b/tools/releasetools/common.py
+index d743c3e2d..e100e716b 100644
+--- a/tools/releasetools/common.py
++++ b/tools/releasetools/common.py
+@@ -59,11 +59,11 @@ class Options(object):
+         "darwin": os.path.join(base_search_path, "host/darwin-x86"),
+     }
+ 
+-    self.search_path = platform_search_path.get(sys.platform)
++    self.search_path = "@search_path@"
+     self.signapk_path = "framework/signapk.jar"  # Relative to search_path
+     self.signapk_shared_library_path = "lib64"   # Relative to search_path
+     self.extra_signapk_args = []
+-    self.java_path = "java"  # Use the one on the path by default.
++    self.java_path = "@java@"  # Use the one on the path by default.
+     self.java_args = ["-Xmx2048m"]  # The default JVM args.
+     self.public_key_suffix = ".x509.pem"
+     self.private_key_suffix = ".pk8"
+-- 
+2.22.0
+

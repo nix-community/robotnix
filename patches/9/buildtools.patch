@@ -1,0 +1,43 @@
+From 42d04f29ce249ffa09c30d078f9c8b0af2d89e1a Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Mon, 16 Sep 2019 09:55:01 -0400
+Subject: [PATCH] Path fixes for nixdroid
+
+---
+ tools/releasetools/build_image.py | 2 +-
+ tools/releasetools/common.py      | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/tools/releasetools/build_image.py b/tools/releasetools/build_image.py
+index ca96d01cc..03abb7f47 100755
+--- a/tools/releasetools/build_image.py
++++ b/tools/releasetools/build_image.py
+@@ -80,7 +80,7 @@ def GetVerityTreeSize(partition_size):
+ 
+ 
+ def GetVerityMetadataSize(partition_size):
+-  cmd = ["system/extras/verity/build_verity_metadata.py", "size",
++  cmd = ["build_verity_metadata.py", "size",
+          str(partition_size)]
+   output, exit_code = RunCommand(cmd, False)
+   if exit_code != 0:
+diff --git a/tools/releasetools/common.py b/tools/releasetools/common.py
+index 6defb2b08..155957bd5 100644
+--- a/tools/releasetools/common.py
++++ b/tools/releasetools/common.py
+@@ -45,10 +45,11 @@ class Options(object):
+     }
+ 
+     self.search_path = platform_search_path.get(sys.platform, None)
++    self.search_path = "@search_path@"
+     self.signapk_path = "framework/signapk.jar"  # Relative to search_path
+     self.signapk_shared_library_path = "lib64"   # Relative to search_path
+     self.extra_signapk_args = []
+-    self.java_path = "java"  # Use the one on the path by default.
++    self.java_path = "@java@"  # Use the one on the path by default.
+     self.java_args = ["-Xmx2048m"]  # The default JVM args.
+     self.public_key_suffix = ".x509.pem"
+     self.private_key_suffix = ".pk8"
+-- 
+2.22.0
+

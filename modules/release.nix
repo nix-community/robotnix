@@ -21,13 +21,11 @@ let
     name = "android-build-tools-${config.buildNumber}";
     src = config.source.dirs."build/make".contents;
     buildInputs = with pkgs; [ python ];
-    postPatch = ''
-      substituteInPlace ./tools/releasetools/common.py \
-        --replace "out/host/linux-x86" "${config.build.hostTools}" \
-        --replace "java_path = \"java\"" "java_path = \"${jdk}/bin/java\""
-      substituteInPlace ./tools/releasetools/build_image.py \
-        --replace "system/extras/verity/build_verity_metadata.py" "$out/build_verity_metadata.py"
-    '';
+    patches = [ (pkgs.substituteAll {
+      src = (../patches + "/${config.androidVersion}" + /buildtools.patch);
+      java = "${jdk}/bin/java";
+      search_path = config.build.hostTools;
+    }) ];
     installPhase = ''
       mkdir -p $out
       cp --reflink=auto -r ./tools/* $out
