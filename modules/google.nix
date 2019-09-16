@@ -36,10 +36,13 @@ in
     (mkIf cfg.fi.enable {
       vendor.full = true;
       google.dialer.enable = true;
+      resources."frameworks/base/core/res".config_ims_package = "com.google.android.ims";
       vendor.systemBytecode = [
         "${productPath}/app/Tycho/Tycho.apk::PRESIGNED" # Google Fi app
         "${productPath}/priv-app/GCS/GCS.apk::PRESIGNED" # Google Connectivity Services (does wifi VPN at least)
-        "${productPath}/priv-app/CarrierServices/CarrierServices.apk::PRESIGNED" # Google Carrier Services (seems to be needed for wifi calls)
+        "${productPath}/priv-app/CarrierServices/CarrierServices.apk::PRESIGNED" # Google Carrier Services. com.google.android.ims (needed for wifi calls)
+        "${productPath}/priv-app/CarrierSettings/CarrierSettings.apk::PRESIGNED" # com.google.android.carrier
+        "${productPath}/priv-app/CarrierSetup/CarrierSetup.apk::PRESIGNED" # com.google.android.carriersetup
       ];
     })
   ];
