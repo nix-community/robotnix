@@ -56,9 +56,8 @@ mkIf (config.flavor == "vanilla") {
     ref = "refs/tags/${kernelTag}";
   };
 
-  removedProductPackages = [ "webview" "Browser2" "Calendar" "QuickSearchBox" ];
+  removedProductPackages = [ "webview" "Browser2" "QuickSearchBox" ];
   source.dirs."external/chromium-webview".enable = false;
-  source.dirs."packages/apps/Calendar".enable = false;
   source.dirs."packages/apps/QuickSearchBox".enable = false;
   source.dirs."packages/apps/Browser2".enable = false;
 
