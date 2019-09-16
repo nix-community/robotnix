@@ -2,6 +2,8 @@
 
 with lib;
 let
+  nixdroid-env = pkgs.callPackage ../buildenv.nix {};
+
   avbFlags = {
     verity_only = "--replace_verity_public_key $KEYSDIR/verity_key.pub --replace_verity_private_key $KEYSDIR/verity --replace_verity_keyid $KEYSDIR/verity.x509.pem";
     vbmeta_simple = "--avb_vbmeta_key $KEYSDIR/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
@@ -64,7 +66,7 @@ let
   '';
 
   wrapScript = { commands, keysDir ? "" }: ''
-    export PATH=${config.build.hostTools}/bin:${pkgs.openssl}/bin:${pkgs.zip}/bin:${pkgs.unzip}/bin:${jdk}/bin:${pkgs.getopt}/bin:${pkgs.which}/bin:${pkgs.hexdump}/bin:${pkgs.perl}/bin:$PATH
+    export PATH=${config.build.hostTools}/bin:${pkgs.openssl}/bin:${pkgs.zip}/bin:${pkgs.unzip}/bin:${jdk}/bin:${pkgs.getopt}/bin:${pkgs.hexdump}/bin:${pkgs.perl}/bin:${pkgs.toybox}/bin:$PATH
 
     # sign_target_files_apks.py and others require this directory to be here.
     mkdir -p build/target/product/
@@ -74,14 +76,16 @@ let
     # permissions of the source file in ZipWrite. Since signing uses this
     # function with a key, we need to make a temporary copy of our keys so the
     # sandbox doesn't complain if it doesn't have permissions to do so.
-    KEYSDIR=${keysDir}
+    export KEYSDIR=${keysDir}
     if [[ "$KEYSDIR" ]]; then
       mkdir -p keys_copy
       cp -r $KEYSDIR/* keys_copy/
       KEYSDIR=keys_copy
     fi
 
+    cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
     ${commands}
+    EOF
 
     rm -r build  # Unsafe
     if [[ "$KEYSDIR" ]]; then rm -rf keys_copy; fi

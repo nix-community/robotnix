@@ -212,19 +212,7 @@ in
         dontMoveLib64 = true;
       };
 
-      # Tools that were built for the host in the process of building the target files.
-      # Do the patchShebangs / patchelf stuff in this derivation so it failing for any reason doesn't stop the main android build
-      hostTools = pkgs.stdenv.mkDerivation {
-        name = "android-host-tools";
-        src = config.build.android.bin;
-        nativeBuildInputs = [ pkgs.autoPatchelfHook ];
-        buildInputs = with pkgs; [ python ncurses5 ]; # One of the utilities needs libncurses.so.5 but it's not in the lib/ dir of the android build files.
-        installPhase = ''
-          mkdir -p $out
-          cp --reflink=auto -r * $out
-        '';
-        dontMoveLib64 = true;
-      };
+      hostTools = config.build.android.bin;
     };
   };
 }
