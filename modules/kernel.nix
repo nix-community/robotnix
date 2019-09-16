@@ -90,7 +90,7 @@ in
 
       patches = config.kernel.patches;
 
-      postPatch = lib.optionalString (config.avbMode == "verity_only") ''
+      postPatch = lib.optionalString (config.signBuild && (config.avbMode == "verity_only")) ''
         rm -f verity_*.x509
         openssl x509 -outform der -in ${config.build.x509 "verity"} -out verity_user.der.x509
       '';

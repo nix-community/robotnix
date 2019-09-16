@@ -10,6 +10,11 @@ let
 in
 {
   options = {
+    flavor = mkOption {
+      default = "vanilla";
+      type = types.str;
+    };
+
     device = mkOption {
       type = types.str;
       description = "Code name of device build target";
@@ -22,12 +27,14 @@ in
     };
 
     buildNumber = mkOption {
+      default = "12345";
       type = types.str;
       description = "Set this to something meaningful, like the date. Needs to be unique for each build for the updater to work";
       example = "2019.08.12.1";
     };
 
     buildDateTime = mkOption {
+      default = 1;
       type = types.int;
       description = "Seconds since the epoch that this build is taking place. Needs to be monotone increasing for the updater to work. e.g. output of \"date +%s\"";
       example = 1565645583;
@@ -76,7 +83,7 @@ in
     };
 
     signBuild = mkOption {
-      default = true;
+      default = false;
       type = types.bool;
       description = "Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.";
     };

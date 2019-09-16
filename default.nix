@@ -13,6 +13,10 @@ lib.evalModules {
       _module.args.nixdroidlib = nixdroidlib;
     }
     configuration 
+    ./flavors/grapheneos.nix
+    ./flavors/vanilla.nix
+    ./flavors/common.nix
+    ./flavors/pixel.nix
     ./modules/apps/auditor.nix
     ./modules/apps/backup.nix
     ./modules/apps/fdroid.nix

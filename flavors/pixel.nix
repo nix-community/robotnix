@@ -23,7 +23,7 @@ let
   };
 in
 mkMerge [
-  { # Default settings that apply to all devices unless overridden.
+  { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault {
       marlin = "marlin"; # Pixel XL
       sailfish = "marlin"; # Pixel

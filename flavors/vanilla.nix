@@ -39,9 +39,7 @@ let
     };
   }.${config.androidVersion}.${config.deviceFamily};
 in
-{
-  imports = [ ./common.nix ./pixel.nix ];
-
+mkIf (config.flavor == "vanilla") {
   source.manifest = {
     url = mkDefault "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
     rev = mkDefault "refs/tags/${release.tag}";

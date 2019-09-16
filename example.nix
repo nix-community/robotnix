@@ -3,7 +3,7 @@
 with pkgs;
 with lib;
 {
-  imports = [ ./profiles/grapheneos.nix ];
+  flavor = "grapheneos"; # "vanilla" is another option
 
   # Don't forget to update these for each unique build
   buildNumber = "2019.09.12.2";

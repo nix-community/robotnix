@@ -26,9 +26,7 @@ let
     fetchSubmodules = true;
   };
 in
-{
-  imports = [ ./common.nix ./pixel.nix ];
-
+mkIf (config.flavor == "grapheneos") {
   source.manifest = {
     url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
     rev = mkDefault "refs/tags/${release.tag}";
