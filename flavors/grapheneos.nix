@@ -46,17 +46,15 @@ mkIf (config.flavor == "grapheneos") {
   source.dirs."kernel/google/crosshatch".enable = false;
   source.dirs."kernel/google/bonito".enable = false;
 
-  apps.webview.enable = mkDefault true;
   # TODO: Build and include vanadium
   removedProductPackages = [ "Vanadium" ];
 
-  apps.updater.enable = mkDefault true;
-
-  # Don't include upstream if we use the patched version
-  source.dirs."packages/apps/Updater".enable = mkIf config.apps.updater.enable false;
+  # Don't include updater by default since it would download updates signed with grapheneos's keys.
+  # TODO: Encourage user to set apps.updater.enable
+  source.dirs."packages/apps/Updater".enable = false;
 
   # Leave the existing auditor in the build--just in case the use wants to
   # audit devices using the official upstream build
 
-  source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own version
+  source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own pinned version
 }
