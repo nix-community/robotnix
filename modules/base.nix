@@ -111,9 +111,9 @@ in
 
     # Some derivations (like fdroid) need to know the fingerprints of the keys
     # even if we aren't signing. Set test-keys in that case. This is not an
-    # unconditional default because we want the user to be foreced to set
+    # unconditional default because we want the user to be forced to set
     # keyStorePath themselves if they select signBuild.
-    keyStorePath = mkIf (!config.signBuild) (config.source.dirs."build/make".contents + /target/product/security);
+    keyStorePath = mkIf (!config.signBuild) (mkDefault (config.source.dirs."build/make".contents + /target/product/security));
 
     extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.additionalProductPackages;
 
