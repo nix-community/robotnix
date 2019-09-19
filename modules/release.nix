@@ -50,19 +50,6 @@ let
     patchShebangs $out/bin
   '';
 
-  # Use bash substitution to only set options if KEYSDIR is set
-  signedTargetFilesScript = { out }: ''
-    ${buildTools}/releasetools/sign_target_files_apks.py ''${KEYSDIR:+-o -d $KEYSDIR ${avbFlags}} ${config.build.android.out}/aosp_${config.device}-target_files-${config.buildNumber}.zip ${out} || exit 1
-  '';
-
-  otaScript = { signedTargetFiles, out }: ''
-    ${buildTools}/releasetools/ota_from_target_files.py --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} ${signedTargetFiles} ${out} || exit 1
-  '';
-
-  imgScript = { signedTargetFiles, out }: ''
-    ${buildTools}/releasetools/img_from_target_files.py ${signedTargetFiles} ${out} || exit 1
-  '';
-
   wrapScript = { commands, keysDir ? "" }: ''
     export PATH=${config.build.hostTools}/bin:${pkgs.openssl}/bin:${pkgs.zip}/bin:${pkgs.unzip}/bin:${jdk}/bin:${pkgs.getopt}/bin:${pkgs.hexdump}/bin:${pkgs.perl}/bin:${pkgs.toybox}/bin:$PATH
 
@@ -88,78 +75,116 @@ let
     rm -r build  # Unsafe
     if [[ "$KEYSDIR" ]]; then rm -rf keys_copy; fi
   '';
-in
-{
-  config.build = {
-    # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
-    # TODO: Currently can only build here with keys enabled
-    signedTargetFiles = if config.signBuild
-      then pkgs.runCommand "${config.device}-signed_target_files-${config.buildNumber}.zip" {}
-      (wrapScript {
-        commands = signedTargetFilesScript { out="$out"; };
-        keysDir = optionalString config.signBuild "/keys/${config.device}";
-      })
-      else config.build.android + "/aosp_${config.device}-target_files-${config.buildNumber}.zip";
-    ota = pkgs.runCommand "${config.device}-ota_update-${config.buildNumber}.zip" {}
-      (wrapScript {
-        commands = otaScript { signedTargetFiles=config.build.signedTargetFiles; out="$out"; };
-        keysDir = optionalString config.signBuild "/keys/${config.device}";
-      });
-    img = pkgs.runCommand "${config.device}-img-${config.buildNumber}.zip" {}
-      (wrapScript {
-        commands = imgScript { signedTargetFiles=config.build.signedTargetFiles; out="$out"; };
-      }); # No need for keys here
-    otaMetadata = pkgs.runCommand "${config.device}-stable" {} ''
-      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.build.ota} > $out
-    '';
 
-    otaDir = pkgs.linkFarm "${config.device}-otaDir" (with config.build; [ { name=ota.name; path=ota; } { name=otaMetadata.name; path=otaMetadata;} ]);
+  runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
+    commands = script (args // {out="$out";});
+    keysDir = optionalString config.signBuild "/keys/${config.device}";
+  });
 
-    # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
-    # Maybe just remove this script? It's definitely complicated--and often untested
-    releaseScript = pkgs.writeScript "release.sh" (''
-      #!${pkgs.runtimeShell}
-      '' + (wrapScript { keysDir="$1"; commands=''
-      PREV_BUILDNUMBER=$2
-
-      echo Signing target files
-      ${signedTargetFilesScript {
-        out="${config.device}-target_files-${config.buildNumber}.zip";
-      }}
-
-      echo Building OTA zip
-      ${otaScript {
-        signedTargetFiles="${config.device}-target_files-${config.buildNumber}.zip";
-        out="${config.device}-ota_update-${config.buildNumber}.zip";
-      }}
-
-      echo Building incremental OTA zip
-      if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
-        ${buildTools}/releasetools/ota_from_target_files.py --block ''${KEYSDIR:+"-k $KEYSDIR/releasekey} -i ${config.device}-target_files-$PREV_BUILDNUMBER.zip ${config.device}-target_files-${config.buildNumber}.zip ${config.device}-incremental-$PREV_BUILDNUMBER-${config.buildNumber}.zip || exit 1
-      fi
-
-      echo Building .img file
-      ${imgScript {
-        signedTargetFiles="${config.device}-target_files-${config.buildNumber}.zip";
-        out="${config.device}-img-${config.buildNumber}.zip";
-      }}
+  unsignedTargetFiles = config.build.android + "/aosp_${config.device}-target_files-${config.buildNumber}.zip";
+  signedTargetFilesScript = { out }:
+    ''${buildTools}/releasetools/sign_target_files_apks.py ''${KEYSDIR:+-o -d $KEYSDIR ${avbFlags}} ${unsignedTargetFiles} ${out}'';
+  otaScript = { targetFiles, prevTargetFiles ? null, out }:
+    ''${buildTools}/releasetools/ota_from_target_files.py --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} ${targetFiles} ${out}'';
+  imgScript = { targetFiles, out }: ''${buildTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
+  factoryImgScript = { targetFiles, img, out }: ''
+      ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
+      ln -s ${img} ${config.device}-img-${config.buildNumber}.zip || true
 
       export DEVICE=${config.device};
       export PRODUCT=${config.device};
       export BUILD=${config.buildNumber};
       export VERSION=${toLower config.buildNumber};
 
-      # TODO: What if we don't have vendor.files?
+      # TODO: What if we don't have vendor.files? Maybe extract and use IFD?
       get_radio_image() {
         grep -Po "require version-$1=\K.+" ${config.build.vendor.files}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
       }
       export BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
       export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
-      echo Building factory image
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".contents}/generate-factory-images-common.sh
+      mv $PRODUCT-$VERSION-factory-*.zip $out
+  '';
 
-      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.device}-ota_update-${config.buildNumber}.zip > ${config.device}-stable
+  targetFiles = if config.signBuild then signedTargetFiles else unsignedTargetFiles;
+  signedTargetFiles = runWrappedCommand "signed_target_files" signedTargetFilesScript {};
+  ota = runWrappedCommand "ota_update" otaScript { inherit targetFiles; };
+  incrementalOta = runWrappedCommand "incremental-${config.prevBuildNumber}" otaScript { inherit targetFiles; prevTargetFiles=config.prevTargetFiles; };
+  img = runWrappedCommand "img" imgScript { inherit targetFiles; };
+  factoryImg = runWrappedCommand "factory" factoryImgScript { inherit targetFiles; img=config.build.img; };
+in
+{
+  options = {
+    incremental = mkOption {
+      default = false;
+      type = types.bool;
+      description = "Whether to include an incremental build in config.build.otaDir";
+    };
+
+    channel = mkOption {
+      default = "stable";
+      type = types.strMatching "(stable|beta)";
+      description = "Default channel to use for updates (can be modified in app)";
+    };
+
+    prevBuildDir = mkOption {
+      type = types.str;
+    };
+
+    prevBuildNumber = mkOption {
+      type = types.str;
+    };
+
+    prevTargetFiles = mkOption {
+      type = types.path;
+    };
+  };
+
+  config.prevBuildNumber = let
+      metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.channel}");
+    in mkDefault (head (splitString " " metadata));
+  config.prevTargetFiles = mkDefault (config.prevBuildDir + "/${config.device}-target_files-${config.prevBuildNumber}");
+
+  config.build = {
+    # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
+    inherit signedTargetFiles ota incrementalOta img factoryImg;
+
+    otaMetadata = pkgs.runCommand "${config.device}-${config.channel}" {} ''
+      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.build.ota} > $out
+    '';
+
+    # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
+    otaDir = pkgs.linkFarm "${config.device}-otaDir" (
+      (map (p: {name=p.name; path=p;}) (with config.build; [ ota otaMetadata ] ++ (optional config.incremental incrementalOta)))
+      ++ [{ name="${config.device}-target_files-${config.buildNumber}.zip"; path=targetFiles; }]
+    );
+
+    # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
+    # Maybe just remove this script? It's definitely complicated--and often untested
+    releaseScript = pkgs.writeScript "release.sh" (''
+      #!${pkgs.runtimeShell}
+      export PREV_BUILDNUMBER=$2
+      '' + (wrapScript { keysDir="$1"; commands=''
+      if [[ "$KEYSDIR" ]]; then
+        echo Signing target files
+        ${signedTargetFilesScript { out=signedTargetFiles.name; }} || exit 1
+      fi
+      echo Building OTA zip
+      ${otaScript { targetFiles=signedTargetFiles.name; out=ota.name; }} || exit 1
+      echo Building incremental OTA zip
+      if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
+        ${otaScript {
+          targetFiles=signedTargetFiles.name;
+          prevTargetFiles="${config.device}-target_files-$PREV_BUILDNUMBER.zip";
+          out="${config.device}-incremental-$PREV_BUILDNUMBER-${config.buildNumber}.zip";
+        }} || exit 1
+      fi
+      echo Building .img file
+      ${imgScript { targetFiles=signedTargetFiles.name; out=img.name; }} || exit 1
+      echo Building factory image
+      ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
+      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${ota.name} > ${config.device}-${config.channel}
     ''; }));
 
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool

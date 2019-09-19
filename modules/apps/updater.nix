@@ -20,12 +20,6 @@ in
         type = types.str;
         description = "URL for OTA updates (requires trailing slash)";
       };
-
-      channel = mkOption {
-        default = "stable";
-        type = types.strMatching "(stable|beta)";
-        description = "Default channel to use for updates (can be modified in app)";
-      };
     };
   };
 
@@ -36,7 +30,7 @@ in
 
     resources."nixdroid/apps/Updater" = {
       inherit (cfg) url;
-      channel_default = cfg.channel;
+      channel_default = config.channel;
     };
   };
 }
