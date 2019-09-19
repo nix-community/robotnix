@@ -29,6 +29,7 @@ in
       "device/generic/car"
       "device/generic/qemu"
       "prebuilts/qemu-kernel"
+      "prebuilts/android-emulator"
 
       "device/linaro/bootloader/arm-trusted-firmware"
       "device/linaro/bootloader/edk2"
@@ -48,7 +49,5 @@ in
       "device/google/accessory/arduino"
       "device/google/accessory/demokit"
       "device/google/atv"
-      "device/google/contexthub"
-      "device/google/hikey-kernel"
     ]);
 }

@@ -188,15 +188,14 @@ in
         BUILD_NUMBER=config.buildNumber;
         BUILD_DATETIME=config.buildDateTime;
         DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
-        ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8G";
 
-        # Alternative is to just "make target-files-package brillo_update_payload
         # Parts from https://github.com/GrapheneOS/script/blob/pie/release.sh
         buildPhase = ''
           cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
           source build/envsetup.sh
           choosecombo release "aosp_${config.device}" ${config.buildType}
-          make brillo_update_payload target-files-package -j$NIX_BUILD_CORES
+          export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES";
+          make brillo_update_payload target-files-package
           EOF
         '';
 
@@ -206,6 +205,7 @@ in
           mkdir -p $out $bin
           cp --reflink=auto -r out/target/product/${config.device}/obj/PACKAGING/target_files_intermediates/aosp_${config.device}-target_files-${config.buildNumber}.zip $out/
           cp --reflink=auto -r out/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
+          cp --reflink=auto -r out/soong/host/linux-x86/* $bin/
         '';
 
         configurePhase = ":";
