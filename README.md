@@ -1,13 +1,29 @@
 # NixDroid
 
-This is a fork of the original NixDroid, focusing on recent customized vanilla-ish AOSP targeting Pixel devices.
-This fork additionally uses a NixOS-style module system for configuring the build.
-It also has partial support for building GrapheneOS, but currently doesn't build Vanadium (GrapheneOS's chromium fork).
+This is a fork of the original NixDroid, focusing on customized vanilla-ish AOSP targeting Pixel devices.
+Some features include:
+ - Uses a NixOS-style module system for configuring the build
+ - Signing builds for verified boot (dm-verity/AVB) and re-locking the bootloader
+ - Automated OTA updates
+ - Partial GrapheneOS support (currently doesn't build Vanadium, the chromium fork)
+ - Preliminary support for Android 10
 
-To begin, create a configuration file, see `example.nix`, `marlin.nix`, and `crosshatch.nix` for inspiration.
-This has only been tested on marlin (Pixel XL) and crosshatch (Pixel 3 XL), but should support all Pixel devices with (hopefully) minor changes.
+Further goals include:
+ - Better documentation, especially for module options
+ - Reproducible builds
+ - Continuous integration / testing
 
-#### Building the vanilla AOSP ROM:
+This has currently only been tested on marlin (Pixel XL) and crosshatch (Pixel 3 XL), but should support all Pixel devices with (hopefully) minor changes.
+
+Two line `.img` build:
+```console
+curl https://nixos.org/nix/install | sh
+nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="marlin";}' -A config.build.factoryImg
+```
+this will make generate an image signed with `test-keys`, so don't use it for anything other than testing.
+
+A configuration file shold be created for anything more complicated.
+See `example.nix`, `marlin.nix`, and `crosshatch.nix` for inspiration.
 
 Generate keys to sign your build:
 
@@ -26,7 +42,8 @@ $ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.relea
 $ ./release ./keys/marlin
 ```
 
-An alternative to using the releaseScript above is to build the final products using nix with a sandbox exception for secret keys, so the build process can sign things itself.
+An alternative to using the releaseScript above is to build the final products inside nix.
+This will require a nix sandbox exception so the secret keys are available to the build scripts.
 
 ```console
 $ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.img --option extra-sandbox-paths /keys=$(pwd)/keys
@@ -34,4 +51,23 @@ $ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.img -
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 The root user is always trusted, however, running `sudo nix-build ...` would use root's git cache for `builtins.fetchgit`, which would effectively re-download the source again.
 
-Other built targets include `config.build.ota`, and `config.build.otaDir`.
+Additional information:
+
+```console
+# To easily build NixDroid outside of nix for debugging
+nix-shell ... -A config.build.android
+source $debugUnpackScript       # should just create files under nixdroid/
+# Apply any patches in $patches
+runHook postPatch
+
+~/NixDroid/buildenv/bin/nixdroid-build # TODO: Could put this in the PATH for easier debugging
+
+export TMPDIR=/tmp
+export OUT_DIR_COMMON_BASE=/mnt/media/out
+source build/envsetup.sh
+choosecombo debug aosp_x86_64 userdebug
+make target-files-package
+
+# sign target files
+# ota_from_target_files also needs xxd (toybox works)
+```
