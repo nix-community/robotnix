@@ -189,12 +189,16 @@ in
 
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
     # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
-    generateKeysScript = pkgs.writeScript "generate_keys.sh" ''
+    generateKeysScript = let
+      keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
+                        ++ (optional (config.avbMode == "verity_only") "verity")
+                        ++ (optional (config.androidVersion == "10") "networkstack");
+    in pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}
 
       export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
-      for key in {releasekey,platform,shared,media${optionalString (config.avbMode == "verity_only") ",verity"}}; do
+      for key in ${toString keysToGenerate}; do
         # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
         ! make_key "$key" "$1" || exit 1
       done
