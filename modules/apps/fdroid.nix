@@ -31,7 +31,7 @@ in
           };
 
           description = mkOption {
-            default = "";
+            default = "Empty description"; # fdroid parsing of additional_repos.xml requires all items to have text
             type = types.str;
           };
 
