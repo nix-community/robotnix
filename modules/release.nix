@@ -63,6 +63,10 @@ let
     # sandbox doesn't complain if it doesn't have permissions to do so.
     export KEYSDIR=${keysDir}
     if [[ "$KEYSDIR" ]]; then
+      if [[ ! -d "$KEYSDIR" ]]; then
+        echo 'Missing KEYSDIR directory, did you use "--option extra-sandbox-paths /keys=..." ?'
+        exit 1
+      fi
       mkdir -p keys_copy
       cp -r $KEYSDIR/* keys_copy/
       KEYSDIR=keys_copy
