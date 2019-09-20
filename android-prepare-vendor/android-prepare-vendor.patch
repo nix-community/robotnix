@@ -105,14 +105,15 @@ index d022597..0653cc7 100755
 2.22.0
 
 
-From f42dae948ff780b4b459212be08aa7783a2e3f79 Mon Sep 17 00:00:00 2001
+From 5746cb09da6e45300501d3f6fc59434e93dada70 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Wed, 11 Sep 2019 13:02:03 -0400
 Subject: [PATCH 4/4] Allow for externally-set config file
 
 ---
- execute-all.sh | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ execute-all.sh             | 8 +++++++-
+ scripts/generate-vendor.sh | 5 ++---
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/execute-all.sh b/execute-all.sh
 index 124305a..bed91f1 100755
@@ -140,6 +141,36 @@ index 124305a..bed91f1 100755
  
  # Prepare output dir structure
  OUT_BASE="$OUTPUT_DIR/$DEVICE/$BUILDID"
+diff --git a/scripts/generate-vendor.sh b/scripts/generate-vendor.sh
+index 0653cc7..c1c7817 100755
+--- a/scripts/generate-vendor.sh
++++ b/scripts/generate-vendor.sh
+@@ -1115,7 +1115,8 @@ isValidConfigType "$CONFIG_TYPE"
+ isValidApiLevel "$API_LEVEL"
+ 
+ # Populate config files from base conf dir
+-readonly DEVICE_CONFIG_DIR="$(dirname "$CONFIG_FILE")"
++DEVICE=$(get_device_codename "$INPUT_DIR/system/build.prop")
++readonly DEVICE_CONFIG_DIR="$SCRIPTS_DIR/../$DEVICE"
+ readonly BLOBS_LIST="./proprietary-blobs.txt"
+ readonly OVERLAYS_DIR="$(setOverlaysDir)"
+ readonly DEP_DSO_BLOBS_LIST="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "dep-dso" "$CONFIG_FILE" | grep -Ev '(^#|^$)')"
+@@ -1135,7 +1136,6 @@ readarray -t PSIG_BC_FILES < <(
+ verify_input "$INPUT_DIR"
+ 
+ # Get device details
+-DEVICE=$(get_device_codename "$INPUT_DIR/system/build.prop")
+ DEVICE_FAMILY="$(jqRawStrTop "device-family" "$CONFIG_FILE")"
+ VENDOR=$(get_vendor "$INPUT_DIR/system/build.prop")
+ VENDOR_DIR="$(jqRawStrTop "aosp-vendor-dir" "$CONFIG_FILE")"
+@@ -1146,7 +1146,6 @@ if [[ "$EXTRA_IMGS_LIST" != "" ]]; then
+   readarray -t EXTRA_IMGS < <(echo "$EXTRA_IMGS_LIST")
+ fi
+ 
+-
+ echo "[*] Generating '$DEVICE' vendor blobs"
+ 
+ # Prepare vendor output directory structure
 -- 
 2.22.0
 

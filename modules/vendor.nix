@@ -4,13 +4,21 @@
 with lib;
 let
   android-prepare-vendor = pkgs.callPackage ../android-prepare-vendor { api = config.apiLevel; };
+  apvConfig = builtins.fromJSON (builtins.readFile "${android-prepare-vendor.android-prepare-vendor}/${config.device}/config.json");
+  usedOta = if (apvConfig ? ota-partitions) then config.vendor.ota else null;
 in
 {
   options = {
     vendor.img = mkOption {
       default = null;
       type = types.nullOr types.path;
-      description = "A .img from upstream whose vendor contents should be extracted and included in the build";
+      description = "A factory image .zip from upstream whose vendor contents should be extracted and included in the build";
+    };
+
+    vendor.ota = mkOption {
+      default = null;
+      type = types.nullOr types.path;
+      description = "An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds needs an OTA as well)";
     };
 
     vendor.full = mkOption {
@@ -33,7 +41,6 @@ in
   config = mkIf (config.vendor.img != null) {
     build.vendor = {
       files = let
-        apvConfig = builtins.fromJSON (builtins.readFile "${android-prepare-vendor.android-prepare-vendor}/${config.device}/config.json");
         # TODO: There's probably a better way to do this
         mergedConfig = recursiveUpdate apvConfig {
           "api-${config.apiLevel}".${if config.vendor.full then "full" else "naked"} = let
@@ -48,6 +55,7 @@ in
         android-prepare-vendor.buildVendorFiles {
           inherit (config) device;
           inherit (config.vendor) img full;
+          ota = usedOta;
           configFile = mergedConfigFile;
         };
 
