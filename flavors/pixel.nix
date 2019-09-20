@@ -22,7 +22,7 @@ mkMerge [
       marlin = "marlin"; # Pixel XL
       sailfish = "marlin"; # Pixel
       taimen = "taimen"; # Pixel 2 XL
-      walleye = "taimen"; # Pixel 2
+      walleye = "wahoo"; # Pixel 2
       crosshatch = "crosshatch"; # Pixel 3 XL
       blueline = "crosshatch"; # Pixel 3
       bonito = "bonito"; # Pixel 3a XL
@@ -46,8 +46,6 @@ mkMerge [
     avbMode = mkDefault "verity_only";
   })
   (mkIf (config.deviceFamily == "taimen") {
-    kernel.configName = "wahoo";
-    kernel.relpath = "device/google/wahoo-kernel";
     avbMode = mkDefault "vbmeta_simple";
   })
   (mkIf (config.deviceFamily == "crosshatch") {
