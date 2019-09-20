@@ -131,7 +131,6 @@ in
     };
 
     source.postPatch = mkIf config.kernel.useCustom ''
-      rm -rf ${config.kernel.relpath}
       mkdir -p ${config.kernel.relpath}
       cp -v ${config.build.kernel}/* ${config.kernel.relpath}/
       chmod -R u+w ${config.kernel.relpath}/
