@@ -104,6 +104,7 @@ let
     ${buildTools}/releasetools/ota_from_target_files.py  \
       --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} \
       ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
+      ${optionalString config.ota.retrofit "--retrofit_dynamic_partitions"} \
       ${targetFiles} ${out}
   '';
   imgScript = { targetFiles, out }: ''${buildTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
@@ -148,6 +149,12 @@ in
       description = "Whether to include an incremental build in config.build.otaDir";
     };
 
+    ota.retrofit = mkOption {
+      default = false;
+      type = types.bool;
+      description = "Generate a retrofit OTA for upgrading a device without dynamic partitions";
+      # https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legacy#generating-update-packages
+    };
 
     prevBuildDir = mkOption {
       type = types.str;

@@ -51,8 +51,10 @@ mkMerge [
   (mkIf (config.deviceFamily == "crosshatch") {
     kernel.configName = "b1c1";
     avbMode = mkDefault "vbmeta_chained";
+    ota.retrofit = mkIf (config.androidVersion == "10") (mkDefault true);
   })
   (mkIf (config.deviceFamily == "bonito") {
     avbMode = mkDefault "vbmeta_chained";
+    ota.retrofit = mkIf (config.androidVersion == "10") (mkDefault true);
   })
 ]
