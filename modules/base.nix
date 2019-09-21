@@ -210,6 +210,8 @@ in
 
         configurePhase = ":";
         dontMoveLib64 = true;
+
+        shellHook = "${nixdroid-env}/bin/nixdroid-build";
       };
 
       hostTools = config.build.android.bin;

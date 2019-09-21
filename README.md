@@ -62,8 +62,6 @@ source $debugUnpackScript       # should just create files under nixdroid/
 # Apply any patches in $patches
 runHook postPatch
 
-~/NixDroid/buildenv/bin/nixdroid-build # TODO: Could put this in the PATH for easier debugging
-
 export TMPDIR=/tmp
 export OUT_DIR_COMMON_BASE=/mnt/media/out
 source build/envsetup.sh
