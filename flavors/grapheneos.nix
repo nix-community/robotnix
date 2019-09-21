@@ -46,6 +46,9 @@ mkIf (config.flavor == "grapheneos") {
   source.dirs."kernel/google/crosshatch".enable = false;
   source.dirs."kernel/google/bonito".enable = false;
 
+  # GrapheneOS just disables apex updating wholesale
+  apex.enable = false;
+
   # TODO: Build and include vanadium
   removedProductPackages = [ "Vanadium" ];
 
@@ -53,7 +56,7 @@ mkIf (config.flavor == "grapheneos") {
   # TODO: Encourage user to set apps.updater.enable
   source.dirs."packages/apps/Updater".enable = false;
 
-  # Leave the existing auditor in the build--just in case the use wants to
+  # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 
   source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own pinned version

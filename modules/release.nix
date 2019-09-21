@@ -104,7 +104,7 @@ let
     ${buildTools}/releasetools/sign_target_files_apks.py \
       ''${KEYSDIR:+-o -d $KEYSDIR ${toString avbFlags}} \
       ${optionalString (config.androidVersion == "10") "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"} \
-      ${concatMapStringsSep " " (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") config.apexPackageNames} \
+      ${concatMapStringsSep " " (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") config.apex.packageNames} \
       ${unsignedTargetFiles} ${out}
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
@@ -175,13 +175,16 @@ in
       type = types.path;
     };
 
-    apexPackageNames = mkOption {
+    # Android 10 feature. This just disables the key generation/signing. TODO: Make it change the device configuration as well
+    apex.enable = mkEnableOption "apex";
+
+    apex.packageNames = mkOption {
       default = [];
       type = types.listOf types.str;
     };
   };
 
-  config.apexPackageNames = mkIf (config.androidVersion == "10")
+  config.apex.packageNames = mkIf (config.apex.enable && (config.androidVersion == "10"))
     [ "com.android.conscrypt" "com.android.media"
       "com.android.media.swcodec" "com.android.resolv"
       "com.android.runtime.release" "com.android.tzdata"
@@ -238,8 +241,8 @@ in
     generateKeysScript = let
       keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
                         ++ (optional (config.avbMode == "verity_only") "verity")
-                        ++ (optionals (config.androidVersion == "10") [ "networkstack" ] ++ config.apexPackageNames);
-      avbKeysToGenerate = config.apexPackageNames;
+                        ++ (optionals (config.androidVersion == "10") [ "networkstack" ] ++ config.apex.packageNames);
+      avbKeysToGenerate = config.apex.packageNames;
     in pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}
 

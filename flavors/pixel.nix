@@ -38,12 +38,14 @@ mkMerge [
     kernel.compiler = mkDefault "clang";
     vendor.img = mkDefault (latestImg config.device config.androidVersion);
     vendor.ota = mkDefault (latestOta config.device config.androidVersion);
+    apex.enable = mkIf (config.androidVersion == "10") (mkDefault true);
   }
 
   # Device-specific overrides
   (mkIf (config.deviceFamily == "marlin") {
     kernel.compiler = "gcc";
     avbMode = mkDefault "verity_only";
+    apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
   })
   (mkIf (config.deviceFamily == "taimen") {
     avbMode = mkDefault "vbmeta_simple";
