@@ -5,14 +5,20 @@ let
   flex = pkgs.callPackage ../misc/flex-2.5.39.nix {};
 in
 {
-  # Android 9: Fix a locale issue with included flex program
+  # Some android version-specific fixes:
   source.postPatch = mkIf (config.androidVersion == "9") "ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39";
-  source.patches = mkIf (config.androidVersion == "10") [
+  source.dirs."build/make".patches = [
+    (pkgs.substituteAll {
+      src = (../patches + "/${config.androidVersion}" + /buildtools.patch);
+      java = "${jdk}/bin/java";
+      search_path = config.build.hostTools;
+    })
+  ] ++ (optional (config.androidVersion == "10")
     (pkgs.substituteAll {
       src = ../patches/10/partition-size-fix.patch;
       inherit (pkgs) coreutils;
     })
-  ];
+  );
 
   source.excludeGroups = mkDefault [
     "darwin" # Linux-only for now

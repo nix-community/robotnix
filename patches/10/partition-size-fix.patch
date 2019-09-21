@@ -1,7 +1,7 @@
-diff --git a/build/make/tools/releasetools/build_image.py b/build/make/tools/releasetools/build_image.py
+diff --git a/tools/releasetools/build_image.py b/tools/releasetools/build_image.py
 index 4136ed432..23fa83508 100755
---- a/build/make/tools/releasetools/build_image.py
-+++ b/build/make/tools/releasetools/build_image.py
+--- a/tools/releasetools/build_image.py
++++ b/tools/releasetools/build_image.py
 @@ -57,8 +57,8 @@ def GetDiskUsage(path):
    Returns:
      The number of bytes based on a 1K block_size.
