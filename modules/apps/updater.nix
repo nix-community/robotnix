@@ -30,7 +30,7 @@ in
 
     resources."nixdroid/apps/Updater" = {
       inherit (cfg) url;
-      channel_default = config.channel;
+      channel_default = config.ota.channel;
     };
   };
 }

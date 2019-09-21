@@ -115,17 +115,18 @@ let
 in
 {
   options = {
-    incremental = mkOption {
+    ota.channel = mkOption {
+      default = "stable";
+      type = types.strMatching "(stable|beta)";
+      description = "Default channel to use for updates (can be modified in app)";
+    };
+
+    ota.incremental = mkOption {
       default = false;
       type = types.bool;
       description = "Whether to include an incremental build in config.build.otaDir";
     };
 
-    channel = mkOption {
-      default = "stable";
-      type = types.strMatching "(stable|beta)";
-      description = "Default channel to use for updates (can be modified in app)";
-    };
 
     prevBuildDir = mkOption {
       type = types.str;
@@ -141,21 +142,21 @@ in
   };
 
   config.prevBuildNumber = let
-      metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.channel}");
+      metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.ota.channel}");
     in mkDefault (head (splitString " " metadata));
-  config.prevTargetFiles = mkDefault (config.prevBuildDir + "/${config.device}-target_files-${config.prevBuildNumber}");
+  config.prevTargetFiles = mkDefault (config.prevBuildDir + "/${config.device}-target_files-${config.prevBuildNumber}.zip");
 
   config.build = {
     # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
     inherit signedTargetFiles ota incrementalOta img factoryImg;
 
-    otaMetadata = pkgs.runCommand "${config.device}-${config.channel}" {} ''
+    otaMetadata = pkgs.runCommand "${config.device}-${config.ota.channel}" {} ''
       ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.build.ota} > $out
     '';
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
     otaDir = pkgs.linkFarm "${config.device}-otaDir" (
-      (map (p: {name=p.name; path=p;}) (with config.build; [ ota otaMetadata ] ++ (optional config.incremental incrementalOta)))
+      (map (p: {name=p.name; path=p;}) (with config.build; [ ota otaMetadata ] ++ (optional config.ota.incremental incrementalOta)))
       ++ [{ name="${config.device}-target_files-${config.buildNumber}.zip"; path=targetFiles; }]
     );
 
@@ -183,7 +184,7 @@ in
       ${imgScript { targetFiles=signedTargetFiles.name; out=img.name; }} || exit 1
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
-      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${ota.name} > ${config.device}-${config.channel}
+      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${ota.name} > ${config.device}-${config.ota.channel}
     ''; }));
 
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
