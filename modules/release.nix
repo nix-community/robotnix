@@ -32,7 +32,13 @@ let
   buildTools = pkgs.stdenv.mkDerivation {
     name = "android-build-tools-${config.buildNumber}";
     src = config.source.dirs."build/make".contents;
-    patches = config.source.dirs."build/make".patches;
+    patches = config.source.dirs."build/make".patches ++ [
+      (pkgs.substituteAll {
+        src = (../patches + "/${config.androidVersion}" + /buildtools.patch);
+        java = "${jdk}/bin/java";
+        search_path = config.build.hostTools;
+      })
+    ];
     buildInputs = with pkgs; [ python ];
     installPhase = ''
       mkdir -p $out

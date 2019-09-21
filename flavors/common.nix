@@ -4,21 +4,16 @@ with lib;
 let
   flex = pkgs.callPackage ../misc/flex-2.5.39.nix {};
 in
+mkMerge [
 {
   # Some android version-specific fixes:
   source.postPatch = mkIf (config.androidVersion == "9") "ln -sf ${flex}/bin/flex prebuilts/misc/linux-x86/flex/flex-2.5.39";
-  source.dirs."build/make".patches = [
-    (pkgs.substituteAll {
-      src = (../patches + "/${config.androidVersion}" + /buildtools.patch);
-      java = "${jdk}/bin/java";
-      search_path = config.build.hostTools;
-    })
-  ] ++ (optional (config.androidVersion == "10")
+  source.dirs."build/make".patches = mkIf (config.androidVersion == "10") [
     (pkgs.substituteAll {
       src = ../patches/10/partition-size-fix.patch;
       inherit (pkgs) coreutils;
     })
-  );
+  ];
 
   source.excludeGroups = mkDefault [
     "darwin" # Linux-only for now
@@ -26,7 +21,8 @@ in
     "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
   ];
   source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.configName ]; # But include the one we care about. Also include deviceFamily and kernel.configName, which might be an alternate name
-
+}
+{
   # Disable some unused directories to save time downloading / extracting
   source.dirs = listToAttrs (map (dir: nameValuePair dir { enable = false; })
     [ "developers/samples/android"
@@ -56,4 +52,4 @@ in
       "device/google/accessory/demokit"
       "device/google/atv"
     ]);
-}
+}]
