@@ -53,10 +53,6 @@ let
   wrapScript = { commands, keysDir ? "" }: ''
     export PATH=${config.build.hostTools}/bin:${pkgs.openssl}/bin:${pkgs.zip}/bin:${pkgs.unzip}/bin:${jdk}/bin:${pkgs.getopt}/bin:${pkgs.hexdump}/bin:${pkgs.perl}/bin:${pkgs.toybox}/bin:$PATH
 
-    # sign_target_files_apks.py and others require this directory to be here.
-    mkdir -p build/target/product/
-    ln -sf ${config.source.dirs."build/make".contents}/target/product/security build/target/product/security
-
     # build-tools releasetools/common.py hilariously tries to modify the
     # permissions of the source file in ZipWrite. Since signing uses this
     # function with a key, we need to make a temporary copy of our keys so the
@@ -76,7 +72,6 @@ let
     ${commands}
     EOF
 
-    rm -r build  # Unsafe
     if [[ "$KEYSDIR" ]]; then rm -rf keys_copy; fi
   '';
 
