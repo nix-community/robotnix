@@ -5,9 +5,21 @@ let
   nixdroid-env = pkgs.callPackage ../buildenv.nix {};
 
   avbFlags = {
-    verity_only = "--replace_verity_public_key $KEYSDIR/verity_key.pub --replace_verity_private_key $KEYSDIR/verity --replace_verity_keyid $KEYSDIR/verity.x509.pem";
-    vbmeta_simple = "--avb_vbmeta_key $KEYSDIR/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048";
-    vbmeta_chained = "--avb_vbmeta_key $KEYSDIR/avb.pem --avb_vbmeta_algorithm SHA256_RSA2048 --avb_system_key $KEYSDIR/avb.pem --avb_system_algorithm SHA256_RSA2048";
+    verity_only = [
+      "--replace_verity_public_key $KEYSDIR/verity_key.pub"
+      "--replace_verity_private_key $KEYSDIR/verity"
+      "--replace_verity_keyid $KEYSDIR/verity.x509.pem"
+    ];
+    vbmeta_simple = [ "--avb_vbmeta_key $KEYSDIR/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048" ];
+    vbmeta_chained = [
+      "--avb_vbmeta_key $KEYSDIR/avb.pem"
+      "--avb_vbmeta_algorithm SHA256_RSA2048"
+      "--avb_system_key $KEYSDIR/avb.pem"
+      "--avb_system_algorithm SHA256_RSA2048"
+    ] ++ optionals (config.androidVersion == "10") [
+      "--avb_system_other_key $KEYSDIR/avb.pem"
+      "--avb_system_other_algorithm SHA256_RSA2048"
+    ];
   }.${config.avbMode};
 
   # Signing target files fails in signapk.jar with error -6 unless using this jdk
@@ -81,10 +93,19 @@ let
   });
 
   unsignedTargetFiles = config.build.android + "/aosp_${config.device}-target_files-${config.buildNumber}.zip";
-  signedTargetFilesScript = { out }:
-    ''${buildTools}/releasetools/sign_target_files_apks.py ''${KEYSDIR:+-o -d $KEYSDIR ${avbFlags}} ${unsignedTargetFiles} ${out}'';
-  otaScript = { targetFiles, prevTargetFiles ? null, out }:
-    ''${buildTools}/releasetools/ota_from_target_files.py --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} ${targetFiles} ${out}'';
+  signedTargetFilesScript = { out }: ''
+    ${buildTools}/releasetools/sign_target_files_apks.py \
+      ''${KEYSDIR:+-o -d $KEYSDIR ${toString avbFlags}} \
+      ${optionalString (config.androidVersion == "10") "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"} \
+      ${concatMapStringsSep " " (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") config.apexPackageNames} \
+      ${unsignedTargetFiles} ${out}
+  '';
+  otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
+    ${buildTools}/releasetools/ota_from_target_files.py  \
+      --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} \
+      ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
+      ${targetFiles} ${out}
+  '';
   imgScript = { targetFiles, out }: ''${buildTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
   factoryImgScript = { targetFiles, img, out }: ''
       ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
@@ -139,7 +160,18 @@ in
     prevTargetFiles = mkOption {
       type = types.path;
     };
+
+    apexPackageNames = mkOption {
+      default = [];
+      type = types.listOf types.str;
+    };
   };
+
+  config.apexPackageNames = mkIf (config.androidVersion == "10")
+    [ "com.android.conscrypt" "com.android.media"
+      "com.android.media.swcodec" "com.android.resolv"
+      "com.android.runtime.release" "com.android.tzdata"
+    ];
 
   config.prevBuildNumber = let
       metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.ota.channel}");
@@ -192,7 +224,8 @@ in
     generateKeysScript = let
       keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
                         ++ (optional (config.avbMode == "verity_only") "verity")
-                        ++ (optional (config.androidVersion == "10") "networkstack");
+                        ++ (optionals (config.androidVersion == "10") [ "networkstack" ] ++ config.apexPackageNames);
+      avbKeysToGenerate = config.apexPackageNames;
     in pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}
 
@@ -204,10 +237,17 @@ in
       done
 
       ${optionalString (config.avbMode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
+
+      # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
       ${optionalString (config.avbMode != "verity_only") ''
         openssl genrsa -out avb.pem 2048 || exit 1
         avbtool extract_public_key --key avb.pem --output avb_pkmd.bin || exit 1
       ''}
+
+      ${concatMapStringsSep "\n" (k: ''
+        openssl genrsa -out ${k}.pem 4096 || exit 1
+        avbtool extract_public_key --key ${k}.pem --output ${k}.avbpubkey || exit 1
+      '') avbKeysToGenerate}
     '';
   };
 }
