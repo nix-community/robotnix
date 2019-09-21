@@ -3,16 +3,25 @@ with lib;
 let
   release = rec {
     marlin = {
-      tag = "PQ3A.190801.002.2019.08.25.15";
-      sha256 = "17776v5hxkz9qyijhaaqcmgdx6lhrm6kbc5ql9m3rq043av27ihw";
+      "9" = {
+        tag = "PQ3A.190801.002.2019.08.25.15";
+        sha256 = "17776v5hxkz9qyijhaaqcmgdx6lhrm6kbc5ql9m3rq043av27ihw";
+      };
+      "10" = {
+        tag = "QP1A.190711.020.2019.09.21.18";
+        sha256 = "01x8c6p272xjjc12ylb81qgrjyvig9zygfhmp5x5h47yszh0ikp9";
+      };
     };
     taimen = marlin;
     crosshatch = marlin;
     bonito = {
-      tag = "PQ3B.190801.002.2019.08.25.15";
-      sha256 = "1w4ymqhqwyy8gc01aq5gadg3ibf969mhnh5z655cv8qz21fpiiha";
+      "9" = {
+        tag = "PQ3B.190801.002.2019.08.25.15";
+        sha256 = "1w4ymqhqwyy8gc01aq5gadg3ibf969mhnh5z655cv8qz21fpiiha";
+      };
+      "10" = marlin."10";
     };
-  }.${config.deviceFamily};
+  }.${config.deviceFamily}.${config.androidVersion};
 
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
   kernelSrc = pkgs.fetchFromGitHub {
