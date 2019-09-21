@@ -15,14 +15,13 @@ Further goals include:
 
 This has currently only been tested on marlin (Pixel XL) and crosshatch (Pixel 3 XL), but should support all Pixel devices with (hopefully) minor changes.
 
-Two line `.img` build:
+A one line `.img` build:
 ```console
-curl https://nixos.org/nix/install | sh
 nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="marlin";}' -A config.build.factoryImg
 ```
 this will make generate an image signed with `test-keys`, so don't use it for anything other than testing.
 
-A configuration file shold be created for anything more complicated.
+A configuration file should be created for anything more complicated, including creating signed builds.
 See `example.nix`, `marlin.nix`, and `crosshatch.nix` for inspiration.
 
 Generate keys to sign your build:
@@ -42,8 +41,11 @@ $ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.relea
 $ ./release ./keys/marlin
 ```
 
-An alternative to using the releaseScript above is to build the final products inside nix.
-This will require a nix sandbox exception so the secret keys are available to the build scripts.
+One advantage of using a release script is that the build can take place on a different machine than the signing.
+`nix-copy-closure` could be used to transfer this script and its dependencies to another computer to finish the release.
+
+One alternative to using the `releaseScript` is to build the final products inside nix.
+This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
 
 ```console
 $ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.img --option extra-sandbox-paths /keys=$(pwd)/keys
