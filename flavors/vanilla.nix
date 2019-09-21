@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let
   # https://source.android.com/setup/start/build-numbers
@@ -65,6 +65,13 @@ mkIf (config.flavor == "vanilla") {
   source.patches = [ (../patches + "/${config.androidVersion}" + /disable-quicksearch.patch) ];
   source.dirs."device/google/${deviceDirName}".patches = [
     (../patches + "/${config.androidVersion}/${deviceDirName}-fix-device-names.patch")
+  ];
+
+  source.dirs."packages/apps/DeskClock".patches = mkIf (config.androidVersion == "10") [
+    (pkgs.fetchpatch {
+      url = "https://github.com/GrapheneOS/platform_packages_apps_DeskClock/commit/f31333513b1bf27ae23c61e4ba938568cc9e7b76.patch";
+      sha256 = "1as8vyhfyi9cj61fc80ajskyz4lwwdc85fgxhj0b69z0dbxm77pj";
+    })
   ];
 
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
