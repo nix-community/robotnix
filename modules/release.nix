@@ -67,7 +67,7 @@ let
   wrapScript = { commands, keysDir ? "" }: ''
     export PATH=${config.build.hostTools}/bin:${pkgs.openssl}/bin:${pkgs.zip}/bin:${pkgs.unzip}/bin:${jdk}/bin:${pkgs.getopt}/bin:${pkgs.hexdump}/bin:${pkgs.perl}/bin:${pkgs.toybox}/bin:$PATH
 
-    # sign_target_files_apks.py and others require this directory to be here.
+    # sign_target_files_apks.py and others require this directory to be here so it has the data to even recognize test-keys
     mkdir -p build/target/product/
     ln -sf ${config.source.dirs."build/make".contents}/target/product/security build/target/product/security
 
@@ -102,7 +102,8 @@ let
   unsignedTargetFiles = config.build.android + "/aosp_${config.device}-target_files-${config.buildNumber}.zip";
   signedTargetFilesScript = { out }: ''
     ${buildTools}/releasetools/sign_target_files_apks.py \
-      ''${KEYSDIR:+-o -d $KEYSDIR ${toString avbFlags}} \
+      --verbose \
+      -o -d $KEYSDIR ${toString avbFlags} \
       ${optionalString (config.androidVersion == "10") "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"} \
       ${concatMapStringsSep " " (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") config.apex.packageNames} \
       ${unsignedTargetFiles} ${out}
