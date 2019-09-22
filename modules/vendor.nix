@@ -64,6 +64,26 @@ in
         inherit (config) device;
         inherit (config.vendor) img;
       };
+
+      # For debugging differences between upstream vendor files and ours
+      # TODO: Could probably compare with something earlier in the process.
+      # It's also a little dumb that this does buildVendorFiles and unpackImg on config.vendor.img
+      diff = let
+          builtVendor = android-prepare-vendor.unpackImg {
+            inherit (config) device;
+            img = config.build.factoryImg;
+          };
+        in pkgs.runCommand "vendor-diff" {} ''
+          mkdir -p $out
+          ln -s ${config.build.vendor.unpacked} $out/upstream
+          ln -s ${builtVendor} $out/built
+          find ${config.build.vendor.unpacked}/vendor -printf "%P\n" | sort > $out/upstream-vendor
+          find ${builtVendor}/vendor -printf "%P\n" | sort > $out/built-vendor
+          diff $out/upstream-vendor $out/built-vendor > $out/diff-vendor || true
+          find ${config.build.vendor.unpacked}/system -printf "%P\n" | sort > $out/upstream-system
+          find ${builtVendor}/system -printf "%P\n" | sort > $out/built-system
+          diff $out/upstream-system $out/built-system > $out/diff-system || true
+        '';
     };
 
     # Using unpackScript instead of source.dirs since vendor_overlay/google_devices/${config.device} is not guaranteed to exist
