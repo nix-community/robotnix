@@ -1,7 +1,23 @@
-diff -Naur a/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java b/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
---- a/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java	2019-06-12 15:15:59.615977830 -0400
-+++ b/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java	2019-06-12 15:18:43.931453260 -0400
-@@ -231,7 +231,7 @@
+diff --git a/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java b/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java
+index 993fadb..fc88f72 100644
+--- a/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java
++++ b/app/src/main/java/org/fdroid/fdroid/privileged/ClientWhitelist.java
+@@ -34,8 +34,8 @@ import java.util.HashSet;
+ public class ClientWhitelist {
+ 
+     public static HashSet<Pair<String, String>> whitelist = new HashSet<>(Arrays.asList(
+-            // certificate SHA-256 of https//f-droid.org/F-Droid.apk
+-            new Pair<>("org.fdroid.fdroid", "43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab")
++            // Custom certificate
++            new Pair<>("org.fdroid.fdroid", "@fingerprint@")
+     ));
+ 
+ }
+diff --git a/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java b/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
+index 837a937..6241ae1 100644
+--- a/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
++++ b/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
+@@ -231,7 +231,7 @@ public class PrivilegedService extends Service {
                   * The client app used to set this to F-Droid, but we need it to be set to
                   * this package's package name to be able to uninstall from here.
                   */
