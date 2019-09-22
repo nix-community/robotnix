@@ -36,7 +36,6 @@ in
     (mkIf cfg.fi.enable {
       vendor.full = true;
       google.dialer.enable = true;
-      resources."frameworks/base/core/res".config_ims_package = "com.google.android.ims";
       vendor.systemBytecode = [
         "${productPath}/app/Tycho/Tycho.apk::PRESIGNED" # Google Fi app
         "${productPath}/priv-app/GCS/GCS.apk::PRESIGNED" # Google Connectivity Services (does wifi VPN at least)
