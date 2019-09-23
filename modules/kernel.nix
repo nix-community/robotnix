@@ -132,7 +132,7 @@ in
 
     source.postPatch = mkIf config.kernel.useCustom ''
       mkdir -p ${config.kernel.relpath}
-      cp -v ${config.build.kernel}/* ${config.kernel.relpath}/
+      cp -fv ${config.build.kernel}/* ${config.kernel.relpath}/
       chmod -R u+w ${config.kernel.relpath}/
     '';
   };
