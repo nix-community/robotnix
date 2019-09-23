@@ -21,6 +21,15 @@ index ca96d01cc..03abb7f47 100755
           str(partition_size)]
    output, exit_code = RunCommand(cmd, False)
    if exit_code != 0:
+@@ -250,7 +250,7 @@ def BuildVerityTree(sparse_image_path, verity_image_path, prop_dict):
+ def BuildVerityMetadata(image_size, verity_metadata_path, root_hash, salt,
+                         block_device, signer_path, key, signer_args,
+                         verity_disable):
+-  cmd = ["system/extras/verity/build_verity_metadata.py", "build",
++  cmd = ["build_verity_metadata.py", "build",
+          str(image_size), verity_metadata_path, root_hash, salt, block_device,
+          signer_path, key]
+   if signer_args:
 diff --git a/tools/releasetools/common.py b/tools/releasetools/common.py
 index 6defb2b08..155957bd5 100644
 --- a/tools/releasetools/common.py

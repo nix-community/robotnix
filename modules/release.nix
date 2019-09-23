@@ -65,7 +65,9 @@ let
   '';
 
   wrapScript = { commands, keysDir ? "" }: ''
-    export PATH=${config.build.hostTools}/bin:${pkgs.openssl}/bin:${pkgs.zip}/bin:${pkgs.unzip}/bin:${jdk}/bin:${pkgs.getopt}/bin:${pkgs.hexdump}/bin:${pkgs.perl}/bin:${pkgs.toybox}/bin:$PATH
+    export PATH=${lib.makeBinPath (with pkgs; [
+      config.build.hostTools openssl zip unzip jdk pkgs.getopt hexdump perl toybox
+    ])}:${buildTools}:$PATH
 
     # sign_target_files_apks.py and others require this directory to be here so it has the data to even recognize test-keys
     mkdir -p build/target/product/
