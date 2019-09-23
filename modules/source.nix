@@ -114,8 +114,7 @@ in
         echo "${d.contents} -> ${d.path}"
         cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}/
         chmod -R u+w ${d.path}
-        '' + (concatMapStringsSep "\n" (p: "patch -p1 -d ${d.path} < ${p}") d.patches) + "\n"
-      ) (attrValues config.source.dirs))) +
+      '') (attrValues config.source.dirs))) +
       # Get linkfiles and copyfiles too. XXX: Hack
       (concatStringsSep "" (mapAttrsToList (name: p: optionalString config.source.dirs.${p.relpath}.enable
         ((concatMapStringsSep "\n" (c: ''
@@ -128,6 +127,10 @@ in
           '') p.linkfiles))
       ) config.source.json)) + ''
     '');
+
+    postPatch = concatStringsSep "\n" (map (d: optionalString d.enable
+      (concatMapStringsSep "\n" (p: "patch -p1 -d ${d.path} < ${p}") d.patches))
+      (attrValues config.source.dirs));
   };
 
   # Extract only files under nixdroid/ (for debugging with an external AOSP build)
