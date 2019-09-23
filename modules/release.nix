@@ -48,7 +48,7 @@ let
   };
 
   # Get a bunch of utilities to generate keys
-  keyTools = pkgs.runCommandCC "android-key-tools-${config.buildNumber}" { buildInputs = with pkgs; [ python pkgconfig boringssl ]; } ''
+  keyTools = pkgs.runCommandCC "android-key-tools" { buildInputs = with pkgs; [ python pkgconfig boringssl ]; } ''
     mkdir -p $out/bin
 
     cp ${config.source.dirs."development".contents}/tools/make_key $out/bin/make_key
