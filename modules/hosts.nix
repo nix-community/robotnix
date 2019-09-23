@@ -11,8 +11,9 @@ with lib;
   };
 
   config = mkIf (config.hosts != null) {
-    source.postPatch = ''
-      cp -v ${config.hosts} system/core/rootdir/etc/hosts
+    # TODO: Replace with resource overlay?
+    source.dirs."system/core".postPatch = ''
+      cp -v ${config.hosts} rootdir/etc/hosts
     '';
   };
 }

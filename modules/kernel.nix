@@ -130,7 +130,8 @@ in
       '';
     };
 
-    source.postPatch = mkIf config.kernel.useCustom ''
+    source.dirs.${config.kernel.relpath}.enable = mkIf config.kernel.useCustom false;
+    source.unpackScript = mkIf config.kernel.useCustom ''
       mkdir -p ${config.kernel.relpath}
       cp -fv ${config.build.kernel}/* ${config.kernel.relpath}/
       chmod -R u+w ${config.kernel.relpath}/

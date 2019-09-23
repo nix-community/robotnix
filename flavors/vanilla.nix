@@ -67,7 +67,7 @@ mkIf (config.flavor == "vanilla") {
   source.dirs."packages/apps/QuickSearchBox".enable = false;
   source.dirs."packages/apps/Browser2".enable = false;
 
-  source.patches = [ (../patches + "/${toString config.androidVersion}" + /disable-quicksearch.patch) ];
+  source.dirs."packages/apps/Launcher3".patches = [ (../patches + "/${toString config.androidVersion}" + /disable-quicksearch.patch) ];
   source.dirs."device/google/${deviceDirName}".patches = [
     (../patches + "/${toString config.androidVersion}/${deviceDirName}-fix-device-names.patch")
   ];

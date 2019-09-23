@@ -119,24 +119,27 @@ in
 
     # TODO: The " \\" in the below sed is a bit flaky, and would require the line to end in " \\"
     # come up with something more robust.
-    source.postPatch = ''
-      ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' build/make/target/product/*.mk") config.removedProductPackages}
+    source.dirs."build/make".postPatch = ''
+      ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' target/product/*.mk") config.removedProductPackages}
 
       # this is newer location in master
-      mk_file=./build/make/target/product/handheld_system.mk
+      mk_file=./target/product/handheld_system.mk
       if [ ! -f ''${mk_file} ]; then
         # this is older location
-        mk_file=./build/make/target/product/core.mk
+        mk_file=./target/product/core.mk
         if [ ! -f ''${mk_file} ]; then
           echo "Expected handheld_system.mk or core.mk do not exist"
           exit 1
         fi
       fi
 
+      echo "\$(call inherit-product-if-exists, nixdroid/config.mk)" >> ''${mk_file}
+    '';
+
+    source.unpackScript = ''
       mkdir -p nixdroid/
       cp -f ${pkgs.writeText "config.mk" config.extraConfig} nixdroid/config.mk
       chmod u+w nixdroid/config.mk
-      echo "\$(call inherit-product-if-exists, nixdroid/config.mk)" >> ''${mk_file}
     '';
 
     build = {
@@ -168,50 +171,68 @@ in
         name = "nixdroid-${config.device}-${config.buildNumber}";
         srcs = [];
 
+        # TODO: Clean this stuff up. unshare / nixdroid-build could probably be combined into a single utility.
+        builder = pkgs.writeScript "builder.sh" ''
+          #!${pkgs.runtimeShell}
+          export useBindMounts=$(test -e /dev/fuse && echo true)
+          export SAVED_UID=$UID
+          export SAVED_GID=$GID
+
+          # If useBindMounts is set then become a fake "root" in a new namespace so we can bind mount sources
+          ${pkgs.toybox}/bin/cat << 'EOF' | ''${useBindMounts:+${pkgs.utillinux}/bin/unshare -m -r} ${pkgs.runtimeShell}
+          source $stdenv/setup
+          genericBuild
+          EOF
+        '';
+
         outputs = [ "out" "bin" ]; # This derivation builds AOSP release tools and target-files
 
         unpackPhase = ''
           ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
 
+          export rootDir=$PWD
           source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
         '';
 
         # Just included for convenience when building outside of nix.
         debugUnpackScript = config.build.debugUnpackScript;
 
-        patches = config.source.patches;
-        patchFlags = [ "-p1" "--no-backup-if-mismatch" ]; # Patches that don't apply exactly will create .orig files, which the android build system doesn't like seeing.
-
-        postPatch = config.source.postPatch;
-
         ANDROID_JAVA_HOME="${pkgs.jdk.home}"; # This is already set in android 10. They use their own prebuilt jdk
         BUILD_NUMBER=config.buildNumber;
         BUILD_DATETIME=config.buildDateTime;
         DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
 
-        # Parts from https://github.com/GrapheneOS/script/blob/pie/release.sh
-        buildPhase = ''
-          cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
+        buildPhase = let
+          fakeuser = pkgs.callPackage ./fakeuser {};
+        in ''
+          export OUT_DIR_COMMON_BASE=$rootDir/out
+
+          # Become the original user--not fake root.
+          ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID} ${pkgs.runtimeShell}
+
+          # Enter an FHS user namespace
+          ${pkgs.toybox}/bin/cat << 'EOF3' | ${nixdroid-env}/bin/nixdroid-build
+
           source build/envsetup.sh
           choosecombo release "aosp_${config.device}" ${config.buildType}
           export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES";
           make brillo_update_payload target-files-package
-          EOF
+
+          EOF3
+          EOF2
         '';
 
         # Kinda ugly to just throw all this in $bin/
         # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
         installPhase = ''
           mkdir -p $out $bin
-          cp --reflink=auto -r out/target/product/${config.device}/obj/PACKAGING/target_files_intermediates/aosp_${config.device}-target_files-${config.buildNumber}.zip $out/
-          cp --reflink=auto -r out/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
-          cp --reflink=auto -r out/soong/host/linux-x86/* $bin/
+          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/target/product/${config.device}/obj/PACKAGING/target_files_intermediates/aosp_${config.device}-target_files-${config.buildNumber}.zip $out/
+          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
+          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/soong/host/linux-x86/* $bin/
         '';
 
         configurePhase = ":";
         dontMoveLib64 = true;
-
-        shellHook = "${nixdroid-env}/bin/nixdroid-build";
       };
 
       hostTools = config.build.android.bin;

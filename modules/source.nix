@@ -45,7 +45,7 @@ in
 
       dirs = mkOption {
         default = {};
-        type = types.attrsOf (types.submodule ({ name, ... }: {
+        type = types.attrsOf (types.submodule ({ name, config, ... }: {
           options = {
             enable = mkOption {
               default = true;
@@ -66,6 +66,28 @@ in
               default = [];
               type = types.listOf types.path;
             };
+
+            postPatch = mkOption {
+              default = "";
+              type = types.lines;
+            };
+
+            patchedContents = mkOption {
+              type = types.path;
+              internal = true;
+            };
+          };
+
+          config = {
+            patchedContents = mkDefault (if (config.patches != [] || config.postPatch != "") then
+              (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.path}-patched" {} ''
+                cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.contents} $out/
+                chmod u+w -R $out
+                ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
+                cd $out
+                ${config.postPatch}
+              '')
+              else config.contents);
           };
         }));
       };
@@ -82,18 +104,7 @@ in
         description = "project groups to include in source tree (overrides excludeGroups)";
       };
 
-      patches = mkOption {
-        default = [];
-        type = types.listOf types.path;
-      };
-
       unpackScript = mkOption {
-        default = "";
-        internal = true;
-        type = types.lines;
-      };
-
-      postPatch = mkOption {
         default = "";
         internal = true;
         type = types.lines;
@@ -101,7 +112,7 @@ in
     };
   };
 
-  config.source = {
+  config.source = mkMerge [{
     dirs = mapAttrs' (name: p:
       nameValuePair p.relpath {
         enable = mkDefault ((any (g: elem g p.groups) config.source.includeGroups) || (!(any (g: elem g p.groups) config.source.excludeGroups)));
@@ -109,13 +120,17 @@ in
       }) config.source.json;
 
     unpackScript = (
-      (concatStringsSep "" (map (d: optionalString d.enable ''
-        mkdir -p $(dirname ${d.path})
-        echo "${d.contents} -> ${d.path}"
-        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}/
-        chmod -R u+w ${d.path}
+      (concatStringsSep "\n" (map (d: optionalString d.enable ''
+        if [[ $useBindMounts = true ]]; then
+          mkdir -p ${d.path}
+          ${pkgs.utillinux}/bin/mount --bind ${d.patchedContents} ${d.path}
+        else
+          echo "${d.contents} -> ${d.path}"
+          mkdir -p $(dirname ${d.path})
+          cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.patchedContents} ${d.path}/
+          chmod -R u+w ${d.path}
+        fi
       '') (attrValues config.source.dirs))) +
-      # Get linkfiles and copyfiles too. XXX: Hack
       (concatStringsSep "" (mapAttrsToList (name: p: optionalString config.source.dirs.${p.relpath}.enable
         ((concatMapStringsSep "\n" (c: ''
             mkdir -p $(dirname ${c.dest})
@@ -125,13 +140,31 @@ in
             mkdir -p $(dirname ${c.dest})
             ln -s ./${c.src_rel_to_dest} ${c.dest}
           '') p.linkfiles))
-      ) config.source.json)) + ''
-    '');
+      ) config.source.json)));
+    }
+    {
+      unpackScript = mkBefore ''
+        export useBindMounts=$(test -e /dev/fuse && echo true)
 
-    postPatch = concatStringsSep "\n" (map (d: optionalString d.enable
-      (concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.path} < ${p}") d.patches))
-      (attrValues config.source.dirs));
-  };
+        if [[ $useBindMounts = true ]]; then
+          echo " - Found /dev/fuse. Using bind-mounts and bindfs instead of copying source files"
+          mkdir -p bind-mounts src
+          cd bind-mounts
+        else
+          echo " - Could not find /dev/fuse. Copying source files instead of using bind-mounts"
+        fi
+      '';
+    }
+    {
+      unpackScript = mkAfter ''
+        if [[ $useBindMounts = true ]]; then
+          cd ..
+          ${pkgs.bindfs}/bin/bindfs --perms=u+w bind-mounts src
+          export sourceRoot=$PWD/src
+        fi
+      '';
+    }
+  ];
 
   # Extract only files under nixdroid/ (for debugging with an external AOSP build)
   config.build.debugUnpackScript = pkgs.writeText "unpack.sh" (''

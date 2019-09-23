@@ -46,8 +46,9 @@ in
       '';
     };
 
-    source.postPatch = ''
-      cp --no-preserve=all -v ${config_webview_packages} frameworks/base/core/res/res/xml/config_webview_packages.xml
+    # TODO: Replace this with something in the overlay
+    source.dirs."frameworks/base".postPatch = ''
+      cp --no-preserve=all -v ${config_webview_packages} core/res/res/xml/config_webview_packages.xml
     '';
   };
 }
