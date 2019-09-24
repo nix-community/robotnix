@@ -15,13 +15,18 @@ let
       };
     };
     taimen = marlin;
-    crosshatch = marlin;
+    crosshatch = marlin // {
+      "10" = {
+        tag = "android-10.0.0_r3"; # QP1A.190711.20.C3
+        sha256 = "1rynj7q03sa2gf156ia4kh4yfmqv62rv21jyc1fli029x0df2m4m";
+      };
+    };
     bonito = {
       "9" = {
         tag = "android-9.0.0_r47"; # PQ3B.190801.002
         sha256 = "0wqcy2708i8znr3xqkmafrk5dvf9z222f3705j3l2jdb67aqim49";
       };
-      "10" = marlin."10";
+      "10" = crosshatch."10";
     };
   }.${config.deviceFamily}.${config.androidVersion};
   kernelTag = {
@@ -34,8 +39,8 @@ let
     "10" = {
       marlin = "android-10.0.0_r0.1";
       taimen = "android-10.0.0_r0.2";
-      crosshatch = "android-10.0.0_r0.3";
-      bonito = "android-10.0.0_r0.4";
+      crosshatch = "android-10.0.0_r0.5";
+      bonito = "android-10.0.0_r0.6";
     };
   }.${config.androidVersion}.${config.deviceFamily};
   deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
