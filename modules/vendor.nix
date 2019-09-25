@@ -71,7 +71,7 @@ in
       diff = let
           builtVendor = android-prepare-vendor.unpackImg {
             inherit (config) device;
-            img = config.build.factoryImg;
+            img = config.factoryImg;
           };
         in pkgs.runCommand "vendor-diff" {} ''
           mkdir -p $out

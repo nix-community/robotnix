@@ -103,20 +103,19 @@ let
     keysDir = optionalString config.signBuild "/keys/${config.device}";
   });
 
-  unsignedTargetFiles = config.build.android + "/aosp_${config.device}-target_files-${config.buildNumber}.zip";
-  signedTargetFilesScript = { out }: ''
+  signedTargetFilesScript = { targetFiles, out }: ''
     ${buildTools}/releasetools/sign_target_files_apks.py \
       --verbose \
       -o -d $KEYSDIR ${toString avbFlags} \
       ${optionalString (config.androidVersion == "10") "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"} \
       ${concatMapStringsSep " " (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") config.apex.packageNames} \
-      ${unsignedTargetFiles} ${out}
+      ${targetFiles} ${out}
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
     ${buildTools}/releasetools/ota_from_target_files.py  \
       --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} \
       ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
-      ${optionalString config.ota.retrofit "--retrofit_dynamic_partitions"} \
+      ${optionalString config.retrofit "--retrofit_dynamic_partitions"} \
       ${targetFiles} ${out}
   '';
   imgScript = { targetFiles, out }: ''${buildTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
@@ -140,45 +139,45 @@ let
       mv $PRODUCT-$VERSION-factory-*.zip $out
   '';
 
-  targetFiles = if config.signBuild then signedTargetFiles else unsignedTargetFiles;
-  signedTargetFiles = runWrappedCommand "signed_target_files" signedTargetFilesScript {};
-  ota = runWrappedCommand "ota_update" otaScript { inherit targetFiles; };
-  incrementalOta = runWrappedCommand "incremental-${config.prevBuildNumber}" otaScript { inherit targetFiles; prevTargetFiles=config.prevTargetFiles; };
-  img = runWrappedCommand "img" imgScript { inherit targetFiles; };
-  factoryImg = runWrappedCommand "factory" factoryImgScript { inherit targetFiles; img=config.build.img; };
+  otaMetadata = pkgs.runCommand "${config.device}-${config.channel}" {} ''
+    ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.ota} > $out
+  '';
 in
 {
   options = {
-    ota.channel = mkOption {
+    channel = mkOption {
       default = "stable";
       type = types.strMatching "(stable|beta)";
       description = "Default channel to use for updates (can be modified in app)";
     };
 
-    ota.incremental = mkOption {
+    incremental = mkOption {
       default = false;
       type = types.bool;
-      description = "Whether to include an incremental build in config.build.otaDir";
+      description = "Whether to include an incremental build in otaDir";
     };
 
-    ota.retrofit = mkOption {
+    retrofit = mkOption {
       default = false;
       type = types.bool;
       description = "Generate a retrofit OTA for upgrading a device without dynamic partitions";
       # https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legacy#generating-update-packages
     };
 
-    prevBuildDir = mkOption {
-      type = types.str;
-    };
+    # Build products. Put here for convenience--but it's not a great interface
+    unsignedTargetFiles = mkOption { type = types.path; internal = true; };
+    signedTargetFiles = mkOption { type = types.path; internal = true; };
+    ota = mkOption { type = types.path; internal = true; };
+    incrementalOta = mkOption { type = types.path; internal = true; };
+    otaDir = mkOption { type = types.path; internal = true; };
+    img = mkOption { type = types.path; internal = true; };
+    factoryImg = mkOption { type = types.path; internal = true; };
+    generateKeysScript = mkOption { type = types.path; internal = true; };
+    releaseScript = mkOption { type = types.path; internal = true;};
 
-    prevBuildNumber = mkOption {
-      type = types.str;
-    };
-
-    prevTargetFiles = mkOption {
-      type = types.path;
-    };
+    prevBuildDir = mkOption { type = types.str; internal = true; };
+    prevBuildNumber = mkOption { type = types.str; internal = true; };
+    prevTargetFiles = mkOption { type = types.path; internal = true; };
 
     # Android 10 feature. This just disables the key generation/signing. TODO: Make it change the device configuration as well
     apex.enable = mkEnableOption "apex";
@@ -189,40 +188,43 @@ in
     };
   };
 
-  config.apex.packageNames = mkIf (config.apex.enable && (config.androidVersion == "10"))
-    [ "com.android.conscrypt" "com.android.media"
-      "com.android.media.swcodec" "com.android.resolv"
-      "com.android.runtime.release" "com.android.tzdata"
-    ];
-
-  config.prevBuildNumber = let
-      metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.ota.channel}");
-    in mkDefault (head (splitString " " metadata));
-  config.prevTargetFiles = mkDefault (config.prevBuildDir + "/${config.device}-target_files-${config.prevBuildNumber}.zip");
-
-  config.build = {
+  config = with config; let # "with config" is ugly--but the scripts below get too verbose otherwise
+    targetFiles = if signBuild then signedTargetFiles else unsignedTargetFiles;
+  in {
     # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
-    inherit signedTargetFiles ota incrementalOta img factoryImg;
+    unsignedTargetFiles = mkDefault (build.android + "/aosp_${device}-target_files-${buildNumber}.zip");
+    signedTargetFiles = mkDefault (assert signBuild; runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;});
+    ota = mkDefault (runWrappedCommand "ota_update" otaScript { inherit targetFiles; });
+    incrementalOta = mkDefault (runWrappedCommand "incremental-${prevBuildNumber}" otaScript { inherit targetFiles prevTargetFiles; });
+    img = mkDefault (runWrappedCommand "img" imgScript { inherit targetFiles; });
+    factoryImg = mkDefault (runWrappedCommand "factory" factoryImgScript { inherit targetFiles img; });
 
-    otaMetadata = pkgs.runCommand "${config.device}-${config.ota.channel}" {} ''
-      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.build.ota} > $out
-    '';
+    apex.packageNames = mkIf (apex.enable && (androidVersion == "10"))
+      [ "com.android.conscrypt" "com.android.media"
+        "com.android.media.swcodec" "com.android.resolv"
+        "com.android.runtime.release" "com.android.tzdata"
+      ];
+
+    prevBuildNumber = let
+        metadata = builtins.readFile (prevBuildDir + "/${device}-${channel}");
+      in mkDefault (head (splitString " " metadata));
+    prevTargetFiles = mkDefault (prevBuildDir + "/${device}-target_files-${prevBuildNumber}.zip");
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
-    otaDir = pkgs.linkFarm "${config.device}-otaDir" (
-      (map (p: {name=p.name; path=p;}) (with config.build; [ ota otaMetadata ] ++ (optional config.ota.incremental incrementalOta)))
-      ++ [{ name="${config.device}-target_files-${config.buildNumber}.zip"; path=targetFiles; }]
+    otaDir = pkgs.linkFarm "${device}-otaDir" (
+      (map (p: {name=p.name; path=p;}) ([ ota otaMetadata ] ++ (optional incremental incrementalOta)))
+      ++ [{ name="${device}-target_files-${buildNumber}.zip"; path=targetFiles; }]
     );
 
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
     # Maybe just remove this script? It's definitely complicated--and often untested
-    releaseScript = pkgs.writeScript "release.sh" (''
+    releaseScript = mkDefault (pkgs.writeScript "release.sh" (''
       #!${pkgs.runtimeShell}
       export PREV_BUILDNUMBER=$2
       '' + (wrapScript { keysDir="$1"; commands=''
       if [[ "$KEYSDIR" ]]; then
         echo Signing target files
-        ${signedTargetFilesScript { out=signedTargetFiles.name; }} || exit 1
+        ${signedTargetFilesScript { targetFiles=unsignedTargetFiles; out=signedTargetFiles.name; }} || exit 1
       fi
       echo Building OTA zip
       ${otaScript { targetFiles=signedTargetFiles.name; out=ota.name; }} || exit 1
@@ -230,25 +232,25 @@ in
       if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
         ${otaScript {
           targetFiles=signedTargetFiles.name;
-          prevTargetFiles="${config.device}-target_files-$PREV_BUILDNUMBER.zip";
-          out="${config.device}-incremental-$PREV_BUILDNUMBER-${config.buildNumber}.zip";
+          prevTargetFiles="${device}-target_files-$PREV_BUILDNUMBER.zip";
+          out="${device}-incremental-$PREV_BUILDNUMBER-${buildNumber}.zip";
         }} || exit 1
       fi
       echo Building .img file
       ${imgScript { targetFiles=signedTargetFiles.name; out=img.name; }} || exit 1
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
-      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${ota.name} > ${config.device}-${config.ota.channel}
-    ''; }));
+      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${ota.name} > ${device}-${channel}
+    ''; })));
 
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
     # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
     generateKeysScript = let
       keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
-                        ++ (optional (config.avbMode == "verity_only") "verity")
-                        ++ (optionals (config.androidVersion == "10") [ "networkstack" ] ++ config.apex.packageNames);
-      avbKeysToGenerate = config.apex.packageNames;
-    in pkgs.writeScript "generate_keys.sh" ''
+                        ++ (optional (avbMode == "verity_only") "verity")
+                        ++ (optionals (androidVersion == "10") [ "networkstack" ] ++ apex.packageNames);
+      avbKeysToGenerate = apex.packageNames;
+    in mkDefault (pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}
 
       export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
@@ -258,10 +260,10 @@ in
         ! make_key "$key" "$1" || exit 1
       done
 
-      ${optionalString (config.avbMode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
+      ${optionalString (avbMode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
 
       # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
-      ${optionalString (config.avbMode != "verity_only") ''
+      ${optionalString (avbMode != "verity_only") ''
         openssl genrsa -out avb.pem 2048 || exit 1
         avbtool extract_public_key --key avb.pem --output avb_pkmd.bin || exit 1
       ''}
@@ -270,6 +272,6 @@ in
         openssl genrsa -out ${k}.pem 4096 || exit 1
         avbtool extract_public_key --key ${k}.pem --output ${k}.avbpubkey || exit 1
       '') avbKeysToGenerate}
-    '';
+    '');
   };
 }

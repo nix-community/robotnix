@@ -6,7 +6,7 @@
 let
   nixdroidlib = import ./lib lib;
 in
-lib.evalModules {
+(lib.evalModules {
   modules = [
     { _module.args.pkgs = pkgs;
       _module.args.lib = lib;
@@ -35,4 +35,4 @@ lib.evalModules {
     ./modules/source.nix
     ./modules/vendor.nix
   ];
-}
+}).config

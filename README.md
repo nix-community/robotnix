@@ -17,7 +17,7 @@ This has currently only been tested on marlin (Pixel XL) and crosshatch (Pixel 3
 
 A one line `.img` build:
 ```console
-$ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="marlin";}' -A config.build.factoryImg
+$ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="marlin";}' -A factoryImg
 ```
 this will make generate an image signed with `test-keys`, so don't use it for anything other than testing.
 
@@ -27,7 +27,7 @@ See `example.nix`, `marlin.nix`, and `crosshatch.nix` for inspiration.
 Generate keys to sign your build:
 
 ```console
-$ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.generateKeysScript -o generate-keys
+$ nix-build ./default.nix --arg configuration ./marlin.nix -A generateKeysScript -o generate-keys
 $ mkdir keys/marlin
 $ cd keys/marlin
 $ ../generate-keys "/CN=NixDroid" # Use appropriate x509 cert fields
@@ -37,7 +37,7 @@ $ cd ../..
 Build and sign your release:
 
 ```console
-$ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.releaseScript -o release
+$ nix-build ./default.nix --arg configuration ./marlin.nix -A releaseScript -o release
 $ ./release ./keys/marlin
 ```
 
@@ -48,7 +48,7 @@ One alternative to using the `releaseScript` is to build the final products insi
 This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
 
 ```console
-$ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.img --option extra-sandbox-paths /keys=$(pwd)/keys
+$ nix-build ./default.nix --arg configuration ./marlin.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
 ```
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 The root user is always trusted, however, running `sudo nix-build ...` would use root's git cache for `builtins.fetchgit`, which would effectively re-download the source again.
