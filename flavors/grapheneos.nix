@@ -8,18 +8,23 @@ let
         sha256 = "17776v5hxkz9qyijhaaqcmgdx6lhrm6kbc5ql9m3rq043av27ihw";
       };
       "10" = {
-        tag = "QP1A.190711.020.2019.09.21.18";
-        sha256 = "01x8c6p272xjjc12ylb81qgrjyvig9zygfhmp5x5h47yszh0ikp9";
+        tag = "QP1A.190711.020.2019.09.25.00";
+        sha256 = "1mgbi2893v9f325ig8azg4v6c3fk9kjfpfqrxb1cznlcbkam9dkx";
       };
     };
     taimen = marlin;
-    crosshatch = marlin;
+    crosshatch = marlin // {
+      "10" = {
+        tag = "QP1A.190711.020.C3.2019.09.25.00";
+        sha256 = "1aq62s7pmz3s0q6wc1nh7h0dvg7w5d9nw91vm28ngn4d62378xbc";
+      };
+    };
     bonito = {
       "9" = {
         tag = "PQ3B.190801.002.2019.08.25.15";
         sha256 = "1w4ymqhqwyy8gc01aq5gadg3ibf969mhnh5z655cv8qz21fpiiha";
       };
-      "10" = marlin."10";
+      "10" = crosshatch."10";
     };
   }.${config.deviceFamily}.${config.androidVersion};
 
