@@ -47,7 +47,7 @@ mkIf (config.flavor == "grapheneos") {
   kernel.src = mkDefault (if (elem config.deviceFamily ["crosshatch" "bonito"])
     then kernelSrc
     else config.source.dirs."kernel/google/${config.deviceFamily}".contents);
-  kernel.configName = mkIf (elem config.deviceFamily ["taimen" "crosshatch"]) (mkForce config.device); # GrapheneOS uses different config names than upstream
+  kernel.configName = mkForce config.deviceFamily;
 
   # No need to include these in AOSP build since we build separately
   source.dirs."kernel/google/marlin".enable = false;
