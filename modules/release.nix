@@ -29,8 +29,9 @@ let
     minimal = true;
   };
 
+  # TODO: build tools is an overloaded name. See prebuilts/build-tools
   buildTools = pkgs.stdenv.mkDerivation {
-    name = "android-build-tools-${config.buildNumber}";
+    name = "android-build-tools";
     src = config.source.dirs."build/make".contents;
     patches = config.source.dirs."build/make".patches ++ [
       (pkgs.substituteAll {
@@ -88,6 +89,7 @@ let
       KEYSDIR=keys_copy
     fi
 
+    # TODO: Try to get rid of this nixdroid-env wrapper.
     cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
     ${commands}
     EOF
