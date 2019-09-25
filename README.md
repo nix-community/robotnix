@@ -17,7 +17,7 @@ This has currently only been tested on marlin (Pixel XL) and crosshatch (Pixel 3
 
 A one line `.img` build:
 ```console
-nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="marlin";}' -A config.build.factoryImg
+$ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="marlin";}' -A config.build.factoryImg
 ```
 this will make generate an image signed with `test-keys`, so don't use it for anything other than testing.
 
@@ -53,20 +53,20 @@ $ nix-build ./default.nix --arg configuration ./marlin.nix -A config.build.img -
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 The root user is always trusted, however, running `sudo nix-build ...` would use root's git cache for `builtins.fetchgit`, which would effectively re-download the source again.
 
-Additional information:
+### Additional information:
 
 ```console
 # To easily build NixDroid outside of nix for debugging
-nix-shell ... -A config.build.android
-source $debugUnpackScript       # should just create files under nixdroid/
+$ nix-shell ... -A config.build.android
+$ source $debugUnpackScript       # should just create files under nixdroid/
 # Apply any patches in $patches
-runHook postPatch
+$ runHook postPatch
 
-export TMPDIR=/tmp
-export OUT_DIR_COMMON_BASE=/mnt/media/out
-source build/envsetup.sh
-choosecombo debug aosp_x86_64 userdebug
-make target-files-package
+$ export TMPDIR=/tmp
+$ export OUT_DIR_COMMON_BASE=/mnt/media/out
+$ source build/envsetup.sh
+$ choosecombo debug aosp_x86_64 userdebug
+$ make target-files-package
 
 # sign target files
 # ota_from_target_files also needs xxd (toybox works)
