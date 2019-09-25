@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.google;
   # Android 10 separates product specific apps/config, but its still under system in marlin
-  productPath = if (config.androidVersion == "10")
+  productPath = if (config.androidVersion >= 10)
     then "${optionalString (config.deviceFamily == "marlin") "system/"}product"
     else "system";
 in

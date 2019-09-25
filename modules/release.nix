@@ -16,7 +16,7 @@ let
       "--avb_vbmeta_algorithm SHA256_RSA2048"
       "--avb_system_key $KEYSDIR/avb.pem"
       "--avb_system_algorithm SHA256_RSA2048"
-    ] ++ optionals (config.androidVersion == "10") [
+    ] ++ optionals (config.androidVersion >= 10) [
       "--avb_system_other_key $KEYSDIR/avb.pem"
       "--avb_system_other_algorithm SHA256_RSA2048"
     ];
@@ -35,7 +35,7 @@ let
     src = config.source.dirs."build/make".contents;
     patches = config.source.dirs."build/make".patches ++ [
       (pkgs.substituteAll {
-        src = (../patches + "/${config.androidVersion}" + /buildtools.patch);
+        src = (../patches + "/${toString config.androidVersion}" + /buildtools.patch);
         java = "${jdk}/bin/java";
         search_path = config.build.hostTools;
       })
@@ -107,7 +107,7 @@ let
     ${buildTools}/releasetools/sign_target_files_apks.py \
       --verbose \
       -o -d $KEYSDIR ${toString avbFlags} \
-      ${optionalString (config.androidVersion == "10") "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"} \
+      ${optionalString (config.androidVersion >= 10) "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"} \
       ${concatMapStringsSep " " (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") config.apex.packageNames} \
       ${targetFiles} ${out}
   '';
@@ -193,13 +193,13 @@ in
   in {
     # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
     unsignedTargetFiles = mkDefault (build.android + "/aosp_${device}-target_files-${buildNumber}.zip");
-    signedTargetFiles = mkDefault (assert signBuild; runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;});
+    signedTargetFiles = mkDefault (runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;});
     ota = mkDefault (runWrappedCommand "ota_update" otaScript { inherit targetFiles; });
     incrementalOta = mkDefault (runWrappedCommand "incremental-${prevBuildNumber}" otaScript { inherit targetFiles prevTargetFiles; });
     img = mkDefault (runWrappedCommand "img" imgScript { inherit targetFiles; });
     factoryImg = mkDefault (runWrappedCommand "factory" factoryImgScript { inherit targetFiles img; });
 
-    apex.packageNames = mkIf (apex.enable && (androidVersion == "10"))
+    apex.packageNames = mkIf (apex.enable && (androidVersion >= 10))
       [ "com.android.conscrypt" "com.android.media"
         "com.android.media.swcodec" "com.android.resolv"
         "com.android.runtime.release" "com.android.tzdata"
@@ -248,7 +248,7 @@ in
     generateKeysScript = let
       keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
                         ++ (optional (avbMode == "verity_only") "verity")
-                        ++ (optionals (androidVersion == "10") [ "networkstack" ] ++ apex.packageNames);
+                        ++ (optionals (androidVersion >= 10) [ "networkstack" ] ++ apex.packageNames);
       avbKeysToGenerate = apex.packageNames;
     in mkDefault (pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}

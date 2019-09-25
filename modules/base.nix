@@ -47,8 +47,8 @@ in
     };
 
     androidVersion = mkOption {
-      default = "9";
-      type = types.str;
+      default = 9;
+      type = types.int;
       description = "Used to select which android version to use";
     };
 
@@ -107,7 +107,7 @@ in
   };
 
   config = {
-    apiLevel = mkIf (config.androidVersion == "10") "29";
+    apiLevel = mkIf (config.androidVersion == 10) "29";
 
     # Some derivations (like fdroid) need to know the fingerprints of the keys
     # even if we aren't signing. Set test-keys in that case. This is not an

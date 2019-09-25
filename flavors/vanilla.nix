@@ -28,7 +28,7 @@ let
       };
       "10" = crosshatch."10";
     };
-  }.${config.deviceFamily}.${config.androidVersion};
+  }.${config.deviceFamily}.${toString config.androidVersion};
   kernelTag = {
     "9" = {
       marlin = "android-9.0.0_r0.111";
@@ -42,7 +42,7 @@ let
       crosshatch = "android-10.0.0_r0.5";
       bonito = "android-10.0.0_r0.6";
     };
-  }.${config.androidVersion}.${config.deviceFamily};
+  }.${toString config.androidVersion}.${config.deviceFamily};
   deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
 in
 mkIf (config.flavor == "vanilla") {
@@ -67,12 +67,12 @@ mkIf (config.flavor == "vanilla") {
   source.dirs."packages/apps/QuickSearchBox".enable = false;
   source.dirs."packages/apps/Browser2".enable = false;
 
-  source.patches = [ (../patches + "/${config.androidVersion}" + /disable-quicksearch.patch) ];
+  source.patches = [ (../patches + "/${toString config.androidVersion}" + /disable-quicksearch.patch) ];
   source.dirs."device/google/${deviceDirName}".patches = [
-    (../patches + "/${config.androidVersion}/${deviceDirName}-fix-device-names.patch")
+    (../patches + "/${toString config.androidVersion}/${deviceDirName}-fix-device-names.patch")
   ];
 
-  source.dirs."packages/apps/DeskClock".patches = mkIf (config.androidVersion == "10") [
+  source.dirs."packages/apps/DeskClock".patches = mkIf (config.androidVersion == 10) [
     (pkgs.fetchpatch {
       url = "https://github.com/GrapheneOS/platform_packages_apps_DeskClock/commit/f31333513b1bf27ae23c61e4ba938568cc9e7b76.patch";
       sha256 = "1as8vyhfyi9cj61fc80ajskyz4lwwdc85fgxhj0b69z0dbxm77pj";

@@ -34,11 +34,11 @@ mkMerge [
     kernel.clangVersion = mkDefault {
       "9" = "4393122";
       "10" = "r349610";
-    }.${config.androidVersion};
+    }.${toString config.androidVersion};
     kernel.compiler = mkDefault "clang";
-    vendor.img = mkDefault (latestImg config.device config.androidVersion);
-    vendor.ota = mkDefault (latestOta config.device config.androidVersion);
-    apex.enable = mkIf (config.androidVersion == "10") (mkDefault true);
+    vendor.img = mkDefault (latestImg config.device (toString config.androidVersion));
+    vendor.ota = mkDefault (latestOta config.device (toString config.androidVersion));
+    apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
   }
 
   # Device-specific overrides
@@ -53,10 +53,10 @@ mkMerge [
   (mkIf (config.deviceFamily == "crosshatch") {
     kernel.configName = "b1c1";
     avbMode = mkDefault "vbmeta_chained";
-    retrofit = mkIf (config.androidVersion == "10") (mkDefault true);
+    retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
   })
   (mkIf (config.deviceFamily == "bonito") {
     avbMode = mkDefault "vbmeta_chained";
-    retrofit = mkIf (config.androidVersion == "10") (mkDefault true);
+    retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
   })
 ]

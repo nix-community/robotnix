@@ -26,7 +26,7 @@ let
       };
       "10" = crosshatch."10";
     };
-  }.${config.deviceFamily}.${config.androidVersion};
+  }.${config.deviceFamily}.${toString config.androidVersion};
 
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
   kernelSrc = pkgs.fetchFromGitHub {
