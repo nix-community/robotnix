@@ -129,7 +129,7 @@ in
     '');
 
     postPatch = concatStringsSep "\n" (map (d: optionalString d.enable
-      (concatMapStringsSep "\n" (p: "patch -p1 -d ${d.path} < ${p}") d.patches))
+      (concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.path} < ${p}") d.patches))
       (attrValues config.source.dirs));
   };
 
