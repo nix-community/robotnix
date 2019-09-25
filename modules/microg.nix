@@ -11,10 +11,16 @@ in
   };
 
   config = mkIf config.microg.enable {
-    source.patches = [ ./microg-sigspoof.patch ];
-    resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = mkIf (config.androidVersion != "10") "gps,network"; # Lots of stuff is currently broken with microg and android 10 anyway
+    source.dirs."frameworks/base".patches = [
+      (pkgs.fetchpatch { # Better patch for microg that hardcodes the fake google signature and only allows microg apps to use it
+        name = "microg.patch";
+        url = "https://gitlab.com/calyxos/platform_frameworks_base/commit/dccce9d969f11c1739d19855ade9ccfbacf8ef76.patch";
+        sha256 = "15c2i64dz4i0i5xv2cz51k08phlkhhg620b06n25bp2x88226m06";
+      })
+    ];
+    resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = mkIf (config.androidVersion != "10") "gps,network";
 
-    # Preferably build this stuff ourself.
+    # TODO: Preferably build this stuff ourself.
     # Used https://github.com/lineageos4microg/android_prebuilts_prebuiltapks as source for Android.mk options
     apps.prebuilt = {
       GmsCore = { 
