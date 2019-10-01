@@ -24,6 +24,8 @@ let
 
     LOCAL_PRIVILEGED_MODULE := ${if prebuilt.privileged then "true" else "false"}
     LOCAL_CERTIFICATE := ${if builtins.elem prebuilt.certificate deviceCertificates then prebuilt.certificate else "PRESIGNED"}
+    ${optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
+    ${optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
     ${prebuilt.extraConfig}
 
     include $(BUILD_PREBUILT)
@@ -90,6 +92,10 @@ in
             example = ''[ "INSTALL_PACKAGES" ]'';
           };
 
+          partition = mkOption {
+            type = types.strMatching "(vendor|system|product)";
+          };
+
           extraConfig = mkOption {
             default = "";
             type = types.lines;
@@ -97,6 +103,8 @@ in
         };
 
         config = {
+          partition = mkDefault (if (_config.androidVersion >= 10) then "product" else "system");
+
           # Uses the sandbox exception in /keys
           signedApk = mkDefault (
             if config.certificate == "PRESIGNED" then config.apk else (signApk {
