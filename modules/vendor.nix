@@ -21,12 +21,6 @@ in
       description = "An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds needs an OTA as well)";
     };
 
-    vendor.full = mkOption {
-      default = false;
-      type = types.bool;
-      description = "Include non-essential OEM blobs";
-    };
-
     vendor.systemBytecode = mkOption {
       type = types.listOf types.str;
       default = [];
@@ -43,8 +37,8 @@ in
       files = let
         # TODO: There's probably a better way to do this
         mergedConfig = recursiveUpdate apvConfig {
-          "api-${config.apiLevel}".${if config.vendor.full then "full" else "naked"} = let
-            _config = apvConfig."api-${config.apiLevel}".${if config.vendor.full then "full" else "naked"};
+          "api-${config.apiLevel}".naked = let
+            _config = apvConfig."api-${config.apiLevel}".naked;
           in _config // {
             system-bytecode = _config.system-bytecode ++ config.vendor.systemBytecode;
             system-other = _config.system-other ++ config.vendor.systemOther;
@@ -54,7 +48,7 @@ in
       in
         android-prepare-vendor.buildVendorFiles {
           inherit (config) device;
-          inherit (config.vendor) img full;
+          inherit (config.vendor) img;
           ota = usedOta;
           configFile = mergedConfigFile;
         };
