@@ -135,7 +135,10 @@ in
 
     etc = listToAttrs (map (prebuilt: {
         name = "permissions/${prebuilt.packageName}.xml";
-        value = { text = privapp-permissions prebuilt; };
+        value = {
+          text = privapp-permissions prebuilt;
+          inherit (prebuilt) partition;
+        };
       }) (filter (prebuilt: prebuilt.privappPermissions != []) (attrValues cfg)));
 
     additionalProductPackages = map (prebuilt: prebuilt.name) (attrValues cfg);

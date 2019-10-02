@@ -11,7 +11,7 @@ let
     LOCAL_MODULE := ${f.moduleName}
     LOCAL_MODULE_TAGS := optional
     LOCAL_MODULE_CLASS := ETC
-    LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/${dirOf f.target}
+    LOCAL_MODULE_PATH := $(TARGET_OUT${optionalString (f.partition == "product") "_PRODUCT"})/etc/${dirOf f.target}
     LOCAL_MODULE_STEM := ${baseNameOf f.target}
     LOCAL_SRC_FILES := ${f.moduleName}
 
@@ -40,6 +40,11 @@ in
           moduleName = mkOption {
             type = types.str;
             internal = true;
+          };
+
+          partition = mkOption {
+            default = "system";
+            type = types.strMatching "(vendor|system|product)";
           };
         };
 
