@@ -130,7 +130,9 @@ in
       '';
     };
 
-    source.dirs.${config.kernel.relpath}.enable = mkIf config.kernel.useCustom false;
+    source.dirs = mkIf config.kernel.useCustom {
+      ${config.kernel.relpath}.enable = false;
+    };
     source.unpackScript = mkIf config.kernel.useCustom ''
       mkdir -p ${config.kernel.relpath}
       cp -fv ${config.build.kernel}/* ${config.kernel.relpath}/

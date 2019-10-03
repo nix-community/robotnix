@@ -3,7 +3,8 @@
 with lib;
 let
   usePatchedCoreutils = false;
-  nixdroid-env = pkgs.callPackage ../buildenv.nix {};
+  nixdroid-build = pkgs.callPackage ../buildenv.nix {};
+  fakeuser = pkgs.callPackage ./fakeuser {};
 
   # TODO: Not exactly sure what i'm doing.
   putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
@@ -107,6 +108,8 @@ in
   };
 
   config = {
+    deviceFamily = mkOptionDefault config.device;
+
     apiLevel = mkIf (config.androidVersion == 10) "29";
 
     # Some derivations (like fdroid) need to know the fingerprints of the keys
@@ -187,6 +190,8 @@ in
 
         outputs = [ "out" "bin" ]; # This derivation builds AOSP release tools and target-files
 
+        nativeBuildInputs = [ nixdroid-build fakeuser ];
+
         unpackPhase = ''
           ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
 
@@ -202,21 +207,20 @@ in
         BUILD_DATETIME=config.buildDateTime;
         DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
 
-        buildPhase = let
-          fakeuser = pkgs.callPackage ./fakeuser {};
-        in ''
+        buildPhase = ''
           export OUT_DIR_COMMON_BASE=$rootDir/out
 
           # Become the original user--not fake root.
-          ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID} ${pkgs.runtimeShell}
+          ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} ${pkgs.runtimeShell}
 
           # Enter an FHS user namespace
-          ${pkgs.toybox}/bin/cat << 'EOF3' | ${nixdroid-env}/bin/nixdroid-build
+          ${pkgs.toybox}/bin/cat << 'EOF3' | nixdroid-build
 
           source build/envsetup.sh
           choosecombo release "aosp_${config.device}" ${config.buildType}
           export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES";
           make brillo_update_payload target-files-package
+          echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 
           EOF3
           EOF2
@@ -224,14 +228,18 @@ in
 
         # Kinda ugly to just throw all this in $bin/
         # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
+        # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
         installPhase = ''
           mkdir -p $out $bin
-          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/target/product/${config.device}/obj/PACKAGING/target_files_intermediates/aosp_${config.device}-target_files-${config.buildNumber}.zip $out/
+          export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
+          # Just grab top-level build products (for emulator, not recursive) + target_files
+          find $ANDROID_PRODUCT_OUT -maxdepth 1 -type f | xargs -I {} cp --reflink=auto {} $out/
+          cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/aosp_${config.device}-target_files-${config.buildNumber}.zip $out/
+
           cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
           cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/soong/host/linux-x86/* $bin/
         '';
 
-        configurePhase = ":";
         dontMoveLib64 = true;
       };
 

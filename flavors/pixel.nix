@@ -15,31 +15,32 @@ let
     matchingOtas = filter (v: (v.device == device) && (hasPrefix version v.version)) otaList;
   in
     pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) (elemAt matchingOtas ((length matchingOtas)-1)));
+
+  deviceFamilyMap = {
+    marlin = "marlin"; # Pixel XL
+    sailfish = "marlin"; # Pixel
+    taimen = "taimen"; # Pixel 2 XL
+    walleye = "wahoo"; # Pixel 2
+    crosshatch = "crosshatch"; # Pixel 3 XL
+    blueline = "crosshatch"; # Pixel 3
+    bonito = "bonito"; # Pixel 3a XL
+    sargo = "bonito"; # Pixel 3a
+  };
 in
 mkMerge [
-  { # Default settings that apply to all devices unless overridden. TODO: Make conditional
-    deviceFamily = mkDefault {
-      marlin = "marlin"; # Pixel XL
-      sailfish = "marlin"; # Pixel
-      taimen = "taimen"; # Pixel 2 XL
-      walleye = "wahoo"; # Pixel 2
-      crosshatch = "crosshatch"; # Pixel 3 XL
-      blueline = "crosshatch"; # Pixel 3
-      bonito = "bonito"; # Pixel 3a XL
-      sargo = "bonito"; # Pixel 3a
-    }.${config.device};
+  (mkIf (hasAttr config.device deviceFamilyMap) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
+    deviceFamily = mkDefault deviceFamilyMap.${config.device};
 
     kernel.configName = mkDefault config.deviceFamily;
     kernel.relpath = mkDefault "device/google/${config.deviceFamily}-kernel";
-    kernel.clangVersion = mkDefault {
-      "9" = "4393122";
-      "10" = "r349610";
-    }.${toString config.androidVersion};
-    kernel.compiler = mkDefault "clang";
     vendor.img = mkDefault (latestImg config.device (toString config.androidVersion));
     vendor.ota = mkDefault (latestOta config.device (toString config.androidVersion));
-    apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
-  }
+
+    source.excludeGroups = mkDefault [
+      "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
+    ];
+    source.includeGroups = mkDefault [ config.deviceFamily config.kernel.configName ];
+  })
 
   # Device-specific overrides
   (mkIf (config.deviceFamily == "marlin") {

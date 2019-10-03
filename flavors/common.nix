@@ -18,9 +18,15 @@ mkMerge [
   source.excludeGroups = mkDefault [
     "darwin" # Linux-only for now
     "mips" "hikey"
-    "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
   ];
-  source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.configName ]; # But include the one we care about. Also include deviceFamily and kernel.configName, which might be an alternate name
+  source.includeGroups = mkDefault [ config.device ];
+
+  kernel.compiler = mkDefault "clang";
+  kernel.clangVersion = mkDefault {
+    "9" = "4393122";
+    "10" = "r349610";
+  }.${toString config.androidVersion};
+  apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
 }
 {
   # Disable some unused directories to save time downloading / extracting
@@ -29,8 +35,8 @@ mkMerge [
       "developers/demos"
 
       "device/generic/car"
-      "device/generic/qemu"
-      "prebuilts/qemu-kernel"
+#      "device/generic/qemu"
+#      "prebuilts/qemu-kernel"
       "prebuilts/android-emulator"
 
       "device/linaro/bootloader/arm-trusted-firmware"
