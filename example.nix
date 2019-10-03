@@ -14,7 +14,7 @@ with lib;
   signBuild = true;
 
   apps = {
-    webview = {
+    webview = mkIf (config.androidVersion == 9) { # Not currently working with android 10
       enable = true;
       description = "Bromite";
       packageName = "com.android.webview";
