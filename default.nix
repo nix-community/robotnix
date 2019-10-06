@@ -26,6 +26,7 @@ in
     ./modules/base.nix
     ./modules/emulator.nix
     ./modules/etc.nix
+    ./modules/framework.nix
     ./modules/google.nix
     ./modules/hosts.nix
     ./modules/kernel.nix
