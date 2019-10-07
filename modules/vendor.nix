@@ -53,7 +53,6 @@ in
           configFile = mergedConfigFile;
         };
 
-      # Just for ease in debugging
       unpacked = android-prepare-vendor.unpackImg {
         inherit (config) device;
         inherit (config.vendor) img;

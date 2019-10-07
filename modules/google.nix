@@ -3,10 +3,25 @@
 with lib;
 let
   cfg = config.google;
+
+  # TODO: Use repairedImg from android-prepare-vendor
+  systemPath = "${unpacked}/system/system";
+
   # Android 10 separates product specific apps/config, but its still under system in marlin
   productPath = if (config.androidVersion >= 10)
-    then "${optionalString (config.deviceFamily == "marlin") "system/"}product"
-    else "system";
+    then "${unpacked}/${optionalString (config.deviceFamily == "marlin") "system/system/"}product"
+    else systemPath;
+
+  android-prepare-vendor = pkgs.callPackage ../android-prepare-vendor { api = config.apiLevel; };
+  unpacked = if (config.vendor.img != null)
+    then config.build.vendor.unpacked
+    else (import ../default.nix { # If vendor is not set--say for generic/emulator targets, use the vendor files from crosshatch
+      configuration = {
+        device = "crosshatch";
+        imports = [ ../flavors/pixel.nix ];
+        inherit (config) androidVersion;
+      };
+    }).build.vendor.unpacked;
 in
 {
   # TODO: Add other google stuff. Ensure that either google play services or microg is enabled if these are.
@@ -18,24 +33,25 @@ in
     };
   };
 
+  # TODO: Refactor to avoid duplicating names (error prone)
   config = mkMerge [
     (mkIf cfg.base.enable {
-      vendor.systemBytecode = [
-      ];
-      vendor.systemOther = [
-        "system/etc/permissions/privapp-permissions-google.xml"
-        "${productPath}/etc/sysconfig/google_build.xml"
-        "${productPath}/etc/sysconfig/google-hiddenapi-package-whitelist.xml"
-        "${productPath}/etc/sysconfig/google.xml"
-        "${productPath}/etc/sysconfig/nexus.xml"
-      ] ++ (optionals (config.androidVersion >= 10) [
-        "${productPath}/etc/permissions/privapp-permissions-google-ps.xml"
-        "${productPath}/etc/permissions/privapp-permissions-google-p.xml"
-      ]) ++ (optionals (config.deviceFamily == "crosshatch") [ # TODO: Do this for other devices
-        "${productPath}/etc/sysconfig/pixel_2018_exclusive.xml"
-        "${productPath}/etc/sysconfig/pixel_experience_2017.xml"
-        "${productPath}/etc/sysconfig/pixel_experience_2018.xml"
-      ]);
+      etc = {
+        "permissions/privapp-permissions-google.xml".source = "${systemPath}/etc/permissions/privapp-permissions-google.xml";
+        "sysconfig/google_build.xml".source = "${productPath}/etc/sysconfig/google_build.xml";
+        "sysconfig/google-hiddenapi-package-whitelist.xml".source = "${productPath}/etc/sysconfig/google-hiddenapi-package-whitelist.xml";
+        "sysconfig/google.xml".source = "${productPath}/etc/sysconfig/google.xml";
+        "sysconfig/nexus.xml".source = "${productPath}/etc/sysconfig/nexus.xml";
+      } // (optionalAttrs (config.androidVersion >= 10) {
+        "permissions/privapp-permissions-google-ps.xml".source = "${productPath}/etc/permissions/privapp-permissions-google-ps.xml";
+        "permissions/privapp-permissions-google-p.xml".source = "${productPath}/etc/permissions/privapp-permissions-google-p.xml";
+      }) // (optionalAttrs (config.deviceFamily == "marlin") { # TODO: Do this for other devices
+        "sysconfig/pixel_2016_exclusive.xml".source = "${systemPath}/etc/sysconfig/pixel_2016_exclusive.xml";
+      }) // (optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Do this for other devices
+        "sysconfig/pixel_2018_exclusive.xml".source = "${productPath}/etc/sysconfig/pixel_2018_exclusive.xml";
+        "sysconfig/pixel_experience_2017.xml".source = "${productPath}/etc/sysconfig/pixel_experience_2017.xml";
+        "sysconfig/pixel_experience_2018.xml".source = "${productPath}/etc/sysconfig/pixel_experience_2018.xml";
+      });
     })
     (mkIf cfg.dialer.enable {
       google.base.enable = true;
@@ -43,33 +59,58 @@ in
         config_defaultDialer = "com.google.android.dialer";
         config_priorityOnlyDndExemptPackages = [ "com.google.android.dialer" ]; # Found under PixelConfigOverlayCommon.apk
       };
-      vendor.systemBytecode = [
-        "${productPath}/priv-app/GoogleDialer/GoogleDialer.apk::PRESIGNED"
-        "${productPath}/framework/com.google.android.dialer.support.jar"
-      ];
-      vendor.systemOther = [
-        "${productPath}/etc/permissions/com.google.android.dialer.support.xml"
-      ];
+      apps.prebuilt.GoogleDialer = {
+        apk = "${productPath}/priv-app/GoogleDialer/GoogleDialer.apk";
+        privileged = true;
+        certificate = "PRESIGNED";
+      };
+      etc."permissions/com.google.android.dialer.support.xml".source = "${productPath}/etc/permissions/com.google.android.dialer.support.xml";
+      framework."com.google.android.dialer.support.jar".source = "${productPath}/framework/com.google.android.dialer.support.jar";
     })
     (mkIf cfg.fi.enable {
       google.base.enable = true;
       google.dialer.enable = true;
-      vendor.systemBytecode = [
-        "${productPath}/app/Tycho/Tycho.apk::PRESIGNED" # Google Fi app
-        "${productPath}/priv-app/GCS/GCS.apk::PRESIGNED" # Google Connectivity Services (does wifi VPN at least)
-        "${productPath}/priv-app/CarrierServices/CarrierServices.apk::PRESIGNED" # Google Carrier Services. com.google.android.ims (needed for wifi calls)
-        "${productPath}/priv-app/CarrierSettings/CarrierSettings.apk::PRESIGNED" # com.google.android.carrier
-        "${productPath}/priv-app/CarrierSetup/CarrierSetup.apk::PRESIGNED" # com.google.android.carriersetup
-      ] ++ (optionals (config.deviceFamily == "crosshatch") [ # TODO: Generalize to other devices with esim
-        "${productPath}/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED"
-      ]) ++ (optionals ((config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) [
-        "${productPath}/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"
-      ]);
+      apps.prebuilt = {
+        Tycho = {
+          apk = "${productPath}/app/Tycho/Tycho.apk"; # Google Fi app
+          certificate = "PRESIGNED";
+        };
+        GCS = {
+          apk = "${productPath}/priv-app/GCS/GCS.apk"; # Google Connectivity Services (does wifi VPN at least)
+          certificate = "PRESIGNED";
+        };
+        CarrierServices = {
+          apk = "${productPath}/priv-app/CarrierServices/CarrierServices.apk"; # Google Carrier Services. com.google.android.ims (needed for wifi calls)
+          certificate = "PRESIGNED";
+        };
+        CarrierSettings = {
+          apk = "${productPath}/priv-app/CarrierSettings/CarrierSettings.apk"; # com.google.android.carrier
+          certificate = "PRESIGNED";
+        };
+        CarrierSetup = {
+          apk = "${productPath}/priv-app/CarrierSetup/CarrierSetup.apk"; # com.google.android.carriersetup
+          certificate = "PRESIGNED";
+        };
+      } // (optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Generalize to other devices with esim
+        EuiccGoogle = {
+          apk = "${productPath}/priv-app/EuiccGoogle/EuiccGoogle.apk";
+          certificate = "PRESIGNED";
+        };
+      }) // (optionalAttrs ((config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
+        EuiccSupportPixel = {
+          apk = "${productPath}/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk";
+          certificate = "PRESIGNED";
+        };
+      });
 
-      vendor.systemOther = optionals (config.deviceFamily == "crosshatch") [
-        "${productPath}/priv-app/Euicc${if (config.androidVersion >= 10) then "SupportPixel" else "Google"}/esim-full-v0.img"
-        "${productPath}/priv-app/Euicc${if (config.androidVersion >= 10) then "SupportPixel" else "Google"}/esim-v1.img"
-      ];
+#      vendor.systemOther = optionals (config.deviceFamily == "crosshatch") [
+#        "${productPath}/priv-app/Euicc${if (config.androidVersion >= 10) then "SupportPixel" else "Google"}/esim-full-v0.img"
+#        "${productPath}/priv-app/Euicc${if (config.androidVersion >= 10) then "SupportPixel" else "Google"}/esim-v1.img"
+#      ];
     })
   ];
 }
+
+# EaselServicePrebuilt # pixel visual core
+# crosshatch has: framswork/com.google.android.camera.experimental2018.jar
+# https://github.com/opengapps/opengapps/blob/master/scripts/inc.buildtarget.sh has some useful information

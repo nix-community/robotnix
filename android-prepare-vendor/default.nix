@@ -28,4 +28,10 @@ rec {
       mkdir -p $out
       ${android-prepare-vendor}/scripts/extract-factory-images.sh --debugfs --input "${img}" --output $out --conf-file ${android-prepare-vendor}/${device}/config.json
     '';
+
+  repairImg = imgDir:
+    runCommand "repaired-img" {} ''
+      mkdir -p $out
+      ${android-prepare-vendor}/scripts/system-img-repair.sh --input "${imgDir}/system" --output $out --method OATDUMP --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${api}/bin/oatdump
+    '';
 }
