@@ -8,8 +8,8 @@ let
         sha256 = "17776v5hxkz9qyijhaaqcmgdx6lhrm6kbc5ql9m3rq043av27ihw";
       };
       "10" = {
-        tag = "QP1A.190711.020.2019.09.25.00";
-        sha256 = "1mgbi2893v9f325ig8azg4v6c3fk9kjfpfqrxb1cznlcbkam9dkx";
+        tag = "QP1A.191005.007.A1.2019.10.07.21";
+        sha256 = "14fi33vlh38i327amqqqd3nxfg03cilanxbdrznzfw2mc1vp4z0y";
       };
     };
     taimen = marlin;
@@ -18,9 +18,9 @@ let
         kernelSha256 = "1r3pj5fv2a2zy1kjm9cc49j5vmscvwpvlx5hffhc9r8jbc85acgi";
       };
       "10" = {
-        tag = "QP1A.190711.020.C3.2019.09.25.00";
-        sha256 = "1aq62s7pmz3s0q6wc1nh7h0dvg7w5d9nw91vm28ngn4d62378xbc";
-        kernelSha256 = "03a94jdb4qjjszch1wbf07kxrc5w9jk5yvp15ghh1ymy25ky60c0";
+        tag = "QP1A.191005.007.2019.10.07.21";
+        sha256 = "0hy4fj4sm23a9bcy37dc799r1lcwlpw2jzh4l4vx70bl0z1ilsld";
+        kernelSha256 = "0lz3kg9npwfcslbplb1wyy5fknh3l3b1mpc5m92dq1sidjrqmwrc";
       };
     };
     bonito = {
@@ -29,17 +29,15 @@ let
         sha256 = "1w4ymqhqwyy8gc01aq5gadg3ibf969mhnh5z655cv8qz21fpiiha";
         kernelSha256 = "071kxvmch43747a3vprf0igh5qprafdi4rjivny8yvv41q649m4z";
       };
-      "10" = crosshatch."10" // {
-        kernelSha256 = "16aj61riyyahdgx41qkq50j3i564wf7ab091795hb3lyx39p2rz5";
-      };
+      "10" = crosshatch."10";
     };
-    x86_64 = crosshatch; # Emulator target
+    x86_64 = marlin; # Emulator target
   }.${config.deviceFamily}.${toString config.androidVersion};
 
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
-  kernelSrc = pkgs.fetchFromGitHub {
+  kernelSrc = device: pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
-    repo = "kernel_google_${config.deviceFamily}";
+    repo = "kernel_google_${device}";
     rev = release.tag;
     sha256 = release.kernelSha256;
     fetchSubmodules = true;
@@ -55,7 +53,7 @@ mkIf (config.flavor == "grapheneos") {
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault (if (elem config.deviceFamily ["crosshatch" "bonito"])
-    then kernelSrc
+    then kernelSrc (if (config.androidVersion >= 10) then "crosshatch" else config.deviceFamily)
     else config.source.dirs."kernel/google/${config.deviceFamily}".contents);
   kernel.configName = mkForce config.deviceFamily;
 
