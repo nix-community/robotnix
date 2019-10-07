@@ -22,7 +22,9 @@ in
   options = {
     etc = mkOption {
       default = {};
-      type = types.attrsOf (types.submodule ({ name, config, ... }: {
+      type = let
+        _config = config;
+      in types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
           target = mkOption {
             type = types.str;
@@ -43,7 +45,6 @@ in
           };
 
           partition = mkOption {
-            default = "system";
             type = types.strMatching "(vendor|system|product)";
           };
         };
@@ -54,6 +55,7 @@ in
             let name' = "etc-" + baseNameOf name;
             in mkDefault (pkgs.writeText name' config.text));
           moduleName = mkDefault (replaceStrings [ "/" ] [ "_" ] name);
+          partition = mkDefault (if (_config.androidVersion >= 10) then "product" else "system");
         };
       }));
     };
