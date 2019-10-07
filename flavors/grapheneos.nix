@@ -13,18 +13,25 @@ let
       };
     };
     taimen = marlin;
-    crosshatch = marlin // {
+    crosshatch = {
+      "9" = marlin."9" // {
+        kernelSha256 = "1r3pj5fv2a2zy1kjm9cc49j5vmscvwpvlx5hffhc9r8jbc85acgi";
+      };
       "10" = {
         tag = "QP1A.190711.020.C3.2019.09.25.00";
         sha256 = "1aq62s7pmz3s0q6wc1nh7h0dvg7w5d9nw91vm28ngn4d62378xbc";
+        kernelSha256 = "03a94jdb4qjjszch1wbf07kxrc5w9jk5yvp15ghh1ymy25ky60c0";
       };
     };
     bonito = {
       "9" = {
         tag = "PQ3B.190801.002.2019.08.25.15";
         sha256 = "1w4ymqhqwyy8gc01aq5gadg3ibf969mhnh5z655cv8qz21fpiiha";
+        kernelSha256 = "071kxvmch43747a3vprf0igh5qprafdi4rjivny8yvv41q649m4z";
       };
-      "10" = crosshatch."10";
+      "10" = crosshatch."10" // {
+        kernelSha256 = "16aj61riyyahdgx41qkq50j3i564wf7ab091795hb3lyx39p2rz5";
+      };
     };
     x86_64 = crosshatch; # Emulator target
   }.${config.deviceFamily}.${toString config.androidVersion};
@@ -34,10 +41,7 @@ let
     owner = "GrapheneOS";
     repo = "kernel_google_${config.deviceFamily}";
     rev = release.tag;
-    sha256 = {
-      crosshatch = "1r3pj5fv2a2zy1kjm9cc49j5vmscvwpvlx5hffhc9r8jbc85acgi";
-      bonito = "071kxvmch43747a3vprf0igh5qprafdi4rjivny8yvv41q649m4z";
-    }.${config.deviceFamily};
+    sha256 = release.kernelSha256;
     fetchSubmodules = true;
   };
 in
