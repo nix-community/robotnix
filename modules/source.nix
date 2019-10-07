@@ -134,11 +134,11 @@ in
       (concatStringsSep "" (mapAttrsToList (name: p: optionalString config.source.dirs.${p.relpath}.enable
         ((concatMapStringsSep "\n" (c: ''
             mkdir -p $(dirname ${c.dest})
-            cp --reflink=auto ${p.relpath}/${c.src} ${c.dest}
+            cp --reflink=auto -f ${p.relpath}/${c.src} ${c.dest}
           '') p.copyfiles) +
         (concatMapStringsSep "\n" (c: ''
             mkdir -p $(dirname ${c.dest})
-            ln -s ./${c.src_rel_to_dest} ${c.dest}
+            ln -sf ./${c.src_rel_to_dest} ${c.dest}
           '') p.linkfiles))
       ) config.source.json)));
     }
@@ -167,14 +167,26 @@ in
   ];
 
   # Extract only files under nixdroid/ (for debugging with an external AOSP build)
-  config.build.debugUnpackScript = pkgs.writeText "unpack.sh" (''
+  config.build.debugUnpackScript = pkgs.writeText "debug-unpack.sh" (''
     rm -rf nixdroid
     '' +
     (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "nixdroid/" d.path)) ''
       mkdir -p $(dirname ${d.path})
       echo "${d.contents} -> ${d.path}"
-      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.contents} ${d.path}/
+      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.patchedContents} ${d.path}/
     '') (attrValues config.source.dirs))) + ''
     chmod -R u+w nixdroid/
   '');
+
+  # Patch files in other sources besides nixdroid/*
+  config.build.debugPatchScript = pkgs.writeText "debug-patch.sh"
+    (concatStringsSep "\n" (map (d: ''
+      ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.path} < ${p}") d.patches}
+      ${optionalString (d.postPatch != "") ''
+      pushd ${d.path} >/dev/null
+      ${d.postPatch}
+      popd >/dev/null
+      ''}
+    '')
+    (filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (attrValues config.source.dirs))));
 }

@@ -136,14 +136,14 @@ in
         fi
       fi
 
-      echo "\$(call inherit-product-if-exists, nixdroid/config.mk)" >> ''${mk_file}
+      echo "\$(call inherit-product-if-exists, nixdroid/config/config.mk)" >> ''${mk_file}
     '';
 
-    source.unpackScript = ''
-      mkdir -p nixdroid/
-      cp -f ${pkgs.writeText "config.mk" config.extraConfig} nixdroid/config.mk
-      chmod u+w nixdroid/config.mk
-    '';
+    source.dirs."nixdroid/config".contents = (pkgs.writeTextFile {
+      name = "nixdroid-config";
+      text = config.extraConfig;
+      destination = "/config.mk";
+    });
 
     build = {
       # TODO: Is there a nix-native way to get this information instead of using IFD
@@ -199,8 +199,7 @@ in
           source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
         '';
 
-        # Just included for convenience when building outside of nix.
-        debugUnpackScript = config.build.debugUnpackScript;
+        configurePhase = ":";
 
         ANDROID_JAVA_HOME="${pkgs.jdk.home}"; # This is already set in android 10. They use their own prebuilt jdk
         BUILD_NUMBER=config.buildNumber;
@@ -241,6 +240,28 @@ in
         '';
 
         dontMoveLib64 = true;
+
+        # Just included for convenience when building outside of nix.
+        # TODO: Only build these scripts if entered using mkShell?
+        debugUnpackScript = config.build.debugUnpackScript;
+        debugPatchScript = config.build.debugPatchScript;
+        debugEnterEnv = pkgs.writeText "debug-enter-env.sh" ''
+          export useBindMounts=$(test -e /dev/fuse && echo true)
+          export SAVED_UID=$UID
+          export SAVED_GID=$GID
+          ${pkgs.toybox}/bin/cat << 'EOF' | ''${useBindMounts:+${pkgs.utillinux}/bin/unshare -m -r} ${pkgs.runtimeShell}
+          export rootDir=$PWD
+          source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
+
+          # Become the original user--not fake root.
+          ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} ${pkgs.runtimeShell}
+
+          # Enter an FHS user namespace
+          nixdroid-build -i < /dev/stdin
+
+          EOF2
+          EOF
+        '';
       };
 
       hostTools = config.build.android.bin;
