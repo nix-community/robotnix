@@ -10,15 +10,15 @@ let
         sha256 = "08hjjmyrr4isb1hl3wixyysp9792bh2pp0ifh9w9p5v90nx7s1sz";
       };
       "10" = {
-        tag = "android-10.0.0_r2"; # QP1A.190711.20
-        sha256 = "11pmxdrps2n8im4wl9vi6pq4a16gl55g9y3kd2kn8n5rz61h2vrb";
+        tag = "android-10.0.0_r5"; # QP1A.191005.007.A1
+        sha256 = "10gw8xxk62fnlj1y2lsr23wrzh59kxchqg8f7hzmzbw0qvlrvsqg";
       };
     };
     taimen = marlin;
     crosshatch = marlin // {
       "10" = {
-        tag = "android-10.0.0_r3"; # QP1A.190711.20.C3
-        sha256 = "1rynj7q03sa2gf156ia4kh4yfmqv62rv21jyc1fli029x0df2m4m";
+        tag = "android-10.0.0_r4"; # QP1A.191005.007
+        sha256 = "1h608kpzbk3yl2p620mj8816igpfpd8fjg3rv7ma08mx6bi2lahh";
       };
     };
     bonito = {
@@ -37,10 +37,10 @@ let
       bonito = "android-9.0.0_r0.114";
     };
     "10" = {
-      marlin = "android-10.0.0_r0.1";
-      taimen = "android-10.0.0_r0.2";
-      crosshatch = "android-10.0.0_r0.5";
-      bonito = "android-10.0.0_r0.6";
+      marlin = "android-10.0.0_r0.7";
+      taimen = "android-10.0.0_r0.8";
+      crosshatch = "android-10.0.0_r0.10"; # TODO: crosshatch/bonito have additional repos
+      bonito = "android-10.0.0_r0.12";
     };
   }.${toString config.androidVersion}.${config.deviceFamily};
   deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
