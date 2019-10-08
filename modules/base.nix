@@ -48,7 +48,7 @@ in
     };
 
     androidVersion = mkOption {
-      default = 9;
+      default = 10;
       type = types.int;
       description = "Used to select which android version to use";
     };
