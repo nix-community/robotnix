@@ -31,6 +31,8 @@ in
         packageName = "com.google.android.gms";
         privileged = true;
         privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" ];
+        defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
+        allowInPowerSave = true;
       };
 
       GsfProxy.apk = pkgs.fetchurl {
@@ -46,6 +48,7 @@ in
         packageName = "com.android.vending";
         privileged = true;
         privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
+        defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
       };
     };
   };

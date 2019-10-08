@@ -3,14 +3,6 @@
 with lib;
 let
   cfg = config.apps.prebuilt;
-  privapp-permissions = prebuilt: ''
-    <?xml version="1.0" encoding="utf-8"?>
-    <permissions>
-      <privapp-permissions package="${prebuilt.packageName}">
-        ${concatMapStrings (p: "<permission name=\"android.permission.${p}\"/>") prebuilt.privappPermissions}
-      </privapp-permissions>
-    </permissions>
-  '';
   androidmk = prebuilt: pkgs.writeText "Android.mk" (''
     LOCAL_PATH := $(call my-dir)
 
@@ -86,14 +78,28 @@ in
             default = [];
             type = types.listOf types.str;
             description = ''
-              See https://developer.android.com/reference/android/Manifest.permission and note perimssions which say
+              See https://developer.android.com/reference/android/Manifest.permission and note permissions which say
               "not for use by third-party applications".
+            '';
+            example = ''[ "INSTALL_PACKAGES" ]'';
+          };
+
+          defaultPermissions = mkOption {
+            default = [];
+            type = types.listOf types.str;
+            description = ''
+              Permissions which are to be enabled by default without user prompting
             '';
             example = ''[ "INSTALL_PACKAGES" ]'';
           };
 
           partition = mkOption {
             type = types.strMatching "(vendor|system|product)";
+          };
+
+          allowInPowerSave = mkOption {
+            default = false;
+            type = types.bool;
           };
 
           extraConfig = mkOption {
@@ -133,13 +139,52 @@ in
       };
     }) (attrValues cfg));
 
-    etc = listToAttrs (map (prebuilt: {
-        name = "permissions/${prebuilt.packageName}.xml";
-        value = {
-          text = privapp-permissions prebuilt;
-          inherit (prebuilt) partition;
-        };
-      }) (filter (prebuilt: prebuilt.privappPermissions != []) (attrValues cfg)));
+    # TODO: Make just a single file with each of these tconfiguration types instead of one for each app?
+    etc = let
+      confToAttrs = f:
+        (listToAttrs (map (prebuilt: {
+          name = (f prebuilt).path;
+          value = {
+            text = (f prebuilt).text;
+            inherit (prebuilt) partition;
+          };
+        }) (filter (prebuilt: (f prebuilt).filter) (attrValues cfg))));
+    in
+      confToAttrs (prebuilt: {
+        path = "permissions/privapp-permissions-${prebuilt.packageName}.xml";
+        filter = prebuilt.privappPermissions != [];
+        text = ''
+          <?xml version="1.0" encoding="utf-8"?>
+          <permissions>
+            <privapp-permissions package="${prebuilt.packageName}">
+              ${concatMapStrings (p: "<permission name=\"android.permission.${p}\"/>") prebuilt.privappPermissions}
+            </privapp-permissions>
+          </permissions>
+        '';
+      }) //
+      confToAttrs (prebuilt: {
+        path = "default-permissions/default-permissions-${prebuilt.packageName}.xml";
+        filter = prebuilt.defaultPermissions != [];
+        # TODO: Allow user to set "fixed" in the configuration?
+        text = ''
+          <?xml version="1.0" encoding="utf-8"?>
+          <exceptions>
+            <exception package="${prebuilt.packageName}">
+              ${concatMapStrings (p: "<permission name=\"android.permission.${p}\" fixed=\"false\"/>") prebuilt.defaultPermissions}
+            </exception>
+          </exceptions>
+        '';
+      }) //
+      confToAttrs (prebuilt: {
+        path = "sysconfig/whitelist-${prebuilt.packageName}.xml";
+        filter = prebuilt.allowInPowerSave;
+        text = ''
+          <?xml version="1.0" encoding="utf-8"?>
+          <config>
+            <allow-in-power-save package="${prebuilt.packageName}"/>
+          </config>
+        '';
+      });
 
     additionalProductPackages = map (prebuilt: prebuilt.name) (attrValues cfg);
 
