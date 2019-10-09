@@ -217,7 +217,7 @@ in
 
           source build/envsetup.sh
           choosecombo release "aosp_${config.device}" ${config.buildType}
-          export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES";
+          export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES"
           make brillo_update_payload target-files-package
           echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 
