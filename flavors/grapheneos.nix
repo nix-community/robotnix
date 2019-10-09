@@ -67,7 +67,7 @@ mkIf (config.flavor == "grapheneos") {
   apex.enable = false;
 
   # TODO: Build and include vanadium
-  removedProductPackages = [ "Vanadium" ];
+  removedProductPackages = mkIf (config.androidVersion == 9) [ "Vanadium" ];
 
   # Don't include updater by default since it would download updates signed with grapheneos's keys.
   # TODO: Encourage user to set apps.updater.enable
