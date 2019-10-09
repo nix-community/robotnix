@@ -1,20 +1,32 @@
 # NixDroid
 
-This is a fork of the original NixDroid, focusing on customized vanilla-ish AOSP targeting Pixel devices.
+This is a fork of the ajs124's NixDroid, focusing on customized vanilla-ish AOSP targeting Pixel devices.
 Some features include:
- - Uses a NixOS-style module system for configuring the build
- - Signing builds for verified boot (dm-verity/AVB) and re-locking the bootloader
- - Automated OTA updates
+ - A NixOS-style module system for customizing various aspects of the build
+ - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader
  - Partial GrapheneOS support (currently doesn't build Vanadium, the chromium fork)
- - Preliminary support for Android 10
+ - Android 10 Support
+ 
+Some optional nixos-style modules include:
+ - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Backup](https://github.com/stevesoltys/backup)
+ - [Automated OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
+ - [MicroG](https://microg.org/)
+ - Certain google apps (currently just stuff for Google Fi)
+ - Easily setting various framework configuration settings such as those found in [here](https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/values/config.xml)
+ - Custom built kernels
+ - Setting a custom /etc/hosts file
+ - Extracting vendor blobs from Google's images using [android-prepare-vendor](https://github.com/anestisb/android-prepare-vendor)
 
 Further goals include:
  - Better documentation, especially for module options
- - Reproducible builds
- - Continuous integration / testing
-
+ - Continuous integration / testing for various devices
+ - Automating CTS (Compatibility Test Suite) like nixos tests.
+ - Automatic verification of build reproducibility
+ 
 This has currently only been tested on marlin (Pixel XL) and crosshatch (Pixel 3 XL), but should support all Pixel devices with (hopefully) minor changes.
 
+
+## Build Instructions
 A one line `.img` build:
 ```console
 $ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="marlin";}' -A factoryImg
@@ -24,7 +36,7 @@ this will make generate an image signed with `test-keys`, so don't use it for an
 A configuration file should be created for anything more complicated, including creating signed builds.
 See `example.nix`, `marlin.nix`, and `crosshatch.nix` for inspiration.
 
-Generate keys to sign your build:
+After creating a configuration file, generate keys with which to sign your build:
 
 ```console
 $ nix-build ./default.nix --arg configuration ./marlin.nix -A generateKeysScript -o generate-keys
@@ -34,24 +46,37 @@ $ ../generate-keys "/CN=NixDroid" # Use appropriate x509 cert fields
 $ cd ../..
 ```
 
-Build and sign your release:
-
+Next, build and sign your release. There are two ways in which a build may be created. One involves creating a `build-script` which does the final stages of signing target files and creating ota/img files outside of nix:
 ```console
 $ nix-build ./default.nix --arg configuration ./marlin.nix -A releaseScript -o release
 $ ./release ./keys/marlin
 ```
+A full android 10 build takes about 4 hours on my i7-3770 with 16GB of memory.
+One may use the `--cores` option for `nix-build` to set the number of cores to use.
 
-One advantage of using a release script is that the build can take place on a different machine than the signing.
+One advantage of using a release script as above is that the build can take place on a different machine than the signing.
 `nix-copy-closure` could be used to transfer this script and its dependencies to another computer to finish the release.
 
-One alternative to using the `releaseScript` is to build the final products inside nix.
-This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
-
+One alternative to using the `releaseScript` is to build the final products inside nix:
 ```console
 $ nix-build ./default.nix --arg configuration ./marlin.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
 ```
+This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 The root user is always trusted, however, running `sudo nix-build ...` would use root's git cache for `builtins.fetchgit`, which would effectively re-download the source again.
+
+### Speeding up the build
+The default mode of operation involves copying the source files multiple times.
+Once from the nix's git cache into the nix store, and again during every build into a temporary location.
+Since the AOSP source tree is very large--this can take a significant amount of time and is especially painful when tweaking configuration files.
+There are patches under `misc/nix.nix` to speed some of this up using reflink (if your filesystem supports that).
+Mine does not, so I looked for another soluation.
+
+The most recent solution for speeding this up relies on user namespaces + bind mounts + bindfs, to simply bind mount the source from /nix/store into the temporary location while building.
+Android 10 builds should work fine with read-only source trees.
+However, it sometimes copies files from the source and uses the original permissions set on those files--which does not work for /nix/store which does not have user-write permissions on its files.
+So, a fuse filesystem called "bindfs" used in addition to bind mounts to fake the `u+w` permission on the source files.
+The nix sandbox does not normally allow access to `/dev/fuse`, so this mode is only enabled if an additional sandbox exception is made for `/dev/fuse` with `--extra-sandbox-paths "/dev/fuse?"`
 
 ### Additional information:
 
