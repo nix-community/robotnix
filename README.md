@@ -46,7 +46,9 @@ $ ../generate-keys "/CN=NixDroid" # Use appropriate x509 cert fields
 $ cd ../..
 ```
 
-Next, build and sign your release. There are two ways in which a build may be created. One involves creating a `build-script` which does the final stages of signing target files and creating ota/img files outside of nix:
+Next, build and sign your release.
+There are two ways to create a build.
+One involves creating a `build-script` which does the final build steps of signing target files and creating ota/img files outside of nix:
 ```console
 $ nix-build ./default.nix --arg configuration ./marlin.nix -A releaseScript -o release
 $ ./release ./keys/marlin
@@ -57,7 +59,7 @@ One may use the `--cores` option for `nix-build` to set the number of cores to u
 One advantage of using a release script as above is that the build can take place on a different machine than the signing.
 `nix-copy-closure` could be used to transfer this script and its dependencies to another computer to finish the release.
 
-One alternative to using the `releaseScript` is to build the final products inside nix:
+The other way to create a build is to build the final products entirely inside nix instead of using `releaseScript`
 ```console
 $ nix-build ./default.nix --arg configuration ./marlin.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
 ```
