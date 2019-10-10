@@ -152,8 +152,8 @@ in
     in
       pkgs.runCommand "nixdroid-config" {} ''
         mkdir -p $out
-        cp ${systemMk} system.mk
-        cp ${productMk} product.mk
+        cp ${systemMk} $out/system.mk
+        cp ${productMk} $out/product.mk
       '';
 
     build = {
