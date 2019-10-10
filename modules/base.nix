@@ -64,7 +64,13 @@ in
       type = types.listOf types.path;
     };
 
-    additionalProductPackages = mkOption {
+    system.additionalProductPackages = mkOption {
+      default = [];
+      type = types.listOf types.str;
+      description = "PRODUCT_PACKAGES to add to build";
+    };
+
+    product.additionalProductPackages = mkOption {
       default = [];
       type = types.listOf types.str;
       description = "PRODUCT_PACKAGES to add to build";
@@ -76,7 +82,14 @@ in
       description = "PRODUCT_PACKAGES to remove from build";
     };
 
-    extraConfig = mkOption {
+    system.extraConfig = mkOption {
+      default = "";
+      type = types.lines;
+      description = "Additional configuration to be included in system .mk file";
+      internal = true;
+    };
+
+    product.extraConfig = mkOption {
       default = "";
       type = types.lines;
       description = "Additional configuration to be included in product .mk file";
@@ -118,32 +131,30 @@ in
     # keyStorePath themselves if they select signBuild.
     keyStorePath = mkIf (!config.signBuild) (mkDefault (config.source.dirs."build/make".contents + /target/product/security));
 
-    extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.additionalProductPackages;
+    system.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.system.additionalProductPackages;
+    product.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.product.additionalProductPackages;
 
     # TODO: The " \\" in the below sed is a bit flaky, and would require the line to end in " \\"
     # come up with something more robust.
     source.dirs."build/make".postPatch = ''
       ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' target/product/*.mk") config.removedProductPackages}
+    '' + (if (config.androidVersion >= 10) then ''
+      echo "\$(call inherit-product-if-exists, nixdroid/config/system.mk)" >> target/product/handheld_system.mk
+      echo "\$(call inherit-product-if-exists, nixdroid/config/product.mk)" >> target/product/handheld_product.mk
+    '' else ''
+      echo "\$(call inherit-product-if-exists, nixdroid/config/system.mk)" >> target/product/core.mk
+      echo "\$(call inherit-product-if-exists, nixdroid/config/product.mk)" >> target/product/core.mk
+    '');
 
-      # this is newer location in master
-      mk_file=./target/product/handheld_system.mk
-      if [ ! -f ''${mk_file} ]; then
-        # this is older location
-        mk_file=./target/product/core.mk
-        if [ ! -f ''${mk_file} ]; then
-          echo "Expected handheld_system.mk or core.mk do not exist"
-          exit 1
-        fi
-      fi
-
-      echo "\$(call inherit-product-if-exists, nixdroid/config/config.mk)" >> ''${mk_file}
-    '';
-
-    source.dirs."nixdroid/config".contents = (pkgs.writeTextFile {
-      name = "nixdroid-config";
-      text = config.extraConfig;
-      destination = "/config.mk";
-    });
+    source.dirs."nixdroid/config".contents = let
+      systemMk = pkgs.writeTextFile { name = "system.mk"; text = config.system.extraConfig; };
+      productMk = pkgs.writeTextFile { name = "product.mk"; text = config.product.extraConfig; };
+    in
+      pkgs.runCommand "nixdroid-config" {} ''
+        mkdir -p $out
+        cp ${systemMk} system.mk
+        cp ${productMk} product.mk
+      '';
 
     build = {
       # TODO: Is there a nix-native way to get this information instead of using IFD

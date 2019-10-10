@@ -59,6 +59,7 @@ in
       cp ${androidmk} $out/Android.mk
     '' + (concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (attrValues config.framework))));
 
-    additionalProductPackages = map (f: f.moduleName) (attrValues config.framework);
+    system.additionalProductPackages = map (f: f.moduleName) (filter (f: f.partition == "system") (attrValues config.framework));
+    product.additionalProductPackages = map (f: f.moduleName) (filter (f: f.partition == "product") (attrValues config.framework));
   };
 }

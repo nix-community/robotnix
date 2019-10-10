@@ -56,6 +56,7 @@ in
   config = mkIf cfg.enable {
     apps.prebuilt."F-Droid".apk = pkgs.callPackage ./fdroid {};
 
+    # TODO: Put this under product/
     source.dirs."nixdroid/apps/F-DroidPrivilegedExtension" = {
       contents = privext;
       patches = [
@@ -66,7 +67,7 @@ in
       ];
     };
 
-    additionalProductPackages = [ "F-DroidPrivilegedExtension" ];
+    system.additionalProductPackages = [ "F-DroidPrivilegedExtension" ];
 
     etc = mkIf (cfg.additionalRepos != {}) {
       "org.fdroid.fdroid/additional_repos.xml".text = nixdroidlib.configXML {

@@ -26,7 +26,8 @@ in
   config = mkIf cfg.enable {
     source.dirs."nixdroid/apps/Updater".contents = src;
 
-    additionalProductPackages = [ "Updater" ];
+    # It's currently a system package in upstream
+    system.additionalProductPackages = [ "Updater" ];
 
     resources."nixdroid/apps/Updater" = {
       inherit (cfg) url;

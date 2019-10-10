@@ -186,7 +186,8 @@ in
         '';
       });
 
-    additionalProductPackages = map (prebuilt: prebuilt.name) (attrValues cfg);
+    system.additionalProductPackages = map (p: p.name) (filter (p: p.partition == "system") (attrValues cfg));
+    product.additionalProductPackages = map (p: p.name) (filter (p: p.partition == "product") (attrValues cfg));
 
     # Convenience derivation to get all prebuilt apks -- for use in custom fdroid repo?
     build.prebuiltApks = pkgs.linkFarm "${config.device}-prebuilt-apks"

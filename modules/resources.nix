@@ -30,7 +30,8 @@ in
   };
 
   config = {
-    extraConfig = "PRODUCT_PACKAGE_OVERLAYS += nixdroid/overlay";
+    # TODO: Should some of these be in system?
+    product.extraConfig = "PRODUCT_PACKAGE_OVERLAYS += nixdroid/overlay";
 
     source.dirs."nixdroid/overlay".contents = (pkgs.symlinkJoin {
       name = "nixdroid-overlay";
