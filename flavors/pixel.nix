@@ -45,19 +45,37 @@ mkMerge [
   # Device-specific overrides
   (mkIf (config.deviceFamily == "marlin") {
     kernel.compiler = "gcc";
-    avbMode = mkDefault "verity_only";
+    avbMode = "verity_only";
     apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
+    kernel.buildProductFilenames = [
+      "arch/arm64/boot/Image.lz4-dtb"
+    ];
   })
   (mkIf (config.deviceFamily == "taimen") {
-    avbMode = mkDefault "vbmeta_simple";
+    avbMode = "vbmeta_simple";
+    kernel.buildProductFilenames = [
+      "arch/arm64/boot/Image.lz4-dtb"
+      "arch/arm64/boot/dtbo.img"
+    ];
   })
   (mkIf (config.deviceFamily == "crosshatch") {
     kernel.configName = "b1c1";
-    avbMode = mkDefault "vbmeta_chained";
+    avbMode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
+    kernel.buildProductFilenames = [
+      "arch/arm64/boot/Image.lz4"
+      "arch/arm64/boot/dtbo.img"
+      "arch/arm64/boot/dts/qcom/sdm845-v2.dtb"
+      "arch/arm64/boot/dts/qcom/sdm845-v2.1.dtb"
+    ];
   })
   (mkIf (config.deviceFamily == "bonito") {
-    avbMode = mkDefault "vbmeta_chained";
+    avbMode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
+    kernel.buildProductFilenames = [
+      "arch/arm64/boot/Image.lz4"
+      "arch/arm64/boot/dtbo.img"
+      "arch/arm64/boot/dts/qcom/sdm670.dtb"
+    ];
   })
 ]

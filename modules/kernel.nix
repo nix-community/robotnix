@@ -75,6 +75,11 @@ in
         type = types.str;
         description = "Version of prebuilt clang to use for kernel. See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md";
       };
+
+      buildProductFilenames = mkOption {
+        type = types.listOf types.str;
+        description = "list of build products in kernel out/ to copy into relpath";
+      };
     };
   };
 
@@ -124,10 +129,7 @@ in
 
       installPhase = ''
         mkdir -p $out
-        cp out/arch/arm64/boot/Image.lz4-dtb $out/
-      '' + optionalString (config.deviceFamily != "marlin") ''
-        cp out/arch/arm64/boot/dtbo.img $out/
-      '';
+      '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames);
     };
 
     source.dirs = mkIf config.kernel.useCustom {
