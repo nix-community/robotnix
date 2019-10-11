@@ -70,17 +70,20 @@ in
     system.additionalProductPackages = [ "F-DroidPrivilegedExtension" ];
 
     etc = mkIf (cfg.additionalRepos != {}) {
-      "org.fdroid.fdroid/additional_repos.xml".text = nixdroidlib.configXML {
-        # Their XML schema is just a list of strings. Each 7 entries represents one repo.
-        additional_repos = flatten (mapAttrsToList (_: repo: with repo; (map (v: toString v) [
-          name
-          url
-          description
-          version
-          (if enable then "1" else "0")
-          pushRequests
-          pubkey
-        ])) cfg.additionalRepos);
+      "org.fdroid.fdroid/additional_repos.xml" = {
+        partition = "system"; # TODO: Make this work in /product partition
+        text = nixdroidlib.configXML {
+          # Their XML schema is just a list of strings. Each 7 entries represents one repo.
+          additional_repos = flatten (mapAttrsToList (_: repo: with repo; (map (v: toString v) [
+            name
+            url
+            description
+            version
+            (if enable then "1" else "0")
+            pushRequests
+            pubkey
+          ])) cfg.additionalRepos);
+        };
       };
     };
   };
