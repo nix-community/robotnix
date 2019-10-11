@@ -15,7 +15,10 @@ let
     LOCAL_MODULE_TAGS := optional
 
     LOCAL_PRIVILEGED_MODULE := ${if prebuilt.privileged then "true" else "false"}
-    LOCAL_CERTIFICATE := ${if builtins.elem prebuilt.certificate deviceCertificates then prebuilt.certificate else "PRESIGNED"}
+    LOCAL_CERTIFICATE := ${if builtins.elem prebuilt.certificate deviceCertificates
+      then (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
+      else "PRESIGNED"
+    }
     ${optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
     ${optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
     ${prebuilt.extraConfig}
@@ -30,7 +33,7 @@ let
   '';
 
   # Cert names used by AOSP. Only some of these make sense to be used to sign packages
-  deviceCertificates = [ "release" "platform" "media" "shared" "verity" ];
+  deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ];
 in
 {
   options = {
@@ -60,7 +63,7 @@ in
           };
 
           certificate = mkOption {
-            default = "platform";
+            default = "releasekey";
             type = types.str;
             description = ''
               Certificate name to sign apk with.  If it is a device certificate, the cert/key will be ''${keyStorePath}/''${device}/''${certificate}.{x509.pem,pk8}

@@ -62,7 +62,7 @@ in
       patches = [
         (pkgs.substituteAll {
           src = ./fdroid/privext.patch;
-          fingerprint = toLower (config.build.fingerprints "platform");
+          fingerprint = toLower (config.build.fingerprints "releasekey");
         })
       ];
     };
