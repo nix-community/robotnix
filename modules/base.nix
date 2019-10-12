@@ -276,6 +276,36 @@ in
       };
 
       hostTools = config.build.android.bin;
+
+      checkAndroid = config.build.android.overrideAttrs (attrs: {
+        outputs = [ "out" ];
+
+        buildPhase = ''
+          export OUT_DIR_COMMON_BASE=$rootDir/out
+
+          # Become the original user--not fake root.
+          ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} ${pkgs.runtimeShell}
+
+          # Enter an FHS user namespace
+          ${pkgs.toybox}/bin/cat << 'EOF3' | nixdroid-build
+
+          source build/envsetup.sh
+          choosecombo release "aosp_${config.device}" ${config.buildType}
+          export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES -n"
+          make brillo_update_payload target-files-package
+          echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
+
+          EOF3
+          EOF2
+        '';
+
+        installPhase = ''
+          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/ $out
+          # Don't include these FIFOs
+          rm -f $out/.ninja_fifo
+          rm -f $out/.path_interposer_log
+        '';
+      });
     };
   };
 }
