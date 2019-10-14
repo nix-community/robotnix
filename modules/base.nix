@@ -299,12 +299,20 @@ in
           EOF2
         '';
 
+        # Just copy some things that are useful for debugging
         installPhase = ''
-          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/ $out
-          # Don't include these FIFOs
-          rm -f $out/.ninja_fifo
-          rm -f $out/.path_interposer_log
+          mkdir -p $out
+          cp -r $OUT_DIR_COMMON_BASE/src/*.{log,gz} $out/
+          cp -r $OUT_DIR_COMMON_BASE/src/.module_paths $out/
         '';
+        # TODO: checkPhase that nixdroid mk file is in .module_paths/Android.mk.list
+
+#        installPhase = ''
+#          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/ $out
+#          # Don't include these FIFOs
+#          rm -f $out/.ninja_fifo
+#          rm -f $out/.path_interposer_log
+#        '';
       });
     };
   };
