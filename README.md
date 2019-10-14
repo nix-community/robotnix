@@ -23,8 +23,7 @@ Further goals include:
  - Automating CTS (Compatibility Test Suite) like nixos tests.
  - Automatic verification of build reproducibility
  
-This has currently only been tested on marlin (Pixel XL) and crosshatch (Pixel 3 XL), but should support all Pixel devices with (hopefully) minor changes.
-
+This has currently only been tested on marlin (Pixel XL) and crosshatch (Pixel 3 XL, my daily driver).
 
 ## Build Instructions
 A one line `.img` build:
@@ -80,7 +79,18 @@ However, it sometimes copies files from the source and uses the original permiss
 So, a fuse filesystem called "bindfs" used in addition to bind mounts to fake the `u+w` permission on the source files.
 The nix sandbox does not normally allow access to `/dev/fuse`, so this mode is only enabled if an additional sandbox exception is made for `/dev/fuse` with `--extra-sandbox-paths "/dev/fuse?"`
 
-### Additional information:
+### Testing / CI / Reproducibility
+
+All devices (Pixel 1-3(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.
+See `test.nix` for the set of configurations with this minimal build testing.
+As each build takes approximately 4 hours--I only build marlin and crosshatch builds for myself.
+At some point, I would love to set up a build farm and publish build products on s3 or [cachix](https://cachix.org).
+This would allow an end-user to simply sign their own releases without building the entire AOSP themselves.
+
+As of Android 10, `target-files` seem to be built reproducibly.
+Further tests are needed for `img`/`ota` files.
+
+### Additional information
 
 ```console
 # To easily build NixDroid outside of nix for debugging
