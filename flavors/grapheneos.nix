@@ -42,6 +42,14 @@ let
     sha256 = release.kernelSha256;
     fetchSubmodules = true;
   };
+
+  kernelName = if (config.deviceFamily == "taimen") then "wahoo" else config.deviceFamily;
+
+  configNameMap = {
+    sailfish = "marlin";
+    sargo = "bonito";
+  };
+  configName = if (hasAttr config.device configNameMap) then configNameMap.${config.device} else config.device;
 in
 mkIf (config.flavor == "grapheneos") {
   source.manifest = {
@@ -53,9 +61,9 @@ mkIf (config.flavor == "grapheneos") {
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault (if (elem config.deviceFamily ["crosshatch" "bonito"])
-    then kernelSrc (if (config.androidVersion >= 10) then "crosshatch" else config.deviceFamily)
-    else config.source.dirs."kernel/google/${config.deviceFamily}".contents);
-  kernel.configName = mkForce config.deviceFamily;
+    then kernelSrc (if (config.androidVersion >= 10) then "crosshatch" else kernelName)
+    else config.source.dirs."kernel/google/${kernelName}".contents);
+  kernel.configName = mkForce configName;
 
   # No need to include these in AOSP build since we build separately
   source.dirs."kernel/google/marlin".enable = false;

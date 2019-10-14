@@ -20,19 +20,21 @@ let
     marlin = "marlin"; # Pixel XL
     sailfish = "marlin"; # Pixel
     taimen = "taimen"; # Pixel 2 XL
-    walleye = "wahoo"; # Pixel 2
+    walleye = "taimen"; # Pixel 2
     crosshatch = "crosshatch"; # Pixel 3 XL
     blueline = "crosshatch"; # Pixel 3
     bonito = "bonito"; # Pixel 3a XL
     sargo = "bonito"; # Pixel 3a
   };
+
+  kernelName = if (config.deviceFamily == "taimen") then "wahoo" else config.deviceFamily;
 in
 mkMerge [
   (mkIf (hasAttr config.device deviceFamilyMap) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault deviceFamilyMap.${config.device};
 
     kernel.configName = mkDefault config.deviceFamily;
-    kernel.relpath = mkDefault "device/google/${config.deviceFamily}-kernel";
+    kernel.relpath = mkDefault "device/google/${kernelName}-kernel";
     vendor.img = mkDefault (latestImg config.device (toString config.androidVersion));
     vendor.ota = mkDefault (latestOta config.device (toString config.androidVersion));
 
