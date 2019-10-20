@@ -163,7 +163,7 @@ in
         in if builtins.elem name deviceCertificates
           then (if config.signBuild
             then "${keyStorePath}/${config.device}/${name}"
-            else "${keyStorePath}/${name}")
+            else "${keyStorePath}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signBuild, use test keys from AOSP
           else "${keyStorePath}/${name}";
       keyPath = name: config.build._keyPath config.keyStorePath name;
       sandboxKeyPath = name: config.build._keyPath "/keys" name;
