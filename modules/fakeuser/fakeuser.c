@@ -15,8 +15,8 @@
 // TODO: No real error handling. Need to make this more robust.
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
-        fprintf(stderr, "Usage: fakeuser <uid> <gid>\n");
+    if (argc < 3) {
+        fprintf(stderr, "Usage: fakeuser <uid> <gid> [command]\n");
         exit(1);
     }
 
@@ -36,5 +36,8 @@ int main(int argc, char **argv) {
     fprintf(f, "%d %d 1", atoi(argv[2]), gid);
     fclose(f);
 
-    execl("/bin/sh", "/bin/sh", NULL);
+    if (argc >= 4)
+        return execvp(argv[3], argv+3);
+    else
+        return execl("/bin/sh", "/bin/sh", NULL);
 }

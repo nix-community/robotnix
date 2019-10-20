@@ -8,6 +8,65 @@ let
 
   # TODO: Not exactly sure what i'm doing.
   putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
+
+  mkAndroid =
+    { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
+    # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
+    pkgs.stdenvNoCC.mkDerivation rec {
+      inherit name;
+      srcs = [];
+
+      # TODO: Clean this stuff up. unshare / nixdroid-build could probably be combined into a single utility.
+      builder = pkgs.writeScript "builder.sh" ''
+        #!${pkgs.runtimeShell}
+        export useBindMounts=$(test -e /dev/fuse && echo true)
+        export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
+        export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
+
+        # If useBindMounts is set then become a fake "root" in a new namespace so we can bind mount sources
+        ${pkgs.toybox}/bin/cat << 'EOF' | ''${useBindMounts:+${pkgs.utillinux}/bin/unshare -m -r} ${pkgs.runtimeShell}
+        source $stdenv/setup
+        genericBuild
+        EOF
+      '';
+
+      inherit outputs;
+
+      nativeBuildInputs = [ nixdroid-build fakeuser ];
+
+      unpackPhase = ''
+        ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
+
+        export rootDir=$PWD
+        source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
+      '';
+
+      configurePhase = ":";
+
+      ANDROID_JAVA_HOME="${pkgs.jdk.home}"; # This is already set in android 10. They use their own prebuilt jdk
+      BUILD_NUMBER=config.buildNumber;
+      BUILD_DATETIME=config.buildDateTime;
+      DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
+
+      buildPhase = ''
+        export OUT_DIR_COMMON_BASE=$rootDir/out
+
+        # Become the original user--not fake root.
+        ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} nixdroid-build
+
+        source build/envsetup.sh
+        choosecombo release "aosp_${config.device}" ${config.buildType}
+        export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
+        make ${toString makeTargets}
+        echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
+
+        EOF2
+      '';
+
+      inherit installPhase;
+
+      dontMoveLib64 = true;
+    };
 in
 {
   options = {
@@ -180,62 +239,10 @@ in
           ${pkgs.openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${config.build.x509 name} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
         ''));
 
-      # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
-      android = pkgs.stdenvNoCC.mkDerivation rec {
+      android = mkAndroid {
         name = "nixdroid-${config.device}-${config.buildNumber}";
-        srcs = [];
-
-        # TODO: Clean this stuff up. unshare / nixdroid-build could probably be combined into a single utility.
-        builder = pkgs.writeScript "builder.sh" ''
-          #!${pkgs.runtimeShell}
-          export useBindMounts=$(test -e /dev/fuse && echo true)
-          export SAVED_UID=$UID
-          export SAVED_GID=$GID
-
-          # If useBindMounts is set then become a fake "root" in a new namespace so we can bind mount sources
-          ${pkgs.toybox}/bin/cat << 'EOF' | ''${useBindMounts:+${pkgs.utillinux}/bin/unshare -m -r} ${pkgs.runtimeShell}
-          source $stdenv/setup
-          genericBuild
-          EOF
-        '';
-
-        outputs = [ "out" "bin" ]; # This derivation builds AOSP release tools and target-files
-
-        nativeBuildInputs = [ nixdroid-build fakeuser ];
-
-        unpackPhase = ''
-          ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
-
-          export rootDir=$PWD
-          source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
-        '';
-
-        configurePhase = ":";
-
-        ANDROID_JAVA_HOME="${pkgs.jdk.home}"; # This is already set in android 10. They use their own prebuilt jdk
-        BUILD_NUMBER=config.buildNumber;
-        BUILD_DATETIME=config.buildDateTime;
-        DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
-
-        buildPhase = ''
-          export OUT_DIR_COMMON_BASE=$rootDir/out
-
-          # Become the original user--not fake root.
-          ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} ${pkgs.runtimeShell}
-
-          # Enter an FHS user namespace
-          ${pkgs.toybox}/bin/cat << 'EOF3' | nixdroid-build
-
-          source build/envsetup.sh
-          choosecombo release "aosp_${config.device}" ${config.buildType}
-          export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES"
-          make brillo_update_payload target-files-package
-          echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
-
-          EOF3
-          EOF2
-        '';
-
+        makeTargets = [ "brillo_update_payload" "target-files-package" ];
+        outputs = [ "out" "bin" ];
         # Kinda ugly to just throw all this in $bin/
         # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
         # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
@@ -249,71 +256,41 @@ in
           cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
           cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/soong/host/linux-x86/* $bin/
         '';
-
-        dontMoveLib64 = true;
-
-        # Just included for convenience when building outside of nix.
-        # TODO: Only build these scripts if entered using mkShell?
-        debugUnpackScript = config.build.debugUnpackScript;
-        debugPatchScript = config.build.debugPatchScript;
-        debugEnterEnv = pkgs.writeText "debug-enter-env.sh" ''
-          export useBindMounts=$(test -e /dev/fuse && echo true)
-          export SAVED_UID=$UID
-          export SAVED_GID=$GID
-          ${pkgs.toybox}/bin/cat << 'EOF' | ''${useBindMounts:+${pkgs.utillinux}/bin/unshare -m -r} ${pkgs.runtimeShell}
-          export rootDir=$PWD
-          source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
-
-          # Become the original user--not fake root.
-          ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} ${pkgs.runtimeShell}
-
-          # Enter an FHS user namespace
-          nixdroid-build -i < /dev/stdin
-
-          EOF2
-          EOF
-        '';
       };
 
       hostTools = config.build.android.bin;
 
-      checkAndroid = config.build.android.overrideAttrs (attrs: {
-        outputs = [ "out" ];
-
-        buildPhase = ''
-          export OUT_DIR_COMMON_BASE=$rootDir/out
-
-          # Become the original user--not fake root.
-          ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} ${pkgs.runtimeShell}
-
-          # Enter an FHS user namespace
-          ${pkgs.toybox}/bin/cat << 'EOF3' | nixdroid-build
-
-          source build/envsetup.sh
-          choosecombo release "aosp_${config.device}" ${config.buildType}
-          export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES -n"
-          make brillo_update_payload target-files-package
-          echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
-
-          EOF3
-          EOF2
-        '';
-
+      checkAndroid = mkAndroid {
+        name = "nixdroid-check-${config.device}-${config.buildNumber}";
+        makeTargets = [ "brillo_update_payload" "target-files-package" ];
+        ninjaArgs = "-n"; # Pretend to run the actual build steps
         # Just copy some things that are useful for debugging
         installPhase = ''
           mkdir -p $out
           cp -r $OUT_DIR_COMMON_BASE/src/*.{log,gz} $out/
           cp -r $OUT_DIR_COMMON_BASE/src/.module_paths $out/
         '';
-        # TODO: checkPhase that nixdroid mk file is in .module_paths/Android.mk.list
+      };
 
-#        installPhase = ''
-#          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/ $out
-#          # Don't include these FIFOs
-#          rm -f $out/.ninja_fifo
-#          rm -f $out/.path_interposer_log
-#        '';
-      });
+        # Just included for convenience when building outside of nix.
+        # TODO: Better way than creating all these scripts and feeding with init-file?
+#        debugUnpackScript = config.build.debugUnpackScript;
+#        debugPatchScript = config.build.debugPatchScript;
+        debugEnterEnv = pkgs.writeScript "debug-enter-env.sh" ''
+          #!${pkgs.runtimeShell}
+          export useBindMounts=$(test -e /dev/fuse && echo true)
+          export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
+          export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
+          ''${useBindMounts:+${pkgs.utillinux}/bin/unshare -m -r} ${pkgs.writeScript "debug-enter-env2.sh" ''
+          export rootDir=$PWD
+          cd $(mktemp -d)
+          source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
+          cd src
+
+          # Become the original user--not fake root. Enter an FHS user namespace
+          ''${useBindMounts:+${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID} ${nixdroid-build}/bin/nixdroid-build
+          ''}
+        '';
     };
   };
 }
