@@ -24,9 +24,9 @@ in
     # Used https://github.com/lineageos4microg/android_prebuilts_prebuiltapks as source for Android.mk options
     apps.prebuilt = {
       GmsCore = { 
-        apk = pkgs.fetchurl { # Using calyox gmscore since it's newer than official prebuilt
-          url = "https://gitlab.com/calyxos/platform_prebuilts_calyx/raw/2e51d79e521ab8ec458b22976aba2c75ee9fe2fe/microg/GmsCore/GmsCore.apk";
-          sha256 = "0bc6j17pv3q3d9kixh3pdk56h9fjsxr90blgxr8andjhvz0vb5dp";
+        apk = pkgs.fetchurl {
+          url = "https://github.com/microg/android_packages_apps_GmsCore/releases/download/v0.2.9.19420/GmsCore-v0.2.9.19420.apk";
+          sha256 = "0z2s45m868vpdd44p5ljdkx0670laabplr5h8yv470881s6kv49b";
         };
         packageName = "com.google.android.gms";
         privileged = true;
