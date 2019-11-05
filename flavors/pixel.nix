@@ -25,6 +25,8 @@ let
     blueline = "crosshatch"; # Pixel 3
     bonito = "bonito"; # Pixel 3a XL
     sargo = "bonito"; # Pixel 3a
+    coral = "coral"; # Pixel 4 XL
+    flame = "coral"; # Pixel 4
   };
 
   kernelName = if (config.deviceFamily == "taimen") then "wahoo" else config.deviceFamily;

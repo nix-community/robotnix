@@ -4,45 +4,27 @@ let
   # https://source.android.com/setup/start/build-numbers
   # TODO: Make an autoupdate script too.
   release = rec {
-    marlin = {
-      "9" = {
-        tag = "android-9.0.0_r46"; # PQ3A.190801.002
-        sha256 = "08hjjmyrr4isb1hl3wixyysp9792bh2pp0ifh9w9p5v90nx7s1sz";
-      };
-      "10" = {
-        tag = "android-10.0.0_r5"; # QP1A.191005.007.A1
-        sha256 = "10gw8xxk62fnlj1y2lsr23wrzh59kxchqg8f7hzmzbw0qvlrvsqg";
-      };
+    marlin = { # TODO: Marlin is no longer updated
+      tag = "android-10.0.0_r5"; # QP1A.191005.007.A1
+      sha256 = "10gw8xxk62fnlj1y2lsr23wrzh59kxchqg8f7hzmzbw0qvlrvsqg";
     };
-    taimen = marlin;
-    crosshatch = marlin // {
-      "10" = {
-        tag = "android-10.0.0_r4"; # QP1A.191005.007
-        sha256 = "1h608kpzbk3yl2p620mj8816igpfpd8fjg3rv7ma08mx6bi2lahh";
-      };
+    taimen = {
+      tag = "android-10.0.0_r11"; # QP1A.191105.004
+      sha256 = "02cxv983wl6kqm7jbij1wswvp5wi96wivr1fj46kv09sqr9zr7sr";
     };
-    bonito = {
-      "9" = {
-        tag = "android-9.0.0_r47"; # PQ3B.190801.002
-        sha256 = "0wqcy2708i8znr3xqkmafrk5dvf9z222f3705j3l2jdb67aqim49";
-      };
-      "10" = crosshatch."10";
+    crosshatch = taimen;
+    bonito = taimen;
+    coral = {
+      tag = "android-10.0.0_r14"; # QP1A.190821.014.C2
+      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
     };
-  }.${config.deviceFamily}.${toString config.androidVersion};
+  }.${config.deviceFamily};
   kernelTag = {
-    "9" = {
-      marlin = "android-9.0.0_r0.111";
-      taimen = "android-9.0.0_r0.112";
-      crosshatch = "android-9.0.0_r0.113";
-      bonito = "android-9.0.0_r0.114";
-    };
-    "10" = {
-      marlin = "android-10.0.0_r0.7";
-      taimen = "android-10.0.0_r0.8";
-      crosshatch = "android-10.0.0_r0.10"; # TODO: crosshatch/bonito have additional repos
-      bonito = "android-10.0.0_r0.12";
-    };
-  }.${toString config.androidVersion}.${config.deviceFamily};
+    taimen = "android-10.0.0_r0.18";
+    crosshatch = "android-10.0.0_r0.19";
+    bonito = "android-10.0.0_r0.20";
+    coral = "android-10.0.0_r0.21";
+  }.${config.deviceFamily};
   deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
 in
 mkIf (config.flavor == "vanilla") {
