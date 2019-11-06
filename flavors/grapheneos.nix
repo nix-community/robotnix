@@ -3,12 +3,12 @@ with lib;
 let
   release = rec {
     taimen = {
-      tag = "QP1A.191105.004.2019.11.04.23";
-      sha256 = "0cvzx976say2kfs2hp16fqp2s3ldw8z3bkpcxyqqccs13g339wsp";
+      tag = "QP1A.191105.004.2019.11.05.23";
+      sha256 = "0r02alkgb0kdvh1c7y8295agl1n69msggkvaifvbrhk071zrfqqw";
     };
     crosshatch = {
-      tag = "QP1A.191105.003.2019.11.04.23";
-      sha256 = "1wn7l8k60wg295x3c1r1wl3dl838sc36mrgaxidj2c33fvpjx4j2";
+      tag = "QP1A.191105.003.2019.11.05.23";
+      sha256 = "1a2572ivzcdnnjc8bps3y1ra2jm7r3vwxz9mvijncwnzi3dx6wcm";
       kernelSha256 = "0nyc9ndlrbpw0zc4fyap9rkf285xbvwxw42k1q4a63cghz5nl6j2";
     };
     bonito = crosshatch;
