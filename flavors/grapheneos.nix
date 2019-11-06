@@ -2,37 +2,18 @@
 with lib;
 let
   release = rec {
-    marlin = {
-      "9" = {
-        tag = "PQ3A.190801.002.2019.08.25.15";
-        sha256 = "17776v5hxkz9qyijhaaqcmgdx6lhrm6kbc5ql9m3rq043av27ihw";
-      };
-      "10" = {
-        tag = "QP1A.191005.007.A1.2019.10.07.21";
-        sha256 = "14fi33vlh38i327amqqqd3nxfg03cilanxbdrznzfw2mc1vp4z0y";
-      };
+    taimen = {
+      tag = "QP1A.191105.004.2019.11.04.23";
+      sha256 = "0cvzx976say2kfs2hp16fqp2s3ldw8z3bkpcxyqqccs13g339wsp";
     };
-    taimen = marlin;
     crosshatch = {
-      "9" = marlin."9" // {
-        kernelSha256 = "1r3pj5fv2a2zy1kjm9cc49j5vmscvwpvlx5hffhc9r8jbc85acgi";
-      };
-      "10" = {
-        tag = "QP1A.191005.007.2019.10.07.21";
-        sha256 = "0hy4fj4sm23a9bcy37dc799r1lcwlpw2jzh4l4vx70bl0z1ilsld";
-        kernelSha256 = "0lz3kg9npwfcslbplb1wyy5fknh3l3b1mpc5m92dq1sidjrqmwrc";
-      };
+      tag = "QP1A.191105.003.2019.11.04.23";
+      sha256 = "1wn7l8k60wg295x3c1r1wl3dl838sc36mrgaxidj2c33fvpjx4j2";
+      kernelSha256 = "0nyc9ndlrbpw0zc4fyap9rkf285xbvwxw42k1q4a63cghz5nl6j2";
     };
-    bonito = {
-      "9" = {
-        tag = "PQ3B.190801.002.2019.08.25.15";
-        sha256 = "1w4ymqhqwyy8gc01aq5gadg3ibf969mhnh5z655cv8qz21fpiiha";
-        kernelSha256 = "071kxvmch43747a3vprf0igh5qprafdi4rjivny8yvv41q649m4z";
-      };
-      "10" = crosshatch."10";
-    };
-    x86_64 = marlin; # Emulator target
-  }.${config.deviceFamily}.${toString config.androidVersion};
+    bonito = crosshatch;
+    x86_64 = taimen; # Emulator target
+  }.${config.deviceFamily};
 
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
   kernelSrc = device: pkgs.fetchFromGitHub {
