@@ -1,13 +1,8 @@
 { pkgs }:
-let
-  jdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/8.nix) {
-    bootjdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/bootstrap.nix) { version = "8"; };
-    inherit (pkgs.gnome2) GConf gnome_vfs;
-    minimal = true;
-  };
-in pkgs.buildFHSUserEnv {
+pkgs.buildFHSUserEnv {
   name = "nixdroid-build";
   targetPkgs = pkgs: with pkgs; [
+      # TODO: Much of this can propbably be removed with android 10
       bc
       git
       gitRepo
@@ -23,7 +18,7 @@ in pkgs.buildFHSUserEnv {
       #androidenv.androidsdk_latest
       androidenv.androidPkgs_9_0.platform-tools
       androidsdk_9_0
-      jdk
+      jre8_headless
       schedtool
       utillinux
       m4

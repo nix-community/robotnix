@@ -22,13 +22,6 @@ let
     ];
   }.${config.avbMode};
 
-  # Signing target files fails in signapk.jar with error -6 unless using this jdk
-  jdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/8.nix) {
-    bootjdk = pkgs.callPackage (pkgs.path + /pkgs/development/compilers/openjdk/bootstrap.nix) { version = "8"; };
-    inherit (pkgs.gnome2) GConf gnome_vfs;
-    minimal = true;
-  };
-
   # TODO: build tools is an overloaded name. See prebuilts/build-tools
   buildTools = pkgs.stdenv.mkDerivation {
     name = "android-build-tools";
@@ -36,7 +29,7 @@ let
     patches = config.source.dirs."build/make".patches ++ [
       (pkgs.substituteAll {
         src = (../patches + "/${toString config.androidVersion}" + /buildtools.patch);
-        java = "${jdk}/bin/java";
+        java = "${pkgs.jre8_headless}/bin/java";
         search_path = config.build.hostTools;
       })
     ];

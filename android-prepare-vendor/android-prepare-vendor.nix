@@ -1,5 +1,5 @@
 { stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, makeWrapper,
-  simg2img, zip, unzip, e2fsprogs, jq, jdk, wget, utillinux, perl, which, python2, python2Packages,
+  simg2img, zip, unzip, e2fsprogs, jq, jdk, wget, utillinux, perl, which, python2,
   api ? "28"
 }:
 
@@ -49,7 +49,9 @@ in
   });
 
   nativeBuildInputs = [ makeWrapper ];
-  buildInputs = lib.optionals (api == "29") [ python2 python2Packages.protobuf ]; # Python is used by "extract_android_ota_payload"
+  buildInputs = lib.optionals (api == "29") [
+    (python2.withPackages (p: [ p.protobuf ])) # Python is used by "extract_android_ota_payload"
+  ];
 
   patches = [ ./android-prepare-vendor.patch ];
 

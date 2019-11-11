@@ -1,7 +1,8 @@
 let
   nixpkgs = builtins.fetchTarball {
-    url = "https://github.com/nixos/nixpkgs/archive/525eaf407d4edb329ea48f6dc9c6590fb73c779a.tar.gz";
-    sha256 = "0l2hvrpsvnlv2ly6il4n5gzn673zjlssrwi0ryvla42i06grqpis";
+    # nixos-19.09 channel. Latest as of 2019-11-11
+    url = "https://github.com/nixos/nixpkgs/archive/2d896998dc9b1b0daeb8a180dc170733f1225678.tar.gz";
+    sha256 = "1vj3bwljkh55si4qjx52zgw7nfy6mnf324xf1l2i5qffxlh7qxb6";
   };
 
   # Hack since I can't figure out how to overide the androidenv stuff with an overlay.
