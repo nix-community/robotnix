@@ -28,7 +28,7 @@ let
 
   signApk = {name, apk, keyPath}: pkgs.runCommand "${name}-signed.apk" { nativeBuildInputs = [ pkgs.jre ]; } ''
     cp ${apk} $out
-    ${head pkgs.androidenv.androidPkgs_9_0.build-tools}/libexec/android-sdk/build-tools/28.0.3/apksigner sign \
+    ${pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-29-0-2 ])}/share/android-sdk/build-tools/29.0.2/apksigner sign \
       --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
   '';
 

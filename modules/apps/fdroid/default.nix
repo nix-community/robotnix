@@ -1,15 +1,7 @@
-{ callPackage, substituteAll, fetchFromGitHub, androidenv, jdk, gradle }:
-with androidenv;
+{ callPackage, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle }:
 let
   buildGradle = callPackage ./gradle-env.nix {};
-
-  args = {
-    platformVersions = [ "27" ];
-    buildToolsVersions = [ "27.0.3" ];
-  };
-  androidSdkFormalArgs = builtins.functionArgs composeAndroidPackages;
-  androidArgs = builtins.intersectAttrs androidSdkFormalArgs args;
-  androidsdk = (composeAndroidPackages androidArgs).androidsdk;
+  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-27 build-tools-27-0-3 ]);
 in
 buildGradle rec {
   name = "F-Droid-${version}.apk";
@@ -31,7 +23,7 @@ buildGradle rec {
 
   gradleFlags = [ "assembleRelease" ];
 
-  ANDROID_HOME = "${androidsdk}/libexec/android-sdk";
+  ANDROID_HOME = "${androidsdk}/share/android-sdk";
   nativeBuildInputs = [ jdk gradle ];
 
   installPhase = ''

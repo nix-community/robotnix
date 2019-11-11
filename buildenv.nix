@@ -14,10 +14,8 @@ pkgs.buildFHSUserEnv {
       # boringssl
       gnumake
       nettools
-      #androidenv.platformTools
-      #androidenv.androidsdk_latest
-      androidenv.androidPkgs_9_0.platform-tools
-      androidsdk_9_0
+      (androidPkgs.sdk (p: with p.stable; [ tools platform-tools ]))
+      #androidsdk_9_0
       jre8_headless
       schedtool
       utillinux

@@ -1,14 +1,7 @@
-{ callPackage, lib, substituteAll, fetchFromGitHub, androidenv, jdk, gradle, }:
-with androidenv;
+{ callPackage, lib, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle, }:
 let
   buildGradle = callPackage ./gradle-env.nix {}; # Needs a modified version to patch aapt2 binary in a jar
-
-  args = {
-    platformVersions = [ "28" ];
-  };
-  androidSdkFormalArgs = builtins.functionArgs composeAndroidPackages;
-  androidArgs = builtins.intersectAttrs androidSdkFormalArgs args;
-  androidsdk = (composeAndroidPackages androidArgs).androidsdk;
+  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-28 build-tools-28-0-3 ]);
 in
 buildGradle rec {
   name = "Backup-${version}.apk";
@@ -25,7 +18,7 @@ buildGradle rec {
 
   gradleFlags = [ "assembleRelease" ];
 
-  ANDROID_HOME = "${androidsdk}/libexec/android-sdk";
+  ANDROID_HOME = "${androidsdk}/share/android-sdk";
   nativeBuildInputs = [ jdk gradle ];
 
   installPhase = ''

@@ -8,9 +8,9 @@ let
 in
 (lib.evalModules {
   modules = [
-    { _module.args.pkgs = pkgs;
-      _module.args.lib = lib;
-      _module.args.nixdroidlib = nixdroidlib;
+    { _module.args = {
+        inherit pkgs lib nixdroidlib;
+      };
     }
     configuration 
     ./flavors/grapheneos.nix

@@ -5,16 +5,12 @@ let
     sha256 = "1vj3bwljkh55si4qjx52zgw7nfy6mnf324xf1l2i5qffxlh7qxb6";
   };
 
-  # Hack since I can't figure out how to overide the androidenv stuff with an overlay.
-  # Needed for gradle builds
-  # TODO: Should this patch be upstreamed?
-  patchedNixpkgs = (import nixpkgs {}).runCommand "nixpkgs-patched" {} ''
-    cp -r ${nixpkgs} $out
-    chmod -R +w $out
-    patch -d $out -p1 < ${./patches/nixpkgs-licenses.patch}
-  '';
-
   overlay = self: super: {
+    androidPkgs = import (builtins.fetchTarball {
+      url = "https://github.com/tadfisher/android-nixpkgs/archive/d3f24c3618c3d3ecdc32d164d4294578ae369e9d.tar.gz";
+      sha256 = "0d0n8am9k2cwca7kf64xi7ypriy8j1h3bc2jzyl8qakpfdcp19np";
+    }) { pkgs = self; };
+
     diffoscope = (super.diffoscope.overrideAttrs (attrs: {
       patches = attrs.patches ++ [
         ./patches/0001-comparators-android-Support-sparse-android-images.patch
@@ -32,7 +28,7 @@ let
     };
   };
 in
-  import patchedNixpkgs {
+  import nixpkgs {
     overlays = [ overlay ];
     config = { android_sdk.accept_license=true; };
   }
