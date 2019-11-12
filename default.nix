@@ -18,9 +18,9 @@ in
     ./flavors/common.nix
     ./flavors/pixel.nix
     ./modules/apps/auditor.nix
-    ./modules/apps/backup.nix
     ./modules/apps/fdroid.nix
     ./modules/apps/prebuilt.nix
+    ./modules/apps/seedvault.nix
     ./modules/apps/updater.nix
     ./modules/apps/webview.nix
     ./modules/base.nix

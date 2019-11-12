@@ -1,6 +1,6 @@
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
 # Disclaimer: I don't know what I"m doing
-{ callPackage, lib, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle,
+{ callPackage, lib, substituteAll, fetchFromGitHub, buildGradle, androidPkgs, jdk, gradle,
   domain ? "example.org",
   applicationName ? "NixDroid Auditor",
   applicationId ? "org.nixdroid.auditor",
@@ -9,7 +9,6 @@
   avbFingerprint ? ""
 }:
 let
-  buildGradle = callPackage ./gradle-env.nix {}; # Needs a modified version to patch aapt2 binary in a jar
   androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-28 build-tools-28-0-3 ]);
 in
 buildGradle rec {

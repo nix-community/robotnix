@@ -11,6 +11,8 @@ let
       sha256 = "0d0n8am9k2cwca7kf64xi7ypriy8j1h3bc2jzyl8qakpfdcp19np";
     }) { pkgs = self; };
 
+    buildGradle = super.callPackage ./misc/gradle-env.nix {};
+
     diffoscope = (super.diffoscope.overrideAttrs (attrs: {
       patches = attrs.patches ++ [
         ./patches/0001-comparators-android-Support-sparse-android-images.patch

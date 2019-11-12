@@ -19,7 +19,7 @@
 #         '';
 #       }
 
-{ stdenv, lib, buildEnv, fetchurl, gradleGen, writeText }:
+{ stdenv, lib, buildEnv, fetchurl, gradleGen, writeText, runCommandCC, unzip, zip, autoPatchelfHook }:
 
 { envSpec
 , pname ? null
@@ -30,12 +30,28 @@
 , ... } @ args:
 
 let
+  patchJar = jar: stdenv.mkDerivation {
+    name = "patched.jar";
+    src = jar;
+
+    phases = "unpackPhase buildPhase installPhase";
+
+    nativeBuildInputs = [ unzip zip autoPatchelfHook ];
+
+    unpackPhase = "unzip $src";
+    buildPhase = "autoPatchelf .";
+    installPhase = "zip -r $out *";
+  };
+
   mkDep = depSpec: stdenv.mkDerivation {
     inherit (depSpec) name;
 
-    src = fetchurl {
-      inherit (depSpec) urls sha256;
-    };
+    src = let
+        file = fetchurl {
+        inherit (depSpec) urls sha256;
+      };
+    # Special case for aapt2-...-linux.jar, which contains a jar with an executable that will need to be patched
+    in if (lib.hasSuffix "-linux.jar" depSpec.filename) then patchJar file else file;
 
     phases = "installPhase";
 
@@ -97,7 +113,20 @@ let
 
   gradleEnv = builtins.mapAttrs
     (_: p: mkProjectEnv p)
-    (builtins.fromJSON (builtins.readFile envSpec));
+    (let
+    # Reach into the dependency spec and manually add a missing dependency: aapt2
+    # TODO: Figure out why it isn't included normally
+      oldSpec = builtins.fromJSON (builtins.readFile envSpec);
+      aaptVersion = "3.4.2-5326820";
+    in lib.recursiveUpdate oldSpec { "".dependencies.project = oldSpec."".dependencies.project ++ [
+      {
+        name = "com.android.tools.build-aapt2-${aaptVersion}-jar";
+        filename = "aapt2-${aaptVersion}-linux.jar";
+        path = "com/android/tools/build/aapt2/${aaptVersion}";
+        urls = [ "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/${aaptVersion}/aapt2-${aaptVersion}-linux.jar" ];
+        sha256 = "1arck96l9m19q217ajm7f3zg113d6p6p32mxvnl39v8kx2zya2lf";
+      }
+    ]; });
 
   projectEnv = gradleEnv."";
   pname = args.pname or projectEnv.name;

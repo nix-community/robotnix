@@ -27,7 +27,7 @@ with lib;
     updater.enable = true;
     updater.url = "https://daniel.fullmer.me/android/";
 
-    backup.enable = true;
+    seedvault.enable = true;
     fdroid.enable = true;
 
     # See the NixOS module in https://github.com/danielfullmer/nixos-config/blob/master/modules/attestation-server.nix
