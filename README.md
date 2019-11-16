@@ -23,24 +23,24 @@ Further goals include:
  - Automating CTS (Compatibility Test Suite) like nixos tests.
  - Automatic verification of build reproducibility
  
-This has currently only been tested on marlin (Pixel XL) and crosshatch (Pixel 3 XL, my daily driver).
+This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
 
 ## Build Instructions
 A one line `.img` build:
 ```console
-$ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="marlin";}' -A factoryImg
+$ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="crosshatch";}' -A factoryImg
 ```
 this will make generate an image signed with `test-keys`, so don't use it for anything other than testing.
 
 A configuration file should be created for anything more complicated, including creating signed builds.
-See `example.nix`, `marlin.nix`, and `crosshatch.nix` for inspiration.
+See `example.nix` and `crosshatch.nix` for inspiration.
 
 After creating a configuration file, generate keys with which to sign your build:
 
 ```console
-$ nix-build ./default.nix --arg configuration ./marlin.nix -A generateKeysScript -o generate-keys
-$ mkdir keys/marlin
-$ cd keys/marlin
+$ nix-build ./default.nix --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
+$ mkdir keys/crosshatch
+$ cd keys/crosshatch
 $ ../generate-keys "/CN=NixDroid" # Use appropriate x509 cert fields
 $ cd ../..
 ```
@@ -49,8 +49,8 @@ Next, build and sign your release.
 There are two ways to create a build.
 One involves creating a `build-script` which does the final build steps of signing target files and creating ota/img files outside of nix:
 ```console
-$ nix-build ./default.nix --arg configuration ./marlin.nix -A releaseScript -o release
-$ ./release ./keys/marlin
+$ nix-build ./default.nix --arg configuration ./crosshatch.nix -A releaseScript -o release
+$ ./release ./keys/crosshatch
 ```
 A full android 10 build takes about 4 hours on my i7-3770 with 16GB of memory.
 One may use the `--cores` option for `nix-build` to set the number of cores to use.
@@ -60,7 +60,7 @@ One advantage of using a release script as above is that the build can take plac
 
 The other way to create a build is to build the final products entirely inside nix instead of using `releaseScript`
 ```console
-$ nix-build ./default.nix --arg configuration ./marlin.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
+$ nix-build ./default.nix --arg configuration ./crosshatch.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
 ```
 This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.

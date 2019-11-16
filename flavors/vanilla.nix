@@ -20,6 +20,7 @@ let
     };
   }.${config.deviceFamily};
   kernelTag = {
+    marlin = "android-10.0.0_r0.7";
     taimen = "android-10.0.0_r0.18";
     crosshatch = "android-10.0.0_r0.19";
     bonito = "android-10.0.0_r0.20";
