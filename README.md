@@ -108,3 +108,11 @@ $ make target-files-package
 # sign target files
 # ota_from_target_files also needs xxd (toybox works)
 ```
+
+### Optional CCACHE stuff:
+As root:
+```console
+# mkdir -p -m0770 /var/cache/ccache
+# chown root:nixbld /var/cache/ccache
+```
+Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as sandbox exception when building.

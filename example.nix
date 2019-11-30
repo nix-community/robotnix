@@ -13,6 +13,9 @@ with lib;
   keyStorePath = "/var/secrets/android-keys";
   signBuild = true;
 
+  # Build with ccache
+  ccache.enable = true;
+
   apps = {
     webview = mkIf (config.androidVersion == 9) { # Not currently working with android 10
       enable = true;

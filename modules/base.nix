@@ -12,7 +12,7 @@ let
   mkAndroid =
     { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
     # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
-    pkgs.stdenvNoCC.mkDerivation rec {
+    pkgs.stdenvNoCC.mkDerivation (rec {
       inherit name;
       srcs = [];
 
@@ -66,7 +66,12 @@ let
       inherit installPhase;
 
       dontMoveLib64 = true;
-    };
+    } // (lib.optionalAttrs config.ccache.enable {
+      CCACHE_EXEC = pkgs.ccache + /bin/ccache;
+      USE_CCACHE = "true";
+      CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
+      CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
+    }));
 in
 {
   options = {
@@ -170,6 +175,8 @@ in
       type = types.strMatching "(verity_only|vbmeta_simple|vbmeta_chained)";
       default  = "vbmeta_chained"; # TODO: Not sure what a good default would be for non pixel devices.
     };
+
+    ccache.enable = mkEnableOption "ccache";
 
     # Random attrset to throw build products into
     build = mkOption {
