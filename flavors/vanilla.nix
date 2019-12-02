@@ -6,20 +6,20 @@ let
   release = rec {
     marlin = {
       tag = "android-10.0.0_r17"; # QP1A.191005.007.A3
-      sha256 = "1v0f39256zlznp63wbrcxqgyw2w1jdw8rm5qbgfn52gmvfncmpfx";
+      sha256 = "12i292cb97aqs9dl1bkkm1mnq7immxxnrbighxj4xrywgp46mh9l";
     };
     taimen = {
       tag = "android-10.0.0_r15"; # QQ1A.191205.008
-      sha256 = "0jyyxramir40acymzyvml4sh559g33218lcfb1ckpm6c4ycyafsf";
+      sha256 = "1ffw09mskmfx2falczdxy0hsify8wvy41ba7cc34rxswqadjslbn";
     };
     crosshatch = taimen;
     bonito = {
       tag = "android-10.0.0_r16"; # QQ1A.191205.011
-      sha256 = "0lsx3ikms29hhlas7x1w89pigl11d1p5vqq94firjy7vbdifc5gh";
+      sha256 = "15cw1fa6bjn77lfqh50xhnisbihsqsm5rpnp7ryaykywrhxg6wnr";
     };
     coral = {
       tag = "android-10.0.0_r14"; # QP1A.190821.014.C2
-      sha256 = "0nidvhfy547n766lmckbh51zp7d23csil0g1qy5b57gp382f0026";
+      sha256 = "1j6gzdfszhcmlzjslfm3cr5zwv89i44x3q4h8yn2k58rzqgyh6xz";
     };
   }.${config.deviceFamily};
   kernelRelease = {

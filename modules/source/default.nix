@@ -3,18 +3,27 @@
 with lib;
 let
   repo2nix = import ./repo2nix.nix;
-  jsonFile = repo2nix {
-    manifest = config.source.manifest.url;
-    inherit (config.source.manifest) rev sha256 localManifests;
-    extraFlags = "--no-repo-verify";
-  };
-  json = builtins.fromJSON (builtins.readFile jsonFile);
-  # Get project source from JSON description
-  projectSource = p: builtins.fetchGit {
-    inherit (p) url rev;
-    ref = if strings.hasInfix "refs/heads" p.revisionExpr then last (splitString "/" p.revisionExpr) else p.revisionExpr;
-    name = builtins.replaceStrings ["/"] ["="] p.relpath;
-  };
+  json = importJSON config.source.jsonFile; # Get project source from JSON description
+
+  projectSource = p:
+    let
+      ref = if strings.hasInfix "refs/heads" p.revisionExpr then last (splitString "/" p.revisionExpr) else p.revisionExpr;
+      name = builtins.replaceStrings ["/"] ["="] p.relpath;
+      zeroHash = "0000000000000000000000000000000000000000000000000000000000000000";
+      # Try to get the sha256 by looking first for the treehash, falling back to the revision
+      sha256 = lib.attrByPath [ (if (p ? tree) then p.tree else p.rev) ] zeroHash config.source.hashes;
+    in
+    if ((sha256 == zeroHash) && config.source.fetchGitFallback)
+    then
+      builtins.fetchGit { # Evaluation-time source fetching. Uses nix's git cache, but any nix-instantiate will require fetching sources.
+        inherit (p) url rev;
+        inherit ref name;
+      }
+    else
+      pkgs.fetchgit { # Build-time source fetching. This should be preferred, but is slightly less convenient when developing.
+        inherit (p) url rev;
+        inherit sha256;
+      };
 in
 {
   options = {
@@ -38,9 +47,21 @@ in
         };
       };
 
-      json = mkOption {
+      fetchGitFallback = mkOption {
+        default = false;
+        description = "Allows use of builtins.fetchGit instead of pkgs.fetchgit if not all sha256 hashes are available. (Useful for development)";
+      };
+
+      jsonFile = mkOption {
         default = json;
         internal = true;
+      };
+
+      hashes = mkOption {
+        type = types.attrsOf types.str;
+        default = {};
+        internal = true;
+        description = "schema is {url: {revision: sha256}}";
       };
 
       dirs = mkOption {
@@ -113,11 +134,18 @@ in
   };
 
   config.source = mkMerge [{
+    jsonFile = repo2nix {
+      manifest = config.source.manifest.url;
+      inherit (config.source.manifest) rev sha256 localManifests;
+      extraFlags = "--no-repo-verify";
+      withTreeHashes = true;
+    };
+
     dirs = mapAttrs' (name: p:
       nameValuePair p.relpath {
         enable = mkDefault ((any (g: elem g p.groups) config.source.includeGroups) || (!(any (g: elem g p.groups) config.source.excludeGroups)));
         contents = mkDefault (projectSource p);
-      }) config.source.json;
+      }) json;
 
     unpackScript = (
       (concatStringsSep "\n" (map (d: optionalString d.enable ''
@@ -140,7 +168,7 @@ in
             mkdir -p $(dirname ${c.dest})
             ln -sf ./${c.src_rel_to_dest} ${c.dest}
           '') p.linkfiles))
-      ) config.source.json)));
+      ) json)));
     }
     {
       unpackScript = mkBefore ''

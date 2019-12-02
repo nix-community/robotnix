@@ -4,14 +4,15 @@ let
   release = rec {
     taimen = {
       tag = "QQ1A.191205.008.2019.12.02.23";
-      sha256 = "18lkmnznvwrmwq3mgjka44m1hwhy60k58hp4bqwg4nwwdydzgai1";
+      sha256 = "1a3q8cs3n9r02p5rn03y9dgk18q9i21cf5678h8w6qgqb2b7l1b5";
     };
     crosshatch = taimen // {
       kernelSha256 = "0bhzdpd7fmfzh1dvxpfsz4993wqyrbzy62vkl7w328b3r5b0i0f6";
     };
     bonito = {
       tag = "QQ1A.191205.011.2019.12.02.23";
-      sha256 = "161c9m1by3ma40yqn5av3n8pr54bpb3h30qk77sxhcmhz66crrkx";
+      sha256 = "0b8s7qch9a2b9kafrxs3xmcai7d5a0sk5p0kr3ws3idc53szny5q";
+      kernelSha256 = "0bhzdpd7fmfzh1dvxpfsz4993wqyrbzy62vkl7w328b3r5b0i0f6";
     };
     x86_64 = bonito; # Emulator target
   }.${config.deviceFamily};
