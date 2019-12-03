@@ -4,27 +4,45 @@ let
   # https://source.android.com/setup/start/build-numbers
   # TODO: Make an autoupdate script too.
   release = rec {
-    marlin = { # TODO: Marlin is no longer updated
-      tag = "android-10.0.0_r5"; # QP1A.191005.007.A1
-      sha256 = "10gw8xxk62fnlj1y2lsr23wrzh59kxchqg8f7hzmzbw0qvlrvsqg";
+    marlin = {
+      tag = "android-10.0.0_r17"; # QP1A.191005.007.A3
+      sha256 = "1ay3dynd9abvd021ghafx5winzj4rfqr8wzq83cvgwxm1dmfis5j";
     };
     taimen = {
-      tag = "android-10.0.0_r11"; # QP1A.191105.004
-      sha256 = "02cxv983wl6kqm7jbij1wswvp5wi96wivr1fj46kv09sqr9zr7sr";
+      tag = "android-10.0.0_r15"; # QQ1A.191205.008
+      sha256 = "1a7cf8pjsz0fpksy3gi28dswv9zigg89bhqrxgvm0ddmhfxygan3";
     };
     crosshatch = taimen;
-    bonito = taimen;
+    bonito = {
+      tag = "android-10.0.0_r16"; # QQ1A.191205.011
+      sha256 = "0nz4lhxas4hhlhfih2rnv9acwir0k4z6mx53js948hqb1bbprk5z";
+    };
     coral = {
       tag = "android-10.0.0_r14"; # QP1A.190821.014.C2
-      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+      sha256 = "0gmas0jdarz8yqvd4chg5sxkqssw74bgg37xl8bdjvc8a7c58003";
     };
   }.${config.deviceFamily};
-  kernelTag = {
-    marlin = "android-10.0.0_r0.7";
-    taimen = "android-10.0.0_r0.18";
-    crosshatch = "android-10.0.0_r0.19";
-    bonito = "android-10.0.0_r0.20";
-    coral = "android-10.0.0_r0.21";
+  kernelRelease = {
+    marlin = {
+      tag = "android-10.0.0_r0.23";
+      sha256 = "0wy6h97g9j5sma67brn9vxq7jzf169j2gzq4ai96v4h68lz39lq9";
+    };
+    taimen = {
+      tag = "android-10.0.0_r0.24";
+      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+    };
+    crosshatch = {
+      tag = "android-10.0.0_r0.26"; # TODO: Get the other sources for these kernels
+      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+    };
+    bonito = {
+      tag = "android-10.0.0_r0.28";
+      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+    };
+    coral = {
+      tag = "android-10.0.0_r0.21";
+      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+    };
   }.${config.deviceFamily};
   deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
 in
@@ -40,9 +58,10 @@ mkIf (config.flavor == "vanilla") {
   # could normally be fetched with repo at https://android.googlesource.com/kernel/manifest
   # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
   kernel.useCustom = mkDefault (config.signBuild && (config.deviceFamily == "marlin"));
-  kernel.src = builtins.fetchGit {
+  kernel.src = pkgs.fetchgit {
     url = "https://android.googlesource.com/kernel/msm";
-    ref = "refs/tags/${kernelTag}";
+    rev = kernelRelease.tag;
+    sha256 = kernelRelease.sha256;
   };
 
   removedProductPackages = [ "webview" "Browser2" "QuickSearchBox" ];
