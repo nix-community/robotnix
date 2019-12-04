@@ -41,7 +41,8 @@ mkMerge [
     vendor.ota = mkDefault (latestOta config.device (toString config.androidVersion));
 
     source.excludeGroups = mkDefault [
-      "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" # Exclude all devices by default
+      # Exclude all devices by default
+      "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" "coral"
     ];
     source.includeGroups = mkDefault [ config.deviceFamily config.kernel.configName ];
   })
