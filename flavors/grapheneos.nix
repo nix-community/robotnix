@@ -3,23 +3,25 @@ with lib;
 let
   release = rec {
     taimen = {
-      tag = "QP1A.191105.004.2019.11.05.23";
-      sha256 = "0r02alkgb0kdvh1c7y8295agl1n69msggkvaifvbrhk071zrfqqw";
+      tag = "QQ1A.191205.008.2019.12.02.23";
+      sha256 = "18lkmnznvwrmwq3mgjka44m1hwhy60k58hp4bqwg4nwwdydzgai1";
     };
-    crosshatch = {
-      tag = "QP1A.191105.003.2019.11.05.23";
-      sha256 = "1a2572ivzcdnnjc8bps3y1ra2jm7r3vwxz9mvijncwnzi3dx6wcm";
-      kernelSha256 = "0nyc9ndlrbpw0zc4fyap9rkf285xbvwxw42k1q4a63cghz5nl6j2";
+    crosshatch = taimen // {
+      kernelSha256 = "0bhzdpd7fmfzh1dvxpfsz4993wqyrbzy62vkl7w328b3r5b0i0f6";
     };
-    bonito = crosshatch;
-    x86_64 = taimen; # Emulator target
+    bonito = {
+      tag = "QQ1A.191205.011.2019.12.02.23";
+      sha256 = "161c9m1by3ma40yqn5av3n8pr54bpb3h30qk77sxhcmhz66crrkx";
+    };
+    x86_64 = bonito; # Emulator target
   }.${config.deviceFamily};
 
   # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
   kernelSrc = device: pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "kernel_google_${device}";
-    rev = release.tag;
+    # TODO: Override for just this grapheneos release, since this refers to an old commit for techpack/audio submodule
+    rev = if (device == "crosshatch") then "57bb6aab22f3c8e6059ed6f9088052a458599da8" else release.tag;
     sha256 = release.kernelSha256;
     fetchSubmodules = true;
   };
@@ -39,10 +41,10 @@ mkIf (config.flavor == "grapheneos") {
     sha256 = mkDefault release.sha256;
   };
 
-  # Hack for crosshatch since it uses submodules and repo2nix doesn't support that yet.
+  # Hack for crosshatch/bonito since they use submodules and repo2nix doesn't support that yet.
   kernel.useCustom = mkDefault true;
-  kernel.src = mkDefault (if (elem config.deviceFamily ["crosshatch" "bonito"])
-    then kernelSrc (if (config.androidVersion >= 10) then "crosshatch" else kernelName)
+  kernel.src = mkDefault (if (elem config.deviceFamily ["crosshatch" "bonito"]) # Pixel 3 and 3a use the same kernel source
+    then kernelSrc "crosshatch"
     else config.source.dirs."kernel/google/${kernelName}".contents);
   kernel.configName = mkForce configName;
 
