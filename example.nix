@@ -6,8 +6,8 @@ with lib;
   flavor = "grapheneos"; # "vanilla" is another option
 
   # Don't forget to update these for each unique build. Needed for the updater
-  buildNumber = "2019.11.11.10";
-  buildDateTime = 1573521581;
+  buildNumber = "2019.12.04.11";
+  buildDateTime = 1575499001;
 
   # A _string_ of the path for the key store.
   keyStorePath = "/var/secrets/android-keys";
