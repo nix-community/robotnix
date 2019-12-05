@@ -12,7 +12,7 @@ Some optional nixos-style modules include:
  - [Automated OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
  - [MicroG](https://microg.org/)
  - Certain google apps (currently just stuff for Google Fi)
- - Easily setting various framework configuration settings such as those found in [here](https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/values/config.xml)
+ - Easily setting various framework configuration settings such as those found [here](https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/values/config.xml)
  - Custom built kernels
  - Setting a custom /etc/hosts file
  - Extracting vendor blobs from Google's images using [android-prepare-vendor](https://github.com/anestisb/android-prepare-vendor)
@@ -28,9 +28,9 @@ This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) 
 ## Build Instructions
 A one line `.img` build:
 ```console
-$ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="crosshatch";}' -A factoryImg
+$ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="crosshatch";}' -A img
 ```
-this will make generate an image signed with `test-keys`, so don't use it for anything other than testing.
+this will build an image signed with `test-keys`, so don't use it for anything other than testing.
 
 A configuration file should be created for anything more complicated, including creating signed builds.
 See `example.nix` and `crosshatch.nix` for inspiration.
@@ -115,4 +115,4 @@ As root:
 # mkdir -p -m0770 /var/cache/ccache
 # chown root:nixbld /var/cache/ccache
 ```
-Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as sandbox exception when building.
+Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as a sandbox exception when building.
