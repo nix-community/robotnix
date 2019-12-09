@@ -15,6 +15,8 @@ in
     enable = mkEnableOption "F-Droid";
 
     # See apps/src/main/java/org/fdroid/fdroid/data/DBHelper.java in fdroid source
+    # Note that changes to this setting will only take effect on a freshly
+    # installed device--or if the FDroid storage is cleared
     additionalRepos = mkOption {
       default = {};
       type = types.attrsOf (types.submodule ({ name, ... }: {

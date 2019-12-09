@@ -1,24 +1,27 @@
-{ callPackage, substituteAll, fetchFromGitHub, buildGradle, androidPkgs, jdk, gradle }:
+{ callPackage, substituteAll, fetchFromGitLab, buildGradle, androidPkgs, jdk, gradle }:
 let
   androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-27 build-tools-27-0-3 ]);
 in
 buildGradle rec {
   name = "F-Droid-${version}.apk";
-  version = "1.6.2";
+  version = "1.7.1";
 
   envSpec = ./gradle-env.json;
 
-  src = fetchFromGitHub {
-    owner = "f-droid";
+  src = fetchFromGitLab {
+    owner = "fdroid";
     repo = "fdroidclient";
     rev = version;
-    sha256 = "054qbrxl7ycn2qls41g45lc6j877w15ji4wjdm6hd2wgh9w87y9l";
+    sha256 = "1xby3y726jyr6acxhl5gdv6lmnm80xhcw1iqgym9j2w4fqbdp04r";
   };
 
   patches = [
-    (substituteAll { src = ./version.patch; inherit version; })
     ./grapheneos.patch
   ];
+
+  postPatch = ''
+    substituteInPlace app/build.gradle --replace "getVersionName()" "\"${version}\""
+  '';
 
   gradleFlags = [ "assembleRelease" ];
 
