@@ -13,16 +13,3 @@ index 993fadb..fc88f72 100644
      ));
  
  }
-diff --git a/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java b/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
-index 837a937..6241ae1 100644
---- a/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
-+++ b/app/src/main/java/org/fdroid/fdroid/privileged/PrivilegedService.java
-@@ -231,7 +231,7 @@ public class PrivilegedService extends Service {
-                  * The client app used to set this to F-Droid, but we need it to be set to
-                  * this package's package name to be able to uninstall from here.
-                  */
--                pm.setInstallerPackageName(packageName, BuildConfig.APPLICATION_ID);
-+                pm.setInstallerPackageName(packageName, getPackageName());
-                 // Create a PendingIntent and use it to generate the IntentSender
-                 Intent broadcastIntent = new Intent(BROADCAST_ACTION_UNINSTALL);
-                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
