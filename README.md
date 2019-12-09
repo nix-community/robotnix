@@ -33,7 +33,7 @@ $ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" -
 this will build an image signed with `test-keys`, so don't use it for anything other than testing.
 
 A configuration file should be created for anything more complicated, including creating signed builds.
-See `example.nix` and `crosshatch.nix` for inspiration.
+See my own configuration under `example.nix` for inspiration.
 
 After creating a configuration file, generate keys with which to sign your build:
 

@@ -3,7 +3,9 @@
 with pkgs;
 with lib;
 {
-  flavor = "grapheneos"; # "vanilla" is another option
+  # These are required options, but commented out here since I set it programmatically my devices elsewhere
+  #device = "crosshatch";
+  #flavor = "grapheneos"; # "vanilla" is another option
 
   # Don't forget to update these for each unique build. Needed for the updater
   buildNumber = "2019.12.04.11";
