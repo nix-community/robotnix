@@ -1,6 +1,6 @@
 let
   checkConfig = configuration:
-    (import ./default.nix { inherit configuration; }).source.jsonFile;
+    (import ../default.nix { inherit configuration; }).source.jsonFile;
   grapheneDevices = [
     "taimen" "walleye"
     "crosshatch" "blueline"

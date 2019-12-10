@@ -18,8 +18,8 @@ let
       sha256 = "15cw1fa6bjn77lfqh50xhnisbihsqsm5rpnp7ryaykywrhxg6wnr";
     };
     coral = {
-      tag = "android-10.0.0_r14"; # QP1A.190821.014.C2
-      sha256 = "1j6gzdfszhcmlzjslfm3cr5zwv89i44x3q4h8yn2k58rzqgyh6xz";
+      tag = "android-10.0.0_r18"; # QQ1B.191205.011
+      sha256 = "16fdrgcvviamj2bgi9y1x014wcr10nif4hzjw86pksx364lnzbf6";
     };
   }.${config.deviceFamily};
   kernelRelease = {
