@@ -133,6 +133,12 @@ in
         internal = true;
         type = types.lines;
       };
+
+      buildNumber = mkOption {
+        default = "12345";
+        type = types.str;
+        description = "Build number associated with this upstream source code (just used to select images elsewhere)";
+      };
     };
   };
 

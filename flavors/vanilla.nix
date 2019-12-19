@@ -5,20 +5,24 @@ let
   # TODO: Make an autoupdate script too.
   release = rec {
     marlin = {
-      tag = "android-10.0.0_r17"; # QP1A.191005.007.A3
+      buildNumber = "QP1A.191005.007.A3";
+      tag = "android-10.0.0_r17";
       sha256 = "12i292cb97aqs9dl1bkkm1mnq7immxxnrbighxj4xrywgp46mh9l";
     };
     taimen = {
-      tag = "android-10.0.0_r15"; # QQ1A.191205.008
+      buildNumber = "QQ1A.191205.008";
+      tag = "android-10.0.0_r15";
       sha256 = "1ffw09mskmfx2falczdxy0hsify8wvy41ba7cc34rxswqadjslbn";
     };
     crosshatch = taimen;
     bonito = {
-      tag = "android-10.0.0_r16"; # QQ1A.191205.011
+      buildNumber = "QQ1A.191205.011";
+      tag = "android-10.0.0_r16";
       sha256 = "15cw1fa6bjn77lfqh50xhnisbihsqsm5rpnp7ryaykywrhxg6wnr";
     };
     coral = {
-      tag = "android-10.0.0_r18"; # QQ1B.191205.011
+      buildNumber = "QQ1B.191205.011";
+      tag = "android-10.0.0_r18";
       sha256 = "16fdrgcvviamj2bgi9y1x014wcr10nif4hzjw86pksx364lnzbf6";
     };
   }.${config.deviceFamily};
@@ -52,6 +56,7 @@ mkIf (config.flavor == "vanilla") {
     rev = mkDefault "refs/tags/${release.tag}";
     sha256 = mkDefault release.sha256;
   };
+  source.buildNumber = mkIf (release ? buildNumber) (mkDefault release.buildNumber);
 
   # TODO: Only build kernel for marlin since it needs verity key in build.
   # Kernel sources for crosshatch and bonito require multiple repos--which

@@ -2,19 +2,17 @@
 
 with lib;
 let
-  imgList = builtins.fromJSON (builtins.readFile ./pixel-imgs.json);
-  latestImg = device: version: let
-    matchingImgs = filter (v: (v.device == device) && (hasPrefix version v.version)) imgList;
+  imgList = lib.importJSON ./pixel-imgs.json;
+  otaList = lib.importJSON ./pixel-otas.json;
+  fetchItem = json: let
+    matchingItem = lib.findSingle
+      (v: (v.device == config.device) && (hasInfix "(${config.source.buildNumber}" v.version)) # Look for left paren + upstream buildNumber
+      null
+      (throw "multiple items found")
+      json;
   in
-    # This assumes that the last machine entry is the latest--which should hold from the website
-    pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) (elemAt matchingImgs ((length matchingImgs)-1)));
-
-  # TODO: unify logic with above
-  otaList = builtins.fromJSON (builtins.readFile ./pixel-otas.json);
-  latestOta = device: version: let
-    matchingOtas = filter (v: (v.device == device) && (hasPrefix version v.version)) otaList;
-  in
-    pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) (elemAt matchingOtas ((length matchingOtas)-1)));
+    if (matchingItem == null) then null else
+      pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);
 
   deviceFamilyMap = {
     marlin = "marlin"; # Pixel XL
@@ -37,8 +35,8 @@ mkMerge [
 
     kernel.configName = mkDefault config.deviceFamily;
     kernel.relpath = mkDefault "device/google/${kernelName}-kernel";
-    vendor.img = mkDefault (latestImg config.device (toString config.androidVersion));
-    vendor.ota = mkDefault (latestOta config.device (toString config.androidVersion));
+    vendor.img = mkDefault (fetchItem imgList);
+    vendor.ota = mkDefault (fetchItem otaList);
 
     source.excludeGroups = mkDefault [
       # Exclude all devices by default
