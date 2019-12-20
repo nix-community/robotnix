@@ -63,6 +63,10 @@ in mkMerge [
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
   };
 })
+(mkIf ((config.flavor == "vanilla") && (config.buildProduct == "sdk")) {
+  source.manifest.rev = "platform-tools-29.0.5";
+  source.manifest.sha256 = "0v9zaplr993wa8fgd0g7mik3qrcbq6y1ywpmq1jdwzdz2yawjacp";
+})
 
 # AOSP usability improvements for device builds
 (mkIf ((config.flavor == "vanilla") && (elem config.deviceFamily supportedDeviceFamilies)) {

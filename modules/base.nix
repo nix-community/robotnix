@@ -293,6 +293,27 @@ in
         '';
       };
 
+      sdk = mkAndroid {
+        name = "android-sdk_${config.buildNumber}_linux-x86.zip";
+        makeTargets = [ "dist" "sdk" ];
+        installPhase = ''
+          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/host/linux-x86/sdk/sdk/android-sdk_${config.buildNumber}_linux-x86.zip $out
+        '';
+      };
+
+      # TODO: Unify with checkAndroid abovee
+      checkSdk = mkAndroid {
+        name = "nixdroid-check-${config.buildProduct}-${config.buildNumber}";
+        makeTargets = [ "sdk" ];
+        ninjaArgs = "-n"; # Pretend to run the actual build steps
+        # Just copy some things that are useful for debugging
+        installPhase = ''
+          mkdir -p $out
+          cp -r $OUT_DIR_COMMON_BASE/src/*.{log,gz} $out/
+          cp -r $OUT_DIR_COMMON_BASE/src/.module_paths $out/
+        '';
+      };
+
         # Just included for convenience when building outside of nix.
         # TODO: Better way than creating all these scripts and feeding with init-file?
 #        debugUnpackScript = config.build.debugUnpackScript;
