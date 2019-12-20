@@ -55,7 +55,7 @@ let
         ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} nixdroid-build
 
         source build/envsetup.sh
-        choosecombo release "aosp_${config.device}" ${config.buildType}
+        choosecombo ${config.buildType} ${config.buildProduct} ${config.variant}
         export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
         make ${toString makeTargets}
         echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
@@ -91,6 +91,23 @@ in
       type = types.str;
     };
 
+    variant = mkOption {
+      default = "user";
+      type = types.strMatching "(user|userdebug|eng)";
+      description = "one of \"user\", \"userdebug\", or \"eng\"";
+    };
+
+    buildProduct = mkOption {
+      type = types.str;
+      description = "Product name for choosecombo/lunch (defaults to aosp_${config.device})";
+    };
+
+    buildType = mkOption {
+      default = "release";
+      type = types.strMatching "(release|debug)";
+      description = "one of \"release\", \"debug\"";
+    };
+
     buildNumber = mkOption {
       default = "12345";
       type = types.str;
@@ -103,12 +120,6 @@ in
       type = types.int;
       description = "Seconds since the epoch that this build is taking place. Needs to be monotone increasing for the updater to work. e.g. output of \"date +%s\"";
       example = 1565645583;
-    };
-
-    buildType = mkOption {
-      default = "user";
-      type = types.strMatching "(user|userdebug|eng)";
-      description = "one of \"user\", \"userdebug\", or \"eng\"";
     };
 
     androidVersion = mkOption {
@@ -187,6 +198,7 @@ in
   };
 
   config = {
+    buildProduct = mkOptionDefault "aosp_${config.device}";
     deviceFamily = mkOptionDefault config.device;
 
     apiLevel = mkIf (config.androidVersion == 10) "29";
@@ -247,7 +259,7 @@ in
         ''));
 
       android = mkAndroid {
-        name = "nixdroid-${config.device}-${config.buildNumber}";
+        name = "nixdroid-${config.buildProduct}-${config.buildNumber}";
         makeTargets = [ "brillo_update_payload" "target-files-package" ];
         outputs = [ "out" "bin" ];
         # Kinda ugly to just throw all this in $bin/
@@ -258,7 +270,7 @@ in
           export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
           # Just grab top-level build products (for emulator, not recursive) + target_files
           find $ANDROID_PRODUCT_OUT -maxdepth 1 -type f | xargs -I {} cp --reflink=auto {} $out/
-          cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/aosp_${config.device}-target_files-${config.buildNumber}.zip $out/
+          cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.buildProduct}-target_files-${config.buildNumber}.zip $out/
 
           cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
           cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/soong/host/linux-x86/* $bin/

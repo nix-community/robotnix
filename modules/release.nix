@@ -185,7 +185,7 @@ in
     targetFiles = if signBuild then signedTargetFiles else unsignedTargetFiles;
   in {
     # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
-    unsignedTargetFiles = mkDefault (build.android + "/aosp_${device}-target_files-${buildNumber}.zip");
+    unsignedTargetFiles = mkDefault (build.android + "/${buildProduct}-target_files-${buildNumber}.zip");
     signedTargetFiles = mkDefault (runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;});
     ota = mkDefault (runWrappedCommand "ota_update" otaScript { inherit targetFiles; });
     incrementalOta = mkDefault (runWrappedCommand "incremental-${prevBuildNumber}" otaScript { inherit targetFiles prevTargetFiles; });
