@@ -30,7 +30,7 @@ let
   kernelName = if (config.deviceFamily == "taimen") then "wahoo" else config.deviceFamily;
 in
 mkMerge [
-  (mkIf (hasAttr config.device deviceFamilyMap) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
+  (mkIf ((config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault deviceFamilyMap.${config.device};
 
     kernel.configName = mkDefault config.deviceFamily;

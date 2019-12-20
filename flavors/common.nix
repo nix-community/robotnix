@@ -21,7 +21,7 @@ mkMerge [
     "darwin" # Linux-only for now
     "mips" "hikey"
   ];
-  source.includeGroups = mkDefault [ config.device ];
+  source.includeGroups = mkIf (config.deviceFamily != null) (mkDefault [ config.deviceFamily ]);
 
   kernel.compiler = mkDefault "clang";
   kernel.clangVersion = mkDefault {

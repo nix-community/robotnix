@@ -77,18 +77,20 @@ in
   options = {
     flavor = mkOption {
       default = "vanilla";
-      type = types.str;
+      type = types.nullOr types.str;
     };
 
     device = mkOption {
-      type = types.str;
+      default = null;
+      type = types.nullOr types.str;
       description = "Code name of device build target";
       example = "marlin";
     };
 
     deviceFamily = mkOption {
+      default = null;
+      type = types.nullOr types.str;
       internal = true;
-      type = types.str;
     };
 
     variant = mkOption {
@@ -198,8 +200,8 @@ in
   };
 
   config = {
-    buildProduct = mkOptionDefault "aosp_${config.device}";
-    deviceFamily = mkOptionDefault config.device;
+    buildProduct = mkIf (config.device != null) (mkOptionDefault "aosp_${config.device}");
+    deviceFamily = mkIf (config.device != null) (mkOptionDefault config.device);
 
     apiLevel = mkIf (config.androidVersion == 10) "29";
 
