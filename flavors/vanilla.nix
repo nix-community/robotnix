@@ -3,72 +3,69 @@ with lib;
 let
   # https://source.android.com/setup/start/build-numbers
   # TODO: Make an autoupdate script too.
-  release = rec {
-    marlin = {
-      buildNumber = "QP1A.191005.007.A3";
-      tag = "android-10.0.0_r17";
-      sha256 = "12i292cb97aqs9dl1bkkm1mnq7immxxnrbighxj4xrywgp46mh9l";
-    };
-    taimen = {
-      buildNumber = "QQ1A.191205.008";
-      tag = "android-10.0.0_r15";
-      sha256 = "1ffw09mskmfx2falczdxy0hsify8wvy41ba7cc34rxswqadjslbn";
-    };
-    crosshatch = taimen;
-    bonito = {
-      buildNumber = "QQ1A.191205.011";
-      tag = "android-10.0.0_r16";
-      sha256 = "15cw1fa6bjn77lfqh50xhnisbihsqsm5rpnp7ryaykywrhxg6wnr";
-    };
-    coral = {
-      buildNumber = "QQ1B.191205.011";
-      tag = "android-10.0.0_r18";
-      sha256 = "16fdrgcvviamj2bgi9y1x014wcr10nif4hzjw86pksx364lnzbf6";
-    };
-  }.${config.deviceFamily};
-  kernelRelease = {
-    marlin = {
-      tag = "android-10.0.0_r0.23";
-      sha256 = "0wy6h97g9j5sma67brn9vxq7jzf169j2gzq4ai96v4h68lz39lq9";
-    };
-    taimen = {
-      tag = "android-10.0.0_r0.24";
-      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-    };
-    crosshatch = {
-      tag = "android-10.0.0_r0.26"; # TODO: Get the other sources for these kernels
-      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-    };
-    bonito = {
-      tag = "android-10.0.0_r0.28";
-      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-    };
-    coral = {
-      tag = "android-10.0.0_r0.21";
-      sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-    };
-  }.${config.deviceFamily};
-  deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
-in
-mkIf (config.flavor == "vanilla") {
-  source.manifest = {
-    url = mkDefault "https://android.googlesource.com/platform/manifest"; # I get 100% cpu usage and no progress with this URL. Needs older curl version
-    rev = mkDefault "refs/tags/${release.tag}";
-    sha256 = mkDefault release.sha256;
+  kernelSrc = { rev, sha256 }: pkgs.fetchgit {
+    url = "https://android.googlesource.com/kernel/msm";
+    inherit rev sha256;
   };
-  source.buildNumber = mkIf (release ? buildNumber) (mkDefault release.buildNumber);
-
+  supportedDeviceFamilies = [ "marlin" "taimen" "crosshatch" "bonito" "coral" ];
+  deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
+in mkMerge [
+(mkIf (config.flavor == "vanilla") {
+  source.manifest.url = "https://android.googlesource.com/platform/manifest";
+  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/arm64/webview.apk";
+})
+(mkIf ((config.flavor == "vanilla") && (config.deviceFamily == "marlin")) {
+  source.buildNumber = "QP1A.191005.007.A3";
+  source.manifest.rev = "android-10.0.0_r17";
+  source.manifest.sha256 = "12i292cb97aqs9dl1bkkm1mnq7immxxnrbighxj4xrywgp46mh9l";
+  kernel.src = kernelSrc {
+    rev = "android-10.0.0_r0.23";
+    sha256 = "0wy6h97g9j5sma67brn9vxq7jzf169j2gzq4ai96v4h68lz39lq9";
+  };
   # TODO: Only build kernel for marlin since it needs verity key in build.
   # Kernel sources for crosshatch and bonito require multiple repos--which
   # could normally be fetched with repo at https://android.googlesource.com/kernel/manifest
   # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
-  kernel.useCustom = mkDefault (config.signBuild && (config.deviceFamily == "marlin"));
-  kernel.src = pkgs.fetchgit {
-    url = "https://android.googlesource.com/kernel/msm";
-    rev = kernelRelease.tag;
-    sha256 = kernelRelease.sha256;
+  kernel.useCustom = mkDefault config.signBuild;
+})
+(mkIf ((config.flavor == "vanilla") && (elem config.deviceFamily [ "taimen" "crosshatch" ])) {
+  source.buildNumber = "QQ1A.191205.008";
+  source.manifest.rev = "android-10.0.0_r15";
+  source.manifest.sha256 = "1ffw09mskmfx2falczdxy0hsify8wvy41ba7cc34rxswqadjslbn";
+})
+(mkIf ((config.flavor == "vanilla") && (config.deviceFamily == "taimen")) {
+  kernel.src = kernelSrc {
+    tag = "android-10.0.0_r0.24";
+    sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
   };
+})
+(mkIf ((config.flavor == "vanilla") && (config.deviceFamily == "crosshatch")) {
+  kernel.src = kernelSrc {
+    tag = "android-10.0.0_r0.26";
+    sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+  };
+})
+(mkIf ((config.flavor == "vanilla") && (config.deviceFamily == "bonito")) {
+  source.buildNumber = "QQ1A.191205.011";
+  source.manifest.rev = "android-10.0.0_r16";
+  source.manifest.sha256 = "15cw1fa6bjn77lfqh50xhnisbihsqsm5rpnp7ryaykywrhxg6wnr";
+  kernel.src = kernelSrc {
+    tag = "android-10.0.0_r0.28";
+    sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+  };
+})
+(mkIf ((config.flavor == "vanilla") && (config.deviceFamily == "coral")) {
+  source.buildNumber = "QQ1B.191205.011";
+  source.manifest.rev = "android-10.0.0_r18";
+  source.manifest.sha256 = "16fdrgcvviamj2bgi9y1x014wcr10nif4hzjw86pksx364lnzbf6";
+  kernel.src = kernelSrc {
+    tag = "android-10.0.0_r0.21";
+    sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
+  };
+})
 
+# AOSP usability improvements for device builds
+(mkIf ((config.flavor == "vanilla") && (elem config.deviceFamily supportedDeviceFamilies)) {
   removedProductPackages = [ "webview" "Browser2" "QuickSearchBox" ];
   source.dirs."external/chromium-webview".enable = false;
   source.dirs."packages/apps/QuickSearchBox".enable = false;
@@ -88,4 +85,5 @@ mkIf (config.flavor == "vanilla") {
 
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
-}
+})
+]
