@@ -1,9 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, apks, lib, ... }:
 
 with lib;
 let
   cfg = config.apps.seedvault;
-  seedvault = pkgs.callPackage ./seedvault {};
 in
 {
   options = {
@@ -12,9 +11,9 @@ in
 
   config = mkIf cfg.enable {
     apps.prebuilt.Seedvault = {
-      apk = seedvault;
+      apk = apks.seedvault;
       packageName = "com.stevesoltys.seedvault";
-      privileged = true; # Is this needed? it's not in the upstream repo.
+      privileged = true;
       privappPermissions = [ "BACKUP" "MANAGE_USB" "WRITE_SECURE_SETTINGS" ];
     };
 
@@ -30,7 +29,7 @@ in
     resources."frameworks/base/packages/SettingsProvider".def_backup_transport = "com.stevesoltys.seedvault/.transport.ConfigurableBackupTransportService";
 
     # TODO: is the above working?
-    # Run bmgr list transports
-    # or bmgr set transport com.stevesoltys.seedvault.transport.ConfigurableBackupTransport
+    # $ bmgr list transports
+    # $ bmgr transport com.stevesoltys.seedvault.transport.ConfigurableBackupTransport
   };
 }

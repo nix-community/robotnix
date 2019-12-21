@@ -5,11 +5,12 @@
 
 let
   nixdroidlib = import ./lib lib;
+  apks = import ./apks { inherit pkgs; };
 in
 (lib.evalModules {
   modules = [
     { _module.args = {
-        inherit pkgs lib nixdroidlib;
+        inherit pkgs apks lib nixdroidlib;
       };
     }
     configuration 

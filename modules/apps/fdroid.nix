@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixdroidlib, ... }:
+{ config, pkgs, apks, lib, nixdroidlib, ... }:
 
 with lib;
 let
@@ -56,14 +56,14 @@ in
   };
 
   config = mkIf cfg.enable {
-    apps.prebuilt."F-Droid".apk = pkgs.callPackage ./fdroid {};
+    apps.prebuilt."F-Droid".apk = apks.fdroid;
 
     # TODO: Put this under product/
     source.dirs."nixdroid/apps/F-DroidPrivilegedExtension" = {
       contents = privext;
       patches = [
         (pkgs.substituteAll {
-          src = ./fdroid/privext.patch;
+          src = ./fdroid-privext.patch;
           fingerprint = toLower (config.build.fingerprints "releasekey");
         })
       ];

@@ -1,10 +1,9 @@
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
-# Disclaimer: I don't know what I"m doing
 { callPackage, lib, substituteAll, fetchFromGitHub, buildGradle, androidPkgs, jdk, gradle,
   domain ? "example.org",
   applicationName ? "NixDroid Auditor",
   applicationId ? "org.nixdroid.auditor",
-  signatureFingerprint,
+  signatureFingerprint ? "", # Signature that this app will be signed by.
   deviceFamily ? "",
   avbFingerprint ? ""
 }:
@@ -27,7 +26,8 @@ buildGradle rec {
   patches = [
     (substituteAll {
     src = ./customized-auditor.patch;
-    inherit domain applicationName applicationId signatureFingerprint;
+    inherit domain applicationName applicationId ;
+    signatureFingerprint = lib.toUpper signatureFingerprint;
 
     taimen_avbFingerprint = if (deviceFamily == "taimen") then avbFingerprint else "DISABLED_CUSTOM_TAIMEN";
     crosshatch_avbFingerprint = if (deviceFamily == "crosshatch") then avbFingerprint else "DISABLED_CUSTOM_CROSSHATCH";
