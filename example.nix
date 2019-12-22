@@ -18,17 +18,8 @@ with lib;
   # Build with ccache
   ccache.enable = true;
 
-  apps = {
-    webview = mkIf (config.androidVersion == 9) { # Not currently working with android 10
-      enable = true;
-      description = "Bromite";
-      packageName = "com.android.webview";
-      apk = fetchurl {
-        url = "https://github.com/bromite/bromite/releases/download/77.0.3865.104/arm64_SystemWebView.apk";
-        sha256 = "0gr0g4csmqwymnhix5hyj893sz4hf4j8kpk7lxrf5cz9lhiw90y1";
-      };
-    };
 
+  apps = {
     updater.enable = true;
     updater.url = "https://daniel.fullmer.me/android/";
 
@@ -39,6 +30,12 @@ with lib;
     auditor.enable = true;
     auditor.domain = "attestation.daniel.fullmer.me";
   };
+
+  webview.prebuilt.enable = true; # Just for testing
+  #apps.bromite.enable = true; # I'll just install on my own for now
+  apps.chromium.enable = true; # Might as well
+  webview.chromium.enable = true;
+  webview.chromium.availableByDefault = true;
 
   # Custom hosts file
   hosts = fetchurl { # 2019-08-14

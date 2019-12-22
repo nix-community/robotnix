@@ -42,11 +42,19 @@ in mkMerge [
   source.dirs."kernel/google/crosshatch".enable = false;
   source.dirs."kernel/google/bonito".enable = false;
 
+  # Enable Vanadium (GraphaneOS's chromium fork). It currently doesn't work with Android 10?
+  #apps.vanadium.enable = true; # Just stick to using their prebuilt vanadium for now
+  #webview.vanadium.enable = true;
+  #webview.vanadium.availableByDefault = true;
+  removedProductPackages = [ "webview" "Vanadium" ]; # Remove from  build. We'll re-add it ourselves
+  webview.prebuilt = {
+    apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/arm64/webview.apk";
+    availableByDefault = mkDefault true;
+    enable = mkDefault true;
+  };
+
   # GrapheneOS just disables apex updating wholesale
   apex.enable = false;
-
-  # TODO: Build and include vanadium
-  removedProductPackages = mkIf (config.androidVersion == 9) [ "Vanadium" ];
 
   # Don't include updater by default since it would download updates signed with grapheneos's keys.
   # TODO: Encourage user to set apps.updater.enable

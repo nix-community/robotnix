@@ -1,4 +1,4 @@
-with (import ../../pkgs.nix);
+with (import ../../pkgs.nix {});
 
 # Remove any hashes from file whose revision or tree hash aren't in the specified json files
 writeScript "clean-hashes.sh" ''

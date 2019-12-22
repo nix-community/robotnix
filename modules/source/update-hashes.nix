@@ -1,4 +1,4 @@
-with (import ../../pkgs.nix);
+with (import ../../pkgs.nix {});
 # TODO: Nice to depend on  pkgs above so that nix-prefetch-git can use fetchGit override for local mirror
 writeScript "update-hashes.sh" ''
   hashesFile=$1

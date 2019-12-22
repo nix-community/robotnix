@@ -28,9 +28,12 @@ let
       binutils-unwrapped = super.pkgsCross.aarch64-multiplatform.buildPackages.binutils-unwrapped;
       enableBloat = true;
     };
+
+    cipd = super.callPackage ./apks/chromium/cipd {};
+    fetchcipd = super.callPackage ./apks/chromium/fetchcipd.nix {};
   };
 in
-  import nixpkgs {
+  import nixpkgs (args // {
     overlays = [ overlay ];
     config = { android_sdk.accept_license=true; };
-  }
+  })

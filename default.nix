@@ -1,5 +1,5 @@
 { configuration,
-  pkgs ? import ./pkgs.nix,
+  pkgs ? (import ./pkgs.nix {}),
   lib ? pkgs.stdenv.lib
 }:
 
@@ -14,16 +14,16 @@ in
       };
     }
     configuration 
-    ./flavors/grapheneos.nix
-    ./flavors/vanilla.nix
     ./flavors/common.nix
+    ./flavors/grapheneos.nix
     ./flavors/pixel.nix
+    ./flavors/vanilla.nix
     ./modules/apps/auditor.nix
     ./modules/apps/fdroid.nix
+    ./modules/apps/chromium.nix
     ./modules/apps/prebuilt.nix
     ./modules/apps/seedvault.nix
     ./modules/apps/updater.nix
-    ./modules/apps/webview.nix
     ./modules/base.nix
     ./modules/emulator.nix
     ./modules/etc.nix
@@ -35,6 +35,8 @@ in
     ./modules/release.nix
     ./modules/resources.nix
     ./modules/source
+    ./modules/source/prebuilts.nix
+    ./modules/webview.nix
     ./modules/vendor.nix
   ];
 }).config

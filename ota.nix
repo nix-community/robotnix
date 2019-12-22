@@ -1,4 +1,4 @@
-with (import ./pkgs.nix);
+with (import ./pkgs.nix {});
 symlinkJoin {
   name = "nixdroid-ota";
   paths = [

@@ -4,11 +4,12 @@ This is a fork of the ajs124's NixDroid, focusing on customized vanilla-ish AOSP
 Some features include:
  - A NixOS-style module system for customizing various aspects of the build
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader
- - Partial GrapheneOS support (currently doesn't build Vanadium, the chromium fork)
- - Android 10 Support
+ - [GrapheneOS](https://grapheneos.org/) support
+ - Android 10 support
  
 Some optional nixos-style modules include:
  - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Backup](https://github.com/stevesoltys/backup)
+ - Browser / Webview: [Chromium](https://www.chromium.org/Home) [Bromite](https://www.bromite.org/) [Vanadium](https://github.com/GrapheneOS/Vanadium)
  - [Automated OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
  - [MicroG](https://microg.org/)
  - Certain google apps (currently just stuff for Google Fi)
