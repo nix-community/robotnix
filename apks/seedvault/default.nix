@@ -4,15 +4,15 @@ let
 in
 buildGradle rec {
   name = "Seedvault-${version}.apk";
-  version = "1.0.0-alpha1"; # Latest in development branch as of 2019-11-11
+  version = "1.0.0-alpha1"; # Latest in development branch as of 2019-12-22
 
   envSpec = ./gradle-env.json;
 
   src = (fetchFromGitHub {
     owner = "stevesoltys";
     repo = "seedvault";
-    rev = "8686ee6c903b0d22bbd616733dd3dcdb62a9c2a8";
-    sha256 = "0i1nfqfq7g3qs11j9xmrks7jb8asdpa96pa6k0djrvf2p8jcc26m";
+    rev = version;
+    sha256 = "1dca93hcm0kpm0941daxwfimzss2imxyjpsdlf2fw8vh3x0sdb6y";
   });
 
   gradleFlags = [ "assembleRelease" ];
