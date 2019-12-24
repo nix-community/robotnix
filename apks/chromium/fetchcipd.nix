@@ -21,6 +21,6 @@ runCommand name {
   mkdir -p $out
   cd $out
   cipd init
-  cipd install ${package} ${version}
+  cipd install -- "${package}" "${version}"
 ''
 # TODO: Remove symlinks and .cipd dirs?
