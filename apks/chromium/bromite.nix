@@ -1,25 +1,26 @@
 { chromiumBase, fetchFromGitHub }:
 
 let
-  version = "79.0.3945.94";
+  version = "79.0.3945.100";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "0d38vwjkdpsf7ag8j7680ka0lq39ymfin6nr11kasrifd2xhyvf9";
+    sha256 = "10i7608vn9g21119il8jca9cpwz42fac4kx79sabryqd2shzcswc";
   };
 
 in (chromiumBase.override {
-  versionCode = "390410800"; # TODO: Calculate
+  inherit version;
+  versionCode = "394510000"; # TODO: Calculate
   customGnFlags = { # From bromite/build/GN_ARGS
     blink_symbol_level=1;
     dcheck_always_on=false;
     debuggable_apks=false;
-    dfmify_dev_ui=true;
+    dfmify_dev_ui=false;
     disable_android_lint=true;
-    disable_autofill_assistant_dfm=false;
-    disable_tab_ui_dfm=false;
+    disable_autofill_assistant_dfm=true;
+    disable_tab_ui_dfm=true;
     enable_av1_decoder=true;
     enable_dav1d_decoder=true;
     enable_feed_in_chrome=false;
@@ -43,7 +44,6 @@ in (chromiumBase.override {
     rtc_build_examples=false;
     safe_browsing_mode=0;
     strip_absolute_paths_from_debug_symbols=true;
-    strip_debug_info=true;
     symbol_level=1;
     use_debug_fission=true;
     use_errorprone_java_compiler=false;
