@@ -48,6 +48,7 @@ in
       }) // (optionalAttrs (config.deviceFamily == "marlin") { # TODO: Do this for other devices
         "sysconfig/pixel_2016_exclusive.xml".source = "${systemPath}/etc/sysconfig/pixel_2016_exclusive.xml";
       }) // (optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Do this for other devices
+        "permissions/android.hardware.telephony.euicc.xml".source = "${productPath}/etc/permissions/android.hardware.telephony.euicc.xml";
         "sysconfig/pixel_2018_exclusive.xml".source = "${productPath}/etc/sysconfig/pixel_2018_exclusive.xml";
         "sysconfig/pixel_experience_2017.xml".source = "${productPath}/etc/sysconfig/pixel_experience_2017.xml";
         "sysconfig/pixel_experience_2018.xml".source = "${productPath}/etc/sysconfig/pixel_experience_2018.xml";
@@ -78,35 +79,49 @@ in
         GCS = {
           apk = "${productPath}/priv-app/GCS/GCS.apk"; # Google Connectivity Services (does wifi VPN at least)
           certificate = "PRESIGNED";
+          privileged = true;
         };
         CarrierServices = {
           apk = "${productPath}/priv-app/CarrierServices/CarrierServices.apk"; # Google Carrier Services. com.google.android.ims (needed for wifi calls)
           certificate = "PRESIGNED";
+          privileged = true;
         };
         CarrierSettings = {
           apk = "${productPath}/priv-app/CarrierSettings/CarrierSettings.apk"; # com.google.android.carrier
           certificate = "PRESIGNED";
+          privileged = true;
         };
         CarrierSetup = {
           apk = "${productPath}/priv-app/CarrierSetup/CarrierSetup.apk"; # com.google.android.carriersetup
           certificate = "PRESIGNED";
+          privileged = true;
         };
       } // (optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Generalize to other devices with esim
         EuiccGoogle = {
           apk = "${productPath}/priv-app/EuiccGoogle/EuiccGoogle.apk";
           certificate = "PRESIGNED";
+          privileged = true;
         };
       }) // (optionalAttrs ((config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
         EuiccSupportPixel = {
           apk = "${productPath}/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk";
           certificate = "PRESIGNED";
+          privileged = true;
         };
       });
-
-#      vendor.systemOther = optionals (config.deviceFamily == "crosshatch") [
-#        "${productPath}/priv-app/Euicc${if (config.androidVersion >= 10) then "SupportPixel" else "Google"}/esim-full-v0.img"
-#        "${productPath}/priv-app/Euicc${if (config.androidVersion >= 10) then "SupportPixel" else "Google"}/esim-v1.img"
-#      ];
+    })
+    (mkIf (cfg.fi.enable && (config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
+      # TODO: Hack. Make better
+      source.dirs."nixdroid/esimhack".contents = let
+      in pkgs.runCommand "esim-hack" {} ''
+        mkdir -p $out
+        cp ${productPath}/priv-app/EuiccSupportPixel/esim-full-v0.img $out/
+        cp ${productPath}/priv-app/EuiccSupportPixel/esim-v1.img $out/
+      '';
+      product.extraConfig = ''
+        PRODUCT_COPY_FILES += nixdroid/esimhack/esim-full-v0.img:$(TARGET_COPY_OUT_PRODUCT)/priv-app/EuiccSupportPixel/esim-full-v0.img
+        PRODUCT_COPY_FILES += nixdroid/esimhack/esim-v1.img:$(TARGET_COPY_OUT_PRODUCT)/priv-app/EuiccSupportPixel/esim-v1.img
+      '';
     })
   ];
 }
