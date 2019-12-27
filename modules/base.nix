@@ -65,6 +65,7 @@ let
 
       inherit installPhase;
 
+      dontFixup = true;
       dontMoveLib64 = true;
     } // (lib.optionalAttrs config.ccache.enable {
       CCACHE_EXEC = pkgs.ccache + /bin/ccache;
