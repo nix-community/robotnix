@@ -4,19 +4,24 @@
 
 from __future__ import print_function
 
-import sys
-import os
-import shutil
-import subprocess
-import string
-import json
 import argparse
+import json
+import os
+import re
+import shutil
+import string
+import subprocess
+import sys
 
-# TODO: Memoized hash stuff
-BASEDIR = "/mnt/media/chromium" # /tmp/z
+BASEDIR = "/tmp/z"
+
+SKIP_DEPS = [ "src" "src/tools/luci-go" ]
 
 def hash_path(path):
-    return subprocess.check_output(["nix", "hash-path", "--base32", "--type", "sha256", path]).strip() # TODO: Error check
+    sha256 = subprocess.check_output(["nix", "hash-path", "--base32", "--type", "sha256", path]).strip()
+    if re.match(r'[0-9a-z]{52}', sha256) == None:
+        raise ValueError('bad hash %s' % sha256)
+    return sha256
 
 def checkout_git(url, rev, path):
     subprocess.check_call([
@@ -73,9 +78,9 @@ def make_vendor_file(chromium_version, target_os):
     sys.path.append(os.path.join(topdir, "depot_tools"))
     import gclient_eval
 
-    # Not setting target_cpu, as it'st just used to run script fetching sysroot, which we don't use anyway
+    # Not setting target_cpu, as it's just used to run script fetching sysroot, which we don't use anyway
     target_cpu = []
-    # Normally set in gclient.py
+    # Normally set in depot_tools/gclient.py
     builtin_vars={
         'checkout_android': 'android' in target_os,
         'checkout_chromeos': 'chromeos' in target_os,
@@ -94,8 +99,8 @@ def make_vendor_file(chromium_version, target_os):
         'checkout_s390': 's390' in target_cpu,
         'checkout_x64': 'x64' in target_cpu,
 
-        'host_os': 'linux', # See _PLATFORM_MARPPING in tools/gclient.py
-        'host_cpu': 'x64', # See tools/detect_host_arch.py. Luckily this variable is not really currently used much
+        'host_os': 'linux', # See _PLATFORM_MARPPING in depot_tools/gclient.py
+        'host_cpu': 'x64', # See depot_tools/detect_host_arch.py. Luckily this variable is not currently used in DEPS for anything we care about
     }
 
     # like checkout() but do not delete .git (gclient expects it) and do not compute hash
@@ -109,7 +114,7 @@ def make_vendor_file(chromium_version, target_os):
         subprocess.check_call(["git", "checkout", "FETCH_HEAD"], cwd=src_dir)
     else:
         # restore topdir into virgin state
-        if ("tag '%s' of" % chromium_version) not in open(os.path.join(topdir, "src/.git/FETCH_HEAD")).read():
+        if ("tag '%s' of" % chromium_version) in open(os.path.join(src_dir, ".git/FETCH_HEAD")).read():
             print("already at", chromium_version)
         else:
             print('git fetch --progress --depth 1 origin "+%s"' % chromium_version)
@@ -126,15 +131,6 @@ def make_vendor_file(chromium_version, target_os):
     while need_another_iteration:
         need_another_iteration = False
 
-        # # flatten fail because of duplicate valiable names, so rename them
-        # if (-f 'src/third_party/angle/buildtools/DEPS') {
-        # edit_file {
-        #     s/\b(libcxx_revision)\b/${1}2/g;
-        #     s/\b(libcxxabi_revision)\b/${1}2/g;
-        #     s/\b(libunwind_revision)\b/${1}2/g;
-        # } 'src/third_party/angle/buildtools/DEPS';
-        # }
-
         subprocess.check_call(["python2", "depot_tools/gclient.py", "config", "https://chromium.googlesource.com/chromium/src.git"], cwd=topdir)
         flat = subprocess.check_output(["python2", "depot_tools/gclient.py", "flatten", "--pin-all-deps"], cwd=topdir)
 
@@ -145,8 +141,8 @@ def make_vendor_file(chromium_version, target_os):
         merged_vars.update(builtin_vars)
 
         for path, fields in content['deps'].iteritems():
-            # Skip this one
-            if path == "src/tools/luci-go":
+            # Skip these
+            if path in SKIP_DEPS:
                 continue
 
             # Skip dependency if its condition evaluates to False
@@ -156,16 +152,24 @@ def make_vendor_file(chromium_version, target_os):
             if not path in deps:
                 if fields['dep_type'] == "git":
                     url, rev = fields['url'].split('@')
-                    wholepath = os.path.join(BASEDIR, rev)
+                    wholepath = os.path.join(topdir, path)
+                    memoized_path = os.path.join(BASEDIR, rev)
 
-                    if os.path.exists(wholepath + ".sha256"): # memoize hash
-                        sha256 = open(wholepath + ".sha256").read()
+                    if os.path.exists(memoized_path + ".sha256"): # memoize hash
+                        sha256 = open(memoized_path + ".sha256").read()
                     else:
-                        shutil.rmtree(path, ignore_errors=True)
-                        sha256 = checkout_git(url, rev, wholepath)
-                        open(wholepath + ".sha256", "w").write(sha256)
+                        shutil.rmtree(memoized_path, ignore_errors=True)
+                        sha256 = checkout_git(url, rev, memoized_path)
+                        open(memoized_path + ".sha256", "w").write(sha256)
 
-                    if os.path.exists(os.path.join(wholepath, "DEPS")):
+                    if path != "src":
+                        shutil.rmtree(wholepath, ignore_errors=True)
+                        if not os.path.isdir(os.path.dirname(wholepath)):
+                            os.mkdir(os.path.dirname(wholepath))
+                        #shutil.copytree(memoized_path, wholepath, copy_function=os.link) # copy_function isn't available in python 2
+                        subprocess.check_call(["cp", "-al", memoized_path, wholepath])
+
+                    if os.path.exists(os.path.join(memoized_path, "DEPS")): # Need to recurse
                         need_another_iteration = True
 
                     deps[path] = {
@@ -180,14 +184,14 @@ def make_vendor_file(chromium_version, target_os):
                     for p in fields['packages']:
                         package, version = p['package'], p['version']
                         dirname = (package + '_' + version).replace('/', '_').replace(':', '') # TODO: Better path normalization
-                        wholepath = os.path.join(BASEDIR, dirname)
+                        memoized_path = os.path.join(BASEDIR, dirname)
 
-                        if os.path.exists(wholepath + ".sha256"): # memoize hash
-                            sha256 = open(wholepath + ".sha256").read()
+                        if os.path.exists(memoized_path + ".sha256"): # memoize hash
+                            sha256 = open(memoized_path + ".sha256").read()
                         else:
-                            shutil.rmtree(wholepath, ignore_errors=True)
-                            sha256 = checkout_cipd(package, version, wholepath)
-                            open(wholepath + ".sha256", "w").write(sha256)
+                            shutil.rmtree(memoized_path, ignore_errors=True)
+                            sha256 = checkout_cipd(package, version, memoized_path)
+                            open(memoized_path + ".sha256", "w").write(sha256)
 
                         packages.append({
                             "package": package,
@@ -204,7 +208,7 @@ def make_vendor_file(chromium_version, target_os):
                     raise ValueError("Unrecognized dep_type", fields['dep_type'])
 
     with open('vendor-%s.nix' % chromium_version, 'w') as vendor_nix:
-        vendor_nix.write("# GENERATED BY mk-vendor-file.py, %s for %s\n" % (chromium_version, ", ".join(target_os)))
+        vendor_nix.write("# GENERATED BY 'mk-vendor-file.py %s' for %s\n" % (chromium_version, ", ".join(target_os)))
         vendor_nix.write("{fetchgit, fetchcipd, fetchurl, runCommand, symlinkJoin}:\n");
         vendor_nix.write("{\n");
 
