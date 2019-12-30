@@ -23,6 +23,7 @@ Further goals include:
  - Continuous integration / testing for various devices
  - Automating CTS (Compatibility Test Suite) like nixos tests.
  - Automatic verification of build reproducibility
+ - Replacing android prebuilt toolchains with nixpkgs equivalents.
  
 This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
 
@@ -36,7 +37,7 @@ this will build an image signed with `test-keys`, so don't use it for anything o
 A configuration file should be created for anything more complicated, including creating signed builds.
 See my own configuration under `example.nix` for inspiration.
 
-After creating a configuration file, generate keys with which to sign your build:
+After creating a configuration file, generate keys for your device:
 
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
@@ -65,20 +66,16 @@ $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A img --option e
 ```
 This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
-The root user is always trusted, however, running `sudo nix-build ...` would use root's git cache for `builtins.fetchgit`, which would effectively re-download the source again.
 
 ### Speeding up the build
 The default mode of operation involves copying the source files multiple times.
-Once from the nix's git cache into the nix store, and again during every build into a temporary location.
 Since the AOSP source tree is very large--this can take a significant amount of time and is especially painful when tweaking configuration files.
-There are patches under `misc/nix.nix` to speed some of this up using reflink (if your filesystem supports that).
-Mine does not, so I looked for another soluation.
-
-The most recent solution for speeding this up relies on user namespaces + bind mounts + bindfs, to simply bind mount the source from /nix/store into the temporary location while building.
+The most recent solution for speeding this up relies on user namespaces + bind mounts + bindfs, in which we bind mount the source directories from `/nix/store` into the temporary location while building.
 Android 10 builds should work fine with read-only source trees.
-However, it sometimes copies files from the source and uses the original permissions set on those files--which does not work for /nix/store which does not have user-write permissions on its files.
+However, it sometimes copies files from the source and uses the original permissions set on those files--which does not work with `/nix/store` which does not have user-write permissions on its files.
 So, a fuse filesystem called "bindfs" used in addition to bind mounts to fake the `u+w` permission on the source files.
 The nix sandbox does not normally allow access to `/dev/fuse`, so this mode is only enabled if an additional sandbox exception is made for `/dev/fuse` with `--extra-sandbox-paths "/dev/fuse?"`
+Using this approach essentially trades off between high IO use for copying the entire source tree, vs high CPU use in bindfs (as all data is being fed through it)
 
 ### Testing / CI / Reproducibility
 
