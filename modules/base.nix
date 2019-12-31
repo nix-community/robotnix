@@ -94,6 +94,12 @@ in
       internal = true;
     };
 
+    arch = mkOption {
+      default = "arm64";
+      type = types.strMatching "(arm64|arm|x86_64|x86)";
+      description = "Architecture of phone, usually set automatically by device";
+    };
+
     variant = mkOption {
       default = "user";
       type = types.strMatching "(user|userdebug|eng)";

@@ -69,7 +69,7 @@ in mkMerge [
 
 # AOSP usability improvements for device builds
 (mkIf ((config.flavor == "vanilla") && (elem config.deviceFamily supportedDeviceFamilies)) {
-  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/arm64/webview.apk";
+  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
 
   removedProductPackages = [ "webview" "Browser2" "QuickSearchBox" ];

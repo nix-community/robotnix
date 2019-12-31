@@ -32,6 +32,7 @@ in
 mkMerge [
   (mkIf ((config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault deviceFamilyMap.${config.device};
+    arch = mkDefault "arm64";
 
     kernel.configName = mkDefault config.deviceFamily;
     kernel.relpath = mkDefault "device/google/${kernelName}-kernel";

@@ -107,7 +107,7 @@ in
       nativeBuildInputs = with pkgs; [
         perl bc nettools openssl rsync gmp libmpc mpfr lz4
         prebuiltGCC prebuiltGCCarm32 prebuiltMisc
-      ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ];
+      ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ];  # TODO: Generalize to other arches
 
       enableParallelBuilding = true;
       makeFlags = [
@@ -118,7 +118,7 @@ in
         #"CROSS_COMPILE_ARM32=arm-linux-androideabi-"
       ] ++ lib.optionals (cfg.compiler == "clang") [
         "CC=clang"
-        "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils
+        "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
       ];
 
       preBuild = ''

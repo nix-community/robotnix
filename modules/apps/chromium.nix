@@ -7,6 +7,7 @@ let
   # enabling/disabling the apps/webview independently, but the benefits
   # outweigh the costs.
   mkBrowser = name: apks.${name}.override {
+    targetCPU = { arm64 = "arm64"; arm = "arm"; x86_64 = "x64"; x86 = "x86";}.${config.arch};
     buildTargets =
       (optional config.apps.${name}.enable "chrome_modern_public_apk") ++
       (optional config.webview.${name}.enable "system_webview_apk");

@@ -48,7 +48,7 @@ in mkMerge [
   #webview.vanadium.availableByDefault = true;
   removedProductPackages = [ "webview" "Vanadium" ]; # Remove from  build. We'll re-add it ourselves
   webview.prebuilt = {
-    apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/arm64/webview.apk";
+    apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/${config.arch}/webview.apk";
     availableByDefault = mkDefault true;
     enable = mkDefault true;
   };

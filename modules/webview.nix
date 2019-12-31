@@ -76,11 +76,11 @@ in
         LOCAL_REQUIRED_MODULES := \
           libwebviewchromium_loader \
           libwebviewchromium_plat_support
-        LOCAL_MODULE_TARGET_ARCH := arm64
+        LOCAL_MODULE_TARGET_ARCH := ${config.arch}
       '';
     }) (filterAttrs (name: m: m.enable) config.webview);
 
-    # TODO: Replace this with something in the overlay
+    # TODO: Replace this with something in the overlay. TODO only enable if there are enabled webviews
     source.dirs."frameworks/base".postPatch = ''
       cp --no-preserve=all -v ${config_webview_packages} core/res/res/xml/config_webview_packages.xml
     '';
