@@ -7,16 +7,16 @@ let
     sargo = "bonito";
   };
   grapheneOSRelease = "2019.12.02.23";
-in mkMerge [
-(mkIf ((config.flavor == "grapheneos") && (elem config.deviceFamily [ "taimen" "crosshatch" ])) {
+in mkIf (config.flavor == "grapheneos") (mkMerge [
+(mkIf (elem config.deviceFamily [ "taimen" "crosshatch" ]) {
   source.buildNumber = "QQ1A.191205.008";
   source.manifest.sha256 = "1a3q8cs3n9r02p5rn03y9dgk18q9i21cf5678h8w6qgqb2b7l1b5";
 })
-(mkIf ((config.flavor == "grapheneos") && (config.deviceFamily == "bonito")) {
+(mkIf (config.deviceFamily == "bonito") {
   source.buildNumber = "QQ1A.191205.011";
   source.manifest.sha256 = "0b8s7qch9a2b9kafrxs3xmcai7d5a0sk5p0kr3ws3idc53szny5q";
 })
-(mkIf ((config.flavor == "grapheneos") && (elem config.deviceFamily [ "crosshatch" "bonito" ])) {
+(mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
   # Hack for crosshatch/bonito since they uses submodules and repo2nix doesn't support that yet.
   kernel.src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
@@ -27,7 +27,7 @@ in mkMerge [
     fetchSubmodules = true;
   };
 })
-(mkIf (config.flavor == "grapheneos") {
+{
   source.manifest.url = "https://github.com/GrapheneOS/platform_manifest.git";
   source.manifest.rev = "refs/tags/${config.source.buildNumber}.${grapheneOSRelease}";
 
@@ -64,5 +64,5 @@ in mkMerge [
   # audit devices using the official upstream build
 
   source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own pinned version
-})
-]
+}
+])
