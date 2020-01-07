@@ -6,24 +6,19 @@ let
     sailfish = "marlin";
     sargo = "bonito";
   };
-  grapheneOSRelease = "2019.12.02.23";
+  grapheneOSRelease = "2020.01.06.21";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
-(mkIf (elem config.deviceFamily [ "taimen" "crosshatch" ]) {
-  source.buildNumber = "QQ1A.191205.008";
-  source.manifest.sha256 = "1a3q8cs3n9r02p5rn03y9dgk18q9i21cf5678h8w6qgqb2b7l1b5";
-})
-(mkIf (config.deviceFamily == "bonito") {
-  source.buildNumber = "QQ1A.191205.011";
-  source.manifest.sha256 = "0b8s7qch9a2b9kafrxs3xmcai7d5a0sk5p0kr3ws3idc53szny5q";
+(mkIf (elem config.deviceFamily [ "taimen" "crosshatch" "bonito" ]) {
+  source.buildNumber = "QQ1A.200105.002";
+  source.manifest.sha256 = "14r4g0zbp6c10li266vg71c5b1vvdkhi5fgv03wc290v1jzw5978";
 })
 (mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
   # Hack for crosshatch/bonito since they uses submodules and repo2nix doesn't support that yet.
   kernel.src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
-    # TODO: Override for just this grapheneos release, since this refers to an old commit for techpack/audio submodule
-    rev = "57bb6aab22f3c8e6059ed6f9088052a458599da8";
-    sha256 = "0bhzdpd7fmfzh1dvxpfsz4993wqyrbzy62vkl7w328b3r5b0i0f6";
+    rev = "${config.source.buildNumber}.${grapheneOSRelease}";
+    sha256 = "02lrkvgkaqjvzjbn9yl0ylf3b38bld57pm7bnvcj79ng9gx20qzc";
     fetchSubmodules = true;
   };
 })
