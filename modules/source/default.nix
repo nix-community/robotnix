@@ -196,7 +196,7 @@ in
       unpackScript = mkAfter ''
         if [[ $useBindMounts = true ]]; then
           cd ..
-          ${pkgs.bindfs}/bin/bindfs --perms=u+w bind-mounts src
+          ${pkgs.bindfs}/bin/bindfs --multithreaded --perms=u+w bind-mounts src
           export sourceRoot=$PWD/src
         fi
       '';
