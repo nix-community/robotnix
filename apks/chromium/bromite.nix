@@ -1,18 +1,18 @@
-{ chromiumBase, fetchFromGitHub }:
+{ chromiumBase, fetchFromGitHub, git }:
 
 let
-  version = "79.0.3945.111";
+  version = "79.0.3945.123";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "1clxm9cfzycdr4j7cryy2ak1im4k4p6ipcdkpmjqqnhnm9fgysjs";
+    sha256 = "16fz7jdb2mvh55hnyl89zfvhvbnq7qnp4ljsfbzrqiphz1xafn0x";
   };
 
 in (chromiumBase.override {
   inherit version;
-  versionCode = "394511100"; # TODO: Calculate
+  versionCode = "394512300"; # TODO: Calculate
   customGnFlags = { # From bromite/build/GN_ARGS
     blink_symbol_level=1;
     dcheck_always_on=false;
@@ -54,11 +54,11 @@ in (chromiumBase.override {
     use_sysroot=false;
   };
 }).overrideAttrs (attrs: {
-  postPatch = attrs.postPatch + ''
+  postPatch = ''
     ( cd src
       cat ${bromite_src}/build/bromite_patches_list.txt | while read patchfile; do
-        patch -p1 < ${bromite_src}/build/patches/$patchfile
+        ${git}/bin/git apply --unsafe-paths "${bromite_src}/build/patches/$patchfile"
       done
     )
-  '';
+  '' + attrs.postPatch;
 })

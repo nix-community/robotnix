@@ -18,7 +18,7 @@ rec {
     inherit (pkgs) fetchFromGitHub git;
   };
   bromite = import ./chromium/bromite.nix {
-    inherit chromiumBase ;
-    inherit (pkgs) fetchFromGitHub;
+    inherit chromiumBase;
+    inherit (pkgs) fetchFromGitHub git;
   };
 }

@@ -28,11 +28,11 @@ in (chromiumBase.override {
   };
 }).overrideAttrs (attrs: {
   # Use git apply below since some of these patches use "git binary diff" format
-  postPatch = attrs.postPatch + ''
+  postPatch = ''
     ( cd src
       for patchfile in ${vanadium_src}/*.patch; do
         ${git}/bin/git apply --unsafe-paths $patchfile
       done
     )
-  '';
+  '' + attrs.postPatch;
 })
