@@ -26,12 +26,13 @@ let
     coral = "coral"; # Pixel 4 XL
     flame = "coral"; # Pixel 4
   };
+  deviceFamily = deviceFamilyMap.${config.device};
 
   kernelName = if (config.deviceFamily == "taimen") then "wahoo" else config.deviceFamily;
 in
 mkMerge [
   (mkIf ((config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
-    deviceFamily = mkDefault deviceFamilyMap.${config.device};
+    deviceFamily = mkDefault deviceFamily;
     arch = mkDefault "arm64";
 
     kernel.configName = mkDefault config.deviceFamily;
@@ -43,7 +44,8 @@ mkMerge [
       # Exclude all devices by default
       "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" "coral"
     ];
-    source.includeGroups = mkDefault [ config.deviceFamily config.kernel.configName ];
+    source.includeGroups = mkDefault ([ config.device config.deviceFamily config.kernel.configName ]
+      ++ (lib.optional (deviceFamily == "taimen") "wahoo"));
   })
 
   # Device-specific overrides
