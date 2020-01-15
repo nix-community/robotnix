@@ -142,7 +142,7 @@ in
     };
   };
 
-  config.source = mkMerge [{
+  config.source = {
     jsonFile = repo2nix {
       manifest = config.source.manifest.url;
       inherit (config.source.manifest) rev sha256 localManifests;
@@ -158,15 +158,8 @@ in
 
     unpackScript = (
       (concatStringsSep "\n" (map (d: optionalString d.enable ''
-        if [[ $useBindMounts = true ]]; then
-          mkdir -p ${d.path}
-          ${pkgs.utillinux}/bin/mount --bind ${d.patchedContents} ${d.path}
-        else
-          echo "${d.contents} -> ${d.path}"
-          mkdir -p $(dirname ${d.path})
-          cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.patchedContents} ${d.path}/
-          chmod -R u+w ${d.path}
-        fi
+        mkdir -p ${d.path}
+        ${pkgs.utillinux}/bin/mount --bind ${d.patchedContents} ${d.path}
       '') (attrValues config.source.dirs))) +
       (concatStringsSep "" (mapAttrsToList (name: p: optionalString config.source.dirs.${p.relpath}.enable
         ((concatMapStringsSep "\n" (c: ''
@@ -178,30 +171,7 @@ in
             ln -sf ./${c.src_rel_to_dest} ${c.dest}
           '') p.linkfiles))
       ) json)));
-    }
-    {
-      unpackScript = mkBefore ''
-        export useBindMounts=$(test -e /dev/fuse && echo true)
-
-        if [[ $useBindMounts = true ]]; then
-          echo " - Found /dev/fuse. Using bind-mounts and bindfs instead of copying source files"
-          mkdir -p bind-mounts src
-          cd bind-mounts
-        else
-          echo " - Could not find /dev/fuse. Copying source files instead of using bind-mounts"
-        fi
-      '';
-    }
-    {
-      unpackScript = mkAfter ''
-        if [[ $useBindMounts = true ]]; then
-          cd ..
-          ${pkgs.bindfs}/bin/bindfs --multithreaded --perms=u+w bind-mounts src
-          export sourceRoot=$PWD/src
-        fi
-      '';
-    }
-  ];
+  };
 
   # Extract only files under nixdroid/ (for debugging with an external AOSP build)
   config.build.debugUnpackScript = pkgs.writeText "debug-unpack.sh" (''

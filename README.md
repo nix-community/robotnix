@@ -70,12 +70,9 @@ To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 ### Speeding up the build
 The default mode of operation involves copying the source files multiple times.
 Since the AOSP source tree is very large--this can take a significant amount of time and is especially painful when tweaking configuration files.
-The most recent solution for speeding this up relies on user namespaces + bind mounts + bindfs, in which we bind mount the source directories from `/nix/store` into the temporary location while building.
-Android 10 builds should work fine with read-only source trees.
-However, it sometimes copies files from the source and uses the original permissions set on those files--which does not work with `/nix/store` which does not have user-write permissions on its files.
-So, a fuse filesystem called "bindfs" used in addition to bind mounts to fake the `u+w` permission on the source files.
-The nix sandbox does not normally allow access to `/dev/fuse`, so this mode is only enabled if an additional sandbox exception is made for `/dev/fuse` with `--extra-sandbox-paths "/dev/fuse?"`
-Using this approach essentially trades off between high IO use for copying the entire source tree, vs high CPU use in bindfs (as all data is being fed through it)
+The most recent solution for speeding this up relies on user namespaces + bind mounts, in which we bind mount the source directories from `/nix/store` into the temporary location while building.
+While android 10 builds should work fine with read-only source trees, sometimes they depend on the `u+w` flag being set on files to be copied.
+These are issues that can be patched individually.
 
 ### Testing / CI / Reproducibility
 

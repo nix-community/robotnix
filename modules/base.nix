@@ -19,12 +19,11 @@ let
       # TODO: Clean this stuff up. unshare / nixdroid-build could probably be combined into a single utility.
       builder = pkgs.writeScript "builder.sh" ''
         #!${pkgs.runtimeShell}
-        export useBindMounts=$(test -e /dev/fuse && echo true)
         export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
         export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
 
-        # If useBindMounts is set then become a fake "root" in a new namespace so we can bind mount sources
-        ${pkgs.toybox}/bin/cat << 'EOF' | ''${useBindMounts:+${pkgs.utillinux}/bin/unshare -m -r} ${pkgs.runtimeShell}
+        # Become a fake "root" in a new namespace so we can bind mount sources
+        ${pkgs.toybox}/bin/cat << 'EOF' | ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.runtimeShell}
         source $stdenv/setup
         genericBuild
         EOF
@@ -52,7 +51,7 @@ let
         export OUT_DIR_COMMON_BASE=$rootDir/out
 
         # Become the original user--not fake root.
-        ${pkgs.toybox}/bin/cat << 'EOF2' | ''${useBindMounts:+fakeuser $SAVED_UID $SAVED_GID} nixdroid-build
+        ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID} nixdroid-build
 
         source build/envsetup.sh
         choosecombo ${config.buildType} ${config.buildProduct} ${config.variant}
@@ -327,17 +326,16 @@ in
 #        debugPatchScript = config.build.debugPatchScript;
         debugEnterEnv = pkgs.writeScript "debug-enter-env.sh" ''
           #!${pkgs.runtimeShell}
-          export useBindMounts=$(test -e /dev/fuse && echo true)
           export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
           export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
-          ''${useBindMounts:+${pkgs.utillinux}/bin/unshare -m -r} ${pkgs.writeScript "debug-enter-env2.sh" ''
+          ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeScript "debug-enter-env2.sh" ''
           export rootDir=$PWD
           cd $(mktemp -d)
           source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
           cd src
 
           # Become the original user--not fake root. Enter an FHS user namespace
-          ''${useBindMounts:+${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID} ${nixdroid-build}/bin/nixdroid-build
+          ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${nixdroid-build}/bin/nixdroid-build
           ''}
         '';
     };

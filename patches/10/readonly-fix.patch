@@ -1,0 +1,12 @@
+diff --git a/core/Makefile b/core/Makefile
+index 4253b7200..ba01f42d9 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -3028,6 +3028,7 @@ INSTALLED_DTBOIMAGE_TARGET := $(PRODUCT_OUT)/dtbo.img
+ ifeq ($(BOARD_AVB_ENABLE),true)
+ $(INSTALLED_DTBOIMAGE_TARGET): $(BOARD_PREBUILT_DTBOIMAGE) $(AVBTOOL) $(BOARD_AVB_DTBO_KEY_PATH)
+ 	cp $(BOARD_PREBUILT_DTBOIMAGE) $@
++	chmod 644 $@
+ 	$(AVBTOOL) add_hash_footer \
+ 	    --image $@ \
+ 	    --partition_size $(BOARD_DTBOIMG_PARTITION_SIZE) \

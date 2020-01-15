@@ -11,6 +11,7 @@ mkMerge [
   # Some android version-specific fixes:
   source.dirs."prebuilts/misc".postPatch = mkIf (config.androidVersion == 9) "ln -sf ${flex}/bin/flex linux-x86/flex/flex-2.5.39";
   source.dirs."build/make".patches = mkIf (config.androidVersion == 10) [
+    ../patches/10/readonly-fix.patch
     (pkgs.substituteAll {
       src = ../patches/10/partition-size-fix.patch;
       inherit (pkgs) coreutils;
