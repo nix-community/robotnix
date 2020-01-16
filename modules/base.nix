@@ -48,7 +48,7 @@ let
       DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
 
       buildPhase = ''
-        export OUT_DIR_COMMON_BASE=$rootDir/out
+        export OUT_DIR=$rootDir/out
 
         # Become the original user--not fake root.
         ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID} nixdroid-build
@@ -206,8 +206,7 @@ in
   };
 
   config = {
-    buildProduct = mkIf (config.device != null) (mkOptionDefault "aosp_${config.device}");
-    deviceFamily = mkIf (config.device != null) (mkOptionDefault config.device);
+    buildProduct = mkIf (config.device != null) (mkDefault "aosp_${config.device}");
 
     apiLevel = mkIf (config.androidVersion == 10) "29";
 
@@ -280,8 +279,8 @@ in
           find $ANDROID_PRODUCT_OUT -maxdepth 1 -type f | xargs -I {} cp --reflink=auto {} $out/
           cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.buildProduct}-target_files-${config.buildNumber}.zip $out/
 
-          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
-          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/soong/host/linux-x86/* $bin/
+          cp --reflink=auto -r $OUT_DIR/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
+          cp --reflink=auto -r $OUT_DIR/soong/host/linux-x86/* $bin/
         '';
       };
 
@@ -294,8 +293,8 @@ in
         # Just copy some things that are useful for debugging
         installPhase = ''
           mkdir -p $out
-          cp -r $OUT_DIR_COMMON_BASE/src/*.{log,gz} $out/
-          cp -r $OUT_DIR_COMMON_BASE/src/.module_paths $out/
+          cp -r $OUT_DIR/*.{log,gz} $out/
+          cp -r $OUT_DIR/.module_paths $out/
         '';
       };
 
@@ -303,7 +302,7 @@ in
         name = "android-sdk_${config.buildNumber}_linux-x86.zip";
         makeTargets = [ "dist" "sdk" ];
         installPhase = ''
-          cp --reflink=auto -r $OUT_DIR_COMMON_BASE/src/host/linux-x86/sdk/sdk/android-sdk_${config.buildNumber}_linux-x86.zip $out
+          cp --reflink=auto -r $OUT_DIR/host/linux-x86/sdk/sdk/android-sdk_${config.buildNumber}_linux-x86.zip $out
         '';
       };
 
@@ -315,8 +314,8 @@ in
         # Just copy some things that are useful for debugging
         installPhase = ''
           mkdir -p $out
-          cp -r $OUT_DIR_COMMON_BASE/src/*.{log,gz} $out/
-          cp -r $OUT_DIR_COMMON_BASE/src/.module_paths $out/
+          cp -r $OUT_DIR/*.{log,gz} $out/
+          cp -r $OUT_DIR/.module_paths $out/
         '';
       };
 
