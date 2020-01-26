@@ -1,18 +1,18 @@
 { chromiumBase, fetchFromGitHub, git }:
 
 let
-  version = "79.0.3945.123";
+  version = "79.0.3945.139";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "16fz7jdb2mvh55hnyl89zfvhvbnq7qnp4ljsfbzrqiphz1xafn0x";
+    sha256 = "00fz7jdb2mvh55hnyl89zfvhvbnq7qnp4ljsfbzrqiphz1xafn0x";
   };
 
 in (chromiumBase.override {
   inherit version;
-  versionCode = "394512300"; # TODO: Calculate
+  versionCode = "394513900"; # TODO: Calculate
   customGnFlags = { # From bromite/build/GN_ARGS
     blink_symbol_level=1;
     dcheck_always_on=false;
