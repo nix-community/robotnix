@@ -6,11 +6,11 @@ let
     sailfish = "marlin";
     sargo = "bonito";
   };
-  grapheneOSRelease = "2020.01.06.21";
+  grapheneOSRelease = "2020.02.04.01";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
-(mkIf (elem config.deviceFamily [ "taimen" "crosshatch" "bonito" ]) {
-  source.buildNumber = "QQ1A.200105.002";
-  source.manifest.sha256 = "14r4g0zbp6c10li266vg71c5b1vvdkhi5fgv03wc290v1jzw5978";
+(mkIf ((elem config.deviceFamily [ "taimen" "crosshatch" "bonito" ]) || (config.device == "x86")) {
+  source.buildNumber = "QQ1A.200205.002";
+  source.manifest.sha256 = "10p0il9zjn5m4l3v0kn3nwqhp7yq3qbb6yx3klhflcql4f2h5a4b";
 })
 (mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
   # Hack for crosshatch/bonito since they uses submodules and repo2nix doesn't support that yet.
