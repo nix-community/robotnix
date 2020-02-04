@@ -7,7 +7,7 @@ let
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "00fz7jdb2mvh55hnyl89zfvhvbnq7qnp4ljsfbzrqiphz1xafn0x";
+    sha256 = "0x1asiwyhl3xshy3aj45p1cak9am0p8xrkrlbkbxpfv4cja49gj0";
   };
 
 in (chromiumBase.override {
