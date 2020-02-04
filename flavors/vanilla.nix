@@ -27,10 +27,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
   kernel.useCustom = mkDefault config.signBuild;
 })
-(mkIf (elem config.deviceFamily [ "taimen" "bonito" ]) {
-  source.buildNumber = "QQ1A.200105.002";
-  source.manifest.rev = "android-10.0.0_r21";
-  source.manifest.sha256 = "037nrr6f6l2b1syd5j3l754z9p525bmy72h45ss77wj62c1jl2hi";
+(mkIf (elem config.deviceFamily [ "taimen" "bonito" "crosshatch" ]) {
+  source.buildNumber = "QQ1A.200205.002";
+  source.manifest.rev = "android-10.0.0_r26";
+  source.manifest.sha256 = "01yylmap8l3mvvn1ij47z6kqli8f3i4w823kgnx6mf95inwqbq88";
 })
 (mkIf (config.deviceFamily == "taimen") {
   kernel.src = kernelSrc {
@@ -39,9 +39,6 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
 })
 (mkIf (config.deviceFamily == "crosshatch") {
-  source.buildNumber = "QQ1A.200105.003";
-  source.manifest.rev = "android-10.0.0_r22";
-  source.manifest.sha256 = "1n779k3xhqnzqfxygbfjrqaxsmzwwd3sdrxjwhwjv8z14vg392gd";
   kernel.src = kernelSrc {
     tag = "android-10.0.0_r0.26";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
@@ -54,9 +51,9 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
 })
 (mkIf (config.deviceFamily == "coral") {
-  source.buildNumber = "QQ1B.200105.004";
-  source.manifest.rev = "android-10.0.0_r23";
-  source.manifest.sha256 = "069y5w9zzs3fykf1by4cjs9h1vn0f2j9gkyxsy08pf09fndxhrg2";
+  source.buildNumber = "QQ1B.200205.002";
+  source.manifest.rev = "android-10.0.0_r27";
+  source.manifest.sha256 = "09lrpq234d8dd5svvg8cssqimjnj0mvldg1iiscxzvdb0mc6qlrd";
   kernel.src = kernelSrc {
     tag = "android-10.0.0_r0.35";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
