@@ -1,18 +1,18 @@
 { chromiumBase, fetchFromGitHub, git }:
 
 let
-  version = "79.0.3945.139";
+  version = "80.0.3987.78";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "0x1asiwyhl3xshy3aj45p1cak9am0p8xrkrlbkbxpfv4cja49gj0";
+    sha256 = "11z4ahmplfv7nm2gxvwa73xgjyhrqmwvxqszcxn4npk7n1mpj6k5";
   };
 
 in (chromiumBase.override {
   inherit version;
-  versionCode = "394513900"; # TODO: Calculate
+  versionCode = "398778000"; # TODO: Calculate
   customGnFlags = { # From bromite/build/GN_ARGS
     blink_symbol_level=1;
     dcheck_always_on=false;
@@ -43,7 +43,6 @@ in (chromiumBase.override {
     is_official_build=true;
     rtc_build_examples=false;
     safe_browsing_mode=0;
-    strip_absolute_paths_from_debug_symbols=true;
     symbol_level=1;
     use_debug_fission=true;
     use_errorprone_java_compiler=false;
@@ -52,6 +51,9 @@ in (chromiumBase.override {
     chrome_pgo_phase=0;
     full_wpo_on_official=true;
     use_sysroot=false;
+
+    # XXX: Hack. Not sure why it's not being set currectly
+    rtc_use_x11=false;
   };
 }).overrideAttrs (attrs: {
   postPatch = ''
