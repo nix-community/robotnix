@@ -8,8 +8,8 @@ with lib;
   #flavor = "grapheneos"; # "vanilla" is another option
 
   # Don't forget to update these for each unique build. Needed for the updater
-  buildNumber = "2020.02.04.16";
-  buildDateTime = 1580828894;
+  buildNumber = "2020.02.07.17";
+  buildDateTime = 1581095269;
 
   # A _string_ of the path for the key store.
   keyStorePath = "/var/secrets/android-keys";
@@ -31,10 +31,9 @@ with lib;
     auditor.domain = "attestation.daniel.fullmer.me";
   };
 
-  # Using chromium webview for now as bromite/vanadium are at chromium 79 which doesn't support api 29 webview.
-  webview.chromium.enable = true;
-  webview.chromium.availableByDefault = true;
-  apps.chromium.enable = true; # Might as well
+  webview.bromite.enable = true;
+  webview.bromite.availableByDefault = true;
+  apps.bromite.enable = true; # Might as well
   webview.prebuilt.enable = true; # Just for testing
 
   # Custom hosts file
