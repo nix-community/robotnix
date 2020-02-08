@@ -52,7 +52,7 @@ in (chromiumBase.override {
     full_wpo_on_official=true;
     use_sysroot=false;
 
-    # XXX: Hack. Not sure why it's not being set currectly
+    # XXX: Hack. Not sure why it's not being set correctly
     rtc_use_x11=false;
   };
 }).overrideAttrs (attrs: {
