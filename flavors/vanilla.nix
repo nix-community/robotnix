@@ -27,10 +27,17 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
   kernel.useCustom = mkDefault config.signBuild;
 })
-(mkIf (elem config.deviceFamily [ "taimen" "bonito" "crosshatch" ]) {
-  source.buildNumber = "QQ1A.200205.002";
-  source.manifest.rev = "android-10.0.0_r26";
-  source.manifest.sha256 = "01yylmap8l3mvvn1ij47z6kqli8f3i4w823kgnx6mf95inwqbq88";
+(mkIf ((elem config.deviceFamily [ "taimen" "bonito" "crosshatch" ]) || (config.device == "x86")) {
+  source.buildNumber = "QQ1A.200305.002";
+  source.manifest.rev = "android-10.0.0_r30";
+  source.manifest.sha256 = "1kvbzcxbn78kvjnd96mjy59yfqyaqkyd28kay24k85lb04991qxx";
+
+  # TODO: temporary fix for missing apifinder until upstream issue is resolved: https://issuetracker.google.com/issues/150626837
+  source.dirs."tools/apifinder".contents = pkgs.fetchgit {
+    url = "https://android.googlesource.com/platform/tools/apifinder";
+    rev = "refs/tags/android-mainline-10.0.0_r9";
+    sha256 =  "0hcbvs6dns11b83877wy5g3pzyq8f7f71mcas6npi5y8ka503kv9";
+  };
 })
 (mkIf (config.deviceFamily == "taimen") {
   kernel.src = kernelSrc {
@@ -51,16 +58,16 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
 })
 (mkIf (config.deviceFamily == "coral") {
-  source.buildNumber = "QQ1B.200205.002";
-  source.manifest.rev = "android-10.0.0_r27";
-  source.manifest.sha256 = "09lrpq234d8dd5svvg8cssqimjnj0mvldg1iiscxzvdb0mc6qlrd";
+  source.buildNumber = "QQ1B.200305.002";
+  source.manifest.rev = "android-10.0.0_r31";
+  source.manifest.sha256 = "1bwl12dj7x0a1nxxkm9k6a5ixgcmiw724fdbw8ny2ycm4divv763";
   kernel.src = kernelSrc {
     tag = "android-10.0.0_r0.35";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
   };
 })
 (mkIf (config.buildProduct == "sdk") {
-  source.manifest.rev = "platform-tools-29.0.5";
+  source.manifest.rev = "platform-tools-29.0.5"; # TODO: 29.0.6 is out now
   source.manifest.sha256 = "0v9zaplr993wa8fgd0g7mik3qrcbq6y1ywpmq1jdwzdz2yawjacp";
 })
 

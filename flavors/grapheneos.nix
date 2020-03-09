@@ -6,11 +6,11 @@ let
     sailfish = "marlin";
     sargo = "bonito";
   };
-  grapheneOSRelease = "2020.02.04.01";
+  grapheneOSRelease = "2020.03.04.16";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 (mkIf ((elem config.deviceFamily [ "taimen" "crosshatch" "bonito" ]) || (config.device == "x86")) {
-  source.buildNumber = "QQ1A.200205.002";
-  source.manifest.sha256 = "10p0il9zjn5m4l3v0kn3nwqhp7yq3qbb6yx3klhflcql4f2h5a4b";
+  source.buildNumber = "QQ2A.200305.002";
+  source.manifest.sha256 = "1s2y87rzg2lcrqfx9gkjkz4aaazn9k4s0pk4lgwki7mpsh2pp3c0";
 })
 (mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
   # Hack for crosshatch/bonito since they uses submodules and repo2nix doesn't support that yet.
@@ -18,7 +18,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = "${config.source.buildNumber}.${grapheneOSRelease}";
-    sha256 = "02lrkvgkaqjvzjbn9yl0ylf3b38bld57pm7bnvcj79ng9gx20qzc";
+    sha256 = "08dc9q4bldli85zp0lwc2jqhpqwxclkqg030iq7qm7ygqckb22kh";
     fetchSubmodules = true;
   };
 })
@@ -37,16 +37,11 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/crosshatch".enable = false;
   source.dirs."kernel/google/bonito".enable = false;
 
-  # Enable Vanadium (GraphaneOS's chromium fork). It currently doesn't work with Android 10?
-  #apps.vanadium.enable = true; # Just stick to using their prebuilt vanadium for now
-  #webview.vanadium.enable = true;
-  #webview.vanadium.availableByDefault = true;
-  removedProductPackages = [ "webview" "Vanadium" ]; # Remove from  build. We'll re-add it ourselves
-  webview.prebuilt = {
-    apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/${config.arch}/webview.apk";
-    availableByDefault = mkDefault true;
-    enable = mkDefault true;
-  };
+  # Enable Vanadium (GraphaneOS's chromium fork).
+  apps.vanadium.enable = true;
+  webview.vanadium.enable = true;
+  webview.vanadium.availableByDefault = true;
+  removedProductPackages = [ "webview" "Vanadium" ]; # Remove from build. We'll re-add it ourselves
 
   # GrapheneOS just disables apex updating wholesale
   apex.enable = false;
