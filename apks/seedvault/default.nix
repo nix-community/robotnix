@@ -4,7 +4,7 @@ let
 in
 buildGradle rec {
   name = "Seedvault-${version}.apk";
-  version = "1.0.0-alpha1"; # Latest in development branch as of 2019-12-22
+  version = "1.0.0"; # Latest in development branch as of 2019-12-22
 
   envSpec = ./gradle-env.json;
 
@@ -12,7 +12,7 @@ buildGradle rec {
     owner = "stevesoltys";
     repo = "seedvault";
     rev = version;
-    sha256 = "1dca93hcm0kpm0941daxwfimzss2imxyjpsdlf2fw8vh3x0sdb6y";
+    sha256 = "0pzx7gbn3lldi8gzdf5ww1yljs54yicv0i5dxnlvmpiy249cag2m";
   });
 
   gradleFlags = [ "assembleRelease" ];
