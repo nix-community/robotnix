@@ -3,7 +3,7 @@
 with pkgs;
 with lib;
 {
-  # These are required options, but commented out here since I set it programmatically my devices elsewhere
+  # These are required options, but commented out here since I set it programmatically for my devices elsewhere
   #device = "crosshatch";
   #flavor = "grapheneos"; # "vanilla" is another option
 
