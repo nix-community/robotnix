@@ -8,70 +8,6 @@ let
 
   # TODO: Not exactly sure what i'm doing.
   putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
-
-  mkAndroid =
-    { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
-    # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
-    pkgs.stdenvNoCC.mkDerivation (rec {
-      inherit name;
-      srcs = [];
-
-      # TODO: Clean this stuff up. unshare / nixdroid-build could probably be combined into a single utility.
-      builder = pkgs.writeScript "builder.sh" ''
-        #!${pkgs.runtimeShell}
-        export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
-        export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
-
-        # Become a fake "root" in a new namespace so we can bind mount sources
-        ${pkgs.toybox}/bin/cat << 'EOF' | ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.runtimeShell}
-        source $stdenv/setup
-        genericBuild
-        EOF
-      '';
-
-      inherit outputs;
-
-      nativeBuildInputs = [ nixdroid-build fakeuser ];
-
-      unpackPhase = ''
-        ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
-
-        export rootDir=$PWD
-        source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
-      '';
-
-      configurePhase = ":";
-
-      ANDROID_JAVA_HOME="${pkgs.jdk.home}"; # This is already set in android 10. They use their own prebuilt jdk
-      BUILD_NUMBER=config.buildNumber;
-      BUILD_DATETIME=config.buildDateTime;
-      DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
-
-      buildPhase = ''
-        export OUT_DIR=$rootDir/out
-
-        # Become the original user--not fake root.
-        ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID} nixdroid-build
-
-        source build/envsetup.sh
-        choosecombo ${config.buildType} ${config.buildProduct} ${config.variant}
-        export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
-        make ${toString makeTargets}
-        echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
-
-        EOF2
-      '';
-
-      inherit installPhase;
-
-      dontFixup = true;
-      dontMoveLib64 = true;
-    } // (lib.optionalAttrs config.ccache.enable {
-      CCACHE_EXEC = pkgs.ccache + /bin/ccache;
-      USE_CCACHE = "true";
-      CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
-      CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
-    }));
 in
 {
   options = {
@@ -265,6 +201,71 @@ in
           ${pkgs.openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${config.build.x509 name} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
         ''));
 
+      mkAndroid =
+        { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
+        # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
+        pkgs.stdenvNoCC.mkDerivation (rec {
+          inherit name;
+          srcs = [];
+
+          # TODO: Clean this stuff up. unshare / robotnix-build could probably be combined into a single utility.
+          builder = pkgs.writeScript "builder.sh" ''
+            #!${pkgs.runtimeShell}
+            export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
+            export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
+
+            # Become a fake "root" in a new namespace so we can bind mount sources
+            ${pkgs.toybox}/bin/cat << 'EOF' | ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.runtimeShell}
+            source $stdenv/setup
+            genericBuild
+            EOF
+          '';
+
+          inherit outputs;
+
+          nativeBuildInputs = [ robotnix-build fakeuser ];
+
+          unpackPhase = ''
+            ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
+
+            export rootDir=$PWD
+            source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
+          '';
+
+          configurePhase = ":";
+
+          ANDROID_JAVA_HOME="${pkgs.jdk.home}"; # This is already set in android 10. They use their own prebuilt jdk
+          BUILD_NUMBER=config.buildNumber;
+          BUILD_DATETIME=config.buildDateTime;
+          DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
+
+          buildPhase = ''
+            export OUT_DIR=$rootDir/out
+
+            # Become the original user--not fake root.
+            ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID} robotnix-build
+
+            source build/envsetup.sh
+            choosecombo ${config.buildType} ${config.buildProduct} ${config.variant}
+            export NINJA_ARGS="${toString ninjaArgs}"
+            #export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
+            make ${toString makeTargets}
+            echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
+
+            EOF2
+          '';
+
+          inherit installPhase;
+
+          dontFixup = true;
+          dontMoveLib64 = true;
+        } // (lib.optionalAttrs config.ccache.enable {
+          CCACHE_EXEC = pkgs.ccache + /bin/ccache;
+          USE_CCACHE = "true";
+          CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
+          CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
+        }));
+
       android = mkAndroid {
         name = "robotnix-${config.buildProduct}-${config.buildNumber}";
         makeTargets = [ "brillo_update_payload" "target-files-package" ];
@@ -275,8 +276,7 @@ in
         installPhase = ''
           mkdir -p $out $bin
           export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
-          # Just grab top-level build products (for emulator, not recursive) + target_files
-          find $ANDROID_PRODUCT_OUT -maxdepth 1 -type f | xargs -I {} cp --reflink=auto {} $out/
+
           cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.buildProduct}-target_files-${config.buildNumber}.zip $out/
 
           cp --reflink=auto -r $OUT_DIR/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
