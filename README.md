@@ -48,31 +48,24 @@ $ cd ../..
 ```
 
 Next, build and sign your release.
-There are two ways to create a build.
-One involves creating a `build-script` which does the final build steps of signing target files and creating ota/img files outside of nix:
+There are two ways to do this.
+The first option involves creating a `build-script` which does the final build steps of signing target files and creating ota/img files outside of nix:
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A releaseScript -o release
 $ ./release ./keys/crosshatch
 ```
-A full android 10 build takes about 4 hours on my i7-3770 with 16GB of memory.
-One may use the `--cores` option for `nix-build` to set the number of cores to use.
-
 One advantage of using a release script as above is that the build can take place on a different machine than the signing.
 `nix-copy-closure` could be used to transfer this script and its dependencies to another computer to finish the release.
 
-The other way to create a build is to build the final products entirely inside nix instead of using `releaseScript`
+The other option is to build the final products entirely inside nix instead of using `releaseScript`
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
 ```
 This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 
-### Speeding up the build
-The default mode of operation involves copying the source files multiple times.
-Since the AOSP source tree is very large--this can take a significant amount of time and is especially painful when tweaking configuration files.
-The most recent solution for speeding this up relies on user namespaces + bind mounts, in which we bind mount the source directories from `/nix/store` into the temporary location while building.
-While android 10 builds should work fine with read-only source trees, sometimes they depend on the `u+w` flag being set on files to be copied.
-These are issues that can be patched individually.
+A full android 10 build takes about 4 hours on my i7-3770 with 16GB of memory.
+One may use the `--cores` option for `nix-build` to set the number of cores to use.
 
 ### Testing / CI / Reproducibility
 
