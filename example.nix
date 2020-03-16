@@ -8,8 +8,8 @@ with lib;
   #flavor = "grapheneos"; # "vanilla" is another option
 
   # Don't forget to update these for each unique build. Needed for the updater
-  buildNumber = "2020.02.07.17";
-  buildDateTime = 1581095269;
+  buildNumber = "2020.03.16.18";
+  buildDateTime = 1584398664; # Use `date "+%s"` to get the current time
 
   # A _string_ of the path for the key store.
   keyStorePath = "/var/secrets/android-keys";
@@ -30,11 +30,6 @@ with lib;
     auditor.enable = true;
     auditor.domain = "attestation.daniel.fullmer.me";
   };
-
-  webview.bromite.enable = true;
-  webview.bromite.availableByDefault = true;
-  apps.bromite.enable = true; # Might as well
-  webview.prebuilt.enable = true; # Just for testing
 
   # Custom hosts file
   hosts = fetchurl { # 2019-08-14

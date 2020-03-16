@@ -38,10 +38,10 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/bonito".enable = false;
 
   # Enable Vanadium (GraphaneOS's chromium fork).
-  apps.vanadium.enable = true;
-  webview.vanadium.enable = true;
-  webview.vanadium.availableByDefault = true;
-  removedProductPackages = [ "webview" "Vanadium" ]; # Remove from build. We'll re-add it ourselves
+  apps.vanadium.enable = mkDefault true;
+  webview.vanadium.enable = mkDefault true;
+  webview.vanadium.availableByDefault = mkDefault true;
+  removedProductPackages = [ "webview" "Vanadium" ]; # Remove upstream's version from build. We re-add it ourselves
 
   # GrapheneOS just disables apex updating wholesale
   apex.enable = false;
