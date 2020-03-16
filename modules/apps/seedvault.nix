@@ -14,7 +14,7 @@ in
       apk = apks.seedvault;
       packageName = "com.stevesoltys.seedvault";
       privileged = true;
-      privappPermissions = [ "BACKUP" "MANAGE_USB" "MANAGE_DOCUMENTS" "WRITE_SECURE_SETTINGS" ];
+      privappPermissions = [ "BACKUP" "MANAGE_USB" "MANAGE_DOCUMENTS" "WRITE_SECURE_SETTINGS" "INSTALL_PACKAGES" ];
     };
 
     etc."sysconfig/com.stevesoltys.seedvault.xml".text = ''

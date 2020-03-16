@@ -4,7 +4,7 @@ let
 in
 buildGradle rec {
   name = "Seedvault-${version}.apk";
-  version = "1.0.0"; # Latest in development branch as of 2019-12-22
+  version = "1.0.0";
 
   envSpec = ./gradle-env.json;
 
