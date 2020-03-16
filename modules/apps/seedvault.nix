@@ -21,12 +21,12 @@ in
       <?xml version="1.0" encoding="utf-8"?>
       <config>
         <backup-transport-whitelisted-service
-          service="com.stevesoltys.seedvault/.transport.ConfigurableBackupTransportService"/>
+          service="com.stevesoltys.seedvault.transport.ConfigurableBackupTransportService"/>
       </config>
     '';
 
     # Set as default
-    resources."frameworks/base/packages/SettingsProvider".def_backup_transport = "com.stevesoltys.seedvault/.transport.ConfigurableBackupTransportService";
+    resources."frameworks/base/packages/SettingsProvider".def_backup_transport = "com.stevesoltys.seedvault.transport.ConfigurableBackupTransportService";
 
     # TODO: is the above working?
     # $ bmgr list transports
