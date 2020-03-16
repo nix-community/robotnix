@@ -4,7 +4,7 @@ rec {
   android-prepare-vendor = callPackage ./android-prepare-vendor.nix { inherit api; };
 
   buildVendorFiles =
-    { device, img, ota ? null, full ? false, timestamp ? 1, buildID ? "nixdroid", configFile ? null }:
+    { device, img, ota ? null, full ? false, timestamp ? 1, buildID ? "robotnix", configFile ? null }:
     runCommand "vendor-files-${device}" {} ''
       ${android-prepare-vendor}/execute-all.sh \
         ${lib.optionalString full "--full"} \

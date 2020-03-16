@@ -2,7 +2,7 @@
 
 with lib;
 let
-  nixdroid-env = pkgs.callPackage ../buildenv.nix {};
+  robotnix-env = pkgs.callPackage ../buildenv.nix {};
 
   avbFlags = {
     verity_only = [
@@ -82,8 +82,8 @@ let
       KEYSDIR=keys_copy
     fi
 
-    # TODO: Try to get rid of this nixdroid-env wrapper.
-    cat << 'EOF' | ${nixdroid-env}/bin/nixdroid-build
+    # TODO: Try to get rid of this robotnix-env wrapper.
+    cat << 'EOF' | ${robotnix-env}/bin/robotnix-build
     ${commands}
     EOF
 

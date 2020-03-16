@@ -11,8 +11,8 @@ let
     buildTargets =
       (optional config.apps.${name}.enable "chrome_modern_public_apk") ++
       (optional config.webview.${name}.enable "system_webview_apk");
-    packageName = "org.nixdroid.${name}"; # Override package names here so we don't have to worry about conflicts
-    webviewPackageName = "org.nixdroid.${name}.webview";
+    packageName = "org.robotnix.${name}"; # Override package names here so we don't have to worry about conflicts
+    webviewPackageName = "org.robotnix.${name}.webview";
   };
   chromium = mkBrowser "chromium";
   bromite = mkBrowser "bromite";
@@ -32,7 +32,7 @@ in
       });
     mkWebViewCfg = name: displayName: browser: {
       webview.${name} = {
-        packageName = "org.nixdroid.${name}.webview";
+        packageName = "org.robotnix.${name}.webview";
         description = "${displayName} WebView";
         apk = "${browser}/SystemWebView.apk";
       };

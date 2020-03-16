@@ -62,7 +62,7 @@ in
   };
 
   config = {
-    source.dirs."nixdroid/etcfiles".contents = (pkgs.runCommand "nixdroid-etcfiles" {} (''
+    source.dirs."robotnix/etcfiles".contents = (pkgs.runCommand "robotnix-etcfiles" {} (''
       mkdir -p $out
       cp ${androidmk} $out/Android.mk
     '' + (concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (attrValues config.etc))));

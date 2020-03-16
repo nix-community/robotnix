@@ -1,6 +1,6 @@
 with (import ./pkgs.nix {});
 symlinkJoin {
-  name = "nixdroid-ota";
+  name = "robotnix-ota";
   paths = [
     (import ./default.nix { configuration={
       imports = [./example.nix];

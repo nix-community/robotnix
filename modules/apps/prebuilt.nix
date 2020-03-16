@@ -127,7 +127,7 @@ in
 
   config = {
     source.dirs = listToAttrs (map (prebuilt: {
-      name = "nixdroid/prebuilt/${prebuilt.name}";
+      name = "robotnix/prebuilt/${prebuilt.name}";
       value = {
         contents = let
           # Don't use the signed version if it's an apk that is going to get signed when signing target-files.

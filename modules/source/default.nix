@@ -173,19 +173,19 @@ in
       ) json)));
   };
 
-  # Extract only files under nixdroid/ (for debugging with an external AOSP build)
+  # Extract only files under robotnix/ (for debugging with an external AOSP build)
   config.build.debugUnpackScript = pkgs.writeText "debug-unpack.sh" (''
-    rm -rf nixdroid
+    rm -rf robotnix
     '' +
-    (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "nixdroid/" d.path)) ''
+    (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "robotnix/" d.path)) ''
       mkdir -p $(dirname ${d.path})
       echo "${d.contents} -> ${d.path}"
       cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.patchedContents} ${d.path}/
     '') (attrValues config.source.dirs))) + ''
-    chmod -R u+w nixdroid/
+    chmod -R u+w robotnix/
   '');
 
-  # Patch files in other sources besides nixdroid/*
+  # Patch files in other sources besides robotnix/*
   config.build.debugPatchScript = pkgs.writeText "debug-patch.sh"
     (concatStringsSep "\n" (map (d: ''
       ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.path} < ${p}") d.patches}

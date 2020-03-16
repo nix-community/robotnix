@@ -3,7 +3,7 @@
 with lib;
 let
   usePatchedCoreutils = false;
-  nixdroid-build = pkgs.callPackage ../buildenv.nix {};
+  robotnix-build = pkgs.callPackage ../buildenv.nix {};
   fakeuser = pkgs.callPackage ./fakeuser {};
 
   # TODO: Not exactly sure what i'm doing.
@@ -224,24 +224,24 @@ in
     source.dirs."build/make".postPatch = ''
       ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' target/product/*.mk") config.removedProductPackages}
     '' + (if (config.androidVersion >= 10) then ''
-      echo "\$(call inherit-product-if-exists, nixdroid/config/system.mk)" >> target/product/handheld_system.mk
-      echo "\$(call inherit-product-if-exists, nixdroid/config/product.mk)" >> target/product/handheld_product.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/handheld_system.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/handheld_product.mk
     '' else ''
-      echo "\$(call inherit-product-if-exists, nixdroid/config/system.mk)" >> target/product/core.mk
-      echo "\$(call inherit-product-if-exists, nixdroid/config/product.mk)" >> target/product/core.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/core.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/core.mk
     '');
 
-    source.dirs."nixdroid/config".contents = let
+    source.dirs."robotnix/config".contents = let
       systemMk = pkgs.writeTextFile { name = "system.mk"; text = config.system.extraConfig; };
       productMk = pkgs.writeTextFile { name = "product.mk"; text = config.product.extraConfig; };
     in
-      pkgs.runCommand "nixdroid-config" {} ''
+      pkgs.runCommand "robotnix-config" {} ''
         mkdir -p $out
         cp ${systemMk} $out/system.mk
         cp ${productMk} $out/product.mk
       '';
 
-    build = {
+    build = rec {
       # TODO: Is there a nix-native way to get this information instead of using IFD
       _keyPath = keyStorePath: name:
         let deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
@@ -266,7 +266,7 @@ in
         ''));
 
       android = mkAndroid {
-        name = "nixdroid-${config.buildProduct}-${config.buildNumber}";
+        name = "robotnix-${config.buildProduct}-${config.buildNumber}";
         makeTargets = [ "brillo_update_payload" "target-files-package" ];
         outputs = [ "out" "bin" ];
         # Kinda ugly to just throw all this in $bin/
@@ -287,7 +287,7 @@ in
       hostTools = config.build.android.bin;
 
       checkAndroid = mkAndroid {
-        name = "nixdroid-check-${config.device}-${config.buildNumber}";
+        name = "robotnix-check-${config.device}-${config.buildNumber}";
         makeTargets = [ "brillo_update_payload" "target-files-package" ];
         ninjaArgs = "-n"; # Pretend to run the actual build steps
         # Just copy some things that are useful for debugging
@@ -308,7 +308,7 @@ in
 
       # TODO: Unify with checkAndroid abovee
       checkSdk = mkAndroid {
-        name = "nixdroid-check-${config.buildProduct}-${config.buildNumber}";
+        name = "robotnix-check-${config.buildProduct}-${config.buildNumber}";
         makeTargets = [ "sdk" ];
         ninjaArgs = "-n"; # Pretend to run the actual build steps
         # Just copy some things that are useful for debugging
@@ -334,7 +334,7 @@ in
           cd src
 
           # Become the original user--not fake root. Enter an FHS user namespace
-          ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${nixdroid-build}/bin/nixdroid-build
+          ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${robotnix-build}/bin/robotnix-build
           ''}
         '';
     };

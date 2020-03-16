@@ -1,4 +1,4 @@
-{ config, pkgs, apks, lib, nixdroidlib, ... }:
+{ config, pkgs, apks, lib, robotnixlib, ... }:
 
 with lib;
 let
@@ -59,7 +59,7 @@ in
     apps.prebuilt."F-Droid".apk = apks.fdroid;
 
     # TODO: Put this under product/
-    source.dirs."nixdroid/apps/F-DroidPrivilegedExtension" = {
+    source.dirs."robotnix/apps/F-DroidPrivilegedExtension" = {
       contents = privext;
       patches = [
         (pkgs.substituteAll {
@@ -74,7 +74,7 @@ in
     etc = mkIf (cfg.additionalRepos != {}) {
       "org.fdroid.fdroid/additional_repos.xml" = {
         partition = "system"; # TODO: Make this work in /product partition
-        text = nixdroidlib.configXML {
+        text = robotnixlib.configXML {
           # Their XML schema is just a list of strings. Each 7 entries represents one repo.
           additional_repos = flatten (mapAttrsToList (_: repo: with repo; (map (v: toString v) [
             name

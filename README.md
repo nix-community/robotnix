@@ -1,11 +1,11 @@
-# NixDroid
+# RobotNix - Building Android (AOSP) with Nix
 
-This is a fork of the ajs124's NixDroid, focusing on customized vanilla-ish AOSP targeting Pixel devices.
+This project enables using nix to build (optionally customized) Android targeting Pixel devices.
 Some features include:
  - A NixOS-style module system for customizing various aspects of the build
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader
- - [GrapheneOS](https://grapheneos.org/) support
  - Android 10 support
+ - [GrapheneOS](https://grapheneos.org/) support
  
 Some optional nixos-style modules include:
  - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Backup](https://github.com/stevesoltys/backup)
@@ -15,7 +15,7 @@ Some optional nixos-style modules include:
  - Certain google apps (currently just stuff for Google Fi)
  - Easily setting various framework configuration settings such as those found [here](https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/values/config.xml)
  - Custom built kernels
- - Setting a custom /etc/hosts file
+ - Custom `/etc/hosts` file
  - Extracting vendor blobs from Google's images using [android-prepare-vendor](https://github.com/anestisb/android-prepare-vendor)
 
 Further goals include:
@@ -30,7 +30,7 @@ This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) 
 ## Build Instructions
 A one line `.img` build:
 ```console
-$ nix-build "https://github.com/danielfullmer/NixDroid/archive/vanilla.tar.gz" --arg configuration '{device="crosshatch";}' -A img
+$ nix-build "https://github.com/danielfullmer/RobotNix/archive/master.tar.gz" --arg configuration '{device="crosshatch";}' -A img
 ```
 this will build an image signed with `test-keys`, so don't use it for anything other than testing.
 
@@ -43,7 +43,7 @@ After creating a configuration file, generate keys for your device:
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
 $ mkdir keys/crosshatch
 $ cd keys/crosshatch
-$ ../generate-keys "/CN=NixDroid" # Use appropriate x509 cert fields
+$ ../generate-keys "/CN=RobotNix" # Use appropriate x509 cert fields
 $ cd ../..
 ```
 
@@ -87,27 +87,13 @@ Further tests are needed for `img`/`ota` files.
 
 ### Additional information
 
-```console
-# To easily build NixDroid outside of nix for debugging
-$ nix-shell ... -A config.build.android
-$ source $debugUnpackScript       # should just create files under nixdroid/
-# Apply any patches in $patches
-$ runHook postPatch
-
-$ export TMPDIR=/tmp
-$ export OUT_DIR_COMMON_BASE=/mnt/media/out
-$ source build/envsetup.sh
-$ choosecombo debug aosp_x86_64 userdebug
-$ make target-files-package
-
-# sign target files
-# ota_from_target_files also needs xxd (toybox works)
-```
-
-### Optional CCACHE stuff:
+Optional CCACHE stuff.
 As root:
 ```console
 # mkdir -p -m0770 /var/cache/ccache
 # chown root:nixbld /var/cache/ccache
 ```
 Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as a sandbox exception when building.
+
+## Notable mentions
+See also: [RattlesnakeOS](), [aosp-build](https://github.com/hashbang/aosp-build), and [CalyxOS](https://calyxos.org/)

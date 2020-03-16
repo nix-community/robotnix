@@ -1,15 +1,15 @@
-{ config, pkgs, lib, nixdroidlib, ... }:
+{ config, pkgs, lib, robotnixlib, ... }:
 
 # https://developer.android.com/guide/topics/resources/providing-resources
 # https://developer.android.com/guide/topics/resources/more-resources.html
 with lib;
 let
-  # TODO: Unify with nixdroidlib.configXML (just need something nice for resourceTypeOverrides)
+  # TODO: Unify with robotnixlib.configXML (just need something nice for resourceTypeOverrides)
   configXML = relativePath: packageResources: ''
     <?xml version="1.0" encoding="utf-8"?>
     <resources>
       ${concatStringsSep "\n" (mapAttrsToList
-        (name: value: nixdroidlib.resourceXML name value (config.resourceTypeOverrides.${relativePath}.${name} or nixdroidlib.resourceType value))
+        (name: value: robotnixlib.resourceXML name value (config.resourceTypeOverrides.${relativePath}.${name} or robotnixlib.resourceType value))
        packageResources)}
     </resources>
   '';
@@ -31,10 +31,10 @@ in
 
   config = {
     # TODO: Should some of these be in system?
-    product.extraConfig = "PRODUCT_PACKAGE_OVERLAYS += nixdroid/overlay";
+    product.extraConfig = "PRODUCT_PACKAGE_OVERLAYS += robotnix/overlay";
 
-    source.dirs."nixdroid/overlay".contents = (pkgs.symlinkJoin {
-      name = "nixdroid-overlay";
+    source.dirs."robotnix/overlay".contents = (pkgs.symlinkJoin {
+      name = "robotnix-overlay";
       paths = mapAttrsToList (relativePath: packageResources: (pkgs.writeTextFile {
         name = "${replaceStrings ["/"] ["="] relativePath}-resources";
         text = configXML relativePath packageResources;

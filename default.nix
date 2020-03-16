@@ -4,13 +4,13 @@
 }:
 
 let
-  nixdroidlib = import ./lib lib;
+  robotnixlib = import ./lib lib;
   apks = import ./apks { inherit pkgs; };
 in
 (lib.evalModules {
   modules = [
     { _module.args = {
-        inherit pkgs apks lib nixdroidlib;
+        inherit pkgs apks lib robotnixlib;
       };
     }
     configuration 

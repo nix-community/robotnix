@@ -24,12 +24,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    source.dirs."nixdroid/apps/Updater".contents = src;
+    source.dirs."robotnix/apps/Updater".contents = src;
 
     # It's currently a system package in upstream
     system.additionalProductPackages = [ "Updater" ];
 
-    resources."nixdroid/apps/Updater" = {
+    resources."robotnix/apps/Updater" = {
       inherit (cfg) url;
       channel_default = config.channel;
     };

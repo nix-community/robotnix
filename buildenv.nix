@@ -1,6 +1,6 @@
 { pkgs }:
 pkgs.buildFHSUserEnv {
-  name = "nixdroid-build";
+  name = "robotnix-build";
   targetPkgs = pkgs: with pkgs; [
       # TODO: Much of this can propbably be removed with android 10
       bc

@@ -112,15 +112,15 @@ in
     })
     (mkIf (cfg.fi.enable && (config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
       # TODO: Hack. Make better
-      source.dirs."nixdroid/esimhack".contents = let
+      source.dirs."robotnix/esimhack".contents = let
       in pkgs.runCommand "esim-hack" {} ''
         mkdir -p $out
         cp ${productPath}/priv-app/EuiccSupportPixel/esim-full-v0.img $out/
         cp ${productPath}/priv-app/EuiccSupportPixel/esim-v1.img $out/
       '';
       product.extraConfig = ''
-        PRODUCT_COPY_FILES += nixdroid/esimhack/esim-full-v0.img:$(TARGET_COPY_OUT_PRODUCT)/priv-app/EuiccSupportPixel/esim-full-v0.img
-        PRODUCT_COPY_FILES += nixdroid/esimhack/esim-v1.img:$(TARGET_COPY_OUT_PRODUCT)/priv-app/EuiccSupportPixel/esim-v1.img
+        PRODUCT_COPY_FILES += robotnix/esimhack/esim-full-v0.img:$(TARGET_COPY_OUT_PRODUCT)/priv-app/EuiccSupportPixel/esim-full-v0.img
+        PRODUCT_COPY_FILES += robotnix/esimhack/esim-v1.img:$(TARGET_COPY_OUT_PRODUCT)/priv-app/EuiccSupportPixel/esim-v1.img
       '';
     })
   ];
