@@ -299,10 +299,11 @@ in
       };
 
       sdk = mkAndroid {
-        name = "android-sdk_${config.buildNumber}_linux-x86.zip";
-        makeTargets = [ "dist" "sdk" ];
+        name = "android-sdk";
+        makeTargets = [ "dist" "sdk" "sdk_repo" ];
         installPhase = ''
-          cp --reflink=auto -r $OUT_DIR/host/linux-x86/sdk/sdk/android-sdk_${config.buildNumber}_linux-x86.zip $out
+          #cp --reflink=auto -r $OUT_DIR/host/linux-x86/sdk/sdk/android-sdk_${config.buildNumber}_linux-x86.zip $out
+          cp --reflink=auto -r $OUT_DIR/host/linux-x86/sdk/sdk/* $out
         '';
       };
 
