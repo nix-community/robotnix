@@ -77,9 +77,9 @@ let
       export BUILD=${config.buildNumber};
       export VERSION=${toLower config.buildNumber};
 
-      # TODO: What if we don't have vendor.files? Maybe extract and use IFD?
       get_radio_image() {
-        grep -Po "require version-$1=\K.+" ${config.build.vendor.files}/vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
+        ${getBin pkgs.unzip}/bin/unzip -p ${targetFiles} OTA/android-info.txt  \
+          |  grep -Po "require version-$1=\K.+" | tr '[:upper:]' '[:lower:]'
       }
       export BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
       export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
