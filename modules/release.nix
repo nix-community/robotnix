@@ -2,7 +2,7 @@
 
 with lib;
 let
-  robotnix-env = pkgs.callPackage ../buildenv.nix {};
+  otaTools = config.build.otaTools;
 
   avbFlags = {
     verity_only = [
@@ -22,50 +22,19 @@ let
     ];
   }.${config.avbMode};
 
-  # TODO: build tools is an overloaded name. See prebuilts/build-tools
-  buildTools = pkgs.stdenv.mkDerivation {
-    name = "android-build-tools";
-    src = config.source.dirs."build/make".contents;
-    patches = config.source.dirs."build/make".patches ++ [
-      (pkgs.substituteAll {
-        src = (../patches + "/${toString config.androidVersion}" + /buildtools.patch);
-        java = "${pkgs.jre8_headless}/bin/java";
-        search_path = config.build.hostTools;
-      })
-    ];
-    buildInputs = with pkgs; [ python ];
-    installPhase = ''
-      mkdir -p $out
-      cp --reflink=auto -r ./tools/* $out
-      cp --reflink=auto ${config.source.dirs."system/extras".contents}/verity/{build_verity_metadata.py,boot_signer,verity_signer} $out # Some extra random utilities from elsewhere
-    '';
-  };
-
   # Get a bunch of utilities to generate keys
-  keyTools = pkgs.runCommandCC "android-key-tools" { buildInputs = with pkgs; [ python pkgconfig boringssl ]; } ''
+  keyTools = pkgs.runCommandCC "android-key-tools" {} ''
     mkdir -p $out/bin
 
     cp ${config.source.dirs."development".contents}/tools/make_key $out/bin/make_key
     substituteInPlace $out/bin/make_key --replace openssl ${getBin pkgs.openssl}/bin/openssl
 
-    cc -o $out/bin/generate_verity_key \
-      ${config.source.dirs."system/extras".contents}/verity/generate_verity_key.c \
-      ${config.source.dirs."system/core".contents}/libcrypto_utils/android_pubkey.c \
-      -I ${config.source.dirs."system/core".contents}/libcrypto_utils/include/ \
-      -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
-
-    cp ${config.source.dirs."external/avb".contents}/avbtool $out/bin/avbtool
     patchShebangs $out/bin
   '';
 
   wrapScript = { commands, keysDir ? "" }: ''
-    export PATH=${lib.makeBinPath (with pkgs; [
-      config.build.hostTools openssl zip unzip jdk pkgs.getopt hexdump perl toybox
-    ])}:${buildTools}:$PATH
-
-    # sign_target_files_apks.py and others require this directory to be here so it has the data to even recognize test-keys
-    mkdir -p build/target/product/
-    ln -sf ${config.source.dirs."build/make".contents}/target/product/security build/target/product/security
+    export PATH=${otaTools}/bin:$PATH
+    export EXT2FS_NO_MTAB_OK=yes
 
     # build-tools releasetools/common.py hilariously tries to modify the
     # permissions of the source file in ZipWrite. Since signing uses this
@@ -79,16 +48,12 @@ let
       fi
       mkdir -p keys_copy
       cp -r $KEYSDIR/* keys_copy/
-      KEYSDIR=keys_copy
+      KEYSDIR=$(pwd)/keys_copy
     fi
 
-    # TODO: Try to get rid of this robotnix-env wrapper.
-    cat << 'EOF' | ${robotnix-env}/bin/robotnix-build
     ${commands}
-    EOF
 
-    rm -r build  # Unsafe
-    if [[ "$KEYSDIR" ]]; then rm -rf keys_copy; fi
+    if [[ "$KEYSDIR" ]]; then rm -rf "$KEYSDIR"; fi
   '';
 
   runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
@@ -97,21 +62,22 @@ let
   });
 
   signedTargetFilesScript = { targetFiles, out }: ''
-    ${buildTools}/releasetools/sign_target_files_apks.py \
-      --verbose \
+  ( cd ${otaTools}; # Enter otaTools dir so relative paths are correct for finding original keys
+    ${otaTools}/releasetools/sign_target_files_apks.py \
       -o -d $KEYSDIR ${toString avbFlags} \
       ${optionalString (config.androidVersion >= 10) "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"} \
       ${concatMapStringsSep " " (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") config.apex.packageNames} \
       ${targetFiles} ${out}
+  )
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
-    ${buildTools}/releasetools/ota_from_target_files.py  \
+    ${otaTools}/releasetools/ota_from_target_files.py  \
       --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} \
       ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
       ${optionalString config.retrofit "--retrofit_dynamic_partitions"} \
       ${targetFiles} ${out}
   '';
-  imgScript = { targetFiles, out }: ''${buildTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
+  imgScript = { targetFiles, out }: ''${otaTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
   factoryImgScript = { targetFiles, img, out }: ''
       ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
       ln -s ${img} ${config.device}-img-${config.buildNumber}.zip || true

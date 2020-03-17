@@ -268,8 +268,7 @@ in
 
       android = mkAndroid {
         name = "robotnix-${config.buildProduct}-${config.buildNumber}";
-        makeTargets = [ "brillo_update_payload" "target-files-package" ];
-        outputs = [ "out" "bin" ];
+        makeTargets = [ "target-files-package" "otatools-package" ]; # TODO Separate into two derivations?
         # Kinda ugly to just throw all this in $bin/
         # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
         # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
@@ -277,24 +276,92 @@ in
           mkdir -p $out $bin
           export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
 
+          cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
           cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.buildProduct}-target_files-${config.buildNumber}.zip $out/
-
-          cp --reflink=auto -r $OUT_DIR/host/linux-x86/{bin,lib,lib64,usr,framework} $bin/
-          cp --reflink=auto -r $OUT_DIR/soong/host/linux-x86/* $bin/
         '';
       };
 
-      hostTools = config.build.android.bin;
-
       checkAndroid = mkAndroid {
         name = "robotnix-check-${config.device}-${config.buildNumber}";
-        makeTargets = [ "brillo_update_payload" "target-files-package" ];
+        makeTargets = [ "target-files-package" "otatools-package" ];
         ninjaArgs = "-n"; # Pretend to run the actual build steps
         # Just copy some things that are useful for debugging
         installPhase = ''
           mkdir -p $out
           cp -r $OUT_DIR/*.{log,gz} $out/
           cp -r $OUT_DIR/.module_paths $out/
+        '';
+      };
+
+      otaTools = pkgs.stdenv.mkDerivation {
+        name = "ota-tools";
+        src = "${config.build.android}/otatools.zip";
+        sourceRoot = ".";
+        nativeBuildInputs = with pkgs; [ unzip autoPatchelfHook protobuf pythonPackages.pytest ];
+        buildInputs = [ (pkgs.python.withPackages (p: [ p.protobuf ])) ];
+        postPatch = ''
+          # Replace some python binaries with the original python files.
+          # The soong-compiled versions all have "Failed to import the site module" error
+          cp ${config.source.dirs."external/avb".contents}/avbtool bin/avbtool
+          cp ${config.source.dirs."system/core".contents}/mkbootimg/mkbootimg.py bin/mkbootimg
+          cp ${config.source.dirs."system/extras".contents}/ext4_utils/mkuserimg_mke2fs.py bin/mkuserimg_mke2fs
+          cp ${config.source.dirs."bootable/recovery".contents}/update_verifier/care_map_generator.py bin/care_map_generator
+          protoc --python_out=bin/ -I ${config.source.dirs."bootable/recovery".contents}/update_verifier \
+            ${config.source.dirs."bootable/recovery".contents}/update_verifier/care_map.proto
+
+          for name in boot_signer verity_signer; do
+            substituteInPlace bin/$name --replace java ${lib.getBin pkgs.jre8_headless}/bin/java
+          done
+
+          substituteInPlace releasetools/common.py \
+            --replace 'self.search_path = platform_search_path.get(sys.platform)' "self.search_path = \"$out\"" \
+            --replace 'self.java_path = "java"' 'self.java_path = "${lib.getBin pkgs.jre8_headless}/bin/java"' \
+            --replace '"zip"' '"${lib.getBin pkgs.zip}/bin/zip"' \
+            --replace '"unzip"' '"${lib.getBin pkgs.unzip}/bin/unzip"'
+
+          substituteInPlace bin/lib/shflags/shflags \
+            --replace "FLAGS_GETOPT_CMD:-getopt" "FLAGS_GETOPT_CMD:-${pkgs.getopt}/bin/getopt"
+
+          substituteInPlace bin/brillo_update_payload \
+            --replace "which delta_generator" "${pkgs.which}/bin/which delta_generator" \
+            --replace "xxd " "${lib.getBin pkgs.toybox}/bin/xxd " \
+            --replace "cgpt " "${lib.getBin pkgs.vboot_reference}/bin/cgpt " \
+            --replace "look " "${lib.getBin pkgs.utillinux}/bin/look " \
+            --replace "unzip " "${lib.getBin pkgs.unzip}/bin/unzip "
+
+          for name in bin/avbtool releasetools/{check_ota_package_signature,sign_target_files_apks,test_common,common,test_ota_from_target_files,ota_from_target_files,check_target_files_signatures}.py; do
+            substituteInPlace "$name" \
+              --replace "'openssl'" "'${lib.getBin pkgs.openssl}/bin/openssl'" \
+              --replace "\"openssl\"" "\"${lib.getBin pkgs.openssl}/bin/openssl\""
+          done
+          for name in releasetools/testdata/{payload_signer,signing_helper}.sh; do
+            substituteInPlace "$name" \
+              --replace "openssl" "${lib.getBin pkgs.openssl}/bin/openssl"
+          done
+
+          for name in releasetools/test_*.py; do
+            substituteInPlace "$name" \
+              --replace "@test_utils.SkipIfExternalToolsUnavailable()" ""
+          done
+
+          # This test is broken
+          substituteInPlace releasetools/test_sign_target_files_apks.py \
+            --replace test_ReadApexKeysInfo_presignedKeys skip_test_ReadApexKeysInfo_presignedKeys
+
+          # These tests are too slow
+          substituteInPlace releasetools/test_common.py \
+            --replace test_ZipWrite skip_test_zipWrite
+        '';
+        installPhase = ''
+          mkdir -p $out
+          cp --reflink=auto -r * $out/
+        '';
+        doInstallCheck = true;
+        installCheckPhase = ''
+          cd $out/releasetools
+          export PATH=$out/bin:$PATH
+          export EXT2FS_NO_MTAB_OK=yes
+          pytest
         '';
       };
 
