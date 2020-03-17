@@ -76,6 +76,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   webview.prebuilt.apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
 
+  apps.chromium.enable = mkDefault true;
+  webview.chromium.availableByDefault = mkDefault true;
+  webview.chromium.enable = mkDefault true;
+
   removedProductPackages = [ "webview" "Browser2" "QuickSearchBox" ];
   source.dirs."external/chromium-webview".enable = false;
   source.dirs."packages/apps/QuickSearchBox".enable = false;
