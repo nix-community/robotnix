@@ -355,6 +355,10 @@ in
           mkdir -p $out
           cp --reflink=auto -r * $out/
         '';
+        # Since we copy everything from build dir into $out, we don't want
+        # env-vars file which contains a bunch of references we don't need
+        noDumpEnvVars = true;
+
         doInstallCheck = true;
         installCheckPhase = ''
           cd $out/releasetools
