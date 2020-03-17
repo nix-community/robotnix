@@ -84,8 +84,9 @@ let
       export BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
       export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
+      export PATH=${getBin pkgs.zip}/bin:${getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".contents}/generate-factory-images-common.sh
-      mv $PRODUCT-$VERSION-factory-*.zip $out
+      mv $PRODUCT-$VERSION-factory-*.zip ${out}
   '';
 
   otaMetadata = pkgs.runCommand "${config.device}-${config.channel}" {} ''
