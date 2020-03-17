@@ -176,8 +176,8 @@ in
       fi
       echo Building OTA zip
       ${otaScript { targetFiles=signedTargetFiles.name; out=ota.name; }} || exit 1
-      echo Building incremental OTA zip
       if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
+        echo Building incremental OTA zip
         ${otaScript {
           targetFiles=signedTargetFiles.name;
           prevTargetFiles="${device}-target_files-$PREV_BUILDNUMBER.zip";

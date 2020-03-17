@@ -269,11 +269,10 @@ in
       android = mkAndroid {
         name = "robotnix-${config.buildProduct}-${config.buildNumber}";
         makeTargets = [ "target-files-package" "otatools-package" ]; # TODO Separate into two derivations?
-        # Kinda ugly to just throw all this in $bin/
         # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
         # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
         installPhase = ''
-          mkdir -p $out $bin
+          mkdir -p $out
           export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
 
           cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
