@@ -26,7 +26,7 @@ with lib;
     seedvault.enable = true;
     fdroid.enable = true;
 
-    # See the NixOS module in https://github.com/danielfullmer/nixos-config/blob/master/modules/attestation-server.nix
+    # See the NixOS module under nixos/ subdir
     auditor.enable = true;
     auditor.domain = "attestation.daniel.fullmer.me";
   };
