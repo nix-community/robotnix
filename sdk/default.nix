@@ -2,7 +2,6 @@
   configuration = {
     buildProduct = "sdk";
     variant = "eng";
-    flavor = "none";
     source.jsonFile = ./platform-tools-29.0.5.json; # TODO: 29.0.6 is out now
   };
 }).build.mkAndroid {

@@ -28,11 +28,13 @@ Further goals include:
 This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
 
 ## Build Instructions
-A one line `.img` build:
+Here is a single-command to build an `img` which can be flashed onto a device with `fastboot`.
 ```console
-$ nix-build "https://github.com/danielfullmer/RobotNix/archive/master.tar.gz" --arg configuration '{device="crosshatch";}' -A img
+$ nix-build "https://github.com/danielfullmer/robotnix/archive/master.tar.gz" \
+    --arg configuration '{ device="crosshatch"; flavor="vanilla"; }' \
+    -A img
 ```
-this will build an image signed with `test-keys`, so don't use it for anything other than testing.
+This will build an image signed with `test-keys`, so definitely don't use this for anything real-world.
 
 A configuration file should be created for anything more complicated, including creating signed builds.
 See my own configuration under `example.nix` for inspiration.

@@ -12,7 +12,7 @@ in
 {
   options = {
     flavor = mkOption {
-      default = "vanilla";
+      default = null;
       type = types.nullOr types.str;
     };
 
