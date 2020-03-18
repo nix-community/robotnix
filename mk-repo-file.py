@@ -75,10 +75,10 @@ def main():
     parser.add_argument('--mirror', help="directory to a repo mirror of %s" % AOSP_BASEURL)
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('rev', help="manifest revision/tag")
-    parser.add_argument('oldrepojson', nargs='*', help="any older repo json file from this tool to use in cache")
+    parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
 
-    # Read in all files in this directory to populate hashtables
+    # Read all oldrepojson files to populate hashtables
     for filename in args.oldrepojson:
         data = json.load(open(filename))
         for name, p in data.items():
