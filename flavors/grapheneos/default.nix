@@ -22,6 +22,9 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   };
 })
 {
+  buildNumber = mkDefault "2020.03.16.18";
+  buildDateTime = mkDefault 1584398664;
+
   source.jsonFile = ./. + "/${grapheneOSRelease}.json";
 
   # Not strictly necessary for me to set these, since I override the jsonFile

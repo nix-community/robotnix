@@ -11,6 +11,9 @@ let
   deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
 in mkIf (config.flavor == "vanilla") (mkMerge [
 {
+  buildNumber = mkDefault "2020.03.16.18";
+  buildDateTime = mkDefault 1584398664;
+
   source.jsonFile = ./. + "/${config.source.manifest.rev}.json";
   # Not strictly necessary for me to set this, since I override the jsonFile
   source.manifest.url = "https://android.googlesource.com/platform/manifest";

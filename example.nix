@@ -7,9 +7,10 @@ with lib;
   #device = "crosshatch";
   #flavor = "grapheneos"; # "vanilla" is another option
 
-  # Don't forget to update these for each unique build. Needed for the updater
-  buildNumber = "2020.03.16.18";
-  buildDateTime = 1584398664; # Use `date "+%s"` to get the current time
+  # buildNumber and buildDateTime are set by default by the flavor, and are updated when those flavors have new releases.
+  # If you make new changes to your build that you want to be pushed by the OTA updater, you should set these yourself.
+  # buildNumber = "2020.03.16.18";
+  # buildDateTime = 1584398664; # Use `date "+%s"` to get the current time
 
   # A _string_ of the path for the key store.
   keyStorePath = "/var/secrets/android-keys";
