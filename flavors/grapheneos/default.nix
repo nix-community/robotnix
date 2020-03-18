@@ -6,25 +6,27 @@ let
     sailfish = "marlin";
     sargo = "bonito";
   };
-  grapheneOSRelease = "2020.03.04.16";
+  grapheneOSRelease = "${config.source.buildNumber}.2020.03.04.16";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 (mkIf ((elem config.deviceFamily [ "taimen" "crosshatch" "bonito" ]) || (config.device == "x86")) {
   source.buildNumber = "QQ2A.200305.002";
-  source.manifest.sha256 = "1s2y87rzg2lcrqfx9gkjkz4aaazn9k4s0pk4lgwki7mpsh2pp3c0";
 })
 (mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
   # Hack for crosshatch/bonito since they uses submodules and repo2nix doesn't support that yet.
   kernel.src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
-    rev = "${config.source.buildNumber}.${grapheneOSRelease}";
+    rev = grapheneOSRelease;
     sha256 = "08dc9q4bldli85zp0lwc2jqhpqwxclkqg030iq7qm7ygqckb22kh";
     fetchSubmodules = true;
   };
 })
 {
+  source.jsonFile = ./. + "/${grapheneOSRelease}.json";
+
+  # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = "https://github.com/GrapheneOS/platform_manifest.git";
-  source.manifest.rev = "refs/tags/${config.source.buildNumber}.${grapheneOSRelease}";
+  source.manifest.rev = "refs/tags/${grapheneOSRelease}";
 
   # Hack for crosshatch/bonito since they use submodules and repo2nix doesn't support that yet.
   kernel.useCustom = mkDefault true;

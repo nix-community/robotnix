@@ -18,7 +18,7 @@ let
     else (import ../default.nix { # If vendor is not set--say for generic/emulator targets, use the vendor files from crosshatch
       configuration = {
         device = "crosshatch";
-        imports = [ ../flavors/pixel.nix ];
+        imports = [ ../flavors/pixel ];
         inherit (config) androidVersion;
       };
     }).build.vendor.unpacked;

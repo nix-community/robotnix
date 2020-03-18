@@ -15,12 +15,12 @@ in
     }
     configuration 
     ./flavors/common.nix
-    ./flavors/grapheneos.nix
-    ./flavors/pixel.nix
-    ./flavors/vanilla.nix
+    ./flavors/grapheneos
+    ./flavors/pixel
+    ./flavors/vanilla
     ./modules/apps/auditor.nix
-    ./modules/apps/fdroid.nix
     ./modules/apps/chromium.nix
+    ./modules/apps/fdroid.nix
     ./modules/apps/prebuilt.nix
     ./modules/apps/seedvault.nix
     ./modules/apps/updater.nix
@@ -33,11 +33,11 @@ in
     ./modules/kernel.nix
     ./modules/keys.nix
     ./modules/microg.nix
+    ./modules/prebuilts.nix
     ./modules/release.nix
     ./modules/resources.nix
-    ./modules/source
-    ./modules/source/prebuilts.nix
-    ./modules/webview.nix
+    ./modules/source.nix
     ./modules/vendor.nix
+    ./modules/webview.nix
   ];
 }).config

@@ -78,7 +78,21 @@ This would allow an end-user to simply sign their own releases without building 
 As of Android 10, `target-files` seem to be built reproducibly.
 Further tests are needed for `img`/`ota` files.
 
+
+### Fetching android source files
+
+RobotNix supports two alternative approaches for fetching source files:
+
+- Build-time source fetching with `pkgs.fetchgit`. This is the default.
+  The end user will need to create a repo json file using `mk-repo-file.py` and update `source.jsonFile` to point to this file.
+- Evaluation-time source fetching with `builtins.fetchGit`.
+  This is more convenient for development when changing branches, as it allows use of a shared git cache.
+  The end user will need to set `source.manifest.{url,rev,sha256}` and enable `source.evalTimeFetching`.
+  However, with `builtins.fetchGit`, the `drv`s themselves depend on the source,
+  and `nix-copy-closure` of even just the `.drv` files would require downloading the source as well.
+
 ### Additional information
+
 
 Optional CCACHE stuff.
 As root:

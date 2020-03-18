@@ -11,12 +11,14 @@ let
   deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
 in mkIf (config.flavor == "vanilla") (mkMerge [
 {
+  source.jsonFile = ./. + "/${config.source.manifest.rev}.json";
+  # Not strictly necessary for me to set this, since I override the jsonFile
   source.manifest.url = "https://android.googlesource.com/platform/manifest";
 }
-(mkIf (config.deviceFamily == "marlin") {
+(mkIf (config.deviceFamily == "marlin") { # marlin is no longer receiving monthly security updates. Keeping this around just for testing.
   source.buildNumber = "QP1A.191005.007.A3";
   source.manifest.rev = "android-10.0.0_r17";
-  source.manifest.sha256 = "12i292cb97aqs9dl1bkkm1mnq7immxxnrbighxj4xrywgp46mh9l";
+
   kernel.src = kernelSrc {
     rev = "android-10.0.0_r0.23";
     sha256 = "0wy6h97g9j5sma67brn9vxq7jzf169j2gzq4ai96v4h68lz39lq9";
@@ -30,7 +32,6 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf ((elem config.deviceFamily [ "taimen" "bonito" "crosshatch" ]) || (config.device == "x86")) {
   source.buildNumber = "QQ1A.200305.002";
   source.manifest.rev = "android-10.0.0_r30";
-  source.manifest.sha256 = "1kvbzcxbn78kvjnd96mjy59yfqyaqkyd28kay24k85lb04991qxx";
 
   # TODO: temporary fix for missing apifinder until upstream issue is resolved: https://issuetracker.google.com/issues/150626837
   source.dirs."tools/apifinder".contents = pkgs.fetchgit {
@@ -85,9 +86,9 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   source.dirs."packages/apps/QuickSearchBox".enable = false;
   source.dirs."packages/apps/Browser2".enable = false;
 
-  source.dirs."packages/apps/Launcher3".patches = [ (../patches + "/${toString config.androidVersion}" + /disable-quicksearch.patch) ];
+  source.dirs."packages/apps/Launcher3".patches = [ (../../patches + "/${toString config.androidVersion}" + /disable-quicksearch.patch) ];
   source.dirs."device/google/${deviceDirName}".patches = [
-    (../patches + "/${toString config.androidVersion}/${deviceDirName}-fix-device-names.patch")
+    (../../patches + "/${toString config.androidVersion}/${deviceDirName}-fix-device-names.patch")
   ];
 
   source.dirs."packages/apps/DeskClock".patches = mkIf (config.androidVersion == 10) [

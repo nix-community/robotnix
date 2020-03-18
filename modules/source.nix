@@ -9,11 +9,8 @@ let
     let
       ref = if strings.hasInfix "refs/heads" p.revisionExpr then last (splitString "/" p.revisionExpr) else p.revisionExpr;
       name = builtins.replaceStrings ["/"] ["="] p.relpath;
-      zeroHash = "0000000000000000000000000000000000000000000000000000000000000000";
-      # Try to get the sha256 by looking first for the treehash, falling back to the revision
-      sha256 = lib.attrByPath [ (if (p ? tree) then p.tree else p.rev) ] zeroHash config.source.hashes;
     in
-    if ((sha256 == zeroHash) && config.source.fetchGitFallback)
+    if config.source.evalTimeFetching
     then
       builtins.fetchGit { # Evaluation-time source fetching. Uses nix's git cache, but any nix-instantiate will require fetching sources.
         inherit (p) url rev;
@@ -21,8 +18,7 @@ let
       }
     else
       pkgs.fetchgit { # Build-time source fetching. This should be preferred, but is slightly less convenient when developing.
-        inherit (p) url rev;
-        inherit sha256;
+        inherit (p) url rev sha256;
         # Submodules are manually specified as "nested projects". No support for that in repo2nix. See https://gerrit.googlesource.com/git-repo/+/master/docs/manifest-format.md
         fetchSubmodules = false;
         deepClone = false;
@@ -31,6 +27,7 @@ in
 {
   options = {
     source = {
+      # End-user should either set source.manifest.* or source.jsonFile
       manifest = {
         url = mkOption {
           type = types.str;
@@ -50,21 +47,19 @@ in
         };
       };
 
-      fetchGitFallback = mkOption {
+      evalTimeFetching = mkOption {
         default = false;
-        description = "Allows use of builtins.fetchGit instead of pkgs.fetchgit if not all sha256 hashes are available. (Useful for development)";
+        description = ''
+          Set config.source.jsonFile automatically using IFD with information
+          from `source.manifest`. Also enables use of builtins.fetchGit instead
+          of pkgs.fetchgit if not all sha256 hashes are available. (Useful for
+          development)
+        '';
       };
 
       jsonFile = mkOption {
-        default = json;
-        internal = true;
-      };
-
-      hashes = mkOption {
-        type = types.attrsOf types.str;
-        default = {};
-        internal = true;
-        description = "schema is {url: {revision: sha256}}";
+        type = types.path;
+        description = "Path to JSON file, outputted by mk-repo-file.py or with repo2nix";
       };
 
       dirs = mkOption {
@@ -82,7 +77,7 @@ in
               type = types.str;
             };
 
-            contents = mkOption {
+            contents = mkOption { # TODO: Rename just "src"?
               type = types.path;
             };
 
@@ -143,12 +138,10 @@ in
   };
 
   config.source = {
-    jsonFile = repo2nix {
+    jsonFile = mkIf config.source.evalTimeFetching (repo2nix {
       manifest = config.source.manifest.url;
       inherit (config.source.manifest) rev sha256 localManifests;
-      extraFlags = "--no-repo-verify";
-      withTreeHashes = true;
-    };
+    });
 
     dirs = mapAttrs' (name: p:
       nameValuePair p.relpath {

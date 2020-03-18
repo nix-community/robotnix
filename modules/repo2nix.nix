@@ -1,5 +1,5 @@
 {
- pkgs ? import ../../pkgs.nix {},
+ pkgs ? import ../pkgs.nix {},
  manifest, rev, sha256
 # Optional parameters:
 , repoRepoURL ? "https://github.com/danielfullmer/tools_repo"
@@ -7,16 +7,7 @@
 , referenceDir ? ""
 , extraFlags ? "--no-repo-verify"
 , localManifests ? []
-, withTreeHashes ? false
 }:
-# withTreeHashes enables additionally fetching the git SHA1 hash of the actual
-# tree associated with the tag/commit.  This is valuable since android sources
-# have many tags/commits across devices pointing to the same tree--but with
-# different commit messages.  This allows us to deduplicate these sources which
-# have the same sha256 hash, without having to fetch them all individually.
-# Since there is no clear way to have git fetch these tree hashes directly
-# without fetching too much information, we rely on the web interface at
-# android.googlesource.com
 
 assert repoRepoRev != "" -> repoRepoURL != "";
 
@@ -50,7 +41,7 @@ in stdenvNoCC.mkDerivation {
     "GIT_PROXY_COMMAND" "SOCKS_SERVER"
   ];
 
-  nativeBuildInputs = [ gitRepo cacert ] ++ (optionals withTreeHashes [ curl jq go-pup ]);
+  nativeBuildInputs = [ gitRepo cacert ];
 
   GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
@@ -73,5 +64,5 @@ in stdenvNoCC.mkDerivation {
     repo dumpjson > "$out"
 
     rm -rf .repo*
-  '' + (optionalString withTreeHashes "bash ${./fetch-treehashes.sh} $out");
+  '';
 }
