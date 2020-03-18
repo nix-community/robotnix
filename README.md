@@ -9,7 +9,7 @@ Some features include:
  
 Some optional nixos-style modules include:
  - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Backup](https://github.com/stevesoltys/backup)
- - Browser / Webview: [Chromium](https://www.chromium.org/Home) [Bromite](https://www.bromite.org/) [Vanadium](https://github.com/GrapheneOS/Vanadium)
+ - Browser / Webview: [Chromium](https://www.chromium.org/Home), [Bromite](https://www.bromite.org/), [Vanadium](https://github.com/GrapheneOS/Vanadium)
  - [Automated OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
  - [MicroG](https://microg.org/)
  - Certain google apps (currently just stuff for Google Fi)
@@ -105,4 +105,4 @@ As root:
 Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as a sandbox exception when building.
 
 ## Notable mentions
-See also: [RattlesnakeOS](), [aosp-build](https://github.com/hashbang/aosp-build), and [CalyxOS](https://calyxos.org/)
+See also: [RattlesnakeOS](https://github.com/dan-v/rattlesnakeos-stack), [aosp-build](https://github.com/hashbang/aosp-build), and [CalyxOS](https://calyxos.org/)
