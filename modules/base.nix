@@ -239,7 +239,9 @@ in
           BUILD_DATETIME=config.buildDateTime;
           DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
 
-          buildPhase = ''
+          buildPhase = lib.optionalString (config.device == "taimen") ''
+            ln -s wahoo-kernel device/google/taimen-kernel
+          '' + ''
             export OUT_DIR=$rootDir/out
 
             # Become the original user--not fake root.
