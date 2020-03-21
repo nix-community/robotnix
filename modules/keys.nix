@@ -11,6 +11,7 @@ let
 
     patchShebangs $out/bin
   '';
+  otaTools = config.build.otaTools;
 in {
   options = {
     generateKeysScript = mkOption { type = types.path; internal = true; };
@@ -27,7 +28,7 @@ in {
     in mkDefault (pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}
 
-      export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
+      export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:${otaTools}/bin:$PATH
 
       for key in ${toString keysToGenerate}; do
         # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
