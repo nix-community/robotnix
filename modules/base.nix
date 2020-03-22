@@ -3,7 +3,6 @@
 with lib;
 let
   usePatchedCoreutils = false;
-  robotnix-build = pkgs.callPackage ../buildenv.nix {};
   fakeuser = pkgs.callPackage ./fakeuser {};
 
   # TODO: Not exactly sure what i'm doing.
@@ -223,7 +222,7 @@ in
 
           inherit outputs;
 
-          nativeBuildInputs = [ robotnix-build fakeuser ];
+          nativeBuildInputs = [ config.build.env fakeuser ];
 
           unpackPhase = ''
             ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
@@ -368,22 +367,72 @@ in
         '';
       };
 
-        # Just included for convenience when building outside of nix.
-        # TODO: Better way than creating all these scripts and feeding with init-file?
+      # Just included for convenience when building outside of nix.
+      # TODO: Better way than creating all these scripts and feeding with init-file?
 #        debugUnpackScript = config.build.debugUnpackScript;
 #        debugPatchScript = config.build.debugPatchScript;
-        debugEnterEnv = pkgs.writeScript "debug-enter-env.sh" ''
-          #!${pkgs.runtimeShell}
-          export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
-          export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
-          ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeScript "debug-enter-env2.sh" ''
-          export rootDir=$PWD
-          source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
+      debugEnterEnv = pkgs.writeScript "debug-enter-env.sh" ''
+        #!${pkgs.runtimeShell}
+        export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
+        export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
+        ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeScript "debug-enter-env2.sh" ''
+        export rootDir=$PWD
+        source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
 
-          # Become the original user--not fake root. Enter an FHS user namespace
-          ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${robotnix-build}/bin/robotnix-build
-          ''}
-        '';
+        # Become the original user--not fake root. Enter an FHS user namespace
+        ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${config.build.env}/bin/robotnix-build
+        ''}
+      '';
+
+      env = pkgs.buildFHSUserEnv {
+        name = "robotnix-build";
+        # Check build/soong/ui/build/paths/config.go for a list of things that are needed
+        targetPkgs = pkgs: with pkgs; [
+          bc
+          git
+          gnumake
+          jre8_headless
+          lsof
+          m4
+          ncurses5
+          openssl_1_0_2.dev
+          psmisc # for "fuser", "pstree"
+          rsync
+          unzip
+          zip
+
+          # Things not in build/soong/ui/build/paths/config.go
+          nettools # Needed for "hostname" in build/soong/ui/build/sandbox_linux.go
+          procps # Needed for "ps" in build/envsetup.sh
+        ] ++ optionals (config.androidVersion <= 9) [
+          # stuff that was in the earlier buildenv. Not entirely sure everything here is necessary
+          (androidPkgs.sdk (p: with p.stable; [ tools platform-tools ]))
+          #androidsdk_9_0
+          bison
+          curl
+          flex
+          gcc
+          gitRepo
+          gnupg
+          gperf
+          imagemagick
+          libxml2
+          lzip
+          lzop
+          perl
+          python2
+          schedtool
+          utillinux
+          which
+        ] ++ optionals (config.androidVersion >= 10)
+        [
+          freetype # Needed by jdk9 prebuilt
+          fontconfig
+
+          python3
+        ];
+        multiPkgs = pkgs: with pkgs; [ zlib ];
+      };
     };
   };
 }
