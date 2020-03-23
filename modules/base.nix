@@ -238,9 +238,9 @@ in
           BUILD_DATETIME=config.buildDateTime;
           DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
 
+          # This was originally in the buildPhase, but building the sdk / atree would complain for unknown reasons when it was set
+          # export OUT_DIR=$rootDir/out
           buildPhase = ''
-            export OUT_DIR=$rootDir/out
-
             # Become the original user--not fake root.
             ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID} robotnix-build
 
@@ -286,8 +286,8 @@ in
         # Just copy some things that are useful for debugging
         installPhase = ''
           mkdir -p $out
-          cp -r $OUT_DIR/*.{log,gz} $out/
-          cp -r $OUT_DIR/.module_paths $out/
+          cp -r out/*.{log,gz} $out/
+          cp -r out/.module_paths $out/
         '';
       };
 
