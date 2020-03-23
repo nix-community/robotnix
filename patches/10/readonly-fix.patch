@@ -10,3 +10,19 @@ index 4253b7200..ba01f42d9 100644
  	$(AVBTOOL) add_hash_footer \
  	    --image $@ \
  	    --partition_size $(BOARD_DTBOIMG_PARTITION_SIZE) \
+diff --git a/tools/libhost/CopyFile.c b/tools/libhost/CopyFile.c
+index f9bda86fd..44b36e4bd 100644
+--- a/tools/libhost/CopyFile.c
++++ b/tools/libhost/CopyFile.c
+@@ -180,9 +180,9 @@ static int setPermissions(const char* dst, const struct stat* pSrcStat, unsigned
+         /*
+          * Set the permissions.
+          */
+-        if (chmod(dst, pSrcStat->st_mode & ~(S_IFMT)) != 0) {
++        if (chmod(dst, (pSrcStat->st_mode | S_IWUSR) & ~(S_IFMT)) != 0) {
+             DBUG(("---   unable to set perms on '%s' to 0%o: %s\n",
+-                dst, pSrcStat->st_mode & ~(S_IFMT), strerror(errno)));
++                dst, (pSrcStat->st_mode | S_IWUSR) & ~(S_IFMT), strerror(errno)));
+         }
+ #ifndef _WIN32
+         /*

@@ -5,13 +5,14 @@ let
       buildProduct = "sdk";
       variant = "eng";
       source.jsonFile = ./platform-tools-29.0.5.json; # TODO: 29.0.6 is out now
+      androidVersion = 11;
     };
   }).build.mkAndroid {
     name = "adb";
     makeTargets = [ "adb" "fastboot" ];
     installPhase = ''
       mkdir -p $out
-      cp $OUT_DIR/host/linux-x86/bin/{adb,fastboot} $out/
+      cp out/host/linux-x86/bin/{adb,fastboot} $out/
     '';
   };
 in

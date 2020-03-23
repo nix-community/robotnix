@@ -5,10 +5,12 @@ let
   flex = pkgs.callPackage ../misc/flex-2.5.39.nix {};
 in
 mkMerge [
-{
+(mkIf (config.androidVersion <= 9) {
   # Some android version-specific fixes:
-  source.dirs."prebuilts/misc".postPatch = mkIf (config.androidVersion == 9) "ln -sf ${flex}/bin/flex linux-x86/flex/flex-2.5.39";
-  source.dirs."build/make".patches = mkIf (config.androidVersion == 10) [
+  source.dirs."prebuilts/misc".postPatch = "ln -sf ${flex}/bin/flex linux-x86/flex/flex-2.5.39";
+})
+(mkIf (config.androidVersion >= 10) {
+  source.dirs."build/make".patches = [
     ../patches/10/readonly-fix.patch
     (pkgs.substituteAll {
       src = ../patches/10/partition-size-fix.patch;
@@ -16,6 +18,13 @@ mkMerge [
     })
   ];
 
+  # This one script needs python2. Used by sdk builds
+  source.dirs."development".postPatch = ''
+    substituteInPlace build/tools/mk_sources_zip.py \
+      --replace "#!/usr/bin/python" "#!${pkgs.python2.interpreter}"
+  '';
+})
+{
   source.excludeGroups = mkDefault [
     "darwin" # Linux-only for now
     "mips" "hikey"

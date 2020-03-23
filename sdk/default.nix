@@ -3,13 +3,14 @@
     buildProduct = "sdk";
     variant = "eng";
     source.jsonFile = ./platform-tools-29.0.5.json; # TODO: 29.0.6 is out now
+    androidVersion = 11;
   };
 }).build.mkAndroid {
   name = "android-sdk";
-  makeTargets = [ "dist" "sdk" "sdk_repo" ];
+  makeTargets = [ "sdk" "sdk_repo" ];
   installPhase = ''
-    #cp --reflink=auto -r $OUT_DIR/host/linux-x86/sdk/sdk/android-sdk_${config.buildNumber}_linux-x86.zip $out
-    cp --reflink=auto -r $OUT_DIR/host/linux-x86/sdk/sdk/* $out
+    mkdir -p $out
+    cp --reflink=auto out/host/linux-x86/sdk/sdk/*.{zip,xml} $out
   '';
 }
 
