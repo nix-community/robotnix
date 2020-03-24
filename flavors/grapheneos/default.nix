@@ -35,6 +35,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${kernelName}".contents;
   kernel.configName = mkForce (if (hasAttr config.device configNameMap) then configNameMap.${config.device} else config.device);
+  kernel.relpath = mkIf (config.deviceFamily == "taimen") "device/google/taimen-kernel";
 
   # No need to include these in AOSP build source since we build separately
   source.dirs."kernel/google/marlin".enable = false;
