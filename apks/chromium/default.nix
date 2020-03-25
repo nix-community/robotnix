@@ -11,9 +11,9 @@
 , webviewPackageName ? "com.android.webview"
 , version ? "79.0.3945.94"
 , versionCode ? "394509400"
-# Relevant Options:
+# Potential buildTargets:
 # chrome_modern_public_apk + system_webview_apk
-# trichrome_chrome_bundle + trichome_library_apk
+# trichrome_webview_apk + trichrome_chrome_bundle + trichome_library_apk
 # monochrome_public_apk
 }:
 

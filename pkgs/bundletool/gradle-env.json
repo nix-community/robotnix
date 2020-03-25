@@ -1,0 +1,2393 @@
+{
+  "": {
+    "name": "bundletool",
+    "version": "unspecified",
+    "path": "",
+    "gradle": {
+      "version": "5.0",
+      "type": "bin",
+      "url": "https://services.gradle.org/distributions/gradle-5.0-bin.zip",
+      "sha256": "6157ac9f3410bc63644625b3b3e9e96c963afd7910ae0697792db57813ee79a6",
+      "nativeVersion": "0.14"
+    },
+    "dependencies": {
+      "plugin": [],
+      "buildscript": [
+        {
+          "name": "aopalliance-aopalliance-1.0-jar",
+          "filename": "aopalliance-1.0.jar",
+          "path": "aopalliance/aopalliance/1.0",
+          "urls": [
+            "https://jcenter.bintray.com/aopalliance/aopalliance/1.0/aopalliance-1.0.jar",
+            "https://plugins.gradle.org/m2/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"
+          ],
+          "sha256": "0addec670fedcd3f113c5c8091d783280d23f75e3acb841b61a9cdb079376a08"
+        },
+        {
+          "name": "com.github.jengelman.gradle.plugins-shadow-4.0.4-jar",
+          "filename": "shadow-4.0.4.jar",
+          "path": "com/github/jengelman/gradle/plugins/shadow/4.0.4",
+          "urls": [
+            "https://jcenter.bintray.com/com/github/jengelman/gradle/plugins/shadow/4.0.4/shadow-4.0.4.jar",
+            "https://plugins.gradle.org/m2/com/github/jengelman/gradle/plugins/shadow/4.0.4/shadow-4.0.4.jar"
+          ],
+          "sha256": "fb353a964f8b4100c93d180695e17e1b5eb21ce5970ea54320815348aae0dd01"
+        },
+        {
+          "name": "com.google.gradle-osdetector-gradle-plugin-1.4.0-jar",
+          "filename": "osdetector-gradle-plugin-1.4.0.jar",
+          "path": "com/google/gradle/osdetector-gradle-plugin/1.4.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/gradle/osdetector-gradle-plugin/1.4.0/osdetector-gradle-plugin-1.4.0.jar",
+            "https://plugins.gradle.org/m2/com/google/gradle/osdetector-gradle-plugin/1.4.0/osdetector-gradle-plugin-1.4.0.jar"
+          ],
+          "sha256": "0885aff2503e7cd45a6b74003534302703bf6e722af5469657b0b2311384555f"
+        },
+        {
+          "name": "com.google.guava-guava-18.0-jar",
+          "filename": "guava-18.0.jar",
+          "path": "com/google/guava/guava/18.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava/18.0/guava-18.0.jar",
+            "https://plugins.gradle.org/m2/com/google/guava/guava/18.0/guava-18.0.jar"
+          ],
+          "sha256": "d664fbfc03d2e5ce9cab2a44fb01f1d0bf9dfebeccc1a473b1f9ea31f79f6f99"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-gradle-plugin-0.8.8-jar",
+          "filename": "protobuf-gradle-plugin-0.8.8.jar",
+          "path": "com/google/protobuf/protobuf-gradle-plugin/0.8.8",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-gradle-plugin/0.8.8/protobuf-gradle-plugin-0.8.8.jar",
+            "https://plugins.gradle.org/m2/com/google/protobuf/protobuf-gradle-plugin/0.8.8/protobuf-gradle-plugin-0.8.8.jar"
+          ],
+          "sha256": "59263ce257c7efc570bb771beb9dcbb460d509b6fe704e15d5e9555654d90c91"
+        },
+        {
+          "name": "commons-lang-commons-lang-2.6-jar",
+          "filename": "commons-lang-2.6.jar",
+          "path": "commons-lang/commons-lang/2.6",
+          "urls": [
+            "https://jcenter.bintray.com/commons-lang/commons-lang/2.6/commons-lang-2.6.jar",
+            "https://plugins.gradle.org/m2/commons-lang/commons-lang/2.6/commons-lang-2.6.jar"
+          ],
+          "sha256": "50f11b09f877c294d56f24463f47d28f929cf5044f648661c0f0cfbae9a2f49c"
+        },
+        {
+          "name": "javax.annotation-jsr250-api-1.0-jar",
+          "filename": "jsr250-api-1.0.jar",
+          "path": "javax/annotation/jsr250-api/1.0",
+          "urls": [
+            "https://jcenter.bintray.com/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar",
+            "https://plugins.gradle.org/m2/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar"
+          ],
+          "sha256": "a1a922d0d9b6d183ed3800dfac01d1e1eb159f0e8c6f94736931c1def54a941f"
+        },
+        {
+          "name": "javax.enterprise-cdi-api-1.0-jar",
+          "filename": "cdi-api-1.0.jar",
+          "path": "javax/enterprise/cdi-api/1.0",
+          "urls": [
+            "https://jcenter.bintray.com/javax/enterprise/cdi-api/1.0/cdi-api-1.0.jar",
+            "https://plugins.gradle.org/m2/javax/enterprise/cdi-api/1.0/cdi-api-1.0.jar"
+          ],
+          "sha256": "1f10b2204cc77c919301f20ff90461c3df1b6e6cb148be1c2d22107f4851d423"
+        },
+        {
+          "name": "javax.inject-javax.inject-1-jar",
+          "filename": "javax.inject-1.jar",
+          "path": "javax/inject/javax.inject/1",
+          "urls": [
+            "https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.jar",
+            "https://plugins.gradle.org/m2/javax/inject/javax.inject/1/javax.inject-1.jar"
+          ],
+          "sha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
+        },
+        {
+          "name": "kr.motd.maven-os-maven-plugin-1.4.0.Final-jar",
+          "filename": "os-maven-plugin-1.4.0.Final.jar",
+          "path": "kr/motd/maven/os-maven-plugin/1.4.0.Final",
+          "urls": [
+            "https://jcenter.bintray.com/kr/motd/maven/os-maven-plugin/1.4.0.Final/os-maven-plugin-1.4.0.Final.jar",
+            "https://plugins.gradle.org/m2/kr/motd/maven/os-maven-plugin/1.4.0.Final/os-maven-plugin-1.4.0.Final.jar"
+          ],
+          "sha256": "f54ae6cf2763a329b59aa79139b3e2a3b7130c69b13682a3052f20bd88d0d5da"
+        },
+        {
+          "name": "org.apache.maven-maven-artifact-3.2.1-jar",
+          "filename": "maven-artifact-3.2.1.jar",
+          "path": "org/apache/maven/maven-artifact/3.2.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/maven/maven-artifact/3.2.1/maven-artifact-3.2.1.jar",
+            "https://plugins.gradle.org/m2/org/apache/maven/maven-artifact/3.2.1/maven-artifact-3.2.1.jar"
+          ],
+          "sha256": "8de1252142cdbad31b7242464e7aa8a541ea72c77110649990adf9cda9e5e596"
+        },
+        {
+          "name": "org.apache.maven-maven-model-3.2.1-jar",
+          "filename": "maven-model-3.2.1.jar",
+          "path": "org/apache/maven/maven-model/3.2.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/maven/maven-model/3.2.1/maven-model-3.2.1.jar",
+            "https://plugins.gradle.org/m2/org/apache/maven/maven-model/3.2.1/maven-model-3.2.1.jar"
+          ],
+          "sha256": "014ae05271910db8ba64f07e2175989c500cc46ace868965e1ab5bc30e90ab91"
+        },
+        {
+          "name": "org.apache.maven-maven-plugin-api-3.2.1-jar",
+          "filename": "maven-plugin-api-3.2.1.jar",
+          "path": "org/apache/maven/maven-plugin-api/3.2.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/maven/maven-plugin-api/3.2.1/maven-plugin-api-3.2.1.jar",
+            "https://plugins.gradle.org/m2/org/apache/maven/maven-plugin-api/3.2.1/maven-plugin-api-3.2.1.jar"
+          ],
+          "sha256": "fa68af8b6c632821b82aba83b1d92ab373d168940c69239bcf6c3c75a1578f4a"
+        },
+        {
+          "name": "org.codehaus.groovy-groovy-backports-compat23-2.4.15-jar",
+          "filename": "groovy-backports-compat23-2.4.15.jar",
+          "path": "org/codehaus/groovy/groovy-backports-compat23/2.4.15",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/groovy/groovy-backports-compat23/2.4.15/groovy-backports-compat23-2.4.15.jar",
+            "https://plugins.gradle.org/m2/org/codehaus/groovy/groovy-backports-compat23/2.4.15/groovy-backports-compat23-2.4.15.jar"
+          ],
+          "sha256": "434d2bfce7b3b16abebc2590832cc042ebd8898eaa39df0f9192c98f2e843766"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-classworlds-2.4-jar",
+          "filename": "plexus-classworlds-2.4.jar",
+          "path": "org/codehaus/plexus/plexus-classworlds/2.4",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus-classworlds/2.4/plexus-classworlds-2.4.jar",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus-classworlds/2.4/plexus-classworlds-2.4.jar"
+          ],
+          "sha256": "259d528a29722cab6349d7e7d432e3fd4877c087ffcb04985a6612e97023bba8"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-component-annotations-1.5.5-jar",
+          "filename": "plexus-component-annotations-1.5.5.jar",
+          "path": "org/codehaus/plexus/plexus-component-annotations/1.5.5",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5.jar",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5.jar"
+          ],
+          "sha256": "4df7a6a7be64b35bbccf60b5c115697f9ea3421d22674ae67135dde375fcca1f"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-utils-3.0.17-jar",
+          "filename": "plexus-utils-3.0.17.jar",
+          "path": "org/codehaus/plexus/plexus-utils/3.0.17",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus-utils/3.0.17/plexus-utils-3.0.17.jar",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus-utils/3.0.17/plexus-utils-3.0.17.jar"
+          ],
+          "sha256": "547b70a47d468958703c42706b77c9e892f0e862e3afbac81a94c724cd69022a"
+        },
+        {
+          "name": "org.eclipse.sisu-org.eclipse.sisu.inject-0.0.0.M5-jar",
+          "filename": "org.eclipse.sisu.inject-0.0.0.M5.jar",
+          "path": "org/eclipse/sisu/org.eclipse.sisu.inject/0.0.0.M5",
+          "urls": [
+            "https://jcenter.bintray.com/org/eclipse/sisu/org.eclipse.sisu.inject/0.0.0.M5/org.eclipse.sisu.inject-0.0.0.M5.jar",
+            "https://plugins.gradle.org/m2/org/eclipse/sisu/org.eclipse.sisu.inject/0.0.0.M5/org.eclipse.sisu.inject-0.0.0.M5.jar"
+          ],
+          "sha256": "a591bd6b63e54639ae70f8eada0944ce9bdbeca0760162c7f2bf09a1edf20e6c"
+        },
+        {
+          "name": "org.eclipse.sisu-org.eclipse.sisu.plexus-0.0.0.M5-jar",
+          "filename": "org.eclipse.sisu.plexus-0.0.0.M5.jar",
+          "path": "org/eclipse/sisu/org.eclipse.sisu.plexus/0.0.0.M5",
+          "urls": [
+            "https://jcenter.bintray.com/org/eclipse/sisu/org.eclipse.sisu.plexus/0.0.0.M5/org.eclipse.sisu.plexus-0.0.0.M5.jar",
+            "https://plugins.gradle.org/m2/org/eclipse/sisu/org.eclipse.sisu.plexus/0.0.0.M5/org.eclipse.sisu.plexus-0.0.0.M5.jar"
+          ],
+          "sha256": "ea8e63f336673f6a6e6f0b837e69578c151417c1113a578568f5e99a5a165f29"
+        },
+        {
+          "name": "org.sonatype.sisu-sisu-guice-3.1.0-no_aop-jar",
+          "filename": "sisu-guice-3.1.0-no_aop.jar",
+          "path": "org/sonatype/sisu/sisu-guice/3.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/sisu/sisu-guice/3.1.0/sisu-guice-3.1.0-no_aop.jar",
+            "https://plugins.gradle.org/m2/org/sonatype/sisu/sisu-guice/3.1.0/sisu-guice-3.1.0-no_aop.jar"
+          ],
+          "sha256": "4b76079f35407e5682aac1ecbe67afd5f430ae619044a9d6a413666a45750c25"
+        },
+        {
+          "name": "aopalliance-aopalliance-1.0-pom",
+          "filename": "aopalliance-1.0.pom",
+          "path": "aopalliance/aopalliance/1.0",
+          "urls": [
+            "https://jcenter.bintray.com/aopalliance/aopalliance/1.0/aopalliance-1.0.pom",
+            "https://plugins.gradle.org/m2/aopalliance/aopalliance/1.0/aopalliance-1.0.pom"
+          ],
+          "sha256": "26e82330157d6b844b67a8064945e206581e772977183e3e31fec6058aa9a59b"
+        },
+        {
+          "name": "com.github.jengelman.gradle.plugins-shadow-4.0.4-pom",
+          "filename": "shadow-4.0.4.pom",
+          "path": "com/github/jengelman/gradle/plugins/shadow/4.0.4",
+          "urls": [
+            "https://jcenter.bintray.com/com/github/jengelman/gradle/plugins/shadow/4.0.4/shadow-4.0.4.pom",
+            "https://plugins.gradle.org/m2/com/github/jengelman/gradle/plugins/shadow/4.0.4/shadow-4.0.4.pom"
+          ],
+          "sha256": "8065b24c326b595f5704c357f1464e291d5bca0de1e9772e5c7e47dc8dc23d0d"
+        },
+        {
+          "name": "com.google.gradle-osdetector-gradle-plugin-1.4.0-pom",
+          "filename": "osdetector-gradle-plugin-1.4.0.pom",
+          "path": "com/google/gradle/osdetector-gradle-plugin/1.4.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/gradle/osdetector-gradle-plugin/1.4.0/osdetector-gradle-plugin-1.4.0.pom",
+            "https://plugins.gradle.org/m2/com/google/gradle/osdetector-gradle-plugin/1.4.0/osdetector-gradle-plugin-1.4.0.pom"
+          ],
+          "sha256": "0e547bbad951d53dca8c3358b8b50a332c5438bf97967219e401c699728fe9eb"
+        },
+        {
+          "name": "com.google.guava-guava-parent-18.0-pom",
+          "filename": "guava-parent-18.0.pom",
+          "path": "com/google/guava/guava-parent/18.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava-parent/18.0/guava-parent-18.0.pom",
+            "https://plugins.gradle.org/m2/com/google/guava/guava-parent/18.0/guava-parent-18.0.pom"
+          ],
+          "sha256": "a4accc8895e757f6a33f087e4fd0b661c5638ffe5e0728f298efe7d80551b166"
+        },
+        {
+          "name": "com.google.guava-guava-18.0-pom",
+          "filename": "guava-18.0.pom",
+          "path": "com/google/guava/guava/18.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava/18.0/guava-18.0.pom",
+            "https://plugins.gradle.org/m2/com/google/guava/guava/18.0/guava-18.0.pom"
+          ],
+          "sha256": "e743d61d76f76b5dc060d6f7914fdd41c4418b3529062556920116a716719836"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-gradle-plugin-0.8.8-pom",
+          "filename": "protobuf-gradle-plugin-0.8.8.pom",
+          "path": "com/google/protobuf/protobuf-gradle-plugin/0.8.8",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-gradle-plugin/0.8.8/protobuf-gradle-plugin-0.8.8.pom",
+            "https://plugins.gradle.org/m2/com/google/protobuf/protobuf-gradle-plugin/0.8.8/protobuf-gradle-plugin-0.8.8.pom"
+          ],
+          "sha256": "920634bde93b1b2e2be292d9dbf1aa02e943dfb03f729f64912e75dd5ea416a1"
+        },
+        {
+          "name": "commons-lang-commons-lang-2.6-pom",
+          "filename": "commons-lang-2.6.pom",
+          "path": "commons-lang/commons-lang/2.6",
+          "urls": [
+            "https://jcenter.bintray.com/commons-lang/commons-lang/2.6/commons-lang-2.6.pom",
+            "https://plugins.gradle.org/m2/commons-lang/commons-lang/2.6/commons-lang-2.6.pom"
+          ],
+          "sha256": "ed76b8891c30b566289c743656f8a4d435986982438d40c567c626233247e711"
+        },
+        {
+          "name": "javax.annotation-jsr250-api-1.0-pom",
+          "filename": "jsr250-api-1.0.pom",
+          "path": "javax/annotation/jsr250-api/1.0",
+          "urls": [
+            "https://jcenter.bintray.com/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.pom",
+            "https://plugins.gradle.org/m2/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.pom"
+          ],
+          "sha256": "548b0ef6f04356ef2283af5140d9404f38fd3891a509d468537abf2f9462944d"
+        },
+        {
+          "name": "javax.enterprise-cdi-api-1.0-pom",
+          "filename": "cdi-api-1.0.pom",
+          "path": "javax/enterprise/cdi-api/1.0",
+          "urls": [
+            "https://jcenter.bintray.com/javax/enterprise/cdi-api/1.0/cdi-api-1.0.pom",
+            "https://plugins.gradle.org/m2/javax/enterprise/cdi-api/1.0/cdi-api-1.0.pom"
+          ],
+          "sha256": "43125840dd928065fa83fb76c89873be4fc34e28c8b6fb62fd66be9be965100d"
+        },
+        {
+          "name": "javax.inject-javax.inject-1-pom",
+          "filename": "javax.inject-1.pom",
+          "path": "javax/inject/javax.inject/1",
+          "urls": [
+            "https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.pom",
+            "https://plugins.gradle.org/m2/javax/inject/javax.inject/1/javax.inject-1.pom"
+          ],
+          "sha256": "943e12b100627804638fa285805a0ab788a680266531e650921ebfe4621a8bfa"
+        },
+        {
+          "name": "kr.motd.maven-os-maven-plugin-1.4.0.Final-pom",
+          "filename": "os-maven-plugin-1.4.0.Final.pom",
+          "path": "kr/motd/maven/os-maven-plugin/1.4.0.Final",
+          "urls": [
+            "https://jcenter.bintray.com/kr/motd/maven/os-maven-plugin/1.4.0.Final/os-maven-plugin-1.4.0.Final.pom",
+            "https://plugins.gradle.org/m2/kr/motd/maven/os-maven-plugin/1.4.0.Final/os-maven-plugin-1.4.0.Final.pom"
+          ],
+          "sha256": "4efe85ddd3c97181df3d9bdd764c0669493a4c9061b31c9695a21bce202745d5"
+        },
+        {
+          "name": "org.apache.commons-commons-parent-17-pom",
+          "filename": "commons-parent-17.pom",
+          "path": "org/apache/commons/commons-parent/17",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/commons/commons-parent/17/commons-parent-17.pom",
+            "https://plugins.gradle.org/m2/org/apache/commons/commons-parent/17/commons-parent-17.pom"
+          ],
+          "sha256": "96e718baf534874ee62ce4d42de265f2ddacd88391a540e030d59d98fa7c4408"
+        },
+        {
+          "name": "org.apache.maven-maven-artifact-3.2.1-pom",
+          "filename": "maven-artifact-3.2.1.pom",
+          "path": "org/apache/maven/maven-artifact/3.2.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/maven/maven-artifact/3.2.1/maven-artifact-3.2.1.pom",
+            "https://plugins.gradle.org/m2/org/apache/maven/maven-artifact/3.2.1/maven-artifact-3.2.1.pom"
+          ],
+          "sha256": "179b301e4abd485fa952e2e17047ae52847526af96423d1d06ce656b98948e7d"
+        },
+        {
+          "name": "org.apache.maven-maven-model-3.2.1-pom",
+          "filename": "maven-model-3.2.1.pom",
+          "path": "org/apache/maven/maven-model/3.2.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/maven/maven-model/3.2.1/maven-model-3.2.1.pom",
+            "https://plugins.gradle.org/m2/org/apache/maven/maven-model/3.2.1/maven-model-3.2.1.pom"
+          ],
+          "sha256": "fbfcb0e0b193935d862e64971901d90c7496e6c1dea7da4adbbf136b12230468"
+        },
+        {
+          "name": "org.apache.maven-maven-parent-23-pom",
+          "filename": "maven-parent-23.pom",
+          "path": "org/apache/maven/maven-parent/23",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/maven/maven-parent/23/maven-parent-23.pom",
+            "https://plugins.gradle.org/m2/org/apache/maven/maven-parent/23/maven-parent-23.pom"
+          ],
+          "sha256": "5425501edd9e0bd7b01eca53cc92e06836d24851151304f9c6759e1713541685"
+        },
+        {
+          "name": "org.apache.maven-maven-plugin-api-3.2.1-pom",
+          "filename": "maven-plugin-api-3.2.1.pom",
+          "path": "org/apache/maven/maven-plugin-api/3.2.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/maven/maven-plugin-api/3.2.1/maven-plugin-api-3.2.1.pom",
+            "https://plugins.gradle.org/m2/org/apache/maven/maven-plugin-api/3.2.1/maven-plugin-api-3.2.1.pom"
+          ],
+          "sha256": "31c737b1af33075119944229d7c27407c42fb04305bf9c84a2e0e09a63d36ca2"
+        },
+        {
+          "name": "org.apache.maven-maven-3.2.1-pom",
+          "filename": "maven-3.2.1.pom",
+          "path": "org/apache/maven/maven/3.2.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/maven/maven/3.2.1/maven-3.2.1.pom",
+            "https://plugins.gradle.org/m2/org/apache/maven/maven/3.2.1/maven-3.2.1.pom"
+          ],
+          "sha256": "825fadc93aa113ff10ee6df2157fba717df5f70e543eb7871e7d55f92b16cbb8"
+        },
+        {
+          "name": "org.apache-apache-13-pom",
+          "filename": "apache-13.pom",
+          "path": "org/apache/apache/13",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/apache/13/apache-13.pom",
+            "https://plugins.gradle.org/m2/org/apache/apache/13/apache-13.pom"
+          ],
+          "sha256": "ff513db0361fd41237bef4784968bc15aae478d4ec0a9496f811072ccaf3841d"
+        },
+        {
+          "name": "org.apache-apache-7-pom",
+          "filename": "apache-7.pom",
+          "path": "org/apache/apache/7",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/apache/7/apache-7.pom",
+            "https://plugins.gradle.org/m2/org/apache/apache/7/apache-7.pom"
+          ],
+          "sha256": "1397ce1db433adc9f223dbf07496d133681448751f4ae29e58f68e78fb4b6c25"
+        },
+        {
+          "name": "org.codehaus.groovy-groovy-backports-compat23-2.4.15-pom",
+          "filename": "groovy-backports-compat23-2.4.15.pom",
+          "path": "org/codehaus/groovy/groovy-backports-compat23/2.4.15",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/groovy/groovy-backports-compat23/2.4.15/groovy-backports-compat23-2.4.15.pom",
+            "https://plugins.gradle.org/m2/org/codehaus/groovy/groovy-backports-compat23/2.4.15/groovy-backports-compat23-2.4.15.pom"
+          ],
+          "sha256": "badfde7591686a840a2dcb4b22a2d84b0633d2fdad3291c443e819eaea39dd23"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-classworlds-2.4-pom",
+          "filename": "plexus-classworlds-2.4.pom",
+          "path": "org/codehaus/plexus/plexus-classworlds/2.4",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus-classworlds/2.4/plexus-classworlds-2.4.pom",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus-classworlds/2.4/plexus-classworlds-2.4.pom"
+          ],
+          "sha256": "c0439c2b2d850488686143e2529f521b38f2abded6ac212add8f0c637eb912e9"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-component-annotations-1.5.5-pom",
+          "filename": "plexus-component-annotations-1.5.5.pom",
+          "path": "org/codehaus/plexus/plexus-component-annotations/1.5.5",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5.pom",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5.pom"
+          ],
+          "sha256": "815f3ec316b8c5fa701385fdf4009bfb51e07d780e8f6a6e2afe720c52d7e292"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-containers-1.5.5-pom",
+          "filename": "plexus-containers-1.5.5.pom",
+          "path": "org/codehaus/plexus/plexus-containers/1.5.5",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus-containers/1.5.5/plexus-containers-1.5.5.pom",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus-containers/1.5.5/plexus-containers-1.5.5.pom"
+          ],
+          "sha256": "1bc264824ec876b0ca6f4f5838175c541c638cbc43326a268b9aee7d4778b5ef"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-utils-3.0.17-pom",
+          "filename": "plexus-utils-3.0.17.pom",
+          "path": "org/codehaus/plexus/plexus-utils/3.0.17",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus-utils/3.0.17/plexus-utils-3.0.17.pom",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus-utils/3.0.17/plexus-utils-3.0.17.pom"
+          ],
+          "sha256": "e5f820f02dc5513b3f9518f6403fbcbcb0f1654cb965c759eb1e31ddd80f57fb"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-2.0.7-pom",
+          "filename": "plexus-2.0.7.pom",
+          "path": "org/codehaus/plexus/plexus/2.0.7",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus/2.0.7/plexus-2.0.7.pom",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus/2.0.7/plexus-2.0.7.pom"
+          ],
+          "sha256": "2b59062030ab0a15c5d0977ba22421706368926488739a65f25793e715cc8a74"
+        },
+        {
+          "name": "org.codehaus.plexus-plexus-3.3.1-pom",
+          "filename": "plexus-3.3.1.pom",
+          "path": "org/codehaus/plexus/plexus/3.3.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/plexus/plexus/3.3.1/plexus-3.3.1.pom",
+            "https://plugins.gradle.org/m2/org/codehaus/plexus/plexus/3.3.1/plexus-3.3.1.pom"
+          ],
+          "sha256": "6ec96f889bc29250f90b167c14e547f1b05aa23565c63f9079595befbde816bb"
+        },
+        {
+          "name": "org.eclipse.sisu-org.eclipse.sisu.inject-0.0.0.M5-pom",
+          "filename": "org.eclipse.sisu.inject-0.0.0.M5.pom",
+          "path": "org/eclipse/sisu/org.eclipse.sisu.inject/0.0.0.M5",
+          "urls": [
+            "https://jcenter.bintray.com/org/eclipse/sisu/org.eclipse.sisu.inject/0.0.0.M5/org.eclipse.sisu.inject-0.0.0.M5.pom",
+            "https://plugins.gradle.org/m2/org/eclipse/sisu/org.eclipse.sisu.inject/0.0.0.M5/org.eclipse.sisu.inject-0.0.0.M5.pom"
+          ],
+          "sha256": "6b28c62be08c56572605b8aa7fc8696b2f033766264dd903d9766236fe2402a6"
+        },
+        {
+          "name": "org.eclipse.sisu-org.eclipse.sisu.plexus-0.0.0.M5-pom",
+          "filename": "org.eclipse.sisu.plexus-0.0.0.M5.pom",
+          "path": "org/eclipse/sisu/org.eclipse.sisu.plexus/0.0.0.M5",
+          "urls": [
+            "https://jcenter.bintray.com/org/eclipse/sisu/org.eclipse.sisu.plexus/0.0.0.M5/org.eclipse.sisu.plexus-0.0.0.M5.pom",
+            "https://plugins.gradle.org/m2/org/eclipse/sisu/org.eclipse.sisu.plexus/0.0.0.M5/org.eclipse.sisu.plexus-0.0.0.M5.pom"
+          ],
+          "sha256": "148984b7402d593f67f01cd19d65f76fd5526501fb1b0ad92c5a6ab80ad8977c"
+        },
+        {
+          "name": "org.eclipse.sisu-sisu-inject-0.0.0.M5-pom",
+          "filename": "sisu-inject-0.0.0.M5.pom",
+          "path": "org/eclipse/sisu/sisu-inject/0.0.0.M5",
+          "urls": [
+            "https://jcenter.bintray.com/org/eclipse/sisu/sisu-inject/0.0.0.M5/sisu-inject-0.0.0.M5.pom",
+            "https://plugins.gradle.org/m2/org/eclipse/sisu/sisu-inject/0.0.0.M5/sisu-inject-0.0.0.M5.pom"
+          ],
+          "sha256": "7b9e07d076c8d16e1f1379445f31dd13c93d6506ce8b90229a8cc7d8e570012c"
+        },
+        {
+          "name": "org.eclipse.sisu-sisu-plexus-0.0.0.M5-pom",
+          "filename": "sisu-plexus-0.0.0.M5.pom",
+          "path": "org/eclipse/sisu/sisu-plexus/0.0.0.M5",
+          "urls": [
+            "https://jcenter.bintray.com/org/eclipse/sisu/sisu-plexus/0.0.0.M5/sisu-plexus-0.0.0.M5.pom",
+            "https://plugins.gradle.org/m2/org/eclipse/sisu/sisu-plexus/0.0.0.M5/sisu-plexus-0.0.0.M5.pom"
+          ],
+          "sha256": "dab29d72c9773e83650f6dca9dd2f858199c60df28ec21f220ef4b6e539a09a9"
+        },
+        {
+          "name": "org.jboss.weld-weld-api-bom-1.0-pom",
+          "filename": "weld-api-bom-1.0.pom",
+          "path": "org/jboss/weld/weld-api-bom/1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jboss/weld/weld-api-bom/1.0/weld-api-bom-1.0.pom",
+            "https://plugins.gradle.org/m2/org/jboss/weld/weld-api-bom/1.0/weld-api-bom-1.0.pom"
+          ],
+          "sha256": "8f74dc3a67c107376168b9f7b1b94e317e172768d398f826330931a02ff57b98"
+        },
+        {
+          "name": "org.jboss.weld-weld-api-parent-1.0-pom",
+          "filename": "weld-api-parent-1.0.pom",
+          "path": "org/jboss/weld/weld-api-parent/1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jboss/weld/weld-api-parent/1.0/weld-api-parent-1.0.pom",
+            "https://plugins.gradle.org/m2/org/jboss/weld/weld-api-parent/1.0/weld-api-parent-1.0.pom"
+          ],
+          "sha256": "1fb0dbd26fba2b009a75355e87620256b0689cb46f124f4836bc66fc296942c1"
+        },
+        {
+          "name": "org.jboss.weld-weld-parent-6-pom",
+          "filename": "weld-parent-6.pom",
+          "path": "org/jboss/weld/weld-parent/6",
+          "urls": [
+            "https://jcenter.bintray.com/org/jboss/weld/weld-parent/6/weld-parent-6.pom",
+            "https://plugins.gradle.org/m2/org/jboss/weld/weld-parent/6/weld-parent-6.pom"
+          ],
+          "sha256": "74ab64d978a3415cab65c3639b7c5ba5a20599ca5578251b748dd81c882a6088"
+        },
+        {
+          "name": "org.sonatype.forge-forge-parent-10-pom",
+          "filename": "forge-parent-10.pom",
+          "path": "org/sonatype/forge/forge-parent/10",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/forge/forge-parent/10/forge-parent-10.pom",
+            "https://plugins.gradle.org/m2/org/sonatype/forge/forge-parent/10/forge-parent-10.pom"
+          ],
+          "sha256": "c14fb9c32b59cc03251f609416db7c0cff01f811edcccb4f6a865d6e7046bd0b"
+        },
+        {
+          "name": "org.sonatype.oss-oss-parent-7-pom",
+          "filename": "oss-parent-7.pom",
+          "path": "org/sonatype/oss/oss-parent/7",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/7/oss-parent-7.pom",
+            "https://plugins.gradle.org/m2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom"
+          ],
+          "sha256": "b51f8867c92b6a722499557fc3a1fdea77bdf9ef574722fe90ce436a29559454"
+        },
+        {
+          "name": "org.sonatype.oss-oss-parent-9-pom",
+          "filename": "oss-parent-9.pom",
+          "path": "org/sonatype/oss/oss-parent/9",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/9/oss-parent-9.pom",
+            "https://plugins.gradle.org/m2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom"
+          ],
+          "sha256": "fb40265f982548212ff82e362e59732b2187ec6f0d80182885c14ef1f982827a"
+        },
+        {
+          "name": "org.sonatype.sisu.inject-guice-parent-3.1.0-pom",
+          "filename": "guice-parent-3.1.0.pom",
+          "path": "org/sonatype/sisu/inject/guice-parent/3.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/sisu/inject/guice-parent/3.1.0/guice-parent-3.1.0.pom",
+            "https://plugins.gradle.org/m2/org/sonatype/sisu/inject/guice-parent/3.1.0/guice-parent-3.1.0.pom"
+          ],
+          "sha256": "6c1be769d69337f1a8cc2d7e756f94b8bdc02a76c3087545aad1e374ac4bd0ce"
+        },
+        {
+          "name": "org.sonatype.sisu-sisu-guice-3.1.0-pom",
+          "filename": "sisu-guice-3.1.0.pom",
+          "path": "org/sonatype/sisu/sisu-guice/3.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/sisu/sisu-guice/3.1.0/sisu-guice-3.1.0.pom",
+            "https://plugins.gradle.org/m2/org/sonatype/sisu/sisu-guice/3.1.0/sisu-guice-3.1.0.pom"
+          ],
+          "sha256": "28a7c38bd751e9e2a9f8d13ddf876266f90f9d6e29c9178b524828afbc5e45f4"
+        },
+        {
+          "name": "org.sonatype.spice-spice-parent-17-pom",
+          "filename": "spice-parent-17.pom",
+          "path": "org/sonatype/spice/spice-parent/17",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/spice/spice-parent/17/spice-parent-17.pom",
+            "https://plugins.gradle.org/m2/org/sonatype/spice/spice-parent/17/spice-parent-17.pom"
+          ],
+          "sha256": "9151f9a5b33ec36ee8778842fc56144fb0242d39cbcc42061b053b8909969bdf"
+        }
+      ],
+      "project": [
+        {
+          "name": "com.android.tools.build-aapt2-proto-4.1.0-alpha01-6193524-jar",
+          "filename": "aapt2-proto-4.1.0-alpha01-6193524.jar",
+          "path": "com/android/tools/build/aapt2-proto/4.1.0-alpha01-6193524",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/aapt2-proto/4.1.0-alpha01-6193524/aapt2-proto-4.1.0-alpha01-6193524.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2-proto/4.1.0-alpha01-6193524/aapt2-proto-4.1.0-alpha01-6193524.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/aapt2-proto/4.1.0-alpha01-6193524/aapt2-proto-4.1.0-alpha01-6193524.jar"
+          ],
+          "sha256": "17e75523e1e92dd4f222c7368ee41df9e964a508232f591e265d0c499baf9dca"
+        },
+        {
+          "name": "com.android.tools.build-aapt2-proto-4.1.0-alpha01-6193524-pom",
+          "filename": "aapt2-proto-4.1.0-alpha01-6193524.pom",
+          "path": "com/android/tools/build/aapt2-proto/4.1.0-alpha01-6193524",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/aapt2-proto/4.1.0-alpha01-6193524/aapt2-proto-4.1.0-alpha01-6193524.pom",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2-proto/4.1.0-alpha01-6193524/aapt2-proto-4.1.0-alpha01-6193524.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/aapt2-proto/4.1.0-alpha01-6193524/aapt2-proto-4.1.0-alpha01-6193524.pom"
+          ],
+          "sha256": "140a406bcc52be2c99937c51f629076134c74fb060aeedb9f54e91cb7091d786"
+        },
+        {
+          "name": "com.android.tools.build-aapt2-4.1.0-alpha01-6193524-pom",
+          "filename": "aapt2-4.1.0-alpha01-6193524.pom",
+          "path": "com/android/tools/build/aapt2/4.1.0-alpha01-6193524",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524.pom",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524.pom"
+          ],
+          "sha256": "8e96316a53fbb812b6f2eecfa3c14e30822c3385a24306f19b426ffdbe345651"
+        },
+        {
+          "name": "com.android.tools.build-aapt2-4.1.0-alpha01-6193524-linux-jar",
+          "filename": "aapt2-4.1.0-alpha01-6193524-linux.jar",
+          "path": "com/android/tools/build/aapt2/4.1.0-alpha01-6193524",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-linux.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-linux.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-linux.jar"
+          ],
+          "sha256": "96e08594f443757c7576d1fcd472b67cc940e71b72fa1d139a34e9ba68f221d0"
+        },
+        {
+          "name": "com.android.tools.build-aapt2-4.1.0-alpha01-6193524-osx-jar",
+          "filename": "aapt2-4.1.0-alpha01-6193524-osx.jar",
+          "path": "com/android/tools/build/aapt2/4.1.0-alpha01-6193524",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-osx.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-osx.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-osx.jar"
+          ],
+          "sha256": "c10fb9059fbb01ddc414ad794838ab4418022c30bb513fa9f066ff00a3f14ce6"
+        },
+        {
+          "name": "com.android.tools.build-aapt2-4.1.0-alpha01-6193524-windows-jar",
+          "filename": "aapt2-4.1.0-alpha01-6193524-windows.jar",
+          "path": "com/android/tools/build/aapt2/4.1.0-alpha01-6193524",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-windows.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-windows.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/aapt2/4.1.0-alpha01-6193524/aapt2-4.1.0-alpha01-6193524-windows.jar"
+          ],
+          "sha256": "4dc67fdc00fe7bfb577130b42f9083d0a47e3eac995c7924e9a93aab9b74e8b4"
+        },
+        {
+          "name": "com.android.tools.build-apksig-3.4.0-beta01-jar",
+          "filename": "apksig-3.4.0-beta01.jar",
+          "path": "com/android/tools/build/apksig/3.4.0-beta01",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.0-beta01/apksig-3.4.0-beta01.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.0-beta01/apksig-3.4.0-beta01.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/apksig/3.4.0-beta01/apksig-3.4.0-beta01.jar"
+          ],
+          "sha256": "e91273f7842ae5d8f9a025e78a22fb1390861f97113549d2a941f00840af0aa8"
+        },
+        {
+          "name": "com.android.tools.build-apksig-3.4.0-beta01-pom",
+          "filename": "apksig-3.4.0-beta01.pom",
+          "path": "com/android/tools/build/apksig/3.4.0-beta01",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/apksig/3.4.0-beta01/apksig-3.4.0-beta01.pom",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.4.0-beta01/apksig-3.4.0-beta01.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/apksig/3.4.0-beta01/apksig-3.4.0-beta01.pom"
+          ],
+          "sha256": "ba0a4caa8e60f10ae4e2dea345df399a76327ba6944a4e8092b1c1467143be17"
+        },
+        {
+          "name": "com.android.tools.build-apkzlib-3.4.0-beta01-jar",
+          "filename": "apkzlib-3.4.0-beta01.jar",
+          "path": "com/android/tools/build/apkzlib/3.4.0-beta01",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.0-beta01/apkzlib-3.4.0-beta01.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.0-beta01/apkzlib-3.4.0-beta01.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/apkzlib/3.4.0-beta01/apkzlib-3.4.0-beta01.jar"
+          ],
+          "sha256": "978545a35dd93318e7795cc6de888dd63d75f5ff781b79bf4c2fe5b0d53399d4"
+        },
+        {
+          "name": "com.android.tools.build-apkzlib-3.4.0-beta01-pom",
+          "filename": "apkzlib-3.4.0-beta01.pom",
+          "path": "com/android/tools/build/apkzlib/3.4.0-beta01",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/build/apkzlib/3.4.0-beta01/apkzlib-3.4.0-beta01.pom",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.4.0-beta01/apkzlib-3.4.0-beta01.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/build/apkzlib/3.4.0-beta01/apkzlib-3.4.0-beta01.pom"
+          ],
+          "sha256": "60f7e790de18469baf0d26621b4bc4b977c251f8c47437c4d0e084b665d36ab4"
+        },
+        {
+          "name": "com.android.tools.ddms-ddmlib-26.2.0-jar",
+          "filename": "ddmlib-26.2.0.jar",
+          "path": "com/android/tools/ddms/ddmlib/26.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.jar"
+          ],
+          "sha256": "ff9b6951698a6ec005b25e5e3b5f7fe960f566131ba8fcdf713392e10cc2dd50"
+        },
+        {
+          "name": "com.android.tools.ddms-ddmlib-26.2.0-pom",
+          "filename": "ddmlib-26.2.0.pom",
+          "path": "com/android/tools/ddms/ddmlib/26.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.pom"
+          ],
+          "sha256": "c16d70e02b7c926ee562960db6c7abd5c8643627b3a2bbcfb38e760ebc0cbe68"
+        },
+        {
+          "name": "com.android.tools-annotations-26.2.0-jar",
+          "filename": "annotations-26.2.0.jar",
+          "path": "com/android/tools/annotations/26.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/annotations/26.2.0/annotations-26.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.2.0/annotations-26.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/annotations/26.2.0/annotations-26.2.0.jar"
+          ],
+          "sha256": "af775f75168acbadb2ff61d6955e4fbeca9b1bd9f7a40b54ab7a489e30af45bb"
+        },
+        {
+          "name": "com.android.tools-annotations-26.2.0-pom",
+          "filename": "annotations-26.2.0.pom",
+          "path": "com/android/tools/annotations/26.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/annotations/26.2.0/annotations-26.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.2.0/annotations-26.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/annotations/26.2.0/annotations-26.2.0.pom"
+          ],
+          "sha256": "306443ecde2ff95901e75019f3ce75b0aa20d81d5e762123144d068851288716"
+        },
+        {
+          "name": "com.android.tools-common-26.2.0-jar",
+          "filename": "common-26.2.0.jar",
+          "path": "com/android/tools/common/26.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/common/26.2.0/common-26.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.2.0/common-26.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/common/26.2.0/common-26.2.0.jar"
+          ],
+          "sha256": "3e60e91bc7c7a634bbfae3522c5e0b49e8a268a2d69904bed4bd55833f8bb0c9"
+        },
+        {
+          "name": "com.android.tools-common-26.2.0-pom",
+          "filename": "common-26.2.0.pom",
+          "path": "com/android/tools/common/26.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/common/26.2.0/common-26.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/common/26.2.0/common-26.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/common/26.2.0/common-26.2.0.pom"
+          ],
+          "sha256": "4a3a6ace335495205112693f14e05f4fbb83d6d856d8765804dd60117a3bd91d"
+        },
+        {
+          "name": "com.android.tools-r8-2.0.23-jar",
+          "filename": "r8-2.0.23.jar",
+          "path": "com/android/tools/r8/2.0.23",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/r8/2.0.23/r8-2.0.23.jar",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/r8/2.0.23/r8-2.0.23.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/r8/2.0.23/r8-2.0.23.jar"
+          ],
+          "sha256": "a71f1c2d4675085b6d7e70ab800bb9d30d39282e796e1959a8f364b1ac1433dd"
+        },
+        {
+          "name": "com.android.tools-r8-2.0.23-pom",
+          "filename": "r8-2.0.23.pom",
+          "path": "com/android/tools/r8/2.0.23",
+          "urls": [
+            "https://jcenter.bintray.com/com/android/tools/r8/2.0.23/r8-2.0.23.pom",
+            "https://dl.google.com/dl/android/maven2/com/android/tools/r8/2.0.23/r8-2.0.23.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/android/tools/r8/2.0.23/r8-2.0.23.pom"
+          ],
+          "sha256": "0d60df6b0db0d407603d5dfe8bdde3dcb0a63ff287400e22f749dbb1bdbc0310"
+        },
+        {
+          "name": "com.google.auto.value-auto-value-annotations-1.6.2-jar",
+          "filename": "auto-value-annotations-1.6.2.jar",
+          "path": "com/google/auto/value/auto-value-annotations/1.6.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.jar"
+          ],
+          "sha256": "b48b04ddba40e8ac33bf036f06fc43995fc5084bd94bdaace807ce27d3bea3fb"
+        },
+        {
+          "name": "com.google.auto.value-auto-value-annotations-1.6.2-pom",
+          "filename": "auto-value-annotations-1.6.2.pom",
+          "path": "com/google/auto/value/auto-value-annotations/1.6.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.pom"
+          ],
+          "sha256": "1c76cd462fc96e7aa96dc70ce82f0d54063d6df16db35c9c7d9cc0d1a99d3fff"
+        },
+        {
+          "name": "com.google.auto.value-auto-value-annotations-1.6.3-jar",
+          "filename": "auto-value-annotations-1.6.3.jar",
+          "path": "com/google/auto/value/auto-value-annotations/1.6.3",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/value/auto-value-annotations/1.6.3/auto-value-annotations-1.6.3.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/value/auto-value-annotations/1.6.3/auto-value-annotations-1.6.3.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/value/auto-value-annotations/1.6.3/auto-value-annotations-1.6.3.jar"
+          ],
+          "sha256": "0e951fee8c31f60270bc46553a8586001b7b93dbb12aec06373aa99a150392c0"
+        },
+        {
+          "name": "com.google.auto.value-auto-value-annotations-1.6.3-pom",
+          "filename": "auto-value-annotations-1.6.3.pom",
+          "path": "com/google/auto/value/auto-value-annotations/1.6.3",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/value/auto-value-annotations/1.6.3/auto-value-annotations-1.6.3.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/value/auto-value-annotations/1.6.3/auto-value-annotations-1.6.3.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/value/auto-value-annotations/1.6.3/auto-value-annotations-1.6.3.pom"
+          ],
+          "sha256": "e1fc780f7ee025e662b3da72723dbe2ac8dac0a2f8920f265315c4e1be3d765c"
+        },
+        {
+          "name": "com.google.auto.value-auto-value-parent-1.6.2-pom",
+          "filename": "auto-value-parent-1.6.2.pom",
+          "path": "com/google/auto/value/auto-value-parent/1.6.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/value/auto-value-parent/1.6.2/auto-value-parent-1.6.2.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/value/auto-value-parent/1.6.2/auto-value-parent-1.6.2.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/value/auto-value-parent/1.6.2/auto-value-parent-1.6.2.pom"
+          ],
+          "sha256": "27b640c82179f5cff62009c0b72033d9bc60f60e9902a66802274b7fe37fc81c"
+        },
+        {
+          "name": "com.google.auto.value-auto-value-parent-1.6.3-pom",
+          "filename": "auto-value-parent-1.6.3.pom",
+          "path": "com/google/auto/value/auto-value-parent/1.6.3",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/value/auto-value-parent/1.6.3/auto-value-parent-1.6.3.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/value/auto-value-parent/1.6.3/auto-value-parent-1.6.3.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/value/auto-value-parent/1.6.3/auto-value-parent-1.6.3.pom"
+          ],
+          "sha256": "e59df5732b4cb34d5727181446f9ded9ce4425131a0a1062519eea196de4d8a1"
+        },
+        {
+          "name": "com.google.auto.value-auto-value-1.6.2-jar",
+          "filename": "auto-value-1.6.2.jar",
+          "path": "com/google/auto/value/auto-value/1.6.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/value/auto-value/1.6.2/auto-value-1.6.2.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/value/auto-value/1.6.2/auto-value-1.6.2.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/value/auto-value/1.6.2/auto-value-1.6.2.jar"
+          ],
+          "sha256": "edbe65a5c53e3d4f5cb10b055d4884ae7705a7cd697be4b2a5d8427761b8ba12"
+        },
+        {
+          "name": "com.google.auto.value-auto-value-1.6.2-pom",
+          "filename": "auto-value-1.6.2.pom",
+          "path": "com/google/auto/value/auto-value/1.6.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/value/auto-value/1.6.2/auto-value-1.6.2.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/value/auto-value/1.6.2/auto-value-1.6.2.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/value/auto-value/1.6.2/auto-value-1.6.2.pom"
+          ],
+          "sha256": "a2ca1c0e0ab462f56bbe44a234385770877809bc5b277fedff9da2b3af9cd865"
+        },
+        {
+          "name": "com.google.auto-auto-parent-6-pom",
+          "filename": "auto-parent-6.pom",
+          "path": "com/google/auto/auto-parent/6",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/auto-parent/6/auto-parent-6.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/auto-parent/6/auto-parent-6.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/auto-parent/6/auto-parent-6.pom"
+          ],
+          "sha256": "05f740c6648165db00cf618dd56c200c4725e358e6d54f5853e0bec15734ea0a"
+        },
+        {
+          "name": "com.google.auto-auto-parent-7-pom",
+          "filename": "auto-parent-7.pom",
+          "path": "com/google/auto/auto-parent/7",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/auto/auto-parent/7/auto-parent-7.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/auto/auto-parent/7/auto-parent-7.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/auto/auto-parent/7/auto-parent-7.pom"
+          ],
+          "sha256": "a46426fccb5d32705ad9cbbc996f786bd048cc8cbdd21db046500169f15a4356"
+        },
+        {
+          "name": "com.google.code.findbugs-jsr305-1.3.9-jar",
+          "filename": "jsr305-1.3.9.jar",
+          "path": "com/google/code/findbugs/jsr305/1.3.9",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar"
+          ],
+          "sha256": "905721a0eea90a81534abb7ee6ef4ea2e5e645fa1def0a5cd88402df1b46c9ed"
+        },
+        {
+          "name": "com.google.code.findbugs-jsr305-1.3.9-pom",
+          "filename": "jsr305-1.3.9.pom",
+          "path": "com/google/code/findbugs/jsr305/1.3.9",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.pom"
+          ],
+          "sha256": "feab9191311c3d7aeef2b66d6064afc80d3d1d52d980fb07ae43c78c987ba93a"
+        },
+        {
+          "name": "com.google.code.findbugs-jsr305-3.0.2-jar",
+          "filename": "jsr305-3.0.2.jar",
+          "path": "com/google/code/findbugs/jsr305/3.0.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar"
+          ],
+          "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+        },
+        {
+          "name": "com.google.code.findbugs-jsr305-3.0.2-pom",
+          "filename": "jsr305-3.0.2.pom",
+          "path": "com/google/code/findbugs/jsr305/3.0.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom"
+          ],
+          "sha256": "19889dbdf1b254b2601a5ee645b8147a974644882297684c798afe5d63d78dfe"
+        },
+        {
+          "name": "com.google.code.gson-gson-parent-2.7-pom",
+          "filename": "gson-parent-2.7.pom",
+          "path": "com/google/code/gson/gson-parent/2.7",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/gson/gson-parent/2.7/gson-parent-2.7.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/code/gson/gson-parent/2.7/gson-parent-2.7.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/code/gson/gson-parent/2.7/gson-parent-2.7.pom"
+          ],
+          "sha256": "871e8c737322301f0cc8acfe39a2960c4579d9d8666aeea5298bb6fcc9e4272b"
+        },
+        {
+          "name": "com.google.code.gson-gson-2.7-jar",
+          "filename": "gson-2.7.jar",
+          "path": "com/google/code/gson/gson/2.7",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/gson/gson/2.7/gson-2.7.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/code/gson/gson/2.7/gson-2.7.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/code/gson/gson/2.7/gson-2.7.jar"
+          ],
+          "sha256": "2d43eb5ea9e133d2ee2405cc14f5ee08951b8361302fdd93494a3a997b508d32"
+        },
+        {
+          "name": "com.google.code.gson-gson-2.7-pom",
+          "filename": "gson-2.7.pom",
+          "path": "com/google/code/gson/gson/2.7",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/gson/gson/2.7/gson-2.7.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/code/gson/gson/2.7/gson-2.7.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/code/gson/gson/2.7/gson-2.7.pom"
+          ],
+          "sha256": "723936ec07b87b210a44ef8058f32f56e3d56442218dfbf8f4e538a927160ede"
+        },
+        {
+          "name": "com.google.errorprone-error_prone_annotations-2.0.18-jar",
+          "filename": "error_prone_annotations-2.0.18.jar",
+          "path": "com/google/errorprone/error_prone_annotations/2.0.18",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.0.18/error_prone_annotations-2.0.18.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/errorprone/error_prone_annotations/2.0.18/error_prone_annotations-2.0.18.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/errorprone/error_prone_annotations/2.0.18/error_prone_annotations-2.0.18.jar"
+          ],
+          "sha256": "cb4cfad870bf563a07199f3ebea5763f0dec440fcda0b318640b1feaa788656b"
+        },
+        {
+          "name": "com.google.errorprone-error_prone_annotations-2.0.18-pom",
+          "filename": "error_prone_annotations-2.0.18.pom",
+          "path": "com/google/errorprone/error_prone_annotations/2.0.18",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.0.18/error_prone_annotations-2.0.18.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/errorprone/error_prone_annotations/2.0.18/error_prone_annotations-2.0.18.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/errorprone/error_prone_annotations/2.0.18/error_prone_annotations-2.0.18.pom"
+          ],
+          "sha256": "9144127192d6f612c2366825dceaeb23b0d53130b83e0bf1ffe107d1470a8487"
+        },
+        {
+          "name": "com.google.errorprone-error_prone_annotations-2.3.1-jar",
+          "filename": "error_prone_annotations-2.3.1.jar",
+          "path": "com/google/errorprone/error_prone_annotations/2.3.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.1/error_prone_annotations-2.3.1.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/errorprone/error_prone_annotations/2.3.1/error_prone_annotations-2.3.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/errorprone/error_prone_annotations/2.3.1/error_prone_annotations-2.3.1.jar"
+          ],
+          "sha256": "10a5949aa0f95c8de4fd47edfe20534d2acefd8c224f8afea1f607e112816120"
+        },
+        {
+          "name": "com.google.errorprone-error_prone_annotations-2.3.1-pom",
+          "filename": "error_prone_annotations-2.3.1.pom",
+          "path": "com/google/errorprone/error_prone_annotations/2.3.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.1/error_prone_annotations-2.3.1.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/errorprone/error_prone_annotations/2.3.1/error_prone_annotations-2.3.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/errorprone/error_prone_annotations/2.3.1/error_prone_annotations-2.3.1.pom"
+          ],
+          "sha256": "3edce6b711ba368efe16b9b7aacb0214fbd648414cb9b965953a2e7ed89a819a"
+        },
+        {
+          "name": "com.google.errorprone-error_prone_parent-2.0.18-pom",
+          "filename": "error_prone_parent-2.0.18.pom",
+          "path": "com/google/errorprone/error_prone_parent/2.0.18",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.0.18/error_prone_parent-2.0.18.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/errorprone/error_prone_parent/2.0.18/error_prone_parent-2.0.18.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/errorprone/error_prone_parent/2.0.18/error_prone_parent-2.0.18.pom"
+          ],
+          "sha256": "cf149955279b07d4f11e817985c1164a69e930d73db7441b43a6ef53bbd286c4"
+        },
+        {
+          "name": "com.google.errorprone-error_prone_parent-2.3.1-pom",
+          "filename": "error_prone_parent-2.3.1.pom",
+          "path": "com/google/errorprone/error_prone_parent/2.3.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.3.1/error_prone_parent-2.3.1.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/errorprone/error_prone_parent/2.3.1/error_prone_parent-2.3.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/errorprone/error_prone_parent/2.3.1/error_prone_parent-2.3.1.pom"
+          ],
+          "sha256": "767525d9a81129cd081968382980336327be4162b1e2251a182911daa733c123"
+        },
+        {
+          "name": "com.google.guava-failureaccess-1.0.1-jar",
+          "filename": "failureaccess-1.0.1.jar",
+          "path": "com/google/guava/failureaccess/1.0.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar"
+          ],
+          "sha256": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
+        },
+        {
+          "name": "com.google.guava-failureaccess-1.0.1-pom",
+          "filename": "failureaccess-1.0.1.pom",
+          "path": "com/google/guava/failureaccess/1.0.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom"
+          ],
+          "sha256": "e96042ce78fecba0da2be964522947c87b40a291b5fd3cd672a434924103c4b9"
+        },
+        {
+          "name": "com.google.guava-guava-parent-23.0-pom",
+          "filename": "guava-parent-23.0.pom",
+          "path": "com/google/guava/guava-parent/23.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava-parent/23.0/guava-parent-23.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/guava-parent/23.0/guava-parent-23.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/guava-parent/23.0/guava-parent-23.0.pom"
+          ],
+          "sha256": "66cc3a0d329f9fe130605fdb2c901e5a9bb2612f02f23a76757b46e689b3594d"
+        },
+        {
+          "name": "com.google.guava-guava-parent-26.0-android-pom",
+          "filename": "guava-parent-26.0-android.pom",
+          "path": "com/google/guava/guava-parent/26.0-android",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom"
+          ],
+          "sha256": "f8698ab46ca996ce889c1afc8ca4f25eb8ac6b034dc898d4583742360016cc04"
+        },
+        {
+          "name": "com.google.guava-guava-parent-27.0.1-jre-pom",
+          "filename": "guava-parent-27.0.1-jre.pom",
+          "path": "com/google/guava/guava-parent/27.0.1-jre",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava-parent/27.0.1-jre/guava-parent-27.0.1-jre.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/guava-parent/27.0.1-jre/guava-parent-27.0.1-jre.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/guava-parent/27.0.1-jre/guava-parent-27.0.1-jre.pom"
+          ],
+          "sha256": "317e88291262e0cf2805e956c18850f1d4565c85c2e1112f5d9d08ab1732e696"
+        },
+        {
+          "name": "com.google.guava-guava-23.0-jar",
+          "filename": "guava-23.0.jar",
+          "path": "com/google/guava/guava/23.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/guava/23.0/guava-23.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/guava/23.0/guava-23.0.jar"
+          ],
+          "sha256": "7baa80df284117e5b945b19b98d367a85ea7b7801bd358ff657946c3bd1b6596"
+        },
+        {
+          "name": "com.google.guava-guava-23.0-pom",
+          "filename": "guava-23.0.pom",
+          "path": "com/google/guava/guava/23.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/guava/23.0/guava-23.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/guava/23.0/guava-23.0.pom"
+          ],
+          "sha256": "ac2ac42a7a6b4ce5097c6c83e2fbbacbbb7f9913f1b4f993eb1723a14476324e"
+        },
+        {
+          "name": "com.google.guava-guava-27.0.1-jre-jar",
+          "filename": "guava-27.0.1-jre.jar",
+          "path": "com/google/guava/guava/27.0.1-jre",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.jar"
+          ],
+          "sha256": "e1c814fd04492a27c38e0317eabeaa1b3e950ec8010239e400fe90ad6c9107b4"
+        },
+        {
+          "name": "com.google.guava-guava-27.0.1-jre-pom",
+          "filename": "guava-27.0.1-jre.pom",
+          "path": "com/google/guava/guava/27.0.1-jre",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.pom"
+          ],
+          "sha256": "6a8dd041f23a6bb14a86e440fccb993537b62271357a0dac0a3cb0ff39158f36"
+        },
+        {
+          "name": "com.google.guava-listenablefuture-9999.0-empty-to-avoid-conflict-with-guava-jar",
+          "filename": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+          "path": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"
+          ],
+          "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
+        },
+        {
+          "name": "com.google.guava-listenablefuture-9999.0-empty-to-avoid-conflict-with-guava-pom",
+          "filename": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom",
+          "path": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom"
+          ],
+          "sha256": "18d4b1db26153d4e55079ce1f76bb1fe05cdb862ef9954a88cbcc4ff38b8679b"
+        },
+        {
+          "name": "com.google.j2objc-j2objc-annotations-1.1-jar",
+          "filename": "j2objc-annotations-1.1.jar",
+          "path": "com/google/j2objc/j2objc-annotations/1.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.jar"
+          ],
+          "sha256": "2994a7eb78f2710bd3d3bfb639b2c94e219cedac0d4d084d516e78c16dddecf6"
+        },
+        {
+          "name": "com.google.j2objc-j2objc-annotations-1.1-pom",
+          "filename": "j2objc-annotations-1.1.pom",
+          "path": "com/google/j2objc/j2objc-annotations/1.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.pom"
+          ],
+          "sha256": "f0c98c571e93a7cb4dd18df0fa308f0963e7a0620ac2d4244e61e709d03ad6be"
+        },
+        {
+          "name": "com.google.jimfs-jimfs-parent-1.1-pom",
+          "filename": "jimfs-parent-1.1.pom",
+          "path": "com/google/jimfs/jimfs-parent/1.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/jimfs/jimfs-parent/1.1/jimfs-parent-1.1.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/jimfs/jimfs-parent/1.1/jimfs-parent-1.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/jimfs/jimfs-parent/1.1/jimfs-parent-1.1.pom"
+          ],
+          "sha256": "c71555751e57e0ef912870e8ac9625ae782502a6a5b9c19ccf83b2a97d8b26bd"
+        },
+        {
+          "name": "com.google.jimfs-jimfs-1.1-jar",
+          "filename": "jimfs-1.1.jar",
+          "path": "com/google/jimfs/jimfs/1.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar"
+          ],
+          "sha256": "c4828e28d7c0a930af9387510b3bada7daa5c04d7c25a75c7b8b081f1c257ddd"
+        },
+        {
+          "name": "com.google.jimfs-jimfs-1.1-pom",
+          "filename": "jimfs-1.1.pom",
+          "path": "com/google/jimfs/jimfs/1.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/jimfs/jimfs/1.1/jimfs-1.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/jimfs/jimfs/1.1/jimfs-1.1.pom"
+          ],
+          "sha256": "efa86e5cd922f17b472fdfcae57234d8d4ac3e148b6250737dfce454af7a7a44"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-bom-3.10.0-pom",
+          "filename": "protobuf-bom-3.10.0.pom",
+          "path": "com/google/protobuf/protobuf-bom/3.10.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-bom/3.10.0/protobuf-bom-3.10.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protobuf-bom/3.10.0/protobuf-bom-3.10.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protobuf-bom/3.10.0/protobuf-bom-3.10.0.pom"
+          ],
+          "sha256": "32ff2307dafc658d0b55b2ad841d625aea5606bb9b0316605165cd6980503243"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-java-util-3.4.0-jar",
+          "filename": "protobuf-java-util-3.4.0.jar",
+          "path": "com/google/protobuf/protobuf-java-util/3.4.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.jar"
+          ],
+          "sha256": "4189e0be5ab15cf2330f70b24fbdc75ca37514f188388fce8580ce16a9a68052"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-java-util-3.4.0-pom",
+          "filename": "protobuf-java-util-3.4.0.pom",
+          "path": "com/google/protobuf/protobuf-java-util/3.4.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.pom"
+          ],
+          "sha256": "89c43073e7eaa0eaba72a4a36ae1b6bfdfe5d81bb9d0e156aee05e4a72de3cb8"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-java-3.10.0-jar",
+          "filename": "protobuf-java-3.10.0.jar",
+          "path": "com/google/protobuf/protobuf-java/3.10.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.jar"
+          ],
+          "sha256": "161d7d61a8cb3970891c299578702fd079646e032329d6c2cabf998d191437c9"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-java-3.10.0-pom",
+          "filename": "protobuf-java-3.10.0.pom",
+          "path": "com/google/protobuf/protobuf-java/3.10.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.pom"
+          ],
+          "sha256": "b404c1b093ec9dea888e02c8dfe8662759586b94efa4f97061cdfc1bbfa15af0"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-parent-3.10.0-pom",
+          "filename": "protobuf-parent-3.10.0.pom",
+          "path": "com/google/protobuf/protobuf-parent/3.10.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-parent/3.10.0/protobuf-parent-3.10.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protobuf-parent/3.10.0/protobuf-parent-3.10.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protobuf-parent/3.10.0/protobuf-parent-3.10.0.pom"
+          ],
+          "sha256": "6dd84a508125fffdefbd583fae12bf166aa902511b570ca54fa9efa45f6dfe80"
+        },
+        {
+          "name": "com.google.protobuf-protobuf-parent-3.4.0-pom",
+          "filename": "protobuf-parent-3.4.0.pom",
+          "path": "com/google/protobuf/protobuf-parent/3.4.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protobuf-parent/3.4.0/protobuf-parent-3.4.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protobuf-parent/3.4.0/protobuf-parent-3.4.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protobuf-parent/3.4.0/protobuf-parent-3.4.0.pom"
+          ],
+          "sha256": "24909c552842c0eb7a4c769d631a43cbef5a9a10c1640f2bdbd1ea149c573a47"
+        },
+        {
+          "name": "com.google.protobuf-protoc-3.4.0-pom",
+          "filename": "protoc-3.4.0.pom",
+          "path": "com/google/protobuf/protoc/3.4.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protoc/3.4.0/protoc-3.4.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protoc/3.4.0/protoc-3.4.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protoc/3.4.0/protoc-3.4.0.pom"
+          ],
+          "sha256": "8aac87c7190e698b41649225252beaffb529f9742aab763ef44ff21472e1f85b"
+        },
+        {
+          "name": "com.google.protobuf-protoc-3.4.0-linux-x86_64-exe",
+          "filename": "protoc-3.4.0-linux-x86_64.exe",
+          "path": "com/google/protobuf/protoc/3.4.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/protobuf/protoc/3.4.0/protoc-3.4.0-linux-x86_64.exe",
+            "https://dl.google.com/dl/android/maven2/com/google/protobuf/protoc/3.4.0/protoc-3.4.0-linux-x86_64.exe",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/protobuf/protoc/3.4.0/protoc-3.4.0-linux-x86_64.exe"
+          ],
+          "sha256": "5133b4b794e7f41d8c8aaef461ebb6c0849fe7a5e9ad5a0f319289dbb2ccafc7"
+        },
+        {
+          "name": "com.google.truth.extensions-truth-extensions-parent-0.45-pom",
+          "filename": "truth-extensions-parent-0.45.pom",
+          "path": "com/google/truth/extensions/truth-extensions-parent/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/extensions/truth-extensions-parent/0.45/truth-extensions-parent-0.45.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/extensions/truth-extensions-parent/0.45/truth-extensions-parent-0.45.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/extensions/truth-extensions-parent/0.45/truth-extensions-parent-0.45.pom"
+          ],
+          "sha256": "f5d4f9ea4881d58da7357ccb6b5a43f5ff4a60506c9eeab2b59040447f0b2dfe"
+        },
+        {
+          "name": "com.google.truth.extensions-truth-java8-extension-0.45-jar",
+          "filename": "truth-java8-extension-0.45.jar",
+          "path": "com/google/truth/extensions/truth-java8-extension/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/extensions/truth-java8-extension/0.45/truth-java8-extension-0.45.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/extensions/truth-java8-extension/0.45/truth-java8-extension-0.45.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/extensions/truth-java8-extension/0.45/truth-java8-extension-0.45.jar"
+          ],
+          "sha256": "dc1fedf6c13b1b1a4c4fa3e810f11df070ea4701765f05176f8bdcb5520c7de4"
+        },
+        {
+          "name": "com.google.truth.extensions-truth-java8-extension-0.45-pom",
+          "filename": "truth-java8-extension-0.45.pom",
+          "path": "com/google/truth/extensions/truth-java8-extension/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/extensions/truth-java8-extension/0.45/truth-java8-extension-0.45.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/extensions/truth-java8-extension/0.45/truth-java8-extension-0.45.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/extensions/truth-java8-extension/0.45/truth-java8-extension-0.45.pom"
+          ],
+          "sha256": "40d96119d3766275a2d9adf9addd70354e292bdb40b17b92028fe9f9d8853420"
+        },
+        {
+          "name": "com.google.truth.extensions-truth-liteproto-extension-0.45-jar",
+          "filename": "truth-liteproto-extension-0.45.jar",
+          "path": "com/google/truth/extensions/truth-liteproto-extension/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/extensions/truth-liteproto-extension/0.45/truth-liteproto-extension-0.45.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/extensions/truth-liteproto-extension/0.45/truth-liteproto-extension-0.45.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/extensions/truth-liteproto-extension/0.45/truth-liteproto-extension-0.45.jar"
+          ],
+          "sha256": "f4943c759b101542af051e3c8c139059fd1bfa3203f52cfd10b4bb1787874186"
+        },
+        {
+          "name": "com.google.truth.extensions-truth-liteproto-extension-0.45-pom",
+          "filename": "truth-liteproto-extension-0.45.pom",
+          "path": "com/google/truth/extensions/truth-liteproto-extension/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/extensions/truth-liteproto-extension/0.45/truth-liteproto-extension-0.45.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/extensions/truth-liteproto-extension/0.45/truth-liteproto-extension-0.45.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/extensions/truth-liteproto-extension/0.45/truth-liteproto-extension-0.45.pom"
+          ],
+          "sha256": "c127c08bef921cda983d9ef6054be8ae709a5602273c619ae10b139671d1c98b"
+        },
+        {
+          "name": "com.google.truth.extensions-truth-proto-extension-0.45-jar",
+          "filename": "truth-proto-extension-0.45.jar",
+          "path": "com/google/truth/extensions/truth-proto-extension/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/extensions/truth-proto-extension/0.45/truth-proto-extension-0.45.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/extensions/truth-proto-extension/0.45/truth-proto-extension-0.45.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/extensions/truth-proto-extension/0.45/truth-proto-extension-0.45.jar"
+          ],
+          "sha256": "1033b995b992bb7a62ddef11b70ae721b6ec82155eb2c36d0d43e3d469ea1548"
+        },
+        {
+          "name": "com.google.truth.extensions-truth-proto-extension-0.45-pom",
+          "filename": "truth-proto-extension-0.45.pom",
+          "path": "com/google/truth/extensions/truth-proto-extension/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/extensions/truth-proto-extension/0.45/truth-proto-extension-0.45.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/extensions/truth-proto-extension/0.45/truth-proto-extension-0.45.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/extensions/truth-proto-extension/0.45/truth-proto-extension-0.45.pom"
+          ],
+          "sha256": "5ec53f520159526d13dcf5873bfa27562cc6fe15aeb0c367cf88b0d02c5b9558"
+        },
+        {
+          "name": "com.google.truth-truth-parent-0.45-pom",
+          "filename": "truth-parent-0.45.pom",
+          "path": "com/google/truth/truth-parent/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/truth-parent/0.45/truth-parent-0.45.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/truth-parent/0.45/truth-parent-0.45.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/truth-parent/0.45/truth-parent-0.45.pom"
+          ],
+          "sha256": "287504f4bfc760d1235392521bd0bb645144c41104b302d202fdbfcf9f4887b4"
+        },
+        {
+          "name": "com.google.truth-truth-0.45-jar",
+          "filename": "truth-0.45.jar",
+          "path": "com/google/truth/truth/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/truth/0.45/truth-0.45.jar",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/truth/0.45/truth-0.45.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/truth/0.45/truth-0.45.jar"
+          ],
+          "sha256": "0f7dced2a16e55a77e44fc3ff9c5be98d4bf4bb30abc18d78ffd735df950a69f"
+        },
+        {
+          "name": "com.google.truth-truth-0.45-pom",
+          "filename": "truth-0.45.pom",
+          "path": "com/google/truth/truth/0.45",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/truth/truth/0.45/truth-0.45.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/truth/truth/0.45/truth-0.45.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/truth/truth/0.45/truth-0.45.pom"
+          ],
+          "sha256": "e6a3347c842ff65fbdb10169146959dcacbcaa6210437cbb7147945340503007"
+        },
+        {
+          "name": "com.google-google-1-pom",
+          "filename": "google-1.pom",
+          "path": "com/google/google/1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/google/1/google-1.pom",
+            "https://dl.google.com/dl/android/maven2/com/google/google/1/google-1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/google/google/1/google-1.pom"
+          ],
+          "sha256": "cd6db17a11a31ede794ccbd1df0e4d9750f640234731f21cff885a9997277e81"
+        },
+        {
+          "name": "com.googlecode.java-diff-utils-diffutils-1.3.0-jar",
+          "filename": "diffutils-1.3.0.jar",
+          "path": "com/googlecode/java-diff-utils/diffutils/1.3.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.jar",
+            "https://dl.google.com/dl/android/maven2/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.jar"
+          ],
+          "sha256": "61ba4dc49adca95243beaa0569adc2a23aedb5292ae78aa01186fa782ebdc5c2"
+        },
+        {
+          "name": "com.googlecode.java-diff-utils-diffutils-1.3.0-pom",
+          "filename": "diffutils-1.3.0.pom",
+          "path": "com/googlecode/java-diff-utils/diffutils/1.3.0",
+          "urls": [
+            "https://jcenter.bintray.com/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.pom",
+            "https://dl.google.com/dl/android/maven2/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/com/googlecode/java-diff-utils/diffutils/1.3.0/diffutils-1.3.0.pom"
+          ],
+          "sha256": "2fe31dd6309b0f5f195bbdc4749cfc0af065d61f06cfe183dfd2f2092ab847b6"
+        },
+        {
+          "name": "it.unimi.dsi-fastutil-7.2.0-jar",
+          "filename": "fastutil-7.2.0.jar",
+          "path": "it/unimi/dsi/fastutil/7.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar"
+          ],
+          "sha256": "74fa208043740642f7e6eb09faba15965218ad2f50ce3020efb100136e4b591c"
+        },
+        {
+          "name": "it.unimi.dsi-fastutil-7.2.0-pom",
+          "filename": "fastutil-7.2.0.pom",
+          "path": "it/unimi/dsi/fastutil/7.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom"
+          ],
+          "sha256": "953b116521a73575eee990e3f2c36a892fb088bb2d9a3027c82193cb7a013ef7"
+        },
+        {
+          "name": "junit-junit-4.12-jar",
+          "filename": "junit-4.12.jar",
+          "path": "junit/junit/4.12",
+          "urls": [
+            "https://jcenter.bintray.com/junit/junit/4.12/junit-4.12.jar",
+            "https://dl.google.com/dl/android/maven2/junit/junit/4.12/junit-4.12.jar",
+            "https://storage.googleapis.com/r8-releases/raw/junit/junit/4.12/junit-4.12.jar"
+          ],
+          "sha256": "59721f0805e223d84b90677887d9ff567dc534d7c502ca903c0c2b17f05c116a"
+        },
+        {
+          "name": "junit-junit-4.12-pom",
+          "filename": "junit-4.12.pom",
+          "path": "junit/junit/4.12",
+          "urls": [
+            "https://jcenter.bintray.com/junit/junit/4.12/junit-4.12.pom",
+            "https://dl.google.com/dl/android/maven2/junit/junit/4.12/junit-4.12.pom",
+            "https://storage.googleapis.com/r8-releases/raw/junit/junit/4.12/junit-4.12.pom"
+          ],
+          "sha256": "90f163f78e3ffb6f1c7ad97de9e7eba4eea25807141b85d6d12be67ca25449c4"
+        },
+        {
+          "name": "net.bytebuddy-byte-buddy-agent-1.8.5-jar",
+          "filename": "byte-buddy-agent-1.8.5.jar",
+          "path": "net/bytebuddy/byte-buddy-agent/1.8.5",
+          "urls": [
+            "https://jcenter.bintray.com/net/bytebuddy/byte-buddy-agent/1.8.5/byte-buddy-agent-1.8.5.jar",
+            "https://dl.google.com/dl/android/maven2/net/bytebuddy/byte-buddy-agent/1.8.5/byte-buddy-agent-1.8.5.jar",
+            "https://storage.googleapis.com/r8-releases/raw/net/bytebuddy/byte-buddy-agent/1.8.5/byte-buddy-agent-1.8.5.jar"
+          ],
+          "sha256": "804e0d85bff9f34110564318bfb34ec62604c4704dbcc734668abd68d58cbb7a"
+        },
+        {
+          "name": "net.bytebuddy-byte-buddy-agent-1.8.5-pom",
+          "filename": "byte-buddy-agent-1.8.5.pom",
+          "path": "net/bytebuddy/byte-buddy-agent/1.8.5",
+          "urls": [
+            "https://jcenter.bintray.com/net/bytebuddy/byte-buddy-agent/1.8.5/byte-buddy-agent-1.8.5.pom",
+            "https://dl.google.com/dl/android/maven2/net/bytebuddy/byte-buddy-agent/1.8.5/byte-buddy-agent-1.8.5.pom",
+            "https://storage.googleapis.com/r8-releases/raw/net/bytebuddy/byte-buddy-agent/1.8.5/byte-buddy-agent-1.8.5.pom"
+          ],
+          "sha256": "3e8380192db007fbdcc32dbe10bc9c3400ccddd5d92a9a4376aed1fd81a52a90"
+        },
+        {
+          "name": "net.bytebuddy-byte-buddy-parent-1.8.5-pom",
+          "filename": "byte-buddy-parent-1.8.5.pom",
+          "path": "net/bytebuddy/byte-buddy-parent/1.8.5",
+          "urls": [
+            "https://jcenter.bintray.com/net/bytebuddy/byte-buddy-parent/1.8.5/byte-buddy-parent-1.8.5.pom",
+            "https://dl.google.com/dl/android/maven2/net/bytebuddy/byte-buddy-parent/1.8.5/byte-buddy-parent-1.8.5.pom",
+            "https://storage.googleapis.com/r8-releases/raw/net/bytebuddy/byte-buddy-parent/1.8.5/byte-buddy-parent-1.8.5.pom"
+          ],
+          "sha256": "c8d9a073504f3aae8178950fb4c5ac89c3c6ecd6f933f10de70077fbd5297a17"
+        },
+        {
+          "name": "net.bytebuddy-byte-buddy-1.8.5-jar",
+          "filename": "byte-buddy-1.8.5.jar",
+          "path": "net/bytebuddy/byte-buddy/1.8.5",
+          "urls": [
+            "https://jcenter.bintray.com/net/bytebuddy/byte-buddy/1.8.5/byte-buddy-1.8.5.jar",
+            "https://dl.google.com/dl/android/maven2/net/bytebuddy/byte-buddy/1.8.5/byte-buddy-1.8.5.jar",
+            "https://storage.googleapis.com/r8-releases/raw/net/bytebuddy/byte-buddy/1.8.5/byte-buddy-1.8.5.jar"
+          ],
+          "sha256": "5cdf38df41d2224e668382dde9d8698b443769d8d20f4a3377b029c6719d681e"
+        },
+        {
+          "name": "net.bytebuddy-byte-buddy-1.8.5-pom",
+          "filename": "byte-buddy-1.8.5.pom",
+          "path": "net/bytebuddy/byte-buddy/1.8.5",
+          "urls": [
+            "https://jcenter.bintray.com/net/bytebuddy/byte-buddy/1.8.5/byte-buddy-1.8.5.pom",
+            "https://dl.google.com/dl/android/maven2/net/bytebuddy/byte-buddy/1.8.5/byte-buddy-1.8.5.pom",
+            "https://storage.googleapis.com/r8-releases/raw/net/bytebuddy/byte-buddy/1.8.5/byte-buddy-1.8.5.pom"
+          ],
+          "sha256": "bbcec6e5aba3e5b396ec7af27b250c6b971cc87ef6379a0334e7e6da14c506e7"
+        },
+        {
+          "name": "net.sf.jopt-simple-jopt-simple-4.6-jar",
+          "filename": "jopt-simple-4.6.jar",
+          "path": "net/sf/jopt-simple/jopt-simple/4.6",
+          "urls": [
+            "https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.6/jopt-simple-4.6.jar",
+            "https://dl.google.com/dl/android/maven2/net/sf/jopt-simple/jopt-simple/4.6/jopt-simple-4.6.jar",
+            "https://storage.googleapis.com/r8-releases/raw/net/sf/jopt-simple/jopt-simple/4.6/jopt-simple-4.6.jar"
+          ],
+          "sha256": "3fcfbe3203c2ea521bf7640484fd35d6303186ea2e08e72f032d640ca067ffda"
+        },
+        {
+          "name": "net.sf.jopt-simple-jopt-simple-4.6-pom",
+          "filename": "jopt-simple-4.6.pom",
+          "path": "net/sf/jopt-simple/jopt-simple/4.6",
+          "urls": [
+            "https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.6/jopt-simple-4.6.pom",
+            "https://dl.google.com/dl/android/maven2/net/sf/jopt-simple/jopt-simple/4.6/jopt-simple-4.6.pom",
+            "https://storage.googleapis.com/r8-releases/raw/net/sf/jopt-simple/jopt-simple/4.6/jopt-simple-4.6.pom"
+          ],
+          "sha256": "692744a19473011539ebc1370a264b8af1c056e0ae21f5372aa9dd7d4b4e5a2b"
+        },
+        {
+          "name": "net.sf.kxml-kxml2-2.3.0-jar",
+          "filename": "kxml2-2.3.0.jar",
+          "path": "net/sf/kxml/kxml2/2.3.0",
+          "urls": [
+            "https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.jar",
+            "https://dl.google.com/dl/android/maven2/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.jar"
+          ],
+          "sha256": "f264dd9f79a1fde10ce5ecc53221eff24be4c9331c830b7d52f2f08a7b633de2"
+        },
+        {
+          "name": "net.sf.kxml-kxml2-2.3.0-pom",
+          "filename": "kxml2-2.3.0.pom",
+          "path": "net/sf/kxml/kxml2/2.3.0",
+          "urls": [
+            "https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom",
+            "https://dl.google.com/dl/android/maven2/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom"
+          ],
+          "sha256": "31ce606f4e9518936299bb0d27c978fa61e185fd1de7c9874fe959a53e34a685"
+        },
+        {
+          "name": "org.apiguardian-apiguardian-api-1.0.0-jar",
+          "filename": "apiguardian-api-1.0.0.jar",
+          "path": "org/apiguardian/apiguardian-api/1.0.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar"
+          ],
+          "sha256": "1f58b77470d8d147a0538d515347dd322f49a83b9e884b8970051160464b65b3"
+        },
+        {
+          "name": "org.apiguardian-apiguardian-api-1.0.0-pom",
+          "filename": "apiguardian-api-1.0.0.pom",
+          "path": "org/apiguardian/apiguardian-api/1.0.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.pom"
+          ],
+          "sha256": "2ecc15d2614124cb9630c7173efcae1776cf43588a8f3ab1b04684b8dbe02489"
+        },
+        {
+          "name": "org.bouncycastle-bcpkix-jdk15on-1.56-jar",
+          "filename": "bcpkix-jdk15on-1.56.jar",
+          "path": "org/bouncycastle/bcpkix-jdk15on/1.56",
+          "urls": [
+            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar",
+            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar"
+          ],
+          "sha256": "7043dee4e9e7175e93e0b36f45b1ec1ecb893c5f755667e8b916eb8dd201c6ca"
+        },
+        {
+          "name": "org.bouncycastle-bcpkix-jdk15on-1.56-pom",
+          "filename": "bcpkix-jdk15on-1.56.pom",
+          "path": "org/bouncycastle/bcpkix-jdk15on/1.56",
+          "urls": [
+            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom",
+            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom"
+          ],
+          "sha256": "321668fc474a73140eb9cc73c779f1ebb9f60948aade3beddee082ecefcf0259"
+        },
+        {
+          "name": "org.bouncycastle-bcprov-jdk15on-1.56-jar",
+          "filename": "bcprov-jdk15on-1.56.jar",
+          "path": "org/bouncycastle/bcprov-jdk15on/1.56",
+          "urls": [
+            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar",
+            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar"
+          ],
+          "sha256": "963e1ee14f808ffb99897d848ddcdb28fa91ddda867eb18d303e82728f878349"
+        },
+        {
+          "name": "org.bouncycastle-bcprov-jdk15on-1.56-pom",
+          "filename": "bcprov-jdk15on-1.56.pom",
+          "path": "org/bouncycastle/bcprov-jdk15on/1.56",
+          "urls": [
+            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom",
+            "https://dl.google.com/dl/android/maven2/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom"
+          ],
+          "sha256": "8fdc3336e7b01873193ba9c48b87de7d788dc0954d1eb45c322492627a4b5c6e"
+        },
+        {
+          "name": "org.checkerframework-checker-compat-qual-2.5.5-jar",
+          "filename": "checker-compat-qual-2.5.5.jar",
+          "path": "org/checkerframework/checker-compat-qual/2.5.5",
+          "urls": [
+            "https://jcenter.bintray.com/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.jar",
+            "https://dl.google.com/dl/android/maven2/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.jar"
+          ],
+          "sha256": "11d134b245e9cacc474514d2d66b5b8618f8039a1465cdc55bbc0b34e0008b7a"
+        },
+        {
+          "name": "org.checkerframework-checker-compat-qual-2.5.5-pom",
+          "filename": "checker-compat-qual-2.5.5.pom",
+          "path": "org/checkerframework/checker-compat-qual/2.5.5",
+          "urls": [
+            "https://jcenter.bintray.com/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.pom",
+            "https://dl.google.com/dl/android/maven2/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.pom"
+          ],
+          "sha256": "42f21ebd9183be049ee5afc822b345403a5da764037875734a039b0d6e0353be"
+        },
+        {
+          "name": "org.checkerframework-checker-qual-2.5.2-jar",
+          "filename": "checker-qual-2.5.2.jar",
+          "path": "org/checkerframework/checker-qual/2.5.2",
+          "urls": [
+            "https://jcenter.bintray.com/org/checkerframework/checker-qual/2.5.2/checker-qual-2.5.2.jar",
+            "https://dl.google.com/dl/android/maven2/org/checkerframework/checker-qual/2.5.2/checker-qual-2.5.2.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/checkerframework/checker-qual/2.5.2/checker-qual-2.5.2.jar"
+          ],
+          "sha256": "64b02691c8b9d4e7700f8ee2e742dce7ea2c6e81e662b7522c9ee3bf568c040a"
+        },
+        {
+          "name": "org.checkerframework-checker-qual-2.5.2-pom",
+          "filename": "checker-qual-2.5.2.pom",
+          "path": "org/checkerframework/checker-qual/2.5.2",
+          "urls": [
+            "https://jcenter.bintray.com/org/checkerframework/checker-qual/2.5.2/checker-qual-2.5.2.pom",
+            "https://dl.google.com/dl/android/maven2/org/checkerframework/checker-qual/2.5.2/checker-qual-2.5.2.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/checkerframework/checker-qual/2.5.2/checker-qual-2.5.2.pom"
+          ],
+          "sha256": "dc4cd438a36462d013c2338c8e206d102a322a00f33729e8955ee219859c9ede"
+        },
+        {
+          "name": "org.codehaus.mojo-animal-sniffer-annotations-1.14-jar",
+          "filename": "animal-sniffer-annotations-1.14.jar",
+          "path": "org/codehaus/mojo/animal-sniffer-annotations/1.14",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.jar",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.jar"
+          ],
+          "sha256": "2068320bd6bad744c3673ab048f67e30bef8f518996fa380033556600669905d"
+        },
+        {
+          "name": "org.codehaus.mojo-animal-sniffer-annotations-1.14-pom",
+          "filename": "animal-sniffer-annotations-1.14.pom",
+          "path": "org/codehaus/mojo/animal-sniffer-annotations/1.14",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.pom",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.pom"
+          ],
+          "sha256": "1879f19a05991e3ed95910b96689333396b0c467a215dc4d1f90018404b72a26"
+        },
+        {
+          "name": "org.codehaus.mojo-animal-sniffer-annotations-1.17-jar",
+          "filename": "animal-sniffer-annotations-1.17.jar",
+          "path": "org/codehaus/mojo/animal-sniffer-annotations/1.17",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.jar",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.jar"
+          ],
+          "sha256": "92654f493ecfec52082e76354f0ebf87648dc3d5cec2e3c3cdb947c016747a53"
+        },
+        {
+          "name": "org.codehaus.mojo-animal-sniffer-annotations-1.17-pom",
+          "filename": "animal-sniffer-annotations-1.17.pom",
+          "path": "org/codehaus/mojo/animal-sniffer-annotations/1.17",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.pom",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.pom"
+          ],
+          "sha256": "e956ab5d2eb48fabae12300d0cd2d3294d4a2a41abc2068c23cb4d60ad76cbe5"
+        },
+        {
+          "name": "org.codehaus.mojo-animal-sniffer-parent-1.14-pom",
+          "filename": "animal-sniffer-parent-1.14.pom",
+          "path": "org/codehaus/mojo/animal-sniffer-parent/1.14",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-parent/1.14/animal-sniffer-parent-1.14.pom",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/mojo/animal-sniffer-parent/1.14/animal-sniffer-parent-1.14.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/mojo/animal-sniffer-parent/1.14/animal-sniffer-parent-1.14.pom"
+          ],
+          "sha256": "f51550a06b1410bd4962cb0e71df0b921a60a7ef47bfa9c4825a14be72316eea"
+        },
+        {
+          "name": "org.codehaus.mojo-animal-sniffer-parent-1.17-pom",
+          "filename": "animal-sniffer-parent-1.17.pom",
+          "path": "org/codehaus/mojo/animal-sniffer-parent/1.17",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-parent/1.17/animal-sniffer-parent-1.17.pom",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/mojo/animal-sniffer-parent/1.17/animal-sniffer-parent-1.17.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/mojo/animal-sniffer-parent/1.17/animal-sniffer-parent-1.17.pom"
+          ],
+          "sha256": "18a03df16e2a184c582db7b125633c15fb7714027a84c1b532d72933dc08b81f"
+        },
+        {
+          "name": "org.codehaus.mojo-mojo-parent-34-pom",
+          "filename": "mojo-parent-34.pom",
+          "path": "org/codehaus/mojo/mojo-parent/34",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/mojo-parent/34/mojo-parent-34.pom",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/mojo/mojo-parent/34/mojo-parent-34.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/mojo/mojo-parent/34/mojo-parent-34.pom"
+          ],
+          "sha256": "3e395d6fbc43c09a3774cac8694ce527398305ea3fd5492d80e25af27d382a9c"
+        },
+        {
+          "name": "org.codehaus.mojo-mojo-parent-40-pom",
+          "filename": "mojo-parent-40.pom",
+          "path": "org/codehaus/mojo/mojo-parent/40",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/mojo-parent/40/mojo-parent-40.pom",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/mojo/mojo-parent/40/mojo-parent-40.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/mojo/mojo-parent/40/mojo-parent-40.pom"
+          ],
+          "sha256": "fc648dcdc404f8bf66e0583914ecf980176618201227bea114fae85043cb755e"
+        },
+        {
+          "name": "org.codehaus-codehaus-parent-4-pom",
+          "filename": "codehaus-parent-4.pom",
+          "path": "org/codehaus/codehaus-parent/4",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/codehaus-parent/4/codehaus-parent-4.pom",
+            "https://dl.google.com/dl/android/maven2/org/codehaus/codehaus-parent/4/codehaus-parent-4.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/codehaus/codehaus-parent/4/codehaus-parent-4.pom"
+          ],
+          "sha256": "6b87237de8c2e1740cf80627c7f3ce3e15de1930bb250c55a1eca94fa3e014df"
+        },
+        {
+          "name": "org.hamcrest-hamcrest-core-1.3-jar",
+          "filename": "hamcrest-core-1.3.jar",
+          "path": "org/hamcrest/hamcrest-core/1.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar",
+            "https://dl.google.com/dl/android/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
+          ],
+          "sha256": "66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9"
+        },
+        {
+          "name": "org.hamcrest-hamcrest-core-1.3-pom",
+          "filename": "hamcrest-core-1.3.pom",
+          "path": "org/hamcrest/hamcrest-core/1.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom",
+            "https://dl.google.com/dl/android/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom"
+          ],
+          "sha256": "fde386a7905173a1b103de6ab820727584b50d0e32282e2797787c20a64ffa93"
+        },
+        {
+          "name": "org.hamcrest-hamcrest-parent-1.3-pom",
+          "filename": "hamcrest-parent-1.3.pom",
+          "path": "org/hamcrest/hamcrest-parent/1.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom",
+            "https://dl.google.com/dl/android/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom"
+          ],
+          "sha256": "6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b"
+        },
+        {
+          "name": "org.jetbrains.kotlin-kotlin-stdlib-common-1.3.31-jar",
+          "filename": "kotlin-stdlib-common-1.3.31.jar",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.31",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.31/kotlin-stdlib-common-1.3.31.jar",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.31/kotlin-stdlib-common-1.3.31.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.31/kotlin-stdlib-common-1.3.31.jar"
+          ],
+          "sha256": "d6e9c54c1e6c4df21be9395de558665544c6bdc8f8076ea7518f089f82cd34fc"
+        },
+        {
+          "name": "org.jetbrains.kotlin-kotlin-stdlib-common-1.3.31-pom",
+          "filename": "kotlin-stdlib-common-1.3.31.pom",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.31",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.31/kotlin-stdlib-common-1.3.31.pom",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.31/kotlin-stdlib-common-1.3.31.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.31/kotlin-stdlib-common-1.3.31.pom"
+          ],
+          "sha256": "43f118ba3aa72a531d66d64cdd4223fa612b7fac57030ce9148ffb4a55cc3afc"
+        },
+        {
+          "name": "org.jetbrains.kotlin-kotlin-stdlib-jre7-1.2.0-jar",
+          "filename": "kotlin-stdlib-jre7-1.2.0.jar",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.jar"
+          ],
+          "sha256": "c7a20fb951d437797afe8980aff6c1e5a03f310c661ba58ba1d4fa90cb0f2926"
+        },
+        {
+          "name": "org.jetbrains.kotlin-kotlin-stdlib-jre7-1.2.0-pom",
+          "filename": "kotlin-stdlib-jre7-1.2.0.pom",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.pom"
+          ],
+          "sha256": "2077417c22d3ab7734ce35385e9c3f4721840fa8df925edb19abe3eea8507348"
+        },
+        {
+          "name": "org.jetbrains.kotlin-kotlin-stdlib-jre8-1.2.0-jar",
+          "filename": "kotlin-stdlib-jre8-1.2.0.jar",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.jar"
+          ],
+          "sha256": "633524eee6ef1941f7cb1dab7ee3927b0a221ceee9047aeb5515f4cbb990c82a"
+        },
+        {
+          "name": "org.jetbrains.kotlin-kotlin-stdlib-jre8-1.2.0-pom",
+          "filename": "kotlin-stdlib-jre8-1.2.0.pom",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.pom"
+          ],
+          "sha256": "6b7a74be21c57056eed1c1606524c3b6381ba091a98925fd934567c4a524ac38"
+        },
+        {
+          "name": "org.jetbrains.kotlin-kotlin-stdlib-1.3.31-jar",
+          "filename": "kotlin-stdlib-1.3.31.jar",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.31",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.31/kotlin-stdlib-1.3.31.jar",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.3.31/kotlin-stdlib-1.3.31.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlin/kotlin-stdlib/1.3.31/kotlin-stdlib-1.3.31.jar"
+          ],
+          "sha256": "f38c84326543e66ed4895b20fb3ea0fca527fd5a040e1f49d0946ecf3d2b3b23"
+        },
+        {
+          "name": "org.jetbrains.kotlin-kotlin-stdlib-1.3.31-pom",
+          "filename": "kotlin-stdlib-1.3.31.pom",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.31",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.31/kotlin-stdlib-1.3.31.pom",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.3.31/kotlin-stdlib-1.3.31.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlin/kotlin-stdlib/1.3.31/kotlin-stdlib-1.3.31.pom"
+          ],
+          "sha256": "938182555f87aabdaabfa7ea22f29249a801d0882587fdb36efd6b69ab6d9483"
+        },
+        {
+          "name": "org.jetbrains.kotlinx-kotlinx-metadata-jvm-0.1.0-jar",
+          "filename": "kotlinx-metadata-jvm-0.1.0.jar",
+          "path": "org/jetbrains/kotlinx/kotlinx-metadata-jvm/0.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlinx/kotlinx-metadata-jvm/0.1.0/kotlinx-metadata-jvm-0.1.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlinx/kotlinx-metadata-jvm/0.1.0/kotlinx-metadata-jvm-0.1.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlinx/kotlinx-metadata-jvm/0.1.0/kotlinx-metadata-jvm-0.1.0.jar"
+          ],
+          "sha256": "9753bb39efef35957c5c15df9a3cb769aabf2cdfa74b47afcb7760e5146be3b5"
+        },
+        {
+          "name": "org.jetbrains.kotlinx-kotlinx-metadata-jvm-0.1.0-pom",
+          "filename": "kotlinx-metadata-jvm-0.1.0.pom",
+          "path": "org/jetbrains/kotlinx/kotlinx-metadata-jvm/0.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlinx/kotlinx-metadata-jvm/0.1.0/kotlinx-metadata-jvm-0.1.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/kotlinx/kotlinx-metadata-jvm/0.1.0/kotlinx-metadata-jvm-0.1.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/kotlinx/kotlinx-metadata-jvm/0.1.0/kotlinx-metadata-jvm-0.1.0.pom"
+          ],
+          "sha256": "1dcc01c3b16b42e69e1185127685fbd86837ab7834674198521e9f8aa878cfc9"
+        },
+        {
+          "name": "org.jetbrains-annotations-13.0-jar",
+          "filename": "annotations-13.0.jar",
+          "path": "org/jetbrains/annotations/13.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/annotations/13.0/annotations-13.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/annotations/13.0/annotations-13.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/annotations/13.0/annotations-13.0.jar"
+          ],
+          "sha256": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
+        },
+        {
+          "name": "org.jetbrains-annotations-13.0-pom",
+          "filename": "annotations-13.0.pom",
+          "path": "org/jetbrains/annotations/13.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/annotations/13.0/annotations-13.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/jetbrains/annotations/13.0/annotations-13.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/jetbrains/annotations/13.0/annotations-13.0.pom"
+          ],
+          "sha256": "965aeb2bedff369819bdde1bf7a0b3b89b8247dd69c88b86375d76163bb8c397"
+        },
+        {
+          "name": "org.junit.jupiter-junit-jupiter-api-5.2.0-jar",
+          "filename": "junit-jupiter-api-5.2.0.jar",
+          "path": "org/junit/jupiter/junit-jupiter-api/5.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/jupiter/junit-jupiter-api/5.2.0/junit-jupiter-api-5.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/junit/jupiter/junit-jupiter-api/5.2.0/junit-jupiter-api-5.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/jupiter/junit-jupiter-api/5.2.0/junit-jupiter-api-5.2.0.jar"
+          ],
+          "sha256": "47f7d71b35dc331210b9ab219bbb00d54332981aa12eb5effe817de17e1ae7b3"
+        },
+        {
+          "name": "org.junit.jupiter-junit-jupiter-api-5.2.0-pom",
+          "filename": "junit-jupiter-api-5.2.0.pom",
+          "path": "org/junit/jupiter/junit-jupiter-api/5.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/jupiter/junit-jupiter-api/5.2.0/junit-jupiter-api-5.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/junit/jupiter/junit-jupiter-api/5.2.0/junit-jupiter-api-5.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/jupiter/junit-jupiter-api/5.2.0/junit-jupiter-api-5.2.0.pom"
+          ],
+          "sha256": "14dd2198170ca844e260b55682d7817e6997fd0fd9c02a9c68213d0ae769fedf"
+        },
+        {
+          "name": "org.junit.jupiter-junit-jupiter-engine-5.2.0-jar",
+          "filename": "junit-jupiter-engine-5.2.0.jar",
+          "path": "org/junit/jupiter/junit-jupiter-engine/5.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/jupiter/junit-jupiter-engine/5.2.0/junit-jupiter-engine-5.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/junit/jupiter/junit-jupiter-engine/5.2.0/junit-jupiter-engine-5.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/jupiter/junit-jupiter-engine/5.2.0/junit-jupiter-engine-5.2.0.jar"
+          ],
+          "sha256": "8f994f4094790e246dc84de86a1ff4194ca85e8b13bedaca0207f727ebfbc813"
+        },
+        {
+          "name": "org.junit.jupiter-junit-jupiter-engine-5.2.0-pom",
+          "filename": "junit-jupiter-engine-5.2.0.pom",
+          "path": "org/junit/jupiter/junit-jupiter-engine/5.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/jupiter/junit-jupiter-engine/5.2.0/junit-jupiter-engine-5.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/junit/jupiter/junit-jupiter-engine/5.2.0/junit-jupiter-engine-5.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/jupiter/junit-jupiter-engine/5.2.0/junit-jupiter-engine-5.2.0.pom"
+          ],
+          "sha256": "ac08a0c134e5bf8f5ead465ac7c9c601c7722eab3058347f9823a70dff6c6910"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-commons-1.2.0-jar",
+          "filename": "junit-platform-commons-1.2.0.jar",
+          "path": "org/junit/platform/junit-platform-commons/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-commons/1.2.0/junit-platform-commons-1.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-commons/1.2.0/junit-platform-commons-1.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-commons/1.2.0/junit-platform-commons-1.2.0.jar"
+          ],
+          "sha256": "7771af2f797d1d0ccce9920eb3cd826fb8fd7659ccb4d8877e76d9412be72cc2"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-commons-1.2.0-pom",
+          "filename": "junit-platform-commons-1.2.0.pom",
+          "path": "org/junit/platform/junit-platform-commons/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-commons/1.2.0/junit-platform-commons-1.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-commons/1.2.0/junit-platform-commons-1.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-commons/1.2.0/junit-platform-commons-1.2.0.pom"
+          ],
+          "sha256": "719aee1d4922d3c04ece7cc048413443679ef2b6a297d91b799624e9ffbe10cf"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-engine-1.2.0-jar",
+          "filename": "junit-platform-engine-1.2.0.jar",
+          "path": "org/junit/platform/junit-platform-engine/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-engine/1.2.0/junit-platform-engine-1.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-engine/1.2.0/junit-platform-engine-1.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-engine/1.2.0/junit-platform-engine-1.2.0.jar"
+          ],
+          "sha256": "60b102e94ea01556fdc8c041950a05450edc188e3708f032a6bfb1a50ba0bc22"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-engine-1.2.0-pom",
+          "filename": "junit-platform-engine-1.2.0.pom",
+          "path": "org/junit/platform/junit-platform-engine/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-engine/1.2.0/junit-platform-engine-1.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-engine/1.2.0/junit-platform-engine-1.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-engine/1.2.0/junit-platform-engine-1.2.0.pom"
+          ],
+          "sha256": "6d227a49634de70b804f062658084c591fdad7e54220885ea9ec1ddb9ca77d74"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-launcher-1.2.0-jar",
+          "filename": "junit-platform-launcher-1.2.0.jar",
+          "path": "org/junit/platform/junit-platform-launcher/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-launcher/1.2.0/junit-platform-launcher-1.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-launcher/1.2.0/junit-platform-launcher-1.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-launcher/1.2.0/junit-platform-launcher-1.2.0.jar"
+          ],
+          "sha256": "c935ef7c543a67757cfd00736fc899c5a72738ca99adc359a03218737761667b"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-launcher-1.2.0-pom",
+          "filename": "junit-platform-launcher-1.2.0.pom",
+          "path": "org/junit/platform/junit-platform-launcher/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-launcher/1.2.0/junit-platform-launcher-1.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-launcher/1.2.0/junit-platform-launcher-1.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-launcher/1.2.0/junit-platform-launcher-1.2.0.pom"
+          ],
+          "sha256": "16736e5943eb79ecb6a15ad449bb86ab7f9f352c3e7f6c1dd003d3804c5a3b94"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-runner-1.2.0-jar",
+          "filename": "junit-platform-runner-1.2.0.jar",
+          "path": "org/junit/platform/junit-platform-runner/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-runner/1.2.0/junit-platform-runner-1.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-runner/1.2.0/junit-platform-runner-1.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-runner/1.2.0/junit-platform-runner-1.2.0.jar"
+          ],
+          "sha256": "89bb1499685c8f3c1dccbd877faa93cb3e2cc482f592647ac589c3c30ccdf1ee"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-runner-1.2.0-pom",
+          "filename": "junit-platform-runner-1.2.0.pom",
+          "path": "org/junit/platform/junit-platform-runner/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-runner/1.2.0/junit-platform-runner-1.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-runner/1.2.0/junit-platform-runner-1.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-runner/1.2.0/junit-platform-runner-1.2.0.pom"
+          ],
+          "sha256": "0632c75680af57717b74c4ac61d4546926c932ce8cec33d87e2906152dee755d"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-suite-api-1.2.0-jar",
+          "filename": "junit-platform-suite-api-1.2.0.jar",
+          "path": "org/junit/platform/junit-platform-suite-api/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-suite-api/1.2.0/junit-platform-suite-api-1.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-suite-api/1.2.0/junit-platform-suite-api-1.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-suite-api/1.2.0/junit-platform-suite-api-1.2.0.jar"
+          ],
+          "sha256": "821ae6c837265c62afb290cca5e3e090c9e34249491202a414348c6aec8b5f58"
+        },
+        {
+          "name": "org.junit.platform-junit-platform-suite-api-1.2.0-pom",
+          "filename": "junit-platform-suite-api-1.2.0.pom",
+          "path": "org/junit/platform/junit-platform-suite-api/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-suite-api/1.2.0/junit-platform-suite-api-1.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/junit/platform/junit-platform-suite-api/1.2.0/junit-platform-suite-api-1.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/platform/junit-platform-suite-api/1.2.0/junit-platform-suite-api-1.2.0.pom"
+          ],
+          "sha256": "0f550283c3ade5429d057b6dc5314fd355177232605852a70310cf580428a47a"
+        },
+        {
+          "name": "org.junit.vintage-junit-vintage-engine-5.2.0-jar",
+          "filename": "junit-vintage-engine-5.2.0.jar",
+          "path": "org/junit/vintage/junit-vintage-engine/5.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/vintage/junit-vintage-engine/5.2.0/junit-vintage-engine-5.2.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/junit/vintage/junit-vintage-engine/5.2.0/junit-vintage-engine-5.2.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/vintage/junit-vintage-engine/5.2.0/junit-vintage-engine-5.2.0.jar"
+          ],
+          "sha256": "1de6e6a0183be0d525305994217819f7c73b5a4d388814bde1f57eea92229271"
+        },
+        {
+          "name": "org.junit.vintage-junit-vintage-engine-5.2.0-pom",
+          "filename": "junit-vintage-engine-5.2.0.pom",
+          "path": "org/junit/vintage/junit-vintage-engine/5.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/vintage/junit-vintage-engine/5.2.0/junit-vintage-engine-5.2.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/junit/vintage/junit-vintage-engine/5.2.0/junit-vintage-engine-5.2.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/junit/vintage/junit-vintage-engine/5.2.0/junit-vintage-engine-5.2.0.pom"
+          ],
+          "sha256": "8eae443eea31d424f69971a6a846eb1279aa2eac0293c17ff7c1e26b928d4521"
+        },
+        {
+          "name": "org.mockito-mockito-core-2.18.3-jar",
+          "filename": "mockito-core-2.18.3.jar",
+          "path": "org/mockito/mockito-core/2.18.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/mockito/mockito-core/2.18.3/mockito-core-2.18.3.jar",
+            "https://dl.google.com/dl/android/maven2/org/mockito/mockito-core/2.18.3/mockito-core-2.18.3.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/mockito/mockito-core/2.18.3/mockito-core-2.18.3.jar"
+          ],
+          "sha256": "c05b2e4fe13a0dfeda8f2bb6eb1871f02076118982fdac2cfcda40d66cda0910"
+        },
+        {
+          "name": "org.mockito-mockito-core-2.18.3-pom",
+          "filename": "mockito-core-2.18.3.pom",
+          "path": "org/mockito/mockito-core/2.18.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/mockito/mockito-core/2.18.3/mockito-core-2.18.3.pom",
+            "https://dl.google.com/dl/android/maven2/org/mockito/mockito-core/2.18.3/mockito-core-2.18.3.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/mockito/mockito-core/2.18.3/mockito-core-2.18.3.pom"
+          ],
+          "sha256": "36fb99d15578913f87d564bd565eca4318c941fdedcfea974bd23e3d11b7feb8"
+        },
+        {
+          "name": "org.objenesis-objenesis-parent-2.6-pom",
+          "filename": "objenesis-parent-2.6.pom",
+          "path": "org/objenesis/objenesis-parent/2.6",
+          "urls": [
+            "https://jcenter.bintray.com/org/objenesis/objenesis-parent/2.6/objenesis-parent-2.6.pom",
+            "https://dl.google.com/dl/android/maven2/org/objenesis/objenesis-parent/2.6/objenesis-parent-2.6.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/objenesis/objenesis-parent/2.6/objenesis-parent-2.6.pom"
+          ],
+          "sha256": "3825feca2a3c176400b063dec7c6b0643e2b5256bbbfd4e0a7c11e0dd0983baa"
+        },
+        {
+          "name": "org.objenesis-objenesis-2.6-jar",
+          "filename": "objenesis-2.6.jar",
+          "path": "org/objenesis/objenesis/2.6",
+          "urls": [
+            "https://jcenter.bintray.com/org/objenesis/objenesis/2.6/objenesis-2.6.jar",
+            "https://dl.google.com/dl/android/maven2/org/objenesis/objenesis/2.6/objenesis-2.6.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/objenesis/objenesis/2.6/objenesis-2.6.jar"
+          ],
+          "sha256": "5e168368fbc250af3c79aa5fef0c3467a2d64e5a7bd74005f25d8399aeb0708d"
+        },
+        {
+          "name": "org.objenesis-objenesis-2.6-pom",
+          "filename": "objenesis-2.6.pom",
+          "path": "org/objenesis/objenesis/2.6",
+          "urls": [
+            "https://jcenter.bintray.com/org/objenesis/objenesis/2.6/objenesis-2.6.pom",
+            "https://dl.google.com/dl/android/maven2/org/objenesis/objenesis/2.6/objenesis-2.6.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/objenesis/objenesis/2.6/objenesis-2.6.pom"
+          ],
+          "sha256": "4c1307909dc62df1bd91f075503f8bdef5ae445e13353f1752af9448bea1d3f1"
+        },
+        {
+          "name": "org.opentest4j-opentest4j-1.1.0-jar",
+          "filename": "opentest4j-1.1.0.jar",
+          "path": "org/opentest4j/opentest4j/1.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/opentest4j/opentest4j/1.1.0/opentest4j-1.1.0.jar",
+            "https://dl.google.com/dl/android/maven2/org/opentest4j/opentest4j/1.1.0/opentest4j-1.1.0.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/opentest4j/opentest4j/1.1.0/opentest4j-1.1.0.jar"
+          ],
+          "sha256": "65a5fd7380f53aac708bcee3091dbe2dba73a9a2e7645b66e70e0804fc36ee3b"
+        },
+        {
+          "name": "org.opentest4j-opentest4j-1.1.0-pom",
+          "filename": "opentest4j-1.1.0.pom",
+          "path": "org/opentest4j/opentest4j/1.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/opentest4j/opentest4j/1.1.0/opentest4j-1.1.0.pom",
+            "https://dl.google.com/dl/android/maven2/org/opentest4j/opentest4j/1.1.0/opentest4j-1.1.0.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/opentest4j/opentest4j/1.1.0/opentest4j-1.1.0.pom"
+          ],
+          "sha256": "f448555c37a1ed026198a6b09de1f60d364a5a291f08df9a1b1c03f8346fafdc"
+        },
+        {
+          "name": "org.ow2.asm-asm-analysis-7.1-jar",
+          "filename": "asm-analysis-7.1.jar",
+          "path": "org/ow2/asm/asm-analysis/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm-analysis/7.1/asm-analysis-7.1.jar",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm-analysis/7.1/asm-analysis-7.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm-analysis/7.1/asm-analysis-7.1.jar"
+          ],
+          "sha256": "4612c0511a63db2a2570f07ad1959e19ed8eb703e4114da945cb85682519a55c"
+        },
+        {
+          "name": "org.ow2.asm-asm-analysis-7.1-pom",
+          "filename": "asm-analysis-7.1.pom",
+          "path": "org/ow2/asm/asm-analysis/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm-analysis/7.1/asm-analysis-7.1.pom",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm-analysis/7.1/asm-analysis-7.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm-analysis/7.1/asm-analysis-7.1.pom"
+          ],
+          "sha256": "eb6284729787b54d45935c161ad7f0cd415b870419bfb2cc65cfc3cfbe6c29fb"
+        },
+        {
+          "name": "org.ow2.asm-asm-commons-7.1-jar",
+          "filename": "asm-commons-7.1.jar",
+          "path": "org/ow2/asm/asm-commons/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm-commons/7.1/asm-commons-7.1.jar",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm-commons/7.1/asm-commons-7.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm-commons/7.1/asm-commons-7.1.jar"
+          ],
+          "sha256": "e5590489d8f1984d85bfeabd3b17374c59c28ae09d48ec4a0ebbd01959ecd358"
+        },
+        {
+          "name": "org.ow2.asm-asm-commons-7.1-pom",
+          "filename": "asm-commons-7.1.pom",
+          "path": "org/ow2/asm/asm-commons/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm-commons/7.1/asm-commons-7.1.pom",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm-commons/7.1/asm-commons-7.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm-commons/7.1/asm-commons-7.1.pom"
+          ],
+          "sha256": "ba32763912770c528b286305a3979f0bbbc01354703ee97717f0ae10be639edc"
+        },
+        {
+          "name": "org.ow2.asm-asm-tree-7.1-jar",
+          "filename": "asm-tree-7.1.jar",
+          "path": "org/ow2/asm/asm-tree/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm-tree/7.1/asm-tree-7.1.jar",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm-tree/7.1/asm-tree-7.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm-tree/7.1/asm-tree-7.1.jar"
+          ],
+          "sha256": "c0e82b220b0a52c71c7ca2a58c99a2530696c7b58b173052b9d48fe3efb10073"
+        },
+        {
+          "name": "org.ow2.asm-asm-tree-7.1-pom",
+          "filename": "asm-tree-7.1.pom",
+          "path": "org/ow2/asm/asm-tree/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm-tree/7.1/asm-tree-7.1.pom",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm-tree/7.1/asm-tree-7.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm-tree/7.1/asm-tree-7.1.pom"
+          ],
+          "sha256": "7329157f8e0b748a594d39facf72c10bf00a3b1736bec79ae1da6d500a82fa1e"
+        },
+        {
+          "name": "org.ow2.asm-asm-util-7.1-jar",
+          "filename": "asm-util-7.1.jar",
+          "path": "org/ow2/asm/asm-util/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm-util/7.1/asm-util-7.1.jar",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm-util/7.1/asm-util-7.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm-util/7.1/asm-util-7.1.jar"
+          ],
+          "sha256": "a24485517596ae1003dcf2329c044a2a861e5c25d4476a695ccaacf560c74d1a"
+        },
+        {
+          "name": "org.ow2.asm-asm-util-7.1-pom",
+          "filename": "asm-util-7.1.pom",
+          "path": "org/ow2/asm/asm-util/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm-util/7.1/asm-util-7.1.pom",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm-util/7.1/asm-util-7.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm-util/7.1/asm-util-7.1.pom"
+          ],
+          "sha256": "102bd66f10f3ab944ea49ea9ebb457b8c28a13ea4e2335998313f066e261f387"
+        },
+        {
+          "name": "org.ow2.asm-asm-7.1-jar",
+          "filename": "asm-7.1.jar",
+          "path": "org/ow2/asm/asm/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm/7.1/asm-7.1.jar",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm/7.1/asm-7.1.jar",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm/7.1/asm-7.1.jar"
+          ],
+          "sha256": "4ab2fa2b6d2cc9ccb1eaa05ea329c407b47b13ed2915f62f8c4b8cc96258d4de"
+        },
+        {
+          "name": "org.ow2.asm-asm-7.1-pom",
+          "filename": "asm-7.1.pom",
+          "path": "org/ow2/asm/asm/7.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/asm/asm/7.1/asm-7.1.pom",
+            "https://dl.google.com/dl/android/maven2/org/ow2/asm/asm/7.1/asm-7.1.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/asm/asm/7.1/asm-7.1.pom"
+          ],
+          "sha256": "0f29742eada6588a46c679f499a6755e4b3939767004f2bd9c02019cfd1d3180"
+        },
+        {
+          "name": "org.ow2-ow2-1.5-pom",
+          "filename": "ow2-1.5.pom",
+          "path": "org/ow2/ow2/1.5",
+          "urls": [
+            "https://jcenter.bintray.com/org/ow2/ow2/1.5/ow2-1.5.pom",
+            "https://dl.google.com/dl/android/maven2/org/ow2/ow2/1.5/ow2-1.5.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/ow2/ow2/1.5/ow2-1.5.pom"
+          ],
+          "sha256": "0f8a1b116e760b8fe6389c51b84e4b07a70fc11082d4f936e453b583dd50b43b"
+        },
+        {
+          "name": "org.sonatype.oss-oss-parent-7-pom",
+          "filename": "oss-parent-7.pom",
+          "path": "org/sonatype/oss/oss-parent/7",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/7/oss-parent-7.pom",
+            "https://dl.google.com/dl/android/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/sonatype/oss/oss-parent/7/oss-parent-7.pom"
+          ],
+          "sha256": "b51f8867c92b6a722499557fc3a1fdea77bdf9ef574722fe90ce436a29559454"
+        },
+        {
+          "name": "org.sonatype.oss-oss-parent-9-pom",
+          "filename": "oss-parent-9.pom",
+          "path": "org/sonatype/oss/oss-parent/9",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/9/oss-parent-9.pom",
+            "https://dl.google.com/dl/android/maven2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom",
+            "https://storage.googleapis.com/r8-releases/raw/org/sonatype/oss/oss-parent/9/oss-parent-9.pom"
+          ],
+          "sha256": "fb40265f982548212ff82e362e59732b2187ec6f0d80182885c14ef1f982827a"
+        }
+      ]
+    }
+  }
+}

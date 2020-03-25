@@ -26,11 +26,18 @@ let
     include $(BUILD_PREBUILT)
     '');
 
-  signApk = {name, apk, keyPath}: pkgs.runCommand "${name}-signed.apk" { nativeBuildInputs = [ pkgs.jre ]; } ''
+  apksigner = "${pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-29-0-2 ])}/share/android-sdk/build-tools/29.0.2/apksigner";
+
+  signApk = {name, apk, keyPath}: pkgs.runCommand "${name}-signed.apk" { nativeBuildInputs = [ pkgs.jre8_headless ]; } ''
     cp ${apk} $out
-    ${pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-29-0-2 ])}/share/android-sdk/build-tools/29.0.2/apksigner sign \
-      --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
+    ${apksigner} sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
   '';
+
+  # TODO: Uses IFD. Try to avoid using this.
+  apkFingerprint = apk: (import pkgs.runCommand "apk-fingerprint" { nativeBuildInputs = [ pkgs.jre8_headless ]; } ''
+    fingerprint=$(keytool -printcert -jarfile ${apk} | grep "SHA256:" | tr --delete ':' | cut --delimiter ' ' --fields 3)
+    echo "\"$fingerprint\"" > $out
+  '');
 
   # Cert names used by AOSP. Only some of these make sense to be used to sign packages
   deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ];
@@ -54,6 +61,13 @@ in
 
           signedApk = mkOption {
             type = types.path;
+            internal = true;
+          };
+
+          fingerprint = mkOption {
+            description = "SHA256 fingerprint of signed apk";
+            type = types.strMatching "[0-9A-F]{64}"; # TODO: Type check fingerprints elsewhere
+            apply = toUpper;
             internal = true;
           };
 
@@ -120,6 +134,12 @@ in
               inherit (config) name apk;
               keyPath = _config.build.sandboxKeyPath config.certificate;
             }));
+
+          fingerprint = mkDefault (
+            if config.certificate == "PRESIGNED"
+            then apkFingerprint config.signedApk
+            else _config.build.fingerprints config.certificate
+          );
         };
       }));
     };
