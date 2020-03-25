@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i python -p python2 nix git nix-prefetch-git cipd -I nixpkgs=../../pkgs.nix
+#!nix-shell -i python -p python2 nix git nix-prefetch-git cipd -I nixpkgs=../../pkgs
 # TODO: Include cipd above
 
 from __future__ import print_function

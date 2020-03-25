@@ -1,4 +1,4 @@
-{ pkgs ? (import ../pkgs.nix {})}:
+{ pkgs ? (import ../pkgs {})}:
 
 with pkgs;
 rec {

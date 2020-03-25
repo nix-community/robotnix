@@ -1,5 +1,5 @@
 { configuration,
-  pkgs ? (import ./pkgs.nix {}),
+  pkgs ? (import ./pkgs {}),
   lib ? pkgs.stdenv.lib
 }:
 

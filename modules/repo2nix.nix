@@ -1,5 +1,5 @@
 {
- pkgs ? import ../pkgs.nix {},
+ pkgs ? import ../pkgs {},
  manifest, rev, sha256
 # Optional parameters:
 , repoRepoURL ? "https://github.com/danielfullmer/tools_repo"

@@ -1,4 +1,4 @@
-{ lib, runCommand, callPackage, cacert }:
+{ lib, runCommand, callPackage, cacert, cipd }:
 
 { name ? builtins.baseNameOf package
 , package
@@ -6,9 +6,6 @@
 , sha256
 }:
 
-let
-  cipd = callPackage ./cipd {};
-in
 runCommand name {
   nativeBuildInputs = [ cipd cacert ];
 

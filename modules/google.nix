@@ -12,7 +12,7 @@ let
     then "${unpacked}/${optionalString (config.deviceFamily == "marlin") "system/system/"}product"
     else systemPath;
 
-  android-prepare-vendor = pkgs.callPackage ../android-prepare-vendor { api = config.apiLevel; };
+  android-prepare-vendor = pkgs.callPackage ../pkgs/android-prepare-vendor { api = config.apiLevel; };
   unpacked = if (config.vendor.img != null)
     then config.build.vendor.unpacked
     else (import ../default.nix { # If vendor is not set--say for generic/emulator targets, use the vendor files from crosshatch

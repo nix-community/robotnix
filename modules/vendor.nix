@@ -3,7 +3,7 @@
 # TODO: One possibility is to reimplement parts of android-prepare-vendor in native nix so we can use an android-prepare-vendor config file directly
 with lib;
 let
-  android-prepare-vendor = pkgs.callPackage ../android-prepare-vendor { api = config.apiLevel; };
+  android-prepare-vendor = pkgs.callPackage ../pkgs/android-prepare-vendor { api = config.apiLevel; };
   apvConfig = builtins.fromJSON (builtins.readFile "${android-prepare-vendor.android-prepare-vendor}/${config.device}/config.json");
   usedOta = if (apvConfig ? ota-partitions) then config.vendor.ota else null;
 in

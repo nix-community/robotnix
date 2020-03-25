@@ -1,5 +1,5 @@
 let
-  pkgs = import ../pkgs.nix {};
+  pkgs = import ../pkgs {};
   adb = (import ../default.nix {
     configuration = {
       buildProduct = "sdk";

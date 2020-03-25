@@ -1,4 +1,4 @@
-args:
+{ ... }@args:
 
 let
   nixpkgs = builtins.fetchTarball {
@@ -13,7 +13,7 @@ let
       sha256 = "0d0n8am9k2cwca7kf64xi7ypriy8j1h3bc2jzyl8qakpfdcp19np";
     }) { pkgs = self; };
 
-    buildGradle = super.callPackage ./misc/gradle-env.nix {};
+    buildGradle = super.callPackage ./gradle-env.nix {};
 
     diffoscope = (super.diffoscope.overrideAttrs (attrs: {
       patches = attrs.patches ++ [
@@ -31,8 +31,8 @@ let
       enableBloat = true;
     };
 
-    cipd = super.callPackage ./apks/chromium/cipd {};
-    fetchcipd = super.callPackage ./apks/chromium/fetchcipd.nix {};
+    cipd = super.callPackage ./cipd {};
+    fetchcipd = super.callPackage ./cipd/fetchcipd.nix {};
   };
 in
   import nixpkgs (args // {
