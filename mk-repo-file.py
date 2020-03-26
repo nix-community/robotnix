@@ -22,6 +22,9 @@ AOSP_BASEURL = "https://android.googlesource.com"
 revHashes: Dict[str, str] = {}
 treeHashes: Dict[str, str] = {}
 
+def save(filename, data):
+    open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
+
 def checkout_git(url, rev):
     print("Checking out %s %s" % (url, rev))
     json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
@@ -65,10 +68,10 @@ def make_repo_file(url: str, rev: str, filename: str, mirror: Optional[str]=None
                 treeHashes[p['tree']] = p['sha256']
 
             # Save after every new piece of information just in case we crash
-            open(filename, 'w').write(json.dumps(data))
+            save(filename, data)
 
     # Save at the end as well!
-    open(filename, 'w').write(json.dumps(data))
+    save(filename, data)
 
 def main():
     parser = argparse.ArgumentParser()
