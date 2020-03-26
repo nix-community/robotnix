@@ -18,7 +18,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    apps.prebuilt.CustomAuditor = {
+    apps.prebuilt.Auditor = {
       # TODO: Generate this one with a script
       # TODO: Can sign with custom certs at the release stage instead
       # Needs a special auditor key that is the same across devices.
