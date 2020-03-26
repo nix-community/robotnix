@@ -1,4 +1,4 @@
-{ stdenv, lib, callPackage, fetchurl, fetchFromGitHub, autoPatchelfHook, makeWrapper,
+{ stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
   simg2img, zip, unzip, e2fsprogs, jq, jdk, wget, utillinux, perl, which, python2,
   api ? "28"
 }:
@@ -53,7 +53,15 @@ in
     (python2.withPackages (p: [ p.protobuf ])) # Python is used by "extract_android_ota_payload"
   ];
 
-  patches = [ ./android-prepare-vendor.patch ];
+  patches = [
+    ./android-prepare-vendor.patch
+
+    # TODO: Temporarily disable PREOPT for grapheneos
+    (fetchpatch {
+      url = "https://github.com/GrapheneOS/android-prepare-vendor/commit/85d206cc28a6d1c23d3e088238b63bc2e6f68743.patch";
+      sha256 = "1nm6wrdqwwk5jdjwyi3na4x6h7midxvdjc31734klf13fysxmcsp";
+    })
+  ];
 
   # TODO: No need to copy oatdump now that we're making a standalone android-prepare-vendor.
   # Just patch it out instead

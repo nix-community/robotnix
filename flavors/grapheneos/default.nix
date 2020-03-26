@@ -6,13 +6,13 @@ let
     sailfish = "marlin";
     sargo = "bonito";
   };
-  grapheneOSRelease = "${config.source.buildNumber}.2020.03.04.16";
+  grapheneOSRelease = "${config.source.buildNumber}.2020.03.23.22";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 (mkIf ((elem config.deviceFamily [ "taimen" "crosshatch" "bonito" ]) || (config.device == "x86")) {
   source.buildNumber = "QQ2A.200305.002";
 })
 (mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
-  # Hack for crosshatch/bonito since they uses submodules and repo2nix doesn't support that yet.
+  # Hack for crosshatch/bonito since they use submodules and repo2nix doesn't support that yet.
   kernel.src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
@@ -22,8 +22,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   };
 })
 {
-  buildNumber = mkDefault "2020.03.16.18";
-  buildDateTime = mkDefault 1584398664;
+  buildNumber = mkDefault "2020.03.26.16";
+  buildDateTime = mkDefault 1585253583;
 
   source.jsonFile = ./. + "/${grapheneOSRelease}.json";
 
@@ -31,7 +31,6 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.manifest.url = "https://github.com/GrapheneOS/platform_manifest.git";
   source.manifest.rev = "refs/tags/${grapheneOSRelease}";
 
-  # Hack for crosshatch/bonito since they use submodules and repo2nix doesn't support that yet.
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${kernelName}".contents;
   kernel.configName = mkForce (if (hasAttr config.device configNameMap) then configNameMap.${config.device} else config.device);
@@ -47,7 +46,14 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   apps.vanadium.enable = mkDefault true;
   webview.vanadium.enable = mkDefault true;
   webview.vanadium.availableByDefault = mkDefault true;
-  removedProductPackages = [ "webview" "Vanadium" ]; # Remove upstream's version from build. We re-add it ourselves
+
+  apps.seedvault.enable = mkDefault true;
+
+# Remove upstream prebuilt versions from build. We build from source ourselves.
+  removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "Seedvault" ];
+  source.dirs."external/vanadium".enable = false;
+  source.dirs."external/seedvault".enable = false;
+  source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own pinned version
 
   # GrapheneOS just disables apex updating wholesale
   apex.enable = false;
@@ -58,7 +64,5 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
-
-  source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own pinned version
 }
 ])
