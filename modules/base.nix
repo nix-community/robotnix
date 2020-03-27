@@ -203,7 +203,7 @@ in
       mkAndroid =
         { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
         # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
-        pkgs.stdenvNoCC.mkDerivation (rec {
+        pkgs.stdenvNoCC.mkDerivation ({
           inherit name;
           srcs = [];
 
@@ -254,7 +254,9 @@ in
             EOF2
           '';
 
-          inherit installPhase;
+          installPhase = ''
+            export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
+          '' + installPhase;
 
           dontFixup = true;
           dontMoveLib64 = true;
@@ -267,13 +269,11 @@ in
 
       android = mkAndroid {
         name = "robotnix-${config.buildProduct}-${config.buildNumber}";
-        makeTargets = [ "target-files-package" "otatools-package" ]; # TODO Separate into two derivations?
+        makeTargets = [ "target-files-package" "otatools-package" ];
         # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
         # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
         installPhase = ''
           mkdir -p $out
-          export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
-
           cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
           cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.buildProduct}-target_files-${config.buildNumber}.zip $out/
         '';
@@ -291,9 +291,23 @@ in
         '';
       };
 
-      otaTools = pkgs.stdenv.mkDerivation {
+      otaTools = mkOtaTools "${config.build.android}/otatools.zip";
+
+      # Also make a version without building all of target-files-package.  This
+      # is just for debugging. We save significant time for a full build by
+      # normally building target-files-package and otatools-package
+      # simultaneously
+      otaToolsQuick = mkOtaTools (mkAndroid {
+        name = "otatools.zip";
+        makeTargets = [ "otatools-package" ];
+        installPhase = ''
+          cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out
+        '';
+      });
+
+      mkOtaTools = src: pkgs.stdenv.mkDerivation {
         name = "ota-tools";
-        src = "${config.build.android}/otatools.zip";
+        inherit src;
         sourceRoot = ".";
         nativeBuildInputs = with pkgs; [ unzip autoPatchelfHook protobuf pythonPackages.pytest ];
         buildInputs = [ (pkgs.python.withPackages (p: [ p.protobuf ])) ];
