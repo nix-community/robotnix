@@ -32,7 +32,7 @@ in (chromiumBase.override {
   # Use git apply below since some of these patches use "git binary diff" format
   postPatch = ''
     ( cd src
-      for patchfile in ${vanadium_src}/*.patch; do
+      for patchfile in ${vanadium_src}/patches/*.patch; do
         ${git}/bin/git apply --unsafe-paths $patchfile
       done
     )
