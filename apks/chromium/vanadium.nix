@@ -8,6 +8,7 @@ let
     sha256 = "005ar1i8k4qnllz3q3bww5akf9cqicddwlmg037yg86f55mp87j0";
   };
 in (chromiumBase.override {
+  name = "vanadium";
   version = "80.0.3987.149";
   versionCode = "398714900";
   customGnFlags = {

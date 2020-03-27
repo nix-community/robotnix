@@ -4,6 +4,7 @@
 , glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libGLU_combined, libXdamage
 , zlib, ncurses5, libxml2, binutils
 
+, name ? "chromium"
 , customGnFlags ? {}
 , targetCPU ? "arm64"
 , buildTargets ? [ "chrome_modern_public_apk" ]
@@ -107,7 +108,7 @@ let
         echo '#endif  // SKIA_EXT_SKIA_COMMIT_HASH_H_'                        >> $out/src/skia/ext/skia_commit_hash.h
       '');
 in stdenvNoCC.mkDerivation rec {
-  pname = "chromium-git";
+  pname = name;
   inherit version src;
 
   nativeBuildInputs = [ gn ninja pkg-config jre8 gperf bison ] ++ 

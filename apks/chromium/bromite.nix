@@ -11,6 +11,7 @@ let
   };
 
 in (chromiumBase.override {
+  name = "bromite";
   inherit version;
   versionCode = "398711800"; # TODO: Calculate
   customGnFlags = { # From bromite/build/GN_ARGS
