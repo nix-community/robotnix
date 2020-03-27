@@ -19,8 +19,8 @@ let
 
     diffoscope = (super.diffoscope.overrideAttrs (attrs: {
       patches = attrs.patches ++ [
-        ./patches/0001-comparators-android-Support-sparse-android-images.patch
-        ./patches/diffoscope-arch-hack.patch
+        ./diffoscope/0001-comparators-android-Support-sparse-android-images.patch
+        ./diffoscope/arch-hack.patch
       ];
       pythonPath = attrs.pythonPath ++ [ super.simg2img ];
     })).override {
