@@ -10,7 +10,7 @@
 , buildTargets ? [ "chrome_modern_public_apk" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
-, version ? "80.0.3987.149"
+, version ? "80.0.3987.162"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_apk + system_webview_apk
