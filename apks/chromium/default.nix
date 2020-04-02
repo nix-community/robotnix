@@ -10,8 +10,8 @@
 , buildTargets ? [ "chrome_modern_public_apk" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
-, version ? "79.0.3945.94"
-, versionCode ? "394509400"
+, version ? "80.0.3987.149"
+, versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_apk + system_webview_apk
 # trichrome_webview_apk + trichrome_chrome_bundle + trichome_library_apk
@@ -19,6 +19,11 @@
 }:
 
 let
+  _versionCode = let
+    minor = lib.fixedWidthString 4 "0" (builtins.elemAt (builtins.splitVersion version) 2);
+    patch = lib.fixedWidthString 3 "0" (builtins.elemAt (builtins.splitVersion version) 3);
+  in if (versionCode != null) then versionCode else "${minor}${patch}00";
+
   buildenv = import ./buildenv.nix { inherit pkgs; };
 
   # Serialize Nix types into GN types according to this document:
@@ -43,7 +48,7 @@ let
 
     android_channel = "stable"; # TODO: Get stable/beta/dev etc
     android_default_version_name = version;
-    android_default_version_code = versionCode;
+    android_default_version_code = _versionCode;
     system_webview_package_name = webviewPackageName;
 
     is_official_build = true;

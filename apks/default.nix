@@ -9,16 +9,13 @@ rec {
   seedvault = callPackage ./seedvault {};
 
   # Chromium-based browsers
-  chromiumBase = callPackage ./chromium/default.nix {};
-  chromium = import ./chromium/chromium.nix {
-    inherit chromiumBase;
-  };
+  chromium = callPackage ./chromium/default.nix {};
   vanadium = import ./chromium/vanadium.nix {
-    inherit chromiumBase;
+    inherit chromium;
     inherit (pkgs) fetchFromGitHub git;
   };
   bromite = import ./chromium/bromite.nix {
-    inherit chromiumBase;
+    inherit chromium;
     inherit (pkgs) fetchFromGitHub git;
   };
 }

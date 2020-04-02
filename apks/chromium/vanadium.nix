@@ -1,4 +1,4 @@
-{ chromiumBase, fetchFromGitHub, git }:
+{ chromium, fetchFromGitHub, git }:
 
 let
   vanadium_src = fetchFromGitHub {
@@ -7,10 +7,9 @@ let
     rev = "QQ2A.200305.002.2020.03.23.22";
     sha256 = "005ar1i8k4qnllz3q3bww5akf9cqicddwlmg037yg86f55mp87j0";
   };
-in (chromiumBase.override {
+in (chromium.override {
   name = "vanadium";
   version = "80.0.3987.149";
-  versionCode = "398714900";
   customGnFlags = {
     is_component_build = false;
     is_debug = false;
