@@ -138,12 +138,16 @@ in stdenvNoCC.mkDerivation rec {
       mkdir -p third_party/node/linux/node-linux-x64/bin
       ln -s --force ${nodejs}/bin/node                    third_party/node/linux/node-linux-x64/bin/node      || true
 
+      # TODO: Have mk-vendor-file.py output this
       echo 'build_with_chromium = true'                > build/config/gclient_args.gni
       echo 'checkout_android = true'                  >> build/config/gclient_args.gni
       echo 'checkout_android_native_support = true'   >> build/config/gclient_args.gni
+      echo 'checkout_google_benchmark = false'        >> build/config/gclient_args.gni
+      echo 'checkout_ios_webkit = false'              >> build/config/gclient_args.gni
       echo 'checkout_nacl = false'                    >> build/config/gclient_args.gni
-      echo 'checkout_openxr = false'                  >> build/config/gclient_args.gni
       echo 'checkout_oculus_sdk = false'              >> build/config/gclient_args.gni
+      echo 'checkout_openxr = false'                  >> build/config/gclient_args.gni
+      echo 'checkout_aemu = false'                    >> build/config/gclient_args.gni
 
       substituteInPlace chrome/android/BUILD.gn \
         --replace 'chrome_public_manifest_package = "org.chromium.chrome"' \
