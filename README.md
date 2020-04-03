@@ -1,6 +1,6 @@
 # RobotNix - Building Android (AOSP) with Nix
 
-This project enables using nix to build (optionally customized) Android targeting Pixel devices.
+This project enables using [nix](https://nixos.org/nix/) to build (optionally customized) Android targeting Pixel devices.
 Some features include:
  - A NixOS-style module system for customizing various aspects of the build
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader
@@ -28,17 +28,17 @@ Further goals include:
 This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
 
 ## Build Instructions
-Here is a single-command to build an `img` which can be flashed onto a device with `fastboot`.
+Here is a single command to build an `img` which can be flashed onto a device with `fastboot`.
 ```console
 $ nix-build "https://github.com/danielfullmer/robotnix/archive/master.tar.gz" \
     --arg configuration '{ device="crosshatch"; flavor="vanilla"; }' \
     -A img
 ```
 This will build an image signed with `test-keys`, so definitely don't use this for anything real-world.
+Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP output is very large it will easily use all of your RAM (even if you have 32GB)!
 
 A configuration file should be created for anything more complicated, including creating signed builds.
 See my own configuration under `example.nix` for inspiration.
-
 After creating a configuration file, generate keys for your device:
 
 ```console
