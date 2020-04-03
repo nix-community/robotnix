@@ -86,7 +86,7 @@ in
   config = {
     build.kernel = pkgs.stdenv.mkDerivation {
       name = "kernel-${config.device}";
-      inherit (config.kernel) src;
+      inherit (cfg) src patches;
 
       # From os-specific/linux/kernel/manual-config.nix in nixpkgs
       prePatch = ''
@@ -96,8 +96,6 @@ in
         done
         sed -i scripts/ld-version.sh -e "s|/usr/bin/awk|${pkgs.gawk}/bin/awk|"
       '';
-
-      patches = config.kernel.patches;
 
       postPatch = lib.optionalString (config.signBuild && (config.avbMode == "verity_only")) ''
         rm -f verity_*.x509
@@ -122,7 +120,7 @@ in
       ];
 
       preBuild = ''
-        make O=out ARCH=arm64 ${config.kernel.configName}_defconfig
+        make O=out ARCH=arm64 ${cfg.configName}_defconfig
       '' + optionalString (cfg.compiler == "clang") ''
         export LD_LIBRARY_PATH="${prebuiltClang}/lib:$LD_LIBRARY_PATH"
       ''; # So it can load LLVMgold.so
@@ -132,13 +130,13 @@ in
       '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames);
     };
 
-    source.dirs = mkIf config.kernel.useCustom {
-      ${config.kernel.relpath}.enable = false;
+    source.dirs = mkIf cfg.useCustom {
+      ${cfg.relpath}.enable = false;
     };
-    source.unpackScript = mkIf config.kernel.useCustom ''
-      mkdir -p ${config.kernel.relpath}
-      cp -fv ${config.build.kernel}/* ${config.kernel.relpath}/
-      chmod -R u+w ${config.kernel.relpath}/
+    source.unpackScript = mkIf cfg.useCustom ''
+      mkdir -p ${cfg.relpath}
+      cp -fv ${config.build.kernel}/* ${cfg.relpath}/
+      chmod -R u+w ${cfg.relpath}/
     '';
   };
 }
