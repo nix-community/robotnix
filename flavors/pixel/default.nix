@@ -18,7 +18,7 @@ let
     marlin = "marlin"; # Pixel XL
     sailfish = "marlin"; # Pixel
     taimen = "taimen"; # Pixel 2 XL
-    walleye = "taimen"; # Pixel 2
+    walleye = "muskie"; # Pixel 2
     crosshatch = "crosshatch"; # Pixel 3 XL
     blueline = "crosshatch"; # Pixel 3
     bonito = "bonito"; # Pixel 3a XL
@@ -28,7 +28,7 @@ let
   };
   deviceFamily = deviceFamilyMap.${config.device};
 
-  kernelName = if (config.deviceFamily == "taimen") then "wahoo" else config.deviceFamily;
+  kernelName = if (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") then "wahoo" else config.deviceFamily;
 in
 mkMerge [
   (mkIf ((config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
@@ -45,7 +45,7 @@ mkMerge [
       "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" "coral"
     ];
     source.includeGroups = mkDefault ([ config.device config.deviceFamily config.kernel.configName ]
-      ++ (lib.optional (deviceFamily == "taimen") "wahoo"));
+      ++ (lib.optional (deviceFamily == "taimen" || deviceFamily == "muskie") "wahoo"));
   })
 
   # Device-specific overrides
@@ -57,7 +57,7 @@ mkMerge [
       "arch/arm64/boot/Image.lz4-dtb"
     ];
   })
-  (mkIf (config.deviceFamily == "taimen") {
+  (mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") {
     avbMode = "vbmeta_simple";
     kernel.buildProductFilenames = [
       "arch/arm64/boot/Image.lz4-dtb"

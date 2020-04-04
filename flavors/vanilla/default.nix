@@ -8,7 +8,6 @@ let
     inherit rev sha256;
   };
   supportedDeviceFamilies = [ "marlin" "taimen" "crosshatch" "bonito" "coral" ];
-  deviceDirName = if (config.device == "walleye") then "muskie" else config.deviceFamily;
 in mkIf (config.flavor == "vanilla") (mkMerge [
 {
   buildNumber = mkDefault "2020.03.16.18";
@@ -32,7 +31,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
   kernel.useCustom = mkDefault config.signBuild;
 })
-(mkIf ((elem config.deviceFamily [ "taimen" "bonito" "crosshatch" ]) || (config.device == "x86")) {
+(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" ]) || (config.device == "x86")) {
   source.buildNumber = "QQ1A.200305.002";
   source.manifest.rev = "android-10.0.0_r30";
 
@@ -43,7 +42,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     sha256 =  "0hcbvs6dns11b83877wy5g3pzyq8f7f71mcas6npi5y8ka503kv9";
   };
 })
-(mkIf (config.deviceFamily == "taimen") {
+(mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") {
   kernel.src = kernelSrc {
     tag = "android-10.0.0_r0.32";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
@@ -86,8 +85,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   source.dirs."packages/apps/Browser2".enable = false;
 
   source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}" + /disable-quicksearch.patch) ];
-  source.dirs."device/google/${deviceDirName}".patches = [
-    (./. + "/${toString config.androidVersion}/${deviceDirName}-fix-device-names.patch")
+  source.dirs."device/google/${config.deviceFamily}".patches = [
+    (./. + "/${toString config.androidVersion}/${config.deviceFamily}-fix-device-names.patch")
   ];
 
   source.dirs."packages/apps/DeskClock".patches = mkIf (config.androidVersion == 10) [
