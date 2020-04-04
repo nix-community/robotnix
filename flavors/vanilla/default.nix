@@ -85,9 +85,9 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   source.dirs."packages/apps/QuickSearchBox".enable = false;
   source.dirs."packages/apps/Browser2".enable = false;
 
-  source.dirs."packages/apps/Launcher3".patches = [ (../../patches + "/${toString config.androidVersion}" + /disable-quicksearch.patch) ];
+  source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}" + /disable-quicksearch.patch) ];
   source.dirs."device/google/${deviceDirName}".patches = [
-    (../../patches + "/${toString config.androidVersion}/${deviceDirName}-fix-device-names.patch")
+    (./. + "/${toString config.androidVersion}/${deviceDirName}-fix-device-names.patch")
   ];
 
   source.dirs."packages/apps/DeskClock".patches = mkIf (config.androidVersion == 10) [

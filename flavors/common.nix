@@ -11,9 +11,9 @@ mkMerge [
 })
 (mkIf (config.androidVersion >= 10) {
   source.dirs."build/make".patches = [
-    ../patches/10/readonly-fix.patch
+    ./readonly-fix.patch
     (pkgs.substituteAll {
-      src = ../patches/10/partition-size-fix.patch;
+      src = ./partition-size-fix.patch;
       inherit (pkgs) coreutils;
     })
   ];
