@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  kernelName = if (config.deviceFamily == "muskie") then "wahoo" else config.deviceFamily;
+  kernelName = if (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") then "wahoo" else config.deviceFamily;
   configNameMap = {
     sailfish = "marlin";
     sargo = "bonito";
