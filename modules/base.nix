@@ -246,6 +246,10 @@ in
 
             source build/envsetup.sh
             choosecombo ${config.buildType} ${config.buildProduct} ${config.variant}
+
+            # Fail early if the product was not selected properly
+            test -n "$TARGET_PRODUCT" || exit 1
+
             #export NINJA_ARGS="${toString ninjaArgs}"
             export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
             make ${toString makeTargets}
