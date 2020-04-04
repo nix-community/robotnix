@@ -246,8 +246,8 @@ in
 
             source build/envsetup.sh
             choosecombo ${config.buildType} ${config.buildProduct} ${config.variant}
-            export NINJA_ARGS="${toString ninjaArgs}"
-            #export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
+            #export NINJA_ARGS="${toString ninjaArgs}"
+            export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
             make ${toString makeTargets}
             echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 
