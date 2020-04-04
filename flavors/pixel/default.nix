@@ -35,6 +35,7 @@ mkMerge [
     deviceFamily = mkDefault deviceFamily;
     arch = mkDefault "arm64";
 
+    kernel.name = mkDefault kernelName;
     kernel.configName = mkDefault config.deviceFamily;
     kernel.relpath = mkDefault "device/google/${kernelName}-kernel";
     vendor.img = mkDefault (fetchItem imgList);
@@ -44,12 +45,11 @@ mkMerge [
       # Exclude all devices by default
       "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" "coral"
     ];
-    source.includeGroups = mkDefault ([ config.device config.deviceFamily config.kernel.configName ]
-      ++ (lib.optional (deviceFamily == "taimen" || deviceFamily == "muskie") "wahoo"));
+    source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.name config.kernel.configName ];
   })
 
   # Device-specific overrides
-  (mkIf (config.deviceFamily == "marlin") {
+  (mkIf (config.kernel.name == "marlin") {
     kernel.compiler = "gcc";
     avbMode = "verity_only";
     apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
@@ -57,14 +57,14 @@ mkMerge [
       "arch/arm64/boot/Image.lz4-dtb"
     ];
   })
-  (mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") {
+  (mkIf (config.kernel.name == "wahoo") {
     avbMode = "vbmeta_simple";
     kernel.buildProductFilenames = [
       "arch/arm64/boot/Image.lz4-dtb"
       "arch/arm64/boot/dtbo.img"
     ];
   })
-  (mkIf (config.deviceFamily == "crosshatch") {
+  (mkIf (config.kernel.name == "crosshatch") {
     kernel.configName = "b1c1";
     avbMode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
@@ -75,7 +75,7 @@ mkMerge [
       "arch/arm64/boot/dts/qcom/sdm845-v2.1.dtb"
     ];
   })
-  (mkIf (config.deviceFamily == "bonito") {
+  (mkIf (config.kernel.name == "bonito") {
     avbMode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
     kernel.buildProductFilenames = [

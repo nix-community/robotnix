@@ -47,6 +47,11 @@ in
         type = types.bool;
       };
 
+      name = mkOption {
+        internal = true;
+        type = types.str;
+      };
+
       configName = mkOption {
         internal = true;
         type = types.str;
