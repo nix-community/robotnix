@@ -7,12 +7,11 @@ let
   fetchItem = json: let
     matchingItem = lib.findSingle
       (v: (v.device == config.device) && (hasInfix "(${config.source.buildNumber}" v.version)) # Look for left paren + upstream buildNumber
-      null
-      (throw "multiple items found")
+      (throw "no items found for vendor files")
+      (throw "multiple items found for vendor files")
       json;
   in
-    if (matchingItem == null) then null else
-      pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);
+    pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);
 
   deviceFamilyMap = {
     marlin = "marlin"; # Pixel XL
