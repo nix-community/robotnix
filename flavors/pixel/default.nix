@@ -27,17 +27,14 @@ let
     flame = "coral"; # Pixel 4
   };
   deviceFamily = deviceFamilyMap.${config.device};
-
-  kernelName = if (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") then "wahoo" else config.deviceFamily;
 in
 mkMerge [
   (mkIf ((config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault deviceFamily;
     arch = mkDefault "arm64";
 
-    kernel.name = mkDefault kernelName;
+    kernel.name = mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") (mkDefault "wahoo");
     kernel.configName = mkDefault config.deviceFamily;
-    kernel.relpath = mkDefault "device/google/${kernelName}-kernel";
     vendor.img = mkDefault (fetchItem imgList);
     vendor.ota = mkDefault (fetchItem otaList);
 
@@ -65,7 +62,6 @@ mkMerge [
     ];
   })
   (mkIf (config.kernel.name == "crosshatch") {
-    kernel.configName = "b1c1";
     avbMode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
     kernel.buildProductFilenames = [

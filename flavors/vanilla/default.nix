@@ -49,6 +49,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
 })
 (mkIf (config.deviceFamily == "crosshatch") {
+  kernel.configName = "b1c1";
   kernel.src = kernelSrc {
     tag = "android-10.0.0_r0.26";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";

@@ -1,10 +1,6 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  configNameMap = {
-    sailfish = "marlin";
-    sargo = "bonito";
-  };
   grapheneOSRelease = "${config.source.buildNumber}.2020.03.23.22";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 (mkIf ((elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) || (config.device == "x86")) {
@@ -20,6 +16,13 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     fetchSubmodules = true;
   };
 })
+(mkIf (config.device == "sargo") { # TODO: Ugly hack
+  kernel.configName = mkForce "bonito";
+  kernel.relpath = mkForce "device/google/bonito-kernel";
+})
+(mkIf (config.device == "blueline") { # TODO: Ugly hack
+  kernel.relpath = mkForce "device/google/blueline-kernel";
+})
 {
   buildNumber = mkDefault "2020.03.27.15";
   buildDateTime = mkDefault 1585337099;
@@ -32,8 +35,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".contents;
-  kernel.configName = mkForce (if (hasAttr config.device configNameMap) then configNameMap.${config.device} else config.device);
-  kernel.relpath = mkIf (config.kernel.name == "wahoo") "device/google/taimen-kernel";
+  kernel.configName = config.device;
+  kernel.relpath = "device/google/${config.device}-kernel";
 
   # No need to include these in AOSP build source since we build separately
   source.dirs."kernel/google/marlin".enable = false;

@@ -89,8 +89,11 @@ in
   };
 
   config = {
+    kernel.name = mkOptionDefault config.deviceFamily;
+    kernel.relpath = mkOptionDefault "device/google/${config.kernel.name}-kernel";
+
     build.kernel = pkgs.stdenv.mkDerivation {
-      name = "kernel-${config.device}";
+      name = "kernel-${cfg.name}";
       inherit (cfg) src patches;
 
       # From os-specific/linux/kernel/manual-config.nix in nixpkgs
