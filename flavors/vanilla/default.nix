@@ -32,7 +32,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   kernel.useCustom = mkDefault config.signBuild;
 })
 (mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" ]) || (config.device == "x86")) {
-  source.buildNumber = "QQ1A.200305.002";
+  source.buildNumber = "QQ2A.200305.002";
   source.manifest.rev = "android-10.0.0_r30";
 
   # TODO: temporary fix for missing apifinder until upstream issue is resolved: https://issuetracker.google.com/issues/150626837
