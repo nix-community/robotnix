@@ -14,9 +14,7 @@ in
       };
     }
     configuration 
-    ./flavors/common.nix
     ./flavors/grapheneos
-    ./flavors/pixel
     ./flavors/vanilla
     ./modules/apps/auditor.nix
     ./modules/apps/chromium.nix
@@ -25,6 +23,7 @@ in
     ./modules/apps/seedvault.nix
     ./modules/apps/updater.nix
     ./modules/base.nix
+    ./modules/common.nix
     ./modules/emulator.nix
     ./modules/etc.nix
     ./modules/framework.nix
@@ -33,6 +32,7 @@ in
     ./modules/kernel.nix
     ./modules/keys.nix
     ./modules/microg.nix
+    ./modules/pixel
     ./modules/prebuilts.nix
     ./modules/release.nix
     ./modules/resources.nix
