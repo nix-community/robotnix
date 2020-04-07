@@ -14,20 +14,14 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # Not strictly necessary for me to set this, since I override the jsonFile
   source.manifest.url = mkDefault "https://android.googlesource.com/platform/manifest";
 }
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" ]) || (config.device == "x86")) {
-  vendor.buildID = mkDefault "QQ2A.200305.002";
-  source.manifest.rev = mkDefault "android-10.0.0_r30";
+(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" "coral" ]) || (config.device == "x86")) {
+  vendor.buildID = mkDefault "QQ2A.200405.005";
+  source.manifest.rev = mkDefault "android-10.0.0_r33";
 
-  buildNumber = mkDefault "2020.03.16.18";
-  buildDateTime = mkDefault 1584398664;
-
-  # TODO: temporary fix for missing apifinder until upstream issue is resolved: https://issuetracker.google.com/issues/150626837
-  source.dirs."tools/apifinder".contents = pkgs.fetchgit {
-    url = "https://android.googlesource.com/platform/tools/apifinder";
-    rev = "refs/tags/android-mainline-10.0.0_r9";
-    sha256 =  "0hcbvs6dns11b83877wy5g3pzyq8f7f71mcas6npi5y8ka503kv9";
-  };
+  buildNumber = mkDefault "2020.04.06.22";
+  buildDateTime = mkDefault 1586227437;
 })
+# TODO: Build kernels for non marlin/sailfish devices
 (mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") {
   kernel.src = kernelSrc {
     rev = "android-10.0.0_r0.32";
@@ -48,9 +42,6 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
 })
 (mkIf (config.deviceFamily == "coral") {
-  vendor.buildID = mkDefault "QQ1B.200305.002";
-  source.manifest.rev = mkDefault "android-10.0.0_r31";
-  source.manifest.sha256 = mkDefault "1bwl12dj7x0a1nxxkm9k6a5ixgcmiw724fdbw8ny2ycm4divv763";
   kernel.src = kernelSrc {
     tag = "android-10.0.0_r0.35";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
