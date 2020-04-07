@@ -3,9 +3,54 @@
 # TODO: One possibility is to reimplement parts of android-prepare-vendor in native nix so we can use an android-prepare-vendor config file directly
 with lib;
 let
-  android-prepare-vendor = pkgs.callPackage ../pkgs/android-prepare-vendor { api = config.apiLevel; };
-  apvConfig = builtins.fromJSON (builtins.readFile "${android-prepare-vendor.android-prepare-vendor}/${config.device}/config.json");
+  _android-prepare-vendor = pkgs.callPackage ../pkgs/android-prepare-vendor { api = config.apiLevel; };
+  android-prepare-vendor =
+    if config.flavor == "grapheneos"
+    then _android-prepare-vendor.overrideAttrs (attrs: {
+      # TODO: Temporarily disable PREOPT for grapheneos
+      patches = attrs.patches ++ [
+        (pkgs.fetchpatch {
+          url = "https://github.com/GrapheneOS/android-prepare-vendor/commit/85d206cc28a6d1c23d3e088238b63bc2e6f68743.patch";
+          sha256 = "1nm6wrdqwwk5jdjwyi3na4x6h7midxvdjc31734klf13fysxmcsp";
+        })
+      ];
+    })
+    else _android-prepare-vendor;
+
+  apvConfig = builtins.fromJSON (builtins.readFile "${android-prepare-vendor}/${config.device}/config.json");
   usedOta = if (apvConfig ? ota-partitions) then config.vendor.ota else null;
+
+  buildVendorFiles =
+    { device, img, ota ? null, full ? false, timestamp ? 1, buildID ? "robotnix", configFile ? null }:
+    pkgs.runCommand "vendor-files-${device}" {} ''
+      ${android-prepare-vendor}/execute-all.sh \
+        ${lib.optionalString full "--full"} \
+        --yes \
+        --output . \
+        --device "${device}" \
+        --buildID "${buildID}" \
+        --imgs "${img}" \
+        ${lib.optionalString (ota != null) "--ota ${ota}"} \
+        --debugfs \
+        --timestamp "${builtins.toString timestamp}" \
+        ${lib.optionalString (configFile != null) "--conf-file ${configFile}"}
+
+      mkdir -p $out
+      cp -r ${device}/${buildID}/* $out
+    '';
+
+  unpackImg =
+    { device, img, configFile ? null }:
+    pkgs.runCommand "unpacked-img-${device}" {} ''
+      mkdir -p $out
+      ${android-prepare-vendor}/scripts/extract-factory-images.sh --debugfs --input "${img}" --output $out --conf-file ${android-prepare-vendor}/${device}/config.json
+    '';
+
+  repairImg = imgDir:
+    pkgs.runCommand "repaired-img" {} ''
+      mkdir -p $out
+      ${android-prepare-vendor}/scripts/system-img-repair.sh --input "${imgDir}/system" --output $out --method OATDUMP --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${api}/bin/oatdump
+    '';
 in
 {
   options = {
@@ -52,14 +97,14 @@ in
         };
         mergedConfigFile = builtins.toFile "config.json" (builtins.toJSON mergedConfig);
       in
-        android-prepare-vendor.buildVendorFiles {
+        buildVendorFiles {
           inherit (config) device;
           inherit (config.vendor) img;
           ota = usedOta;
           configFile = mergedConfigFile;
         };
 
-      unpacked = android-prepare-vendor.unpackImg {
+      unpacked = unpackImg {
         inherit (config) device;
         inherit (config.vendor) img;
       };
@@ -68,7 +113,7 @@ in
       # TODO: Could probably compare with something earlier in the process.
       # It's also a little dumb that this does buildVendorFiles and unpackImg on config.vendor.img
       diff = let
-          builtVendor = android-prepare-vendor.unpackImg {
+          builtVendor = unpackImg {
             inherit (config) device;
             img = config.factoryImg;
           };

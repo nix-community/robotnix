@@ -1,37 +1,83 @@
-{ lib, callPackage, runCommand, api }:
+{ stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
+  simg2img, zip, unzip, e2fsprogs, jq, jdk, wget, utillinux, perl, which, python2,
+  api ? "28"
+}:
 
-rec {
-  android-prepare-vendor = callPackage ./android-prepare-vendor.nix { inherit api; };
+let
+  buildID = "robotnix"; # Doesn't have to match the real buildID
+  dexrepair = callPackage ./dexrepair.nix {};
 
-  buildVendorFiles =
-    { device, img, ota ? null, full ? false, timestamp ? 1, buildID ? "robotnix", configFile ? null }:
-    runCommand "vendor-files-${device}" {} ''
-      ${android-prepare-vendor}/execute-all.sh \
-        ${lib.optionalString full "--full"} \
-        --yes \
-        --output . \
-        --device "${device}" \
-        --buildID "${buildID}" \
-        --imgs "${img}" \
-        ${lib.optionalString (ota != null) "--ota ${ota}"} \
-        --debugfs \
-        --timestamp "${builtins.toString timestamp}" \
-        ${lib.optionalString (configFile != null) "--conf-file ${configFile}"}
+  # TODO: This is for API-28. Need to make this work for all of them. Preferably without downloading each one
+  oatdump = stdenv.mkDerivation {
+    name = "oatdump-${api}";
 
-      mkdir -p $out
-      cp -r ${device}/${buildID}/* $out
+    src = fetchurl {
+      url = https://onedrive.live.com/download?cid=D1FAC8CC6BE2C2B0&resid=D1FAC8CC6BE2C2B0%21574&authkey=ADSQA_DtfAmmk2c;
+      name = "oatdump-${api}.zip";
+      sha256 = "0kiq173jqg6qzw9m5wwp0kh1d3zxxksi69xj4nwg7pp43m4lfjir";
+    };
+
+    nativeBuildInputs = [ autoPatchelfHook ];
+
+    unpackPhase = ''
+      ${unzip}/bin/unzip $src
     '';
 
-  unpackImg =
-    { device, img, configFile ? null }:
-    runCommand "unpacked-img-${device}" {} ''
+    installPhase = ''
       mkdir -p $out
-      ${android-prepare-vendor}/scripts/extract-factory-images.sh --debugfs --input "${img}" --output $out --conf-file ${android-prepare-vendor}/${device}/config.json
+      cp -r * $out
     '';
+  };
+  # TODO: Make sure it can use java if it doesn't use oatdump.
+in
+(stdenv.mkDerivation {
+  pname = "android-prepare-vendor";
+  version = "2019-07-13";
 
-  repairImg = imgDir:
-    runCommand "repaired-img" {} ''
-      mkdir -p $out
-      ${android-prepare-vendor}/scripts/system-img-repair.sh --input "${imgDir}/system" --output $out --method OATDUMP --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${api}/bin/oatdump
-    '';
-}
+  # TODO: Unify these
+  src = if (api == "28") then (fetchFromGitHub {
+    owner = "anestisb";
+    repo = "android-prepare-vendor";
+    rev = "e853d17c89f6962d3fd6f408db8576e6b445f643";
+    sha256 = "1aicx4lh1gvrbq4llh0dqifhp3y5d4g44r271b2qbg3vpkz48alb";
+  }) else
+  (fetchFromGitHub { # api == "29"
+    owner = "danielfullmer";
+    repo = "android-prepare-vendor";
+    rev = "c9b9505ab1f503d72711004ded42779fd9e2aed1";
+    sha256 = "19250xxm6b2zlr8v3jnz5agwky4wbkkccrf4za56mbvfw7p55fbl";
+  });
+
+  nativeBuildInputs = [ makeWrapper ];
+  buildInputs = lib.optionals (api == "29") [
+    (python2.withPackages (p: [ p.protobuf ])) # Python is used by "extract_android_ota_payload"
+  ];
+
+  patches = [ ./robotnix.patch ];
+
+  # TODO: No need to copy oatdump now that we're making a standalone android-prepare-vendor.
+  # Just patch it out instead
+  postPatch = ''
+    patchShebangs ./execute-all.sh
+    patchShebangs ./scripts
+    # TODO: Hardcoded api version
+    mkdir -p hostTools/Linux/api-${api}/
+    cp -r ${oatdump}/* hostTools/Linux/api-${api}/
+
+    for i in ./execute-all.sh ./scripts/download-nexus-image.sh ./scripts/extract-factory-images.sh ./scripts/generate-vendor.sh ./scripts/gen-prop-blobs-list.sh ./scripts/realpath.sh ./scripts/system-img-repair.sh; do
+        sed -i '2 i export PATH=$PATH:${stdenv.lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk wget utillinux perl which ]}' $i
+    done
+  '';
+
+  installPhase = ''
+    mkdir -p $out
+    cp -r * $out
+  '';
+
+  configurePhase = ":";
+
+  postFixup = lib.optionalString (api == "29") ''
+    wrapProgram $out/scripts/extract_android_ota_payload/extract_android_ota_payload.py \
+      --prefix PYTHONPATH : "$PYTHONPATH"
+  '';
+})
