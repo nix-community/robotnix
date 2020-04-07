@@ -3,29 +3,10 @@ with lib;
 let
   grapheneOSRelease = "${config.source.buildNumber}.2020.03.23.22";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) || (config.device == "x86")) {
-  source.buildNumber = "QQ2A.200305.002";
-})
-(mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
-  # Hack for crosshatch/bonito since they use submodules and repo2nix doesn't support that yet.
-  kernel.src = pkgs.fetchFromGitHub {
-    owner = "GrapheneOS";
-    repo = "kernel_google_crosshatch";
-    rev = grapheneOSRelease;
-    sha256 = "08dc9q4bldli85zp0lwc2jqhpqwxclkqg030iq7qm7ygqckb22kh";
-    fetchSubmodules = true;
-  };
-})
-(mkIf (config.device == "sargo") { # TODO: Ugly hack
-  kernel.configName = mkForce "bonito";
-  kernel.relpath = mkForce "device/google/bonito-kernel";
-})
-(mkIf (config.device == "blueline") { # TODO: Ugly hack
-  kernel.relpath = mkForce "device/google/blueline-kernel";
-})
 {
   buildNumber = mkDefault "2020.03.27.15";
   buildDateTime = mkDefault 1585337099;
+  source.buildNumber = "QQ2A.200305.002";
 
   source.jsonFile = ./. + "/${grapheneOSRelease}.json";
 
@@ -67,4 +48,21 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 }
+(mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
+  # Hack for crosshatch/bonito since they use submodules and repo2nix doesn't support that yet.
+  kernel.src = pkgs.fetchFromGitHub {
+    owner = "GrapheneOS";
+    repo = "kernel_google_crosshatch";
+    rev = grapheneOSRelease;
+    sha256 = "08dc9q4bldli85zp0lwc2jqhpqwxclkqg030iq7qm7ygqckb22kh";
+    fetchSubmodules = true;
+  };
+})
+(mkIf (config.device == "sargo") { # TODO: Ugly hack
+  kernel.configName = mkForce "bonito";
+  kernel.relpath = mkForce "device/google/bonito-kernel";
+})
+(mkIf (config.device == "blueline") { # TODO: Ugly hack
+  kernel.relpath = mkForce "device/google/blueline-kernel";
+})
 ])
