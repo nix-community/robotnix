@@ -12,11 +12,11 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 {
   source.jsonFile = ./. + "/${config.source.manifest.rev}.json";
   # Not strictly necessary for me to set this, since I override the jsonFile
-  source.manifest.url = "https://android.googlesource.com/platform/manifest";
+  source.manifest.url = mkDefault "https://android.googlesource.com/platform/manifest";
 }
 (mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" ]) || (config.device == "x86")) {
-  vendor.buildID = "QQ2A.200305.002";
-  source.manifest.rev = "android-10.0.0_r30";
+  vendor.buildID = mkDefault "QQ2A.200305.002";
+  source.manifest.rev = mkDefault "android-10.0.0_r30";
 
   buildNumber = mkDefault "2020.03.16.18";
   buildDateTime = mkDefault 1584398664;
@@ -48,9 +48,9 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
 })
 (mkIf (config.deviceFamily == "coral") {
-  vendor.buildID = "QQ1B.200305.002";
-  source.manifest.rev = "android-10.0.0_r31";
-  source.manifest.sha256 = "1bwl12dj7x0a1nxxkm9k6a5ixgcmiw724fdbw8ny2ycm4divv763";
+  vendor.buildID = mkDefault "QQ1B.200305.002";
+  source.manifest.rev = mkDefault "android-10.0.0_r31";
+  source.manifest.sha256 = mkDefault "1bwl12dj7x0a1nxxkm9k6a5ixgcmiw724fdbw8ny2ycm4divv763";
   kernel.src = kernelSrc {
     tag = "android-10.0.0_r0.35";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
@@ -58,8 +58,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 })
 (mkIf (config.deviceFamily == "marlin") {
   # marlin is no longer receiving monthly security updates. Keeping this old source around just for testing.
-  vendor.buildID = "QP1A.191005.007.A3";
-  source.manifest.rev = "android-10.0.0_r17";
+  vendor.buildID = mkDefault "QP1A.191005.007.A3";
+  source.manifest.rev = mkDefault "android-10.0.0_r17";
 
   buildNumber = mkDefault "2020.03.16.18";
   buildDateTime = mkDefault 1584398664;

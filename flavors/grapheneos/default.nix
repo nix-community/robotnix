@@ -6,13 +6,13 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
   buildNumber = mkDefault "2020.03.27.15";
   buildDateTime = mkDefault 1585337099;
-  vendor.buildID = "QQ2A.200305.002";
+  vendor.buildID = mkDefault "QQ2A.200305.002";
 
   source.jsonFile = ./. + "/${grapheneOSRelease}.json";
 
   # Not strictly necessary for me to set these, since I override the jsonFile
-  source.manifest.url = "https://github.com/GrapheneOS/platform_manifest.git";
-  source.manifest.rev = "refs/tags/${grapheneOSRelease}";
+  source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
+  source.manifest.rev = mkDefault "refs/tags/${grapheneOSRelease}";
 
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".contents;
