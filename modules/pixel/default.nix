@@ -6,9 +6,9 @@ let
   otaList = lib.importJSON ./pixel-otas.json;
   fetchItem = json: let
     matchingItem = lib.findSingle
-      (v: (v.device == config.device) && (hasInfix "(${config.source.buildNumber}" v.version)) # Look for left paren + upstream buildNumber
-      (throw "no items found for vendor files")
-      (throw "multiple items found for vendor files")
+      (v: (v.device == config.device) && (hasInfix "(${config.vendor.buildID}" v.version)) # Look for left paren + upstream buildNumber
+      (throw "no items found for vendor img/ota")
+      (throw "multiple items found for vendor img/ota")
       json;
   in
     pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);

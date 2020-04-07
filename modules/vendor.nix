@@ -30,6 +30,12 @@ in
       type = types.listOf types.str;
       default = [];
     };
+
+    vendor.buildID = mkOption {
+      type = types.str;
+      description = "Build ID associated with the upstream img/ota (used to select images)";
+      internal = true;
+    };
   };
 
   config = mkIf (config.vendor.img != null) {

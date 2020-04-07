@@ -15,7 +15,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   source.manifest.url = "https://android.googlesource.com/platform/manifest";
 }
 (mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" ]) || (config.device == "x86")) {
-  source.buildNumber = "QQ2A.200305.002";
+  vendor.buildID = "QQ2A.200305.002";
   source.manifest.rev = "android-10.0.0_r30";
 
   buildNumber = mkDefault "2020.03.16.18";
@@ -48,7 +48,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
 })
 (mkIf (config.deviceFamily == "coral") {
-  source.buildNumber = "QQ1B.200305.002";
+  vendor.buildID = "QQ1B.200305.002";
   source.manifest.rev = "android-10.0.0_r31";
   source.manifest.sha256 = "1bwl12dj7x0a1nxxkm9k6a5ixgcmiw724fdbw8ny2ycm4divv763";
   kernel.src = kernelSrc {
@@ -58,7 +58,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 })
 (mkIf (config.deviceFamily == "marlin") {
   # marlin is no longer receiving monthly security updates. Keeping this old source around just for testing.
-  source.buildNumber = "QP1A.191005.007.A3";
+  vendor.buildID = "QP1A.191005.007.A3";
   source.manifest.rev = "android-10.0.0_r17";
 
   buildNumber = mkDefault "2020.03.16.18";
