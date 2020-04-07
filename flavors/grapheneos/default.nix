@@ -1,12 +1,12 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.vendor.buildID}.2020.03.23.22";
+  grapheneOSRelease = "${config.vendor.buildID}.2020.04.07.10";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
-  buildNumber = mkDefault "2020.03.27.15";
-  buildDateTime = mkDefault 1585337099;
-  vendor.buildID = mkDefault "QQ2A.200305.002";
+  buildNumber = mkDefault "2020.04.07.13";
+  buildDateTime = mkDefault 1586279715;
+  vendor.buildID = mkDefault "QQ2A.200405.005";
 
   source.jsonFile = ./. + "/${grapheneOSRelease}.json";
 
@@ -54,7 +54,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "08dc9q4bldli85zp0lwc2jqhpqwxclkqg030iq7qm7ygqckb22kh";
+    sha256 = "16di46kmlzm6hrkxd95ddaa07yhxvzkv7ah8d6zki6scpwj1pjkm";
     fetchSubmodules = true;
   };
 })
