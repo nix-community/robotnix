@@ -7,7 +7,7 @@ let
     url = "https://android.googlesource.com/kernel/msm";
     inherit rev sha256;
   };
-  supportedDeviceFamilies = [ "marlin" "taimen" "crosshatch" "bonito" "coral" ];
+  supportedDeviceFamilies = [ "marlin" "taimen" "muskie" "crosshatch" "bonito" "coral" ];
 in mkIf (config.flavor == "vanilla") (mkMerge [
 {
   source.jsonFile = ./. + "/${config.source.manifest.rev}.json";
