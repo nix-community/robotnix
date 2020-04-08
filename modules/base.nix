@@ -295,13 +295,13 @@ in
         '';
       };
 
-      otaTools = mkOtaTools "${config.build.android}/otatools.zip";
+      otaTools = fixOtaTools "${config.build.android}/otatools.zip";
 
       # Also make a version without building all of target-files-package.  This
       # is just for debugging. We save significant time for a full build by
       # normally building target-files-package and otatools-package
       # simultaneously
-      otaToolsQuick = mkOtaTools (mkAndroid {
+      otaToolsQuick = fixOtaTools (mkAndroid {
         name = "otatools.zip";
         makeTargets = [ "otatools-package" ];
         installPhase = ''
@@ -309,7 +309,7 @@ in
         '';
       });
 
-      mkOtaTools = src: pkgs.stdenv.mkDerivation {
+      fixOtaTools = src: pkgs.stdenv.mkDerivation {
         name = "ota-tools";
         inherit src;
         sourceRoot = ".";
