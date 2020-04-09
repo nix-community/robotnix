@@ -13,6 +13,8 @@ let
       sha256 = "0d0n8am9k2cwca7kf64xi7ypriy8j1h3bc2jzyl8qakpfdcp19np";
     }) { pkgs = self; };
 
+    android-emulator = super.callPackage ./android-emulator {};
+
     buildGradle = super.callPackage ./gradle-env.nix {};
 
     bundletool = super.callPackage ./bundletool {};

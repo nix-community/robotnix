@@ -88,6 +88,13 @@ This would allow an end-user to simply sign their own releases without building 
 As of Android 10, `target-files` seem to be built reproducibly.
 Further tests are needed for `img`/`ota` files.
 
+### Emulator
+
+To build and run an emulator with an attached vanilla system image, use (for example):
+```console
+$ nix-build ./default.nix --arg configuration '{device="x86"; flavor="vanilla";}' -A build.emulator
+$ ./result
+```
 
 ### Fetching android source files
 
