@@ -140,7 +140,12 @@ in
     };
   };
 
-  config = {
+  config = mkMerge [
+  (mkIf (elem config.device ["arm64" "arm" "x86" "x86_64"]) {
+    # If this is a generic build for an arch, just set the arch as well
+    arch = mkDefault config.device;
+  })
+  {
     buildProduct = mkIf (config.device != null) (mkDefault "aosp_${config.device}");
 
     apiLevel = mkIf (config.androidVersion == 10) "29";
@@ -454,5 +459,5 @@ in
         multiPkgs = pkgs: with pkgs; [ zlib ];
       };
     };
-  };
+  }];
 }
