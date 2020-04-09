@@ -13,8 +13,8 @@ with lib;
   # buildDateTime = 1584398664; # Use `date "+%s"` to get the current time
 
   # A _string_ of the path for the key store.
-  keyStorePath = "/var/secrets/android-keys";
-  signBuild = true;
+  # keyStorePath = "/var/secrets/android-keys";
+  # signBuild = true;
 
   # Build with ccache
   ccache.enable = true;

@@ -80,7 +80,8 @@ To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 ### Testing / CI / Reproducibility
 
 All devices (Pixel 1-3(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.
-See `test.nix` for the set of configurations with this minimal build testing.
+See `release.nix` for the set of configurations with this minimal build testing.
+This check is run using `nix-build ./release.nix -A check`.
 As each build takes approximately 4 hours--I only build marlin and crosshatch builds for myself.
 At some point, I would love to set up a build farm and publish build products on s3 or [cachix](https://cachix.org).
 This would allow an end-user to simply sign their own releases without building the entire AOSP themselves.

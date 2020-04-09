@@ -1,14 +1,21 @@
-with (import ./pkgs.nix {});
-symlinkJoin {
+# I use this to generate my own OTA directory served by nginx
+
+with (import ./pkgs {});
+let
+  common = {
+    keyStorePath = "/var/secrets/android-keys";
+    signBuild = true;
+  };
+in symlinkJoin {
   name = "robotnix-ota";
   paths = [
     (import ./default.nix { configuration={
-      imports = [./example.nix];
+      imports = [ common ./example.nix ];
       device = "marlin";
       flavor = "vanilla";
     }; }).otaDir
     (import ./default.nix { configuration={
-      imports = [./example.nix];
+      imports = [ common ./example.nix ];
       device = "crosshatch";
       flavor = "grapheneos";
     }; }).otaDir
