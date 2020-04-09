@@ -1,9 +1,8 @@
 (import ../default.nix {
   configuration = {
-    buildProduct = "sdk";
-    variant = "eng";
+    buildProduct = "sdk"; # Alternatives are sdk_arm64, sdk_x86_64, sdk_x86
+    variant = "userdebug";
     source.jsonFile = ./platform-tools-29.0.5.json; # TODO: 29.0.6 is out now
-    androidVersion = 11;
   };
 }).build.mkAndroid {
   name = "android-sdk";
