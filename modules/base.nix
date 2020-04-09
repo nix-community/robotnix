@@ -186,7 +186,9 @@ in
             else "${keyStorePath}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signBuild, use test keys from AOSP
           else "${keyStorePath}/${name}";
       keyPath = name: config.build._keyPath config.keyStorePath name;
-      sandboxKeyPath = name: config.build._keyPath "/keys" name;
+      sandboxKeyPath = name: (if config.signBuild
+        then config.build._keyPath "/keys" name
+        else config.build.keyPath name);
 
       x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
       fingerprints = name:
