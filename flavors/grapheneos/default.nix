@@ -14,11 +14,6 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
   source.manifest.rev = mkDefault "refs/tags/${grapheneOSRelease}";
 
-  kernel.useCustom = mkDefault true;
-  kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".contents;
-  kernel.configName = config.device;
-  kernel.relpath = "device/google/${config.device}-kernel";
-
   # No need to include these in AOSP build source since we build separately
   source.dirs."kernel/google/marlin".enable = false;
   source.dirs."kernel/google/wahoo".enable = false;
@@ -48,6 +43,12 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 }
+(mkIf (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) {
+  kernel.useCustom = mkDefault true;
+  kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".contents;
+  kernel.configName = config.device;
+  kernel.relpath = "device/google/${config.device}-kernel";
+})
 (mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
   # Hack for crosshatch/bonito since they use submodules and repo2nix doesn't support that yet.
   kernel.src = pkgs.fetchFromGitHub {
