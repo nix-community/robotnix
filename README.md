@@ -1,6 +1,6 @@
-# RobotNix - Building Android (AOSP) with Nix
+# robotnix - Building Android (AOSP) with Nix
 
-This project enables using [nix](https://nixos.org/nix/) to build (optionally customized) Android targeting Pixel devices.
+This project enables using [Nix](https://nixos.org/nix/) to build (optionally customized) Android targeting Pixel devices.
 Some features include:
  - A NixOS-style module system for customizing various aspects of the build
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader
@@ -18,7 +18,7 @@ Some optional nixos-style modules include:
  - Custom `/etc/hosts` file
  - Extracting vendor blobs from Google's images using [android-prepare-vendor](https://github.com/anestisb/android-prepare-vendor)
 
-Further goals include:
+Future goals include:
  - Better documentation, especially for module options
  - Continuous integration / testing for various devices
  - Automating CTS (Compatibility Test Suite) like nixos tests.
@@ -28,24 +28,28 @@ Further goals include:
 This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
 
 ## Build Instructions
-Here is a single command to build an `img` which can be flashed onto a device with `fastboot`.
+Here is a single command to build an `img` which can be flashed onto a device.
 ```console
 $ nix-build "https://github.com/danielfullmer/robotnix/archive/master.tar.gz" \
     --arg configuration '{ device="crosshatch"; flavor="vanilla"; }' \
     -A img
 ```
-This will build an image signed with `test-keys`, so definitely don't use this for anything real-world.
-Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP output is very large it will easily use all of your RAM (even if you have 32GB)!
+Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP intermediate builds products are very large will easily use all of your RAM (even if you have 32GB)!
+The command above will build an image signed with `test-keys`, so definitely don't use this for anything real-world.
+To flash the result to your device, run `fastboot update -w <img.zip>`.
 
 A configuration file should be created for anything more complicated, including creating signed builds.
 See my own configuration under `example.nix` for inspiration.
 After creating a configuration file, generate keys for your device:
 
+A full android 10 build takes about 4 hours on my i7-3770 with 16GB of memory.
+One may use the `--cores` option for `nix-build` to set the number of cores to use.
+
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
 $ mkdir keys/crosshatch
 $ cd keys/crosshatch
-$ ../generate-keys "/CN=RobotNix" # Use appropriate x509 cert fields
+$ ../../generate-keys "/CN=RobotNix" # Use appropriate x509 cert fields
 $ cd ../..
 ```
 
@@ -66,9 +70,6 @@ $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A img --option e
 This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 
-A full android 10 build takes about 4 hours on my i7-3770 with 16GB of memory.
-One may use the `--cores` option for `nix-build` to set the number of cores to use.
-
 ### Testing / CI / Reproducibility
 
 All devices (Pixel 1-3(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.
@@ -86,7 +87,9 @@ Further tests are needed for `img`/`ota` files.
 RobotNix supports two alternative approaches for fetching source files:
 
 - Build-time source fetching with `pkgs.fetchgit`. This is the default.
-  The end user will need to create a repo json file using `mk-repo-file.py` and update `source.jsonFile` to point to this file.
+  An end user wanting to fetch sources not already included in `robotnix` would
+  need to create a repo json file using `mk-repo-file.py` and update
+  `source.jsonFile` to point to this file.
 - Evaluation-time source fetching with `builtins.fetchGit`.
   This is more convenient for development when changing branches, as it allows use of a shared git cache.
   The end user will need to set `source.manifest.{url,rev,sha256}` and enable `source.evalTimeFetching`.
@@ -105,4 +108,4 @@ As root:
 Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as a sandbox exception when building.
 
 ## Notable mentions
-See also: [RattlesnakeOS](https://github.com/dan-v/rattlesnakeos-stack), [aosp-build](https://github.com/hashbang/aosp-build), and [CalyxOS](https://calyxos.org/)
+See also: [NixDroid](https://github.com/ajs124/NixDroid), [RattlesnakeOS](https://github.com/dan-v/rattlesnakeos-stack), [aosp-build](https://github.com/hashbang/aosp-build), and [CalyxOS](https://calyxos.org/)
