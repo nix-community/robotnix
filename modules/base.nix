@@ -442,12 +442,12 @@ in
           schedtool
           utillinux
           which
-        ] ++ optionals (config.androidVersion >= 10)
-        [
+        ] ++ optionals (config.androidVersion >= 10) [
           freetype # Needed by jdk9 prebuilt
           fontconfig
 
           python3
+          python2 # device/generic/goldfish/tools/mk_combined_img.py still needs py2 :(
         ];
         multiPkgs = pkgs: with pkgs; [ zlib ];
       };
