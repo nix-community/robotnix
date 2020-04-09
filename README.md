@@ -34,8 +34,8 @@ $ nix-build "https://github.com/danielfullmer/robotnix/archive/master.tar.gz" \
     --arg configuration '{ device="crosshatch"; flavor="vanilla"; }' \
     -A img
 ```
-Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP intermediate builds products are very large will easily use all of your RAM (even if you have 32GB)!
-The command above will build an image signed with `test-keys`, so definitely don't use this for anything real-world.
+Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP intermediate builds products are very large and will easily use all of your RAM (even if you have 32GB)!
+The command above will build an image signed with `test-keys`, so definitely don't use this for anything intended to be secure.
 To flash the result to your device, run `fastboot update -w <img.zip>`.
 
 A full Android 10 build takes about 4 hours on my quad-core i7-3770 with 16GB of memory.
