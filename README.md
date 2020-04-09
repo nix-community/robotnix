@@ -27,7 +27,7 @@ Future goals include:
  
 This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
 
-## Build Instructions
+## Quick Start
 Here is a single command to build an `img` which can be flashed onto a device.
 ```console
 $ nix-build "https://github.com/danielfullmer/robotnix/archive/master.tar.gz" \
@@ -38,12 +38,19 @@ Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP intermediate bui
 The command above will build an image signed with `test-keys`, so definitely don't use this for anything real-world.
 To flash the result to your device, run `fastboot update -w <img.zip>`.
 
+A full Android 10 build takes about 4 hours on my quad-core i7-3770 with 16GB of memory.
+The default `vanilla` flavor also builds `chromium` from source for use as the system webview.
+This takes approximately 6 hours on my i7-3770.
+I have recently upgraded to a 3970x Threadripper with 32-cores.
+This can build chromium+android in under an hour.
+A user can use `--cores` option for `nix-build` to set the number of cores to
+use, which can also be useful to decrease parallelism in case memory usage of
+certain build steps is too large.
+
+## Configuration and Build Options
 A configuration file should be created for anything more complicated, including creating signed builds.
 See my own configuration under `example.nix` for inspiration.
 After creating a configuration file, generate keys for your device:
-
-A full android 10 build takes about 4 hours on my i7-3770 with 16GB of memory.
-One may use the `--cores` option for `nix-build` to set the number of cores to use.
 
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
