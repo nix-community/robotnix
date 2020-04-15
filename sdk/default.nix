@@ -2,7 +2,7 @@
   configuration = {
     buildProduct = "sdk"; # Alternatives are sdk_arm64, sdk_x86_64, sdk_x86
     variant = "userdebug";
-    source.jsonFile = ./platform-tools-29.0.5.json; # TODO: 29.0.6 is out now
+    source.jsonFile = ../flavors/vanilla/android-10.0.0_r33.json;
   };
 }).build.mkAndroid {
   name = "android-sdk";

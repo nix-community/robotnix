@@ -139,7 +139,11 @@ in
 
     dirs = mapAttrs' (name: p:
       nameValuePair p.relpath {
-        enable = mkDefault ((any (g: elem g p.groups) config.source.includeGroups) || (!(any (g: elem g p.groups) config.source.excludeGroups)));
+        enable = mkDefault (
+          if (p ? groups)
+          then (any (g: elem g p.groups) config.source.includeGroups) || (!(any (g: elem g p.groups) config.source.excludeGroups))
+          else true
+          );
         contents = mkDefault (projectSource p);
       }) json;
 
@@ -149,14 +153,14 @@ in
         ${pkgs.utillinux}/bin/mount --bind ${d.patchedContents} ${d.path}
       '') (attrValues config.source.dirs))) +
       (concatStringsSep "" (mapAttrsToList (name: p: optionalString config.source.dirs.${p.relpath}.enable
-        ((concatMapStringsSep "\n" (c: ''
+        ((optionalString (p ? copyfiles) (concatMapStringsSep "\n" (c: ''
             mkdir -p $(dirname ${c.dest})
             cp --reflink=auto -f ${p.relpath}/${c.src} ${c.dest}
-          '') p.copyfiles) +
-        (concatMapStringsSep "\n" (c: ''
+          '') p.copyfiles)) +
+        (optionalString (p ? linkfiles) (concatMapStringsSep "\n" (c: ''
             mkdir -p $(dirname ${c.dest})
-            ln -sf ./${c.src_rel_to_dest} ${c.dest}
-          '') p.linkfiles))
+            ln -sf --relative ${p.relpath}/${c.src} ${c.dest}
+          '') p.linkfiles)))
       ) json)));
   };
 
