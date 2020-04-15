@@ -4,6 +4,8 @@ let
   robotnix = configuration: import ./default.nix { inherit configuration; };
 
   configs = (lib.listToAttrs (builtins.map (c: lib.nameValuePair "${c.flavor}-${c.device}" c) [
+    { device="x86";        flavor="vanilla"; }
+    { device="arm64";      flavor="vanilla"; }
     { device="marlin";     flavor="vanilla"; }
     { device="sailfish";   flavor="vanilla"; }
     { device="taimen";     flavor="vanilla"; }
@@ -14,15 +16,14 @@ let
     { device="sargo";      flavor="vanilla"; }
     #"coral" "flame" # No android-prepare-vendor yet
 
+    { device="x86";        flavor="grapheneos"; }
+    { device="arm64";      flavor="grapheneos"; }
     { device="taimen";     flavor="grapheneos"; }
     { device="walleye";    flavor="grapheneos"; }
     { device="crosshatch"; flavor="grapheneos"; }
     { device="blueline";   flavor="grapheneos"; }
     { device="bonito";     flavor="grapheneos"; }
     { device="sargo";      flavor="grapheneos"; }
-
-    { device="x86";        flavor="vanilla"; }
-    { device="x86";        flavor="grapheneos"; }
   ])) // {
     danielfullmer = { # My personal config
       device="crosshatch";

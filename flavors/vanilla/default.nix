@@ -47,7 +47,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
 }
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" "coral" ]) || (config.device == "x86")) {
+(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" "coral" "generic"])) {
   vendor.buildID = mkDefault "QQ2A.200405.005";
   source.manifest.rev = mkDefault "android-10.0.0_r33";
 
