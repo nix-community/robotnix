@@ -10,7 +10,7 @@
 , buildTargets ? [ "chrome_modern_public_apk" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
-, version ? "80.0.3987.162"
+, version ? "81.0.4044.96"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_apk + system_webview_apk
@@ -70,6 +70,10 @@ let
     # enable support for the H.264 codec
     proprietary_codecs = true;
     ffmpeg_branding = "Chrome";
+
+    # Only include minimal symbols to save space
+    symbol_level = 1;
+    blink_symbol_level = 1;
 
     # explicit host_cpu and target_cpu prevent "nix-shell pkgsi686Linux.chromium-git" from building x86_64 version
     # there is no problem with nix-build, but platform detection in nix-shell is not correct
