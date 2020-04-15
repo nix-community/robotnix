@@ -3,19 +3,6 @@
 with lib;
 let
   boolToString = b: if b then "true" else "false";
-  config_webview_packages = pkgs.writeText "config_webview_packages.xml" (''
-    <?xml version="1.0" encoding="utf-8"?>
-    <webviewproviders>
-  '' +
-  (lib.concatMapStringsSep "\n"
-    (m: lib.optionalString m.enable
-      "<webviewprovider description=\"${m.description}\" packageName=\"${m.packageName}\" availableByDefault=\"${boolToString m.availableByDefault}\" isFallback=\"${boolToString m.isFallback}\"></webviewprovider>")
-    (attrValues config.webview)
-  ) +
-  ''
-
-    </webviewproviders>
-  '');
 in
 {
   options = {
@@ -80,9 +67,23 @@ in
       '';
     }) (filterAttrs (name: m: m.enable) config.webview);
 
-    # TODO: Replace this with something in the overlay. TODO only enable if there are enabled webviews
-    source.dirs."frameworks/base".postPatch = ''
-      cp --no-preserve=all -v ${config_webview_packages} core/res/res/xml/config_webview_packages.xml
-    '';
+    product.extraConfig = "PRODUCT_PACKAGE_OVERLAYS += robotnix/webview-overlay";
+
+    source.dirs."robotnix/webview-overlay".contents = pkgs.writeTextFile {
+      name = "config_webview_packages.xml";
+      text =  ''
+        <?xml version="1.0" encoding="utf-8"?>
+        <webviewproviders>
+      '' +
+      (lib.concatMapStringsSep "\n"
+        (m: lib.optionalString m.enable
+          "<webviewprovider description=\"${m.description}\" packageName=\"${m.packageName}\" availableByDefault=\"${boolToString m.availableByDefault}\" isFallback=\"${boolToString m.isFallback}\"></webviewprovider>")
+        (attrValues config.webview)
+      ) +
+      ''
+        </webviewproviders>
+      '';
+      destination = "/frameworks/base/core/res/res/xml/config_webview_packages.xml";
+    };
   };
 }
