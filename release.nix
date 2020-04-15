@@ -24,16 +24,7 @@ let
     { device="blueline";   flavor="grapheneos"; }
     { device="bonito";     flavor="grapheneos"; }
     { device="sargo";      flavor="grapheneos"; }
-  ])) // {
-    danielfullmer = { # My personal config
-      device="crosshatch";
-      flavor="grapheneos";
-      imports = [ ./example.nix ];
-      # TODO: This will only evaluate on my computer...
-      keyStorePath = "/var/secrets/android-keys";
-      signBuild = true;
-    };
-  };
+  ]));
 in
 {
   inherit (pkgs) diffoscope;
