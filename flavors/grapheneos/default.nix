@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.vendor.buildID}.2020.04.07.10";
+  grapheneOSRelease = "${config.vendor.buildID}.2020.04.14.23";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
-  buildNumber = mkDefault "2020.04.07.13";
-  buildDateTime = mkDefault 1586279715;
+  buildNumber = mkDefault "2020.04.15.12";
+  buildDateTime = mkDefault 1586969927;
   vendor.buildID = mkDefault "QQ2A.200405.005";
 
   source.jsonFile = ./. + "/${grapheneOSRelease}.json";
