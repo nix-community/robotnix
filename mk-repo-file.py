@@ -20,6 +20,7 @@ REPO_FLAGS = [
 AOSP_BASEURL = "https://android.googlesource.com"
 
 revHashes: Dict[str, str] = {}
+revTrees: Dict[str, str] = {}
 treeHashes: Dict[str, str] = {}
 
 def save(filename, data):
@@ -41,10 +42,16 @@ def make_repo_file(url: str, rev: str, filename: str, mirror: Optional[str]=None
             open(filename, 'w').write(json_text)
             data = json.loads(json_text)
 
-    for name, p in data.items():
+    for relpath, p in data.items():
         if 'sha256' not in p:
             print("Fetching information for %s %s" % (p['url'], p['rev']))
             # Used cached copies if available
+            if p['rev'] in revHashes:
+                p['sha256'] = revHashes[p['rev']]
+                if p['rev'] in revTrees:
+                    p['tree'] = revTrees[p['rev']]
+                continue
+
             if mirror and p['url'].startswith(AOSP_BASEURL):
                 p_url = p['url'].replace(AOSP_BASEURL, mirror)
                 p['tree'] = subprocess.check_output(['git', 'log','-1', '--pretty=%T', p['rev']], cwd=p_url+'.git').decode().strip()
@@ -53,10 +60,6 @@ def make_repo_file(url: str, rev: str, filename: str, mirror: Optional[str]=None
                     continue
             else:
                 p_url = p['url']
-
-            if p['rev'] in revHashes:
-                p['sha256'] = revHashes[p['rev']]
-                continue
 
             # Grab 
             git_info = checkout_git(p_url, p['rev'])
@@ -89,6 +92,7 @@ def main():
                 revHashes[p['rev']] = p['sha256']
                 if 'tree' in p:
                     treeHashes[p['tree']] = p['sha256']
+                    revTrees[p['rev']] = p['tree']
 
     make_repo_file(args.url, args.rev, args.rev + '.json', mirror=args.mirror)
 
