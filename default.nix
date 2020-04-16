@@ -33,7 +33,6 @@ in
     ./modules/keys.nix
     ./modules/microg.nix
     ./modules/pixel
-    ./modules/prebuilts.nix
     ./modules/release.nix
     ./modules/resources.nix
     ./modules/source.nix
