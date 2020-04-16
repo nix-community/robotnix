@@ -36,7 +36,7 @@ let
     runtime.network.latency = "none";
     runtime.network.speed = "full";
     vm.heapSize = 512;
-    tag.display = "RobotNix";
+    tag.display = "Robotnix";
     # Set some
     hw.lcd.density = 440;
     hw.lcd.height = 1920;

@@ -1,7 +1,7 @@
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
 { callPackage, lib, substituteAll, fetchFromGitHub, buildGradle, androidPkgs, jdk, gradle,
   domain ? "example.org",
-  applicationName ? "RobotNix Auditor",
+  applicationName ? "Robotnix Auditor",
   applicationId ? "org.robotnix.auditor",
   signatureFingerprint ? "", # Signature that this app will be signed by.
   deviceFamily ? "",

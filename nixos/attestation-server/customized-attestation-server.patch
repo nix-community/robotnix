@@ -256,7 +256,7 @@ index 3fecefd..31b127a 100644
      private static final String OS_STOCK = "Stock";
      private static final String OS_GRAPHENE = "GrapheneOS";
      private static final String OS_CALYX = "CalyxOS";
-+    private static final String OS_ROBOTNIX = "RobotNix";
++    private static final String OS_ROBOTNIX = "Robotnix";
  
      static class DeviceInfo {
          final String name;
@@ -264,7 +264,7 @@ index 3fecefd..31b127a 100644
                      new DeviceInfo(DEVICE_PIXEL_2_GENERIC, 2, 3, true, true, OS_CALYX))
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_CALYX))
-+            // RobotNix (TODO: support multiple devices. Needs different key for each device?)
++            // Robotnix (TODO: support multiple devices. Needs different key for each device?)
 +            .put("@taimen_avbFingerprint@",
 +                    new DeviceInfo(DEVICE_PIXEL_2_GENERIC, 2, 3, true, true, OS_ROBOTNIX))
 +            .put("@crosshatch_avbFingerprint@",
@@ -276,7 +276,7 @@ index 3fecefd..31b127a 100644
              // CalyxOS
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_CALYX))
-+            // RobotNix
++            // Robotnix
 +            .put("@crosshatch_avbFingerprint@",
 +                    new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
              .build();

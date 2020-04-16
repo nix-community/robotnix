@@ -56,7 +56,7 @@ After creating a configuration file, generate keys for your device:
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
 $ mkdir keys/crosshatch
 $ cd keys/crosshatch
-$ ../../generate-keys "/CN=RobotNix" # Use appropriate x509 cert fields
+$ ../../generate-keys "/CN=Robotnix" # Use appropriate x509 cert fields
 $ cd ../..
 ```
 
@@ -99,7 +99,7 @@ $ ./result
 
 ### Fetching android source files
 
-RobotNix supports two alternative approaches for fetching source files:
+Robotnix supports two alternative approaches for fetching source files:
 
 - Build-time source fetching with `pkgs.fetchgit`. This is the default.
   An end user wanting to fetch sources not already included in `robotnix` would
