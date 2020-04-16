@@ -111,7 +111,7 @@ in
     })
     (mkIf (cfg.fi.enable && (config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
       # TODO: Hack. Make better
-      source.dirs."robotnix/esimhack".contents = let
+      source.dirs."robotnix/esimhack".src = let
       in pkgs.runCommand "esim-hack" {} ''
         mkdir -p $out
         cp ${productPath}/priv-app/EuiccSupportPixel/esim-full-v0.img $out/

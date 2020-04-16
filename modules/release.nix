@@ -85,7 +85,7 @@ let
       export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
       export PATH=${getBin pkgs.zip}/bin:${getBin pkgs.unzip}/bin:$PATH
-      ${pkgs.runtimeShell} ${config.source.dirs."device/common".contents}/generate-factory-images-common.sh
+      ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
       mv $PRODUCT-$VERSION-factory-*.zip ${out}
   '';
 

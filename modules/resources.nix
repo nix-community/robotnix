@@ -33,7 +33,7 @@ in
     # TODO: Should some of these be in system?
     product.extraConfig = "PRODUCT_PACKAGE_OVERLAYS += robotnix/overlay";
 
-    source.dirs."robotnix/overlay".contents = (pkgs.symlinkJoin {
+    source.dirs."robotnix/overlay".src = (pkgs.symlinkJoin {
       name = "robotnix-overlay";
       paths = mapAttrsToList (relativePath: packageResources: (pkgs.writeTextFile {
         name = "${replaceStrings ["/"] ["="] relativePath}-resources";

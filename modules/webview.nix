@@ -69,7 +69,7 @@ in
 
     product.extraConfig = "PRODUCT_PACKAGE_OVERLAYS += robotnix/webview-overlay";
 
-    source.dirs."robotnix/webview-overlay".contents = pkgs.writeTextFile {
+    source.dirs."robotnix/webview-overlay".src = pkgs.writeTextFile {
       name = "config_webview_packages.xml";
       text =  ''
         <?xml version="1.0" encoding="utf-8"?>

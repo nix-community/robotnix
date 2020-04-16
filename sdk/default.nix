@@ -2,7 +2,7 @@
   configuration = {
     buildProduct = "sdk"; # Alternatives are sdk_arm64, sdk_x86_64, sdk_x86
     variant = "userdebug";
-    source.jsonFile = ../flavors/vanilla/android-10.0.0_r33.json;
+    source.dirs = builtins.fromJSON (builtins.readFile ../flavors/vanilla/android-10.0.0_r33.json);
   };
 }).build.mkAndroid {
   name = "android-sdk";

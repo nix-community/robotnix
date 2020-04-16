@@ -9,15 +9,16 @@ let
   };
 in mkIf (config.flavor == "vanilla") (mkMerge [
 {
-  source.jsonFile = ./. + "/${config.source.manifest.rev}.json";
+  source.dirs = lib.importJSON (./. + "/${config.source.manifest.rev}.json");
   # Not strictly necessary for me to set this, since I override the jsonFile
   source.manifest.url = mkDefault "https://android.googlesource.com/platform/manifest";
-
+}
+{
   ### AOSP usability improvements ###
 
   # This is the prebuilt webview apk from AOSP. It is very old and not enabled by default.
   # Enable using webview.prebuild.enable = true;
-  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".contents + "/prebuilt/${config.arch}/webview.apk";
+  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
 
   # Instead, we build our own chromium and webview

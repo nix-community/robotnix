@@ -4,7 +4,7 @@ let
     configuration = {
       buildProduct = "sdk";
       variant = "eng";
-      source.jsonFile = ../flavors/vanilla/android-10.0.0_r33.json;
+      source.dirs = builtins.fromJSON (builtins.readFile ../flavors/vanilla/android-10.0.0_r33.json);
     };
   }).build.mkAndroid {
     name = "adb";

@@ -54,7 +54,7 @@ in
   };
 
   config = {
-    source.dirs."robotnix/framework".contents = (pkgs.runCommand "robotnix-framework" {} (''
+    source.dirs."robotnix/framework".src = (pkgs.runCommand "robotnix-framework" {} (''
       mkdir -p $out
       cp ${androidmk} $out/Android.mk
     '' + (concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (attrValues config.framework))));

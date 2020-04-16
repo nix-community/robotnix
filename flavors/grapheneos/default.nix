@@ -8,12 +8,13 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   buildDateTime = mkDefault 1586969927;
   vendor.buildID = mkDefault "QQ2A.200405.005";
 
-  source.jsonFile = ./. + "/${grapheneOSRelease}.json";
+  source.dirs = lib.importJSON (./. + "/${grapheneOSRelease}.json");
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
   source.manifest.rev = mkDefault "refs/tags/${grapheneOSRelease}";
-
+}
+{
   # No need to include these in AOSP build source since we build separately
   source.dirs."kernel/google/marlin".enable = false;
   source.dirs."kernel/google/wahoo".enable = false;
@@ -45,7 +46,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 }
 (mkIf (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) {
   kernel.useCustom = mkDefault true;
-  kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".contents;
+  kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
   kernel.configName = config.device;
   kernel.relpath = "device/google/${config.device}-kernel";
 })

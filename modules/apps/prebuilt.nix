@@ -150,7 +150,7 @@ in
     source.dirs = listToAttrs (map (prebuilt: {
       name = "robotnix/prebuilt/${prebuilt.name}";
       value = {
-        contents = let
+        src = let
           # Don't use the signed version if it's an apk that is going to get signed when signing target-files.
           apk = if builtins.elem prebuilt.certificate deviceCertificates
                 then prebuilt.apk

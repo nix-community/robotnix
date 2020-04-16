@@ -60,7 +60,7 @@ in
 
     # TODO: Put this under product/
     source.dirs."robotnix/apps/F-DroidPrivilegedExtension" = {
-      contents = privext;
+      src = privext;
       patches = [
         (pkgs.substituteAll {
           src = ./fdroid-privext.patch;

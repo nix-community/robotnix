@@ -24,7 +24,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    source.dirs."robotnix/apps/Updater".contents = src;
+    source.dirs."robotnix/apps/Updater".src = src;
 
     # It's currently a system package in upstream
     system.additionalProductPackages = [ "Updater" ];

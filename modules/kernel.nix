@@ -5,7 +5,7 @@ let
   cfg = config.kernel;
   prebuiltGCC = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc";
-    src = config.source.dirs."prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9".contents;
+    src = config.source.dirs."prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9".src;
     buildInputs = with pkgs; [ python autoPatchelfHook ];
     installPhase = ''
       cp -r . $out
@@ -13,7 +13,7 @@ let
   };
   prebuiltGCCarm32 = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc-arm32";
-    src = config.source.dirs."prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9".contents;
+    src = config.source.dirs."prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9".src;
     buildInputs = with pkgs; [ python autoPatchelfHook ];
     installPhase = ''
       cp -r . $out
@@ -21,7 +21,7 @@ let
   };
   prebuiltClang = pkgs.stdenv.mkDerivation {
     name = "prebuilt-clang";
-    src = config.source.dirs."prebuilts/clang/host/linux-x86".contents + "/clang-${cfg.clangVersion}";
+    src = config.source.dirs."prebuilts/clang/host/linux-x86".src + "/clang-${cfg.clangVersion}";
     buildInputs = with pkgs; [ python autoPatchelfHook zlib ncurses5 libedit stdenv.cc.cc.lib ]; # Include cc.lib for libstdc++.so.6
     installPhase = ''
       cp -r . $out
@@ -30,7 +30,7 @@ let
   };
   prebuiltMisc = pkgs.stdenv.mkDerivation {
     name = "prebuilt-misc";
-    src = config.source.dirs."prebuilts/misc".contents;
+    src = config.source.dirs."prebuilts/misc".src;
     buildInputs = with pkgs; [ python autoPatchelfHook ];
     installPhase = ''
       mkdir -p $out/bin

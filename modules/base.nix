@@ -155,7 +155,7 @@ in
     # even if we aren't signing. Set test-keys in that case. This is not an
     # unconditional default because we want the user to be forced to set
     # keyStorePath themselves if they select signBuild.
-    keyStorePath = mkIf (!config.signBuild) (mkDefault (config.source.dirs."build/make".contents + /target/product/security));
+    keyStorePath = mkIf (!config.signBuild) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
 
     system.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.system.additionalProductPackages;
     product.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.product.additionalProductPackages;
@@ -172,7 +172,7 @@ in
       echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/core.mk
     '');
 
-    source.dirs."robotnix/config".contents = let
+    source.dirs."robotnix/config".src = let
       systemMk = pkgs.writeTextFile { name = "system.mk"; text = config.system.extraConfig; };
       productMk = pkgs.writeTextFile { name = "product.mk"; text = config.product.extraConfig; };
     in
@@ -326,12 +326,12 @@ in
         postPatch = ''
           # Replace some python binaries with the original python files.
           # The soong-compiled versions all have "Failed to import the site module" error
-          cp ${config.source.dirs."external/avb".contents}/avbtool bin/avbtool
-          cp ${config.source.dirs."system/core".contents}/mkbootimg/mkbootimg.py bin/mkbootimg
-          cp ${config.source.dirs."system/extras".contents}/ext4_utils/mkuserimg_mke2fs.py bin/mkuserimg_mke2fs
-          cp ${config.source.dirs."bootable/recovery".contents}/update_verifier/care_map_generator.py bin/care_map_generator
-          protoc --python_out=bin/ -I ${config.source.dirs."bootable/recovery".contents}/update_verifier \
-            ${config.source.dirs."bootable/recovery".contents}/update_verifier/care_map.proto
+          cp ${config.source.dirs."external/avb".src}/avbtool bin/avbtool
+          cp ${config.source.dirs."system/core".src}/mkbootimg/mkbootimg.py bin/mkbootimg
+          cp ${config.source.dirs."system/extras".src}/ext4_utils/mkuserimg_mke2fs.py bin/mkuserimg_mke2fs
+          cp ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map_generator.py bin/care_map_generator
+          protoc --python_out=bin/ -I ${config.source.dirs."bootable/recovery".src}/update_verifier \
+            ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map.proto
 
           for name in boot_signer verity_signer; do
             substituteInPlace bin/$name --replace java ${lib.getBin pkgs.jre8_headless}/bin/java
