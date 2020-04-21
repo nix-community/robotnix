@@ -25,6 +25,8 @@ let
     { device="bonito";     flavor="grapheneos"; }
     { device="sargo";      flavor="grapheneos"; }
   ]));
+
+  defaultBuild = (robotnix { device="arm64"; flavor="vanilla"; });
 in
 {
   inherit (pkgs) diffoscope;
@@ -33,6 +35,10 @@ in
   # "build" for a total estimated checking time of about an hour if run
   # sequentially
   check = lib.mapAttrs (name: c: (robotnix c).build.checkAndroid) configs;
+
+  vanilla-arm64-generateKeysScript = defaultBuild.generateKeysScript;
+  vanilla-arm64-ota = defaultBuild.ota;
+  vanilla-arm64-factoryImg = defaultBuild.factoryImg;
 
   sdk = import ./sdk;
 
