@@ -6,10 +6,10 @@ let
   keyTools = pkgs.runCommandCC "android-key-tools" { buildInputs = [ pkgs.python ]; } ''
     mkdir -p $out/bin
 
-    cp ${config.source.dirs."development".contents}/tools/make_key $out/bin/make_key
+    cp ${config.source.dirs."development".src}/tools/make_key $out/bin/make_key
     substituteInPlace $out/bin/make_key --replace openssl ${getBin pkgs.openssl}/bin/openssl
 
-    cp ${config.source.dirs."external/avb".contents}/avbtool $out/bin/avbtool
+    cp ${config.source.dirs."external/avb".src}/avbtool $out/bin/avbtool
 
     patchShebangs $out/bin
   '';
