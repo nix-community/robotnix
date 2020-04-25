@@ -1,6 +1,6 @@
 # robotnix - Building Android (AOSP) with Nix
 
-This project enables using [Nix](https://nixos.org/nix/) to build (optionally customized) Android targeting Pixel devices.
+This project enables using [Nix](https://nixos.org/nix/) to build (optionally customized) Android targeting Pixel 1-3a (XL) devices.
 Some features include:
  - A NixOS-style module system for customizing various aspects of the build
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader
@@ -10,7 +10,7 @@ Some features include:
 Some optional nixos-style modules include:
  - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Backup](https://github.com/stevesoltys/backup)
  - Browser / Webview: [Chromium](https://www.chromium.org/Home), [Bromite](https://www.bromite.org/), [Vanadium](https://github.com/GrapheneOS/Vanadium)
- - [Automated OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
+ - [Seamless OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
  - [MicroG](https://microg.org/)
  - Certain google apps (currently just stuff for Google Fi)
  - Easily setting various framework configuration settings such as those found [here](https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/values/config.xml)
@@ -34,18 +34,24 @@ $ nix-build "https://github.com/danielfullmer/robotnix/archive/master.tar.gz" \
     --arg configuration '{ device="crosshatch"; flavor="vanilla"; }' \
     -A img
 ```
-Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP intermediate builds products are very large and will easily use all of your RAM (even if you have 32GB)!
 The command above will build an image signed with `test-keys`, so definitely don't use this for anything intended to be secure.
 To flash the result to your device, run `fastboot update -w <img.zip>`.
 
+## Requirements
+A typical build for `robotnix` requires approximately 40GB free disk space to check out the for android source, plus an additional 14GB for chromium.
+The AOSP project requires at least 16GB RAM to build.
+Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP intermediate builds products are very large and will easily use all of your RAM (even if you have 32GB)!
+A user can use the `--cores` option for `nix-build` to set the number of cores to
+use, which can also be useful to decrease parallelism in case memory usage of
+certain build steps is too large.
+
 A full Android 10 build takes about 4 hours on my quad-core i7-3770 with 16GB of memory.
-The default `vanilla` flavor also builds `chromium` from source for use as the system webview.
+The included `vanilla` and `grapheneos` flavors also build `chromium` (or `vanadium`) from source for use as the system webview.
 This takes approximately 6 hours on my i7-3770.
 I have recently upgraded to a 3970x Threadripper with 32-cores.
 This can build chromium+android in under an hour.
-A user can use `--cores` option for `nix-build` to set the number of cores to
-use, which can also be useful to decrease parallelism in case memory usage of
-certain build steps is too large.
+
+
 
 ## Configuration and Build Options
 A configuration file should be created for anything more complicated, including creating signed builds.
@@ -86,8 +92,12 @@ As each build takes approximately 4 hours--I only build marlin and crosshatch bu
 At some point, I would love to set up a build farm and publish build products on s3 or [cachix](https://cachix.org).
 This would allow an end-user to simply sign their own releases without building the entire AOSP themselves.
 
-As of Android 10, `target-files` seem to be built reproducibly.
-Further tests are needed for `img`/`ota` files.
+As of Android 10, `target-files`, `img`, and `ota` files all seem to be built reproducibly.
+Automated testing of this is still desired.
+There are a few places where user-specific public keys are included into the build for key pinning.
+This unfortunately decreases the of sharing build products between users.
+The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
+Fixes for this are still under investigation.
 
 ### Emulator
 
