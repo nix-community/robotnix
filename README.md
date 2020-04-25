@@ -1,13 +1,12 @@
 # robotnix - Building Android (AOSP) with Nix
 
-This project enables using [Nix](https://nixos.org/nix/) to build (optionally customized) Android targeting Pixel 1-3a (XL) devices.
-Some features include:
- - A NixOS-style module system for customizing various aspects of the build
- - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader
- - Android 10 support
- - [GrapheneOS](https://grapheneos.org/) support
+This project enables using [Nix](https://nixos.org/nix/) to build Android ROMS, currently targeting Pixel 1-3a (XL) devices.
+Robotnix uses a NixOS-style module system for customizing various aspects of the build.
  
-Some optional nixos-style modules include:
+Some optional modules include:
+ - Vanilla Android 10 AOSP support
+ - [GrapheneOS](https://grapheneos.org/) support
+ - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader with a user-specified key
  - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Backup](https://github.com/stevesoltys/backup)
  - Browser / Webview: [Chromium](https://www.chromium.org/Home), [Bromite](https://www.bromite.org/), [Vanadium](https://github.com/GrapheneOS/Vanadium)
  - [Seamless OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
