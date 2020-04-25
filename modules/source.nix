@@ -223,10 +223,10 @@ in
   config.build.debugUnpackScript = pkgs.writeText "debug-unpack.sh" (''
     rm -rf robotnix
     '' +
-    (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "robotnix/" d.path)) ''
-      mkdir -p $(dirname ${d.path})
-      echo "${d.patchedContents} -> ${d.path}"
-      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.patchedContents} ${d.path}/
+    (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "robotnix/" d.relpath)) ''
+      mkdir -p $(dirname ${d.relpath})
+      echo "${d.patchedContents} -> ${d.relpath}"
+      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.patchedContents} ${d.relpath}/
     '') (attrValues config.source.dirs))) + ''
     chmod -R u+w robotnix/
   '');
@@ -234,9 +234,9 @@ in
   # Patch files in other sources besides robotnix/*
   config.build.debugPatchScript = pkgs.writeText "debug-patch.sh"
     (concatStringsSep "\n" (map (d: ''
-      ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.path} < ${p}") d.patches}
+      ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
       ${optionalString (d.postPatch != "") ''
-      pushd ${d.path} >/dev/null
+      pushd ${d.relpath} >/dev/null
       ${d.postPatch}
       popd >/dev/null
       ''}
