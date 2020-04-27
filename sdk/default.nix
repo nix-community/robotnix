@@ -1,8 +1,9 @@
 (import ../default.nix {
   configuration = {
     buildProduct = "sdk"; # Alternatives are sdk_arm64, sdk_x86_64, sdk_x86
-    variant = "userdebug";
+    variant = "eng";
     source.dirs = builtins.fromJSON (builtins.readFile ../flavors/vanilla/android-10.0.0_r33.json);
+    buildNumber = "eng.10.0.0_r33";
   };
 }).build.mkAndroid {
   name = "android-sdk";
@@ -13,7 +14,7 @@
   '';
 }
 
-## TODO: Unify with checkAndroid abovee
+## TODO: Unify with checkAndroid above
 #checkSdk = mkAndroid {
 #  name = "robotnix-check-${config.buildProduct}-${config.buildNumber}";
 #  makeTargets = [ "sdk" ];
