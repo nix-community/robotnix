@@ -163,7 +163,7 @@ in
       };
     }) (attrValues cfg));
 
-    # TODO: Make just a single file with each of these tconfiguration types instead of one for each app?
+    # TODO: Make just a single file with each of these configuration types instead of one for each app?
     etc = let
       confToAttrs = f:
         (listToAttrs (map (prebuilt: {

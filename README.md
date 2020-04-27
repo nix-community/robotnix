@@ -1,6 +1,6 @@
 # robotnix - Building Android (AOSP) with Nix
 
-This project enables using [Nix](https://nixos.org/nix/) to build Android ROMS, currently targeting Pixel 1-3a (XL) devices.
+This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs, currently targeting Pixel 1-3a (XL) devices.
 Robotnix uses a NixOS-style module system for customizing various aspects of the build.
  
 Some optional modules include:
@@ -67,7 +67,7 @@ $ cd ../..
 
 Next, build and sign your release.
 There are two ways to do this.
-The first option involves creating a `build-script` which does the final build steps of signing target files and creating ota/img files outside of nix:
+The first option involves creating a "release script" which does the final build steps of signing target files and creating ota/img files outside of nix:
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A releaseScript -o release
 $ ./release ./keys/crosshatch
