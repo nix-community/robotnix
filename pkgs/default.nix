@@ -2,9 +2,9 @@
 
 let
   nixpkgs = builtins.fetchTarball {
-    # nixos-19.09 channel. Latest as of 2019-11-11
-    url = "https://github.com/nixos/nixpkgs/archive/2d896998dc9b1b0daeb8a180dc170733f1225678.tar.gz";
-    sha256 = "1vj3bwljkh55si4qjx52zgw7nfy6mnf324xf1l2i5qffxlh7qxb6";
+    # nixos-20.03 channel. Latest as of 2020-05-03
+    url = "https://github.com/nixos/nixpkgs/archive/ab3adfe1c769c22b6629e59ea0ef88ec8ee4563f.tar.gz";
+    sha256 = "1m4wvrrcvif198ssqbdw897c8h84l0cy7q75lyfzdsz9khm1y2n1";
   };
 
   overlay = self: super: {

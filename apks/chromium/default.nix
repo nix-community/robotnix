@@ -131,7 +131,7 @@ in stdenvNoCC.mkDerivation rec {
     ];
   buildInputs = [
     dbus at-spi2-atk atk at-spi2-core nspr nss pciutils utillinux kerberos
-    gdk-pixbuf glib gtk3 alsaLib libXScrnSaver libXcursor libXtst libGLU_combined libXdamage
+    gdk-pixbuf glib gtk3 alsaLib libXScrnSaver libXcursor libXtst libXdamage
   ];
 
   # TODO: Much of the nixos-specific stuff could probably be made conditional

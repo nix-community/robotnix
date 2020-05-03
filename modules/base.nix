@@ -421,7 +421,7 @@ in
           lsof
           m4
           ncurses5
-          openssl_1_0_2.dev
+          openssl # Used in avbtool
           psmisc # for "fuser", "pstree"
           rsync
           unzip
@@ -434,6 +434,7 @@ in
           # stuff that was in the earlier buildenv. Not entirely sure everything here is necessary
           (androidPkgs.sdk (p: with p.stable; [ tools platform-tools ]))
           #androidsdk_9_0
+          #openssl_1_0_2.dev
           bison
           curl
           flex
