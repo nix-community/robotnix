@@ -12,28 +12,6 @@ buildFHSUserEnv {
     kerberos
     ncurses5
     libxml2
-
-    # Leftover stuff from android buildenv--not verified to be necessary
-    bc
-    gnupg
-    procps
-    openssl_1_0_2.dev
-    gnumake
-    nettools
-    schedtool
-    utillinux
-    m4
-    perl
-    zip
-    unzip
-    flex
-    lzop
-    imagemagick
-    which
-    rsync
-    lzip
-    freetype
-    fontconfig
   ];
   multiPkgs = pkgs: with pkgs; [
     zlib

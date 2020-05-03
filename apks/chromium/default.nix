@@ -1,8 +1,8 @@
 { pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook
 , python2, gn, ninja, llvmPackages_latest, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
 , dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, utillinux, kerberos, gdk-pixbuf
-, glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libGLU_combined, libXdamage
-, zlib, ncurses5, libxml2, binutils
+, glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libXdamage
+, zlib, ncurses5, libxml2, binutils, perl
 
 , name ? "chromium"
 , customGnFlags ? {}
@@ -126,6 +126,7 @@ in stdenvNoCC.mkDerivation rec {
     [ bsdiff
       (python2.withPackages (p: with p; [ six ]))
       binutils # Needs readelf
+      perl # Used by //third_party/libvpx
       buildenv
     ];
   buildInputs = [
