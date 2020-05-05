@@ -436,6 +436,9 @@ in
           # Things not in build/soong/ui/build/paths/config.go
           nettools # Needed for "hostname" in build/soong/ui/build/sandbox_linux.go
           procps # Needed for "ps" in build/envsetup.sh
+
+          # LineageOS (or Sony Pioneer)
+          openssl.dev
         ] ++ optionals (config.androidVersion <= 9) [
           # stuff that was in the earlier buildenv. Not entirely sure everything here is necessary
           (androidPkgs.sdk (p: with p.stable; [ tools platform-tools ]))
