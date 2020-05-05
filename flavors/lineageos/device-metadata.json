@@ -1,0 +1,1750 @@
+{
+  "Amber": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_yandex_Amber",
+      "android_kernel_yandex_sdm660",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "Phone",
+    "oem": "Yandex",
+    "variant": "userdebug"
+  },
+  "FP2": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_fairphone_FP2",
+      "android_kernel_fairphone_msm8974"
+    ],
+    "lineage_recovery": true,
+    "name": "Fairphone 2",
+    "oem": "Fairphone",
+    "variant": "userdebug"
+  },
+  "I01WD": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_asus_I01WD",
+      "android_kernel_asus_sm8150"
+    ],
+    "lineage_recovery": true,
+    "name": "Zenfone 6 (ZS630KL)",
+    "oem": "Asus",
+    "variant": "userdebug"
+  },
+  "RMX1801": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_realme_RMX1801",
+      "android_kernel_realme_sdm660"
+    ],
+    "lineage_recovery": false,
+    "name": "2 Pro",
+    "oem": "Realme",
+    "variant": "userdebug"
+  },
+  "RMX1851": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_realme_RMX1851",
+      "android_kernel_realme_sdm710",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "3 Pro",
+    "oem": "Realme",
+    "variant": "userdebug"
+  },
+  "X00TD": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_asus_X00TD",
+      "android_kernel_asus_sdm660"
+    ],
+    "lineage_recovery": false,
+    "name": "Zenfone Max Pro M1",
+    "oem": "Asus",
+    "variant": "userdebug"
+  },
+  "X01BD": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_asus_X01BD",
+      "android_kernel_asus_sdm660"
+    ],
+    "lineage_recovery": false,
+    "name": "Zenfone Max Pro M2",
+    "oem": "Asus",
+    "variant": "userdebug"
+  },
+  "YTX703F": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_lenovo_YTX703-common",
+      "android_device_lenovo_YTX703F",
+      "android_hardware_sony_timekeep",
+      "android_kernel_lenovo_msm8976",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Yoga Tab 3 Plus Wi-Fi",
+    "oem": "Lenovo",
+    "variant": "userdebug"
+  },
+  "YTX703L": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_lenovo_YTX703-common",
+      "android_device_lenovo_YTX703L",
+      "android_hardware_sony_timekeep",
+      "android_kernel_lenovo_msm8976",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Yoga Tab 3 Plus LTE",
+    "oem": "Lenovo",
+    "variant": "userdebug"
+  },
+  "a3xelte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_a3xelte",
+      "android_device_samsung_universal7580-common",
+      "android_hardware_samsung",
+      "android_hardware_samsung_slsi_exynos",
+      "android_hardware_samsung_slsi_exynos5",
+      "android_hardware_samsung_slsi_exynos7580",
+      "android_hardware_samsung_slsi_openmax",
+      "android_kernel_samsung_universal7580",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy A3 (2016)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "a5xelte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_a5xelte",
+      "android_device_samsung_universal7580-common",
+      "android_hardware_samsung",
+      "android_hardware_samsung_slsi_exynos",
+      "android_hardware_samsung_slsi_exynos5",
+      "android_hardware_samsung_slsi_exynos7580",
+      "android_hardware_samsung_slsi_openmax",
+      "android_kernel_samsung_universal7580",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy A5 (2016)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "a5y17lte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_a5y17lte",
+      "android_device_samsung_universal7880-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_universal7880"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy A5 (2017)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "a7y17lte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_a7y17lte",
+      "android_device_samsung_universal7880-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_universal7880"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy A7 (2017)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "bacon": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oneplus_bacon",
+      "android_device_oppo_common",
+      "android_device_oppo_msm8974-common",
+      "android_kernel_oppo_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "One",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "bardock": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_bq_bardock",
+      "android_device_bq_msm8953-common",
+      "android_kernel_bq_msm8953"
+    ],
+    "lineage_recovery": true,
+    "name": "Aquaris X",
+    "oem": "BQ",
+    "variant": "userdebug"
+  },
+  "bardockpro": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_bq_bardockpro",
+      "android_device_bq_msm8953-common",
+      "android_kernel_bq_msm8953"
+    ],
+    "lineage_recovery": true,
+    "name": "Aquaris X Pro",
+    "oem": "BQ",
+    "variant": "userdebug"
+  },
+  "berkeley": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_huawei_berkeley",
+      "android_device_huawei_kirin970-common",
+      "android_kernel_huawei_kirin970"
+    ],
+    "lineage_recovery": false,
+    "name": "Honor View 10",
+    "oem": "Huawei",
+    "variant": "userdebug"
+  },
+  "beryllium": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_beryllium",
+      "android_device_xiaomi_sdm845-common",
+      "android_kernel_xiaomi_sdm845"
+    ],
+    "lineage_recovery": true,
+    "name": "Poco F1",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "capricorn": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_xiaomi_capricorn",
+      "android_device_xiaomi_msm8996-common",
+      "android_hardware_xiaomi",
+      "android_kernel_xiaomi_msm8996"
+    ],
+    "lineage_recovery": false,
+    "name": "Mi 5s",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "charlotte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_huawei_charlotte",
+      "android_device_huawei_kirin970-common",
+      "android_kernel_huawei_kirin970"
+    ],
+    "lineage_recovery": false,
+    "name": "P20 Pro",
+    "oem": "Huawei",
+    "variant": "userdebug"
+  },
+  "cheeseburger": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oneplus_cheeseburger",
+      "android_device_oneplus_msm8998-common",
+      "android_device_oppo_common",
+      "android_kernel_oneplus_msm8998"
+    ],
+    "lineage_recovery": false,
+    "name": "5",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "chef": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_chef",
+      "android_device_motorola_sdm660-common",
+      "android_external_bson",
+      "android_kernel_motorola_msm8998",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto One Power",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "cheryl": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_razer_cheryl",
+      "android_kernel_razer_msm8998"
+    ],
+    "lineage_recovery": true,
+    "name": "Phone",
+    "oem": "Razer",
+    "variant": "userdebug"
+  },
+  "chiron": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_chiron",
+      "android_device_xiaomi_msm8998-common",
+      "android_kernel_xiaomi_msm8998"
+    ],
+    "lineage_recovery": true,
+    "name": "Mi MIX 2",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "crackling": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_cyanogen_msm8916-common",
+      "android_device_wileyfox_crackling",
+      "android_kernel_cyanogen_msm8916"
+    ],
+    "lineage_recovery": false,
+    "name": "Swift",
+    "oem": "Wileyfox",
+    "variant": "userdebug"
+  },
+  "crownlte": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_crownlte",
+      "android_device_samsung_universal9810-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_universal9810"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy Note 9",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "d800": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_d800",
+      "android_device_lge_g2-common",
+      "android_external_sony_boringssl-compat",
+      "android_kernel_lge_msm8974"
+    ],
+    "lineage_recovery": true,
+    "name": "G2 (AT&T)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "d801": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_d801",
+      "android_device_lge_g2-common",
+      "android_external_sony_boringssl-compat",
+      "android_kernel_lge_msm8974"
+    ],
+    "lineage_recovery": true,
+    "name": "G2 (TMO)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "d802": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_d802",
+      "android_device_lge_g2-common",
+      "android_external_sony_boringssl-compat",
+      "android_kernel_lge_msm8974"
+    ],
+    "lineage_recovery": true,
+    "name": "G2 (Intl)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "d803": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_d803",
+      "android_device_lge_g2-common",
+      "android_external_sony_boringssl-compat",
+      "android_kernel_lge_msm8974"
+    ],
+    "lineage_recovery": true,
+    "name": "G2 (Canada)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "d850": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_d850",
+      "android_device_lge_g3-common",
+      "android_kernel_lge_g3"
+    ],
+    "lineage_recovery": true,
+    "name": "G3 (AT&T)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "d851": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_d851",
+      "android_device_lge_g3-common",
+      "android_kernel_lge_g3"
+    ],
+    "lineage_recovery": true,
+    "name": "G3 (TMO)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "d852": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_d852",
+      "android_device_lge_g3-common",
+      "android_kernel_lge_g3"
+    ],
+    "lineage_recovery": true,
+    "name": "G3 (Canada)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "d855": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_d855",
+      "android_device_lge_g3-common",
+      "android_kernel_lge_g3"
+    ],
+    "lineage_recovery": true,
+    "name": "G3 (Unlocked)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "dipper": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_dipper",
+      "android_device_xiaomi_sdm845-common",
+      "android_kernel_xiaomi_sdm845"
+    ],
+    "lineage_recovery": true,
+    "name": "Mi 8",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "discovery": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_sony_discovery",
+      "android_device_sony_nile-common",
+      "android_hardware_sony_macaddrsetup",
+      "android_hardware_sony_simdetect",
+      "android_kernel_sony_sdm660"
+    ],
+    "lineage_recovery": true,
+    "name": "Xperia XA2 Ultra",
+    "oem": "Sony",
+    "variant": "userdebug"
+  },
+  "dumpling": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oneplus_dumpling",
+      "android_device_oneplus_msm8998-common",
+      "android_device_oppo_common",
+      "android_kernel_oneplus_msm8998"
+    ],
+    "lineage_recovery": false,
+    "name": "5T",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "enchilada": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_oneplus_enchilada",
+      "android_device_oneplus_sdm845-common",
+      "android_kernel_oneplus_sdm845"
+    ],
+    "lineage_recovery": true,
+    "name": "6",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "ether": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_nextbit_ether",
+      "android_kernel_nextbit_msm8992"
+    ],
+    "lineage_recovery": false,
+    "name": "Robin",
+    "oem": "Nextbit",
+    "variant": "userdebug"
+  },
+  "evert": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_evert",
+      "android_device_motorola_sdm660-common",
+      "android_external_bson",
+      "android_kernel_motorola_msm8998",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto G6 Plus",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "f1f": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oppo_common",
+      "android_device_oppo_f1f",
+      "android_device_oppo_msm8939-common",
+      "android_kernel_oppo_msm8939"
+    ],
+    "lineage_recovery": false,
+    "name": "F1 (F1f Intl)",
+    "oem": "OPPO",
+    "variant": "userdebug"
+  },
+  "f400": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_f400",
+      "android_device_lge_g3-common",
+      "android_kernel_lge_g3"
+    ],
+    "lineage_recovery": true,
+    "name": "G3 (Korea)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "fajita": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_oneplus_common",
+      "android_device_oneplus_fajita",
+      "android_device_oneplus_sdm845-common",
+      "android_kernel_oneplus_sdm845"
+    ],
+    "lineage_recovery": true,
+    "name": "6T",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "find7": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oppo_common",
+      "android_device_oppo_find7",
+      "android_device_oppo_msm8974-common",
+      "android_kernel_oppo_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Find 7a",
+    "oem": "OPPO",
+    "variant": "userdebug"
+  },
+  "gemini": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_xiaomi_gemini",
+      "android_device_xiaomi_msm8996-common",
+      "android_hardware_xiaomi",
+      "android_kernel_xiaomi_msm8996"
+    ],
+    "lineage_recovery": false,
+    "name": "Mi 5",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "griffin": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_griffin",
+      "android_external_bson",
+      "android_kernel_motorola_msm8996",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto Z",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "gts210vewifi": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_gts210vewifi",
+      "android_device_samsung_msm8976-common",
+      "android_hardware_samsung",
+      "android_hardware_sony_timekeep",
+      "android_kernel_samsung_msm8976"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy Tab S2 9.7 2016 (Wi-Fi)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "gts28vewifi": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_gts28vewifi",
+      "android_device_samsung_msm8976-common",
+      "android_hardware_samsung",
+      "android_hardware_sony_timekeep",
+      "android_kernel_samsung_msm8976"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy Tab S2 8.0 2016 (Wi-Fi)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "gts4lvwifi": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_gts4lv-common",
+      "android_device_samsung_gts4lvwifi",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_sdm670"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S5e (Wi-Fi)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "guacamole": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_oneplus_common",
+      "android_device_oneplus_guacamole",
+      "android_device_oneplus_sm8150-common",
+      "android_kernel_oneplus_sm8150"
+    ],
+    "lineage_recovery": true,
+    "name": "7 Pro",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "h830": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_g5-common",
+      "android_device_lge_h830",
+      "android_device_lge_msm8996-common",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "G5 (TMO)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "h850": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_g5-common",
+      "android_device_lge_h850",
+      "android_device_lge_msm8996-common",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "G5 (Intl)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "h910": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_h910",
+      "android_device_lge_msm8996-common",
+      "android_device_lge_v20-common",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "V20 (AT&T)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "h918": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_h918",
+      "android_device_lge_msm8996-common",
+      "android_device_lge_v20-common",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "V20 (TMO)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "h990": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_h990",
+      "android_device_lge_msm8996-common",
+      "android_device_lge_v20-common",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "V20 (Global)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "ham": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_zuk_ham",
+      "android_kernel_cyanogen_msm8974",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "ZUK Z1",
+    "oem": "Zuk",
+    "variant": "userdebug"
+  },
+  "hlte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_hlte",
+      "android_device_samsung_hlte-common",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy Note 3 LTE (N9005/P)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "hltechn": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_hlte-common",
+      "android_device_samsung_hltechn",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy Note 3 LTE (N9008V)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "hltekor": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_hlte-common",
+      "android_device_samsung_hltekor",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy Note 3 LTE (N900K/L/S)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "hltetmo": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_hlte-common",
+      "android_device_samsung_hltetmo",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy Note 3 LTE (N900T/V/W8)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "jactivelte": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_jactivelte",
+      "android_device_samsung_jf-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_jf"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S4 Active (GT-I9295)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "jasmine_sprout": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_jasmine_sprout",
+      "android_device_xiaomi_wayne-common",
+      "android_kernel_xiaomi_sdm660",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "Mi A2",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "jason": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_jason",
+      "android_kernel_xiaomi_jason",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "Mi Note 3",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "jflteatt": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_jf-common",
+      "android_device_samsung_jflteatt",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_jf"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S4 (SGH-I337)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "jfltespr": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_jf-common",
+      "android_device_samsung_jfltespr",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_jf"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S4 (SCH-R970/C/X,SPH-L720)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "jfltevzw": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_jf-common",
+      "android_device_samsung_jfltevzw",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_jf"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S4 (SCH-I545)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "jfltexx": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_jf-common",
+      "android_device_samsung_jfltexx",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_jf"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S4 (GT-I9505/G,SGH-I337M,SGH-M919)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "jfvelte": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_jf-common",
+      "android_device_samsung_jfvelte",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_jf"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S4 Value Edition (GT-I9515/L)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "kccat6": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_apq8084-common",
+      "android_device_samsung_kccat6",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_apq8084",
+      "android_packages_apps_FlipFlap"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 Plus",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "kirin": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_sony_kirin",
+      "android_device_sony_nile-common",
+      "android_hardware_sony_macaddrsetup",
+      "android_hardware_sony_simdetect",
+      "android_kernel_sony_sdm660"
+    ],
+    "lineage_recovery": true,
+    "name": "Xperia 10",
+    "oem": "Sony",
+    "variant": "userdebug"
+  },
+  "kiwi": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_huawei_kiwi",
+      "android_kernel_huawei_kiwi",
+      "android_packages_apps_FlipFlap",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Honor 5X",
+    "oem": "Huawei",
+    "variant": "userdebug"
+  },
+  "klte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_klte",
+      "android_device_samsung_klte-common",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 LTE (G900AZ/F/M/R4/R7/T/V/W8,S902L)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "klteactivexx": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_klte-common",
+      "android_device_samsung_klteactivexx",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 Active (SM-G870F)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "kltechn": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_klte-common",
+      "android_device_samsung_kltechn",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 LTE (G9006V/8V)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "kltechnduo": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_klte-common",
+      "android_device_samsung_kltechnduo",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 LTE Duos (G9006W/8W)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "klteduos": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_klte-common",
+      "android_device_samsung_klteduos",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 LTE Duos (G900FD/MD)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "kltedv": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_klte-common",
+      "android_device_samsung_kltedv",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 LTE (G900I/P)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "kltekdi": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_klte-common",
+      "android_device_samsung_kltekdi",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 LTE (SCL23)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "kltekor": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_klte-common",
+      "android_device_samsung_kltekor",
+      "android_device_samsung_msm8974-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 LTE (G900K/L/S)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "lake": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_lake",
+      "android_device_motorola_sdm660-common",
+      "android_external_bson",
+      "android_kernel_motorola_msm8998",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto G7 Plus",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "land": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_xiaomi_land",
+      "android_device_xiaomi_msm8937-common",
+      "android_kernel_xiaomi_msm8937",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Redmi 3S/3X",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "lavender": {
+    "branch": "lineage-17.1",
+    "lineage_recovery": true,
+    "name": "Redmi Note 7",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "lentislte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_apq8084-common",
+      "android_device_samsung_lentislte",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_apq8084",
+      "android_packages_apps_FlipFlap"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 LTE-A",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "lithium": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_xiaomi_lithium",
+      "android_device_xiaomi_msm8996-common",
+      "android_hardware_xiaomi",
+      "android_kernel_xiaomi_msm8996"
+    ],
+    "lineage_recovery": false,
+    "name": "Mi MIX",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "ls990": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_lge_g3-common",
+      "android_device_lge_ls990",
+      "android_kernel_lge_g3"
+    ],
+    "lineage_recovery": false,
+    "name": "G3 (Sprint)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "ls997": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_ls997",
+      "android_device_lge_msm8996-common",
+      "android_device_lge_v20-common",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "V20 (Sprint)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "m8": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_htc_m8",
+      "android_device_htc_m8-common",
+      "android_device_htc_msm8974-common",
+      "android_hardware_sony_thermanager",
+      "android_kernel_htc_msm8974",
+      "android_packages_apps_FlipFlap",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "One 2014",
+    "oem": "HTC",
+    "variant": "userdebug"
+  },
+  "m8d": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_htc_m8-common",
+      "android_device_htc_m8d",
+      "android_device_htc_msm8974-common",
+      "android_hardware_sony_thermanager",
+      "android_kernel_htc_msm8974",
+      "android_packages_apps_FlipFlap",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "One 2014 Dual SIM",
+    "oem": "HTC",
+    "variant": "userdebug"
+  },
+  "marlin": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_google_marlin",
+      "android_kernel_google_marlin"
+    ],
+    "lineage_recovery": true,
+    "name": "Pixel XL",
+    "oem": "Google",
+    "variant": "userdebug"
+  },
+  "mata": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_essential_mata",
+      "android_kernel_essential_msm8998",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "PH-1",
+    "oem": "Essential",
+    "variant": "userdebug"
+  },
+  "mermaid": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_sony_mermaid",
+      "android_device_sony_nile-common",
+      "android_hardware_sony_macaddrsetup",
+      "android_hardware_sony_simdetect",
+      "android_kernel_sony_sdm660"
+    ],
+    "lineage_recovery": true,
+    "name": "Xperia 10 Plus",
+    "oem": "Sony",
+    "variant": "userdebug"
+  },
+  "nash": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_nash",
+      "android_external_bson",
+      "android_kernel_motorola_msm8998",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto Z2 Force",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "natrium": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_xiaomi_msm8996-common",
+      "android_device_xiaomi_natrium",
+      "android_hardware_xiaomi",
+      "android_kernel_xiaomi_msm8996"
+    ],
+    "lineage_recovery": false,
+    "name": "Mi 5s Plus",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "nx563j": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_nubia_msm8998-common",
+      "android_device_nubia_nx563j",
+      "android_kernel_nubia_msm8998",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "Nubia Z17",
+    "oem": "Nubia",
+    "variant": "userdebug"
+  },
+  "oneplus2": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oneplus_oneplus2",
+      "android_device_oppo_common",
+      "android_kernel_oneplus_msm8994"
+    ],
+    "lineage_recovery": false,
+    "name": "2",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "oneplus3": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_oneplus_oneplus3",
+      "android_device_oppo_common",
+      "android_kernel_oneplus_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "3 / 3T",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "payton": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_payton",
+      "android_device_motorola_sdm660-common",
+      "android_external_bson",
+      "android_kernel_motorola_msm8998",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto X4",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "pioneer": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_sony_nile-common",
+      "android_device_sony_pioneer",
+      "android_hardware_sony_macaddrsetup",
+      "android_hardware_sony_simdetect",
+      "android_kernel_sony_sdm660"
+    ],
+    "lineage_recovery": true,
+    "name": "Xperia XA2",
+    "oem": "Sony",
+    "variant": "userdebug"
+  },
+  "polaris": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_polaris",
+      "android_device_xiaomi_sdm845-common",
+      "android_kernel_xiaomi_sdm845"
+    ],
+    "lineage_recovery": true,
+    "name": "Mi MIX 2S",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "r5": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oppo_common",
+      "android_device_oppo_msm8939-common",
+      "android_device_oppo_r5",
+      "android_external_sony_boringssl-compat",
+      "android_kernel_oppo_msm8939"
+    ],
+    "lineage_recovery": false,
+    "name": "R5/R5s (R8106/R8106s Intl)",
+    "oem": "OPPO",
+    "variant": "userdebug"
+  },
+  "r7plus": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oppo_common",
+      "android_device_oppo_msm8939-common",
+      "android_device_oppo_r7plus",
+      "android_kernel_oppo_msm8939"
+    ],
+    "lineage_recovery": false,
+    "name": "R7 Plus (R7plusf Intl)",
+    "oem": "OPPO",
+    "variant": "userdebug"
+  },
+  "r7sf": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_oppo_common",
+      "android_device_oppo_msm8939-common",
+      "android_device_oppo_r7sf",
+      "android_kernel_oppo_msm8939"
+    ],
+    "lineage_recovery": false,
+    "name": "R7s (R7sf Intl)",
+    "oem": "OPPO",
+    "variant": "userdebug"
+  },
+  "river": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_river",
+      "android_device_motorola_sdm632-common",
+      "android_external_bson",
+      "android_kernel_motorola_sdm632",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto G7",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "rs988": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_g5-common",
+      "android_device_lge_msm8996-common",
+      "android_device_lge_rs988",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "G5 (US)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "s2": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_leeco_s2",
+      "android_kernel_leeco_msm8976",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Le 2",
+    "oem": "LeEco",
+    "variant": "userdebug"
+  },
+  "s3ve3gds": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_msm8226-common",
+      "android_device_samsung_qcom-common",
+      "android_device_samsung_s3ve3g-common",
+      "android_device_samsung_s3ve3gds",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8226",
+      "android_packages_apps_FlipFlap"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S III Neo (Dual SIM)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "s3ve3gjv": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_msm8226-common",
+      "android_device_samsung_qcom-common",
+      "android_device_samsung_s3ve3g-common",
+      "android_device_samsung_s3ve3gjv",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8226",
+      "android_packages_apps_FlipFlap"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S III Neo (Samsung Camera)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "s3ve3gxx": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_msm8226-common",
+      "android_device_samsung_qcom-common",
+      "android_device_samsung_s3ve3g-common",
+      "android_device_samsung_s3ve3gxx",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8226",
+      "android_packages_apps_FlipFlap"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S III Neo (Sony Camera)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "s5neolte": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_s5neolte",
+      "android_device_samsung_universal7580-common",
+      "android_hardware_samsung",
+      "android_hardware_samsung_slsi_exynos",
+      "android_hardware_samsung_slsi_exynos5",
+      "android_hardware_samsung_slsi_exynos7580",
+      "android_hardware_samsung_slsi_openmax",
+      "android_kernel_samsung_universal7580",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy S5 Neo",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "sagit": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_msm8998-common",
+      "android_device_xiaomi_sagit",
+      "android_kernel_xiaomi_msm8998"
+    ],
+    "lineage_recovery": true,
+    "name": "Mi 6",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "sailfish": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_google_marlin",
+      "android_device_google_sailfish",
+      "android_kernel_google_marlin"
+    ],
+    "lineage_recovery": true,
+    "name": "Pixel",
+    "oem": "Google",
+    "variant": "userdebug"
+  },
+  "santoni": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_xiaomi_msm8937-common",
+      "android_device_xiaomi_santoni",
+      "android_kernel_xiaomi_msm8937",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Redmi 4(X)",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "scorpio": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_xiaomi_msm8996-common",
+      "android_device_xiaomi_scorpio",
+      "android_hardware_xiaomi",
+      "android_kernel_xiaomi_msm8996"
+    ],
+    "lineage_recovery": false,
+    "name": "Mi Note 2",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "shamu": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_moto_shamu",
+      "android_kernel_moto_shamu"
+    ],
+    "lineage_recovery": true,
+    "name": "Nexus 6",
+    "oem": "Google",
+    "variant": "userdebug"
+  },
+  "star2lte": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_star2lte",
+      "android_device_samsung_universal9810-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_universal9810"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S9+",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "starlte": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_starlte",
+      "android_device_samsung_universal9810-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_universal9810"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy S9",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "twolip": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_sdm660-common",
+      "android_device_xiaomi_twolip",
+      "android_kernel_xiaomi_sdm660",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "Redmi Note 6 Pro",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "us996": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_msm8996-common",
+      "android_device_lge_us996",
+      "android_device_lge_v20-common",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "V20 (GSM Unlocked)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "victara": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_motorola_victara",
+      "android_kernel_motorola_msm8974",
+      "android_packages_resources_devicesettings",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": false,
+    "name": "Moto X 2014",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "voyager": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_sony_nile-common",
+      "android_device_sony_voyager",
+      "android_hardware_sony_macaddrsetup",
+      "android_hardware_sony_simdetect",
+      "android_kernel_sony_sdm660"
+    ],
+    "lineage_recovery": true,
+    "name": "Xperia XA2 Plus",
+    "oem": "Sony",
+    "variant": "userdebug"
+  },
+  "vs985": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_g3-common",
+      "android_device_lge_vs985",
+      "android_kernel_lge_g3"
+    ],
+    "lineage_recovery": true,
+    "name": "G3 (VZW)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "vs995": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lge_common",
+      "android_device_lge_msm8996-common",
+      "android_device_lge_v20-common",
+      "android_device_lge_vs995",
+      "android_kernel_lge_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "V20 (VZW)",
+    "oem": "LG",
+    "variant": "userdebug"
+  },
+  "wayne": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_wayne",
+      "android_device_xiaomi_wayne-common",
+      "android_kernel_xiaomi_sdm660",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "Mi 6X",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "x2": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_leeco_msm8996-common",
+      "android_device_leeco_x2",
+      "android_kernel_leeco_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "Le Max 2",
+    "oem": "LeEco",
+    "variant": "userdebug"
+  },
+  "z2_plus": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_zuk_msm8996-common",
+      "android_device_zuk_z2_plus",
+      "android_kernel_zuk_msm8996",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "Zuk Z2 Plus",
+    "oem": "Zuk",
+    "variant": "userdebug"
+  },
+  "z3": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_sony_common",
+      "android_device_sony_msm8974-common",
+      "android_device_sony_shinano-common",
+      "android_device_sony_z3",
+      "android_hardware_broadcom_fm",
+      "android_hardware_sony_macaddrsetup",
+      "android_hardware_sony_thermanager",
+      "android_hardware_sony_timekeep",
+      "android_kernel_sony_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Xperia Z3",
+    "oem": "Sony",
+    "variant": "userdebug"
+  },
+  "z3c": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_sony_common",
+      "android_device_sony_msm8974-common",
+      "android_device_sony_shinano-common",
+      "android_device_sony_z3c",
+      "android_hardware_broadcom_fm",
+      "android_hardware_sony_macaddrsetup",
+      "android_hardware_sony_thermanager",
+      "android_hardware_sony_timekeep",
+      "android_kernel_sony_msm8974"
+    ],
+    "lineage_recovery": false,
+    "name": "Xperia Z3 Compact",
+    "oem": "Sony",
+    "variant": "userdebug"
+  },
+  "zangya": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_bq_sdm660-common",
+      "android_device_bq_zangya",
+      "android_kernel_bq_sdm660",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Aquaris X2",
+    "oem": "BQ",
+    "variant": "userdebug"
+  },
+  "zangyapro": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_bq_sdm660-common",
+      "android_device_bq_zangyapro",
+      "android_kernel_bq_sdm660",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Aquaris X2 Pro",
+    "oem": "BQ",
+    "variant": "userdebug"
+  },
+  "zenfone3": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_asus_zenfone3",
+      "android_kernel_asus_msm8953",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": false,
+    "name": "Zenfone 3 (ZE520KL/ZE552KL)",
+    "oem": "Asus",
+    "variant": "userdebug"
+  },
+  "zl1": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_leeco_msm8996-common",
+      "android_device_leeco_zl1",
+      "android_kernel_leeco_msm8996"
+    ],
+    "lineage_recovery": true,
+    "name": "Le Pro 3",
+    "oem": "LeEco",
+    "variant": "userdebug"
+  }
+}

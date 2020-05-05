@@ -1,0 +1,16 @@
+diff --git a/config/common.mk b/config/common.mk
+index cd509d33..c834a0a8 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -294,11 +294,6 @@ else
+     endif
+ endif
+ 
+-PRODUCT_EXTRA_RECOVERY_KEYS += \
+-    vendor/lineage/build/target/product/security/lineage
+-
+--include vendor/lineage-priv/keys/keys.mk
+-
+ LINEAGE_DISPLAY_VERSION := $(LINEAGE_VERSION)
+ 
+ ifneq ($(PRODUCT_DEFAULT_DEV_CERTIFICATE),)
