@@ -49,11 +49,16 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
 }
 (mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" "coral" "generic"])) {
-  vendor.buildID = mkDefault "QQ2A.200405.005";
-  source.manifest.rev = mkDefault "android-10.0.0_r33";
-
-  buildNumber = mkDefault "2020.04.06.22";
-  buildDateTime = mkDefault 1586227437;
+  buildNumber = mkDefault "2020.05.04.17";
+  buildDateTime = mkDefault 1588626224;
+})
+(mkIf ((elem config.deviceFamily [ "taimen" "muskie" ])) {
+  vendor.buildID = mkDefault "QQ2A.200501.001.B3";
+  source.manifest.rev = mkDefault "android-10.0.0_r36";
+})
+(mkIf ((elem config.deviceFamily [ "bonito" "crosshatch" "coral" "generic"])) {
+  vendor.buildID = mkDefault "QQ2A.200501.001.B2";
+  source.manifest.rev = mkDefault "android-10.0.0_r35";
 })
 # TODO: Build kernels for non marlin/sailfish devices
 (mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") {
