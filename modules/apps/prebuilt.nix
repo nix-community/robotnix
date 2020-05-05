@@ -9,7 +9,7 @@ let
     include $(CLEAR_VARS)
 
     # Add a prefix to avoid potential conflicts with existing modules
-    LOCAL_MODULE := RobotNix${prebuilt.name}
+    LOCAL_MODULE := Robotnix${prebuilt.name}
     LOCAL_MODULE_CLASS := APPS
     LOCAL_SRC_FILES := ${prebuilt.name}.apk
     LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
@@ -210,8 +210,8 @@ in
         '';
       });
 
-    system.additionalProductPackages = map (p: "RobotNix${p.name}") (filter (p: p.partition == "system") (attrValues cfg));
-    product.additionalProductPackages = map (p: "RobotNix${p.name}") (filter (p: p.partition == "product") (attrValues cfg));
+    system.additionalProductPackages = map (p: "Robotnix${p.name}") (filter (p: p.partition == "system") (attrValues cfg));
+    product.additionalProductPackages = map (p: "Robotnix${p.name}") (filter (p: p.partition == "product") (attrValues cfg));
 
     # Convenience derivation to get all prebuilt apks -- for use in custom fdroid repo?
     build.prebuiltApks = pkgs.linkFarm "${config.device}-prebuilt-apks"
