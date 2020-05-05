@@ -279,6 +279,17 @@ in
           CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
         }));
 
+      bacon = mkAndroid {
+        name = "robotnix-bacon-${config.buildProduct}-${config.buildNumber}";
+        makeTargets = [ "bacon" ];
+        # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
+        # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
+        installPhase = ''
+          mkdir -p $out
+          cp --reflink=auto $ANDROID_PRODUCT_OUT/*.zip $out/
+        '';
+      };
+
       android = mkAndroid {
         name = "robotnix-${config.buildProduct}-${config.buildNumber}";
         makeTargets = [ "target-files-package" "otatools-package" ];
