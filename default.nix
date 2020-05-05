@@ -15,6 +15,7 @@ in
     }
     configuration 
     ./flavors/grapheneos
+    ./flavors/lineageos
     ./flavors/vanilla
     ./modules/apps/auditor.nix
     ./modules/apps/chromium.nix
