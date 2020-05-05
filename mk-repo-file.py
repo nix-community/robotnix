@@ -37,7 +37,7 @@ def make_repo_file(url: str, rev: str, filename: str, mirror: Optional[str]=None
     else:
         print("Fetching information for %s %s" % (url, rev))
         with tempfile.TemporaryDirectory() as tmpdir:
-            subprocess.check_call(['repo', 'init', '--manifest-url=' + url, '--manifest-branch=refs/tags/' + rev, *REPO_FLAGS], cwd=tmpdir)
+            subprocess.check_call(['repo', 'init', '--manifest-url=' + url, '--manifest-branch=refs/heads/' + rev, *REPO_FLAGS], cwd=tmpdir)
             json_text = subprocess.check_output(['repo', 'dumpjson'], cwd=tmpdir).decode()
             open(filename, 'w').write(json_text)
             data = json.loads(json_text)
