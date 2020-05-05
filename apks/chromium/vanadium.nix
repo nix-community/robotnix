@@ -4,12 +4,12 @@ let
   vanadium_src = fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "Vanadium";
-    rev = "QQ2A.200405.005.2020.04.14.23";
-    sha256 = "1c2vpvz19wn0wi6isamk3j4dlx7xawbxa7fd6m23w78ghz294rqn";
+    rev = "QQ2A.200501.001.B3.2020.05.05.02";
+    sha256 = "1xvlr83y79i0vwdjfjvgqkzi1j2r8rpgnpp7jm7sh8hy26rwhkxz";
   };
 in (chromium.override {
   name = "vanadium";
-  version = "81.0.4044.96";
+  version = "81.0.4044.117";
   customGnFlags = {
     is_component_build = false;
     is_debug = false;
