@@ -43,6 +43,6 @@ in
   sdk = import ./sdk;
 
   grapheneos-emulator = (robotnix { device="x86"; flavor="grapheneos"; }).build.emulator;
-  vanilla-emulator = (robotnix { device="x86"; flavor="grapheneos"; }).build.emulator;
+  vanilla-emulator = (robotnix { device="x86"; flavor="vanilla"; }).build.emulator;
   danielfullmer-emulator = (robotnix { device="x86"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).build.emulator;
 } // (lib.mapAttrs (name: c: (robotnix c).img) configs)
