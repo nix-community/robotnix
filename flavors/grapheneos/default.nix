@@ -1,12 +1,14 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.vendor.buildID}.2020.04.14.23";
+  grapheneOSRelease = "${config.vendor.buildID}.2020.05.05.02";
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
-  buildNumber = mkDefault "2020.04.15.12";
-  buildDateTime = mkDefault 1586969927;
-  vendor.buildID = mkDefault "QQ2A.200405.005";
+  # This a default number for robotnix that I update whenever a change is made
+  # to anything the build depends on. It does not match the GrapheneOS build
+  # number.
+  buildNumber = mkDefault "2020.05.05.13";
+  buildDateTime = mkDefault 1588698131;
 
   source.dirs = lib.importJSON (./. + "/${grapheneOSRelease}.json");
 
@@ -14,7 +16,22 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
   source.manifest.rev = mkDefault "refs/tags/${grapheneOSRelease}";
 }
+(mkIf ((elem config.deviceFamily [ "taimen" "muskie" ])) {
+  vendor.buildID = mkDefault "QQ2A.200501.001.B3";
+})
+(mkIf ((elem config.deviceFamily [ "bonito" "crosshatch" "coral" "generic"])) {
+  vendor.buildID = mkDefault "QQ2A.200501.001.B2";
+})
 {
+  # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
+  source.dirs."build/soong".patches = [
+    (pkgs.fetchpatch {
+      url = "https://github.com/GrapheneOS/platform_build_soong/commit/76723b5745f08e88efa99295fbb53ed60e80af92.patch";
+      sha256 = "0vvairss3h3f9ybfgxihp5i8yk0rsnyhpvkm473g6dc49lv90ggq";
+      revert = true;
+    })
+  ];
+
   # No need to include these in AOSP build source since we build separately
   source.dirs."kernel/google/marlin".enable = false;
   source.dirs."kernel/google/wahoo".enable = false;
@@ -56,7 +73,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "16di46kmlzm6hrkxd95ddaa07yhxvzkv7ah8d6zki6scpwj1pjkm";
+    sha256 = "0rfx4mx62y7bylhkxdn4zp651jcxbq1dn7zhlmqakyksyjm02z6w";
     fetchSubmodules = true;
   };
 })

@@ -12,9 +12,9 @@
     "groups": [
       "pdk"
     ],
-    "rev": "0083a99abf604ae573d365d8f9fdf288f8532831",
-    "revisionExpr": "0083a99abf604ae573d365d8f9fdf288f8532831",
-    "sha256": "1bbhdxw03smrl4741hp6by09x7fy9adxs15yik45wj1airm0wcn4",
+    "rev": "b4c265e7f3dba87ac0fdc09f5898870690ddab3e",
+    "revisionExpr": "b4c265e7f3dba87ac0fdc09f5898870690ddab3e",
+    "sha256": "139mw6qwdh2s4w7mzhlqp6v1c80dalyvdpcwz94r7vp2fkxqwrsq",
     "url": "https://github.com/GrapheneOS/platform_bionic"
   },
   "bootable/recovery": {
@@ -27,6 +27,7 @@
     "url": "https://github.com/GrapheneOS/platform_bootable_recovery"
   },
   "branding": {
+    "groups": [],
     "rev": "55e27c7db1643107801dee53b63102ac515873e4",
     "revisionExpr": "55e27c7db1643107801dee53b63102ac515873e4",
     "sha256": "0ibqsawxl1rsas39lghs80zkzmxcci1fr46gq34ywkk908syg105",
@@ -90,9 +91,9 @@
         "src": "tools"
       }
     ],
-    "rev": "0395f208c0c9bbe0ce85f9f0e00a7de0a0a61d0d",
-    "revisionExpr": "0395f208c0c9bbe0ce85f9f0e00a7de0a0a61d0d",
-    "sha256": "03g2b54ygh66c63w5vcxjjp8p004fs0d2nhn3dpagyaa5jzn7ji5",
+    "rev": "0ab53d2b08563f4a0dbe80ebda381d7af43c2289",
+    "revisionExpr": "0ab53d2b08563f4a0dbe80ebda381d7af43c2289",
+    "sha256": "1h9kfqm7lzkv8xp7yclxx51x6q80cab98nh384mdya5zwhxavljv",
     "url": "https://github.com/GrapheneOS/platform_build"
   },
   "build/soong": {
@@ -110,9 +111,9 @@
         "src": "bootstrap.bash"
       }
     ],
-    "rev": "af24d46eff1f846432eb5e9ff8365edde901addd",
-    "revisionExpr": "af24d46eff1f846432eb5e9ff8365edde901addd",
-    "sha256": "08d51r98wkbw3j094bvvdyms0k8b2xsr4jlvi69w2a16f5pn4fym",
+    "rev": "76723b5745f08e88efa99295fbb53ed60e80af92",
+    "revisionExpr": "76723b5745f08e88efa99295fbb53ed60e80af92",
+    "sha256": "0wp0d19fhihppavdxm5kj0c5ldrsa1w1ah85j17sh054ak3336qh",
     "url": "https://github.com/GrapheneOS/platform_build_soong"
   },
   "cts": {
@@ -209,9 +210,9 @@
       "pdk",
       "pdk-cw-fs"
     ],
-    "rev": "6886fdc694aa1352912b2296ab58045a28c71552",
-    "revisionExpr": "6886fdc694aa1352912b2296ab58045a28c71552",
-    "sha256": "1qq4hl41xavg72gi5qy8ym1gwd469rfljm5lsz2f7idrz24m80c0",
+    "rev": "71c3bcbd2c941ca97bf0bfb8838a872fb2403e98",
+    "revisionExpr": "71c3bcbd2c941ca97bf0bfb8838a872fb2403e98",
+    "sha256": "16j8fz766ia8pbpks71l4vwqqq6mnpn1s8gmh49w9sl3c0m77dv0",
     "url": "https://github.com/GrapheneOS/device_common"
   },
   "device/generic/arm64": {
@@ -393,9 +394,9 @@
       "bonito",
       "device"
     ],
-    "rev": "6d10d053aeff8d0e745f562caccb4454103e1835",
-    "revisionExpr": "6d10d053aeff8d0e745f562caccb4454103e1835",
-    "sha256": "00ir65gzw6zs02pwqld961csbvgjmcfxnzmsbrdn4jz69b4cqzxm",
+    "rev": "3e452a978b52f0565b2efc83ca5bc0d3e54cd9f8",
+    "revisionExpr": "3e452a978b52f0565b2efc83ca5bc0d3e54cd9f8",
+    "sha256": "0z6dav007zrdaif72ga40g58vwn1pknjzahyhzp9ckz4f6raa10f",
     "url": "https://github.com/GrapheneOS/device_google_bonito"
   },
   "device/google/bonito-sepolicy": {
@@ -425,10 +426,10 @@
       "coral",
       "device"
     ],
-    "rev": "2337cfa7b9c6458cc83e9f38e6f6048eb690cefc",
-    "revisionExpr": "2337cfa7b9c6458cc83e9f38e6f6048eb690cefc",
-    "sha256": "0v8cfrpk4ljqwxrgiwd9jfyygchjs5a2jpqmjycj8g89vr86184m",
-    "tree": "1fc3b8b91d76343eb9aefa274ca1b510884314f8",
+    "rev": "e173eaa2e08c0bd14094cdd22e46b2d745cc64cc",
+    "revisionExpr": "e173eaa2e08c0bd14094cdd22e46b2d745cc64cc",
+    "sha256": "0y2zmc0g6f4axyp3w48b91bgjgl88si7hgcg6ja1xrc7w7fhhrl2",
+    "tree": "23c26447308b93904461c243ae457107f1a363a4",
     "url": "https://android.googlesource.com/device/google/coral"
   },
   "device/google/coral-kernel": {
@@ -436,10 +437,10 @@
       "coral",
       "device"
     ],
-    "rev": "71ddf06fb556ccd8f57c65195e2c80cece81a0f6",
-    "revisionExpr": "71ddf06fb556ccd8f57c65195e2c80cece81a0f6",
-    "sha256": "0mx61rmgnkmy6imriih490rg80lmcpns3m86ivd8rh1r2qxdvpnp",
-    "tree": "7abbb45db44380a6df7b037da56bfe7687be9a5e",
+    "rev": "1addea0ae20d63869392811510ccc5636806fbe7",
+    "revisionExpr": "1addea0ae20d63869392811510ccc5636806fbe7",
+    "sha256": "1mpkc8ddqgg1zlijlnvmbk0rdi6immcxzs5hqp28ifnnr2dx84v0",
+    "tree": "238588d36be86426bbe519cadee1c7cf04546af0",
     "url": "https://android.googlesource.com/device/google/coral-kernel"
   },
   "device/google/coral-sepolicy": {
@@ -459,9 +460,9 @@
       "device",
       "generic_fs"
     ],
-    "rev": "765c6fc4dd831199e042b523ac9b17ae30266207",
-    "revisionExpr": "765c6fc4dd831199e042b523ac9b17ae30266207",
-    "sha256": "1sphnbwmprq58vxigiirzzgl916gn7r9230ma8kqp6l3ls3ld481",
+    "rev": "0e1c83bdefde9cf44c2625eb3f1456d9e8422c28",
+    "revisionExpr": "0e1c83bdefde9cf44c2625eb3f1456d9e8422c28",
+    "sha256": "0f4glmb2szxn464wy0k3sghqslxqn3v6bhqkzg7f0x8vsvdjwilh",
     "url": "https://github.com/GrapheneOS/device_google_crosshatch"
   },
   "device/google/crosshatch-sepolicy": {
@@ -566,12 +567,13 @@
       "generic_fs",
       "wahoo"
     ],
-    "rev": "2ff95a947b22205b00fca92043d58bef76a1fc01",
-    "revisionExpr": "2ff95a947b22205b00fca92043d58bef76a1fc01",
-    "sha256": "1xbq7qz08k1b2bcfngk86ysab5cdr7rn1zwpjwfld1sli8069v7v",
+    "rev": "69018d7bda241e31eb730504eda5ee4fa4c0c8bc",
+    "revisionExpr": "69018d7bda241e31eb730504eda5ee4fa4c0c8bc",
+    "sha256": "0mkzax0x0xw9dpgpvxkkrln38p0a0nqcv8f4ikc0gckrdid8yq81",
     "url": "https://github.com/GrapheneOS/device_google_wahoo"
   },
   "device/linaro/bootloader/OpenPlatformPkg": {
+    "groups": [],
     "rev": "044ce29a658ec8719ca1e839a4502ff835e0ccb7",
     "revisionExpr": "044ce29a658ec8719ca1e839a4502ff835e0ccb7",
     "sha256": "18blzqhkj9pq17k6rp35bjddxhrlv4995ppqd19fyhq2cnsr1c0y",
@@ -579,6 +581,7 @@
     "url": "https://android.googlesource.com/device/linaro/bootloader/OpenPlatformPkg"
   },
   "device/linaro/bootloader/arm-trusted-firmware": {
+    "groups": [],
     "rev": "4a8974da598bde9881f85699fefd69ec776be5b4",
     "revisionExpr": "4a8974da598bde9881f85699fefd69ec776be5b4",
     "sha256": "0rhksygmfjq0bzdfzm1ka68svs4gxkx2qygi5ywlff4vj9f3qc5h",
@@ -586,6 +589,7 @@
     "url": "https://android.googlesource.com/device/linaro/bootloader/arm-trusted-firmware"
   },
   "device/linaro/bootloader/edk2": {
+    "groups": [],
     "rev": "6141238127ffcef8fee2af2cd01757264a95bf09",
     "revisionExpr": "6141238127ffcef8fee2af2cd01757264a95bf09",
     "sha256": "1hlg1izsz55s0l8j1z9arz9igjdjylc1rqrx66vwr5j08df4xfwm",
@@ -684,6 +688,7 @@
     "url": "https://android.googlesource.com/platform/external/ARMComputeLibrary"
   },
   "external/Auditor": {
+    "groups": [],
     "rev": "4bc0f6c21b6112fdb50d30a5a3fe01ba48ee205c",
     "revisionExpr": "4bc0f6c21b6112fdb50d30a5a3fe01ba48ee205c",
     "sha256": "15m35bnpi8hbakc38q2pxicxlrzzs81cd2rgrpcv80dwy8p1nfs4",
@@ -710,6 +715,7 @@
     "url": "https://android.googlesource.com/platform/external/Microsoft-GSL"
   },
   "external/PdfViewer": {
+    "groups": [],
     "rev": "2d04b20511bd6b3a882c42d46c3b6fff205d5014",
     "revisionExpr": "2d04b20511bd6b3a882c42d46c3b6fff205d5014",
     "sha256": "0gmh6gy1a6gnrdz2dv4a2ym8cm69z2hyvd2s2w4bdkbsz4m0vjrn",
@@ -1729,9 +1735,10 @@
     "url": "https://android.googlesource.com/platform/external/hamcrest"
   },
   "external/hardened_malloc": {
-    "rev": "35574db437b25222acbd7c23e556706ec127aa04",
-    "revisionExpr": "35574db437b25222acbd7c23e556706ec127aa04",
-    "sha256": "14mc0zvf1prh4lsdp6y1l9q9xfyhcgy7kdn41krnkfs402cxvg1i",
+    "groups": [],
+    "rev": "9dd50939f1cb22ea6dc64783f5d56dfd71074fa7",
+    "revisionExpr": "9dd50939f1cb22ea6dc64783f5d56dfd71074fa7",
+    "sha256": "1zy4k8fvnchinnqh223bsl2jd53fcsrc39jvcwfhxj9w7xggmr4z",
     "url": "https://github.com/GrapheneOS/hardened_malloc"
   },
   "external/harfbuzz_ng": {
@@ -2222,10 +2229,10 @@
     "groups": [
       "pdk"
     ],
-    "rev": "1a6756b78ad1c7fca57cb8521081fc01181e8f83",
-    "revisionExpr": "1a6756b78ad1c7fca57cb8521081fc01181e8f83",
-    "sha256": "0zqdxam954wwbywhrb4aiy2i6aw68gkwlsn1ys8n9j1xhk8zxviq",
-    "tree": "7f39495551c65a37f40b23544dee1cbc221feebf",
+    "rev": "743914bd6810af7d9057dc659424fc2ca49088a1",
+    "revisionExpr": "743914bd6810af7d9057dc659424fc2ca49088a1",
+    "sha256": "09vd5ylpixj75gxh278kxgq0cn891grg65g1h4lp66dhis7i4ysr",
+    "tree": "f32bad25a377b5b4605c619055abaffc467411a8",
     "url": "https://android.googlesource.com/platform/external/libexif"
   },
   "external/libffi": {
@@ -3734,6 +3741,7 @@
     "url": "https://android.googlesource.com/platform/external/seccomp-tests"
   },
   "external/seedvault": {
+    "groups": [],
     "rev": "4a4368c0891e8d051e1d11c8f4ad979969800cc2",
     "revisionExpr": "4a4368c0891e8d051e1d11c8f4ad979969800cc2",
     "sha256": "1jcvq16lpmh72xc2zbqjgmj6n6z71vvpl176ka88mh0cg1q08qid",
@@ -4053,6 +4061,7 @@
     "url": "https://android.googlesource.com/platform/external/tinyxml2"
   },
   "external/toolchain-utils": {
+    "groups": [],
     "rev": "ccead650bb8e050400f55dc44b60f989b1f8e117",
     "revisionExpr": "ccead650bb8e050400f55dc44b60f989b1f8e117",
     "sha256": "0fqhvlr87xrjbi554cay837n3mmrlsn6h3xr3rjign4rzjkigjdq",
@@ -4120,6 +4129,7 @@
     "url": "https://android.googlesource.com/platform/external/unicode"
   },
   "external/universal-tween-engine": {
+    "groups": [],
     "rev": "22e02dc1c0862dc5621837cd14644533b4687a5a",
     "revisionExpr": "22e02dc1c0862dc5621837cd14644533b4687a5a",
     "sha256": "1iwlpl9adxiwq60s1jhi4b4h1bzm69n8id47a5r2p1rf6mzmqxz3",
@@ -4147,9 +4157,10 @@
     "url": "https://android.googlesource.com/platform/external/v8"
   },
   "external/vanadium": {
-    "rev": "df1c6be540a178c21f49d781434843c4cdf20168",
-    "revisionExpr": "df1c6be540a178c21f49d781434843c4cdf20168",
-    "sha256": "1p5ac33503a7aydiy2mnbz7yx8lyj63gsb18flnr2b8v3w7fswix",
+    "groups": [],
+    "rev": "c42312e8fddac3ba1a9aa9c525e32e8f88c907cf",
+    "revisionExpr": "c42312e8fddac3ba1a9aa9c525e32e8f88c907cf",
+    "sha256": "1c0ch41anpdszi89l5gcfbvzq82gzc3svqzdhm82rfjp1gn7njxw",
     "url": "https://github.com/GrapheneOS/platform_external_vanadium"
   },
   "external/vboot_reference": {
@@ -4370,9 +4381,9 @@
     "groups": [
       "pdk"
     ],
-    "rev": "7b7df631b600cd70d9aab9b04bb5282e13e6fb7e",
-    "revisionExpr": "7b7df631b600cd70d9aab9b04bb5282e13e6fb7e",
-    "sha256": "0ja4zxk4i2bh0m56q3p3srqihlfmf1zy6c0wrwyzfvqla8xqi9c5",
+    "rev": "6c48a5ae3795c9eca415b60f8ea1989573a39d8b",
+    "revisionExpr": "6c48a5ae3795c9eca415b60f8ea1989573a39d8b",
+    "sha256": "0azvc46ziy0ipm8a3g2q12626a8ckwppfvdrcsmni0q8p63kzdn5",
     "url": "https://github.com/GrapheneOS/platform_frameworks_av"
   },
   "frameworks/base": {
@@ -4380,9 +4391,9 @@
       "pdk-cw-fs",
       "pdk-fs"
     ],
-    "rev": "8cc2ac829c0e0da28032ac38d5f51199d9c9aeb3",
-    "revisionExpr": "8cc2ac829c0e0da28032ac38d5f51199d9c9aeb3",
-    "sha256": "0kn9g80cvkk5x6rraq6pqkhaa4mw02l2w0vb6nqgxi7a4n6h5gl9",
+    "rev": "274cf4f82f6df87a81f800be3673456720c43b58",
+    "revisionExpr": "274cf4f82f6df87a81f800be3673456720c43b58",
+    "sha256": "13p56yif86h5yw5kcna16zhr9y0m6qymi94rpih7lymgvb6kpx0j",
     "url": "https://github.com/GrapheneOS/platform_frameworks_base"
   },
   "frameworks/compile/libbcc": {
@@ -4563,6 +4574,7 @@
     "url": "https://android.googlesource.com/platform/frameworks/opt/datetimepicker"
   },
   "frameworks/opt/gamesdk": {
+    "groups": [],
     "rev": "222ea766a65999e619da08f0fda0f7af7a34ed08",
     "revisionExpr": "222ea766a65999e619da08f0fda0f7af7a34ed08",
     "sha256": "0vac3lcwzifcjw86ibn86a3r26b95wx2q6g1rf1x4zbd4pbghqkb",
@@ -4889,8 +4901,8 @@
       "pdk-qcom",
       "qcom_camera"
     ],
-    "rev": "cf84695268abf5dbfd25d9729182d54cdd5bd8d1",
-    "revisionExpr": "cf84695268abf5dbfd25d9729182d54cdd5bd8d1",
+    "rev": "6bd1b9afa72b142bbf00149a476af674eff8a668",
+    "revisionExpr": "6bd1b9afa72b142bbf00149a476af674eff8a668",
     "sha256": "0hk35jwmswpzvijy9g5mf5vgrzhgkvhc38xng854azaf6jw027sy",
     "tree": "f9ddcf03788bee92bc9f1b25df39ad61a355547c",
     "url": "https://android.googlesource.com/platform/hardware/qcom/camera"
@@ -5271,6 +5283,7 @@
     "url": "https://android.googlesource.com/platform/hardware/ti/am57x"
   },
   "kernel/build": {
+    "groups": [],
     "rev": "14be2d1fcb097b45f50d14085a032f1d34d62a7b",
     "revisionExpr": "14be2d1fcb097b45f50d14085a032f1d34d62a7b",
     "sha256": "0w4c3ma8kafxls4av61xjg23r89ygf51g25x8qfmnpdic6n64wy7",
@@ -5288,15 +5301,17 @@
     "url": "https://github.com/GrapheneOS/kernel_configs"
   },
   "kernel/google/crosshatch": {
-    "rev": "23be100158dd3db647aaac31d8c4f2a34cce822d",
-    "revisionExpr": "23be100158dd3db647aaac31d8c4f2a34cce822d",
-    "sha256": "08jjsa9qdpjdihgvwpi34c2crcy5byr8pnynrji9dga1a0h7inwk",
+    "groups": [],
+    "rev": "c9d17c22e1fdcf4b3925f071127dd2508c7a804e",
+    "revisionExpr": "c9d17c22e1fdcf4b3925f071127dd2508c7a804e",
+    "sha256": "1ggr1i78yr3357qx7lm1s4w27kq6gc5782gfjw0cs1mzx05agbnc",
     "url": "https://github.com/GrapheneOS/kernel_google_crosshatch"
   },
   "kernel/google/wahoo": {
-    "rev": "38e9792f2a4adb450830dd768ba1bef2cd04e405",
-    "revisionExpr": "38e9792f2a4adb450830dd768ba1bef2cd04e405",
-    "sha256": "0zfmsnw7gq61q21lcr3b8lpsazi1d6mk32y5himn6r61dzi4hc87",
+    "groups": [],
+    "rev": "a86f0f9cb84bd2c073bce5471e49a7ddca32ee2b",
+    "revisionExpr": "a86f0f9cb84bd2c073bce5471e49a7ddca32ee2b",
+    "sha256": "0z1bwmfa7jsz43ld5qrcpscd3manx1izbgrn9nadmy6y75v59lxc",
     "url": "https://github.com/GrapheneOS/kernel_google_wahoo"
   },
   "kernel/tests": {
@@ -5662,6 +5677,7 @@
     "url": "https://android.googlesource.com/platform/packages/apps/EmergencyInfo"
   },
   "packages/apps/ExactCalculator": {
+    "groups": [],
     "rev": "d8d0c8cec94e266ee63643ba278ec28b3833434c",
     "revisionExpr": "d8d0c8cec94e266ee63643ba278ec28b3833434c",
     "sha256": "1kpnzg5ki3650xcr5qxblv9wibwyvzwfd1kpzx5m1cgr2q39qxyf",
@@ -5860,9 +5876,9 @@
     "groups": [
       "pdk-fs"
     ],
-    "rev": "f4db8a93b70c883de233dbdc6d76adfa2e95e8b0",
-    "revisionExpr": "f4db8a93b70c883de233dbdc6d76adfa2e95e8b0",
-    "sha256": "1lqah2xvsb7wjdximinaj8hwcff1m7yc1w5pmr7w4ljq81j3bga6",
+    "rev": "3e29154718f541f67c53c24ac07f80545d4df69c",
+    "revisionExpr": "3e29154718f541f67c53c24ac07f80545d4df69c",
+    "sha256": "0jvnpjrz8p9257bqcgrs7r1d43ras8jx71727pvi4lgzhbr5m0xk",
     "url": "https://github.com/GrapheneOS/platform_packages_apps_Settings"
   },
   "packages/apps/SettingsIntelligence": {
@@ -5876,6 +5892,7 @@
     "url": "https://android.googlesource.com/platform/packages/apps/SettingsIntelligence"
   },
   "packages/apps/SetupWizard": {
+    "groups": [],
     "rev": "8610ca7eac9da209c6c8246f0e75a5387402ebd4",
     "revisionExpr": "8610ca7eac9da209c6c8246f0e75a5387402ebd4",
     "sha256": "033bqjgi26yihsz2y9gxzdv33qrj9914mjyl9drr7nw0l0jgvmyr",
@@ -6023,6 +6040,7 @@
     "url": "https://android.googlesource.com/platform/packages/apps/UnifiedEmail"
   },
   "packages/apps/UniversalMediaPlayer": {
+    "groups": [],
     "rev": "e549c4eda26b4ca4ca4d02944b74557123175c81",
     "revisionExpr": "e549c4eda26b4ca4ca4d02944b74557123175c81",
     "sha256": "1h168q7jzkd4nazziw0cf73gg38xz0y4l0zd6r27f2lhhrh1c5i0",
@@ -6030,6 +6048,7 @@
     "url": "https://android.googlesource.com/platform/packages/apps/UniversalMediaPlayer"
   },
   "packages/apps/Updater": {
+    "groups": [],
     "rev": "96d1642680a3207c45ce6a7a60cadda885b87604",
     "revisionExpr": "96d1642680a3207c45ce6a7a60cadda885b87604",
     "sha256": "06i1szgyrf09hrjmf5aqy5mmd491ylwd0xpxp1f9l1njgpg0l6k8",
@@ -6119,6 +6138,7 @@
     "url": "https://android.googlesource.com/platform/packages/modules/NetworkStack"
   },
   "packages/modules/TestModule": {
+    "groups": [],
     "rev": "3523a2f0f9b12d4e60374af63aae14f75a2b4c10",
     "revisionExpr": "3523a2f0f9b12d4e60374af63aae14f75a2b4c10",
     "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
@@ -6297,10 +6317,10 @@
       "pdk-cw-fs",
       "pdk-fs"
     ],
-    "rev": "e410a5b973593cde62953666acb432ddf2d77102",
-    "revisionExpr": "e410a5b973593cde62953666acb432ddf2d77102",
-    "sha256": "1sczb1k2cd4wdz7n7kcfpq3s7if387akxbvaifzpxk66ymibjz1b",
-    "tree": "488a73bb9e63495c3a076eaa2954dd14250f5a0c",
+    "rev": "a8597ca323625359468919c7ccbbc58b85bc78a2",
+    "revisionExpr": "a8597ca323625359468919c7ccbbc58b85bc78a2",
+    "sha256": "09na0g0h7h0mah4i4wl06xqvnnc19hbcmxfjz29id2fvh4lmznmn",
+    "tree": "67fc2b2ba021264d5af6e6cb486bcb209175611d",
     "url": "https://android.googlesource.com/platform/packages/services/Car"
   },
   "packages/services/Mms": {
@@ -6330,9 +6350,9 @@
       "pdk-cw-fs",
       "pdk-fs"
     ],
-    "rev": "2a9b0fa293ea7d7f6d241c1939b99f54a8e0c7c9",
-    "revisionExpr": "2a9b0fa293ea7d7f6d241c1939b99f54a8e0c7c9",
-    "sha256": "1ar0gxd8rasc9r7ahd83z5bgywsd4fhqxdcsdjkgh7p4nf4nl40n",
+    "rev": "6586c927fed1d3a744bd8366d5574e1dac7f7438",
+    "revisionExpr": "6586c927fed1d3a744bd8366d5574e1dac7f7438",
+    "sha256": "0iniixw5gw1jnla5j69n02ircdkwiwman2v6ni001vhgkw9spjd8",
     "url": "https://github.com/GrapheneOS/platform_packages_services_Telephony"
   },
   "packages/wallpapers/LivePicker": {
@@ -6653,6 +6673,7 @@
     "url": "https://android.googlesource.com/platform/prebuilts/maven_repo/bumptech"
   },
   "prebuilts/maven_repo/google-play-service-client-libraries-3p": {
+    "groups": [],
     "rev": "427e6e2267fd43142ddbd1a87268e0112ddb9b11",
     "revisionExpr": "427e6e2267fd43142ddbd1a87268e0112ddb9b11",
     "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
@@ -6754,9 +6775,10 @@
     "url": "https://android.googlesource.com/platform/prebuilts/vndk/v28"
   },
   "script": {
-    "rev": "b81d9be4b7277dde424e9357e84db5db65e012c4",
-    "revisionExpr": "b81d9be4b7277dde424e9357e84db5db65e012c4",
-    "sha256": "14y0cxdfl0jy75idvf4wajvxjwi1g45lrs2j7xpq1hsb2ivd46wv",
+    "groups": [],
+    "rev": "a65c949c7663564e0753e70af6398c2b38418022",
+    "revisionExpr": "a65c949c7663564e0753e70af6398c2b38418022",
+    "sha256": "0z2a4ml2z4vvmmgdvcw41nmm7ssbnhwv9d5xyyq6712gh4szx6ph",
     "url": "https://github.com/GrapheneOS/script"
   },
   "sdk": {
@@ -6820,9 +6842,9 @@
     "groups": [
       "pdk"
     ],
-    "rev": "29bf6d6196b359817118d30162583a33456215de",
-    "revisionExpr": "29bf6d6196b359817118d30162583a33456215de",
-    "sha256": "00qlga44fzbr5szf63n5l4x3gq59yqmldir626rflhbikzkc7av0",
+    "rev": "f0ad01bdf673dfce9f4b7b90569479336dd62ecb",
+    "revisionExpr": "f0ad01bdf673dfce9f4b7b90569479336dd62ecb",
+    "sha256": "01c8bm80xygywqdc91jbmr4aa5ybms3gzpjkkcaqm5nwl7yxqxds",
     "url": "https://github.com/GrapheneOS/platform_system_bt"
   },
   "system/ca-certificates": {
@@ -7056,10 +7078,10 @@
     "groups": [
       "pdk"
     ],
-    "rev": "d0fba7ecf19232e5e0c4df1fb8bae80b8ede6500",
-    "revisionExpr": "d0fba7ecf19232e5e0c4df1fb8bae80b8ede6500",
-    "sha256": "0n6pwppd6h2dxx6bs3xff7sa2f03jlmhj7hsn67mddi0hl6k2f3a",
-    "tree": "4ca000fbdfe2ccaaaaae5ee0ed25fdd1b1dbdb69",
+    "rev": "bbbd112dfbc0310f081cfa66c3be09bc28ca8635",
+    "revisionExpr": "bbbd112dfbc0310f081cfa66c3be09bc28ca8635",
+    "sha256": "083wqv2kafigp803mcgssl3qvnz0ydglr673m0q1cil1psv55ik2",
+    "tree": "ea9f8801f52894c5b097f93cdc2ba8fc8aeeda95",
     "url": "https://android.googlesource.com/platform/system/security"
   },
   "system/sepolicy": {
@@ -7204,6 +7226,7 @@
     "url": "https://android.googlesource.com/platform/test/mlts/models"
   },
   "test/mts": {
+    "groups": [],
     "rev": "3a843ecd7c4736a8e66a34363e5e81c79750c0f7",
     "revisionExpr": "3a843ecd7c4736a8e66a34363e5e81c79750c0f7",
     "sha256": "0iy6cz7bx25n178xfs2gxnqnid3z9xa36dpbc785viwcc10pm0j3",
@@ -7374,6 +7397,7 @@
     "url": "https://android.googlesource.com/platform/test/vts-testcase/vndk"
   },
   "toolchain/benchmark": {
+    "groups": [],
     "rev": "1fba1825631e6e52dff5b3ceb87a5b439e2acf52",
     "revisionExpr": "1fba1825631e6e52dff5b3ceb87a5b439e2acf52",
     "sha256": "12yrxw378akva94sjc2zpi424mjhfk7s654m0g5wdsmsqygp2i4v",
@@ -7615,12 +7639,14 @@
     "url": "https://android.googlesource.com/platform/tools/trebuchet"
   },
   "vendor/android-prepare-vendor": {
-    "rev": "f71b91c68a97a31b93b8b1f12fa9f50bbf47f71e",
-    "revisionExpr": "f71b91c68a97a31b93b8b1f12fa9f50bbf47f71e",
-    "sha256": "16axz4dwisc21phzr7vmnibdyyfv6kzq9jq520h27y1cf9fdmz15",
+    "groups": [],
+    "rev": "22643e33fb76dcd15f4046b9a972a623be787ebb",
+    "revisionExpr": "22643e33fb76dcd15f4046b9a972a623be787ebb",
+    "sha256": "177fvp05x8n6nvzq83q5hymd8zikbk45zbyl4a51f68afwqd8raa",
     "url": "https://github.com/GrapheneOS/android-prepare-vendor"
   },
   "vendor/linaro": {
+    "groups": [],
     "rev": "1c45731ed5cb5d56ba575179bc66b167fa2f92ca",
     "revisionExpr": "1c45731ed5cb5d56ba575179bc66b167fa2f92ca",
     "sha256": "06ppr2czfaga1jlzc2rg4r1in08nmpwwirvf23k291mr1dl8dlvd",
