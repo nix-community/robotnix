@@ -40,9 +40,15 @@ in
       description = "one of \"user\", \"userdebug\", or \"eng\"";
     };
 
-    buildProduct = mkOption {
+    productName = mkOption {
       type = types.str;
       description = "Product name for choosecombo/lunch (defaults to aosp_${config.device})";
+    };
+
+    productNamePrefix = mkOption {
+      default = "aosp";
+      type = types.str;
+      description = "Prefix for product name used with choosecombo/lunch";
     };
 
     buildType = mkOption {
@@ -147,7 +153,7 @@ in
     deviceFamily = mkDefault "generic";
   })
   {
-    buildProduct = mkIf (config.device != null) (mkDefault "aosp_${config.device}");
+    productName = mkIf (config.device != null) (mkOptionDefault "${config.productNamePrefix}_${config.device}");
 
     apiLevel = mkIf (config.androidVersion == 10) "29";
 
@@ -253,7 +259,7 @@ in
             ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID} robotnix-build
 
             source build/envsetup.sh
-            choosecombo ${config.buildType} ${config.buildProduct} ${config.variant}
+            choosecombo ${config.buildType} ${config.productName} ${config.variant}
 
             # Fail early if the product was not selected properly
             test -n "$TARGET_PRODUCT" || exit 1
@@ -291,14 +297,13 @@ in
       };
 
       android = mkAndroid {
-        name = "robotnix-${config.buildProduct}-${config.buildNumber}";
+        name = "robotnix-${config.productName}-${config.buildNumber}";
         makeTargets = [ "target-files-package" "otatools-package" ];
-        # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
         # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
         installPhase = ''
           mkdir -p $out
           cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
-          cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.buildProduct}-target_files-${config.buildNumber}.zip $out/
+          cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.productName}-target_files-${config.buildNumber}.zip $out/
         '';
       };
 
