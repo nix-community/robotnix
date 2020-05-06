@@ -2,7 +2,7 @@ let
   pkgs = import ../pkgs {};
   adb = (import ../default.nix {
     configuration = {
-      buildProduct = "sdk";
+      productName = "sdk";
       variant = "eng";
       source.dirs = builtins.fromJSON (builtins.readFile ./platform-tools-29.0.5.json);
     };
