@@ -53,7 +53,7 @@ in
     };
   };
 
-  config = {
+  config = mkIf (any (m: m.enable) (attrValues config.webview)) {
     apps.prebuilt = lib.mapAttrs' (name: m: nameValuePair "Webview${name}" {
       inherit (m) apk;
 
