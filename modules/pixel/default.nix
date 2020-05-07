@@ -28,7 +28,7 @@ let
   deviceFamily = deviceFamilyMap.${config.device};
 in
 mkMerge [
-  (mkIf ((config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
+  (mkIf ((config.flavor != "lineageos") && (config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault deviceFamily;
     arch = mkDefault "arm64";
 

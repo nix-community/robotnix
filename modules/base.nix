@@ -286,12 +286,13 @@ in
         }));
 
       bacon = mkAndroid {
-        name = "robotnix-bacon-${config.buildProduct}-${config.buildNumber}";
+        name = "robotnix-bacon-${config.productName}-${config.buildNumber}";
         makeTargets = [ "bacon" ];
         # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
         # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
         installPhase = ''
           mkdir -p $out
+          cp --reflink=auto $ANDROID_PRODUCT_OUT/boot.img $out/
           cp --reflink=auto $ANDROID_PRODUCT_OUT/*.zip $out/
         '';
       };
@@ -455,6 +456,8 @@ in
 
           # LineageOS (or Sony Pioneer)
           openssl.dev
+          which # Needed by releasetools/ota_from_target_files
+          getopt
         ] ++ optionals (config.androidVersion <= 9) [
           # stuff that was in the earlier buildenv. Not entirely sure everything here is necessary
           (androidPkgs.sdk (p: with p.stable; [ tools platform-tools ]))
