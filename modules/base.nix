@@ -285,18 +285,6 @@ in
           CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
         }));
 
-      bacon = mkAndroid {
-        name = "robotnix-bacon-${config.productName}-${config.buildNumber}";
-        makeTargets = [ "bacon" ];
-        # Don't do patchelf in this derivation, just in case it fails we'd still like to have cached results
-        # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
-        installPhase = ''
-          mkdir -p $out
-          cp --reflink=auto $ANDROID_PRODUCT_OUT/boot.img $out/
-          cp --reflink=auto $ANDROID_PRODUCT_OUT/*.zip $out/
-        '';
-      };
-
       android = mkAndroid {
         name = "robotnix-${config.productName}-${config.buildNumber}";
         makeTargets = [ "target-files-package" "otatools-package" ];
@@ -399,10 +387,6 @@ in
         installPhase = ''
           mkdir -p $out
           cp --reflink=auto -r * $out/
-
-          # HACK:
-          #    libprocessgroup.so -> not found!
-          rm $out/bin/delta_generator
         '';
         # Since we copy everything from build dir into $out, we don't want
         # env-vars file which contains a bunch of references we don't need
@@ -413,9 +397,7 @@ in
           cd $out/releasetools
           export PATH=$out/bin:$PATH
           export EXT2FS_NO_MTAB_OK=yes
-          # HACK:
-          #    duee to previous hack
-          #pytest
+          pytest
         '';
       };
 
@@ -456,16 +438,10 @@ in
           # Things not in build/soong/ui/build/paths/config.go
           nettools # Needed for "hostname" in build/soong/ui/build/sandbox_linux.go
           procps # Needed for "ps" in build/envsetup.sh
-
-          # LineageOS (or Sony Pioneer)
-          openssl.dev
-          which # Needed by releasetools/ota_from_target_files
-          getopt
         ] ++ optionals (config.androidVersion <= 9) [
           # stuff that was in the earlier buildenv. Not entirely sure everything here is necessary
           (androidPkgs.sdk (p: with p.stable; [ tools platform-tools ]))
-          #androidsdk_9_0
-          #openssl_1_0_2.dev
+          openssl.dev
           bison
           curl
           flex
