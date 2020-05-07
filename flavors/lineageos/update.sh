@@ -4,7 +4,7 @@ set -e
 set -u
 
 args=(
-	#--mirror "/mnt/media/mirror"
+	--mirror "/mnt/media/mirror"
 	"https://github.com/LineageOS/android"
 	"$1"
 	*.json #../vanilla/*.json
