@@ -62,7 +62,11 @@ let
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
     ${otaTools}/releasetools/ota_from_target_files.py  \
-      --block ''${KEYSDIR:+-k $KEYSDIR/releasekey} \
+      --block \
+      ${if config.signBuild
+        then "-k $KEYSDIR/releasekey"
+        else "-k ${config.source.dirs."build/make".src}/target/product/security/testkey"
+      } \
       ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
       ${optionalString config.retrofit "--retrofit_dynamic_partitions"} \
       ${targetFiles} ${out}
