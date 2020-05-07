@@ -328,18 +328,20 @@ in
         sourceRoot = ".";
         nativeBuildInputs = with pkgs; [ unzip autoPatchelfHook protobuf pythonPackages.pytest ];
         buildInputs = [ (pkgs.python.withPackages (p: [ p.protobuf ])) ];
+        # TODO: Replace a lot of this with wrappers
         postPatch = ''
           # Replace some python binaries with the original python files.
           # The soong-compiled versions all have "Failed to import the site module" error
           cp ${config.source.dirs."external/avb".src}/avbtool bin/avbtool
           cp ${config.source.dirs."system/core".src}/mkbootimg/mkbootimg.py bin/mkbootimg
           cp ${config.source.dirs."system/extras".src}/ext4_utils/mkuserimg_mke2fs.py bin/mkuserimg_mke2fs
+          cp ${config.source.dirs."system/extras".src}/verity/build_verity_metadata.py bin/build_verity_metadata
           cp ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map_generator.py bin/care_map_generator
           protoc --python_out=bin/ -I ${config.source.dirs."bootable/recovery".src}/update_verifier \
             ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map.proto
 
           for name in boot_signer verity_signer; do
-            substituteInPlace bin/$name --replace java ${lib.getBin pkgs.jre8_headless}/bin/java
+            substituteInPlace bin/$name --replace "java " ${lib.getBin pkgs.jre8_headless}/bin/java
           done
 
           substituteInPlace releasetools/common.py \
@@ -353,6 +355,7 @@ in
 
           substituteInPlace bin/brillo_update_payload \
             --replace "which delta_generator" "${pkgs.which}/bin/which delta_generator" \
+            --replace "python " "${pkgs.python}/bin/python " \
             --replace "xxd " "${lib.getBin pkgs.toybox}/bin/xxd " \
             --replace "cgpt " "${lib.getBin pkgs.vboot_reference}/bin/cgpt " \
             --replace "look " "${lib.getBin pkgs.utillinux}/bin/look " \
