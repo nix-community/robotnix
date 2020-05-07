@@ -19,9 +19,6 @@ let
         # Submodules are manually specified as "nested projects". No support for that in repo2nix. See https://gerrit.googlesource.com/git-repo/+/master/docs/manifest-format.md
         fetchSubmodules = false;
         deepClone = false;
-
-        # Override name so it doesnt' depend on rev, allows sharing dirs between devices in AOSP source.
-        name = last (splitString ":" (baseNameOf (removeSuffix "/" p.url)));
       };
 
   fileModule = types.submodule ({ config, ... }: {
