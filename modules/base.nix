@@ -341,7 +341,7 @@ in
             ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map.proto
 
           for name in boot_signer verity_signer; do
-            substituteInPlace bin/$name --replace "java " ${lib.getBin pkgs.jre8_headless}/bin/java
+            substituteInPlace bin/$name --replace "java " "${lib.getBin pkgs.jre8_headless}/bin/java "
           done
 
           substituteInPlace releasetools/common.py \
