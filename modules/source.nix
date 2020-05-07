@@ -52,6 +52,16 @@ let
 
       src = mkOption {
         type = types.path;
+        apply = src: # Maybe replace with with pkgs.applyPatches? Need patchFlags though...
+          if (config.patches != [] || config.postPatch != "")
+          then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" {} ''
+            cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${src} $out/
+            chmod u+w -R $out
+            ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
+            cd $out
+            ${config.postPatch}
+          '')
+          else src;
       };
 
       patches = mkOption {
@@ -62,11 +72,6 @@ let
       postPatch = mkOption {
         default = "";
         type = types.lines;
-      };
-
-      patchedContents = mkOption {
-        type = types.path;
-        internal = true;
       };
 
       unpackScript = mkOption {
@@ -127,19 +132,9 @@ let
 
       src = mkDefault (projectSource config);
 
-      patchedContents = mkDefault (if (config.patches != [] || config.postPatch != "") then
-        (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" {} ''
-          cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.src} $out/
-          chmod u+w -R $out
-          ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
-          cd $out
-          ${config.postPatch}
-        '')
-        else config.src);
-
       unpackScript = (optionalString config.enable ''
         mkdir -p ${config.relpath}
-        ${pkgs.utillinux}/bin/mount --bind ${config.patchedContents} ${config.relpath}
+        ${pkgs.utillinux}/bin/mount --bind ${config.src} ${config.relpath}
       '')
       + (concatMapStringsSep "\n" (c: ''
         mkdir -p $(dirname ${c.dest})
@@ -225,8 +220,8 @@ in
     '' +
     (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "robotnix/" d.relpath)) ''
       mkdir -p $(dirname ${d.relpath})
-      echo "${d.patchedContents} -> ${d.relpath}"
-      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.patchedContents} ${d.relpath}/
+      echo "${d.src} -> ${d.relpath}"
+      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.src} ${d.relpath}/
     '') (attrValues config.source.dirs))) + ''
     chmod -R u+w robotnix/
   '');
