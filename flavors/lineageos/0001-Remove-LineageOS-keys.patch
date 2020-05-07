@@ -1,0 +1,32 @@
+From da5bf43b54001a1e29684d97b4cd3c70aab3a234 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Thu, 7 May 2020 17:52:03 -0400
+Subject: [PATCH] Remove LineageOS keys
+
+Signing target files would fail:
+extra recovery-only key(s): vendor/lineage/build/target/product/security/lineage.x509.pem
+However, that key is not available in our build environment. We don't
+want to include them anyway.
+---
+ config/common.mk | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/config/common.mk b/config/common.mk
+index cd509d33..c834a0a8 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -294,11 +294,6 @@ else
+     endif
+ endif
+ 
+-PRODUCT_EXTRA_RECOVERY_KEYS += \
+-    vendor/lineage/build/target/product/security/lineage
+-
+--include vendor/lineage-priv/keys/keys.mk
+-
+ LINEAGE_DISPLAY_VERSION := $(LINEAGE_VERSION)
+ 
+ ifneq ($(PRODUCT_DEFAULT_DEV_CERTIFICATE),)
+-- 
+2.26.1
+

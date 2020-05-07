@@ -40,4 +40,15 @@ in mkIf (config.flavor == "lineageos") (mkMerge [
       relpath = "vendor/${if oem == "lg" then "lge" else oem}";
     in filterDirsAttrs (getAttrs [relpath] vendorDirs);
 }
+{
+  source.dirs."vendor/lineage".patches = [ ./0001-Remove-LineageOS-keys.patch ];
+  source.dirs."system/extras".patches = [
+    # pkgutil.get_data() not working, probably because we don't use their compiled python
+    (pkgs.fetchpatch {
+      url = "https://github.com/LineageOS/android_system_extras/commit/7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.patch";
+      sha256 = "0pv56lypdpsn66s7ffcps5ykyfx0hjkazml89flj7p1px12zjhy1";
+      revert = true;
+    })
+  ];
+}
 ])
