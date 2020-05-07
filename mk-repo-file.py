@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i python -p python3 nix gitRepo nix-prefetch-git
+#!nix-shell -i python -p python3 nix gitRepo nix-prefetch-git -I nixpkgs=./pkgs
 
 from typing import Optional, Dict
 
