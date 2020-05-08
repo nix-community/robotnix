@@ -31,8 +31,8 @@ def checkout_git(url, rev):
     json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
     return json.loads(json_text)
 
-def make_repo_file(url: str, rev: str, filename: str, mirror: Optional[str]=None):
-    if os.path.exists(filename):
+def make_repo_file(url: str, rev: str, filename: str, force_refresh: bool, mirror: Optional[str]=None):
+    if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
     else:
         print("Fetching information for %s %s" % (url, rev))
@@ -79,6 +79,7 @@ def make_repo_file(url: str, rev: str, filename: str, mirror: Optional[str]=None
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mirror', help="path to a repo mirror of %s" % AOSP_BASEURL)
+    parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('rev', help="manifest revision/tag")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
@@ -94,7 +95,7 @@ def main():
                     treeHashes[p['tree']] = p['sha256']
                     revTrees[p['rev']] = p['tree']
 
-    make_repo_file(args.url, args.rev, args.rev + '.json', mirror=args.mirror)
+    make_repo_file(args.url, args.rev, args.rev + '.json', force_refresh=args.force, mirror=args.mirror)
 
 if __name__ == "__main__":
     main()
