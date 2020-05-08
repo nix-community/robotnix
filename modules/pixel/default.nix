@@ -45,7 +45,7 @@ mkMerge [
   })
 
   # Device-specific overrides
-  (mkIf (config.kernel.name == "marlin") {
+  (mkIf (config.deviceFamily == "marlin") {
     kernel.compiler = "gcc";
     avbMode = "verity_only";
     apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
@@ -53,14 +53,14 @@ mkMerge [
       "arch/arm64/boot/Image.lz4-dtb"
     ];
   })
-  (mkIf (config.kernel.name == "wahoo") {
+  (mkIf (elem config.deviceFamily [ "taimen" "muskie" ]) {
     avbMode = "vbmeta_simple";
     kernel.buildProductFilenames = [
       "arch/arm64/boot/Image.lz4-dtb"
       "arch/arm64/boot/dtbo.img"
     ];
   })
-  (mkIf (config.kernel.name == "crosshatch") {
+  (mkIf (config.deviceFamily == "crosshatch") {
     avbMode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
     kernel.buildProductFilenames = [
@@ -70,7 +70,7 @@ mkMerge [
       "arch/arm64/boot/dts/qcom/sdm845-v2.1.dtb"
     ];
   })
-  (mkIf (config.kernel.name == "bonito") {
+  (mkIf (config.deviceFamily == "bonito") {
     avbMode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
     kernel.buildProductFilenames = [
