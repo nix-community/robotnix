@@ -24,6 +24,8 @@ in mkIf (config.flavor == "lineageos") (mkMerge [
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
+
+  envPackages = [ pkgs.openssl.dev ]; # Needed by included kernel build for some devices (pioneer at least)
 }
 {
   # Device-specific source dirs
