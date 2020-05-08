@@ -7,8 +7,8 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "platform_packages_apps_Updater";
-    rev = "a000bbabc368d08f4816d919bd979495e8552a72"; # 2019-10-09
-    sha256 = "01mlb8xr2jj3db6p3rpc3pbrb1kixd50vnflmjzb3yn4hxcmsv7v";
+    rev = "96d1642680a3207c45ce6a7a60cadda885b87604"; # 2020-04-08
+    sha256 = "06i1szgyrf09hrjmf5aqy5mmd491ylwd0xpxp1f9l1njgpg0l6k8";
   };
 in
 {
