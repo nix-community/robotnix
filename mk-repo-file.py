@@ -38,8 +38,8 @@ def checkout_git(url, rev):
     json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
     return json.loads(json_text)
 
-def make_repo_file(url: str, rev: str, filename: str, ref_type: ManifestRefType, mirror: Optional[str]=None):
-    if os.path.exists(filename):
+def make_repo_file(url: str, rev: str, filename: str, ref_type: ManifestRefType, force_refresh: bool, mirror: Optional[str]=None):
+    if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
     else:
         print("Fetching information for %s %s" % (url, rev))
@@ -87,6 +87,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mirror', help="directory to a repo mirror of %s" % AOSP_BASEURL)
     parser.add_argument('--ref-type', help="the kind of ref that is mirrored", choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
+    parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('rev', help="manifest revision/tag")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
@@ -104,7 +105,7 @@ def main():
                     treeHashes[p['tree']] = p['sha256']
                     revTrees[p['rev']] = p['tree']
 
-    make_repo_file(args.url, args.rev, args.rev + '.json', ref_type=ref_type, mirror=args.mirror)
+    make_repo_file(args.url, args.rev, args.rev + '.json', ref_type=ref_type, force_refresh=args.force, mirror=args.mirror)
 
 if __name__ == "__main__":
     main()
