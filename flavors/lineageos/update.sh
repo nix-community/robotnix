@@ -4,10 +4,11 @@ set -e
 set -u
 
 args=(
-	--mirror "/mnt/media/mirror"
-	"https://github.com/LineageOS/android"
-	"$1"
-	*.json #../vanilla/*.json
+    --mirror "/mnt/media/mirror"
+    --ref-type branch
+    "https://github.com/LineageOS/android"
+    "$@"
+    *.json #../vanilla/*.json
 )
 
 export TMPDIR=/tmp
