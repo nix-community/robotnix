@@ -24,6 +24,9 @@ let
     { device="blueline";   flavor="grapheneos"; }
     { device="bonito";     flavor="grapheneos"; }
     { device="sargo";      flavor="grapheneos"; }
+
+    { device="marlin";     flavor="lineageos"; }
+    { device="pioneer";    flavor="lineageos"; }
   ]));
 
   defaultBuild = (robotnix { device="arm64"; flavor="vanilla"; });
