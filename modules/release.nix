@@ -126,6 +126,7 @@ in
     otaDir = mkOption { type = types.path; internal = true; };
     img = mkOption { type = types.path; internal = true; };
     factoryImg = mkOption { type = types.path; internal = true; };
+    bootImg = mkOption { type = types.path; internal = true; };
     releaseScript = mkOption { type = types.path; internal = true;};
 
     prevBuildDir = mkOption { type = types.str; internal = true; };
@@ -151,6 +152,9 @@ in
     incrementalOta = mkDefault (runWrappedCommand "incremental-${prevBuildNumber}" otaScript { inherit targetFiles prevTargetFiles; });
     img = mkDefault (runWrappedCommand "img" imgScript { inherit targetFiles; });
     factoryImg = mkDefault (runWrappedCommand "factory" factoryImgScript { inherit targetFiles img; });
+
+    # Pull this out of target files, because (at least) verity key gets put into boot ramdisk
+    bootImg = mkDefault (pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out");
 
     apex.packageNames = mkIf (apex.enable && (androidVersion >= 10))
       [ "com.android.conscrypt" "com.android.media"
