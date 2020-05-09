@@ -20,7 +20,7 @@ in mkIf (config.flavor == "lineageos") (mkMerge [
   buildDateTime = mkDefault 1588648528;
   #vendor.buildID = mkDefault "lineage-17.0-${date}";
 
-  source.dirs = lib.importJSON (./. + "/${LineageOSRelease}.json");
+  source.dirs = lib.importJSON (./. + "/repo-${LineageOSRelease}.json");
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";

@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
-set -e
-set -u
+set -eu
 
 args=(
     --mirror "/mnt/media/mirror"
     --ref-type branch
     "https://github.com/LineageOS/android"
     "$@"
-    *.json #../vanilla/*.json
+    ../*/repo-*.json
 )
 
 export TMPDIR=/tmp

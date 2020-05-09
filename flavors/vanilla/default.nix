@@ -9,7 +9,7 @@ let
   };
 in mkIf (config.flavor == "vanilla") (mkMerge [
 {
-  source.dirs = lib.importJSON (./. + "/${config.source.manifest.rev}.json");
+  source.dirs = lib.importJSON (./. + "/repo-${config.source.manifest.rev}.json");
   # Not strictly necessary for me to set this, since I override the jsonFile
   source.manifest.url = mkDefault "https://android.googlesource.com/platform/manifest";
 }

@@ -105,7 +105,7 @@ def main():
                     treeHashes[p['tree']] = p['sha256']
                     revTrees[p['rev']] = p['tree']
 
-    make_repo_file(args.url, args.rev, args.rev + '.json', ref_type=ref_type, force_refresh=args.force, mirror=args.mirror)
+    make_repo_file(args.url, args.rev, f"repo-{args.rev}.json", ref_type=ref_type, force_refresh=args.force, mirror=args.mirror)
 
 if __name__ == "__main__":
     main()

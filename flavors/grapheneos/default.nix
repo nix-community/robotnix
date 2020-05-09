@@ -10,7 +10,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   buildNumber = mkDefault "2020.05.05.13";
   buildDateTime = mkDefault 1588698131;
 
-  source.dirs = lib.importJSON (./. + "/${grapheneOSRelease}.json");
+  source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
