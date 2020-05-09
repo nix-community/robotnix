@@ -128,6 +128,9 @@ in
       ];
 
       preBuild = ''
+        # (from nixpkgs) Note: we can get rid of this once http://permalink.gmane.org/gmane.linux.kbuild.devel/13800 is merged.
+        buildFlagsArray+=("KBUILD_BUILD_TIMESTAMP=$(date -u -d @$SOURCE_DATE_EPOCH)")
+
         make O=out ARCH=arm64 ${cfg.configName}_defconfig
       '' + optionalString (cfg.compiler == "clang") ''
         export LD_LIBRARY_PATH="${prebuiltClang}/lib:$LD_LIBRARY_PATH"
