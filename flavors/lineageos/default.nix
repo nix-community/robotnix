@@ -20,19 +20,8 @@ in mkIf (config.flavor == "lineageos")
   buildDateTime = mkDefault 1588648528;
   #vendor.buildID = mkDefault "lineage-17.0-${date}";
 
-  source.dirs = mkMerge [
+  source.dirs = mkMerge ([
     (lib.importJSON (./. + "/repo-${LineageOSRelease}.json"))
-
-    # Device-specific source dirs
-    (let
-      relpaths = map (d: replaceStrings ["_"] ["/"] (removePrefix "android_" d)) deviceMetadata.${config.device}.deps;
-     in filterDirsAttrs (getAttrs relpaths deviceDirs))
-
-    # Vendor-specific source dirs
-    (let
-      oem = toLower deviceMetadata.${config.device}.oem;
-      relpath = "vendor/${if oem == "lg" then "lge" else oem}";
-     in filterDirsAttrs (getAttrs [relpath] vendorDirs))
 
     {
       "vendor/lineage".patches = [ ./0001-Remove-LineageOS-keys.patch ];
@@ -45,7 +34,18 @@ in mkIf (config.flavor == "lineageos")
         })
       ];
     }
-  ];
+  ] ++ optionals (deviceMetadata ? "${config.device}") [
+    # Device-specific source dirs
+    (let
+      relpaths = map (d: replaceStrings ["_"] ["/"] (removePrefix "android_" d)) deviceMetadata.${config.device}.deps;
+    in filterDirsAttrs (getAttrs relpaths deviceDirs))
+
+    # Vendor-specific source dirs
+    (let
+      oem = toLower deviceMetadata.${config.device}.oem;
+      relpath = "vendor/${if oem == "lg" then "lge" else oem}";
+    in filterDirsAttrs (getAttrs [relpath] vendorDirs))
+  ]);
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
