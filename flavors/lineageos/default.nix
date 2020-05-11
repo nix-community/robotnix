@@ -24,7 +24,10 @@ in mkIf (config.flavor == "lineageos")
     (lib.importJSON (./. + "/repo-${LineageOSRelease}.json"))
 
     {
-      "vendor/lineage".patches = [ ./0001-Remove-LineageOS-keys.patch ];
+      "vendor/lineage".patches = [
+        ./0001-Remove-LineageOS-keys.patch
+        ./0002-bootanimation-Reproducibility-fix.patch
+      ];
       "system/extras".patches = [
         # pkgutil.get_data() not working, probably because we don't use their compiled python
         (pkgs.fetchpatch {
