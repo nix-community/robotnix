@@ -1,0 +1,13 @@
+diff --git a/core/Makefile b/core/Makefile
+index 4253b7200..783a533fe 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -2785,7 +2785,7 @@ $(BUILT_ASSEMBLED_VENDOR_MANIFEST):
+ 	    -c $(BUILT_SYSTEM_MATRIX) \
+ 	    -i $(BUILT_VENDOR_MANIFEST) \
+ 	    $$([ -d $(TARGET_OUT_VENDOR)/etc/vintf/manifest ] && \
+-	        find $(TARGET_OUT_VENDOR)/etc/vintf/manifest -type f -name "*.xml" | \
++	        find $(TARGET_OUT_VENDOR)/etc/vintf/manifest -type f -name "*.xml" | sort | \
+ 	        sed "s/^/-i /" | tr '\n' ' ') -o $@
+ endif # BUILT_VENDOR_MANIFEST
+ 
