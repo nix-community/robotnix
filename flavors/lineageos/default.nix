@@ -26,7 +26,10 @@ in mkIf (config.flavor == "lineageos")
     {
       "vendor/lineage".patches = [
         ./0001-Remove-LineageOS-keys.patch
-        ./0002-bootanimation-Reproducibility-fix.patch
+        (pkgs.substituteAll {
+          src = ./0002-bootanimation-Reproducibility-fix.patch;
+          inherit (pkgs) imagemagick;
+        })
       ];
       "system/extras".patches = [
         # pkgutil.get_data() not working, probably because we don't use their compiled python

@@ -1,22 +1,23 @@
-From afa6c3c5b8d4b333f4e5ab70ad6df007684ef766 Mon Sep 17 00:00:00 2001
+From 88c11bd1321d0f584bf47d87ae24900ba74443ce Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 10 May 2020 18:33:27 -0400
-Subject: [PATCH 2/2] bootanimation: Reproducibility fix
+Subject: [PATCH 2/3] bootanimation: Reproducibility fix
 
 ---
- bootanimation/Android.mk | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ bootanimation/Android.mk | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/bootanimation/Android.mk b/bootanimation/Android.mk
-index 2bc78ceb..d79e1b7f 100644
+index 2bc78ceb..d61a6fb4 100644
 --- a/bootanimation/Android.mk
 +++ b/bootanimation/Android.mk
-@@ -46,7 +46,7 @@ $(TARGET_GENERATED_BOOTANIMATION): $(SOONG_ZIP)
- 	for part_cnt in 0 1 2 3 4; do \
+@@ -47,6 +47,9 @@ $(TARGET_GENERATED_BOOTANIMATION): $(SOONG_ZIP)
  	    mkdir -p $(INTERMEDIATES)/part$$part_cnt; \
  	done; \
--	prebuilts/tools-lineage/${HOST_OS}-x86/bin/mogrify -resize $$RESOLUTION -colors 250 $(INTERMEDIATES)/*/*.png; \
-+	prebuilts/tools-lineage/${HOST_OS}-x86/bin/mogrify -preserve-timestamp -resize $$RESOLUTION -colors 250 $(INTERMEDIATES)/*/*.png; \
+ 	prebuilts/tools-lineage/${HOST_OS}-x86/bin/mogrify -resize $$RESOLUTION -colors 250 $(INTERMEDIATES)/*/*.png; \
++	for f in $(INTERMEDIATES)/*/*.png; do \
++	    @imagemagick@/bin/convert -strip "$$f" "$$f"; \
++	done; \
  	echo "$$IMAGESCALEWIDTH $$IMAGESCALEHEIGHT 60" > $(INTERMEDIATES)/desc.txt; \
  	cat vendor/lineage/bootanimation/desc.txt >> $(INTERMEDIATES)/desc.txt
  	$(hide) $(SOONG_ZIP) -L 0 -o $(TARGET_GENERATED_BOOTANIMATION) -C $(INTERMEDIATES) -D $(INTERMEDIATES)
