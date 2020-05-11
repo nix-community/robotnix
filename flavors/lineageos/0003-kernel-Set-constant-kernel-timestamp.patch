@@ -1,0 +1,32 @@
+From 929ebbdaa5d237bf7fc99ae15d2551d26cd2d08e Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 10 May 2020 18:50:33 -0400
+Subject: [PATCH 3/3] kernel: Set constant kernel timestamp
+
+---
+ build/tasks/kernel.mk | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/build/tasks/kernel.mk b/build/tasks/kernel.mk
+index 92f51874..990f5492 100644
+--- a/build/tasks/kernel.mk
++++ b/build/tasks/kernel.mk
+@@ -201,11 +201,14 @@ PATH_OVERRIDE += $(TOOLS_PATH_OVERRIDE)
+ 
+ KERNEL_ADDITIONAL_CONFIG_OUT := $(KERNEL_OUT)/.additional_config
+ 
++# Use a constant timestamp
++KERNEL_TIMESTAMP := KBUILD_BUILD_TIMESTAMP="$(shell date -u -d @1)"
++
+ # Internal implementation of make-kernel-target
+ # $(1): output path (The value passed to O=)
+ # $(2): target to build (eg. defconfig, modules, dtbo.img)
+ define internal-make-kernel-target
+-$(PATH_OVERRIDE) $(KERNEL_MAKE_CMD) $(KERNEL_MAKE_FLAGS) -C $(KERNEL_SRC) O=$(KERNEL_BUILD_OUT_PREFIX)$(1) ARCH=$(KERNEL_ARCH) $(KERNEL_CROSS_COMPILE) $(KERNEL_CLANG_TRIPLE) $(KERNEL_CC) $(KERNEL_LD) $(2)
++$(PATH_OVERRIDE) $(KERNEL_MAKE_CMD) $(KERNEL_MAKE_FLAGS) $(KERNEL_TIMESTAMP) -C $(KERNEL_SRC) O=$(KERNEL_BUILD_OUT_PREFIX)$(1) ARCH=$(KERNEL_ARCH) $(KERNEL_CROSS_COMPILE) $(KERNEL_CLANG_TRIPLE) $(KERNEL_CC) $(KERNEL_LD) $(2)
+ endef
+ 
+ # Make a kernel target
+-- 
+2.26.1
+
