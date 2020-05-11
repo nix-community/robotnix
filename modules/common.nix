@@ -16,6 +16,7 @@ mkMerge [
       src = ./partition-size-fix.patch;
       inherit (pkgs) coreutils;
     })
+    ./vendor_manifest-reproducible.patch
   ];
 
   # This one script needs python2. Used by sdk builds
