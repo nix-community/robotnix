@@ -17,6 +17,7 @@ mkMerge [
       inherit (pkgs) coreutils;
     })
     ./vendor_manifest-reproducible.patch
+    ./userdata-cache-uuid-reproducible.patch
   ];
 
   # This one script needs python2. Used by sdk builds
