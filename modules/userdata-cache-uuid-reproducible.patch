@@ -1,0 +1,24 @@
+diff --git a/tools/releasetools/add_img_to_target_files.py b/tools/releasetools/add_img_to_target_files.py
+index f2b9afa65..8bd9b36ad 100755
+--- a/tools/releasetools/add_img_to_target_files.py
++++ b/tools/releasetools/add_img_to_target_files.py
+@@ -371,6 +371,9 @@ def AddUserdata(output_zip):
+   else:
+     user_dir = common.MakeTempDir()
+ 
++  image_props["uuid"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "userdata"))
++  image_props["hash_seed"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "hash_seed-userdata"))
++
+   fstab = OPTIONS.info_dict["fstab"]
+   if fstab:
+     image_props["fs_type"] = fstab["/data"].fs_type
+@@ -521,6 +524,9 @@ def AddCache(output_zip):
+ 
+   user_dir = common.MakeTempDir()
+ 
++  image_props["uuid"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "cache"))
++  image_props["hash_seed"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "hash_seed-cache"))
++
+   fstab = OPTIONS.info_dict["fstab"]
+   if fstab:
+     image_props["fs_type"] = fstab["/cache"].fs_type
