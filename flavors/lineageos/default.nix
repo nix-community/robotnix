@@ -2,11 +2,43 @@
 with lib;
 let
   deviceMetadata = importJSON ./device-metadata.json;
-  deviceDirs = importJSON ./device-dirs.json;
+  _deviceDirs = importJSON ./device-dirs.json;
   vendorDirs = importJSON ./vendor-dirs.json;
 
+  # TODO: Condition on soc name?
+  dtbReproducibilityFix = ''
+    sed -i \
+      's/^DTB_OBJS := $(shell find \(.*\))$/DTB_OBJS := $(sort $(shell find \1))/' \
+      arch/arm64/boot/Makefile
+  '';
+  kernelsNeedFix = [ # Only verified marlin reproducibility is fixed by this, however these other repos have the same issue
+    "kernel/asus/sm8150"
+    "kernel/bq/msm8953"
+    "kernel/essential/msm8998"
+    "kernel/google/marlin"
+    "kernel/leeco/msm8996"
+    "kernel/lge/msm8996"
+    "kernel/motorola/msm8996"
+    "kernel/motorola/msm8998"
+    "kernel/motorola/sdm632"
+    "kernel/nubia/msm8998"
+    "kernel/oneplus/msm8996"
+    "kernel/oneplus/sdm845"
+    "kernel/oneplus/sm8150"
+    "kernel/razer/msm8998"
+    "kernel/samsung/sdm670"
+    "kernel/sony/sdm660"
+    "kernel/xiaomi/jason"
+    "kernel/xiaomi/msm8998"
+    "kernel/xiaomi/sdm660"
+    "kernel/xiaomi/sdm845"
+    "kernel/yandex/sdm660"
+    "kernel/zuk/msm8996"
+  ];
+  deviceDirs = mapAttrs' (n: v: nameValuePair n (v // (optionalAttrs (elem n kernelsNeedFix) { postPatch = dtbReproducibilityFix; }))) _deviceDirs;
+
   # TODO: Move this filtering into vanilla/graphene
-  filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url"]) dir;
+  filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "postPatch"]) dir;
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
 
   date = "2020.05.04";
