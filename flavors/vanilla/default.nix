@@ -98,6 +98,14 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     rev = "android-10.0.0_r0.23";
     sha256 = "0wy6h97g9j5sma67brn9vxq7jzf169j2gzq4ai96v4h68lz39lq9";
   };
+
+  # Fix reproducibility issue with DTBs not being sorted
+  kernel.postPatch = ''
+    sed -i \
+      's/^DTB_OBJS := $(shell find \(.*\))$/DTB_OBJS := $(sort $(shell find \1))/' \
+      arch/arm64/boot/Makefile
+  '';
+
   # TODO: Only build kernel for marlin since it needs verity key in build.
   # Kernel sources for crosshatch and bonito require multiple repos--which
   # could normally be fetched with repo at https://android.googlesource.com/kernel/manifest
