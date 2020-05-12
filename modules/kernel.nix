@@ -66,6 +66,11 @@ in
         type = types.listOf types.path;
       };
 
+      postPatch = mkOption {
+        default = "";
+        type = types.lines;
+      };
+
       relpath = mkOption {
         type = types.str;
         description = "Relative path in source tree to place kernel build artifacts";
@@ -92,9 +97,14 @@ in
     kernel.name = mkOptionDefault config.deviceFamily;
     kernel.relpath = mkOptionDefault "device/google/${config.kernel.name}-kernel";
 
+    kernel.postPatch = lib.optionalString (config.signBuild && (config.avbMode == "verity_only")) ''
+      rm -f verity_*.x509
+      openssl x509 -outform der -in ${config.build.x509 "verity"} -out verity_user.der.x509
+    '';
+
     build.kernel = pkgs.stdenv.mkDerivation {
       name = "kernel-${cfg.name}";
-      inherit (cfg) src patches;
+      inherit (cfg) src patches postPatch;
 
       # From os-specific/linux/kernel/manual-config.nix in nixpkgs
       prePatch = ''
@@ -103,11 +113,6 @@ in
             sed -i "$mf" -e 's|/usr/bin/||g ; s|/bin/||g ; s|/sbin/||g'
         done
         sed -i scripts/ld-version.sh -e "s|/usr/bin/awk|${pkgs.gawk}/bin/awk|"
-      '';
-
-      postPatch = lib.optionalString (config.signBuild && (config.avbMode == "verity_only")) ''
-        rm -f verity_*.x509
-        openssl x509 -outform der -in ${config.build.x509 "verity"} -out verity_user.der.x509
       '';
 
       nativeBuildInputs = with pkgs; [
