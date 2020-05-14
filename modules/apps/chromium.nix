@@ -29,7 +29,7 @@ in
       #isTriChrome = (config.androidVersion >= 10) && config.apps.${name}.enable && config.webview.${name}.enable;
       isTriChrome = false; # FIXME: Disable trichrome for now since it depends on a certificate and breaks nix caching
 
-      browser = apks.${name}.override {
+      browser = apks.${name}.override ({ customGnFlags ? {}, ... }: {
         targetCPU = { arm64 = "arm64"; arm = "arm"; x86_64 = "x64"; x86 = "x86";}.${config.arch};
         buildTargets =
           if isTriChrome then [ "trichrome_webview_apk" "trichrome_chrome_bundle" "trichrome_library_apk" ]
@@ -37,11 +37,11 @@ in
             (optional config.apps.${name}.enable "chrome_modern_public_apk") ++
             (optional config.webview.${name}.enable "system_webview_apk");
           inherit packageName webviewPackageName displayName;
-          customGnFlags = optionalAttrs isTriChrome {
+          customGnFlags = customGnFlags // optionalAttrs isTriChrome {
             # Lots of indirection here. If not careful, it might cause infinite recursion.
             trichrome_certdigest = toLower config.apps.prebuilt."${name}TrichromeLibrary".fingerprint;
           };
-      };
+      });
     in [
       (mkIf (config.apps.${name}.enable) {
         apps.prebuilt.${name}.apk =
