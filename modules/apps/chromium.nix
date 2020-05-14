@@ -36,7 +36,7 @@ in
           else
             (optional config.apps.${name}.enable "chrome_modern_public_apk") ++
             (optional config.webview.${name}.enable "system_webview_apk");
-          inherit packageName webviewPackageName;
+          inherit packageName webviewPackageName displayName;
           customGnFlags = optionalAttrs isTriChrome {
             # Lots of indirection here. If not careful, it might cause infinite recursion.
             trichrome_certdigest = toLower config.apps.prebuilt."${name}TrichromeLibrary".fingerprint;

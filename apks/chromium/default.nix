@@ -3,8 +3,11 @@
 , dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, utillinux, kerberos, gdk-pixbuf
 , glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libXdamage
 , zlib, ncurses5, libxml2, binutils, perl
+, substituteAll
 
 , name ? "chromium"
+, displayName ? "Chromium"
+, enableRebranding ? false
 , customGnFlags ? {}
 , targetCPU ? "arm64"
 , buildTargets ? [ "chrome_modern_public_apk" ]
@@ -134,6 +137,14 @@ in stdenvNoCC.mkDerivation rec {
     gdk-pixbuf glib gtk3 alsaLib libXScrnSaver libXcursor libXtst libXdamage
   ];
 
+  patches = lib.optional enableRebranding (
+    substituteAll {
+      src = ./rebranding.patch;
+      inherit displayName;
+    }
+  );
+  patchFlags = [ "-p1" "-d src" ];
+
   # TODO: Much of the nixos-specific stuff could probably be made conditional
   postPatch = ''
     ( cd src
@@ -157,6 +168,13 @@ in stdenvNoCC.mkDerivation rec {
       substituteInPlace chrome/android/BUILD.gn \
         --replace 'chrome_public_manifest_package = "org.chromium.chrome"' \
                   'chrome_public_manifest_package = "${packageName}"'
+    )
+  '' + lib.optionalString enableRebranding ''
+    ( cd src
+      # Example from Vanadium's string-rebranding patch
+      sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' chrome/browser/touch_to_fill/android/internal/java/strings/android_touch_to_fill_strings.grd chrome/browser/ui/android/strings/android_chrome_strings.grd components/components_chromium_strings.grd components/new_or_sad_tab_strings.grdp components/security_interstitials_strings.grdp
+      find components/strings/ -name '*.xtb' -exec sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' {} +
+      find chrome/browser/ui/android/strings/translations -name '*.xtb' -exec sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' {} +
     )
   '';
 

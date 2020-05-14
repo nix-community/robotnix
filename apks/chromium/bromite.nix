@@ -12,7 +12,9 @@ let
 
 in (chromium.override {
   name = "bromite";
+  displayName = "Bromite";
   inherit version;
+  enableRebranding = true;
   customGnFlags = { # From bromite/build/GN_ARGS
     blink_symbol_level=1;
     dcheck_always_on=false;
