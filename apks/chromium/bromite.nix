@@ -1,16 +1,16 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "83.0.4103.46";
+  version = "83.0.4103.53";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "1zr1vgjdklq78n31263k882f7z3jqfbxp14f9xm2jzm5z0rjdvw3";
+    sha256 = "0wkhn8g87lalrd54a8qvv714kiz8lcw9w4nzllvccgfk5wpyjn7z";
   };
 
-  # Needed just for domain_substitution, since bromite patch is broken
+  # Needed just for domain_substitution, since bromite patch is/was broken
   ungoogled_src = fetchFromGitHub {
     owner = "Eloston";
     repo = "ungoogled-chromium";
