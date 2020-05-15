@@ -44,8 +44,8 @@ in
   (fetchFromGitHub { # api == "29"
     owner = "danielfullmer";
     repo = "android-prepare-vendor";
-    rev = "c9b9505ab1f503d72711004ded42779fd9e2aed1";
-    sha256 = "19250xxm6b2zlr8v3jnz5agwky4wbkkccrf4za56mbvfw7p55fbl";
+    rev = "059c4b69765c296e3efc8938bb49e4f129204c54";
+    sha256 = "1hcq6d9fxw5dj5473r8xs6wppd7py9lffrvqpzk661inw6ndp696";
   });
 
   nativeBuildInputs = [ makeWrapper ];

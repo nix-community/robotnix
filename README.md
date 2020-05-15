@@ -1,6 +1,6 @@
 # robotnix - Building Android (AOSP) with Nix
 
-This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs, currently targeting Pixel 1-3a (XL) devices.
+This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs, currently targeting Pixel 1-4(a) (XL) devices.
 Robotnix uses a NixOS-style module system for customizing various aspects of the build.
  
 Some optional modules include:
@@ -84,7 +84,7 @@ To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 
 ### Testing / CI / Reproducibility
 
-All devices (Pixel 1-3(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.
+All devices (Pixel 1-4(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.
 See `release.nix` for the set of configurations with this minimal build testing.
 This check is run using `nix-build ./release.nix -A check`.
 As each build takes approximately 4 hours--I only build marlin and crosshatch builds for myself.
