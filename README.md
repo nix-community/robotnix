@@ -94,7 +94,7 @@ This would allow an end-user to simply sign their own releases without building 
 As of Android 10, `target-files`, `img`, and `ota` files all seem to be built reproducibly.
 Automated testing of this is still desired.
 There are a few places where user-specific public keys are included into the build for key pinning.
-This unfortunately decreases the of sharing build products between users.
+This unfortunately decreases the possibility of sharing build products between users.
 The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
 Fixes for this are still under investigation.
 
