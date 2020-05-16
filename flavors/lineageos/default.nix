@@ -37,6 +37,8 @@ let
   ];
   deviceDirs = mapAttrs' (n: v: nameValuePair n (v // (optionalAttrs (elem n kernelsNeedFix) { postPatch = dtbReproducibilityFix; }))) _deviceDirs;
 
+  supportedDevices = attrNames deviceMetadata;
+
   # TODO: Move this filtering into vanilla/graphene
   filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "postPatch"]) dir;
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
@@ -51,6 +53,9 @@ in mkIf (config.flavor == "lineageos")
   buildNumber = mkDefault date;
   buildDateTime = mkDefault 1588648528;
   #vendor.buildID = mkDefault "lineage-17.0-${date}";
+
+  warnings = optional ((config.device != null) && !(elem config.device supportedDevices))
+    "${config.device} is not a supported device for LineageOS";
 
   source.dirs = mkMerge ([
     (lib.importJSON (./. + "/repo-${LineageOSRelease}.json"))
