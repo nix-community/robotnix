@@ -7,11 +7,17 @@ let
     url = "https://android.googlesource.com/kernel/msm";
     inherit rev sha256;
   };
+
+  supportedDeviceFamilies = [ "marlin" "taimen" "muskie" "crosshatch" "bonito" "coral" "generic"];
+
 in mkIf (config.flavor == "vanilla") (mkMerge [
 {
   source.dirs = lib.importJSON (./. + "/${config.source.manifest.rev}.json");
   # Not strictly necessary for me to set this, since I override the jsonFile
   source.manifest.url = mkDefault "https://android.googlesource.com/platform/manifest";
+
+  warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
+    "${config.device} is not a supported device for vanilla";
 }
 {
   ### AOSP usability improvements ###
@@ -48,7 +54,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
 }
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "bonito" "crosshatch" "coral" "generic"])) {
+(mkIf (elem config.deviceFamily (remove "marlin" supportedDeviceFamilies)) {
   buildNumber = mkDefault "2020.05.04.17";
   buildDateTime = mkDefault 1588626224;
 })
@@ -87,7 +93,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
 })
 (mkIf (config.deviceFamily == "marlin") {
-  # marlin is no longer receiving monthly security updates. Keeping this old source around just for testing.
+  warnings = [ "marlin and sailfish are no longer receiving monthly security updates from Google. Support is left just for testing" ];
+
   vendor.buildID = mkDefault "QP1A.191005.007.A3";
   source.manifest.rev = mkDefault "android-10.0.0_r17";
 
