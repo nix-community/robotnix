@@ -37,7 +37,7 @@ let
   ];
   deviceDirs = mapAttrs' (n: v: nameValuePair n (v // (optionalAttrs (elem n kernelsNeedFix) { postPatch = dtbReproducibilityFix; }))) _deviceDirs;
 
-  supportedDevices = attrNames deviceMetadata;
+  supportedDevices = attrNames (filterAttrs (n: v: v.branch == LineageOSRelease) deviceMetadata);
 
   # TODO: Move this filtering into vanilla/graphene
   filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "postPatch"]) dir;
