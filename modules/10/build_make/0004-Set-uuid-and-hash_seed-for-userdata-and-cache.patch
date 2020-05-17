@@ -1,0 +1,37 @@
+From 1383112cbaceede28b4f87d612a861676c3f9872 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 00:46:11 -0400
+Subject: [PATCH 4/5] Set uuid and hash_seed for userdata and cache
+
+Change-Id: I14c44af7426f2d1b1917933f21f169e5d2bae0f5
+---
+ tools/releasetools/add_img_to_target_files.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tools/releasetools/add_img_to_target_files.py b/tools/releasetools/add_img_to_target_files.py
+index f2b9afa65..e10d76adf 100755
+--- a/tools/releasetools/add_img_to_target_files.py
++++ b/tools/releasetools/add_img_to_target_files.py
+@@ -371,6 +371,9 @@ def AddUserdata(output_zip):
+   else:
+     user_dir = common.MakeTempDir()
+ 
++  image_props["uuid"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "userdata-@hash@"))
++  image_props["hash_seed"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "hash_seed-userdata-@hash@"))
++
+   fstab = OPTIONS.info_dict["fstab"]
+   if fstab:
+     image_props["fs_type"] = fstab["/data"].fs_type
+@@ -521,6 +524,9 @@ def AddCache(output_zip):
+ 
+   user_dir = common.MakeTempDir()
+ 
++  image_props["uuid"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "cache-@hash@"))
++  image_props["hash_seed"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "hash_seed-cache-@hash@"))
++
+   fstab = OPTIONS.info_dict["fstab"]
+   if fstab:
+     image_props["fs_type"] = fstab["/cache"].fs_type
+-- 
+2.26.1
+

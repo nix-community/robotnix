@@ -1,5 +1,15 @@
+From 57dcf4c6a69207b8e3ffb8520cf04940f5aae8ca Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 00:45:30 -0400
+Subject: [PATCH 3/5] Make vendor_manifest.xml reproducible
+
+Change-Id: Ic27fd1469b87560ba92e75bbd902cfe1fc3cd24a
+---
+ core/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 diff --git a/core/Makefile b/core/Makefile
-index 4253b7200..783a533fe 100644
+index ba01f42d9..e3702a7a4 100644
 --- a/core/Makefile
 +++ b/core/Makefile
 @@ -2785,7 +2785,7 @@ $(BUILT_ASSEMBLED_VENDOR_MANIFEST):
@@ -11,3 +21,6 @@ index 4253b7200..783a533fe 100644
  	        sed "s/^/-i /" | tr '\n' ' ') -o $@
  endif # BUILT_VENDOR_MANIFEST
  
+-- 
+2.26.1
+
