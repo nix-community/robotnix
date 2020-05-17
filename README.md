@@ -91,9 +91,13 @@ As each build takes approximately 4 hours--I only build marlin and crosshatch bu
 At some point, I would love to set up a build farm and publish build products on s3 or [cachix](https://cachix.org).
 This would allow an end-user to simply sign their own releases without building the entire AOSP themselves.
 
-As of Android 10, `target-files`, `img`, and `ota` files all seem to be built reproducibly.
-Automated testing of this is still desired.
-There are a few places where user-specific public keys are included into the build for key pinning.
+As of 2020-05-17, `target_files`, `signed_target_files`, `img`, and `ota` files have all been verified to be bit-for-bit reproducible for `crosshatch` and `marlin`.
+Automated periodic testing of this is still desired.
+
+One option being investigated is to set up multiple remote builders to produce unsigned target files for a number of device and flavor combinations.
+An end-user could then verify that the builders produced the same unsigned target files, and finish the process by signing the target files and producing their own `img` and `ota` files.
+
+However, there are a few places where user-specific public keys are included in the build for key pinning.
 This unfortunately decreases the possibility of sharing build products between users.
 The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
 Fixes for this are still under investigation.
