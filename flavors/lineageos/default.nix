@@ -54,7 +54,11 @@ in mkIf (config.flavor == "lineageos")
   buildDateTime = mkDefault 1588648528;
   #vendor.buildID = mkDefault "lineage-17.0-${date}";
 
-  warnings = optional ((config.device != null) && !(elem config.device supportedDevices))
+  warnings = optional (
+      (config.device != null) &&
+      !(elem config.device supportedDevices) &&
+      (config.deviceFamily != "generic")
+    )
     "${config.device} is not a supported device for LineageOS";
 
   source.dirs = mkMerge ([
