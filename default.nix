@@ -16,6 +16,8 @@ let
       configuration
       ./flavors/grapheneos
       ./flavors/vanilla
+      ./modules/10
+      ./modules/9
       ./modules/apps/auditor.nix
       ./modules/apps/chromium.nix
       ./modules/apps/fdroid.nix
@@ -24,8 +26,8 @@ let
       ./modules/apps/updater.nix
       ./modules/assertions.nix
       ./modules/base.nix
-      ./modules/common.nix
       ./modules/emulator.nix
+      ./modules/envpackages.nix
       ./modules/etc.nix
       ./modules/framework.nix
       ./modules/google.nix

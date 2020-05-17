@@ -77,7 +77,7 @@ in
       };
 
       compiler = mkOption {
-        default = "gcc";
+        default = "clang";
         type = types.strMatching "(gcc|clang)";
       };
 
