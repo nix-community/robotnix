@@ -89,5 +89,16 @@ mkMerge [
       "arch/arm64/boot/dtbo.img"
       "arch/arm64/boot/dts/qcom/sdm670.dtb"
     ];
+
+    # Reproducibility fix for persist.img.
+    # TODO: Generate uuid based on fingerprint
+    source.dirs."device/google/bonito".patches = [
+      (pkgs.substituteAll {
+        src = ./bonito-persist-img-reproducible.patch;
+        uuid = "bc95e63d-cc4c-4205-a7ec-0a4e377b65bd";
+        hashSeed = "3cc33955-c4ed-4c44-b195-1e4178b7e41a";
+        buildDateTime = config.buildDateTime;
+      })
+    ];
   })
 ]
