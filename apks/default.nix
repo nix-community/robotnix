@@ -16,6 +16,6 @@ rec {
   };
   bromite = import ./chromium/bromite.nix {
     inherit chromium;
-    inherit (pkgs) fetchFromGitHub git;
+    inherit (pkgs) fetchFromGitHub git python3;
   };
 }

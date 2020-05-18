@@ -1,0 +1,98 @@
+From c118dc8c0eea5f570e8dbd17d609b275121dd2cd Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 18:58:23 -0400
+Subject: [PATCH 1/4] mkfs.f2fs: add UUID option
+
+---
+ include/f2fs_fs.h       |  1 +
+ lib/libf2fs.c           |  4 ++++
+ mkfs/f2fs_format.c      |  2 +-
+ mkfs/f2fs_format_main.c | 11 ++++++++++-
+ 4 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/include/f2fs_fs.h b/include/f2fs_fs.h
+index e84cccc..e97a785 100644
+--- a/include/f2fs_fs.h
++++ b/include/f2fs_fs.h
+@@ -393,6 +393,7 @@ struct f2fs_configuration {
+ 	u_int32_t lpf_ino;
+ 	u_int32_t root_uid;
+ 	u_int32_t root_gid;
++	__u8 uuid[16];
+ 
+ 	/* defragmentation parameters */
+ 	int defrag_shrink;
+diff --git a/lib/libf2fs.c b/lib/libf2fs.c
+index 60b84e0..ad13619 100644
+--- a/lib/libf2fs.c
++++ b/lib/libf2fs.c
+@@ -20,6 +20,7 @@
+ #include <mntent.h>
+ #endif
+ #include <time.h>
++#include <uuid/uuid.h>
+ #include <sys/stat.h>
+ #ifndef ANDROID_WINDOWS_HOST
+ #include <sys/mount.h>
+@@ -628,6 +629,9 @@ void f2fs_init_configuration(void)
+ 	/* default root owner */
+ 	c.root_uid = getuid();
+ 	c.root_gid = getgid();
++
++        /* Create a default UUID */
++        uuid_generate(c.uuid);
+ }
+ 
+ #ifdef HAVE_SETMNTENT
+diff --git a/mkfs/f2fs_format.c b/mkfs/f2fs_format.c
+index a2685cb..b883b66 100644
+--- a/mkfs/f2fs_format.c
++++ b/mkfs/f2fs_format.c
+@@ -428,7 +428,7 @@ static int f2fs_prepare_super_block(void)
+ 		return -1;
+ 	}
+ 
+-	uuid_generate(sb->uuid);
++	uuid_copy(sb->uuid, c.uuid);
+ 
+ 	/* precompute checksum seed for metadata */
+ 	if (c.feature & cpu_to_le32(F2FS_FEATURE_INODE_CHKSUM))
+diff --git a/mkfs/f2fs_format_main.c b/mkfs/f2fs_format_main.c
+index 9672fd2..c04f414 100644
+--- a/mkfs/f2fs_format_main.c
++++ b/mkfs/f2fs_format_main.c
+@@ -60,6 +60,7 @@ static void mkfs_usage()
+ 	MSG(0, "  -s # of segments per section [default:1]\n");
+ 	MSG(0, "  -S sparse mode\n");
+ 	MSG(0, "  -t 0: nodiscard, 1: discard [default:1]\n");
++	MSG(0, "  -U UUID\n");
+ 	MSG(0, "  -w wanted sector size\n");
+ 	MSG(0, "  -z # of sections per zone [default:1]\n");
+ 	MSG(0, "  -V print the version number and exit\n");
+@@ -107,7 +108,8 @@ static void add_default_options(void)
+ 
+ static void f2fs_parse_options(int argc, char *argv[])
+ {
+-	static const char *option_string = "qa:c:d:e:E:g:il:mo:O:R:s:S:z:t:fw:V";
++	static const char *option_string = "qa:c:d:e:E:g:il:mo:O:R:s:S:z:t:U:fw:V";
++	int val;
+ 	int32_t option=0;
+ 
+ 	while ((option = getopt(argc,argv,option_string)) != EOF) {
+@@ -189,6 +191,13 @@ static void f2fs_parse_options(int argc, char *argv[])
+ 		case 'w':
+ 			c.wanted_sector_size = atoi(optarg);
+ 			break;
++		case 'U':
++			val = uuid_parse(optarg, c.uuid);
++			if (val != 0) {
++				MSG(0, "\tError: Invalid UUID\n");
++				mkfs_usage();
++			}
++                        break;
+ 		case 'V':
+ 			show_version("mkfs.f2fs");
+ 			exit(0);
+-- 
+2.26.1
+

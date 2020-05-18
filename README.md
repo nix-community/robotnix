@@ -1,6 +1,6 @@
 # robotnix - Building Android (AOSP) with Nix
 
-This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs, currently targeting Pixel 1-3a (XL) devices.
+This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs, currently targeting Pixel 1-4(a) (XL) devices.
 Robotnix uses a NixOS-style module system for customizing various aspects of the build.
  
 Some optional modules include:
@@ -37,9 +37,9 @@ The command above will build an image signed with `test-keys`, so definitely don
 To flash the result to your device, run `fastboot update -w <img.zip>`.
 
 ## Requirements
-A typical build for `robotnix` requires approximately 40GB free disk space to check out the for android source, plus an additional 14GB for chromium.
-The AOSP project requires at least 16GB RAM to build.
-Ensure your `/tmp` is not mounted using `tmpfs`, since the AOSP intermediate builds products are very large and will easily use all of your RAM (even if you have 32GB)!
+The AOSP project requires at least 250GB free disk space as well as 16GB RAM.
+A typical build  requires approximately 40GB free disk space to check out the android source, 14GB for chromium, plus some additional free space for intermediate build products.
+Ensure your `/tmp` is not mounted using `tmpfs`, since the intermediate builds products are very large and will easily use all of your RAM (even if you have 32GB)!
 A user can use the `--cores` option for `nix-build` to set the number of cores to
 use, which can also be useful to decrease parallelism in case memory usage of
 certain build steps is too large.
@@ -84,17 +84,21 @@ To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 
 ### Testing / CI / Reproducibility
 
-All devices (Pixel 1-3(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.
+All devices (Pixel 1-4(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.
 See `release.nix` for the set of configurations with this minimal build testing.
 This check is run using `nix-build ./release.nix -A check`.
 As each build takes approximately 4 hours--I only build marlin and crosshatch builds for myself.
 At some point, I would love to set up a build farm and publish build products on s3 or [cachix](https://cachix.org).
 This would allow an end-user to simply sign their own releases without building the entire AOSP themselves.
 
-As of Android 10, `target-files`, `img`, and `ota` files all seem to be built reproducibly.
-Automated testing of this is still desired.
-There are a few places where user-specific public keys are included into the build for key pinning.
-This unfortunately decreases the of sharing build products between users.
+As of 2020-05-17, `target_files`, `signed_target_files`, `img`, and `ota` files have all been verified to be bit-for-bit reproducible for `crosshatch` and `marlin`.
+Automated periodic testing of this is still desired.
+
+One option being investigated is to set up multiple remote builders to produce unsigned target files for a number of device and flavor combinations.
+An end-user could then verify that the builders produced the same unsigned target files, and finish the process by signing the target files and producing their own `img` and `ota` files.
+
+However, there are a few places where user-specific public keys are included in the build for key pinning.
+This unfortunately decreases the possibility of sharing build products between users.
 The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
 Fixes for this are still under investigation.
 

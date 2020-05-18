@@ -2,6 +2,9 @@
 with lib;
 let
   grapheneOSRelease = "${config.vendor.buildID}.2020.05.05.02";
+
+  supportedDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito"  "generic"];
+
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
   # This a default number for robotnix that I update whenever a change is made
@@ -15,6 +18,9 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
   source.manifest.rev = mkDefault "refs/tags/${grapheneOSRelease}";
+
+  warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
+    "${config.device} is not a supported device for GrapheneOS";
 }
 (mkIf ((elem config.deviceFamily [ "taimen" "muskie" ])) {
   vendor.buildID = mkDefault "QQ2A.200501.001.B3";

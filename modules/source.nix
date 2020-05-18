@@ -186,7 +186,7 @@ in
       };
 
       excludeGroups = mkOption {
-        default = [];
+        default = [ "darwin" "mips" "hikey" ];
         type = types.listOf types.str;
         description = "project groups to exclude from source tree";
       };

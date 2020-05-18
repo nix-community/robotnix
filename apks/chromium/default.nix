@@ -1,10 +1,13 @@
-{ pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook
-, python2, gn, ninja, llvmPackages_latest, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
+{ pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook, buildPackages
+, python2, ninja, llvmPackages_10, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
 , dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, utillinux, kerberos, gdk-pixbuf
 , glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libXdamage
 , zlib, ncurses5, libxml2, binutils, perl
+, substituteAll
 
 , name ? "chromium"
+, displayName ? "Chromium"
+, enableRebranding ? false
 , customGnFlags ? {}
 , targetCPU ? "arm64"
 , buildTargets ? [ "chrome_modern_public_apk" ]
@@ -63,9 +66,10 @@ let
     treat_warnings_as_errors = false;
     use_sysroot = false;
 
+    use_gnome_keyring = false;
     enable_vr = false; # Currently not checking out vr stuff
     enable_remoting = false;
-    enable_reporting = false;
+    enable_reporting = false; # Needs to be true for 83 for undefined symbol error
 
     # enable support for the H.264 codec
     proprietary_codecs = true;
@@ -116,29 +120,53 @@ let
         echo '#define SKIA_COMMIT_HASH "${deps."src/third_party/skia".rev}-"' >> $out/src/skia/ext/skia_commit_hash.h
         echo '#endif  // SKIA_EXT_SKIA_COMMIT_HASH_H_'                        >> $out/src/skia/ext/skia_commit_hash.h
       '');
+
+  # Use the prebuilt one from CIPD
+  gn = stdenv.mkDerivation {
+    name = "gn";
+    src = deps."src/buildtools/linux64";
+    nativeBuildInputs = [ autoPatchelfHook ];
+    installPhase = ''
+      install -Dm755 gn $out/bin/gn
+    '';
+  };
+
 in stdenvNoCC.mkDerivation rec {
   pname = name;
   inherit version src;
 
-  nativeBuildInputs = [ gn ninja pkg-config jre8 gperf bison ] ++ 
+  nativeBuildInputs = [ gn ninja pkg-config jre8 gperf bison nodejs ] ++
     # Android stuff (from src/build/install-build-deps-android.sh)
     # Including some of the stuff from src/.vpython as well
     [ bsdiff
-      (python2.withPackages (p: with p; [ six ]))
+      (python2.withPackages (p: with p; [ six setuptools ]))
       binutils # Needs readelf
       perl # Used by //third_party/libvpx
       buildenv
     ];
+
+  # Even though we are building for android, it still complains if its missing linux libs/headers>..
   buildInputs = [
     dbus at-spi2-atk atk at-spi2-core nspr nss pciutils utillinux kerberos
     gdk-pixbuf glib gtk3 alsaLib libXScrnSaver libXcursor libXtst libXdamage
   ];
+
+  patches = lib.optional enableRebranding (
+    substituteAll {
+      src = ./rebranding.patch;
+      inherit displayName;
+    }
+  );
+  patchFlags = [ "-p1" "-d src" ];
 
   # TODO: Much of the nixos-specific stuff could probably be made conditional
   postPatch = ''
     ( cd src
 
       patchShebangs --build .
+
+      mkdir -p buildtools/linux64
+      ln -s --force ${llvmPackages_10.clang.cc}/bin/clang-format buildtools/linux64/clang-format || true
 
       mkdir -p third_party/node/linux/node-linux-x64/bin
       ln -s --force ${nodejs}/bin/node                    third_party/node/linux/node-linux-x64/bin/node      || true
@@ -153,10 +181,18 @@ in stdenvNoCC.mkDerivation rec {
       echo 'checkout_oculus_sdk = false'              >> build/config/gclient_args.gni
       echo 'checkout_openxr = false'                  >> build/config/gclient_args.gni
       echo 'checkout_aemu = false'                    >> build/config/gclient_args.gni
+      echo 'checkout_libaom = false'                  >> build/config/gclient_args.gni
 
       substituteInPlace chrome/android/BUILD.gn \
         --replace 'chrome_public_manifest_package = "org.chromium.chrome"' \
                   'chrome_public_manifest_package = "${packageName}"'
+    )
+  '' + lib.optionalString enableRebranding ''
+    ( cd src
+      # Example from Vanadium's string-rebranding patch
+      sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' chrome/browser/touch_to_fill/android/internal/java/strings/android_touch_to_fill_strings.grd chrome/browser/ui/android/strings/android_chrome_strings.grd components/components_chromium_strings.grd components/new_or_sad_tab_strings.grdp components/security_interstitials_strings.grdp
+      find components/strings/ -name '*.xtb' -exec sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' {} +
+      find chrome/browser/ui/android/strings/translations -name '*.xtb' -exec sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' {} +
     )
   '';
 

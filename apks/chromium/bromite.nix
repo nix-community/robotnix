@@ -1,18 +1,28 @@
-{ chromium, fetchFromGitHub, git }:
+{ chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "81.0.4044.127";
+  version = "83.0.4103.53";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "1fl9mz08yayp61bi1rwiw42jj07i8w8m0v2xmdxnvi5siqdlf993";
+    sha256 = "0wkhn8g87lalrd54a8qvv714kiz8lcw9w4nzllvccgfk5wpyjn7z";
+  };
+
+  # Needed just for domain_substitution, since bromite patch is/was broken
+  ungoogled_src = fetchFromGitHub {
+    owner = "Eloston";
+    repo = "ungoogled-chromium";
+    rev = "81.0.4044.138-1";
+    sha256 = "1qa5lw2psaqxr2zklaldx4sm6by4gsw3mfrp01ijc4kkp9jmvg7r";
   };
 
 in (chromium.override {
   name = "bromite";
+  displayName = "Bromite";
   inherit version;
+  enableRebranding = true;
   customGnFlags = { # From bromite/build/GN_ARGS
     blink_symbol_level=1;
     dcheck_always_on=false;
@@ -32,7 +42,7 @@ in (chromium.override {
     enable_nacl=false;
     enable_nacl_nonsfi=false;
     enable_remoting=false;
-    enable_reporting=false;
+    enable_reporting=true; # Otherwise, fails with undefined symbol: content::CrossOriginEmbedderPolicyReporter::CrossOriginEmbedderPolicyReporter
     enable_resource_whitelist_generation=false;
     enable_vr=false;
     fieldtrial_testing_like_official_build=true;
@@ -49,18 +59,29 @@ in (chromium.override {
     use_official_google_api_keys=false;
     use_openh264=true;
     chrome_pgo_phase=0;
-    full_wpo_on_official=true;
     use_sysroot=false;
 
-    # XXX: Hack. Not sure why it's not being set correctly
+    # XXX: Hack. Not sure why it's not being set correctly when building webview
     rtc_use_x11=false;
+    rtc_use_x11_extensions=false;
+    rtc_use_pipewire=false;
   };
 }).overrideAttrs (attrs: {
   postPatch = ''
     ( cd src
       cat ${bromite_src}/build/bromite_patches_list.txt | while read patchfile; do
+        if [[ "$patchfile" == "Automated-domain-substitution.patch" ]]; then
+          continue
+        fi
+
+        echo Applying $patchfile
         ${git}/bin/git apply --unsafe-paths "${bromite_src}/build/patches/$patchfile"
       done
+
+      ${python3}/bin/python ${ungoogled_src}/utils/domain_substitution.py apply -r ${ungoogled_src}/domain_regex.list -f ${ungoogled_src}/domain_substitution.list -c ./domsubcache.tar.gz .
+
+      # Fixes issue with "sources" being unset in chrome/browser/safe_browsing/BUILD.gn
+      patch -p1 < ${./bromite-safe-browsing-gn-fix.patch}
     )
   '' + attrs.postPatch;
 })

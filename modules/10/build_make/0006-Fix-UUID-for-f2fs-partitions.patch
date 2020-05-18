@@ -1,0 +1,26 @@
+From 55e54e40de95928a579e1ffdb8ce2110f1d6cbfd Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 20:10:45 -0400
+Subject: [PATCH 6/6] Fix UUID for f2fs partitions
+
+Change-Id: Ib18acc29fde0a7999ebddfc733fb3e5bb6eaec3f
+---
+ tools/releasetools/build_image.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/releasetools/build_image.py b/tools/releasetools/build_image.py
+index 97f4ba7c7..9fb35d330 100755
+--- a/tools/releasetools/build_image.py
++++ b/tools/releasetools/build_image.py
+@@ -326,6 +326,8 @@ def BuildImageMkfs(in_dir, prop_dict, out_file, target_out, fs_config):
+     if "timestamp" in prop_dict:
+       build_command.extend(["-T", str(prop_dict["timestamp"])])
+     build_command.extend(["-L", prop_dict["mount_point"]])
++    if "uuid" in prop_dict:
++      build_command.extend(["-U", prop_dict["uuid"]])
+   else:
+     raise BuildImageError(
+         "Error: unknown filesystem type: {}".format(fs_type))
+-- 
+2.26.1
+

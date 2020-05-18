@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/safe_browsing/BUILD.gn b/chrome/browser/safe_browsing/BUILD.gn
+index dcda64b761..0a2d3f0ef0 100644
+--- a/chrome/browser/safe_browsing/BUILD.gn
++++ b/chrome/browser/safe_browsing/BUILD.gn
+@@ -64,6 +64,8 @@ jumbo_static_library("safe_browsing") {
+     deps += [ "//extensions/browser" ]
+   }
+   }
++  sources = []
++  deps = []
+ 
+   if (safe_browsing_mode != 0) {
+     # "Safe Browsing Basic" files used for safe browsing in full mode

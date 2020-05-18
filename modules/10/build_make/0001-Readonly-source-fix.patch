@@ -1,3 +1,17 @@
+From c4026fd09ed06e6c6b6ec9fdce48fa29bbfad542 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 00:42:48 -0400
+Subject: [PATCH 1/6] Readonly source fix
+
+Have CopyFile just always set u+w on copied files. Fixes a bunch of
+issues that would be too difficult to track down otherwise. HACK
+
+Change-Id: Ic905ab7c3c41f013fc70c92b375f5dc41d5cf586
+---
+ core/Makefile            | 1 +
+ tools/libhost/CopyFile.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
 diff --git a/core/Makefile b/core/Makefile
 index 4253b7200..ba01f42d9 100644
 --- a/core/Makefile
@@ -26,3 +40,6 @@ index f9bda86fd..44b36e4bd 100644
          }
  #ifndef _WIN32
          /*
+-- 
+2.26.1
+

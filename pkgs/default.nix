@@ -19,7 +19,12 @@ let
 
     bundletool = super.callPackage ./bundletool {};
 
-    diffoscope = (super.diffoscope.overrideAttrs (attrs: {
+    diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {
+      version = "142";
+      src = super.fetchurl {
+        url    = "https://diffoscope.org/archive/diffoscope-${version}.tar.bz2";
+        sha256 = "0c6lvppghw9ynjg2radr8z3fc6lpgmgwr6kxyih7q4rxqf4gfv6i";
+      };
       patches = attrs.patches ++ [
         ./diffoscope/0001-comparators-android-Support-sparse-android-images.patch
         ./diffoscope/arch-hack.patch

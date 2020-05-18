@@ -9,7 +9,9 @@ let
   };
 in (chromium.override {
   name = "vanadium";
+  displayName = "Vanadium";
   version = "81.0.4044.117";
+  enableRebranding = false; # Patches already include rebranding
   customGnFlags = {
     is_component_build = false;
     is_debug = false;

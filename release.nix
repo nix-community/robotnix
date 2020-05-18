@@ -14,7 +14,8 @@ let
     { device="blueline";   flavor="vanilla"; }
     { device="bonito";     flavor="vanilla"; }
     { device="sargo";      flavor="vanilla"; }
-    #"coral" "flame" # No android-prepare-vendor yet
+    { device="coral";     flavor="vanilla"; }
+    { device="flame";      flavor="vanilla"; }
 
     { device="x86";        flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
