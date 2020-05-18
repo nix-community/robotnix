@@ -1,0 +1,109 @@
+From 2da75452ecc5769fa86bfcbfac782786d4393540 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 19:04:10 -0400
+Subject: [PATCH 3/4] mkfs.f2fs: Use SOURCE_DATE_EPOCH as time if available
+
+---
+ mkfs/f2fs_format.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
+
+diff --git a/mkfs/f2fs_format.c b/mkfs/f2fs_format.c
+index 13b6b18..61b50cc 100644
+--- a/mkfs/f2fs_format.c
++++ b/mkfs/f2fs_format.c
+@@ -28,6 +28,7 @@ extern struct f2fs_configuration c;
+ struct f2fs_super_block raw_sb;
+ struct f2fs_super_block *sb = &raw_sb;
+ struct f2fs_checkpoint *cp;
++time_t cur_time;
+ 
+ /* Return first segment number of each area */
+ #define prev_zone(cur)		(c.cur_seg[cur] - c.segs_per_zone)
+@@ -641,7 +642,7 @@ static int f2fs_write_check_point_pack(void)
+ 	}
+ 
+ 	/* 1. cp page 1 of checkpoint pack 1 */
+-	srand(time(NULL));
++	srand(cur_time);
+ 	cp->checkpoint_ver = cpu_to_le64(rand() | 0x1);
+ 	set_cp(cur_node_segno[0], c.cur_seg[CURSEG_HOT_NODE]);
+ 	set_cp(cur_node_segno[1], c.cur_seg[CURSEG_WARM_NODE]);
+@@ -1105,11 +1106,11 @@ static int f2fs_write_root_inode(void)
+ 	raw_node->i.i_size = cpu_to_le64(1 * blk_size_bytes); /* dentry */
+ 	raw_node->i.i_blocks = cpu_to_le64(2);
+ 
+-	raw_node->i.i_atime = cpu_to_le32(time(NULL));
++	raw_node->i.i_atime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_atime_nsec = 0;
+-	raw_node->i.i_ctime = cpu_to_le32(time(NULL));
++	raw_node->i.i_ctime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_ctime_nsec = 0;
+-	raw_node->i.i_mtime = cpu_to_le32(time(NULL));
++	raw_node->i.i_mtime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_mtime_nsec = 0;
+ 	raw_node->i.i_generation = 0;
+ 	raw_node->i.i_xattr_nid = 0;
+@@ -1127,7 +1128,7 @@ static int f2fs_write_root_inode(void)
+ 		raw_node->i.i_projid = cpu_to_le32(F2FS_DEF_PROJID);
+ 
+ 	if (c.feature & cpu_to_le32(F2FS_FEATURE_INODE_CRTIME)) {
+-		raw_node->i.i_crtime = cpu_to_le32(time(NULL));
++		raw_node->i.i_crtime = cpu_to_le32(cur_time);
+ 		raw_node->i.i_crtime_nsec = 0;
+ 	}
+ 
+@@ -1262,11 +1263,11 @@ static int f2fs_write_qf_inode(int qtype)
+ 	raw_node->i.i_size = cpu_to_le64(1024 * 6); /* Hard coded */
+ 	raw_node->i.i_blocks = cpu_to_le64(1 + QUOTA_DATA(qtype));
+ 
+-	raw_node->i.i_atime = cpu_to_le32(time(NULL));
++	raw_node->i.i_atime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_atime_nsec = 0;
+-	raw_node->i.i_ctime = cpu_to_le32(time(NULL));
++	raw_node->i.i_ctime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_ctime_nsec = 0;
+-	raw_node->i.i_mtime = cpu_to_le32(time(NULL));
++	raw_node->i.i_mtime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_mtime_nsec = 0;
+ 	raw_node->i.i_generation = 0;
+ 	raw_node->i.i_xattr_nid = 0;
+@@ -1462,11 +1463,11 @@ static int f2fs_write_lpf_inode(void)
+ 	raw_node->i.i_size = cpu_to_le64(1 * blk_size_bytes);
+ 	raw_node->i.i_blocks = cpu_to_le64(2);
+ 
+-	raw_node->i.i_atime = cpu_to_le32(time(NULL));
++	raw_node->i.i_atime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_atime_nsec = 0;
+-	raw_node->i.i_ctime = cpu_to_le32(time(NULL));
++	raw_node->i.i_ctime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_ctime_nsec = 0;
+-	raw_node->i.i_mtime = cpu_to_le32(time(NULL));
++	raw_node->i.i_mtime = cpu_to_le32(cur_time);
+ 	raw_node->i.i_mtime_nsec = 0;
+ 	raw_node->i.i_generation = 0;
+ 	raw_node->i.i_xattr_nid = 0;
+@@ -1487,7 +1488,7 @@ static int f2fs_write_lpf_inode(void)
+ 		raw_node->i.i_projid = cpu_to_le32(F2FS_DEF_PROJID);
+ 
+ 	if (c.feature & cpu_to_le32(F2FS_FEATURE_INODE_CRTIME)) {
+-		raw_node->i.i_crtime = cpu_to_le32(time(NULL));
++		raw_node->i.i_crtime = cpu_to_le32(cur_time);
+ 		raw_node->i.i_crtime_nsec = 0;
+ 	}
+ 
+@@ -1642,6 +1643,12 @@ int f2fs_format_device(void)
+ {
+ 	int err = 0;
+ 
++	if (getenv("SOURCE_DATE_EPOCH") != NULL) {
++	    cur_time = atoi(getenv("SOURCE_DATE_EPOCH"));
++	} else {
++	    cur_time = time(NULL);
++	}
++
+ 	err= f2fs_prepare_super_block();
+ 	if (err < 0) {
+ 		MSG(0, "\tError: Failed to prepare a super block!!!\n");
+-- 
+2.26.1
+

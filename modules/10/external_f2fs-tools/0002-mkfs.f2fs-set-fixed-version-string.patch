@@ -1,0 +1,37 @@
+From 51fcb551253f1c0a9f34df3543170684ed324aab Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 19:04:55 -0400
+Subject: [PATCH 2/4] mkfs.f2fs: set fixed version string
+
+HACK. What would be better to do here?
+---
+ mkfs/f2fs_format.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mkfs/f2fs_format.c b/mkfs/f2fs_format.c
+index b883b66..13b6b18 100644
+--- a/mkfs/f2fs_format.c
++++ b/mkfs/f2fs_format.c
+@@ -491,6 +491,8 @@ static int f2fs_prepare_super_block(void)
+ 	cure_extension_list();
+ 
+ 	/* get kernel version */
++	/* This should probably be fixed */
++	/*
+ 	if (c.kd >= 0) {
+ 		dev_read_version(c.version, 0, VERSION_LEN);
+ 		get_kernel_version(c.version);
+@@ -501,6 +503,10 @@ static int f2fs_prepare_super_block(void)
+ 
+ 	memcpy(sb->version, c.version, VERSION_LEN);
+ 	memcpy(sb->init_version, c.version, VERSION_LEN);
++	*/
++	char *version_str = "Linux version 5.4.35 (nixbld@localhost) (gcc version 9.3.0 (GCC)) #1-NixOS SMP Thu Apr 23 08:36:46 UTC 2020";
++	memcpy(sb->version, version_str, VERSION_LEN);
++	memcpy(sb->version, version_str, VERSION_LEN);
+ 
+ 	sb->feature = c.feature;
+ 
+-- 
+2.26.1
+

@@ -20,6 +20,7 @@ mkIf (config.androidVersion >= 10) {
         inherit hash;
       })
       ./build_make/0005-Add-marker-to-insert-AVB-salt-flags.patch
+      ./build_make/0006-Fix-UUID-for-f2fs-partitions.patch
     ];
 
     postPatch = let
@@ -40,6 +41,15 @@ mkIf (config.androidVersion >= 10) {
       sed -i -e '/### AVB SALT MARKER ###/r ${avbSaltFlags}' core/Makefile
     '';
   };
+
+  source.dirs."external/f2fs-tools".patches = [
+    ./external_f2fs-tools/0001-mkfs.f2fs-add-UUID-option.patch
+    ./external_f2fs-tools/0002-mkfs.f2fs-set-fixed-version-string.patch
+    ./external_f2fs-tools/0003-mkfs.f2fs-Use-SOURCE_DATE_EPOCH-as-time-if-available.patch
+    ./external_f2fs-tools/0004-fsck.f2fs-use-SOURCE_DATE_EPOCH-as-time-if-available.patch
+  ];
+
+  source.dirs."system/extras".patches = [ ./system_extras/0001-mkf2fsuserimg.sh-add-UUID-option.patch ];
 
   # This one script needs python2. Used by sdk builds
   source.dirs."development".postPatch = ''

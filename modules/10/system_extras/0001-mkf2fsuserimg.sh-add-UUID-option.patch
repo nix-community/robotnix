@@ -1,0 +1,38 @@
+From a33f9d529900cca18c7cd6b1cd043a1a8992f1c6 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 20:13:54 -0400
+Subject: [PATCH] mkf2fsuserimg.sh: add UUID option
+
+Change-Id: I9a870cf664dbd42aed3e88372f57bef63a9f1351
+---
+ f2fs_utils/mkf2fsuserimg.sh | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/f2fs_utils/mkf2fsuserimg.sh b/f2fs_utils/mkf2fsuserimg.sh
+index ef762dc6..8a1a92f1 100755
+--- a/f2fs_utils/mkf2fsuserimg.sh
++++ b/f2fs_utils/mkf2fsuserimg.sh
+@@ -8,7 +8,7 @@ Usage:
+ ${0##*/} OUTPUT_FILE SIZE
+          [-C FS_CONFIG] [-f SRC_DIR] [-D PRODUCT_OUT]
+          [-s FILE_CONTEXTS] [-t MOUNT_POINT] [-T TIMESTAMP]
+-         [-L LABEL]
++         [-L LABEL] [-U UUID]
+ EOT
+ }
+ 
+@@ -68,6 +68,11 @@ if [[ "$1" == "-L" ]]; then
+   shift; shift
+ fi
+ 
++if [[ "$1" == "-U" ]]; then
++  MKFS_OPTS+=" -U $2"
++  shift; shift
++fi
++
+ if [ -z $SIZE ]; then
+   echo "Need size of filesystem"
+   exit 2
+-- 
+2.26.1
+
