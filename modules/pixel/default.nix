@@ -26,6 +26,16 @@ let
     flame = "coral"; # Pixel 4
   };
   deviceFamily = deviceFamilyMap.${config.device};
+
+  # Make a uuid based on some string data
+  uuidgen = str: let
+    hash = builtins.hashString "sha256" str;
+    s = i: len: substring i len hash;
+  in toLower "${s 0 8}-${s 8 4}-${s 12 4}-${s 16 4}-${s 20 12}";
+
+  # UUID for persist.img
+  uuid = uuidgen "persist-${config.buildNumber}-${builtins.toString config.buildDateTime}";
+  hashSeed = uuidgen "persist-hash-${config.buildNumber}-${builtins.toString config.buildDateTime}";
 in
 mkMerge [
   (mkIf ((config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
@@ -75,9 +85,8 @@ mkMerge [
     source.dirs."device/google/crosshatch".patches = [
       (pkgs.substituteAll {
         src = ./crosshatch-persist-img-reproducible.patch;
-        uuid = "bc95e63d-cc4c-4205-a7ec-0a4e377b65bd";
-        hashSeed = "3cc33955-c4ed-4c44-b195-1e4178b7e41a";
-        buildDateTime = config.buildDateTime;
+        inherit uuid hashSeed;
+        inherit (config) buildDateTime;
       })
     ];
   })
@@ -95,9 +104,8 @@ mkMerge [
     source.dirs."device/google/bonito".patches = [
       (pkgs.substituteAll {
         src = ./bonito-persist-img-reproducible.patch;
-        uuid = "bc95e63d-cc4c-4205-a7ec-0a4e377b65bd";
-        hashSeed = "3cc33955-c4ed-4c44-b195-1e4178b7e41a";
-        buildDateTime = config.buildDateTime;
+        inherit uuid hashSeed;
+        inherit (config) buildDateTime;
       })
     ];
   })
