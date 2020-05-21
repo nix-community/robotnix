@@ -130,13 +130,7 @@ in
         '';
     };
 
-    # Using unpackScript instead of source.dirs since vendor_overlay/google_devices/${config.device} is not guaranteed to exist
-    # TODO: Clean up with symlinked source.dirs
-    source.unpackScript = ''
-      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.build.vendor.files}/* .
-      chmod u+w vendor vendor/google_devices
-      chmod u+w -R -f vendor/google_devices/${config.deviceFamily} || echo "chmod vendor/.. failed"
-      chmod u+w -R -f vendor_overlay || echo "chmod vendor_overlay failed"
-    '';
+    # TODO: Re-add support for vendor_overlay if it is ever used again
+    source.dirs."vendor/google_devices".src = "${config.build.vendor.files}/vendor/google_devices";
   };
 }
