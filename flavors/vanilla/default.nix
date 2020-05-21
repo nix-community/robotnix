@@ -54,7 +54,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
 }
-(mkIf (elem config.deviceFamily (remove "marlin" supportedDeviceFamilies)) {
+(mkIf (elem config.deviceFamily supportedDeviceFamilies) {
   buildNumber = mkDefault "2020.05.04.17";
   buildDateTime = mkDefault 1588626224;
 })
@@ -96,10 +96,12 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   warnings = [ "marlin and sailfish are no longer receiving monthly security updates from Google. Support is left just for testing" ];
 
   vendor.buildID = mkDefault "QP1A.191005.007.A3";
-  source.manifest.rev = mkDefault "android-10.0.0_r17";
+  source.manifest.rev = mkDefault "android-10.0.0_r35";
 
-  buildNumber = mkDefault "2020.03.16.18";
-  buildDateTime = mkDefault 1584398664;
+  # HACK to use recent android source, but with old vendor files...
+  source.dirs."vendor/google_devices".postPatch = ''
+    echo QQ2A.200501.001.B2 > ${config.device}/build_id.txt
+  '';
 
   kernel.src = kernelSrc {
     rev = "android-10.0.0_r0.23";
