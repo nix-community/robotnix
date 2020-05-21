@@ -14,7 +14,7 @@ let
     { device="blueline";   flavor="vanilla"; }
     { device="bonito";     flavor="vanilla"; }
     { device="sargo";      flavor="vanilla"; }
-    { device="coral";     flavor="vanilla"; }
+    { device="coral";      flavor="vanilla"; }
     { device="flame";      flavor="vanilla"; }
 
     { device="x86";        flavor="grapheneos"; }
@@ -32,9 +32,6 @@ in
 {
   inherit (pkgs) diffoscope;
 
-  # A total of 16 configurations above. Each takes about 3-4 minutes to fake
-  # "build" for a total estimated checking time of about an hour if run
-  # sequentially
   check = lib.mapAttrs (name: c: (robotnix c).build.checkAndroid) configs;
 
   vanilla-arm64-generateKeysScript = defaultBuild.generateKeysScript;
