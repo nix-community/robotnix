@@ -272,7 +272,7 @@ in
 
             #export NINJA_ARGS="${toString ninjaArgs}"
             export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
-            make ${toString makeTargets} || exit 1
+            (make ${toString makeTargets} | cat) || exit 1
             echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 
             EOF2

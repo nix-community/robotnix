@@ -209,7 +209,7 @@ in stdenvNoCC.mkDerivation rec {
   buildPhase = ''
     chromium-fhs << 'EOF'
     ( cd src
-      ninja -C out/Release ${builtins.toString buildTargets}
+      ninja -C out/Release ${builtins.toString buildTargets} | cat
     )
     EOF
   '';
