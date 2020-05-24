@@ -13,7 +13,7 @@
 , buildTargets ? [ "chrome_modern_public_apk" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
-, version ? "81.0.4044.127"
+, version ? "83.0.4103.76"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_apk + system_webview_apk
@@ -69,7 +69,7 @@ let
     use_gnome_keyring = false;
     enable_vr = false; # Currently not checking out vr stuff
     enable_remoting = false;
-    enable_reporting = false; # Needs to be true for 83 for undefined symbol error
+    enable_reporting = true; # Needs to be true for 83.* for undefined symbol error
 
     # enable support for the H.264 codec
     proprietary_codecs = true;
