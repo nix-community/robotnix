@@ -116,7 +116,7 @@ in
       '';
 
       nativeBuildInputs = with pkgs; [
-        perl bc nettools openssl rsync gmp libmpc mpfr lz4
+        perl bc nettools openssl rsync gmp libmpc mpfr lz4 which
         prebuiltGCC prebuiltGCCarm32 prebuiltMisc
       ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ];  # TODO: Generalize to other arches
 
