@@ -6,7 +6,7 @@
 let
   dexrepair = callPackage ./dexrepair.nix {};
 
-  # TODO: This is for API-28. Need to make this work for all of them. Preferably without downloading each one
+  # TODO: Build this ourselves?
   oatdump = stdenv.mkDerivation {
     name = "oatdump-${api}";
 
@@ -27,17 +27,16 @@ let
       cp -r * $out
     '';
   };
-  # TODO: Make sure it can use java if it doesn't use oatdump.
 in
 (stdenv.mkDerivation {
   pname = "android-prepare-vendor";
-  version = "2020-05-21";
+  version = "2020-05-29";
 
   src = fetchFromGitHub { # api == "29"
     owner = "danielfullmer";
     repo = "android-prepare-vendor";
-    rev = "84f0d7dee8ab25eea7e8c023369112b5e10f657b";
-    sha256 = "1bhxy76gibax8sxfcs1bxc116261wf22p5r8apvq7l7qzrib1g02";
+    rev = "bfeb50a8151a3e728e5f562a2273f08e34e9ddf3";
+    sha256 = "1a0f7i7y8dkzry7iyqsxjygg567c9d9ni7cc3m075x9iq2xfdkrj";
   };
 
   nativeBuildInputs = [ makeWrapper ];

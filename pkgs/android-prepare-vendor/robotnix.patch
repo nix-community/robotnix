@@ -30,41 +30,6 @@ index 62e21c1..25f28f0 100755
 2.22.0
 
 
-From 537f0ba58ba1b8bf9e7d4a8f13ff61e37b89094d Mon Sep 17 00:00:00 2001
-From: Daniel Fullmer <danielrf12@gmail.com>
-Date: Fri, 6 Sep 2019 16:59:13 -0400
-Subject: [PATCH 2/4] Reproducibility fix
-
----
- scripts/generate-vendor.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/generate-vendor.sh b/scripts/generate-vendor.sh
-index b7c96a5..d022597 100755
---- a/scripts/generate-vendor.sh
-+++ b/scripts/generate-vendor.sh
-@@ -652,7 +652,7 @@ gen_mk_for_bytecode() {
-       while read -r lib
-       do
-         echo "$lib" | sed "s#$inDir/##" >> "$RUNTIME_EXTRA_BLOBS_LIST"
--      done < <(find "$appDir/lib" -type f -iname '*.so')
-+      done < <(find "$appDir/lib" -type f -iname '*.so' | sort)
- 
-       # Some prebuilt APKs have also prebuilt JNI libs that are stored under
-       # system-wide lib directories, with app directory containing a symlink to.
-@@ -676,7 +676,7 @@ gen_mk_for_bytecode() {
-         apk_lib_slinks+="$(gen_apk_dso_symlink "$dsoName" "$dsoMName" "$dsoRoot" \
-                            "$lcMPath/$pkgName" "$arch")"
-         echo "${dsoRoot:1}/$dsoName" >> "$APK_SYSTEM_LIB_BLOBS_LIST"
--      done < <(find -L "$appDir/lib" -type l -iname '*.so')
-+      done < <(find -L "$appDir/lib" -type l -iname '*.so' | sort)
-     fi
- 
-     {
--- 
-2.22.0
-
-
 From f8e3cc8d46bde0adb63d554b5c1c93eec39ede49 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Fri, 6 Sep 2019 16:59:30 -0400
