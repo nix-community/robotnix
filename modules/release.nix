@@ -76,10 +76,10 @@ let
       ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
       ln -s ${img} ${config.device}-img-${config.buildNumber}.zip || true
 
-      export DEVICE=${config.device};
-      export PRODUCT=${config.device};
-      export BUILD=${config.buildNumber};
-      export VERSION=${toLower config.buildNumber};
+      export DEVICE=${config.device}
+      export PRODUCT=${config.device}
+      export BUILD=${config.buildNumber}
+      export VERSION=${toLower config.buildNumber}
 
       get_radio_image() {
         ${getBin pkgs.unzip}/bin/unzip -p ${targetFiles} OTA/android-info.txt  \
@@ -90,7 +90,7 @@ let
 
       export PATH=${getBin pkgs.zip}/bin:${getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
-      mv $PRODUCT-$VERSION-factory-*.zip ${out}
+      mv $PRODUCT-factory-$VERSION.zip ${out}
   '';
 
   otaMetadata = pkgs.runCommand "${config.device}-${config.channel}" {} ''
