@@ -1,8 +1,21 @@
+diff --git a/diffoscope/comparators/fsimage.py b/diffoscope/comparators/fsimage.py
+index 9b940327..1c099352 100644
+--- a/diffoscope/comparators/fsimage.py
++++ b/diffoscope/comparators/fsimage.py
+@@ -62,7 +62,7 @@ class FsImageContainer(Archive):
+             return None
+         devices = self.g.list_devices()
+         try:
+-            self.g.mount(devices[0], '/')
++            self.g.mount_options("ro", devices[0], '/')
+         except RuntimeError:
+             logger.exception("guestfs count not mount image; invalid file?")
+             return None
 diff --git a/diffoscope/external_tools.py b/diffoscope/external_tools.py
-index 89ed90c..fc8b5e4 100644
+index 6b97a346..0b758275 100644
 --- a/diffoscope/external_tools.py
 +++ b/diffoscope/external_tools.py
-@@ -284,7 +284,10 @@ EXTERNAL_TOOLS = {
+@@ -220,7 +220,10 @@ EXTERNAL_TOOLS = {
  # May be populated at runtime by remapped names like
  # readelf -> arm-none-eabi-readelf, etc
  # diff -> gdiff, etc

@@ -20,14 +20,15 @@ let
     bundletool = super.callPackage ./bundletool {};
 
     diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {
-      version = "142";
+      version = "144";
       src = super.fetchurl {
         url    = "https://diffoscope.org/archive/diffoscope-${version}.tar.bz2";
-        sha256 = "0c6lvppghw9ynjg2radr8z3fc6lpgmgwr6kxyih7q4rxqf4gfv6i";
+        sha256 = "1n916k6z35c8ffksjjglkbl52jjhjv3899w230sg7k4ayzylj6zi";
       };
       patches = attrs.patches ++ [
         ./diffoscope/0001-comparators-android-Support-sparse-android-images.patch
-        ./diffoscope/arch-hack.patch
+        ./diffoscope/0002-libguestfs-mount-readonly.patch
+        ./diffoscope/0003-HACK-prefix-tool-names.patch
       ];
       pythonPath = attrs.pythonPath ++ [ super.simg2img ];
     })).override {
