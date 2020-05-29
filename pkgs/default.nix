@@ -30,7 +30,7 @@ let
         ./diffoscope/0002-libguestfs-mount-readonly.patch
         ./diffoscope/0003-HACK-prefix-tool-names.patch
       ];
-      pythonPath = attrs.pythonPath ++ [ super.simg2img ];
+      pythonPath = attrs.pythonPath ++ [ super.simg2img super.zip ];
     })).override {
       python3Packages = super.python3Packages.override {
         overrides = pythonSelf: pythonSuper: {
