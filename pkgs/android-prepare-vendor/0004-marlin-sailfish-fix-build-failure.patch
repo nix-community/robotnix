@@ -1,0 +1,53 @@
+From d95a8828f30f8b01dcd0ee624a237bbcf33726c2 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Thu, 14 May 2020 22:31:21 -0400
+Subject: [PATCH 4/4] marlin/sailfish: fix build failure
+
+---
+ marlin/config.json   | 2 ++
+ sailfish/config.json | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/marlin/config.json b/marlin/config.json
+index 919c938..e322cc4 100644
+--- a/marlin/config.json
++++ b/marlin/config.json
+@@ -753,6 +753,7 @@
+           "etc/audio_platform_info_tasha_t50.xml",
+           "etc/permissions/android.hardware.camera.flash-autofocus.xml",
+           "etc/audio_platform_info_tasha.xml",
++          "etc/selinux/precompiled_sepolicy",
+           "etc/selinux/precompiled_sepolicy.plat_sepolicy_and_mapping.sha256",
+           "etc/selinux/precompiled_sepolicy.product_sepolicy_and_mapping.sha256",
+           "etc/sound_trigger_mixer_paths_tasha_t50.xml",
+@@ -767,6 +768,7 @@
+           "etc/passwd",
+           "etc/seccomp_policy/configstore@1.1.policy",
+           "etc/selinux/plat_pub_versioned.cil",
++          "etc/selinux/plat_sepolicy_vers.txt",
+           "etc/selinux/vendor_file_contexts",
+           "etc/selinux/vendor_hwservice_contexts",
+           "etc/selinux/vendor_mac_permissions.xml",
+diff --git a/sailfish/config.json b/sailfish/config.json
+index 4c9ffb2..a4d25d5 100644
+--- a/sailfish/config.json
++++ b/sailfish/config.json
+@@ -753,6 +753,7 @@
+           "etc/audio_platform_info_tasha_t50.xml",
+           "etc/permissions/android.hardware.camera.flash-autofocus.xml",
+           "etc/audio_platform_info_tasha.xml",
++          "etc/selinux/precompiled_sepolicy",
+           "etc/selinux/precompiled_sepolicy.plat_sepolicy_and_mapping.sha256",
+           "etc/selinux/precompiled_sepolicy.product_sepolicy_and_mapping.sha256",
+           "etc/sound_trigger_mixer_paths_tasha_t50.xml",
+@@ -767,6 +768,7 @@
+           "etc/passwd",
+           "etc/seccomp_policy/configstore@1.1.policy",
+           "etc/selinux/plat_pub_versioned.cil",
++          "etc/selinux/plat_sepolicy_vers.txt",
+           "etc/selinux/vendor_file_contexts",
+           "etc/selinux/vendor_hwservice_contexts",
+           "etc/selinux/vendor_mac_permissions.xml",
+-- 
+2.26.1
+

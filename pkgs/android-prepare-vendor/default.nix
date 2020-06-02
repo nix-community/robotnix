@@ -33,10 +33,10 @@ in
   version = "2020-05-29";
 
   src = fetchFromGitHub { # api == "29"
-    owner = "danielfullmer";
+    owner = "AOSPAlliance";
     repo = "android-prepare-vendor";
-    rev = "bfeb50a8151a3e728e5f562a2273f08e34e9ddf3";
-    sha256 = "1a0f7i7y8dkzry7iyqsxjygg567c9d9ni7cc3m075x9iq2xfdkrj";
+    rev = "16da961f79c1396010d0417fc0bbce03663e9599";
+    sha256 = "1kl10xbvby1smgwszgk6pkv3x90scmwlwkmbs3n1f9jm5yzmsfsx";
   };
 
   nativeBuildInputs = [ makeWrapper ];
@@ -44,7 +44,12 @@ in
     (python2.withPackages (p: [ p.protobuf ])) # Python is used by "extract_android_ota_payload"
   ];
 
-  patches = [ ./robotnix.patch ];
+  patches = [
+    ./0001-Disable-oatdump-update.patch
+    ./0002-Just-write-proprietary-blobs.txt-to-current-dir.patch
+    ./0003-Allow-for-externally-set-config-file.patch
+    ./0004-marlin-sailfish-fix-build-failure.patch
+  ];
 
   # TODO: No need to copy oatdump now that we're making a standalone android-prepare-vendor.
   # Just patch it out instead

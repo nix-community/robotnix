@@ -1,0 +1,31 @@
+From a3909df072287cda969d03f6cf5be64bf84a1d62 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Fri, 6 Sep 2019 16:59:03 -0400
+Subject: [PATCH 1/4] Disable oatdump update
+
+---
+ execute-all.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/execute-all.sh b/execute-all.sh
+index 2bfeacd..1b72cd4 100755
+--- a/execute-all.sh
++++ b/execute-all.sh
+@@ -181,10 +181,10 @@ oatdump_prepare_env() {
+     oatdump_deps_download "$api_level"
+   fi
+ 
+-  if needs_oatdump_update "$api_level"; then
+-    echo "[*] Outdated version detected - downloading oatdump host bin & lib dependencies"
+-    oatdump_deps_download "$api_level"
+-  fi
++#  if needs_oatdump_update "$api_level"; then
++#    echo "[*] Outdated version detected - downloading oatdump host bin & lib dependencies"
++#    oatdump_deps_download "$api_level"
++#  fi
+ }
+ 
+ is_aosp_root() {
+-- 
+2.26.1
+
