@@ -90,7 +90,7 @@ let
 
       export PATH=${getBin pkgs.zip}/bin:${getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
-      mv $PRODUCT-factory-$VERSION.zip ${out}
+      mv *-factory-*.zip ${out}
   '';
 
   otaMetadata = pkgs.runCommand "${config.device}-${config.channel}" {} ''
