@@ -1,7 +1,7 @@
-# robotnix - Building Android (AOSP) with Nix
+# robotnix - Build Android (AOSP) with Nix
 
 This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs, currently targeting Pixel 1-4(a) (XL) devices.
-Robotnix uses a NixOS-style module system for customizing various aspects of the build.
+Robotnix uses a NixOS-style module system to customize various aspects of the build.
  
 Some optional modules include:
  - Vanilla Android 10 AOSP support
@@ -44,13 +44,10 @@ A user can use the `--cores` option for `nix-build` to set the number of cores t
 use, which can also be useful to decrease parallelism in case memory usage of
 certain build steps is too large.
 
-A full Android 10 build takes about 4 hours on my quad-core i7-3770 with 16GB of memory.
-The included `vanilla` and `grapheneos` flavors also build `chromium` (or `vanadium`) from source for use as the system webview.
-This takes approximately 6 hours on my i7-3770.
+A full Android 10 build with chromium webview takes approximately 10 hours on my quad-core i7-3770 with 16GB of memory.
+AOSP takes approximately 4 hours of that, while webview takes approximately 6 hours.
 I have recently upgraded to a 3970x Threadripper with 32-cores.
-This can build chromium+android in under an hour.
-
-
+This can build chromium+android in about an hour.
 
 ## Configuration and Build Options
 A configuration file should be created for anything more complicated, including creating signed builds.
