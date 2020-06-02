@@ -1,9 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p curl go-pup jq
 
-# 2020-06-01: Curling seems broken by recent google changes. Currently saving webpage and feeding into script
-
-curl --fail -s https://developers.google.com/android/images \
+curl --fail -s --cookie "devsite_wall_acks=nexus-image-tos" https://developers.google.com/android/images \
     | pup "div table tbody tr json{}" \
     | jq '.[].children
           | {
@@ -13,7 +11,7 @@ curl --fail -s https://developers.google.com/android/images \
              sha256: .[2].text,
             }' | jq -s > pixel-imgs.json
 
-curl --fail -s https://developers.google.com/android/ota \
+curl --fail -s --cookie "devsite_wall_acks=nexus-ota-tos" https://developers.google.com/android/ota \
     | pup "div table tbody tr json{}" \
     | jq '.[].children
           | {
