@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.vendor.buildID}.2020.05.29.00";
+  grapheneOSRelease = "${config.vendor.buildID}.2020.06.02.02";
 
   supportedDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito"  "generic"];
 
@@ -10,8 +10,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default number for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the GrapheneOS build number above.
-  buildNumber = mkDefault "2020.05.29.15";
-  buildDateTime = mkDefault 1590779982;
+  buildNumber = mkDefault "2020.06.02.13";
+  buildDateTime = mkDefault 1591120592;
 
   source.dirs = lib.importJSON (./. + "/${grapheneOSRelease}.json");
 
@@ -22,11 +22,11 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
     "${config.device} is not a supported device for GrapheneOS";
 }
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" ])) {
-  vendor.buildID = mkDefault "QQ2A.200501.001.B3";
+(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "crosshatch" ])) {
+  vendor.buildID = mkDefault "QQ3A.200605.001";
 })
-(mkIf ((elem config.deviceFamily [ "bonito" "crosshatch" "coral" "generic"])) {
-  vendor.buildID = mkDefault "QQ2A.200501.001.B2";
+(mkIf ((elem config.deviceFamily [ "bonito" "generic"])) {
+  vendor.buildID = mkDefault "QQ3A.200605.002";
 })
 {
   # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
@@ -51,7 +51,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   apps.seedvault.enable = mkDefault true;
 
-# Remove upstream prebuilt versions from build. We build from source ourselves.
+  # Remove upstream prebuilt versions from build. We build from source ourselves.
   removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "Seedvault" ];
   source.dirs."external/vanadium".enable = false;
   source.dirs."external/seedvault".enable = false;
@@ -79,7 +79,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "1d1v5yqbxmw0v3knjzsx762mcibdwlzjd82pabsml9jw13413nzw";
+    sha256 = "0v04nrgp1igs1jx52lvwjlxvl22bgqhyyp0cl000z4lcd44xlv0p";
     fetchSubmodules = true;
   };
 })
