@@ -55,16 +55,16 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
 }
 (mkIf (elem config.deviceFamily supportedDeviceFamilies) {
-  buildNumber = mkDefault "2020.05.04.17";
-  buildDateTime = mkDefault 1588626224;
+  buildNumber = mkDefault "2020.06.01.21";
+  buildDateTime = mkDefault 1591059373;
 })
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" ])) {
-  vendor.buildID = mkDefault "QQ2A.200501.001.B3";
-  source.manifest.rev = mkDefault "android-10.0.0_r36";
+(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "coral" "generic"])) {
+  vendor.buildID = mkDefault "QQ3A.200605.001";
+  source.manifest.rev = mkDefault "android-10.0.0_r37";
 })
-(mkIf ((elem config.deviceFamily [ "bonito" "crosshatch" "coral" "generic"])) {
-  vendor.buildID = mkDefault "QQ2A.200501.001.B2";
-  source.manifest.rev = mkDefault "android-10.0.0_r35";
+(mkIf (config.deviceFamily == "bonito") {
+  vendor.buildID = mkDefault "QQ3A.200605.002";
+  source.manifest.rev = mkDefault "android-10.0.0_r38";
 })
 # TODO: Build kernels for non marlin/sailfish devices
 (mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") {
@@ -96,11 +96,11 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   warnings = [ "marlin and sailfish are no longer receiving monthly security updates from Google. Support is left just for testing" ];
 
   vendor.buildID = mkDefault "QP1A.191005.007.A3";
-  source.manifest.rev = mkDefault "android-10.0.0_r35";
+  source.manifest.rev = mkDefault "android-10.0.0_r37";
 
   # HACK to use recent android source, but with old vendor files...
   source.dirs."vendor/google_devices".postPatch = ''
-    echo QQ2A.200501.001.B2 > ${config.device}/build_id.txt
+    echo QQ3A.200605.001 > ${config.device}/build_id.txt
   '';
 
   kernel.src = kernelSrc {

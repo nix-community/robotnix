@@ -1,6 +1,8 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p curl go-pup jq
 
+# 2020-06-01: Curling seems broken by recent google changes. Currently saving webpage and feeding into script
+
 curl --fail -s https://developers.google.com/android/images \
     | pup "div table tbody tr json{}" \
     | jq '.[].children
