@@ -1,21 +1,13 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "83.0.4103.76";
+  version = "83.0.4103.93";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "157gv5zax8cq6y3www1wwjbm8j8wgn9jkf3cd70bllzzsa3xhgrr";
-  };
-
-  # Needed just for domain_substitution, since bromite patch is/was broken
-  ungoogled_src = fetchFromGitHub {
-    owner = "Eloston";
-    repo = "ungoogled-chromium";
-    rev = "81.0.4044.138-1";
-    sha256 = "1qa5lw2psaqxr2zklaldx4sm6by4gsw3mfrp01ijc4kkp9jmvg7r";
+    sha256 = "02z7463gxp3spjjp4dz17is90vhb61013r6lx6cwdphgr7qga756";
   };
 
 in (chromium.override {
@@ -70,15 +62,9 @@ in (chromium.override {
   postPatch = ''
     ( cd src
       cat ${bromite_src}/build/bromite_patches_list.txt | while read patchfile; do
-        if [[ "$patchfile" == "Automated-domain-substitution.patch" ]]; then
-          continue
-        fi
-
         echo Applying $patchfile
         ${git}/bin/git apply --unsafe-paths "${bromite_src}/build/patches/$patchfile"
       done
-
-      ${python3}/bin/python ${ungoogled_src}/utils/domain_substitution.py apply -r ${ungoogled_src}/domain_regex.list -f ${ungoogled_src}/domain_substitution.list -c ./domsubcache.tar.gz .
 
       # Fixes issue with "sources" being unset in chrome/browser/safe_browsing/BUILD.gn
       patch -p1 < ${./bromite-safe-browsing-gn-fix.patch}
