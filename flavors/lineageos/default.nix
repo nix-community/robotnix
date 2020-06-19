@@ -43,16 +43,13 @@ let
   filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "postPatch"]) dir;
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
 
-  date = "2020.05.04";
   LineageOSRelease = "lineage-17.1";
 in mkIf (config.flavor == "lineageos")
 {
   productNamePrefix = "lineage"; # product names start with "lineage_"
 
-  # FIXME: what should it be for the following?
-  buildNumber = mkDefault date;
-  buildDateTime = mkDefault 1588648528;
-  #vendor.buildID = mkDefault "lineage-17.0-${date}";
+  buildNumber = mkDefault "2020.06.18.21";
+  buildDateTime = mkDefault 1592530418;
 
   warnings = optional (
       (config.device != null) &&

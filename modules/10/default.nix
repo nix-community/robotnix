@@ -10,10 +10,12 @@ mkIf (config.androidVersion >= 10) {
   source.dirs."build/make" = {
     patches = [
       ./build_make/0001-Readonly-source-fix.patch
+    ] ++ (optional (config.flavor != "lineageos")
       (pkgs.substituteAll {
         src = ./build_make/0002-Partition-size-fix.patch;
         inherit (pkgs) coreutils;
       })
+    ) ++ [
       ./build_make/0003-Make-vendor_manifest.xml-reproducible.patch
       (pkgs.substituteAll {
         src = ./build_make/0004-Set-uuid-and-hash_seed-for-userdata-and-cache.patch;

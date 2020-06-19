@@ -107,7 +107,7 @@
     "variant": "userdebug"
   },
   "a3xelte": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_samsung_a3xelte",
       "android_device_samsung_universal7580-common",
@@ -119,13 +119,13 @@
       "android_kernel_samsung_universal7580",
       "android_packages_resources_devicesettings"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Galaxy A3 (2016)",
     "oem": "Samsung",
     "variant": "userdebug"
   },
   "a5xelte": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_samsung_a5xelte",
       "android_device_samsung_universal7580-common",
@@ -137,7 +137,7 @@
       "android_kernel_samsung_universal7580",
       "android_packages_resources_devicesettings"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Galaxy A5 (2016)",
     "oem": "Samsung",
     "variant": "userdebug"
@@ -222,6 +222,7 @@
     "deps": [
       "android_device_xiaomi_beryllium",
       "android_device_xiaomi_sdm845-common",
+      "android_hardware_xiaomi",
       "android_kernel_xiaomi_sdm845"
     ],
     "lineage_recovery": true,
@@ -305,13 +306,13 @@
     "variant": "userdebug"
   },
   "crackling": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_cyanogen_msm8916-common",
       "android_device_wileyfox_crackling",
       "android_kernel_cyanogen_msm8916"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Swift",
     "oem": "Wileyfox",
     "variant": "userdebug"
@@ -434,6 +435,7 @@
     "deps": [
       "android_device_xiaomi_dipper",
       "android_device_xiaomi_sdm845-common",
+      "android_hardware_xiaomi",
       "android_kernel_xiaomi_sdm845"
     ],
     "lineage_recovery": true,
@@ -446,6 +448,7 @@
     "deps": [
       "android_device_sony_discovery",
       "android_device_sony_nile-common",
+      "android_hardware_sony_SonyOpenTelephony",
       "android_hardware_sony_macaddrsetup",
       "android_hardware_sony_simdetect",
       "android_kernel_sony_sdm660"
@@ -557,14 +560,14 @@
     "variant": "userdebug"
   },
   "gemini": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_xiaomi_gemini",
       "android_device_xiaomi_msm8996-common",
       "android_hardware_xiaomi",
       "android_kernel_xiaomi_msm8996"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Mi 5",
     "oem": "Xiaomi",
     "variant": "userdebug"
@@ -634,6 +637,19 @@
     ],
     "lineage_recovery": true,
     "name": "7 Pro",
+    "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "guacamoleb": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_oneplus_common",
+      "android_device_oneplus_guacamoleb",
+      "android_device_oneplus_sm8150-common",
+      "android_kernel_oneplus_sm8150"
+    ],
+    "lineage_recovery": true,
+    "name": "7",
     "oem": "OnePlus",
     "variant": "userdebug"
   },
@@ -719,6 +735,21 @@
     "oem": "Zuk",
     "variant": "userdebug"
   },
+  "harpia": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_harpia",
+      "android_device_motorola_msm8916-common",
+      "android_external_bson",
+      "android_hardware_sony_timekeep",
+      "android_kernel_motorola_msm8916",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto G4 Play",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
   "hlte": {
     "branch": "lineage-16.0",
     "deps": [
@@ -797,9 +828,9 @@
     "branch": "lineage-17.1",
     "deps": [
       "android_device_xiaomi_jasmine_sprout",
+      "android_device_xiaomi_sdm660-common",
       "android_device_xiaomi_wayne-common",
-      "android_kernel_xiaomi_sdm660",
-      "android_packages_resources_devicesettings"
+      "android_kernel_xiaomi_sdm660"
     ],
     "lineage_recovery": true,
     "name": "Mi A2",
@@ -810,8 +841,8 @@
     "branch": "lineage-17.1",
     "deps": [
       "android_device_xiaomi_jason",
-      "android_kernel_xiaomi_jason",
-      "android_packages_resources_devicesettings"
+      "android_device_xiaomi_sdm660-common",
+      "android_kernel_xiaomi_sdm660"
     ],
     "lineage_recovery": true,
     "name": "Mi Note 3",
@@ -908,6 +939,7 @@
     "deps": [
       "android_device_sony_kirin",
       "android_device_sony_nile-common",
+      "android_hardware_sony_SonyOpenTelephony",
       "android_hardware_sony_macaddrsetup",
       "android_hardware_sony_simdetect",
       "android_kernel_sony_sdm660"
@@ -1050,6 +1082,17 @@
     "oem": "Samsung",
     "variant": "userdebug"
   },
+  "kuntao": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_lenovo_kuntao",
+      "android_kernel_lenovo_msm8953"
+    ],
+    "lineage_recovery": true,
+    "name": "P2 (P2a42 Intl)",
+    "oem": "Lenovo",
+    "variant": "userdebug"
+  },
   "lake": {
     "branch": "lineage-17.1",
     "deps": [
@@ -1079,6 +1122,11 @@
   },
   "lavender": {
     "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_lavender",
+      "android_device_xiaomi_sdm660-common",
+      "android_kernel_xiaomi_sdm660"
+    ],
     "lineage_recovery": true,
     "name": "Redmi Note 7",
     "oem": "Xiaomi",
@@ -1100,14 +1148,14 @@
     "variant": "userdebug"
   },
   "lithium": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_xiaomi_lithium",
       "android_device_xiaomi_msm8996-common",
       "android_hardware_xiaomi",
       "android_kernel_xiaomi_msm8996"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Mi MIX",
     "oem": "Xiaomi",
     "variant": "userdebug"
@@ -1136,6 +1184,21 @@
     "lineage_recovery": true,
     "name": "V20 (Sprint)",
     "oem": "LG",
+    "variant": "userdebug"
+  },
+  "lux": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_lux",
+      "android_device_motorola_msm8916-common",
+      "android_external_bson",
+      "android_hardware_sony_timekeep",
+      "android_kernel_motorola_msm8916",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto X Play",
+    "oem": "Motorola",
     "variant": "userdebug"
   },
   "m8": {
@@ -1193,11 +1256,27 @@
     "oem": "Essential",
     "variant": "userdebug"
   },
+  "merlin": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_merlin",
+      "android_device_motorola_msm8916-common",
+      "android_external_bson",
+      "android_hardware_sony_timekeep",
+      "android_kernel_motorola_msm8916",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto G3 Turbo",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
   "mermaid": {
     "branch": "lineage-17.1",
     "deps": [
       "android_device_sony_mermaid",
       "android_device_sony_nile-common",
+      "android_hardware_sony_SonyOpenTelephony",
       "android_hardware_sony_macaddrsetup",
       "android_hardware_sony_simdetect",
       "android_kernel_sony_sdm660"
@@ -1205,6 +1284,22 @@
     "lineage_recovery": true,
     "name": "Xperia 10 Plus",
     "oem": "Sony",
+    "variant": "userdebug"
+  },
+  "ms013g": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_samsung_ms01-common",
+      "android_device_samsung_ms013g",
+      "android_device_samsung_msm8226-common",
+      "android_device_samsung_qcom-common",
+      "android_hardware_samsung",
+      "android_kernel_samsung_msm8226",
+      "android_packages_apps_FlipFlap"
+    ],
+    "lineage_recovery": false,
+    "name": "Galaxy Grand 2",
+    "oem": "Samsung",
     "variant": "userdebug"
   },
   "nash": {
@@ -1221,14 +1316,14 @@
     "variant": "userdebug"
   },
   "natrium": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_xiaomi_msm8996-common",
       "android_device_xiaomi_natrium",
       "android_hardware_xiaomi",
       "android_kernel_xiaomi_msm8996"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Mi 5s Plus",
     "oem": "Xiaomi",
     "variant": "userdebug"
@@ -1238,22 +1333,33 @@
     "deps": [
       "android_device_nubia_msm8998-common",
       "android_device_nubia_nx563j",
-      "android_kernel_nubia_msm8998",
-      "android_packages_resources_devicesettings"
+      "android_kernel_nubia_msm8998"
     ],
     "lineage_recovery": true,
     "name": "Nubia Z17",
     "oem": "Nubia",
     "variant": "userdebug"
   },
+  "onclite": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_onclite",
+      "android_kernel_xiaomi_onclite"
+    ],
+    "lineage_recovery": true,
+    "name": "Redmi 7",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
   "oneplus2": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_oneplus_oneplus2",
       "android_device_oppo_common",
+      "android_hardware_sony_timekeep",
       "android_kernel_oneplus_msm8994"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "2",
     "oem": "OnePlus",
     "variant": "userdebug"
@@ -1268,6 +1374,21 @@
     "lineage_recovery": true,
     "name": "3 / 3T",
     "oem": "OnePlus",
+    "variant": "userdebug"
+  },
+  "osprey": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_msm8916-common",
+      "android_device_motorola_osprey",
+      "android_external_bson",
+      "android_hardware_sony_timekeep",
+      "android_kernel_motorola_msm8916",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto G (2015)",
+    "oem": "Motorola",
     "variant": "userdebug"
   },
   "payton": {
@@ -1289,6 +1410,7 @@
     "deps": [
       "android_device_sony_nile-common",
       "android_device_sony_pioneer",
+      "android_hardware_sony_SonyOpenTelephony",
       "android_hardware_sony_macaddrsetup",
       "android_hardware_sony_simdetect",
       "android_kernel_sony_sdm660"
@@ -1303,6 +1425,7 @@
     "deps": [
       "android_device_xiaomi_polaris",
       "android_device_xiaomi_sdm845-common",
+      "android_hardware_xiaomi",
       "android_kernel_xiaomi_sdm845"
     ],
     "lineage_recovery": true,
@@ -1439,7 +1562,7 @@
     "variant": "userdebug"
   },
   "s5neolte": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_samsung_s5neolte",
       "android_device_samsung_universal7580-common",
@@ -1451,7 +1574,7 @@
       "android_kernel_samsung_universal7580",
       "android_packages_resources_devicesettings"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Galaxy S5 Neo",
     "oem": "Samsung",
     "variant": "userdebug"
@@ -1494,14 +1617,14 @@
     "variant": "userdebug"
   },
   "scorpio": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_xiaomi_msm8996-common",
       "android_device_xiaomi_scorpio",
       "android_hardware_xiaomi",
       "android_kernel_xiaomi_msm8996"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Mi Note 2",
     "oem": "Xiaomi",
     "variant": "userdebug"
@@ -1543,13 +1666,27 @@
     "oem": "Samsung",
     "variant": "userdebug"
   },
+  "surnia": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_motorola_msm8916-common",
+      "android_device_motorola_surnia",
+      "android_external_bson",
+      "android_hardware_sony_timekeep",
+      "android_kernel_motorola_msm8916",
+      "android_system_qcom"
+    ],
+    "lineage_recovery": true,
+    "name": "Moto E LTE (2015)",
+    "oem": "Motorola",
+    "variant": "userdebug"
+  },
   "twolip": {
     "branch": "lineage-17.1",
     "deps": [
       "android_device_xiaomi_sdm660-common",
       "android_device_xiaomi_twolip",
-      "android_kernel_xiaomi_sdm660",
-      "android_packages_resources_devicesettings"
+      "android_kernel_xiaomi_sdm660"
     ],
     "lineage_recovery": true,
     "name": "Redmi Note 6 Pro",
@@ -1571,14 +1708,14 @@
     "variant": "userdebug"
   },
   "victara": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_motorola_victara",
+      "android_external_bson",
       "android_kernel_motorola_msm8974",
-      "android_packages_resources_devicesettings",
       "android_system_qcom"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Moto X 2014",
     "oem": "Motorola",
     "variant": "userdebug"
@@ -1588,6 +1725,7 @@
     "deps": [
       "android_device_sony_nile-common",
       "android_device_sony_voyager",
+      "android_hardware_sony_SonyOpenTelephony",
       "android_hardware_sony_macaddrsetup",
       "android_hardware_sony_simdetect",
       "android_kernel_sony_sdm660"
@@ -1626,14 +1764,38 @@
   "wayne": {
     "branch": "lineage-17.1",
     "deps": [
+      "android_device_xiaomi_sdm660-common",
       "android_device_xiaomi_wayne",
       "android_device_xiaomi_wayne-common",
-      "android_kernel_xiaomi_sdm660",
-      "android_packages_resources_devicesettings"
+      "android_kernel_xiaomi_sdm660"
     ],
     "lineage_recovery": true,
     "name": "Mi 6X",
     "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "whyred": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_sdm660-common",
+      "android_device_xiaomi_whyred",
+      "android_kernel_xiaomi_sdm660"
+    ],
+    "lineage_recovery": true,
+    "name": "Redmi Note 5 Pro",
+    "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "wt88047": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_cyanogen_msm8916-common",
+      "android_device_wingtech_wt88047",
+      "android_kernel_wingtech_msm8916"
+    ],
+    "lineage_recovery": true,
+    "name": "Redmi 2",
+    "oem": "Wingtech",
     "variant": "userdebug"
   },
   "x2": {

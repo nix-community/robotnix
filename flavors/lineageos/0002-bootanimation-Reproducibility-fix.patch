@@ -1,4 +1,4 @@
-From 88c11bd1321d0f584bf47d87ae24900ba74443ce Mon Sep 17 00:00:00 2001
+From 9b6e454e4a7b7c23a1fc4b44dcc07ff5bcd14191 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 10 May 2020 18:33:27 -0400
 Subject: [PATCH 2/3] bootanimation: Reproducibility fix
@@ -22,5 +22,5 @@ index 2bc78ceb..d61a6fb4 100644
  	cat vendor/lineage/bootanimation/desc.txt >> $(INTERMEDIATES)/desc.txt
  	$(hide) $(SOONG_ZIP) -L 0 -o $(TARGET_GENERATED_BOOTANIMATION) -C $(INTERMEDIATES) -D $(INTERMEDIATES)
 -- 
-2.26.1
+2.27.0
 
