@@ -51,6 +51,9 @@ in mkIf (config.flavor == "lineageos")
   buildNumber = mkDefault "2020.06.18.21";
   buildDateTime = mkDefault 1592530418;
 
+  # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
+  variant = mkDefault "userdebug";
+
   warnings = optional (
       (config.device != null) &&
       !(elem config.device supportedDevices) &&
