@@ -1,13 +1,13 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "83.0.4103.101";
+  version = "83.0.4103.119";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "1y8b5qafclzjnvl2fhgp0rj53mcf6wix3awrrma7qa6qqg14njq6";
+    sha256 = "1a52405l9cfrg9my1s052mj27dmskz4jjxrbgpv4kzv51hlpzv6m";
   };
 
 in (chromium.override {
