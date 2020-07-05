@@ -9,8 +9,8 @@ let
 
   overlay = self: super: {
     androidPkgs = import (builtins.fetchTarball {
-      url = "https://github.com/tadfisher/android-nixpkgs/archive/d3f24c3618c3d3ecdc32d164d4294578ae369e9d.tar.gz";
-      sha256 = "0d0n8am9k2cwca7kf64xi7ypriy8j1h3bc2jzyl8qakpfdcp19np";
+      url = "https://github.com/tadfisher/android-nixpkgs/archive/1c521461c78f967e8efda037fd2c3c12b2976662.tar.gz";
+      sha256 = "0c4qq3lnnkwr40a9zkd63xfgi2jaxdj7g76sql7pcalghgx88zag";
     }) { pkgs = self; };
 
     android-emulator = super.callPackage ./android-emulator {};
