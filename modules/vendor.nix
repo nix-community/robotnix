@@ -63,7 +63,7 @@ in
     vendor.ota = mkOption {
       default = null;
       type = types.nullOr types.path;
-      description = "An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds needs an OTA as well)";
+      description = "An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds need an OTA as well)";
     };
 
     vendor.systemBytecode = mkOption {

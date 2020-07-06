@@ -23,7 +23,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   ### AOSP usability improvements ###
 
   # This is the prebuilt webview apk from AOSP. It is very old and not enabled by default.
-  # Enable using webview.prebuild.enable = true;
+  # Enable using webview.prebuilt.enable = true;
   webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
 
