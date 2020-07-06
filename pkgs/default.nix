@@ -43,6 +43,8 @@ let
 
     cipd = super.callPackage ./cipd {};
     fetchcipd = super.callPackage ./cipd/fetchcipd.nix {};
+
+    fetchandroidpatchset = super.callPackage ./fetchandroidpatchset {};
   };
 in
   import nixpkgs (args // {
