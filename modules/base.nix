@@ -289,6 +289,10 @@ in
           USE_CCACHE = "true";
           CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
           CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
+        }) // (lib.optionalAttrs (config.androidVersion >= 11) {
+          # Android 11 ninja filters env vars for more correct incrementalism.
+          # However, env vars like LD_LIBRARY_PATH must be set for nixpkgs build-userenv-fhs to work
+          ALLOW_NINJA_ENV="true";
         }));
 
       android = mkAndroid {
