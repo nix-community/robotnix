@@ -56,16 +56,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf (config.androidVersion == 10) (mkMerge [
 
 (mkIf (elem config.deviceFamily supportedDeviceFamilies) {
-  buildNumber = mkDefault "2020.06.01.21";
-  buildDateTime = mkDefault 1591059373;
-})
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "coral" "generic"])) {
-  vendor.buildID = mkDefault "QQ3A.200605.001";
-  source.manifest.rev = mkDefault "android-10.0.0_r37";
-})
-(mkIf (config.deviceFamily == "bonito") {
-  vendor.buildID = mkDefault "QQ3A.200605.002";
-  source.manifest.rev = mkDefault "android-10.0.0_r38";
+  buildNumber = mkDefault "2020.07.07.09";
+  buildDateTime = mkDefault 1594138015;
+  vendor.buildID = mkDefault "QQ3A.200705.002";
+  source.manifest.rev = mkDefault "android-10.0.0_r40";
 })
 {
   source.dirs."packages/apps/DeskClock".patches = [
@@ -78,38 +72,38 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 # TODO: Build kernels for non marlin/sailfish devices
 (mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") {
   kernel.src = kernelSrc {
-    rev = "android-10.0.0_r0.32";
+    rev = "android-10.0.0_r0.71";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
   };
 })
 (mkIf (config.deviceFamily == "crosshatch") {
   kernel.configName = "b1c1";
   kernel.src = kernelSrc {
-    rev = "android-10.0.0_r0.26";
+    rev = "android-10.0.0_r0.72";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
   };
 })
 (mkIf (config.deviceFamily == "bonito") {
   kernel.src = kernelSrc {
-    rev = "android-10.0.0_r0.28";
+    rev = "android-10.0.0_r0.73";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
   };
 })
 (mkIf (config.deviceFamily == "coral") {
   kernel.src = kernelSrc {
-    tag = "android-10.0.0_r0.35";
+    tag = "android-10.0.0_r0.74";
     sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
   };
 })
 (mkIf (config.deviceFamily == "marlin") {
   warnings = [ "marlin and sailfish are no longer receiving monthly security updates from Google. Support is left just for testing" ];
 
-  vendor.buildID = mkDefault "QP1A.191005.007.A3";
-  source.manifest.rev = mkDefault "android-10.0.0_r37";
+  vendor.buildID = "QP1A.191005.007.A3";
+  source.manifest.rev = "android-10.0.0_r40";
 
   # HACK to use recent android source, but with old vendor files...
   source.dirs."vendor/google_devices".postPatch = ''
-    echo QQ3A.200605.001 > ${config.device}/build_id.txt
+    echo QQ3A.200705.002 > ${config.device}/build_id.txt
   '';
 
   kernel.src = kernelSrc {
