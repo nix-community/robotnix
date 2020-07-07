@@ -15,8 +15,6 @@ let
 
     android-emulator = super.callPackage ./android-emulator {};
 
-    buildGradle = super.callPackage ./gradle-env.nix {};
-
     bundletool = super.callPackage ./bundletool {};
 
     diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {

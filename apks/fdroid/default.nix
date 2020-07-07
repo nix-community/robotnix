@@ -1,6 +1,7 @@
-{ callPackage, substituteAll, fetchFromGitLab, buildGradle, androidPkgs, jdk, gradle }:
+{ callPackage, substituteAll, fetchFromGitLab, androidPkgs, jdk, gradle }:
 let
   androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-27 build-tools-27-0-3 ]);
+  buildGradle = callPackage ./gradle-env.nix {};
 in
 buildGradle rec {
   name = "F-Droid-${version}.apk";

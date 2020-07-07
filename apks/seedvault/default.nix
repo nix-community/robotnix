@@ -1,6 +1,7 @@
-{ callPackage, lib, substituteAll, fetchFromGitHub, buildGradle, androidPkgs, jdk, gradle }:
+{ callPackage, lib, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle }:
 let
   androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-29 build-tools-29-0-2 ]);
+  buildGradle = callPackage ./gradle-env.nix {};
 in
 buildGradle rec {
   name = "Seedvault-${version}.apk";
@@ -18,7 +19,7 @@ buildGradle rec {
   gradleFlags = [ "assembleRelease" ];
 
   ANDROID_HOME = "${androidsdk}/share/android-sdk";
-  nativeBuildInputs = [ jdk gradle ];
+  nativeBuildInputs = [ jdk ];
 
   installPhase = ''
     cp app/build/outputs/apk/release/app-release-unsigned.apk $out
