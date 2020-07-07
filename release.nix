@@ -25,6 +25,8 @@ let
     { device="blueline";   flavor="grapheneos"; }
     { device="bonito";     flavor="grapheneos"; }
     { device="sargo";      flavor="grapheneos"; }
+
+    { device="x86";        flavor="vanilla";  androidVersion=11; }
   ]));
 
   defaultBuild = (robotnix { device="arm64"; flavor="vanilla"; });
