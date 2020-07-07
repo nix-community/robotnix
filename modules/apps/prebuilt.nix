@@ -27,11 +27,16 @@ let
     include $(BUILD_PREBUILT)
     '');
 
-  apksigner = "${pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-29-0-2 ])}/share/android-sdk/build-tools/29.0.2/apksigner";
+  apksigner = let build-tools = pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-29-0-2 ]);
+    in pkgs.runCommand "apksigner" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
+      mkdir -p $out/bin
+      makeWrapper "${pkgs.jre8_headless}/bin/java" "$out/bin/apksigner" \
+        --add-flags "-jar ${build-tools}/share/android-sdk/build-tools/29.0.2/lib/apksigner.jar"
+    '';
 
   signApk = {name, apk, keyPath}: pkgs.runCommand "${name}-signed.apk" { nativeBuildInputs = [ pkgs.jre8_headless ]; } ''
     cp ${apk} $out
-    ${apksigner} sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
+    ${apksigner}/bin/apksigner sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
   '';
 
   # TODO: Uses IFD. Try to avoid using this.
