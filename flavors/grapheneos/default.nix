@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.vendor.buildID}.2020.06.02.02";
+  grapheneOSRelease = "${config.vendor.buildID}.2020.07.06.20";
 
   supportedDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito"  "generic"];
 
@@ -10,10 +10,12 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default number for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the GrapheneOS build number above.
-  buildNumber = mkDefault "2020.06.02.13";
-  buildDateTime = mkDefault 1591120592;
+  buildNumber = mkDefault "2020.07.07.10";
+  buildDateTime = mkDefault 1594141956;
 
   source.dirs = lib.importJSON (./. + "/${grapheneOSRelease}.json");
+
+  vendor.buildID = mkDefault "QQ3A.200705.002";
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -22,12 +24,6 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
     "${config.device} is not a supported device for GrapheneOS";
 }
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" "crosshatch" ])) {
-  vendor.buildID = mkDefault "QQ3A.200605.001";
-})
-(mkIf ((elem config.deviceFamily [ "bonito" "generic"])) {
-  vendor.buildID = mkDefault "QQ3A.200605.002";
-})
 {
   # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
   source.dirs."build/soong".patches = [
@@ -79,7 +75,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "0v04nrgp1igs1jx52lvwjlxvl22bgqhyyp0cl000z4lcd44xlv0p";
+    sha256 = "01zpcjhhbqgpli7zn1fv698193fkdcj2p4f6ix19hig35j3brcyc";
     fetchSubmodules = true;
   };
 })
