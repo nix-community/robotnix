@@ -3,8 +3,8 @@
     productName = "sdk"; # Alternatives are sdk_arm64, sdk_x86_64, sdk_x86
     variant = "eng";
     # TODO: Find out what tag the upstream SDK was built with
-    source.dirs = builtins.fromJSON (builtins.readFile ../flavors/vanilla/android-10.0.0_r37.json);
-    buildNumber = "eng.10.0.0_r37";
+    source.dirs = builtins.fromJSON (builtins.readFile ../flavors/vanilla/android-10.0.0_r40.json);
+    buildNumber = "eng.10.0.0_r40";
   };
 }).build.mkAndroid {
   name = "android-sdk";
