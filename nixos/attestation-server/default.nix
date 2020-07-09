@@ -1,4 +1,4 @@
-{ callPackage, lib, substituteAll, makeWrapper, fetchFromGitHub, jre,
+{ pkgs, callPackage, lib, substituteAll, makeWrapper, fetchFromGitHub, jdk11_headless, gradleGen,
   listenHost ? "localhost",
   port ? 8080,
   applicationId ? "org.robotnix.auditor",
@@ -8,19 +8,23 @@
   avbFingerprint ? ""
 }:
 let
-  buildGradle = callPackage ./gradle-env.nix {};
+  buildGradle = callPackage ./gradle-env.nix {
+    gradleGen = callPackage (pkgs.path + /pkgs/development/tools/build-managers/gradle) {
+      java = jdk11_headless;
+    };
+  };
 in
 buildGradle {
   pname = "AttestationServer";
-  version = "2019-11-11";
+  version = "2020-07-01";
 
   envSpec = ./gradle-env.json;
 
   src = fetchFromGitHub {
     owner = "grapheneos";
     repo = "AttestationServer";
-    rev = "e4b894f1fc2bd5e8fb9bd41fe7b8cb9913027510";
-    sha256 = "0bkl2kfzap3ffwa7bys7qg9myk40vw016yr79am8rhk2dgxdvgw4";
+    rev = "5eb5264b1ea889caca04175cb31bf6d6e83bfcc9";
+    sha256 = "0bf0abma4q8jqbnsbmshfjh3ykkmqj8qfwn6lpbjf99900c6mq1h";
   };
 
   patches = [ (substituteAll {
@@ -42,7 +46,7 @@ buildGradle {
     mv build/libs/source.jar build/libs/AttestationServer.jar # "source" is just the name of the parent dir in the nix environment, which ought to be "AttestationServer"
     cp -r build/libs/* $out/share/java
 
-    makeWrapper ${jre}/bin/java $out/bin/AttestationServer \
+    makeWrapper ${jdk11_headless}/bin/java $out/bin/AttestationServer \
       --add-flags "-cp $out/share/java/AttestationServer.jar:$out/share/java/* app.attestation.server.AttestationServer"
 
     # Static HTML output
