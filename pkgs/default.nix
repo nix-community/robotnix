@@ -15,6 +15,8 @@ let
 
     android-emulator = super.callPackage ./android-emulator {};
 
+    android-prepare-vendor = super.callPackage ./android-prepare-vendor {};
+
     bundletool = super.callPackage ./bundletool {};
 
     diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {

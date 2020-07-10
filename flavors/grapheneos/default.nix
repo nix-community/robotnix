@@ -62,6 +62,20 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
+
+  nixpkgs.overlays = [
+    (self: super: {
+      android-prepare-vendor = super.android-prepare-vendor.overrideAttrs ({ patches ? [], ... }: {
+        # Temporarily disable PREOPT for grapheneos
+        patches = patches ++ [
+          (pkgs.fetchpatch {
+            url = "https://github.com/GrapheneOS/android-prepare-vendor/commit/85d206cc28a6d1c23d3e088238b63bc2e6f68743.patch";
+            sha256 = "1nm6wrdqwwk5jdjwyi3na4x6h7midxvdjc31734klf13fysxmcsp";
+          })
+        ];
+      });
+    })
+  ];
 }
 (mkIf (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) {
   kernel.useCustom = mkDefault true;

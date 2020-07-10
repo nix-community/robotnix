@@ -3,19 +3,7 @@
 # TODO: One possibility is to reimplement parts of android-prepare-vendor in native nix so we can use an android-prepare-vendor config file directly
 with lib;
 let
-  _android-prepare-vendor = pkgs.callPackage ../pkgs/android-prepare-vendor { api = config.apiLevel; };
-  android-prepare-vendor =
-    if config.flavor == "grapheneos"
-    then _android-prepare-vendor.overrideAttrs (attrs: {
-      # TODO: Temporarily disable PREOPT for grapheneos
-      patches = attrs.patches ++ [
-        (pkgs.fetchpatch {
-          url = "https://github.com/GrapheneOS/android-prepare-vendor/commit/85d206cc28a6d1c23d3e088238b63bc2e6f68743.patch";
-          sha256 = "1nm6wrdqwwk5jdjwyi3na4x6h7midxvdjc31734klf13fysxmcsp";
-        })
-      ];
-    })
-    else _android-prepare-vendor;
+  android-prepare-vendor = pkgs.android-prepare-vendor.override { api = config.apiLevel; };
 
   apvConfig = builtins.fromJSON (builtins.readFile "${android-prepare-vendor}/${config.device}/config.json");
   usedOta = if (apvConfig ? ota-partitions) then config.vendor.ota else null;
@@ -49,7 +37,7 @@ let
   repairImg = imgDir:
     pkgs.runCommand "repaired-img" {} ''
       mkdir -p $out
-      ${android-prepare-vendor}/scripts/system-img-repair.sh --input "${imgDir}/system" --output $out --method OATDUMP --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${api}/bin/oatdump
+      ${android-prepare-vendor}/scripts/system-img-repair.sh --input "${imgDir}/system" --output $out --method OATDUMP --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${config.apiLevel}/bin/oatdump
     '';
 in
 {
