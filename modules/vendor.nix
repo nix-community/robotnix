@@ -37,7 +37,7 @@ let
   repairImg = imgDir:
     pkgs.runCommand "repaired-img" {} ''
       mkdir -p $out
-      ${android-prepare-vendor}/scripts/system-img-repair.sh --input "${imgDir}/system" --output $out --method OATDUMP --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${config.apiLevel}/bin/oatdump
+      ${android-prepare-vendor}/scripts/system-img-repair.sh --input "${imgDir}/system" --output $out --method OATDUMP --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${builtins.toString config.apiLevel}/bin/oatdump
     '';
 in
 {
@@ -76,8 +76,8 @@ in
       files = let
         # TODO: There's probably a better way to do this
         mergedConfig = recursiveUpdate apvConfig {
-          "api-${config.apiLevel}".naked = let
-            _config = apvConfig."api-${config.apiLevel}".naked;
+          "api-${builtins.toString config.apiLevel}".naked = let
+            _config = apvConfig."api-${builtins.toString config.apiLevel}".naked;
           in _config // {
             system-bytecode = _config.system-bytecode ++ config.vendor.systemBytecode;
             system-other = _config.system-other ++ config.vendor.systemOther;

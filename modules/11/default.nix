@@ -4,6 +4,8 @@ with lib;
 mkIf (config.androidVersion == 11) {
   warnings = [ "Android 11 support is experimental" ];
 
+  apiLevel = 30;
+
   source.dirs."build/make" = {
     patches = [
       ./build_make/0001-Readonly-source-fix.patch

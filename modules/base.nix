@@ -78,8 +78,8 @@ in
     };
 
     apiLevel = mkOption {
-      default = "28";
-      type = types.str;
+      default = 29;
+      type = types.int;
       internal = true;
     };
 
@@ -160,8 +160,6 @@ in
   })
   {
     productName = mkIf (config.device != null) (mkOptionDefault "${config.productNamePrefix}_${config.device}");
-
-    apiLevel = mkIf (config.androidVersion == 10) "29";
 
     # Some derivations (like fdroid) need to know the fingerprints of the keys
     # even if we aren't signing. Set test-keys in that case. This is not an
