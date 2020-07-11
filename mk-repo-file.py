@@ -96,6 +96,12 @@ def main():
                     revTrees[p['rev']] = p['tree']
 
     make_repo_file(args.url, args.rev, args.rev + '.json', force_refresh=args.force, mirror=args.mirror)
+    if args.ref.startswith('refs/tags/'):
+        ref = args.ref[len('refs/tags/'):]
+    else:
+        ref= args.ref
+    filename = 'repo-' + ref + '.json'
+
 
 if __name__ == "__main__":
     main()

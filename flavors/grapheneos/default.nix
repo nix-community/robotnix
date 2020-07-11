@@ -13,7 +13,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   buildNumber = mkDefault "2020.07.07.10";
   buildDateTime = mkDefault 1594141956;
 
-  source.dirs = lib.importJSON (./. + "/${grapheneOSRelease}.json");
+  source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   vendor.buildID = mkDefault "QQ3A.200705.002";
 
