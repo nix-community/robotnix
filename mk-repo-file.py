@@ -78,7 +78,7 @@ def make_repo_file(url: str, rev: str, filename: str, mirror: Optional[str]=None
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mirror', help="directory to a repo mirror of %s" % AOSP_BASEURL)
+    parser.add_argument('--mirror', help="path to a repo mirror of %s" % AOSP_BASEURL)
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('rev', help="manifest revision/tag")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
