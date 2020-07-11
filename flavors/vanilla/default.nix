@@ -162,10 +162,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   ];
 }
 (mkIf (config.device == "crosshatch") {
-  vendor.buildID = mkIf (config.device == "crosshatch") "RPB1.200504.020";
+  vendor.buildID = mkIf (config.device == "crosshatch") "RPB2.200611.009";
   vendor.img = mkIf (config.device == "crosshatch") (pkgs.fetchurl {
-    url = "https://dl.google.com/developers/android/rvc/images/factory/crosshatch-rpb1.200504.020-factory-5a980970.zip";
-    sha256 = "5a98097062d7aa2a57d69b1e70410be542306939268576e7a076674db29084c8";
+    url = "https://dl.google.com/developers/android/rvc/images/factory/crosshatch-rpb2.200611.009-factory-a34559bf.zip";
+    sha256 = "a34559bfb4ff4bd948e87d576964c8da3f1429d56ca3512c6426d6ecda8917c2";
   });
 
   # Use older OTA image
