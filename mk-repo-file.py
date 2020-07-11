@@ -31,16 +31,25 @@ def checkout_git(url, rev):
     json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
     return json.loads(json_text)
 
-def make_repo_file(url: str, ref: str, filename: str, force_refresh: bool, mirror: Optional[str]=None):
+def make_repo_file(url: str, ref: str, filename: str, override_project_revs: Dict[str, str], force_refresh: bool, mirror: Optional[str]=None):
     if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
     else:
         print("Fetching information for %s %s" % (url, ref))
         with tempfile.TemporaryDirectory() as tmpdir:
-            json_text = subprocess.check_output(['repo', 'dumpjson'], cwd=tmpdir).decode()
-            open(filename, 'w').write(json_text)
             subprocess.check_call(['repo', 'init', '--manifest-url=' + url, '--manifest-branch=' + ref, *REPO_FLAGS], cwd=tmpdir)
+            json_text = subprocess.check_output(['repo', 'dumpjson'] + (["--local-only"] if override_project_revs else []), cwd=tmpdir).decode()
             data = json.loads(json_text)
+
+            for project, rev in override_project_revs.items():
+                # We have to iterate over the whole output since we don't save
+                # the project name anymore, just the relpath, which isn't
+                # exactly the project name
+                for relpath, p in data.items():
+                    if p['url'].endswith(project):
+                        p['rev'] = rev
+
+            save(filename, data)
 
     for relpath, p in data.items():
         if 'sha256' not in p:
@@ -80,10 +89,20 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mirror', help="path to a repo mirror of %s" % AOSP_BASEURL)
     parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
+    parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
+
+    # Extract project revisions from repo.prop
+    override_project_revs = {}
+    if args.repo_prop:
+        lines = open(args.repo_prop, 'r').read().split('\n')
+        for line in lines:
+            if line:
+                project, rev = line.split()
+                override_project_revs[project] = rev
 
     # Read all oldrepojson files to populate hashtables
     for filename in args.oldrepojson:
@@ -101,7 +120,7 @@ def main():
         ref= args.ref
     filename = f'repo-{ref}.json'
 
-    make_repo_file(args.url, args.ref, filename, force_refresh=args.force, mirror=args.mirror)
+    make_repo_file(args.url, args.ref, filename, override_project_revs, force_refresh=args.force, mirror=args.mirror)
 
 if __name__ == "__main__":
     main()
