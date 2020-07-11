@@ -31,15 +31,15 @@ def checkout_git(url, rev):
     json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
     return json.loads(json_text)
 
-def make_repo_file(url: str, rev: str, filename: str, force_refresh: bool, mirror: Optional[str]=None):
+def make_repo_file(url: str, ref: str, filename: str, force_refresh: bool, mirror: Optional[str]=None):
     if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
     else:
-        print("Fetching information for %s %s" % (url, rev))
+        print("Fetching information for %s %s" % (url, ref))
         with tempfile.TemporaryDirectory() as tmpdir:
-            subprocess.check_call(['repo', 'init', '--manifest-url=' + url, '--manifest-branch=refs/tags/' + rev, *REPO_FLAGS], cwd=tmpdir)
             json_text = subprocess.check_output(['repo', 'dumpjson'], cwd=tmpdir).decode()
             open(filename, 'w').write(json_text)
+            subprocess.check_call(['repo', 'init', '--manifest-url=' + url, '--manifest-branch=' + ref, *REPO_FLAGS], cwd=tmpdir)
             data = json.loads(json_text)
 
     for relpath, p in data.items():
@@ -81,7 +81,7 @@ def main():
     parser.add_argument('--mirror', help="path to a repo mirror of %s" % AOSP_BASEURL)
     parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
     parser.add_argument('url', help="manifest URL")
-    parser.add_argument('rev', help="manifest revision/tag")
+    parser.add_argument('ref', help="manifest ref")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
 
@@ -95,13 +95,13 @@ def main():
                     treeHashes[p['tree']] = p['sha256']
                     revTrees[p['rev']] = p['tree']
 
-    make_repo_file(args.url, args.rev, args.rev + '.json', force_refresh=args.force, mirror=args.mirror)
     if args.ref.startswith('refs/tags/'):
         ref = args.ref[len('refs/tags/'):]
     else:
         ref= args.ref
-    filename = 'repo-' + ref + '.json'
+    filename = f'repo-{ref}.json'
 
+    make_repo_file(args.url, args.ref, filename, force_refresh=args.force, mirror=args.mirror)
 
 if __name__ == "__main__":
     main()
