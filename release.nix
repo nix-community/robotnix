@@ -29,7 +29,7 @@ let
     { device="x86";        flavor="vanilla";  androidVersion=11; }
   ]));
 
-  defaultBuild = (robotnix { device="arm64"; flavor="vanilla"; });
+  defaultBuild = robotnix { device="arm64"; flavor="vanilla"; };
 in
 {
   inherit (pkgs) diffoscope;
