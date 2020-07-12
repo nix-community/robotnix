@@ -64,6 +64,7 @@ in
         ProtectHome = true;
 
         NoNewPrivileges = true;
+        PrivateDevices = true;
         StateDirectory = "attestation";
         WorkingDirectory = "%S/attestation";
       };

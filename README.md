@@ -1,7 +1,7 @@
-# robotnix - Building Android (AOSP) with Nix
+# robotnix - Build Android (AOSP) with Nix
 
 This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs, currently targeting Pixel 1-4(a) (XL) devices.
-Robotnix uses a NixOS-style module system for customizing various aspects of the build.
+Robotnix uses a NixOS-style module system to customize various aspects of the build.
  
 Some optional modules include:
  - Vanilla Android 10 AOSP support
@@ -44,13 +44,10 @@ A user can use the `--cores` option for `nix-build` to set the number of cores t
 use, which can also be useful to decrease parallelism in case memory usage of
 certain build steps is too large.
 
-A full Android 10 build takes about 4 hours on my quad-core i7-3770 with 16GB of memory.
-The included `vanilla` and `grapheneos` flavors also build `chromium` (or `vanadium`) from source for use as the system webview.
-This takes approximately 6 hours on my i7-3770.
+A full Android 10 build with chromium webview takes approximately 10 hours on my quad-core i7-3770 with 16GB of memory.
+AOSP takes approximately 4 hours of that, while webview takes approximately 6 hours.
 I have recently upgraded to a 3970x Threadripper with 32-cores.
-This can build chromium+android in under an hour.
-
-
+This can build chromium+android in about an hour.
 
 ## Configuration and Build Options
 A configuration file should be created for anything more complicated, including creating signed builds.
@@ -89,12 +86,12 @@ See `release.nix` for the set of configurations with this minimal build testing.
 This check is run using `nix-build ./release.nix -A check`.
 As each build takes approximately 4 hours--I only build marlin and crosshatch builds for myself.
 At some point, I would love to set up a build farm and publish build products on s3 or [cachix](https://cachix.org).
-This would allow an end-user to simply sign their own releases without building the entire AOSP themselves.
+This would allow an end-user to simply sign releases using their own keys without building the entire AOSP themselves.
 
-As of 2020-05-17, `target_files`, `signed_target_files`, `img`, and `ota` files have all been verified to be bit-for-bit reproducible for `crosshatch` and `marlin`.
+As of 2020-05-17, `target_files`, `signed_target_files`, `img`, and `ota` files have all been verified to be bit-for-bit reproducible for `crosshatch` and `marlin` using the `vanilla` flavor.
 Automated periodic testing of this is still desired.
 
-One option being investigated is to set up multiple remote builders to produce unsigned target files for a number of device and flavor combinations.
+One option being investigated is to have multiple independent remote builders produce unsigned target files for a number of device and flavor combinations.
 An end-user could then verify that the builders produced the same unsigned target files, and finish the process by signing the target files and producing their own `img` and `ota` files.
 
 However, there are a few places where user-specific public keys are included in the build for key pinning.

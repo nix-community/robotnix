@@ -9,27 +9,28 @@ let
 
   overlay = self: super: {
     androidPkgs = import (builtins.fetchTarball {
-      url = "https://github.com/tadfisher/android-nixpkgs/archive/d3f24c3618c3d3ecdc32d164d4294578ae369e9d.tar.gz";
-      sha256 = "0d0n8am9k2cwca7kf64xi7ypriy8j1h3bc2jzyl8qakpfdcp19np";
+      url = "https://github.com/tadfisher/android-nixpkgs/archive/1c521461c78f967e8efda037fd2c3c12b2976662.tar.gz";
+      sha256 = "0c4qq3lnnkwr40a9zkd63xfgi2jaxdj7g76sql7pcalghgx88zag";
     }) { pkgs = self; };
 
     android-emulator = super.callPackage ./android-emulator {};
 
-    buildGradle = super.callPackage ./gradle-env.nix {};
+    android-prepare-vendor = super.callPackage ./android-prepare-vendor {};
 
     bundletool = super.callPackage ./bundletool {};
 
     diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {
-      version = "142";
+      version = "144";
       src = super.fetchurl {
         url    = "https://diffoscope.org/archive/diffoscope-${version}.tar.bz2";
-        sha256 = "0c6lvppghw9ynjg2radr8z3fc6lpgmgwr6kxyih7q4rxqf4gfv6i";
+        sha256 = "1n916k6z35c8ffksjjglkbl52jjhjv3899w230sg7k4ayzylj6zi";
       };
       patches = attrs.patches ++ [
         ./diffoscope/0001-comparators-android-Support-sparse-android-images.patch
-        ./diffoscope/arch-hack.patch
+        ./diffoscope/0002-libguestfs-mount-readonly.patch
+        ./diffoscope/0003-HACK-prefix-tool-names.patch
       ];
-      pythonPath = attrs.pythonPath ++ [ super.simg2img ];
+      pythonPath = attrs.pythonPath ++ [ super.simg2img super.zip ];
     })).override {
       python3Packages = super.python3Packages.override {
         overrides = pythonSelf: pythonSuper: {
@@ -42,6 +43,8 @@ let
 
     cipd = super.callPackage ./cipd {};
     fetchcipd = super.callPackage ./cipd/fetchcipd.nix {};
+
+    fetchandroidpatchset = super.callPackage ./fetchandroidpatchset {};
   };
 in
   import nixpkgs (args // {

@@ -5,22 +5,22 @@ let
   cfg = config.google;
 
   # TODO: Use repairedImg from android-prepare-vendor
-  systemPath = "${unpacked}/system/system";
+  systemPath = "${unpackedImg}/system/system";
 
   # Android 10 separates product specific apps/config, but its still under system in marlin
   productPath = if (config.androidVersion >= 10)
-    then "${unpacked}/${optionalString (config.deviceFamily == "marlin") "system/system/"}product"
+    then "${unpackedImg}/${optionalString (config.deviceFamily == "marlin") "system/system/"}product"
     else systemPath;
 
-  unpacked = if (config.vendor.img != null)
-    then config.build.vendor.unpacked
-    else (import ../default.nix { # If vendor is not set--say for generic/emulator targets, use the vendor files from crosshatch
+  unpackedImg = if config.apv.enable
+    then config.build.apv.unpackedImg
+    else (import ../default.nix { # If apv is not enabled--say for generic/emulator targets, use the vendor files from crosshatch
       configuration = {
         device = "crosshatch";
         flavor = "vanilla";
         inherit (config) androidVersion;
       };
-    }).build.vendor.unpacked;
+    }).build.apv.unpackedImg;
 in
 {
   # TODO: Add other google stuff. Ensure that either google play services or microg is enabled if these are.

@@ -7,7 +7,7 @@ args=(
     --mirror "/mnt/media/mirror"
     --ref-type branch
     "https://github.com/GrapheneOS/platform_manifest"
-    "$@"
+    "refs/tags/$@"
     ../*/repo-*.json
 )
 

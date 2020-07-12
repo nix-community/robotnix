@@ -1,4 +1,4 @@
-From e56d580c97fb51097b732d01a062058da742fccb Mon Sep 17 00:00:00 2001
+From 34e6cf84f28aaf191b556682f42e42f576b311f9 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:00:46 -0400
 Subject: [PATCH 1/4] Custom listen settings
@@ -8,56 +8,56 @@ Subject: [PATCH 1/4] Custom listen settings
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index f5c2927..8ed9cd4 100644
+index 20f48fb..2b194ac 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -224,7 +224,7 @@ public class AttestationServer {
-         new Thread(new AlertDispatcher()).start();
+@@ -225,7 +225,7 @@ public class AttestationServer {
          new Thread(new Maintenance()).start();
  
+         System.setProperty("sun.net.httpserver.nodelay", "true");
 -        final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
 +        final HttpServer server = HttpServer.create(new InetSocketAddress("@listenHost@", @port@), 0);
          server.createContext("/api/create_account", new CreateAccountHandler());
          server.createContext("/api/change_password", new ChangePasswordHandler());
          server.createContext("/api/login", new LoginHandler());
 -- 
-2.23.0
+2.27.0
 
 
-From 8c654ef2e8d3a8a3017ffa67e10db1bd0f9e4124 Mon Sep 17 00:00:00 2001
+From 6a2baccb4c2d9819bdbb0724b94f3a468078d713 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:09 -0400
 Subject: [PATCH 2/4] Custom domain
 
 ---
- .../attestation/server/AlertDispatcher.java    |  2 +-
- .../attestation/server/AttestationServer.java  |  2 +-
- static/about.html                              | 10 +++++-----
- static/contact.html                            | 18 +++++++++---------
- static/index.html                              |  8 ++++----
- static/robots.txt                              |  2 +-
- static/tutorial.html                           | 14 +++++++-------
- 7 files changed, 28 insertions(+), 28 deletions(-)
+ .../attestation/server/AlertDispatcher.java   |  2 +-
+ .../attestation/server/AttestationServer.java |  2 +-
+ static/about.html                             | 10 +++---
+ static/contact.html                           | 34 ++++---------------
+ static/index.html                             |  8 ++---
+ static/robots.txt                             |  2 +-
+ static/tutorial.html                          | 14 ++++----
+ 7 files changed, 26 insertions(+), 46 deletions(-)
 
 diff --git a/src/main/java/app/attestation/server/AlertDispatcher.java b/src/main/java/app/attestation/server/AlertDispatcher.java
-index c27f0cb..cc3aacc 100644
+index 23fb9c0..5aea054 100644
 --- a/src/main/java/app/attestation/server/AlertDispatcher.java
 +++ b/src/main/java/app/attestation/server/AlertDispatcher.java
-@@ -154,7 +154,7 @@ class AlertDispatcher implements Runnable {
+@@ -155,7 +155,7 @@ class AlertDispatcher implements Runnable {
                                          "Devices failed to provide valid attestations within " +
                                          alertDelay / 60 / 60 + " hours");
                                  message.setText("The following devices have failed to provide valid attestations before the expiry time:\n\n" +
--                                        expired.toString() + "\nLog in to https://attestation.app/ for more information.");
-+                                        expired.toString() + "\nLog in to https://@domain@/ for more information.");
+-                                        expired.toString() + "\nLog in to https://attestation.app/ for more information." +
++                                        expired.toString() + "\nLog in to https://@domain@/ for more information." +
+                                         "\nIf you do not want to receive these alerts and cannot log in to the account,\nemail contact@attestation.app from the address receiving the alerts.");
  
                                  Transport.send(message);
- 
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index 8ed9cd4..04c2cff 100644
+index 2b194ac..cb52015 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -749,7 +749,7 @@ public class AttestationServer {
-             }
+@@ -752,7 +752,7 @@ public class AttestationServer {
+             exchange.getResponseHeaders().set("Content-Type", "image/png");
              exchange.sendResponseHeaders(200, 0);
              try (final OutputStream output = exchange.getResponseBody()) {
 -                final String contents = "attestation.app " +
@@ -66,7 +66,7 @@ index 8ed9cd4..04c2cff 100644
                      BaseEncoding.base64().encode(account.subscribeKey) + " " +
                      account.verifyInterval;
 diff --git a/static/about.html b/static/about.html
-index 1044ab8..415c9ba 100644
+index 7221c73..7671484 100644
 --- a/static/about.html
 +++ b/static/about.html
 @@ -12,17 +12,17 @@
@@ -84,7 +84,7 @@ index 1044ab8..415c9ba 100644
 +        <meta property="og:site_name" content="@domain@/>
          <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?5"/>
+         <link rel="stylesheet" href="/attestation.css?9"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/about"/>
 +        <link rel="canonical" href="https://@domain@/about"/>
@@ -101,7 +101,7 @@ index 1044ab8..415c9ba 100644
              alerts. See <a href="/tutorial">the tutorial</a> for usage instructions. The protocol
              used for both local and remote attestation is
 diff --git a/static/contact.html b/static/contact.html
-index 1ff2b3e..da8fd17 100644
+index 3092634..8a94ee4 100644
 --- a/static/contact.html
 +++ b/static/contact.html
 @@ -12,17 +12,17 @@
@@ -119,25 +119,39 @@ index 1ff2b3e..da8fd17 100644
 +        <meta property="og:site_name" content="@domain@"/>
          <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?5"/>
+         <link rel="stylesheet" href="/attestation.css?9"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/contact"/>
 +        <link rel="canonical" href="https://@domain@/contact"/>
      </head>
      <body>
          <nav>
-@@ -40,8 +40,8 @@
+@@ -40,34 +40,14 @@
              <h1 id="contact">
                  <a href="#contact">Contact</a>
              </h1>
--            <p>You can contact <a href="mailto:contact@attestation.app">contact@attestation.app</a> for topics
--            related to the Auditor app and attestation service. The <a href="mailto:security@attestation.app">security@attestation.app</a>
-+            <p>You can contact <a href="mailto:contact@@domain@">contact@@domain@</a> for topics
-+            related to the Auditor app and attestation service. The <a href="mailto:security@@domain@">security@@domain@</a>
-             address can be used for high priority security issues. My personal email address <a href="mailto:danielmicay@gmail.com">danielmicay@gmail.com</a>
-             can be used for anything else.</p>
+-
+-            <p>Do not contact us with offers to sell us products or services.</p>
+-
+-            <p>Please do not send multiple copies / versions of the same email to different
+-            addresses. Either send it to a single address or CC the other addresses. In general,
+-            it's the same person handling every email address, and they don't need to see multiple
+-            copies of the same email in their inbox.</p>
+-
+-            <p>You can contact <a href="mailto:contact@attestation.app">contact@attestation.app</a>
+-            for topics related to the attestation project. Please don't send emails unrelated to
+-            the attestation project to this address.</p>
+-
+-            <p>The <a href="mailto:security@attestation.app">security@attestation.app</a>
+-            address is for reporting high priority security issues related to the attestation
+-            project. Please don't send other kinds of emails to this address. It is not a way of
+-            increasing the priority of emails that are not security reports. Your emails will be
+-            treated as a much lower priority if you misuse this address.</p>
+-
+-            <p>The email address of the lead developer is
+-            <a href="mailto:daniel.micay@attestation.app">daniel.micay@attestation.app</a>.</p>
          </div>
-@@ -49,9 +49,9 @@
+         <script type="application/ld+json">
              {
                  "@context": "https://schema.org",
                  "@type": "Organization",
@@ -151,7 +165,7 @@ index 1ff2b3e..da8fd17 100644
          </script>
      </body>
 diff --git a/static/index.html b/static/index.html
-index 1a500e0..79f70f6 100644
+index 848a784..5d5ffef 100644
 --- a/static/index.html
 +++ b/static/index.html
 @@ -12,17 +12,17 @@
@@ -169,13 +183,13 @@ index 1a500e0..79f70f6 100644
 +        <meta property="og:site_name" content="@domain@"/>
          <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?5"/>
+         <link rel="stylesheet" href="/attestation.css?9"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/"/>
 +        <link rel="canonical" href="https://@domain@/"/>
+         <script type="module" src="/monitoring.js?8"></script>
      </head>
      <body>
-         <nav>
 diff --git a/static/robots.txt b/static/robots.txt
 index 2747cbe..acceea4 100644
 --- a/static/robots.txt
@@ -185,7 +199,7 @@ index 2747cbe..acceea4 100644
 -Sitemap: https://attestation.app/sitemap.xml
 +Sitemap: https://@domain@/sitemap.xml
 diff --git a/static/tutorial.html b/static/tutorial.html
-index 8d5a515..6531118 100644
+index 504e64b..f7c9ed7 100644
 --- a/static/tutorial.html
 +++ b/static/tutorial.html
 @@ -12,17 +12,17 @@
@@ -203,7 +217,7 @@ index 8d5a515..6531118 100644
 +        <meta property="og:site_name" content="@domain@"/>
          <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?5"/>
+         <link rel="stylesheet" href="/attestation.css?9"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/tutorial"/>
 +        <link rel="canonical" href="https://@domain@/tutorial"/>
@@ -227,10 +241,10 @@ index 8d5a515..6531118 100644
              <h2 id="expanding-device-support">
                  <a href="#expanding-device-support">Expanding device support</a>
 -- 
-2.23.0
+2.27.0
 
 
-From 3d464fb97eae473ce18eec4953ca7113c994fc82 Mon Sep 17 00:00:00 2001
+From 0556aab783ac3211de902addd51af9023d1d58eb Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:18 -0400
 Subject: [PATCH 3/4] Custom fingerprints
@@ -240,7 +254,7 @@ Subject: [PATCH 3/4] Custom fingerprints
  1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index 3fecefd..31b127a 100644
+index 9a1a7f0..ed02175 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -166,7 +166,7 @@ class AttestationProtocol {
@@ -252,7 +266,7 @@ index 3fecefd..31b127a 100644
      private static final int OS_VERSION_MINIMUM = 80000;
      private static final int OS_PATCH_LEVEL_MINIMUM = 201801;
      private static final int VENDOR_PATCH_LEVEL_MINIMUM = 201808;
-@@ -237,6 +237,7 @@ class AttestationProtocol {
+@@ -240,6 +240,7 @@ class AttestationProtocol {
      private static final String OS_STOCK = "Stock";
      private static final String OS_GRAPHENE = "GrapheneOS";
      private static final String OS_CALYX = "CalyxOS";
@@ -260,7 +274,7 @@ index 3fecefd..31b127a 100644
  
      static class DeviceInfo {
          final String name;
-@@ -302,6 +303,11 @@ class AttestationProtocol {
+@@ -309,6 +310,11 @@ class AttestationProtocol {
                      new DeviceInfo(DEVICE_PIXEL_2_GENERIC, 2, 3, true, true, OS_CALYX))
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_CALYX))
@@ -272,7 +286,7 @@ index 3fecefd..31b127a 100644
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
-@@ -435,6 +441,9 @@ class AttestationProtocol {
+@@ -448,6 +454,9 @@ class AttestationProtocol {
              // CalyxOS
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_CALYX))
@@ -283,10 +297,10 @@ index 3fecefd..31b127a 100644
      static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 -- 
-2.23.0
+2.27.0
 
 
-From 61a824a03fb9dfd16c0ee45325792fca8340c277 Mon Sep 17 00:00:00 2001
+From f6f6021da8b45d6a205d429f3c399cfd0a411ab2 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:50:29 -0400
 Subject: [PATCH 4/4] Custom appId
@@ -296,7 +310,7 @@ Subject: [PATCH 4/4] Custom appId
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index 31b127a..ab74c04 100644
+index ed02175..44f755f 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -161,7 +161,7 @@ class AttestationProtocol {
@@ -309,5 +323,5 @@ index 31b127a..ab74c04 100644
      private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
              "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
 -- 
-2.23.0
+2.27.0
 

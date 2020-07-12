@@ -6,7 +6,9 @@ let
   # TODO: Maybe include all source hashes except from build/make to avoid infinite recursion?
   hash = builtins.hashString "sha256" "${config.buildNumber} ${builtins.toString config.buildDateTime}";
 in
-mkIf (config.androidVersion >= 10) {
+mkIf (config.androidVersion == 10) {
+  apiLevel = 29;
+
   source.dirs."build/make" = {
     patches = [
       ./build_make/0001-Readonly-source-fix.patch

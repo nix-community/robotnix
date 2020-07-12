@@ -19,7 +19,7 @@
 #         '';
 #       }
 
-{ stdenv, buildEnv, fetchurl, gradleGen, writeText, writeTextDir }:
+{ stdenv, lib, buildEnv, fetchurl, gradleGen, writeText, writeTextDir, runCommandCC, unzip, zip, autoPatchelfHook }:
 
 { envSpec
 , pname ? null
@@ -39,12 +39,28 @@ let
     versionOlder unique mapAttrs last concatMapStringsSep removeSuffix
     optionalString groupBy' readFile hasSuffix;
 
+  patchJar = jar: stdenv.mkDerivation {
+    name = "patched.jar";
+    src = jar;
+
+    phases = "unpackPhase buildPhase installPhase";
+
+    nativeBuildInputs = [ unzip zip autoPatchelfHook ];
+
+    unpackPhase = "unzip $src";
+    buildPhase = "autoPatchelf .";
+    installPhase = "zip -r $out *";
+  };
+
   mkDep = depSpec: stdenv.mkDerivation {
     inherit (depSpec) name;
 
-    src = fetchurl {
-      inherit (depSpec) urls sha256;
-    };
+    src = let
+        file = fetchurl {
+        inherit (depSpec) urls sha256;
+      };
+    # Special case for aapt2-...-linux.jar, which contains a jar with an executable that will need to be patched
+    in if (lib.hasSuffix "-linux.jar" depSpec.name) then patchJar file else file;
 
     phases = "installPhase";
 

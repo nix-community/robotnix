@@ -116,7 +116,7 @@ in
       '';
 
       nativeBuildInputs = with pkgs; [
-        perl bc nettools openssl rsync gmp libmpc mpfr lz4
+        perl bc nettools openssl rsync gmp libmpc mpfr lz4 which
         prebuiltGCC prebuiltGCCarm32 prebuiltMisc
       ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ];  # TODO: Generalize to other arches
 
@@ -135,6 +135,8 @@ in
       preBuild = ''
         # (from nixpkgs) Note: we can get rid of this once http://permalink.gmane.org/gmane.linux.kbuild.devel/13800 is merged.
         buildFlagsArray+=("KBUILD_BUILD_TIMESTAMP=$(date -u -d @$SOURCE_DATE_EPOCH)")
+
+        buildFlagsArray+=("KBUILD_BUILD_VERSION=1")
 
         make O=out ARCH=arm64 ${cfg.configName}_defconfig
       '' + optionalString (cfg.compiler == "clang") ''

@@ -78,8 +78,8 @@ in
     };
 
     apiLevel = mkOption {
-      default = "28";
-      type = types.str;
+      default = 29;
+      type = types.int;
       internal = true;
     };
 
@@ -160,8 +160,6 @@ in
   })
   {
     productName = mkIf (config.device != null) (mkOptionDefault "${config.productNamePrefix}_${config.device}");
-
-    apiLevel = mkIf (config.androidVersion == 10) "29";
 
     # Some derivations (like fdroid) need to know the fingerprints of the keys
     # even if we aren't signing. Set test-keys in that case. This is not an
@@ -272,7 +270,7 @@ in
 
             #export NINJA_ARGS="${toString ninjaArgs}"
             export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
-            make ${toString makeTargets} || exit 1
+            (make ${toString makeTargets} | cat) || exit 1
             echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 
             EOF2
@@ -289,6 +287,10 @@ in
           USE_CCACHE = "true";
           CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
           CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
+        }) // (lib.optionalAttrs (config.androidVersion >= 11) {
+          # Android 11 ninja filters env vars for more correct incrementalism.
+          # However, env vars like LD_LIBRARY_PATH must be set for nixpkgs build-userenv-fhs to work
+          ALLOW_NINJA_ENV="true";
         }));
 
       android = mkAndroid {
@@ -332,27 +334,21 @@ in
         name = "ota-tools";
         inherit src;
         sourceRoot = ".";
-        nativeBuildInputs = with pkgs; [ unzip autoPatchelfHook protobuf pythonPackages.pytest ];
+        nativeBuildInputs = with pkgs; [ unzip pythonPackages.pytest ];
         buildInputs = [ (pkgs.python.withPackages (p: [ p.protobuf ])) ];
-        # TODO: Replace a lot of this with wrappers
-        postPatch = ''
-          # Replace some python binaries with the original python files.
-          # The soong-compiled versions all have "Failed to import the site module" error
-          cp ${config.source.dirs."external/avb".src}/avbtool bin/avbtool
-          cp ${config.source.dirs."system/core".src}/mkbootimg/mkbootimg.py bin/mkbootimg
-          cp ${config.source.dirs."system/extras".src}/ext4_utils/mkuserimg_mke2fs.py bin/mkuserimg_mke2fs
-          cp ${config.source.dirs."system/extras".src}/verity/build_verity_metadata.py bin/build_verity_metadata
-          cp ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map_generator.py bin/care_map_generator
-          protoc --python_out=bin/ -I ${config.source.dirs."bootable/recovery".src}/update_verifier \
-            ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map.proto
+        postPatch = let
+          # Android 11 uses JDK 9, but jre9 is not in nixpkgs anymore
+          jre = if (config.androidVersion >= 11) then pkgs.jdk11_headless else pkgs.jre8_headless;
+        in ''
+          ${optionalString (config.androidVersion >= 11) "cp bin/debugfs_static bin/debugfs"}
 
-          for name in boot_signer verity_signer; do
-            substituteInPlace bin/$name --replace "java " "${lib.getBin pkgs.jre8_headless}/bin/java "
+          for file in bin/{boot_signer,verity_signer}; do
+            substituteInPlace $file --replace "java " "${lib.getBin jre}/bin/java "
           done
 
           substituteInPlace releasetools/common.py \
             --replace 'self.search_path = platform_search_path.get(sys.platform)' "self.search_path = \"$out\"" \
-            --replace 'self.java_path = "java"' 'self.java_path = "${lib.getBin pkgs.jre8_headless}/bin/java"' \
+            --replace 'self.java_path = "java"' 'self.java_path = "${lib.getBin jre}/bin/java"' \
             --replace '"zip"' '"${lib.getBin pkgs.zip}/bin/zip"' \
             --replace '"unzip"' '"${lib.getBin pkgs.unzip}/bin/unzip"'
 
@@ -367,18 +363,18 @@ in
             --replace "look " "${lib.getBin pkgs.utillinux}/bin/look " \
             --replace "unzip " "${lib.getBin pkgs.unzip}/bin/unzip "
 
-          for name in bin/avbtool releasetools/{check_ota_package_signature,sign_target_files_apks,test_common,common,test_ota_from_target_files,ota_from_target_files,check_target_files_signatures}.py; do
-            substituteInPlace "$name" \
+          for file in releasetools/{check_ota_package_signature,sign_target_files_apks,test_common,common,test_ota_from_target_files,ota_from_target_files,check_target_files_signatures}.py; do
+            substituteInPlace "$file" \
               --replace "'openssl'" "'${lib.getBin pkgs.openssl}/bin/openssl'" \
               --replace "\"openssl\"" "\"${lib.getBin pkgs.openssl}/bin/openssl\""
           done
-          for name in releasetools/testdata/{payload_signer,signing_helper}.sh; do
-            substituteInPlace "$name" \
+          for file in releasetools/testdata/{payload_signer,signing_helper}.sh; do
+            substituteInPlace "$file" \
               --replace "openssl" "${lib.getBin pkgs.openssl}/bin/openssl"
           done
 
-          for name in releasetools/test_*.py; do
-            substituteInPlace "$name" \
+          for file in releasetools/test_*.py; do
+            substituteInPlace "$file" \
               --replace "@test_utils.SkipIfExternalToolsUnavailable()" ""
           done
 
@@ -390,7 +386,33 @@ in
           substituteInPlace releasetools/test_common.py \
             --replace test_ZipWrite skip_test_zipWrite
         '';
-        installPhase = ''
+
+        dontBuild = true;
+
+        installPhase = let
+          # Patchelf breaks the executables with embedded python interpreters
+          # Instead, we just wrap all the binaries with a chrootenv. This is ugly.
+          env = pkgs.buildFHSUserEnv {
+            name = "otatools-env";
+            targetPkgs = p: with p; [ openssl ]; # for bin/avbtool
+            runScript = pkgs.writeScript "run" ''
+              #!${pkgs.runtimeShell}
+              run="$1"
+              shift
+              exec -- "$run" "$@"
+            '';
+          };
+        in ''
+          while read -r file; do
+            # isELF is provided by stdenv
+            isELF "$file" || continue
+
+            mv "$file" "bin/.$(basename $file)"
+            echo "#!${pkgs.runtimeShell}" > $file
+            echo "exec ${env}/bin/otatools-env $out/bin/.$(basename $file) \"\$@\"" >> $file
+            chmod +x $file
+          done < <(find ./bin -type f -maxdepth 1 -executable)
+
           mkdir -p $out
           cp --reflink=auto -r * $out/
         '';
@@ -398,7 +420,12 @@ in
         # env-vars file which contains a bunch of references we don't need
         noDumpEnvVars = true;
 
-        doInstallCheck = true;
+        # See patchelf note above
+        dontStrip = true;
+        dontPatchELF = true;
+
+        # TODO: Fix with androud 11
+        doInstallCheck = config.androidVersion <= 10;
         installCheckPhase = ''
           cd $out/releasetools
           export PATH=$out/bin:$PATH

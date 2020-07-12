@@ -4,7 +4,8 @@ let
     configuration = {
       productName = "sdk";
       variant = "eng";
-      source.dirs = builtins.fromJSON (builtins.readFile ./platform-tools-29.0.5.json);
+      androidVersion = 11;
+      source.dirs = builtins.fromJSON (builtins.readFile ./repo-platform-tools-30.0.0.json);
     };
   }).build.mkAndroid {
     name = "adb";

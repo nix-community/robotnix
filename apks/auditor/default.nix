@@ -1,5 +1,5 @@
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
-{ callPackage, lib, substituteAll, fetchFromGitHub, buildGradle, androidPkgs, jdk, gradle,
+{ callPackage, lib, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle,
   domain ? "example.org",
   applicationName ? "Robotnix Auditor",
   applicationId ? "org.robotnix.auditor",
@@ -8,11 +8,12 @@
   avbFingerprint ? ""
 }:
 let
-  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-29 build-tools-29-0-2 ]);
+  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-29 build-tools-29-0-3 ]);
+  buildGradle = callPackage ./gradle-env.nix {};
 in
 buildGradle rec {
   name = "Auditor-${version}.apk";
-  version = "17"; # Latest as of 2019-11-11
+  version = "18"; # Latest as of 2019-11-11
 
   envSpec = ./gradle-env.json;
 
@@ -20,7 +21,7 @@ buildGradle rec {
     owner = "grapheneos";
     repo = "Auditor";
     rev = version;
-    sha256 = "143bvhxyvv5yk1c98kmdbj4qc6hn9snjqdmajwn778bxvwdyf0jl";
+    sha256 = "1w0zn2z0p7rrbwckrhzwifynja5arxa3gijvz6npsc08hws3nwxi";
   };
 
   patches = [
@@ -36,7 +37,7 @@ buildGradle rec {
   gradleFlags = [ "assembleRelease" ];
 
   ANDROID_HOME = "${androidsdk}/share/android-sdk";
-  nativeBuildInputs = [ jdk gradle ];
+  nativeBuildInputs = [ jdk ];
 
   installPhase = ''
     cp app/build/outputs/apk/release/app-release-unsigned.apk $out

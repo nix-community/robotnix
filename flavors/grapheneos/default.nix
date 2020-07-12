@@ -1,19 +1,23 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.vendor.buildID}.2020.05.05.02";
+  grapheneOSRelease = "${config.apv.buildID}.2020.07.06.20";
 
-  supportedDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito"  "generic"];
+  phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" ];
+  supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
-  # This a default number for robotnix that I update whenever a change is made
-  # to anything the build depends on. It does not match the GrapheneOS build
-  # number.
-  buildNumber = mkDefault "2020.05.05.13";
-  buildDateTime = mkDefault 1588698131;
+  # This a default number for robotnix that I update manually whenever
+  # significant a change is made to anything the build depends on. It does not
+  # match the GrapheneOS build number above.
+  buildNumber = mkDefault "2020.07.07.10";
+  buildDateTime = mkDefault 1594141956;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
+
+  apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
+  apv.buildID = mkDefault "QQ3A.200705.002";
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -22,12 +26,6 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
     "${config.device} is not a supported device for GrapheneOS";
 }
-(mkIf ((elem config.deviceFamily [ "taimen" "muskie" ])) {
-  vendor.buildID = mkDefault "QQ2A.200501.001.B3";
-})
-(mkIf ((elem config.deviceFamily [ "bonito" "crosshatch" "coral" "generic"])) {
-  vendor.buildID = mkDefault "QQ2A.200501.001.B2";
-})
 {
   # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
   source.dirs."build/soong".patches = [
@@ -51,7 +49,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   apps.seedvault.enable = mkDefault true;
 
-# Remove upstream prebuilt versions from build. We build from source ourselves.
+  # Remove upstream prebuilt versions from build. We build from source ourselves.
   removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "Seedvault" ];
   source.dirs."external/vanadium".enable = false;
   source.dirs."external/seedvault".enable = false;
@@ -79,7 +77,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "0rfx4mx62y7bylhkxdn4zp651jcxbq1dn7zhlmqakyksyjm02z6w";
+    sha256 = "01zpcjhhbqgpli7zn1fv698193fkdcj2p4f6ix19hig35j3brcyc";
     fetchSubmodules = true;
   };
 })

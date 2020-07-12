@@ -3,21 +3,33 @@
   lib ? pkgs.stdenv.lib
 }:
 
+with lib;
 let
-  robotnixlib = import ./lib lib;
-  apks = import ./apks { inherit pkgs; };
-
-  eval = (lib.evalModules {
+  eval = (evalModules {
     modules = [
-      { _module.args = {
-          inherit pkgs apks lib robotnixlib;
+      ({ config, ... }: {
+        options.nixpkgs.overlays = mkOption {
+          default = [];
+          type = types.listOf types.unspecified;
         };
-      }
+
+        config = {
+          _module.args = let
+            finalPkgs = pkgs.appendOverlays config.nixpkgs.overlays;
+            apks = import ./apks { pkgs = finalPkgs; };
+            robotnixlib = import ./lib lib;
+          in {
+            inherit apks lib robotnixlib;
+            pkgs = finalPkgs;
+          };
+        };
+      })
       configuration
       ./flavors/grapheneos
       ./flavors/lineageos
       ./flavors/vanilla
       ./modules/10
+      ./modules/11
       ./modules/9
       ./modules/apps/auditor.nix
       ./modules/apps/chromium.nix
@@ -25,6 +37,7 @@ let
       ./modules/apps/prebuilt.nix
       ./modules/apps/seedvault.nix
       ./modules/apps/updater.nix
+      ./modules/apv.nix
       ./modules/assertions.nix
       ./modules/base.nix
       ./modules/emulator.nix
@@ -41,7 +54,6 @@ let
       ./modules/release.nix
       ./modules/resources.nix
       ./modules/source.nix
-      ./modules/vendor.nix
       ./modules/webview.nix
     ];
   });
