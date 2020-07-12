@@ -131,35 +131,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  source.manifest.rev = "android-r-preview-4";
-
-  # android-r-preview-4 tag is missing some commits labelled
-  # "Remove mips workarounds." Grab a revision with those included
-  source.dirs."external/seccomp-tests" = {
-    rev = mkForce "f109fb9e5705801c4ab8400df9cc9d68d8132022";
-    sha256 = mkForce "1pfr58m287xa7z28hnl14jp56w615i061xxkj072bfxz9aachp64";
-  };
-  source.dirs."external/linux-kselftest" = {
-    rev = mkForce "db3a9fa235b35199b31b6e056c5e853e017554fc";
-    sha256 = mkForce "0lsnp3hnvhd56s71qsc3n1w288p5ry88jmnrz7h4dhv4m5wkd0bm";
-  };
-
-  source.dirs."libcore".patches = [
-    # Replace jniStrError with strerror_r
-    (pkgs.fetchandroidpatchset {
-      repo = "platform/libcore";
-      changeNumber = 1260462;
-      sha256 = "0lqp06drzs307aca9c7hv4xx86c6cfzkklm9hvwhlp6hyp0fgmz1";
-    })
-
-    # Update libcore.timezone from android.timezone
-    (pkgs.fetchandroidpatchset {
-      repo = "platform/libcore";
-      changeNumber = 1252691;
-      patchset = 3;
-      sha256 = "1yfrjjb7l5fw90fqkn5grdpnpgj1pmmh0i2jhmlbzfs869zjs5af";
-    })
-  ];
+  # Untagged release. Android R Beta 2 is CI build 6625208.
+  # Using CI build 665205 instead for something hopefully close
+  # https://ci.android.com/builds/submitted/6625205/aosp_arm64-userdebug/latest/view/repo.prop
+  source.manifest.rev = "android-r-beta-2";
 }
 (mkIf (config.device == "crosshatch") {
   vendor.buildID = mkIf (config.device == "crosshatch") "RPB2.200611.009";
@@ -173,6 +148,12 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     url = "https://dl.google.com/dl/android/aosp/crosshatch-ota-qq3a.200605.001-68685f95.zip";
     sha256 = "68685f957d8af0a925a26f1c0c11b9a7629df6e08dad70038c87c923a805d4aa";
   });
+
+  # HACK workaround for android-prepare-vendor, which might need to be updated
+  source.dirs."build/make".postPatch = ''
+    substituteInPlace core/Makefile \
+      --replace "check_elf_prebuilt_product_copy_files := true" "check_elf_prebuilt_product_copy_files := false"
+  '';
 
   # HACK to use recent android source, but with old vendor files...
   source.dirs."vendor/google_devices".postPatch = ''
