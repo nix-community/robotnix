@@ -8,7 +8,8 @@ let
     inherit rev sha256;
   };
 
-  supportedDeviceFamilies = [ "marlin" "taimen" "muskie" "crosshatch" "bonito" "coral" "generic"];
+  phoneDeviceFamilies = [ "marlin" "taimen" "muskie" "crosshatch" "bonito" "coral" ];
+  supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "vanilla") (mkMerge [
 
@@ -20,6 +21,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 
   warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
     "${config.device} is not a supported device for vanilla";
+
+  apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
 }
 {
   ### AOSP usability improvements ###

@@ -62,15 +62,17 @@ let
 in
 {
   options.apv = {
+    enable = mkEnableOption "android-prepare-vendor";
+
     img = mkOption {
       default = null;
-      type = types.nullOr types.path;
+      type = types.path;
       description = "A factory image .zip from upstream whose vendor contents should be extracted and included in the build";
     };
 
     ota = mkOption {
       default = null;
-      type = types.nullOr types.path;
+      type = types.path;
       description = "An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds need an OTA as well)";
     };
 
@@ -91,7 +93,7 @@ in
     };
   };
 
-  config = mkIf (cfg.img != null) {
+  config = {
     build.apv = {
       origfiles =
         buildVendorFiles {
@@ -172,6 +174,8 @@ in
     };
 
     # TODO: Re-add support for vendor_overlay if it is ever used again
-    source.dirs."vendor/google_devices".src = "${config.build.apv.files}/vendor/google_devices";
+    source.dirs = mkIf cfg.enable {
+      "vendor/google_devices".src = "${config.build.apv.files}/vendor/google_devices";
+    };
   };
 }

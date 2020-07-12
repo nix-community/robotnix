@@ -12,7 +12,7 @@ let
     then "${unpackedImg}/${optionalString (config.deviceFamily == "marlin") "system/system/"}product"
     else systemPath;
 
-  unpackedImg = if (config.apv.img != null)
+  unpackedImg = if config.apv.enable
     then config.build.apv.unpackedImg
     else (import ../default.nix { # If apv is not enabled--say for generic/emulator targets, use the vendor files from crosshatch
       configuration = {

@@ -44,8 +44,8 @@ mkMerge [
 
     kernel.name = mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") (mkDefault "wahoo");
     kernel.configName = mkDefault config.deviceFamily;
-    apv.img = mkDefault (fetchItem imgList);
-    apv.ota = mkDefault (fetchItem otaList);
+    apv.img = mkIf config.apv.enable (mkDefault (fetchItem imgList));
+    apv.ota = mkIf config.apv.enable (mkDefault (fetchItem otaList));
 
     source.excludeGroups = mkDefault [
       # Exclude all devices by default

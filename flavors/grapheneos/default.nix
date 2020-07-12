@@ -3,7 +3,8 @@ with lib;
 let
   grapheneOSRelease = "${config.apv.buildID}.2020.07.06.20";
 
-  supportedDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito"  "generic"];
+  phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" ];
+  supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
@@ -15,6 +16,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
+  apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkDefault "QQ3A.200705.002";
 
   # Not strictly necessary for me to set these, since I override the jsonFile
