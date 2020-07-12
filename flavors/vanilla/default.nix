@@ -58,7 +58,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf (elem config.deviceFamily supportedDeviceFamilies) {
   buildNumber = mkDefault "2020.07.07.09";
   buildDateTime = mkDefault 1594138015;
-  vendor.buildID = mkDefault "QQ3A.200705.002";
+  apv.buildID = mkDefault "QQ3A.200705.002";
   source.manifest.rev = mkDefault "android-10.0.0_r40";
 })
 {
@@ -98,7 +98,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf (config.deviceFamily == "marlin") {
   warnings = [ "marlin and sailfish are no longer receiving monthly security updates from Google. Support is left just for testing" ];
 
-  vendor.buildID = "QP1A.191005.007.A3";
+  apv.buildID = "QP1A.191005.007.A3";
   source.manifest.rev = "android-10.0.0_r40";
 
   # HACK to use recent android source, but with old vendor files...
@@ -137,14 +137,14 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   source.manifest.rev = "android-r-beta-2";
 }
 (mkIf (config.device == "crosshatch") {
-  vendor.buildID = mkIf (config.device == "crosshatch") "RPB2.200611.009";
-  vendor.img = mkIf (config.device == "crosshatch") (pkgs.fetchurl {
+  apv.buildID = mkIf (config.device == "crosshatch") "RPB2.200611.009";
+  apv.img = mkIf (config.device == "crosshatch") (pkgs.fetchurl {
     url = "https://dl.google.com/developers/android/rvc/images/factory/crosshatch-rpb2.200611.009-factory-a34559bf.zip";
     sha256 = "a34559bfb4ff4bd948e87d576964c8da3f1429d56ca3512c6426d6ecda8917c2";
   });
 
   # Use older OTA image
-  vendor.ota = mkIf (config.device == "crosshatch") (pkgs.fetchurl {
+  apv.ota = mkIf (config.device == "crosshatch") (pkgs.fetchurl {
     url = "https://dl.google.com/dl/android/aosp/crosshatch-ota-qq3a.200605.001-68685f95.zip";
     sha256 = "68685f957d8af0a925a26f1c0c11b9a7629df6e08dad70038c87c923a805d4aa";
   });

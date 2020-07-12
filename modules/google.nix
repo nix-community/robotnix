@@ -12,15 +12,15 @@ let
     then "${unpackedImg}/${optionalString (config.deviceFamily == "marlin") "system/system/"}product"
     else systemPath;
 
-  unpackedImg = if (config.vendor.img != null)
-    then config.build.vendor.unpackedImg
-    else (import ../default.nix { # If vendor is not set--say for generic/emulator targets, use the vendor files from crosshatch
+  unpackedImg = if (config.apv.img != null)
+    then config.build.apv.unpackedImg
+    else (import ../default.nix { # If apv is not enabled--say for generic/emulator targets, use the vendor files from crosshatch
       configuration = {
         device = "crosshatch";
         flavor = "vanilla";
         inherit (config) androidVersion;
       };
-    }).build.vendor.unpackedImg;
+    }).build.apv.unpackedImg;
 in
 {
   # TODO: Add other google stuff. Ensure that either google play services or microg is enabled if these are.

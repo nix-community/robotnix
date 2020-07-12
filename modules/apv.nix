@@ -1,8 +1,10 @@
 { config, pkgs, lib, ... }:
 
+# Robotnix module for android-prepare-vendor (apv)
+
 with lib;
 let
-  cfg = config.vendor;
+  cfg = config.apv;
 
   apiStr = builtins.toString config.apiLevel;
   android-prepare-vendor = pkgs.android-prepare-vendor.override { api = config.apiLevel; };
@@ -59,30 +61,30 @@ let
   '';
 in
 {
-  options = {
-    vendor.img = mkOption {
+  options.apv = {
+    img = mkOption {
       default = null;
       type = types.nullOr types.path;
       description = "A factory image .zip from upstream whose vendor contents should be extracted and included in the build";
     };
 
-    vendor.ota = mkOption {
+    ota = mkOption {
       default = null;
       type = types.nullOr types.path;
       description = "An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds need an OTA as well)";
     };
 
-    vendor.systemBytecode = mkOption {
+    systemBytecode = mkOption {
       type = types.listOf types.str;
       default = [];
     };
 
-    vendor.systemOther = mkOption {
+    systemOther = mkOption {
       type = types.listOf types.str;
       default = [];
     };
 
-    vendor.buildID = mkOption {
+    buildID = mkOption {
       type = types.str;
       description = "Build ID associated with the upstream img/ota (used to select images)";
       internal = true;
@@ -90,7 +92,7 @@ in
   };
 
   config = mkIf (cfg.img != null) {
-    build.vendor = {
+    build.apv = {
       origfiles =
         buildVendorFiles {
           inherit (config) device;
@@ -108,7 +110,7 @@ in
         pkgs.runCommand "repaired-system-${config.device}-${cfg.buildID}" {} ''
           mkdir -p $out
           ${android-prepare-vendor}/scripts/system-img-repair.sh \
-            --input ${config.build.vendor.unpackedImg}/system/system \
+            --input ${config.build.apv.unpackedImg}/system/system \
             --output $out \
             --method OATDUMP \
             --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${apiStr}/bin/oatdump \
@@ -116,7 +118,7 @@ in
             --timestamp 1
         '';
 
-      files = pkgs.runCommand "vendor-files-${config.device}-${cfg.buildID}" {} (with config.build.vendor; ''
+      files = pkgs.runCommand "vendor-files-${config.device}-${cfg.buildID}" {} (with config.build.apv; ''
         mkdir -p tmp
         ln -s ${repairedSystem}/system tmp/system
 
@@ -158,18 +160,18 @@ in
           builtVendor = unpackImg config.factoryImg;
         in pkgs.runCommand "vendor-diff" {} ''
           mkdir -p $out
-          ln -s ${config.build.vendor.unpackedImg} $out/upstream
+          ln -s ${config.build.apv.unpackedImg} $out/upstream
           ln -s ${builtVendor} $out/built
-          find ${config.build.vendor.unpackedImg}/vendor -printf "%P\n" | sort > $out/upstream-vendor
+          find ${config.build.apv.unpackedImg}/vendor -printf "%P\n" | sort > $out/upstream-vendor
           find ${builtVendor}/vendor -printf "%P\n" | sort > $out/built-vendor
           diff -u $out/upstream-vendor $out/built-vendor > $out/diff-vendor || true
-          find ${config.build.vendor.unpackedImg}/system -printf "%P\n" | sort > $out/upstream-system
+          find ${config.build.apv.unpackedImg}/system -printf "%P\n" | sort > $out/upstream-system
           find ${builtVendor}/system -printf "%P\n" | sort > $out/built-system
           diff -u $out/upstream-system $out/built-system > $out/diff-system || true
         '';
     };
 
     # TODO: Re-add support for vendor_overlay if it is ever used again
-    source.dirs."vendor/google_devices".src = "${config.build.vendor.files}/vendor/google_devices";
+    source.dirs."vendor/google_devices".src = "${config.build.apv.files}/vendor/google_devices";
   };
 }

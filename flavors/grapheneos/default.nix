@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.vendor.buildID}.2020.07.06.20";
+  grapheneOSRelease = "${config.apv.buildID}.2020.07.06.20";
 
   supportedDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito"  "generic"];
 
@@ -15,7 +15,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
-  vendor.buildID = mkDefault "QQ3A.200705.002";
+  apv.buildID = mkDefault "QQ3A.200705.002";
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";

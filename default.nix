@@ -36,6 +36,7 @@ let
       ./modules/apps/prebuilt.nix
       ./modules/apps/seedvault.nix
       ./modules/apps/updater.nix
+      ./modules/apv.nix
       ./modules/assertions.nix
       ./modules/base.nix
       ./modules/emulator.nix
@@ -51,7 +52,6 @@ let
       ./modules/release.nix
       ./modules/resources.nix
       ./modules/source.nix
-      ./modules/vendor.nix
       ./modules/webview.nix
     ];
   });
