@@ -334,22 +334,12 @@ in
         name = "ota-tools";
         inherit src;
         sourceRoot = ".";
-        nativeBuildInputs = with pkgs; [ unzip autoPatchelfHook protobuf pythonPackages.pytest ];
+        nativeBuildInputs = with pkgs; [ unzip pythonPackages.pytest ];
         buildInputs = [ (pkgs.python.withPackages (p: [ p.protobuf ])) ];
-        # TODO: Replace a lot of this with wrappers
         postPatch = ''
-          # Replace some python binaries with the original python files.
-          # The soong-compiled versions all have "Failed to import the site module" error
-          cp ${config.source.dirs."external/avb".src}/avbtool bin/avbtool
-          cp ${config.source.dirs."system/core".src}/mkbootimg/mkbootimg.py bin/mkbootimg
-          cp ${config.source.dirs."system/extras".src}/ext4_utils/mkuserimg_mke2fs.py bin/mkuserimg_mke2fs
-          cp ${config.source.dirs."system/extras".src}/verity/build_verity_metadata.py bin/build_verity_metadata
-          cp ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map_generator.py bin/care_map_generator
-          protoc --python_out=bin/ -I ${config.source.dirs."bootable/recovery".src}/update_verifier \
-            ${config.source.dirs."bootable/recovery".src}/update_verifier/care_map.proto
 
-          for name in boot_signer verity_signer; do
-            substituteInPlace bin/$name --replace "java " "${lib.getBin pkgs.jre8_headless}/bin/java "
+          for file in bin/{boot_signer,verity_signer}; do
+            substituteInPlace $file --replace "java " "${lib.getBin pkgs.jre8_headless}/bin/java "
           done
 
           substituteInPlace releasetools/common.py \
@@ -369,18 +359,18 @@ in
             --replace "look " "${lib.getBin pkgs.utillinux}/bin/look " \
             --replace "unzip " "${lib.getBin pkgs.unzip}/bin/unzip "
 
-          for name in bin/avbtool releasetools/{check_ota_package_signature,sign_target_files_apks,test_common,common,test_ota_from_target_files,ota_from_target_files,check_target_files_signatures}.py; do
-            substituteInPlace "$name" \
+          for file in releasetools/{check_ota_package_signature,sign_target_files_apks,test_common,common,test_ota_from_target_files,ota_from_target_files,check_target_files_signatures}.py; do
+            substituteInPlace "$file" \
               --replace "'openssl'" "'${lib.getBin pkgs.openssl}/bin/openssl'" \
               --replace "\"openssl\"" "\"${lib.getBin pkgs.openssl}/bin/openssl\""
           done
-          for name in releasetools/testdata/{payload_signer,signing_helper}.sh; do
-            substituteInPlace "$name" \
+          for file in releasetools/testdata/{payload_signer,signing_helper}.sh; do
+            substituteInPlace "$file" \
               --replace "openssl" "${lib.getBin pkgs.openssl}/bin/openssl"
           done
 
-          for name in releasetools/test_*.py; do
-            substituteInPlace "$name" \
+          for file in releasetools/test_*.py; do
+            substituteInPlace "$file" \
               --replace "@test_utils.SkipIfExternalToolsUnavailable()" ""
           done
 
@@ -392,13 +382,43 @@ in
           substituteInPlace releasetools/test_common.py \
             --replace test_ZipWrite skip_test_zipWrite
         '';
-        installPhase = ''
+
+        dontBuild = true;
+
+        installPhase = let
+          # Patchelf breaks the executables with embedded python interpreters
+          # Instead, we just wrap all the binaries with a chrootenv. This is ugly.
+          env = pkgs.buildFHSUserEnv {
+            name = "otatools-env";
+            targetPkgs = p: with p; [ openssl ]; # for bin/avbtool
+            runScript = pkgs.writeScript "run" ''
+              #!${pkgs.runtimeShell}
+              run="$1"
+              shift
+              exec -- "$run" "$@"
+            '';
+          };
+        in ''
+          while read -r file; do
+            # isELF is provided by stdenv
+            isELF "$file" || continue
+
+            mv "$file" "bin/.$(basename $file)"
+            echo "#!${pkgs.runtimeShell}" > $file
+            echo "exec ${env}/bin/otatools-env $out/bin/.$(basename $file) \"\$@\"" >> $file
+            chmod +x $file
+          done < <(find ./bin -type f -maxdepth 1 -executable)
+
           mkdir -p $out
           cp --reflink=auto -r * $out/
         '';
         # Since we copy everything from build dir into $out, we don't want
         # env-vars file which contains a bunch of references we don't need
         noDumpEnvVars = true;
+
+        # See patchelf note above
+        dontStrip = true;
+        dontPatchELF = true;
 
         doInstallCheck = true;
         installCheckPhase = ''
