@@ -155,20 +155,17 @@ in
 
       # For debugging differences between upstream vendor files and ours
       diff = let
-          builtVendor = unpackImg {
-            inherit (config) device;
-            img = config.factoryImg;
-          };
+          builtVendor = unpackImg config.factoryImg;
         in pkgs.runCommand "vendor-diff" {} ''
           mkdir -p $out
           ln -s ${config.build.vendor.unpackedImg} $out/upstream
           ln -s ${builtVendor} $out/built
           find ${config.build.vendor.unpackedImg}/vendor -printf "%P\n" | sort > $out/upstream-vendor
           find ${builtVendor}/vendor -printf "%P\n" | sort > $out/built-vendor
-          diff $out/upstream-vendor $out/built-vendor > $out/diff-vendor || true
+          diff -u $out/upstream-vendor $out/built-vendor > $out/diff-vendor || true
           find ${config.build.vendor.unpackedImg}/system -printf "%P\n" | sort > $out/upstream-system
           find ${builtVendor}/system -printf "%P\n" | sort > $out/built-system
-          diff $out/upstream-system $out/built-system > $out/diff-system || true
+          diff -u $out/upstream-system $out/built-system > $out/diff-system || true
         '';
     };
 
