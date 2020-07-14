@@ -24,7 +24,7 @@ index 78eb7c5..8d14f81 100644
 2.27.0
 
 
-From 4cc426aa31e66e64f8b7be590052b219d2a6b19f Mon Sep 17 00:00:00 2001
+From 9eb8cd7e8036cc5d9137cacddc016e86460c068c Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 16:17:57 -0400
 Subject: [PATCH 2/4] Custom fingerprints
@@ -35,7 +35,7 @@ Subject: [PATCH 2/4] Custom fingerprints
  2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index 6c85d56..6008e67 100644
+index 6c85d56..4394dd8 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -225,7 +225,7 @@ class AttestationProtocol {
@@ -51,7 +51,7 @@ index 6c85d56..6008e67 100644
                      new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_calyx))
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
-+            // NixDroidOS (TODO: support multiple devices. Needs different key for each device?)
++            // Robotnix
 +            .put("@taimen_avbFingerprint@",
 +                    new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_nixdroid))
 +            .put("@crosshatch_avbFingerprint@",
@@ -63,27 +63,27 @@ index 6c85d56..6008e67 100644
              // CalyxOS
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
-+            // NixDroidOS
++            // Robotnix
 +            .put("@crosshatch_avbFingerprint@",
-+                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_nixdroid))
++                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
              .build();
      private static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 100130a..17864b6 100644
+index 100130a..6f9bfdb 100644
 --- a/app/src/main/res/values/strings.xml
 +++ b/app/src/main/res/values/strings.xml
 @@ -140,4 +140,5 @@
      <string name="os_stock">Stock</string>
      <string name="os_graphene">GrapheneOS</string>
      <string name="os_calyx">CalyxOS</string>
-+    <string name="os_nixdroid">NixDroidOS</string>
++    <string name="os_robotnix">Robotnix</string>
  </resources>
 -- 
 2.27.0
 
 
-From 50e5e03ae5009c962bda1da5bec344959bde2e28 Mon Sep 17 00:00:00 2001
+From ae7752d368bb05504658f41b09d1a43fdc52c788 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:49:04 -0400
 Subject: [PATCH 3/4] Customize appId
@@ -107,7 +107,7 @@ index b4c4ed7..167e083 100644
          targetSdkVersion 29
          versionCode 18
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index 6008e67..c601388 100644
+index 4394dd8..8b5d631 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -220,7 +220,7 @@ class AttestationProtocol {
@@ -123,7 +123,7 @@ index 6008e67..c601388 100644
 2.27.0
 
 
-From fa069977cb507a69fb3708298daccf38deb8e351 Mon Sep 17 00:00:00 2001
+From b14e7792d2b74bca6a921a6250d4d40827b54fa1 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 17:03:03 -0400
 Subject: [PATCH 4/4] Change application name to NixDroid Auditor for clarity
@@ -133,13 +133,13 @@ Subject: [PATCH 4/4] Change application name to NixDroid Auditor for clarity
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 17864b6..2859adf 100644
+index 6f9bfdb..0fde6cd 100644
 --- a/app/src/main/res/values/strings.xml
 +++ b/app/src/main/res/values/strings.xml
 @@ -1,5 +1,5 @@
  <resources>
 -    <string name="app_name">Auditor</string>
-+    <string name="app_name">NixDroid Auditor</string>
++    <string name="app_name">Robotnix Auditor</string>
      <string name="introduction">Two devices are needed to perform verification:\n\n- The device to be verified (Auditee), which needs to be one of the supported devices launched with Android 8.0+.\n\n- An Android 7.0+ device to perform the verification (Auditor).\n\nThe verification process requires sending data between the devices by scanning QR codes.</string>
      <string name="unsupported_auditee">Device is not one of the supported models with hardware-based attestation.</string>
      <string name="camera_permission_denied">Camera permission is required to scan QR codes. Please try again.</string>
