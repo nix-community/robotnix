@@ -7,9 +7,6 @@ import os
 import subprocess
 import urllib.request
 
-# TODO: Use git ls-remote to check if the remote branch has a newer revision
-# than the one we currently have, and update if so. Seee hash_from_ref in nix-prefetch-git
-#
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
 # TODO: Output a timestamp somewhere
@@ -23,6 +20,11 @@ BRANCH = "lineage-17.1"
 
 def save(filename, data):
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
+
+def newest_rev(url):
+    remote_info = subprocess.check_output([ "git", "ls-remote", url, 'refs/heads/' + BRANCH ]).decode()
+    remote_rev = remote_info.split('\t')[0]
+    return remote_rev
 
 def checkout_git(url, rev):
     print("Checking out %s %s" % (url, rev))
