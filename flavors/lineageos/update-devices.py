@@ -125,7 +125,7 @@ def fetch_vendor_dirs(metadata, filename, resume):
 
         # XXX: HACK
         if oem == "xiaomi":
-            url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi"
+            url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi.git/"
         else:
             url = VENDOR_REPO_BASE + 'proprietary_' + relpath.replace('/', '_')
 
