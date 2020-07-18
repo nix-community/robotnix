@@ -123,19 +123,19 @@ def fetch_vendor_dirs(metadata, filename, resume):
 
         relpath = "vendor/" + oem
 
-        # Skip existing dependency
-        if relpath in dirs:
-            continue
-
         # XXX: HACK
         if oem == "xiaomi":
             url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi"
         else:
             url = VENDOR_REPO_BASE + 'proprietary_' + relpath.replace('/', '_')
 
-        dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+        current_rev = dirs.get(relpath, {}).get('rev', None)
+        if current_rev != newest_rev(url):
+            dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+            save(filename, dirs) # Save after every step, for resuming
+        else:
+            print(relpath + ' is up to date.')
 
-        save(filename, dirs) # Save after every step, for resuming
 
     save(filename, dirs)
     return dirs
