@@ -92,14 +92,14 @@ def fetch_dirs(metadata, filename, resume=False):
             relpath = dep[8:]
         relpath = relpath.replace('_', '/')
 
-        # Skip existing dependency
-        if relpath in dirs:
-            continue
-
         url = LINEAGE_REPO_BASE + dep
-        dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
 
-        save(filename, dirs) # Save after every step, for resuming
+        current_rev = dirs.get(relpath, {}).get('rev', None)
+        if current_rev != newest_rev(url):
+            dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+            save(filename, dirs) # Save after every step, for resuming
+        else:
+            print(relpath + ' is up to date.')
 
     save(filename, dirs)
     return dirs
