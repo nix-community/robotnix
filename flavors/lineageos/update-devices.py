@@ -7,9 +7,6 @@ import os
 import subprocess
 import urllib.request
 
-# TODO: Use git ls-remote to check if the remote branch has a newer revision
-# than the one we currently have, and update if so. Seee hash_from_ref in nix-prefetch-git
-#
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
 # TODO: Output a timestamp somewhere
@@ -23,6 +20,11 @@ BRANCH = "lineage-17.1"
 
 def save(filename, data):
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
+
+def newest_rev(url):
+    remote_info = subprocess.check_output([ "git", "ls-remote", url, 'refs/heads/' + BRANCH ]).decode()
+    remote_rev = remote_info.split('\t')[0]
+    return remote_rev
 
 def checkout_git(url, rev):
     print("Checking out %s %s" % (url, rev))
@@ -90,14 +92,14 @@ def fetch_dirs(metadata, filename, resume=False):
             relpath = dep[8:]
         relpath = relpath.replace('_', '/')
 
-        # Skip existing dependency
-        if relpath in dirs:
-            continue
-
         url = LINEAGE_REPO_BASE + dep
-        dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
 
-        save(filename, dirs) # Save after every step, for resuming
+        current_rev = dirs.get(relpath, {}).get('rev', None)
+        if current_rev != newest_rev(url):
+            dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+            save(filename, dirs) # Save after every step, for resuming
+        else:
+            print(relpath + ' is up to date.')
 
     save(filename, dirs)
     return dirs
@@ -121,19 +123,19 @@ def fetch_vendor_dirs(metadata, filename, resume):
 
         relpath = "vendor/" + oem
 
-        # Skip existing dependency
-        if relpath in dirs:
-            continue
-
         # XXX: HACK
         if oem == "xiaomi":
-            url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi"
+            url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi.git/"
         else:
             url = VENDOR_REPO_BASE + 'proprietary_' + relpath.replace('/', '_')
 
-        dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+        current_rev = dirs.get(relpath, {}).get('rev', None)
+        if current_rev != newest_rev(url):
+            dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+            save(filename, dirs) # Save after every step, for resuming
+        else:
+            print(relpath + ' is up to date.')
 
-        save(filename, dirs) # Save after every step, for resuming
 
     save(filename, dirs)
     return dirs
