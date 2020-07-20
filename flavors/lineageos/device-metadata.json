@@ -44,18 +44,6 @@
     "oem": "Realme",
     "variant": "userdebug"
   },
-  "RMX1851": {
-    "branch": "lineage-16.0",
-    "deps": [
-      "android_device_realme_RMX1851",
-      "android_kernel_realme_sdm710",
-      "android_packages_resources_devicesettings"
-    ],
-    "lineage_recovery": false,
-    "name": "3 Pro",
-    "oem": "Realme",
-    "variant": "userdebug"
-  },
   "X00TD": {
     "branch": "lineage-16.0",
     "deps": [
@@ -741,6 +729,7 @@
       "android_device_motorola_harpia",
       "android_device_motorola_msm8916-common",
       "android_external_bson",
+      "android_external_sony_boringssl-compat",
       "android_hardware_sony_timekeep",
       "android_kernel_motorola_msm8916",
       "android_system_qcom"
@@ -807,6 +796,24 @@
     ],
     "lineage_recovery": false,
     "name": "Galaxy Note 3 LTE (N900T/V/W8)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
+  "j7elte": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_samsung_j7elte",
+      "android_device_samsung_universal7580-common",
+      "android_hardware_samsung",
+      "android_hardware_samsung_slsi_exynos",
+      "android_hardware_samsung_slsi_exynos5",
+      "android_hardware_samsung_slsi_exynos7580",
+      "android_hardware_samsung_slsi_openmax",
+      "android_kernel_samsung_universal7580",
+      "android_packages_resources_devicesettings"
+    ],
+    "lineage_recovery": true,
+    "name": "Galaxy J7 (2015)",
     "oem": "Samsung",
     "variant": "userdebug"
   },
@@ -1192,6 +1199,7 @@
       "android_device_motorola_lux",
       "android_device_motorola_msm8916-common",
       "android_external_bson",
+      "android_external_sony_boringssl-compat",
       "android_hardware_sony_timekeep",
       "android_kernel_motorola_msm8916",
       "android_system_qcom"
@@ -1262,6 +1270,7 @@
       "android_device_motorola_merlin",
       "android_device_motorola_msm8916-common",
       "android_external_bson",
+      "android_external_sony_boringssl-compat",
       "android_hardware_sony_timekeep",
       "android_kernel_motorola_msm8916",
       "android_system_qcom"
@@ -1382,6 +1391,7 @@
       "android_device_motorola_msm8916-common",
       "android_device_motorola_osprey",
       "android_external_bson",
+      "android_external_sony_boringssl-compat",
       "android_hardware_sony_timekeep",
       "android_kernel_motorola_msm8916",
       "android_system_qcom"
@@ -1431,6 +1441,17 @@
     "lineage_recovery": true,
     "name": "Mi MIX 2S",
     "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "pro1": {
+    "branch": "lineage-16.0",
+    "deps": [
+      "android_device_fxtec_pro1",
+      "android_kernel_fxtec_msm8998"
+    ],
+    "lineage_recovery": true,
+    "name": "Pro1",
+    "oem": "FxTec",
     "variant": "userdebug"
   },
   "r5": {
@@ -1672,6 +1693,7 @@
       "android_device_motorola_msm8916-common",
       "android_device_motorola_surnia",
       "android_external_bson",
+      "android_external_sony_boringssl-compat",
       "android_hardware_sony_timekeep",
       "android_kernel_motorola_msm8916",
       "android_system_qcom"
@@ -1679,6 +1701,18 @@
     "lineage_recovery": true,
     "name": "Moto E LTE (2015)",
     "oem": "Motorola",
+    "variant": "userdebug"
+  },
+  "tissot": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_xiaomi_msm8953-common",
+      "android_device_xiaomi_tissot",
+      "android_kernel_xiaomi_msm8953"
+    ],
+    "lineage_recovery": true,
+    "name": "Mi A1",
+    "oem": "Xiaomi",
     "variant": "userdebug"
   },
   "twolip": {

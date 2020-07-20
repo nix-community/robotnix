@@ -4,7 +4,6 @@ set -eu
 
 args=(
     --mirror "/mnt/media/mirror"
-    --ref-type branch
     "https://github.com/LineageOS/android"
     "$@"
     ../*/repo-*.json
