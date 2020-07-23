@@ -99,4 +99,6 @@ in mkIf (config.flavor == "lineageos")
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
 
   envPackages = [ pkgs.openssl.dev ]; # Needed by included kernel build for some devices (pioneer at least)
+
+  envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL";  # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
 }
