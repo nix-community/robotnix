@@ -101,4 +101,10 @@ in mkIf (config.flavor == "lineageos")
   envPackages = [ pkgs.openssl.dev ]; # Needed by included kernel build for some devices (pioneer at least)
 
   envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL";  # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
+
+  # LineageOS flattens all APEX packages: https://review.lineageos.org/c/LineageOS/android_vendor_lineage/+/270212
+  # I can't find the CI config where this env var is set, but all device ROMS I
+  # tried had flattened APEX packages as of 2020-07-22
+  apex.enable = false;
+  envVars.OVERRIDE_TARGET_FLATTEN_APEX = "true";
 }
