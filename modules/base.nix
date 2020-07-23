@@ -144,6 +144,12 @@ in
       default = [];
     };
 
+    envVars = mkOption {
+      type = types.attrsOf types.str;
+      internal = true;
+      default = {};
+    };
+
     # Random attrset to throw build products into
     build = mkOption {
       internal = true;
@@ -191,6 +197,20 @@ in
         cp ${systemMk} $out/system.mk
         cp ${productMk} $out/product.mk
       '';
+
+    envVars = mkMerge [
+      {
+        BUILD_NUMBER = config.buildNumber;
+        BUILD_DATETIME = builtins.toString config.buildDateTime;
+        DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
+      }
+      (mkIf config.ccache.enable {
+        CCACHE_EXEC = pkgs.ccache + /bin/ccache;
+        USE_CCACHE = "true";
+        CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
+        CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
+      })
+    ];
 
     build = rec {
       # TODO: Is there a nix-native way to get this information instead of using IFD
@@ -251,11 +271,6 @@ in
 
           configurePhase = ":";
 
-          ANDROID_JAVA_HOME="${pkgs.jdk.home}"; # This is already set in android 10. They use their own prebuilt jdk
-          BUILD_NUMBER=config.buildNumber;
-          BUILD_DATETIME=config.buildDateTime;
-          DISPLAY_BUILD_NUMBER="true"; # Enabling this shows the BUILD_ID concatenated with the BUILD_NUMBER in the settings menu
-
           # This was originally in the buildPhase, but building the sdk / atree would complain for unknown reasons when it was set
           # export OUT_DIR=$rootDir/out
           buildPhase = ''
@@ -282,16 +297,7 @@ in
 
           dontFixup = true;
           dontMoveLib64 = true;
-        } // (lib.optionalAttrs config.ccache.enable {
-          CCACHE_EXEC = pkgs.ccache + /bin/ccache;
-          USE_CCACHE = "true";
-          CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
-          CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
-        }) // (lib.optionalAttrs (config.androidVersion >= 11) {
-          # Android 11 ninja filters env vars for more correct incrementalism.
-          # However, env vars like LD_LIBRARY_PATH must be set for nixpkgs build-userenv-fhs to work
-          ALLOW_NINJA_ENV="true";
-        }));
+        } // config.envVars);
 
       android = mkAndroid {
         name = "robotnix-${config.productName}-${config.buildNumber}";
