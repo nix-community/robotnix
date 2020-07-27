@@ -129,6 +129,7 @@ As root:
 ```console
 # mkdir -p -m0770 /var/cache/ccache
 # chown root:nixbld /var/cache/ccache
+# echo max_size = 100G > /var/cache/ccache/ccache.conf
 ```
 Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as a sandbox exception when building.
 
