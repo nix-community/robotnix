@@ -13,7 +13,7 @@ import string
 import subprocess
 import sys
 
-BASEDIR = "/tmp/z"
+BASEDIR = "/mnt/cache/chromium"
 
 SKIP_DEPS = [ "src/tools/luci-go" ]
 
