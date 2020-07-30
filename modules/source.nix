@@ -215,6 +215,8 @@ in
   };
 
   config.build = {
+    unpackScript = pkgs.writeShellScript "unpack.sh" config.source.unpackScript;
+
     # Extract only files under robotnix/ (for debugging with an external AOSP build)
     debugUnpackScript = pkgs.writeShellScript "debug-unpack.sh" (''
       rm -rf robotnix

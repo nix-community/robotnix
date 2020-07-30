@@ -246,7 +246,7 @@ in
             ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
 
             export rootDir=$PWD
-            source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
+            source ${config.build.unpackScript}
           '';
 
           configurePhase = ":";
@@ -444,7 +444,7 @@ in
         export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
         ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeScript "debug-enter-env2.sh" ''
         export rootDir=$PWD
-        source ${pkgs.writeText "unpack.sh" config.source.unpackScript}
+        source ${config.build.unpackScript}
 
         # Become the original user--not fake root. Enter an FHS user namespace
         ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${config.build.env}/bin/robotnix-build
