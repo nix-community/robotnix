@@ -3,7 +3,7 @@
 with lib;
 
 let
-  version = "0.2.10.19420";
+  version = "0.2.11.202414";
 in
 {
   options = {
@@ -26,11 +26,11 @@ in
       GmsCore = { 
         apk = pkgs.fetchurl {
           url = "https://github.com/microg/android_packages_apps_GmsCore/releases/download/v${version}/GmsCore-v${version}.apk";
-          sha256 = "08636nxb175hz2ky667xq4slb8h343jn3l9qjx5mvd9nhi1xrqfl";
+          sha256 = "0zrzr2bc2fki786i7j8k1fcghp81fl79zzzs879bl9vqfany6iys";
         };
         packageName = "com.google.android.gms";
         privileged = true;
-        privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" ];
+        privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" "UPDATE_APP_OPS_STATS" ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         allowInPowerSave = true;
       };
