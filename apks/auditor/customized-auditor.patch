@@ -24,7 +24,7 @@ index 78eb7c5..8d14f81 100644
 2.27.0
 
 
-From 9eb8cd7e8036cc5d9137cacddc016e86460c068c Mon Sep 17 00:00:00 2001
+From bdea3a91ad8478230222ef64dd14c44128ab90b7 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 16:17:57 -0400
 Subject: [PATCH 2/4] Custom fingerprints
@@ -35,7 +35,7 @@ Subject: [PATCH 2/4] Custom fingerprints
  2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index 6c85d56..4394dd8 100644
+index 6c85d56..6a16064 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -225,7 +225,7 @@ class AttestationProtocol {
@@ -53,9 +53,9 @@ index 6c85d56..4394dd8 100644
                      new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
 +            // Robotnix
 +            .put("@taimen_avbFingerprint@",
-+                    new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_nixdroid))
++                    new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_robotnix))
 +            .put("@crosshatch_avbFingerprint@",
-+                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_nixdroid))
++                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
              .build();
      private static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
@@ -83,7 +83,7 @@ index 100130a..6f9bfdb 100644
 2.27.0
 
 
-From ae7752d368bb05504658f41b09d1a43fdc52c788 Mon Sep 17 00:00:00 2001
+From 7dd7b67b23521fccd7bcedb87f89c97ccd889b11 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:49:04 -0400
 Subject: [PATCH 3/4] Customize appId
@@ -107,7 +107,7 @@ index b4c4ed7..167e083 100644
          targetSdkVersion 29
          versionCode 18
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index 4394dd8..8b5d631 100644
+index 6a16064..21a9ecc 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -220,7 +220,7 @@ class AttestationProtocol {
@@ -123,10 +123,10 @@ index 4394dd8..8b5d631 100644
 2.27.0
 
 
-From b14e7792d2b74bca6a921a6250d4d40827b54fa1 Mon Sep 17 00:00:00 2001
+From 99a0bcbaf2bc59c29f9e0fe2ac0627c00a7aa5ab Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 17:03:03 -0400
-Subject: [PATCH 4/4] Change application name to NixDroid Auditor for clarity
+Subject: [PATCH 4/4] Change application name to Robotnix Auditor for clarity
 
 ---
  app/src/main/res/values/strings.xml | 2 +-
