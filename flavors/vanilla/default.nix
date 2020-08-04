@@ -59,10 +59,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf (config.androidVersion == 10) (mkMerge [
 
 (mkIf (elem config.deviceFamily supportedDeviceFamilies) {
-  buildNumber = mkDefault "2020.07.07.09";
-  buildDateTime = mkDefault 1594138015;
-  apv.buildID = mkDefault "QQ3A.200705.002";
-  source.manifest.rev = mkDefault "android-10.0.0_r40";
+  buildNumber = mkDefault "2020.07.08.09";
+  buildDateTime = mkDefault 1596503967;
+  apv.buildID = mkDefault "QQ3A.200805.001";
+  source.manifest.rev = mkDefault "android-10.0.0_r41";
 })
 {
   source.dirs."packages/apps/DeskClock".patches = [
@@ -102,7 +102,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   warnings = [ "marlin and sailfish are no longer receiving monthly security updates from Google. Support is left just for testing" ];
 
   apv.buildID = "QP1A.191005.007.A3";
-  source.manifest.rev = "android-10.0.0_r40";
+  source.manifest.rev = "android-10.0.0_r41";
 
   # HACK to use recent android source, but with old vendor files...
   source.dirs."vendor/google_devices".postPatch = ''
