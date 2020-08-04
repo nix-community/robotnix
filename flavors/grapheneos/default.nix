@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2020.07.06.20";
+  grapheneOSRelease = "${config.apv.buildID}.2020.08.03.22";
 
   phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
@@ -17,7 +17,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault "QQ3A.200705.002";
+  apv.buildID = mkDefault "QQ3A.200805.001";
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -77,7 +77,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "01zpcjhhbqgpli7zn1fv698193fkdcj2p4f6ix19hig35j3brcyc";
+    sha256 = "17p2x1v3pvpg7pkvdr1l4h2jfm9b97lmajkbqv0sz7askns0rg73";
     fetchSubmodules = true;
   };
 })
