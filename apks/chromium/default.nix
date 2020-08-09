@@ -196,7 +196,9 @@ in stdenvNoCC.mkDerivation rec {
 
       substituteInPlace chrome/android/BUILD.gn \
         --replace 'chrome_public_manifest_package = "org.chromium.chrome"' \
-                  'chrome_public_manifest_package = "${packageName}"'
+                  'chrome_public_manifest_package = "${packageName}"' \
+        --replace '_default_package = "org.chromium.chrome"' \
+                  '_default_package = "${packageName}"'
     )
   '' + lib.optionalString enableRebranding ''
     ( cd src
