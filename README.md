@@ -3,7 +3,7 @@
 Robotnix enables a user to build Android (AOSP) images using the Nix package manager, currently targeting Pixel 1-4(a) (XL) devices.
 AOSP projects often contain long and complicated build instructions requiring a variety of tools for fetching source code and executing the build.
 This applies not only to Android itself, but also to projects which are to be included in the Android build, such as the Linux kernel, Chromium webview, MicroG, other external/prebuilt privileged apps, etc.
-Robotnix orchestrates the diverse build tools across these multiple projects using Nix, inheriting its reliability and reproducibility benefits, and consequently makes the build and signing process very simple for an end-user.
+Robotnix orchestrates the diverse build tools across these multiple projects using Nix, inheriting its reliability and reproducibility benefits, and consequently making the build and signing process very simple for an end-user.
 
 Robotnix includes a NixOS-style module system which allows users to easily customize various aspects of the their builds.
 Some optional modules include:
