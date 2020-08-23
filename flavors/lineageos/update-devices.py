@@ -14,8 +14,8 @@ import urllib.request
 #
 # 369 seconds so far
 
-LINEAGE_REPO_BASE = "https://github.com/LineageOS/"
-VENDOR_REPO_BASE = "https://github.com/TheMuppets/"
+LINEAGE_REPO_BASE = "https://github.com/LineageOS"
+VENDOR_REPO_BASE = "https://github.com/TheMuppets"
 BRANCH = "lineage-17.1"
 
 def save(filename, data):
@@ -75,7 +75,7 @@ def fetch_metadata(filename):
     save(filename, metadata)
     return metadata
 
-def fetch_dirs(metadata, filename, resume=False):
+def fetch_dirs(metadata, filename, resume, mirrors):
     required_deps = set()
     for device, data in metadata.items():
         if data['branch'] == BRANCH:
@@ -92,11 +92,17 @@ def fetch_dirs(metadata, filename, resume=False):
             relpath = dep[8:]
         relpath = relpath.replace('_', '/')
 
-        url = LINEAGE_REPO_BASE + dep
+        orig_url = LINEAGE_REPO_BASE + '/' + dep
+
+        url = orig_url
+        for mirror_url, mirror_path in mirrors.items():
+            if url.startswith(mirror_url):
+                url = url.replace(mirror_url, mirror_path)
 
         current_rev = dirs.get(relpath, {}).get('rev', None)
         if current_rev != newest_rev(url):
             dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+            dirs[relpath]['url'] = orig_url
             save(filename, dirs) # Save after every step, for resuming
         else:
             print(relpath + ' is up to date.')
@@ -104,7 +110,7 @@ def fetch_dirs(metadata, filename, resume=False):
     save(filename, dirs)
     return dirs
 
-def fetch_vendor_dirs(metadata, filename, resume):
+def fetch_vendor_dirs(metadata, filename, resume, mirrors):
     required_oems = set()
     for device, data in metadata.items():
         if data['branch'] == BRANCH:
@@ -125,13 +131,19 @@ def fetch_vendor_dirs(metadata, filename, resume):
 
         # XXX: HACK
         if oem == "xiaomi":
-            url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi.git/"
+            orig_url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi.git/"
         else:
-            url = VENDOR_REPO_BASE + 'proprietary_' + relpath.replace('/', '_')
+            orig_url = VENDOR_REPO_BASE + '/proprietary_' + relpath.replace('/', '_')
+
+        url = orig_url
+        for mirror_url, mirror_path in mirrors.items():
+            if url.startswith(mirror_url):
+                url = url.replace(mirror_url, mirror_path)
 
         current_rev = dirs.get(relpath, {}).get('rev', None)
         if current_rev != newest_rev(url):
             dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+            dirs[relpath]['url'] = orig_url
             save(filename, dirs) # Save after every step, for resuming
         else:
             print(relpath + ' is up to date.')
@@ -142,12 +154,15 @@ def fetch_vendor_dirs(metadata, filename, resume):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--mirror', action="append", help="a repo mirror to use for a given url, specified by <url>=<path>")
     parser.add_argument('--resume', action='store_true', help='use existing device-dirs.json file as source for hashes')
     args = parser.parse_args()
 
+    mirrors = dict(mirror.split("=") for mirror in args.mirror)
+
     metadata = fetch_metadata('device-metadata.json')
-    device_dirs = fetch_dirs(metadata, 'device-dirs.json', args.resume)
-    vendor_dirs = fetch_vendor_dirs(metadata, 'vendor-dirs.json', args.resume)
+    device_dirs = fetch_dirs(metadata, 'device-dirs.json', args.resume, mirrors)
+    vendor_dirs = fetch_vendor_dirs(metadata, 'vendor-dirs.json', args.resume, mirrors)
 
 
 if __name__ == '__main__':
