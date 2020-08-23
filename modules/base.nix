@@ -430,7 +430,7 @@ in
         dontStrip = true;
         dontPatchELF = true;
 
-        # TODO: Fix with androud 11
+        # TODO: Fix with android 11
         doInstallCheck = config.androidVersion <= 10;
         installCheckPhase = ''
           cd $out/releasetools
