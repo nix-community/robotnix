@@ -18,8 +18,6 @@ REPO_FLAGS = [
     "--depth=1",
 ]
 
-AOSP_BASEURL = "https://android.googlesource.com"
-
 # The kind of remote a "commitish" refers to.
 # These are used for the --ref-type CLI arg.
 class ManifestRefType(Enum):
@@ -40,7 +38,7 @@ def checkout_git(url, rev):
 
 def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                    override_project_revs: Dict[str, str], force_refresh: bool,
-                   mirror: Optional[str]=None):
+                   mirrors: Dict[str, str]):
     if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
     else:
@@ -70,14 +68,14 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                     p['tree'] = revTrees[p['rev']]
                 continue
 
-            if mirror and p['url'].startswith(AOSP_BASEURL):
-                p_url = p['url'].replace(AOSP_BASEURL, mirror)
-                p['tree'] = subprocess.check_output(['git', 'log','-1', '--pretty=%T', p['rev']], cwd=p_url+'.git').decode().strip()
-                if p['tree'] in treeHashes:
-                    p['sha256'] = treeHashes[p['tree']]
-                    continue
-            else:
-                p_url = p['url']
+            p_url = p['url']
+            for mirror_url, mirror_path in mirrors.items():
+                if p['url'].startswith(mirror_url):
+                    p_url = p['url'].replace(mirror_url, mirror_path)
+                    p['tree'] = subprocess.check_output(['git', 'log','-1', '--pretty=%T', p['rev']], cwd=p_url+'.git').decode().strip()
+                    if p['tree'] in treeHashes:
+                        p['sha256'] = treeHashes[p['tree']]
+                        continue
 
             # Grab 
             git_info = checkout_git(p_url, p['rev'])
@@ -85,7 +83,7 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
 
             # Add to cache
             revHashes[p['rev']] = p['sha256']
-            if mirror and p['url'].startswith(AOSP_BASEURL):
+            if 'tree' in p:
                 treeHashes[p['tree']] = p['sha256']
 
             # Save after every new piece of information just in case we crash
@@ -96,7 +94,7 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mirror', help="path to a repo mirror of %s" % AOSP_BASEURL)
+    parser.add_argument('--mirror', action="append", help="a repo mirror to use for a given url, specified by <url>=<path>")
     parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",
                         choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
     parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
@@ -105,6 +103,8 @@ def main():
     parser.add_argument('ref', help="manifest ref")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
+
+    mirrors = dict(mirror.split("=") for mirror in args.mirror)
 
     ref_type = ManifestRefType[args.ref_type.upper()]
 
@@ -129,7 +129,7 @@ def main():
 
     filename = f'repo-{args.ref}.json'
 
-    make_repo_file(args.url, args.ref, filename, ref_type, override_project_revs, force_refresh=args.force, mirror=args.mirror)
+    make_repo_file(args.url, args.ref, filename, ref_type, override_project_revs, force_refresh=args.force, mirrors=mirrors)
 
 if __name__ == "__main__":
     main()
