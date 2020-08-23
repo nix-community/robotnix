@@ -3,10 +3,10 @@
 set -eu
 
 args=(
-    --mirror "/mnt/media/mirror"
-    --ref-type branch
+    --mirror "/mnt/cache/mirror"
+    --ref-type tag
     "https://android.googlesource.com/platform/manifest"
-    "refs/tags/$@"
+    "$@"
     ../*/repo-*.json
 )
 

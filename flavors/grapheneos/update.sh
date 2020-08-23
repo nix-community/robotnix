@@ -4,10 +4,10 @@
 set -eu
 
 args=(
-    --mirror "/mnt/media/mirror"
-    --ref-type branch
+    --mirror "/mnt/cache/mirror"
+    --ref-type tag
     "https://github.com/GrapheneOS/platform_manifest"
-    "refs/tags/$@"
+    "$@"
     ../*/repo-*.json
 )
 

@@ -20,6 +20,12 @@ REPO_FLAGS = [
 
 AOSP_BASEURL = "https://android.googlesource.com"
 
+# The kind of remote a "commitish" refers to.
+# These are used for the --ref-type CLI arg.
+class ManifestRefType(Enum):
+    BRANCH = "heads"
+    TAG = "tags"
+
 revHashes: Dict[str, str] = {}
 revTrees: Dict[str, str] = {}
 treeHashes: Dict[str, str] = {}
@@ -32,13 +38,15 @@ def checkout_git(url, rev):
     json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
     return json.loads(json_text)
 
-def make_repo_file(url: str, ref: str, filename: str, override_project_revs: Dict[str, str], force_refresh: bool, mirror: Optional[str]=None):
+def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
+                   override_project_revs: Dict[str, str], force_refresh: bool,
+                   mirror: Optional[str]=None):
     if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
     else:
         print("Fetching information for %s %s" % (url, ref))
         with tempfile.TemporaryDirectory() as tmpdir:
-            subprocess.check_call(['repo', 'init', '--manifest-url=' + url, '--manifest-branch=' + ref, *REPO_FLAGS], cwd=tmpdir)
+            subprocess.check_call(['repo', 'init', f'--manifest-url={url}', f'--manifest-branch=refs/{ref_type.value}/{ref}', *REPO_FLAGS], cwd=tmpdir)
             json_text = subprocess.check_output(['repo', 'dumpjson'] + (["--local-only"] if override_project_revs else []), cwd=tmpdir).decode()
             data = json.loads(json_text)
 
@@ -89,12 +97,16 @@ def make_repo_file(url: str, ref: str, filename: str, override_project_revs: Dic
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mirror', help="path to a repo mirror of %s" % AOSP_BASEURL)
+    parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",
+                        choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
     parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
+
+    ref_type = ManifestRefType[args.ref_type.upper()]
 
     # Extract project revisions from repo.prop
     override_project_revs = {}
@@ -115,13 +127,9 @@ def main():
                     treeHashes[p['tree']] = p['sha256']
                     revTrees[p['rev']] = p['tree']
 
-    if args.ref.startswith('refs/tags/'):
-        ref = args.ref[len('refs/tags/'):]
-    else:
-        ref= args.ref
-    filename = f'repo-{ref}.json'
+    filename = f'repo-{args.ref}.json'
 
-    make_repo_file(args.url, args.ref, filename, override_project_revs, force_refresh=args.force, mirror=args.mirror)
+    make_repo_file(args.url, args.ref, filename, ref_type, override_project_revs, force_refresh=args.force, mirror=args.mirror)
 
 if __name__ == "__main__":
     main()
