@@ -107,7 +107,10 @@ Fixes for this are still under investigation.
 
 ### LineageOS Support
 LineageOS support may be enabled by setting `flavor = "lineageos";`.
-This support should be considered "experimental," as it does yet have the same level of support I intend to provide for `vanilla` and `grapheneos` flavors.
+The typical LineageOS flashing process producing a `boot.img` and `ota`, flashing `boot.img` with fastboot, and then flashing the `ota` in recovery mode.
+The `boot.img` and `ota` targets can be built using `nix-build ... -A bootImg` or `nix-build ... -A ota`, respectively.
+
+LineageOS support should be considered "experimental," as it does yet have the same level of support I intend to provide for `vanilla` and `grapheneos` flavors.
 LineageOS source metadata may be updated irregularly in robotnix, and certain modules (such as the updater) are not guaranteed to work.
 Moreover, LineageOS does not appear to provide the same level of security as even the vanilla flavor, with dm-verity/AVB often disabled, `userdebug` as the default variant, and vendor files with unclear origin.
 LineageOS support is still valuable to include as it extends preliminary to support to a much wider variety of devices, and provides the base that many other Android ROMs use to customize.
