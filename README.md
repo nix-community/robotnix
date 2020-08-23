@@ -1,14 +1,17 @@
 # robotnix - Build Android (AOSP) using Nix
 
-This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs.
-Robotnix uses a NixOS-style module system to customize various aspects of the build.
- 
+Robotnix enables a user to build Android (AOSP) images using the Nix package manager.
+AOSP projects often contain long and complicated build instructions requiring a variety of tools for fetching source code and executing the build.
+This applies not only to Android itself, but also to projects which are to be included in the Android build, such as the Linux kernel, Chromium webview, MicroG, other external/prebuilt privileged apps, etc.
+Robotnix orchestrates the diverse build tools across these multiple projects using Nix, inheriting its reliability and reproducibility benefits, and consequently making the build and signing process very simple for an end-user.
+
+Robotnix includes a NixOS-style module system which allows users to easily customize various aspects of the their builds.
 Some optional modules include:
  - Vanilla Android 10 AOSP support (for Pixel devices)
  - [GrapheneOS](https://grapheneos.org/) support
  - Experimental [LineageOS](https://lineageos.org/) support
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader with a user-specified key
- - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Backup](https://github.com/stevesoltys/backup)
+ - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Seedvault Backup](https://github.com/stevesoltys/backup)
  - Browser / Webview: [Chromium](https://www.chromium.org/Home), [Bromite](https://www.bromite.org/), [Vanadium](https://github.com/GrapheneOS/Vanadium)
  - [Seamless OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
  - [MicroG](https://microg.org/)
@@ -19,6 +22,7 @@ Some optional modules include:
  - Extracting vendor blobs from Google's images using [android-prepare-vendor](https://github.com/anestisb/android-prepare-vendor)
 
 Future goals include:
+ - Support for additional flavors and devices besides Pixel devices (such as LineageOS devices)
  - Better documentation, especially for module options
  - Continuous integration / testing for various devices
  - Automating CTS (Compatibility Test Suite) like nixos tests.
@@ -94,8 +98,9 @@ Automated periodic testing of this is still desired.
 
 One option being investigated is to have multiple independent remote builders produce unsigned target files for a number of device and flavor combinations.
 An end-user could then verify that the builders produced the same unsigned target files, and finish the process by signing the target files and producing their own `img` and `ota` files.
+This eliminates the requirement for an end-user to spend hours building android.
 
-However, there are a few places where user-specific public keys are included in the build for key pinning.
+There are, however, a few places where user-specific public keys are included in the build for key pinning.
 This unfortunately decreases the possibility of sharing build products between users.
 The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
 Fixes for this are still under investigation.
@@ -138,6 +143,7 @@ As root:
 ```console
 # mkdir -p -m0770 /var/cache/ccache
 # chown root:nixbld /var/cache/ccache
+# echo max_size = 100G > /var/cache/ccache/ccache.conf
 ```
 Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as a sandbox exception when building.
 

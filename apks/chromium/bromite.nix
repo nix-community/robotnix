@@ -1,13 +1,13 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "83.0.4103.119";
+  version = "84.0.4147.106";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "1a52405l9cfrg9my1s052mj27dmskz4jjxrbgpv4kzv51hlpzv6m";
+    sha256 = "0d9z7a1fl64y0wjws2mspi8s8r8n5vannbq5sgcl4xpnci57kjm0";
   };
 
 in (chromium.override {
@@ -25,7 +25,6 @@ in (chromium.override {
     disable_tab_ui_dfm=true;
     enable_av1_decoder=true;
     enable_dav1d_decoder=true;
-    enable_feed_in_chrome=false;
     enable_gvr_services=false;
     enable_hangout_services_extension=false;
     enable_iterator_debugging=false;
@@ -41,7 +40,6 @@ in (chromium.override {
     enable_vr=false;
     fieldtrial_testing_like_official_build=true;
     icu_use_data_file=true;
-    is_cfi=true;
     is_component_build=false;
     is_debug=false;
     is_official_build=true;

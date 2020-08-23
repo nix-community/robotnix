@@ -214,27 +214,31 @@ in
     unpackScript = concatMapStringsSep "\n" (d: d.unpackScript) (attrValues config.source.dirs);
   };
 
-  # Extract only files under robotnix/ (for debugging with an external AOSP build)
-  config.build.debugUnpackScript = pkgs.writeText "debug-unpack.sh" (''
-    rm -rf robotnix
-    '' +
-    (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "robotnix/" d.relpath)) ''
-      mkdir -p $(dirname ${d.relpath})
-      echo "${d.src} -> ${d.relpath}"
-      cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.src} ${d.relpath}/
-    '') (attrValues config.source.dirs))) + ''
-    chmod -R u+w robotnix/
-  '');
+  config.build = {
+    unpackScript = pkgs.writeShellScript "unpack.sh" config.source.unpackScript;
 
-  # Patch files in other sources besides robotnix/*
-  config.build.debugPatchScript = pkgs.writeText "debug-patch.sh"
-    (concatStringsSep "\n" (map (d: ''
-      ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
-      ${optionalString (d.postPatch != "") ''
-      pushd ${d.relpath} >/dev/null
-      ${d.postPatch}
-      popd >/dev/null
-      ''}
-    '')
-    (filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (attrValues config.source.dirs))));
+    # Extract only files under robotnix/ (for debugging with an external AOSP build)
+    debugUnpackScript = pkgs.writeShellScript "debug-unpack.sh" (''
+      rm -rf robotnix
+      '' +
+      (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "robotnix/" d.relpath)) ''
+        mkdir -p $(dirname ${d.relpath})
+        echo "${d.src} -> ${d.relpath}"
+        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.src} ${d.relpath}/
+      '') (attrValues config.source.dirs))) + ''
+      chmod -R u+w robotnix/
+    '');
+
+    # Patch files in other sources besides robotnix/*
+    debugPatchScript = pkgs.writeShellScript "debug-patch.sh"
+      (concatStringsSep "\n" (map (d: ''
+        ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
+        ${optionalString (d.postPatch != "") ''
+        pushd ${d.relpath} >/dev/null
+        ${d.postPatch}
+        popd >/dev/null
+        ''}
+      '')
+      (filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (attrValues config.source.dirs))));
+  };
 }

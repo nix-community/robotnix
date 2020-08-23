@@ -4,6 +4,7 @@ with lib;
 {
   config.build = {
     # TODO: Maybe include these in the standard build.android drv?
+    # TODO: Compare this with "nix-build ./default.nix -A packages.canary.system-images.android-29.default.x86
     sysimg = config.build.mkAndroid {
       name = "robotnix-sysimg";
       makeTargets = [ "droid" ];
@@ -18,7 +19,7 @@ with lib;
         cp --reflink=auto $ANDROID_PRODUCT_OUT/VerifiedBootParams.textproto $out/
 
         # sdk-android-x86.atree
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/kernel-ranchu-64 $out/kernel-ranchu-64
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/kernel-ranchu* $out/
         cp --reflink=auto $ANDROID_PRODUCT_OUT/encryptionkey.img $out/encryptionkey.img
         cp --reflink=auto $ANDROID_PRODUCT_OUT/advancedFeatures.ini $out/advancedFeatures.ini
       '';

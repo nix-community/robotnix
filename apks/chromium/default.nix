@@ -3,7 +3,7 @@
 , dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, utillinux, kerberos, gdk-pixbuf
 , glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libXdamage
 , zlib, ncurses5, libxml2, binutils, perl
-, substituteAll
+, substituteAll, fetchgerritpatchset
 
 , name ? "chromium"
 , displayName ? "Chromium"
@@ -13,7 +13,7 @@
 , buildTargets ? [ "chrome_modern_public_apk" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
-, version ? "83.0.4103.106"
+, version ? "84.0.4147.111"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_apk + system_webview_apk
@@ -151,12 +151,23 @@ in stdenvNoCC.mkDerivation rec {
     gdk-pixbuf glib gtk3 alsaLib libXScrnSaver libXcursor libXtst libXdamage
   ];
 
-  patches = lib.optional enableRebranding (
-    substituteAll {
-      src = ./rebranding.patch;
-      inherit displayName;
-    }
-  );
+  patches =
+    lib.optional enableRebranding
+      (substituteAll {
+        src = ./rebranding.patch;
+        inherit displayName;
+      })
+    ++ lib.optional (lib.versionAtLeast version "84")
+      # https://chromium-review.googlesource.com/c/chromium/src/+/2214390
+      (fetchgerritpatchset {
+        domain = "chromium-review.googlesource.com";
+        repo = "chromium/src";
+        changeNumber = 2214390;
+        patchset = 2;
+        sha256 = "1kk4jf2zld1pm7x5ciq3jb0k7pdc8vnpyw96jj4w77crwl5q0833";
+      });
+
+
   patchFlags = [ "-p1" "-d src" ];
 
   # TODO: Much of the nixos-specific stuff could probably be made conditional
@@ -185,7 +196,9 @@ in stdenvNoCC.mkDerivation rec {
 
       substituteInPlace chrome/android/BUILD.gn \
         --replace 'chrome_public_manifest_package = "org.chromium.chrome"' \
-                  'chrome_public_manifest_package = "${packageName}"'
+                  'chrome_public_manifest_package = "${packageName}"' \
+        --replace '_default_package = "org.chromium.chrome"' \
+                  '_default_package = "${packageName}"'
     )
   '' + lib.optionalString enableRebranding ''
     ( cd src

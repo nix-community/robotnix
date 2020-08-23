@@ -148,13 +148,14 @@ in
       '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames);
     };
 
-    source.dirs = mkIf cfg.useCustom {
-      ${cfg.relpath}.enable = false;
+    source = mkIf cfg.useCustom {
+      dirs.${cfg.relpath}.enable = false;
+
+      unpackScript = ''
+        mkdir -p ${cfg.relpath}
+        cp -fv ${config.build.kernel}/* ${cfg.relpath}/
+        chmod -R u+w ${cfg.relpath}/
+      '';
     };
-    source.unpackScript = mkIf cfg.useCustom ''
-      mkdir -p ${cfg.relpath}
-      cp -fv ${config.build.kernel}/* ${cfg.relpath}/
-      chmod -R u+w ${cfg.relpath}/
-    '';
   };
 }

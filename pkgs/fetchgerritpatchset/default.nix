@@ -1,11 +1,11 @@
 { lib, fetchpatch }:
 
-{ repo, changeNumber, patchset ? 1, ...  }@args:
+{ domain, repo, changeNumber, patchset ? 1, ...  }@args:
 
 (fetchpatch ({
     name = "${lib.replaceStrings ["/"] ["_"] repo}-${builtins.toString changeNumber}-${builtins.toString patchset}.patch";
-    url = "https://android-review.googlesource.com/changes/${lib.replaceStrings ["/"] ["%2F"] repo}~${builtins.toString changeNumber}/revisions/${builtins.toString patchset}/patch?download";
-  } // builtins.removeAttrs args [ "repo" "changeNumber" "patchset" ])
+    url = "https://${domain}/changes/${lib.replaceStrings ["/"] ["%2F"] repo}~${builtins.toString changeNumber}/revisions/${builtins.toString patchset}/patch?download";
+  } // builtins.removeAttrs args [ "domain" "repo" "changeNumber" "patchset" ])
 ).overrideAttrs ({ postFetch, ... }: {
   postFetch = ''
     base64 -d <$out >${builtins.toString changeNumber}.patch
