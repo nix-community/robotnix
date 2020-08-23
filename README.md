@@ -1,11 +1,12 @@
-# robotnix - Build Android (AOSP) with Nix
+# robotnix - Build Android (AOSP) using Nix
 
-This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs, currently targeting Pixel 1-4(a) (XL) devices.
+This project enables using [Nix](https://nixos.org/nix/) to build Android ROMs.
 Robotnix uses a NixOS-style module system to customize various aspects of the build.
  
 Some optional modules include:
- - Vanilla Android 10 AOSP support
+ - Vanilla Android 10 AOSP support (for Pixel devices)
  - [GrapheneOS](https://grapheneos.org/) support
+ - Experimental [LineageOS](https://lineageos.org/) support
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader with a user-specified key
  - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Backup](https://github.com/stevesoltys/backup)
  - Browser / Webview: [Chromium](https://www.chromium.org/Home), [Bromite](https://www.bromite.org/), [Vanadium](https://github.com/GrapheneOS/Vanadium)
@@ -98,6 +99,14 @@ However, there are a few places where user-specific public keys are included in 
 This unfortunately decreases the possibility of sharing build products between users.
 The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
 Fixes for this are still under investigation.
+
+### LineageOS Support
+LineageOS support may be enabled by setting `flavor = "lineageos";`.
+This support should be considered "experimental," as it does yet have the same level of support I intend to provide for `vanilla` and `grapheneos` flavors.
+LineageOS source metadata may be updated irregularly in robotnix, and certain modules (such as the updater) are not guaranteed to work.
+Moreover, LineageOS does not appear to provide the same level of security as even the vanilla flavor, with dm-verity/AVB often disabled, `userdebug` as the default variant, and vendor files with unclear origin.
+LineageOS support is still valuable to include as it extends preliminary to support to a much wider variety of devices, and provides the base that many other Android ROMs use to customize.
+Contributions and fixes from LineageOS users are especially welcome!
 
 ### Emulator
 
