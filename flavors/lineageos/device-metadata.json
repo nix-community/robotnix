@@ -22,6 +22,17 @@
     "oem": "Fairphone",
     "variant": "userdebug"
   },
+  "I001D": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_asus_I001D",
+      "android_kernel_asus_I001"
+    ],
+    "lineage_recovery": true,
+    "name": "ROG Phone 2 (I001D)",
+    "oem": "Asus",
+    "variant": "userdebug"
+  },
   "I01WD": {
     "branch": "lineage-17.1",
     "deps": [
@@ -34,12 +45,12 @@
     "variant": "userdebug"
   },
   "RMX1801": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_realme_RMX1801",
       "android_kernel_realme_sdm660"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "2 Pro",
     "oem": "Realme",
     "variant": "userdebug"
@@ -131,40 +142,59 @@
     "variant": "userdebug"
   },
   "a5y17lte": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_samsung_a5y17lte",
       "android_device_samsung_universal7880-common",
       "android_hardware_samsung",
       "android_kernel_samsung_universal7880"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Galaxy A5 (2017)",
     "oem": "Samsung",
     "variant": "userdebug"
   },
+  "a7xelte": {
+    "branch": "lineage-17.1",
+    "lineage_recovery": true,
+    "name": "Galaxy A7 (2016)",
+    "oem": "Samsung",
+    "variant": "userdebug"
+  },
   "a7y17lte": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_samsung_a7y17lte",
       "android_device_samsung_universal7880-common",
       "android_hardware_samsung",
       "android_kernel_samsung_universal7880"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "Galaxy A7 (2017)",
     "oem": "Samsung",
     "variant": "userdebug"
   },
+  "akari": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_sony_akari",
+      "android_device_sony_tama-common",
+      "android_kernel_sony_sdm845"
+    ],
+    "lineage_recovery": true,
+    "name": "Xperia XZ2",
+    "oem": "Sony",
+    "variant": "userdebug"
+  },
   "bacon": {
-    "branch": "lineage-16.0",
+    "branch": "lineage-17.1",
     "deps": [
       "android_device_oneplus_bacon",
       "android_device_oppo_common",
       "android_device_oppo_msm8974-common",
       "android_kernel_oppo_msm8974"
     ],
-    "lineage_recovery": false,
+    "lineage_recovery": true,
     "name": "One",
     "oem": "OnePlus",
     "variant": "userdebug"
@@ -216,6 +246,18 @@
     "lineage_recovery": true,
     "name": "Poco F1",
     "oem": "Xiaomi",
+    "variant": "userdebug"
+  },
+  "blueline": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_google_blueline",
+      "android_device_google_crosshatch",
+      "android_kernel_google_msm-4.9"
+    ],
+    "lineage_recovery": true,
+    "name": "Pixel 3",
+    "oem": "Google",
     "variant": "userdebug"
   },
   "capricorn": {
@@ -298,11 +340,23 @@
     "deps": [
       "android_device_cyanogen_msm8916-common",
       "android_device_wileyfox_crackling",
+      "android_hardware_sony_timekeep",
       "android_kernel_cyanogen_msm8916"
     ],
     "lineage_recovery": true,
     "name": "Swift",
     "oem": "Wileyfox",
+    "variant": "userdebug"
+  },
+  "crosshatch": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_google_crosshatch",
+      "android_kernel_google_msm-4.9"
+    ],
+    "lineage_recovery": true,
+    "name": "Pixel 3 XL",
+    "oem": "Google",
     "variant": "userdebug"
   },
   "crownlte": {
@@ -1447,7 +1501,8 @@
     "branch": "lineage-16.0",
     "deps": [
       "android_device_fxtec_pro1",
-      "android_kernel_fxtec_msm8998"
+      "android_kernel_fxtec_msm8998",
+      "android_packages_resources_devicesettings"
     ],
     "lineage_recovery": true,
     "name": "Pro1",
@@ -1825,6 +1880,7 @@
     "deps": [
       "android_device_cyanogen_msm8916-common",
       "android_device_wingtech_wt88047",
+      "android_hardware_sony_timekeep",
       "android_kernel_wingtech_msm8916"
     ],
     "lineage_recovery": true,
@@ -1842,6 +1898,18 @@
     "lineage_recovery": true,
     "name": "Le Max 2",
     "oem": "LeEco",
+    "variant": "userdebug"
+  },
+  "xz2c": {
+    "branch": "lineage-17.1",
+    "deps": [
+      "android_device_sony_tama-common",
+      "android_device_sony_xz2c",
+      "android_kernel_sony_sdm845"
+    ],
+    "lineage_recovery": true,
+    "name": "Xperia XZ2 Compact",
+    "oem": "Sony",
     "variant": "userdebug"
   },
   "z2_plus": {
