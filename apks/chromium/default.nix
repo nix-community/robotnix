@@ -52,7 +52,9 @@ let
     android_channel = "stable"; # TODO: Get stable/beta/dev etc
     android_default_version_name = version;
     android_default_version_code = _versionCode;
+    chrome_public_manifest_package = packageName;
     system_webview_package_name = webviewPackageName;
+    # trichrome_library_package = "org.grapheneos.vanadium.trichromelibrary" # TODO
 
     is_official_build = true;
     is_debug = false;
@@ -193,12 +195,6 @@ in stdenvNoCC.mkDerivation rec {
       echo 'checkout_openxr = false'                  >> build/config/gclient_args.gni
       echo 'checkout_aemu = false'                    >> build/config/gclient_args.gni
       echo 'checkout_libaom = false'                  >> build/config/gclient_args.gni
-
-      substituteInPlace chrome/android/BUILD.gn \
-        --replace 'chrome_public_manifest_package = "org.chromium.chrome"' \
-                  'chrome_public_manifest_package = "${packageName}"' \
-        --replace '_default_package = "org.chromium.chrome"' \
-                  '_default_package = "${packageName}"'
     )
   '' + lib.optionalString enableRebranding ''
     ( cd src
