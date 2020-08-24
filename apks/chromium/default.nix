@@ -159,7 +159,7 @@ in stdenvNoCC.mkDerivation rec {
         src = ./rebranding.patch;
         inherit displayName;
       })
-    ++ lib.optional (lib.versionAtLeast version "84")
+    ++ lib.optional ((lib.versionAtLeast version "84") && (lib.versionOlder version "85"))
       # https://chromium-review.googlesource.com/c/chromium/src/+/2214390
       (fetchgerritpatchset {
         domain = "chromium-review.googlesource.com";

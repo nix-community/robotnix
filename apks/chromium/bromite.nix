@@ -1,13 +1,14 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "84.0.4147.106";
+  version = "85.0.4183.82";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
-    rev = version;
-    sha256 = "0d9z7a1fl64y0wjws2mspi8s8r8n5vannbq5sgcl4xpnci57kjm0";
+    #rev = version;
+    rev = "21c6b87914b93228080f30ade2f172f1621c324b"; # The tagged release has patches that don't work.
+    sha256 = "13g65xv8974hf4p0m8jhrf5nnv1rghrfx7kkqgyzpsmc5yjzlf3n";
   };
 
 in (chromium.override {
