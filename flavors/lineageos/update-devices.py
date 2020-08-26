@@ -158,7 +158,10 @@ def main():
     parser.add_argument('--resume', action='store_true', help='use existing device-dirs.json file as source for hashes')
     args = parser.parse_args()
 
-    mirrors = dict(mirror.split("=") for mirror in args.mirror)
+    if args.mirror:
+        mirrors = dict(mirror.split("=") for mirror in args.mirror)
+    else:
+        mirrors = {}
 
     metadata = fetch_metadata('device-metadata.json')
     device_dirs = fetch_dirs(metadata, 'device-dirs.json', args.resume, mirrors)

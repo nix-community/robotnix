@@ -104,7 +104,10 @@ def main():
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
 
-    mirrors = dict(mirror.split("=") for mirror in args.mirror)
+    if args.mirror:
+        mirrors = dict(mirror.split("=") for mirror in args.mirror)
+    else:
+        mirrors = {}
 
     ref_type = ManifestRefType[args.ref_type.upper()]
 
