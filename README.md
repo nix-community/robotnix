@@ -22,7 +22,7 @@ Some optional modules include:
  - Extracting vendor blobs from Google's images using [android-prepare-vendor](https://github.com/anestisb/android-prepare-vendor)
 
 Future goals include:
- - Support for additional flavors and devices besides Pixel devices (such as LineageOS devices)
+ - Support for additional flavors and devices
  - Better documentation, especially for module options
  - Continuous integration / testing for various devices
  - Automating CTS (Compatibility Test Suite) like nixos tests.
