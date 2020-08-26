@@ -116,6 +116,10 @@ def fetch_vendor_dirs(metadata, filename, resume, mirrors):
         if data['branch'] == BRANCH:
             if 'oem' in data:
                 required_oems.add(data['oem'].lower())
+            # Bacon needs vendor/oppo
+            # https://github.com/danielfullmer/robotnix/issues/26
+            if device == 'bacon':
+                required_oems.add('oppo')
 
     if resume and os.path.exists(filename):
         dirs = json.load(open(filename))
