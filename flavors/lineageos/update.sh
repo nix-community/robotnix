@@ -2,11 +2,15 @@
 
 set -eu
 
-mirror_args=(
-    --mirror "https://android.googlesource.com=/mnt/cache/mirror"
-    --mirror "https://github.com/LineageOS=/mnt/cache/lineageos/LineageOS"
-    --mirror "https://github.com/TheMuppets=/mnt/cache/muppets/TheMuppets"
-)
+if [[ "$USER" = "danielrf" ]]; then
+    mirror_args=(
+        --mirror "https://android.googlesource.com=/mnt/cache/mirror"
+        --mirror "https://github.com/LineageOS=/mnt/cache/lineageos/LineageOS"
+        --mirror "https://github.com/TheMuppets=/mnt/cache/muppets/TheMuppets"
+    )
+else
+    mirror_args=()
+fi
 
 args=(
     --ref-type branch

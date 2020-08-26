@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-
 set -eu
+
+if [[ "$USER" = "danielrf" ]]; then
+    mirror_args=(
+        --mirror "https://android.googlesource.com=/mnt/cache/mirror"
+    )
+else
+    mirror_args=()
+fi
 
 args=(
     --mirror "https://android.googlesource.com=/mnt/cache/mirror"
@@ -13,4 +20,4 @@ args=(
 
 export TMPDIR=/tmp
 
-../../mk-repo-file.py "${args[@]}"
+../../mk-repo-file.py "${mirror_args[@]}" "${args[@]}"
