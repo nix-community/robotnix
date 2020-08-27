@@ -93,7 +93,10 @@ in mkIf (config.flavor == "lineageos")
       oem = toLower deviceMetadata.${config.device}.oem;
       relpath = "vendor/${if oem == "lg" then "lge" else oem}";
     in filterDirsAttrs (getAttrs [relpath] vendorDirs))
-  ]);
+  ] ++ optional (config.device == "bacon")
+    # Bacon needs vendor/oppo in addition to vendor/oneplus
+    # See https://github.com/danielfullmer/robotnix/issues/26
+    (filterDirsAttrs (getAttrs ["vendor/oppo"] vendorDirs)));
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
