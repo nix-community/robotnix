@@ -5,7 +5,7 @@ let
 in
 buildGradle rec {
   name = "F-Droid-${version}.apk";
-  version = "1.8";
+  version = "1.9";
 
   envSpec = ./gradle-env.json;
 
@@ -13,7 +13,7 @@ buildGradle rec {
     owner = "fdroid";
     repo = "fdroidclient";
     rev = version;
-    sha256 = "0xx8i7awyqbvhl2hh0kbdwp59hl9xp9bbg3mid254xnffg4yga3p";
+    sha256 = "1ijwl8q4530spz87jjvfi83rjxkpz0srly5ijbj27v4xbf35pkm6";
   };
 
   patches = [
