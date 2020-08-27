@@ -96,7 +96,9 @@ in mkIf (config.flavor == "lineageos")
   ] ++ optional (config.device == "bacon")
     # Bacon needs vendor/oppo in addition to vendor/oneplus
     # See https://github.com/danielfullmer/robotnix/issues/26
-    (filterDirsAttrs (getAttrs ["vendor/oppo"] vendorDirs)));
+    (filterDirsAttrs (getAttrs ["vendor/oppo"] vendorDirs))
+  ++ optional (config.device == "shamu")
+    (filterDirsAttrs (getAttrs ["vendor/motorola"] vendorDirs)));
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
