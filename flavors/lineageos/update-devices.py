@@ -64,11 +64,8 @@ def fetch_metadata(filename):
     ###
 
     device_deps = json.load(urllib.request.urlopen("https://github.com/LineageOS/hudson/raw/master/updater/device_deps.json"))
-    for model, deps in device_deps.items():
-        if model not in metadata:
-            continue
-
-        metadata[model].update({'deps': deps})
+    for device, data in metadata.items():
+        data['deps'] = device_deps.get(device, [])
 
     ###
 
