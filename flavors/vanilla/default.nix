@@ -8,7 +8,7 @@ let
     inherit rev sha256;
   };
 
-  phoneDeviceFamilies = [ "marlin" "taimen" "muskie" "crosshatch" "bonito" "coral" ];
+  phoneDeviceFamilies = [ "marlin" "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "vanilla") (mkMerge [
@@ -58,11 +58,17 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 10 stuff ###
 (mkIf (config.androidVersion == 10) (mkMerge [
 
-(mkIf (elem config.deviceFamily supportedDeviceFamilies) {
+(mkIf ((elem config.deviceFamily supportedDeviceFamilies) && (config.device != "sunfish")) {
   buildNumber = mkDefault "2020.07.08.09";
   buildDateTime = mkDefault 1596503967;
   apv.buildID = mkDefault "QQ3A.200805.001";
   source.manifest.rev = mkDefault "android-10.0.0_r41";
+})
+(mkIf (config.device == "sunfish") {
+  buildNumber = mkDefault "2020.08.27.22";
+  buildDateTime = mkDefault 1598591122;
+  apv.buildID = mkDefault "QD4A.200805.003";
+  source.manifest.rev = mkDefault "android-10.0.0_r45";
 })
 {
   source.dirs."packages/apps/DeskClock".patches = [

@@ -31,13 +31,13 @@ let
 in
 (stdenv.mkDerivation {
   pname = "android-prepare-vendor";
-  version = "2020-05-29";
+  version = "2020-08-26";
 
   src = fetchFromGitHub { # api == "29"
     owner = "AOSPAlliance";
     repo = "android-prepare-vendor";
-    rev = "16da961f79c1396010d0417fc0bbce03663e9599";
-    sha256 = "1kl10xbvby1smgwszgk6pkv3x90scmwlwkmbs3n1f9jm5yzmsfsx";
+    rev = "a9602ca6ef16ff10641d668dcb203f89f402d40d";
+    sha256 = "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
   };
 
   nativeBuildInputs = [ makeWrapper ];

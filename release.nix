@@ -16,6 +16,7 @@ let
     { device="sargo";      flavor="vanilla"; }
     { device="coral";      flavor="vanilla"; }
     { device="flame";      flavor="vanilla"; }
+    { device="sunfish";    flavor="vanilla"; }
 
     { device="x86";        flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
