@@ -20,6 +20,17 @@ let
       "--avb_system_other_key $KEYSDIR/avb.pem"
       "--avb_system_other_algorithm SHA256_RSA2048"
     ];
+    vbmeta_chained_v2 = [
+      "--avb_vbmeta_key $KEYSDIR/avb.pem"
+      "--avb_vbmeta_algorithm SHA256_RSA2048"
+      "--avb_system_key $KEYSDIR/avb.pem"
+      "--avb_system_algorithm SHA256_RSA2048"
+      "--avb_vbmeta_system_key $KEYSDIR/avb.pem"
+      "--avb_vbmeta_system_algorithm SHA256_RSA2048"
+    ] ++ optionals (config.androidVersion >= 10) [
+      "--avb_system_other_key $KEYSDIR/avb.pem"
+      "--avb_system_other_algorithm SHA256_RSA2048"
+    ];
   }.${config.avbMode};
 
   wrapScript = { commands, keysDir ? "" }: ''
@@ -37,7 +48,7 @@ let
         exit 1
       fi
       mkdir -p keys_copy
-      cp -r $KEYSDIR/* keys_copy/
+      cp -r $KEYSDIR/. keys_copy/
       KEYSDIR=$(pwd)/keys_copy
     fi
 

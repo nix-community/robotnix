@@ -24,6 +24,7 @@ let
     sargo = "bonito"; # Pixel 3a
     coral = "coral"; # Pixel 4 XL
     flame = "coral"; # Pixel 4
+    sunfish = "sunfish"; # Pixel 4a
   };
   deviceFamily = deviceFamilyMap.${config.device};
 
@@ -108,5 +109,11 @@ mkMerge [
         inherit (config) buildDateTime;
       })
     ];
+  })
+  (mkIf (config.deviceFamily == "coral") {
+    avbMode = "vbmeta_chained_v2";
+  })
+  (mkIf (config.deviceFamily == "sunfish") {
+    avbMode = "vbmeta_chained_v2";
   })
 ]

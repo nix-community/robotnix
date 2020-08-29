@@ -132,7 +132,7 @@ in
     };
 
     avbMode = mkOption {
-      type = types.strMatching "(verity_only|vbmeta_simple|vbmeta_chained)";
+      type = types.strMatching "(verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)";
       default  = "vbmeta_chained"; # TODO: Not sure what a good default would be for non pixel devices.
     };
 
