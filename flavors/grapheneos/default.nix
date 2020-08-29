@@ -56,7 +56,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own pinned version
 
   # GrapheneOS just disables apex updating wholesale
-  apex.enable = false;
+  signing.apex.enable = false;
 
   # Don't include updater by default since it would download updates signed with grapheneos's keys.
   # TODO: Encourage user to set apps.updater.enable

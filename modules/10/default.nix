@@ -61,7 +61,11 @@ mkIf (config.androidVersion == 10) {
       --replace "#!/usr/bin/python" "#!${pkgs.python2.interpreter}"
   '';
 
-  apex.enable = mkDefault true;
+  signing.apex.enable = mkDefault true;
+  signing.apex.packageNames = [
+    "com.android.conscrypt" "com.android.media" "com.android.media.swcodec"
+    "com.android.resolv" "com.android.runtime.release" "com.android.tzdata"
+  ];
 
   kernel.clangVersion = mkDefault "r349610";
 }

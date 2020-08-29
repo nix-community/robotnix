@@ -12,7 +12,7 @@ mkIf (config.androidVersion == 11) {
     ];
   };
 
-  apex.enable = mkDefault true;
+  signing.apex.enable = mkDefault true;
 
   #kernel.clangVersion = mkDefault "r349610";
 

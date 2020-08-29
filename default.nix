@@ -53,6 +53,7 @@ let
       ./modules/pixel
       ./modules/release.nix
       ./modules/resources.nix
+      ./modules/signing.nix
       ./modules/source.nix
       ./modules/webview.nix
     ];

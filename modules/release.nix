@@ -4,35 +4,6 @@ with lib;
 let
   otaTools = config.build.otaTools;
 
-  avbFlags = {
-    verity_only = [
-      "--replace_verity_public_key $KEYSDIR/verity_key.pub"
-      "--replace_verity_private_key $KEYSDIR/verity"
-      "--replace_verity_keyid $KEYSDIR/verity.x509.pem"
-    ];
-    vbmeta_simple = [ "--avb_vbmeta_key $KEYSDIR/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048" ];
-    vbmeta_chained = [
-      "--avb_vbmeta_key $KEYSDIR/avb.pem"
-      "--avb_vbmeta_algorithm SHA256_RSA2048"
-      "--avb_system_key $KEYSDIR/avb.pem"
-      "--avb_system_algorithm SHA256_RSA2048"
-    ] ++ optionals (config.androidVersion >= 10) [
-      "--avb_system_other_key $KEYSDIR/avb.pem"
-      "--avb_system_other_algorithm SHA256_RSA2048"
-    ];
-    vbmeta_chained_v2 = [
-      "--avb_vbmeta_key $KEYSDIR/avb.pem"
-      "--avb_vbmeta_algorithm SHA256_RSA2048"
-      "--avb_system_key $KEYSDIR/avb.pem"
-      "--avb_system_algorithm SHA256_RSA2048"
-      "--avb_vbmeta_system_key $KEYSDIR/avb.pem"
-      "--avb_vbmeta_system_algorithm SHA256_RSA2048"
-    ] ++ optionals (config.androidVersion >= 10) [
-      "--avb_system_other_key $KEYSDIR/avb.pem"
-      "--avb_system_other_algorithm SHA256_RSA2048"
-    ];
-  }.${config.avbMode};
-
   wrapScript = { commands, keysDir ? "" }: ''
     export PATH=${otaTools}/bin:$PATH
     export EXT2FS_NO_MTAB_OK=yes
@@ -59,22 +30,20 @@ let
 
   runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
     commands = script (args // {out="$out";});
-    keysDir = optionalString config.signBuild "/keys/${config.device}";
+    keysDir = optionalString config.signing.enable "/keys/${config.device}";
   });
 
   signedTargetFilesScript = { targetFiles, out }: ''
   ( cd ${otaTools}; # Enter otaTools dir so relative paths are correct for finding original keys
     ${otaTools}/releasetools/sign_target_files_apks.py \
-      -o -d $KEYSDIR ${toString avbFlags} \
-      ${optionalString (config.androidVersion >= 10) "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"} \
-      ${concatMapStringsSep " " (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") config.apex.packageNames} \
+      -o -d $KEYSDIR ${toString config.signing.signTargetFilesArgs} \
       ${targetFiles} ${out}
   )
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
     ${otaTools}/releasetools/ota_from_target_files.py  \
       --block \
-      ${if config.signBuild
+      ${if config.signing.enable
         then "-k $KEYSDIR/releasekey"
         else "-k ${config.source.dirs."build/make".src}/target/product/security/testkey"
       } \
@@ -143,18 +112,10 @@ in
     prevBuildDir = mkOption { type = types.str; internal = true; };
     prevBuildNumber = mkOption { type = types.str; internal = true; };
     prevTargetFiles = mkOption { type = types.path; internal = true; };
-
-    # Android 10 feature. This just disables the key generation/signing. TODO: Make it change the device configuration as well
-    apex.enable = mkEnableOption "apex";
-
-    apex.packageNames = mkOption {
-      default = [];
-      type = types.listOf types.str;
-    };
   };
 
   config = with config; let # "with config" is ugly--but the scripts below get too verbose otherwise
-    targetFiles = if signBuild then signedTargetFiles else unsignedTargetFiles;
+    targetFiles = if signing.enable then signedTargetFiles else unsignedTargetFiles;
   in {
     # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
     unsignedTargetFiles = mkDefault (build.android + "/${productName}-target_files-${buildNumber}.zip");
@@ -166,12 +127,6 @@ in
 
     # Pull this out of target files, because (at least) verity key gets put into boot ramdisk
     bootImg = mkDefault (pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out");
-
-    apex.packageNames = mkIf (apex.enable && (androidVersion >= 10))
-      [ "com.android.conscrypt" "com.android.media"
-        "com.android.media.swcodec" "com.android.resolv"
-        "com.android.runtime.release" "com.android.tzdata"
-      ];
 
     prevBuildNumber = let
         metadata = builtins.readFile (prevBuildDir + "/${device}-${channel}");

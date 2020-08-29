@@ -23,9 +23,8 @@ in {
     # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
     generateKeysScript = let
       keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
-                        ++ (optional (config.avbMode == "verity_only") "verity")
-                        ++ (optionals (config.androidVersion >= 10) [ "networkstack" ] ++ config.apex.packageNames);
-      avbKeysToGenerate = config.apex.packageNames;
+                        ++ (optional (config.signing.avb.mode == "verity_only") "verity")
+                        ++ (optionals (config.androidVersion >= 10) [ "networkstack" ] ++ config.signing.apex.packageNames);
     in mkDefault (pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}
 
@@ -36,10 +35,10 @@ in {
         ! make_key "$key" "$1" || exit 1
       done
 
-      ${optionalString (config.avbMode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
+      ${optionalString (config.signing.avb.mode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
 
       # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
-      ${optionalString (config.avbMode != "verity_only") ''
+      ${optionalString (config.signing.avb.mode != "verity_only") ''
         openssl genrsa -out avb.pem 2048 || exit 1
         avbtool extract_public_key --key avb.pem --output avb_pkmd.bin || exit 1
       ''}
@@ -47,7 +46,7 @@ in {
       ${concatMapStringsSep "\n" (k: ''
         openssl genrsa -out ${k}.pem 4096 || exit 1
         avbtool extract_public_key --key ${k}.pem --output ${k}.avbpubkey || exit 1
-      '') avbKeysToGenerate}
+      '') config.signing.apex.packageNames}
     '');
   };
 }

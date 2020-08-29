@@ -53,26 +53,28 @@ mkMerge [
       "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" "coral"
     ];
     source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.name config.kernel.configName ];
+
+    signing.avb.enable = mkDefault true;
   })
 
   # Device-specific overrides
   (mkIf (config.deviceFamily == "marlin") {
     kernel.compiler = "gcc";
-    avbMode = "verity_only";
-    apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
     kernel.buildProductFilenames = [
       "arch/arm64/boot/Image.lz4-dtb"
     ];
+    signing.avb.mode = "verity_only";
+    signing.apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
   })
   (mkIf (elem config.deviceFamily [ "taimen" "muskie" ]) {
-    avbMode = "vbmeta_simple";
+    signing.avb.mode = "vbmeta_simple";
     kernel.buildProductFilenames = [
       "arch/arm64/boot/Image.lz4-dtb"
       "arch/arm64/boot/dtbo.img"
     ];
   })
   (mkIf (config.deviceFamily == "crosshatch") {
-    avbMode = "vbmeta_chained";
+    signing.avb.mode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
     kernel.buildProductFilenames = [
       "arch/arm64/boot/Image.lz4"
@@ -92,7 +94,7 @@ mkMerge [
     ];
   })
   (mkIf (config.deviceFamily == "bonito") {
-    avbMode = "vbmeta_chained";
+    signing.avb.mode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
     kernel.buildProductFilenames = [
       "arch/arm64/boot/Image.lz4"
@@ -111,9 +113,9 @@ mkMerge [
     ];
   })
   (mkIf (config.deviceFamily == "coral") {
-    avbMode = "vbmeta_chained_v2";
+    signing.avb.mode = "vbmeta_chained_v2";
   })
   (mkIf (config.deviceFamily == "sunfish") {
-    avbMode = "vbmeta_chained_v2";
+    signing.avb.mode = "vbmeta_chained_v2";
   })
 ]

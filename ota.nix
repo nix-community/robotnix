@@ -4,7 +4,7 @@ with (import ./pkgs {});
 let
   common = {
     keyStorePath = "/var/secrets/android-keys";
-    signBuild = true;
+    signing.enable = true;
   };
 in symlinkJoin {
   name = "robotnix-ota";

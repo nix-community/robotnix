@@ -14,7 +14,7 @@ with lib;
 
   # A _string_ of the path for the key store.
   # keyStorePath = "/var/secrets/android-keys";
-  # signBuild = true;
+  # signing.enable = true;
 
   # Build with ccache
   ccache.enable = true;

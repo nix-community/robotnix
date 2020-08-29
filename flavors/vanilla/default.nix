@@ -131,7 +131,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # Kernel sources for crosshatch and bonito require multiple repos--which
   # could normally be fetched with repo at https://android.googlesource.com/kernel/manifest
   # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
-  kernel.useCustom = mkDefault config.signBuild;
+  kernel.useCustom = mkDefault config.signing.enable;
 })
 
 ]))

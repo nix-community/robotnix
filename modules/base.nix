@@ -120,20 +120,9 @@ in
       internal = true;
     };
 
-    signBuild = mkOption {
-      default = false;
-      type = types.bool;
-      description = "Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.";
-    };
-
     keyStorePath = mkOption {
       type = types.str;
       description = "Absolute path to generated keys for signing";
-    };
-
-    avbMode = mkOption {
-      type = types.strMatching "(verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)";
-      default  = "vbmeta_chained"; # TODO: Not sure what a good default would be for non pixel devices.
     };
 
     ccache.enable = mkEnableOption "ccache";
@@ -170,8 +159,8 @@ in
     # Some derivations (like fdroid) need to know the fingerprints of the keys
     # even if we aren't signing. Set test-keys in that case. This is not an
     # unconditional default because we want the user to be forced to set
-    # keyStorePath themselves if they select signBuild.
-    keyStorePath = mkIf (!config.signBuild) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
+    # keyStorePath themselves if they select signing.enable.
+    keyStorePath = mkIf (!config.signing.enable) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
 
     system.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.system.additionalProductPackages;
     product.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.product.additionalProductPackages;
@@ -217,12 +206,12 @@ in
       _keyPath = keyStorePath: name:
         let deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
         in if builtins.elem name deviceCertificates
-          then (if config.signBuild
+          then (if config.signing.enable
             then "${keyStorePath}/${config.device}/${name}"
-            else "${keyStorePath}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signBuild, use test keys from AOSP
+            else "${keyStorePath}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
           else "${keyStorePath}/${name}";
       keyPath = name: config.build._keyPath config.keyStorePath name;
-      sandboxKeyPath = name: (if config.signBuild
+      sandboxKeyPath = name: (if config.signing.enable
         then config.build._keyPath "/keys" name
         else config.build.keyPath name);
 
