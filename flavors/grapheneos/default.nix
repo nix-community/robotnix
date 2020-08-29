@@ -8,10 +8,9 @@ let
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
-  # This a default number for robotnix that I update manually whenever
+  # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
-  # match the GrapheneOS build number above.
-  buildNumber = mkDefault "2020.08.08.19";
+  # match the datetime used in the GrapheneOS build above.
   buildDateTime = mkDefault 1596941503;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
