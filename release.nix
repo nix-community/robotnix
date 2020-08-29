@@ -38,6 +38,12 @@ in
 {
   inherit (pkgs) diffoscope;
 
+  testGenerateKeys = pkgs.runCommand "test-generate-keys" {} ''
+    mkdir -p $out
+    cd $out
+    ${(robotnix configs.grapheneos-crosshatch).generateKeysScript} "/CN=Robotnix"
+  '';
+
   check = lib.mapAttrs (name: c: (robotnix c).build.checkAndroid) configs;
 
   vanilla-arm64-generateKeysScript = defaultBuild.generateKeysScript;
