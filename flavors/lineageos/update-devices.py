@@ -31,10 +31,10 @@ def checkout_git(url, rev):
     json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
     return json.loads(json_text)
 
-def fetch_metadata(filename):
+def fetch_metadata(filename, hudson_url):
     metadata = {}
 
-    lineage_build_targets_str = urllib.request.urlopen("https://github.com/LineageOS/hudson/raw/master/lineage-build-targets").read().decode()
+    lineage_build_targets_str = urllib.request.urlopen(f"{hudson_url}/lineage-build-targets").read().decode()
     for line in lineage_build_targets_str.split("\n"):
         line = line.strip()
         if line == "":
@@ -50,7 +50,7 @@ def fetch_metadata(filename):
 
     ###
 
-    devices = json.load(urllib.request.urlopen("https://github.com/LineageOS/hudson/raw/master/updater/devices.json"))
+    devices = json.load(urllib.request.urlopen(f"{hudson_url}/updater/devices.json"))
     for data in devices:
         if data['model'] not in metadata:
             continue
@@ -63,7 +63,7 @@ def fetch_metadata(filename):
 
     ###
 
-    device_deps = json.load(urllib.request.urlopen("https://github.com/LineageOS/hudson/raw/master/updater/device_deps.json"))
+    device_deps = json.load(urllib.request.urlopen(f"{hudson_url}/updater/device_deps.json"))
     for device, data in metadata.items():
         data['deps'] = device_deps.get(device, [])
 
@@ -157,6 +157,7 @@ def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--mirror', action="append", help="a repo mirror to use for a given url, specified by <url>=<path>")
     parser.add_argument('--resume', action='store_true', help='use existing device-dirs.json file as source for hashes')
+    parser.add_argument('--hudson-url', action='store', default=f"{LINEAGE_REPO_BASE}/hudson/raw/master", help='raw URL to fetch metadata from')
     args = parser.parse_args()
 
     if args.mirror:
@@ -164,7 +165,7 @@ def main():
     else:
         mirrors = {}
 
-    metadata = fetch_metadata('device-metadata.json')
+    metadata = fetch_metadata('device-metadata.json', args.hudson_url)
     device_dirs = fetch_dirs(metadata, 'device-dirs.json', args.resume, mirrors)
     vendor_dirs = fetch_vendor_dirs(metadata, 'vendor-dirs.json', args.resume, mirrors)
 
