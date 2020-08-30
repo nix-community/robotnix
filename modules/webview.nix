@@ -23,7 +23,7 @@ in
             description = "The name shown to the user in the developer settings menu.";
           };
 
-          availableByDefault = mkOption { # TODO: Ensure only one of these is set
+          availableByDefault = mkOption {
             type = types.bool;
             default = false;
             description = ''
@@ -34,7 +34,7 @@ in
             '';
           };
 
-          isFallback = mkOption { # TODO: Ensure only one of these is set
+          isFallback = mkOption {
             type = types.bool;
             default = false;
             description = ''
@@ -54,6 +54,15 @@ in
   };
 
   config = mkIf (any (m: m.enable) (attrValues config.webview)) {
+    assertions = [
+      { assertion = any (m: m.enable && m.availableByDefault) (attrValues config.webview);
+        message = "Webview module is enabled, but no webview has availableByDefault = true";
+      }
+      { assertion = length (filter (m: m.enable && m.isFallback) (attrValues config.webview)) <= 1;
+        message = "Multiple webview modules have isFallback = true";
+      }
+    ];
+
     apps.prebuilt = lib.mapAttrs' (name: m: nameValuePair "Webview${name}" {
       inherit (m) apk;
 
