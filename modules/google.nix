@@ -108,6 +108,26 @@ in
           privileged = true;
         };
       });
+      # Protobufs used in CarrierSettings (TODO find a better way to manage this)
+      etc = listToAttrs (map (n: nameValuePair "CarrierSettings/${n}.pb" { source = "${productPath}/etc/CarrierSettings/${n}.pb"; }) [
+        "airtel_in" "att5g_us" "att_us" "bell_ca" "bluegrass_us" "boost_us"
+        "bouygues_fr" "btb_gb" "btc_gb" "carrier_list" "cellcom_us" "cht_tw"
+        "cricket5g_us" "cricket_us" "cspire_us" "default" "docomo_jp" "ee_gb"
+        "eplus_de" "fet_tw" "fido_ca" "firstnetpacific_us" "firstnet_us"
+        "fi_us" "fizz_ca" "freedommobile_ca" "h3_at" "h3_gb" "h3_se" "idea_in"
+        "idmobile_gb" "kddi_jp" "kddimvno_jp" "koodo_ca" "luckymobile_ca"
+        "o2_de" "o2postpaid_gb" "o2prepaid_de" "o2prepaid_gb" "optus_au"
+        "orange_es" "orange_fr" "others" "pcmobilebell_ca" "rakuten_jp"
+        "rjio_in" "rogers_ca" "sfr_fr" "shaw_ca" "singtel_sg" "softbank_jp"
+        "solomobile_ca" "spectrum_us" "sprintprepaid_us" "sprint_us"
+        "sprintwholesale_us" "starhub_sg" "swisscom_ch" "swisscom_li" "tdc_dk"
+        "tele2_se" "telekom_de" "telenor_dk" "telenor_no" "telia_no" "telia_se"
+        "telstra_au" "telus_ca" "three_dk" "tim_it" "tmobile_nl" "tmobile_us"
+        "tracfonetmo_us" "tracfoneverizon_us" "twm_tw" "uscc_us" "verizon_us"
+        "videotron_ca" "virgin_ca" "virgin_us" "visible_us" "vodafone_au"
+        "vodafone_de" "vodafone_es" "vodafone_gb" "vodafone_in" "vodafone_it"
+        "vodafone_nl" "vodafone_tr" "xfinity_us"
+      ]);
     })
     (mkIf (cfg.fi.enable && (config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
       # TODO: Hack. Make better
