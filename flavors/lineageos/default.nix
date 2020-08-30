@@ -102,6 +102,13 @@ in mkIf (config.flavor == "lineageos")
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
 
+  # This is the prebuilt webview apk from LineageOS. The webview module is not
+  # enabled by default, so setting this here is only for convenience if the
+  # end-user wants to set webview.prebuilt.enable, potentially alongside other
+  # webview modules like webview.chromium.enable;
+  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
+  webview.prebuilt.availableByDefault = mkDefault true;
+
   envPackages = [ pkgs.openssl.dev ]; # Needed by included kernel build for some devices (pioneer at least)
 
   envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL";  # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
