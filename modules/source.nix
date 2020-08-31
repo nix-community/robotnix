@@ -163,11 +163,6 @@ in
         sha256 = mkOption {
           type = types.str;
         };
-
-        localManifests = mkOption {
-          default = [];
-          type = types.listOf types.path;
-        };
       };
 
       evalTimeFetching = mkOption {
@@ -208,7 +203,7 @@ in
   config.source = {
     dirs = mkIf config.source.evalTimeFetching (import ./repo2nix.nix {
       manifest = config.source.manifest.url;
-      inherit (config.source.manifest) rev sha256 localManifests;
+      inherit (config.source.manifest) rev sha256;
     });
 
     unpackScript = concatMapStringsSep "\n" (d: d.unpackScript) (attrValues config.source.dirs);

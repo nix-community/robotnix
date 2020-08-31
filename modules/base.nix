@@ -108,11 +108,6 @@ in
       internal = true;
     };
 
-    localManifests = mkOption {
-      default = [];
-      type = types.listOf types.path;
-    };
-
     system.additionalProductPackages = mkOption {
       default = [];
       type = types.listOf types.str;
