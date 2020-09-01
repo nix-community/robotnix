@@ -21,5 +21,6 @@ args=(
 
 export TMPDIR=/tmp
 
+./update-device-metadata.py
 ../../mk-repo-file.py "${mirror_args[@]}" "${args[@]}"
-./update-devices.py "${mirror_args[@]}"
+./update-device-dirs.py --resume "${mirror_args[@]}"

@@ -84,20 +84,22 @@ in mkIf (config.flavor == "lineageos")
   ] ++ optionals (deviceMetadata ? "${config.device}") [
     # Device-specific source dirs
     (let
-      relpaths = map (d: replaceStrings ["_"] ["/"] (removePrefix "android_" d)) deviceMetadata.${config.device}.deps;
+      vendor = toLower deviceMetadata.${config.device}.vendor;
+      relpathWithDependencies = relpath: [ relpath ] ++ (flatten (map (p: relpathWithDependencies p) deviceDirs.${relpath}.deps));
+      relpaths = relpathWithDependencies "device/${vendor}/${config.device}";
     in filterDirsAttrs (getAttrs relpaths deviceDirs))
 
     # Vendor-specific source dirs
     (let
-      oem = toLower deviceMetadata.${config.device}.oem;
-      relpath = "vendor/${if oem == "lg" then "lge" else oem}";
+      _vendor = toLower deviceMetadata.${config.device}.vendor;
+      vendor = if config.device == "shamu" then "motorola" else _vendor;
+      relpath = "vendor/${vendor}";
     in filterDirsAttrs (getAttrs [relpath] vendorDirs))
   ] ++ optional (config.device == "bacon")
     # Bacon needs vendor/oppo in addition to vendor/oneplus
     # See https://github.com/danielfullmer/robotnix/issues/26
     (filterDirsAttrs (getAttrs ["vendor/oppo"] vendorDirs))
-  ++ optional (config.device == "shamu")
-    (filterDirsAttrs (getAttrs ["vendor/motorola"] vendorDirs)));
+  );
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
