@@ -45,6 +45,8 @@ let
     fetchcipd = super.callPackage ./cipd/fetchcipd.nix {};
 
     fetchgerritpatchset = super.callPackage ./fetchgerritpatchset {};
+
+    nix-prefetch-git = super.callPackage ./nix-prefetch-git {};
   };
 in
   import nixpkgs (args // {
