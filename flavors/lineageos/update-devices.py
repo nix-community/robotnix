@@ -154,7 +154,7 @@ def fetch_vendor_dirs(metadata, filename, resume, mirrors):
     return dirs
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--mirror', action="append", help="a repo mirror to use for a given url, specified by <url>=<path>")
     parser.add_argument('--resume', action='store_true', help='use existing device-dirs.json file as source for hashes')
     args = parser.parse_args()
