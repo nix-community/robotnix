@@ -46,7 +46,7 @@ let
   LineageOSRelease = "lineage-17.1";
 in mkIf (config.flavor == "lineageos")
 {
-  productNamePrefix = "lineage"; # product names start with "lineage_"
+  productNamePrefix = "lineage_"; # product names start with "lineage_"
 
   buildDateTime = mkDefault 1598165474;
 

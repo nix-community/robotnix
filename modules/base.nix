@@ -72,7 +72,7 @@ in
     };
 
     productNamePrefix = mkOption {
-      default = "aosp";
+      default = "aosp_";
       type = types.str;
       description = "Prefix for product name used with choosecombo/lunch";
     };
@@ -176,7 +176,7 @@ in
   {
     buildNumber = mkOptionDefault (formatSecondsSinceEpoch config.buildDateTime);
 
-    productName = mkIf (config.device != null) (mkOptionDefault "${config.productNamePrefix}_${config.device}");
+    productName = mkIf (config.device != null) (mkOptionDefault "${config.productNamePrefix}${config.device}");
 
     # Some derivations (like fdroid) need to know the fingerprints of the keys
     # even if we aren't signing. Set test-keys in that case. This is not an
