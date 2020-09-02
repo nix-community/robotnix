@@ -51,6 +51,7 @@ mkMerge [
     source.excludeGroups = mkDefault [
       # Exclude all devices by default
       "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" "coral"
+      "hikey"
     ];
     source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.name config.kernel.configName ];
 
