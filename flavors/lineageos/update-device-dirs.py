@@ -135,7 +135,7 @@ def main():
     else:
         metadata = {}
         for product in args.product:
-            vendor, device = product.split('_')
+            vendor, device = product.split('_', 1)
             metadata[device] = { 'vendor': vendor }
 
     device_dirs, dir_dependencies = fetch_device_dirs(metadata, 'device-dirs.json')
