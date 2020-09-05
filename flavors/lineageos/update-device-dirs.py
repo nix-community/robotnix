@@ -50,8 +50,8 @@ def fetch_relpath(dirs, relpath, url):
 
 
 # Fetch device source trees for devices in metadata and save their information into filename
-def fetch_device_dirs(metadata, filename, resume):
-    if resume and os.path.exists(filename):
+def fetch_device_dirs(metadata, filename):
+    if os.path.exists(filename):
         dirs = json.load(open(filename))
     else:
         dirs = {}
@@ -85,7 +85,7 @@ def fetch_device_dirs(metadata, filename, resume):
 
     return dirs, dir_dependencies
 
-def fetch_vendor_dirs(metadata, filename, resume):
+def fetch_vendor_dirs(metadata, filename):
     required_vendor = set()
     for device, data in metadata.items():
         if 'vendor' in data:
@@ -99,7 +99,7 @@ def fetch_vendor_dirs(metadata, filename, resume):
             required_vendor.add('motorola')
             required_vendor.remove('moto')
 
-    if resume and os.path.exists(filename):
+    if os.path.exists(filename):
         dirs = json.load(open(filename))
     else:
         dirs = {}
@@ -121,7 +121,6 @@ def fetch_vendor_dirs(metadata, filename, resume):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mirror', default=[], action='append', help="a repo mirror to use for a given url, specified by <url>=<path>")
-    parser.add_argument('--resume', action='store_true', help='use existing json files as source for hashes')
     parser.add_argument('product', nargs='*',
                         help='product to fetch directory metadata for, specified by <vendor>_<device> (example: google_crosshatch) '
                         'If no products are specified, all products in device-metadata.json will be updated')
@@ -139,8 +138,8 @@ def main():
             vendor, device = product.split('_')
             metadata[device] = { 'vendor': vendor }
 
-    device_dirs, dir_dependencies = fetch_device_dirs(metadata, 'device-dirs.json', args.resume)
-    vendor_dirs = fetch_vendor_dirs(metadata, 'vendor-dirs.json', args.resume)
+    device_dirs, dir_dependencies = fetch_device_dirs(metadata, 'device-dirs.json')
+    vendor_dirs = fetch_vendor_dirs(metadata, 'vendor-dirs.json')
 
 if __name__ == '__main__':
     main()
