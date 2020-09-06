@@ -15,7 +15,7 @@ rec {
       )
     else assert false; "Unknown type";
   resourceValueXML = value: type: {
-    bool = if value then "true" else "false";
+    bool = boolToString value;
     color = value; # define our own specialized type for these?
     dimension = value;
     integer = toString value;

@@ -15,7 +15,7 @@ let
     LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
     LOCAL_MODULE_TAGS := optional
 
-    LOCAL_PRIVILEGED_MODULE := ${if prebuilt.privileged then "true" else "false"}
+    LOCAL_PRIVILEGED_MODULE := ${boolToString prebuilt.privileged}
     LOCAL_CERTIFICATE := ${if builtins.elem prebuilt.certificate deviceCertificates
       then (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
       else "PRESIGNED"

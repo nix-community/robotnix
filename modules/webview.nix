@@ -1,9 +1,6 @@
 { config, pkgs, lib, ... }:
 
 with lib;
-let
-  boolToString = b: if b then "true" else "false";
-in
 {
   options = {
     webview = mkOption {
