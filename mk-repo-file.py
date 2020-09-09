@@ -69,13 +69,16 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                 continue
 
             p_url = p['url']
+            found_treehash = False
             for mirror_url, mirror_path in mirrors.items():
                 if p['url'].startswith(mirror_url):
                     p_url = p['url'].replace(mirror_url, mirror_path)
                     p['tree'] = subprocess.check_output(['git', 'log','-1', '--pretty=%T', p['rev']], cwd=p_url+'.git').decode().strip()
                     if p['tree'] in treeHashes:
                         p['sha256'] = treeHashes[p['tree']]
-                        continue
+                        found_treehash = True
+            if found_treehash:
+                continue
 
             # Grab 
             git_info = checkout_git(p_url, p['rev'])
