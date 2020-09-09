@@ -59,7 +59,7 @@ let
         (path: value: (builtins.concatStringsSep "." path) + "=" + (builtins.toString value))
         conf));
 
-  bindImg = img: let
+  bindImg = { img, avd ? {} }: let
     fakeSdkRoot = runCommand "fake-sdk" {} ''
       mkdir -p $out/system-images/android
       ln -s ${img} $out/system-images/android/x86
@@ -67,10 +67,11 @@ let
       mkdir -p $out/platforms
       mkdir -p $out/platform-tools
     '';
+    avdAttrs = lib.recursiveUpdate defaultAVD avd;
   in writeShellScript "bound-android-emulator" ''
     AVD=$(pwd)/avd
     mkdir -p $AVD/Pixel2.avd
-    cp ${writeText "config.ini" (toAVD defaultAVD)}    $AVD/Pixel2.avd/config.ini
+    cp ${writeText "config.ini" (toAVD avdAttrs)}    $AVD/Pixel2.avd/config.ini
     echo "avd.ini.encoding=UTF-8"      > $AVD/Pixel2.ini
     echo "target=android-29"          >> $AVD/Pixel2.ini
     echo "path=$AVD/Pixel2.avd"       >> $AVD/Pixel2.ini

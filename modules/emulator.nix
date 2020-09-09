@@ -25,6 +25,12 @@ with lib;
       '';
     };
 
-    emulator = pkgs.android-emulator.bindImg config.build.sysimg;
+    emulator = pkgs.android-emulator.bindImg {
+      img = config.build.sysimg;
+      avd = {
+        abi.type = config.arch; # TODO: Add all ABIs it supports
+        hw.cpu.arch = config.arch;
+      };
+    };
   };
 }
