@@ -138,35 +138,9 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  # Untagged release. Android R Beta 2 is CI build 6625208.
-  # Using CI build 665205 instead for something hopefully close
-  # https://ci.android.com/builds/submitted/6625205/aosp_arm64-userdebug/latest/view/repo.prop
-  source.manifest.rev = "android-r-beta-2";
+  source.manifest.rev = mkDefault "android-11.0.0_r1";
+
 }
-(mkIf (config.device == "crosshatch") {
-  apv.buildID = mkIf (config.device == "crosshatch") "RPB2.200611.009";
-  apv.img = mkIf (config.device == "crosshatch") (pkgs.fetchurl {
-    url = "https://dl.google.com/developers/android/rvc/images/factory/crosshatch-rpb2.200611.009-factory-a34559bf.zip";
-    sha256 = "a34559bfb4ff4bd948e87d576964c8da3f1429d56ca3512c6426d6ecda8917c2";
-  });
-
-  # Use older OTA image
-  apv.ota = mkIf (config.device == "crosshatch") (pkgs.fetchurl {
-    url = "https://dl.google.com/dl/android/aosp/crosshatch-ota-qq3a.200605.001-68685f95.zip";
-    sha256 = "68685f957d8af0a925a26f1c0c11b9a7629df6e08dad70038c87c923a805d4aa";
-  });
-
-  # HACK workaround for android-prepare-vendor, which might need to be updated
-  source.dirs."build/make".postPatch = ''
-    substituteInPlace core/Makefile \
-      --replace "check_elf_prebuilt_product_copy_files := true" "check_elf_prebuilt_product_copy_files := false"
-  '';
-
-  # HACK to use recent android source, but with old vendor files...
-  source.dirs."vendor/google_devices".postPatch = ''
-    echo AOSP.MASTER > ${config.device}/build_id.txt
-  '';
-})
 
 ]))
 
