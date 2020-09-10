@@ -3,7 +3,7 @@
 with lib;
 
 let
-  version = "0.2.11.202414";
+  version = "0.2.12.203315";
 in
 {
   options = {
@@ -26,7 +26,7 @@ in
       GmsCore = { 
         apk = pkgs.fetchurl {
           url = "https://github.com/microg/android_packages_apps_GmsCore/releases/download/v${version}/GmsCore-v${version}.apk";
-          sha256 = "0zrzr2bc2fki786i7j8k1fcghp81fl79zzzs879bl9vqfany6iys";
+          sha256 = "1rpw098spkxvjvq1k50d7g31p5wz01pn7dbmgn4kcjnvr6n702wv";
         };
         packageName = "com.google.android.gms";
         privileged = true;
