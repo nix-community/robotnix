@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2020.08.07.01";
+  grapheneOSRelease = "${config.apv.buildID}.2020.09.11.14";
 
   phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
@@ -11,7 +11,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1596941503;
+  buildDateTime = mkDefault 1599972803;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
@@ -76,7 +76,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "17p2x1v3pvpg7pkvdr1l4h2jfm9b97lmajkbqv0sz7askns0rg73";
+    sha256 = "0l86yrj40jcm144sc7hmqc6mz5k67fh3gn2yf8hd6dp28ynrwrhd";
     fetchSubmodules = true;
   };
 })
