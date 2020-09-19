@@ -18,9 +18,10 @@ let
         echo 'Missing KEYSDIR directory, did you use "--option extra-sandbox-paths /keys=..." ?'
         exit 1
       fi
-      mkdir -p keys_copy
-      cp -r $KEYSDIR/. keys_copy/
-      KEYSDIR=$(pwd)/keys_copy
+      NEW_KEYSDIR=$(mktemp -d /dev/shm/robotnix_keys.XXXXXXXXXX)
+      trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
+      cp -r "$KEYSDIR"/* "$NEW_KEYSDIR"
+      KEYSDIR=$NEW_KEYSDIR
     fi
 
     ${commands}
