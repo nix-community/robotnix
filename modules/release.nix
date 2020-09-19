@@ -35,10 +35,11 @@ let
   });
 
   signedTargetFilesScript = { targetFiles, out }: ''
-  ( cd ${otaTools}; # Enter otaTools dir so relative paths are correct for finding original keys
+  ( OUT=$(realpath ${out})
+    cd ${otaTools}; # Enter otaTools dir so relative paths are correct for finding original keys
     ${otaTools}/releasetools/sign_target_files_apks.py \
       -o -d $KEYSDIR ${toString config.signing.signTargetFilesArgs} \
-      ${targetFiles} ${out}
+      ${targetFiles} $OUT
   )
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
