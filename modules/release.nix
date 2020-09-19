@@ -145,24 +145,32 @@ in
     # Maybe just remove this script? It's definitely complicated--and often untested
     releaseScript = mkDefault (pkgs.writeScript "release.sh" (''
       #!${pkgs.runtimeShell}
-      export PREV_BUILDNUMBER=$2
+      set -euo pipefail
+
+      if [[ $# -ge 2 ]]; then
+        PREV_BUILDNUMER="$2"
+      else
+        PREV_BUILDNUMER=""
+      fi
       '' + (wrapScript { keysDir="$1"; commands=''
       if [[ "$KEYSDIR" ]]; then
         echo Signing target files
-        ${signedTargetFilesScript { targetFiles=unsignedTargetFiles; out=signedTargetFiles.name; }} || exit 1
+        ${signedTargetFilesScript { targetFiles=unsignedTargetFiles; out=signedTargetFiles.name; }}
+      else
+        echo No KEYSDIR specified. Skipping signing target files.
       fi
       echo Building OTA zip
-      ${otaScript { targetFiles=signedTargetFiles.name; out=ota.name; }} || exit 1
-      if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
+      ${otaScript { targetFiles=signedTargetFiles.name; out=ota.name; }}
+      if [[ ! -v PREV_BUILDNUMBER ]]; then
         echo Building incremental OTA zip
         ${otaScript {
           targetFiles=signedTargetFiles.name;
           prevTargetFiles="${device}-target_files-$PREV_BUILDNUMBER.zip";
           out="${device}-incremental-$PREV_BUILDNUMBER-${buildNumber}.zip";
-        }} || exit 1
+        }}
       fi
       echo Building .img file
-      ${imgScript { targetFiles=signedTargetFiles.name; out=img.name; }} || exit 1
+      ${imgScript { targetFiles=signedTargetFiles.name; out=img.name; }}
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
       ${pkgs.python3}/bin/python ${./generate_metadata.py} ${ota.name} > ${device}-${channel}
