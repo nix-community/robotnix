@@ -33,25 +33,26 @@ in {
                         ++ (optionals (config.androidVersion >= 10) [ "networkstack" ] ++ config.signing.apex.packageNames);
     in mkDefault (pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}
+      set -euo pipefail
 
       export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
       for key in ${toString keysToGenerate}; do
         # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
-        ! make_key "$key" "$1" || exit 1
+        ! make_key "$key" "$1"
       done
 
-      ${optionalString (config.signing.avb.mode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key || exit 1"}
+      ${optionalString (config.signing.avb.mode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key"}
 
       # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
       ${optionalString (config.signing.avb.mode != "verity_only") ''
-        openssl genrsa -out avb.pem 2048 || exit 1
-        avbtool extract_public_key --key avb.pem --output avb_pkmd.bin || exit 1
+        openssl genrsa -out avb.pem 2048
+        avbtool extract_public_key --key avb.pem --output avb_pkmd.bin
       ''}
 
       ${concatMapStringsSep "\n" (k: ''
-        openssl genrsa -out ${k}.pem 4096 || exit 1
-        avbtool extract_public_key --key ${k}.pem --output ${k}.avbpubkey || exit 1
+        openssl genrsa -out ${k}.pem 4096
+        avbtool extract_public_key --key ${k}.pem --output ${k}.avbpubkey
       '') config.signing.apex.packageNames}
     '');
   };
