@@ -9,6 +9,12 @@ let
     cp ${config.source.dirs."development".src}/tools/make_key $out/bin/make_key
     substituteInPlace $out/bin/make_key --replace openssl ${getBin pkgs.openssl}/bin/openssl
 
+    cc -o $out/bin/generate_verity_key \
+      ${config.source.dirs."system/extras".src}/verity/generate_verity_key.c \
+      ${config.source.dirs."system/core".src}/libcrypto_utils/android_pubkey.c \
+      -I ${config.source.dirs."system/core".src}/libcrypto_utils/include/ \
+      -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
+
     cp ${config.source.dirs."external/avb".src}/avbtool $out/bin/avbtool
 
     patchShebangs $out/bin
