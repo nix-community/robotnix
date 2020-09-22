@@ -110,7 +110,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 
   # HACK to use recent android source, but with old vendor files...
   source.dirs."vendor/google_devices".postPatch = ''
-    echo QQ3A.200705.002 > ${config.device}/build_id.txt
+    echo QQ3A.200805.001 > ${config.device}/build_id.txt
   '';
 
   kernel.src = kernelSrc {
