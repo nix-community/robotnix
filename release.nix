@@ -33,6 +33,7 @@ let
     { device="pioneer";    flavor="lineageos"; }
 
     { device="x86_64";     flavor="vanilla"; androidVersion=11; }
+    { device="crosshatch"; flavor="vanilla"; androidVersion=11; }
   ]));
 
   defaultBuild = robotnix { device="arm64"; flavor="vanilla"; };
