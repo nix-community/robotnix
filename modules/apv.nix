@@ -130,6 +130,9 @@ in
         if [[ -d ${unpackedImg}/product ]]; then
           ln -s ${unpackedImg}/product tmp/product
         fi
+        if [[ -d ${unpackedImg}/system_ext ]]; then
+          ln -s ${unpackedImg}/system_ext tmp/system_ext
+        fi
 
         cp ${unpackedImg}/vendor_partition_size tmp
         if [[ -f ${unpackedImg}/product_partition_size ]]; then

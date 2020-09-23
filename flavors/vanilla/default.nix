@@ -138,10 +138,27 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  source.manifest.rev = mkDefault "android-11.0.0_r1";
-
+  buildDateTime = mkDefault 1600909299; # 2020-09-23
 }
-
+(mkIf (config.device != "sunfish") {
+  source.manifest.rev = mkDefault "android-11.0.0_r1";
+  apv.buildID = mkDefault "RP1A.200720.009";
+})
+(mkIf (config.device == "sunfish") {
+  source.manifest.rev = mkDefault "android-11.0.0_r3";
+  apv.buildID = mkDefault "RP1A.200720.011";
+})
+{
+  # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
+  # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
+  # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
+  # where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
+  # and Strength as defined in Authenticators.java
+  resources."frameworks/base/core/res".config_biometric_sensors =
+    optional (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) "0:2:15"
+    ++ optional (config.deviceFamily == "coral") "0:8:15";
+  resourceTypeOverrides."frameworks/base/core/res".config_biometric_sensors = "string-array";
+}
 ]))
 
 ])
