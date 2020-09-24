@@ -149,12 +149,8 @@ in
     };
 
     source = mkIf cfg.useCustom {
-      dirs.${cfg.relpath}.enable = false;
-
-      unpackScript = ''
-        mkdir -p ${cfg.relpath}
-        cp -fv ${config.build.kernel}/* ${cfg.relpath}/
-        chmod -R u+w ${cfg.relpath}/
+      dirs.${cfg.relpath}.postPatch = ''
+        cp -fv ${config.build.kernel}/* .
       '';
     };
   };
