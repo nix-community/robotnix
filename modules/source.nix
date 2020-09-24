@@ -52,6 +52,7 @@ let
 
       src = mkOption {
         type = types.path;
+        default = pkgs.runCommand "empty" {} "mkdir -p $out";
         apply = src: # Maybe replace with with pkgs.applyPatches? Need patchFlags though...
           if (config.patches != [] || config.postPatch != "")
           then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" {} ''
@@ -81,22 +82,25 @@ let
 
       # These remaining options should be set by json output of mk-vendor-file.py
       url = mkOption {
-        type = types.str;
+        type = types.nullOr types.str;
+        default = null;
         internal = true;
       };
 
       rev = mkOption {
-        type = types.str;
+        type = types.nullOr types.str;
+        default = null;
         internal = true;
       };
 
       revisionExpr = mkOption {
-        type = types.str;
+        type = types.nullOr types.str;
         internal = true;
       };
 
       tree = mkOption {
-        type = types.str;
+        type = types.nullOr types.str;
+        default = null;
         internal = true;
       };
 
@@ -107,7 +111,8 @@ let
       };
 
       sha256 = mkOption {
-        type = types.str;
+        type = types.nullOr types.str;
+        default = null;
         internal = true;
       };
 
@@ -130,7 +135,9 @@ let
         || (!(any (g: elem g config.groups) _config.source.excludeGroups))
       );
 
-      src = mkDefault (projectSource config);
+      src =
+        mkIf ((config.url != null) && (config.rev != null) && (config.sha256 != null))
+        (mkDefault (projectSource config));
 
       unpackScript = (optionalString config.enable ''
         mkdir -p ${config.relpath}
