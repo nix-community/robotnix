@@ -8,7 +8,9 @@ let
     inherit rev sha256;
   };
 
-  phoneDeviceFamilies = [ "marlin" "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ];
+  phoneDeviceFamilies =
+    (optional (config.androidVersion <= 10) "marlin")
+    ++ [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "vanilla") (mkMerge [
