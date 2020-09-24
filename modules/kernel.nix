@@ -102,7 +102,7 @@ in
       openssl x509 -outform der -in ${config.build.x509 "verity"} -out verity_user.der.x509
     '';
 
-    build.kernel = pkgs.stdenv.mkDerivation {
+    build.kernel = pkgs.stdenv.mkDerivation ({
       name = "kernel-${cfg.name}";
       inherit (cfg) src patches postPatch;
 
@@ -130,6 +130,9 @@ in
       ] ++ lib.optionals (cfg.compiler == "clang") [
         "CC=clang"
         "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
+      ] ++ lib.optionals (config.deviceFamily == "coral") [
+        # HACK: Otherwise fails with  aarch64-linux-android-ld.gold: error: arch/arm64/lib/lib.a: member at 4210 is not an ELF object
+        "LD=ld.lld"
       ];
 
       preBuild = ''
@@ -146,7 +149,11 @@ in
       installPhase = ''
         mkdir -p $out
       '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames);
-    };
+    } // optionalAttrs (config.deviceFamily == "coral") {
+      # HACK: Needed for coral (pixel 4) (Don't turn this on for other devices)
+      DTC_EXT = "${prebuiltMisc}/bin/dtc";
+      DTC_OVERLAY_TEST_EXT = "${prebuiltMisc}/bin/ufdt_apply_overlay";
+    });
 
     source = mkIf cfg.useCustom {
       dirs.${cfg.relpath}.postPatch = ''

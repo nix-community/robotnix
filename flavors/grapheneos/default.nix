@@ -3,7 +3,7 @@ with lib;
 let
   grapheneOSRelease = "${config.apv.buildID}.2020.09.11.14";
 
-  phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" ];
+  phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" "coral" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -64,7 +64,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 }
-(mkIf (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) {
+(mkIf (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" "coral" ]) {
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
   kernel.configName = config.device;
@@ -86,5 +86,15 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 })
 (mkIf (config.device == "blueline") { # TODO: Ugly hack
   kernel.relpath = mkForce "device/google/blueline-kernel";
+})
+(mkIf (config.deviceFamily == "coral") {
+  kernel.configName = mkForce "floral";
+  kernel.src = pkgs.fetchFromGitHub {
+    owner = "GrapheneOS";
+    repo = "kernel_google_coral";
+    rev = grapheneOSRelease;
+    sha256 = "0jjzp37q01xz32ygji8drxfa55g5lb2qh9n2l39313w94g999ci9";
+    fetchSubmodules = true;
+  };
 })
 ])

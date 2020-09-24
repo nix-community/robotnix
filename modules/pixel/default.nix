@@ -115,6 +115,13 @@ mkMerge [
   })
   (mkIf (config.deviceFamily == "coral") {
     signing.avb.mode = "vbmeta_chained_v2";
+    kernel.buildProductFilenames = [
+      "arch/arm64/boot/Image.lz4"
+      "arch/arm64/boot/dtbo.img"
+      "arch/arm64/boot/dts/google/qcom-base/sm8150.dtb"
+      "arch/arm64/boot/dts/google/qcom-base/sm8150-v2.dtb"
+    ];
+    kernel.configName = "floral"; # coral + flame
   })
   (mkIf (config.deviceFamily == "sunfish") {
     signing.avb.mode = "vbmeta_chained_v2";
