@@ -9,7 +9,7 @@ let
     <?xml version="1.0" encoding="utf-8"?>
     <resources>
       ${concatStringsSep "\n" (mapAttrsToList
-        (name: value: robotnixlib.resourceXML name value (config.resourceTypeOverrides.${relativePath}.${name} or robotnixlib.resourceType value))
+        (name: value: robotnixlib.resourceXML name value (config.resourceTypeOverrides.${relativePath}.${name} or (robotnixlib.resourceType value)))
        packageResources)}
     </resources>
   '';
