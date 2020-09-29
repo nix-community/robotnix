@@ -12,7 +12,7 @@ with lib;
         mkdir -p $out
         cp --reflink=auto $ANDROID_PRODUCT_OUT/vendor-qemu.img $out/vendor.img
         cp --reflink=auto $ANDROID_PRODUCT_OUT/system-qemu.img $out/system.img
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/ramdisk.img $out/ramdisk.img
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/ramdisk${optionalString (config.androidVersion >= 11) "-qemu"}.img $out/ramdisk.img
         cp --reflink=auto $ANDROID_PRODUCT_OUT/userdata.img $out/userdata.img
         cp --reflink=auto -r $ANDROID_PRODUCT_OUT/data $out/
         cp --reflink=auto $ANDROID_PRODUCT_OUT/system/build.prop $out/build.prop
