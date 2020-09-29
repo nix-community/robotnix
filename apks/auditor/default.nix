@@ -8,12 +8,12 @@
   avbFingerprint ? ""
 }:
 let
-  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-29 build-tools-29-0-3 ]);
+  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-30 build-tools-29-0-3 ]);
   buildGradle = callPackage ./gradle-env.nix {};
 in
 buildGradle rec {
   name = "Auditor-${version}.apk";
-  version = "18"; # Latest as of 2019-11-11
+  version = "20"; # Latest as of 2020-09-28
 
   envSpec = ./gradle-env.json;
 
@@ -21,7 +21,7 @@ buildGradle rec {
     owner = "grapheneos";
     repo = "Auditor";
     rev = version;
-    sha256 = "1w0zn2z0p7rrbwckrhzwifynja5arxa3gijvz6npsc08hws3nwxi";
+    sha256 = "1nf2450gsrf7ncgc25mhy7q5221p7kdnh0q8f90ig3rar78b64m9";
   };
 
   patches = [

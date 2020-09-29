@@ -1,4 +1,4 @@
-From c66421401af677b6d4b7ecdcc82e1b1648daa32e Mon Sep 17 00:00:00 2001
+From f0bf16a9f21a6b11f9f29549f1456036be0c09b3 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 15:53:34 -0400
 Subject: [PATCH 1/4] Custom domain
@@ -21,10 +21,10 @@ index 78eb7c5..8d14f81 100644
      private static final String VERIFY_URL = "https://" + DOMAIN + "/verify";
      private static final int CONNECT_TIMEOUT = 60000;
 -- 
-2.27.0
+2.28.0
 
 
-From bdea3a91ad8478230222ef64dd14c44128ab90b7 Mon Sep 17 00:00:00 2001
+From 0b041f3e0df885b40f8a7d6774c43005fc8e586a Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 16:17:57 -0400
 Subject: [PATCH 2/4] Custom fingerprints
@@ -35,7 +35,7 @@ Subject: [PATCH 2/4] Custom fingerprints
  2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index 6c85d56..6a16064 100644
+index 04c25c3..99cbb0b 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -225,7 +225,7 @@ class AttestationProtocol {
@@ -80,10 +80,10 @@ index 100130a..6f9bfdb 100644
 +    <string name="os_robotnix">Robotnix</string>
  </resources>
 -- 
-2.27.0
+2.28.0
 
 
-From 7dd7b67b23521fccd7bcedb87f89c97ccd889b11 Mon Sep 17 00:00:00 2001
+From 1c613bb1d3d4a5e327297eb0bfd1643851d46e3d Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:49:04 -0400
 Subject: [PATCH 3/4] Customize appId
@@ -94,20 +94,20 @@ Subject: [PATCH 3/4] Customize appId
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/app/build.gradle b/app/build.gradle
-index b4c4ed7..167e083 100644
+index 2d942cf..5606ea5 100644
 --- a/app/build.gradle
 +++ b/app/build.gradle
 @@ -4,7 +4,7 @@ android {
-     compileSdkVersion 29
+     compileSdkVersion 30
      buildToolsVersion "29.0.3"
      defaultConfig {
 -        applicationId "app.attestation.auditor"
 +        applicationId "@applicationId@"
          minSdkVersion 24
-         targetSdkVersion 29
-         versionCode 18
+         targetSdkVersion 30
+         versionCode 20
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index 6a16064..21a9ecc 100644
+index 99cbb0b..0f41baf 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -220,7 +220,7 @@ class AttestationProtocol {
@@ -120,10 +120,10 @@ index 6a16064..21a9ecc 100644
      private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
              "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
 -- 
-2.27.0
+2.28.0
 
 
-From 99a0bcbaf2bc59c29f9e0fe2ac0627c00a7aa5ab Mon Sep 17 00:00:00 2001
+From 1b9cee8ce4c34a4f49d25c5a1f7a28352c8aef11 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 17:03:03 -0400
 Subject: [PATCH 4/4] Change application name to Robotnix Auditor for clarity
@@ -144,5 +144,5 @@ index 6f9bfdb..0fde6cd 100644
      <string name="unsupported_auditee">Device is not one of the supported models with hardware-based attestation.</string>
      <string name="camera_permission_denied">Camera permission is required to scan QR codes. Please try again.</string>
 -- 
-2.27.0
+2.28.0
 
