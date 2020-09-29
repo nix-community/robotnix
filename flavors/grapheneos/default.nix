@@ -1,22 +1,24 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2020.09.11.14";
+  grapheneOSRelease = "${config.apv.buildID}.2020.09.25.00";
 
   phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" "coral" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
+  androidVersion = mkDefault 11;
+
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1599972803;
+  buildDateTime = mkDefault 1601319208;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault "QQ3A.200805.001";
+  apv.buildID = mkDefault "RP1A.200720.009";
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -76,7 +78,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "0l86yrj40jcm144sc7hmqc6mz5k67fh3gn2yf8hd6dp28ynrwrhd";
+    sha256 = "1zbqqjwdnibahcghsw3qrgdk30dsnbnxq1z66c9g1mni48rhxy11";
     fetchSubmodules = true;
   };
 })
@@ -93,7 +95,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_coral";
     rev = grapheneOSRelease;
-    sha256 = "0jjzp37q01xz32ygji8drxfa55g5lb2qh9n2l39313w94g999ci9";
+    sha256 = "0jdq96jfk61qn6wyxx71brfpm3alsbj93ywfqrid8jcsim1i5xgj";
     fetchSubmodules = true;
   };
 })
