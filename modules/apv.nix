@@ -167,12 +167,26 @@ in
           mkdir -p $out
           ln -s ${config.build.apv.unpackedImg} $out/upstream
           ln -s ${builtVendor} $out/built
+
           find ${config.build.apv.unpackedImg}/vendor -printf "%P\n" | sort > $out/upstream-vendor
           find ${builtVendor}/vendor -printf "%P\n" | sort > $out/built-vendor
           diff -u $out/upstream-vendor $out/built-vendor > $out/diff-vendor || true
+
           find ${config.build.apv.unpackedImg}/system -printf "%P\n" | sort > $out/upstream-system
           find ${builtVendor}/system -printf "%P\n" | sort > $out/built-system
           diff -u $out/upstream-system $out/built-system > $out/diff-system || true
+
+          if [[ -d ${config.build.apv.unpackedImg}/product ]]; then
+            find ${config.build.apv.unpackedImg}/product -printf "%P\n" | sort > $out/upstream-product
+            find ${builtVendor}/product -printf "%P\n" | sort > $out/built-product
+            diff -u $out/upstream-product $out/built-product > $out/diff-product || true
+          fi
+
+          if [[ -d ${config.build.apv.unpackedImg}/system_ext ]]; then
+            find ${config.build.apv.unpackedImg}/system_ext -printf "%P\n" | sort > $out/upstream-system_ext
+            find ${builtVendor}/system_ext -printf "%P\n" | sort > $out/built-system_ext
+            diff -u $out/upstream-system_ext $out/built-system_ext > $out/diff-system_ext || true
+          fi
         '';
     };
 
