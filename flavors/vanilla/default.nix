@@ -149,6 +149,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     sha256 = "1fw8r3kvs6nbaykahxj9s4kv21vigpl9cfqzipbwlxgdr83fv7zr";
   };
   webview.prebuilt.enable = true;
+  webview.prebuilt.packageName = "com.google.android.webview";
 }
 (mkIf (config.device != "sunfish") {
   source.manifest.rev = mkDefault "android-11.0.0_r1";
