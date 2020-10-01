@@ -34,6 +34,8 @@ let
 
     { device="x86_64";     flavor="vanilla"; androidVersion=11; }
     { device="crosshatch"; flavor="vanilla"; androidVersion=11; }
+    { device="x86_64";     flavor="grapheneos"; androidVersion=11; }
+    { device="crosshatch"; flavor="grapheneos"; androidVersion=11; }
   ]));
 
   defaultBuild = robotnix { device="arm64"; flavor="vanilla"; };
