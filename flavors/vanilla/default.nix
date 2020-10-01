@@ -141,6 +141,14 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
   buildDateTime = mkDefault 1600909299; # 2020-09-23
+
+  # Temporarily use a recent upstream prebuilt webview until we use a chromium version that supports API >= 30
+  source.dirs."external/chromium-webview".src = pkgs.fetchgit {
+    url = "https://github.com/GrapheneOS/platform_external_chromium-webview";
+    rev = "7a4cedd75b8842a070f345e991ca595933e64197";
+    sha256 = "1fw8r3kvs6nbaykahxj9s4kv21vigpl9cfqzipbwlxgdr83fv7zr";
+  };
+  webview.prebuilt.enable = true;
 }
 (mkIf (config.device != "sunfish") {
   source.manifest.rev = mkDefault "android-11.0.0_r1";
