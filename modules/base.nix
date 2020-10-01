@@ -39,6 +39,8 @@ in
     flavor = mkOption {
       default = null;
       type = types.nullOr types.str;
+      description = "One of robotnix's supported flavors.";
+      example = "vanilla";
     };
 
     device = mkOption {
@@ -68,7 +70,7 @@ in
 
     productName = mkOption {
       type = types.str;
-      description = "Product name for choosecombo/lunch (defaults to aosp_${config.device})";
+      description = "Product name for choosecombo/lunch (defaults to aosp_\${device})";
     };
 
     productNamePrefix = mkOption {
