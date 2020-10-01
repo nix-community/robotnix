@@ -49,12 +49,18 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 }
 
 (mkIf (elem config.androidVersion [ 9 10 ]) {
-  source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}/disable-quicksearch.patch") ];
   source.dirs."device/google/marlin".patches = [ (./. + "/${toString config.androidVersion}/marlin-fix-device-names.patch") ];
+})
+(mkIf (elem config.androidVersion [ 9 10 11 ]) {
+  source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}/disable-quicksearch.patch") ];
   source.dirs."device/google/taimen".patches = [ (./. + "/${toString config.androidVersion}/taimen-fix-device-names.patch") ];
   source.dirs."device/google/muskie".patches = [ (./. + "/${toString config.androidVersion}/muskie-fix-device-names.patch") ];
   source.dirs."device/google/crosshatch".patches = [ (./. + "/${toString config.androidVersion}/crosshatch-fix-device-names.patch") ];
   source.dirs."device/google/bonito".patches = [ (./. + "/${toString config.androidVersion}/bonito-fix-device-names.patch") ];
+})
+(mkIf (elem config.androidVersion [ 11 ]) {
+  source.dirs."device/google/coral".patches = [ (./. + "/${toString config.androidVersion}/coral-fix-device-names.patch") ];
+  source.dirs."device/google/sunfish".patches = [ (./. + "/${toString config.androidVersion}/sunfish-fix-device-names.patch") ];
 })
 
 ### Android 10 stuff ###
