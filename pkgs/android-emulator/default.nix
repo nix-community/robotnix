@@ -13,7 +13,7 @@ let
     avd.ini.displayname = "Pixel2";
     avd.ini.encoding = "UTF-8";
     # Real Pixel2 ships with 32GB
-    disk.dataPartition.size = "4096MB";
+    disk.dataPartition.size = "8096MB";
     fastboot.forceColdBoot = "no";
     hw.accelerometer = "yes";
     hw.audioInput = "yes";
