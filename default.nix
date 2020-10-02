@@ -48,7 +48,6 @@ let
       ./modules/google.nix
       ./modules/hosts.nix
       ./modules/kernel.nix
-      ./modules/keys.nix
       ./modules/microg.nix
       ./modules/pixel
       ./modules/release.nix
