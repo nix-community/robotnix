@@ -24,7 +24,7 @@ buildGradle {
     owner = "grapheneos";
     repo = "AttestationServer";
     rev = "9a085e798e9cf340b8c3e217a39478895ff7c05b";
-    sha256 = "0000abma4q8jqbnsbmshfjh3ykkmqj8qfwn6lpbjf99900c6mq1h";
+    sha256 = "0ak66hiqivczsqqcwzcjg93x8r8512q307mk6lb7623whp68qqvq";
   };
 
   patches = [ (substituteAll {
