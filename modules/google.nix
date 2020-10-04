@@ -11,6 +11,9 @@ let
   productPath = if (config.androidVersion >= 10)
     then "${unpackedImg}/${optionalString (config.deviceFamily == "marlin") "system/system/"}product"
     else systemPath;
+  systemExtPath = if (config.androidVersion >= 11)
+    then "${unpackedImg}/system_ext"
+    else productPath;
 
   unpackedImg = if config.apv.enable
     then config.build.apv.unpackedImg
@@ -41,9 +44,12 @@ in
         "sysconfig/google-hiddenapi-package-whitelist.xml".source = "${productPath}/etc/sysconfig/google-hiddenapi-package-whitelist.xml";
         "sysconfig/google.xml".source = "${productPath}/etc/sysconfig/google.xml";
         "sysconfig/nexus.xml".source = "${productPath}/etc/sysconfig/nexus.xml";
-      } // (optionalAttrs (config.androidVersion >= 10) {
+      } // (optionalAttrs (config.androidVersion == 10) {
         "permissions/privapp-permissions-google-ps.xml".source = "${productPath}/etc/permissions/privapp-permissions-google-ps.xml";
+      }) // (optionalAttrs (config.androidVersion >= 10) {
         "permissions/privapp-permissions-google-p.xml".source = "${productPath}/etc/permissions/privapp-permissions-google-p.xml";
+      }) // (optionalAttrs (config.androidVersion >= 11) {
+        "permissions/privapp-permissions-google-se.xml".source = "${systemExtPath}/etc/permissions/privapp-permissions-google-se.xml";
       }) // (optionalAttrs (config.deviceFamily == "marlin") { # TODO: Do this for other devices
         "sysconfig/pixel_2016_exclusive.xml".source = "${systemPath}/etc/sysconfig/pixel_2016_exclusive.xml";
       }) // (optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Do this for other devices
@@ -80,18 +86,19 @@ in
           certificate = "PRESIGNED";
           privileged = true;
         };
-        CarrierServices = {
-          apk = "${productPath}/priv-app/CarrierServices/CarrierServices.apk"; # Google Carrier Services. com.google.android.ims (needed for wifi calls)
-          certificate = "PRESIGNED";
-          privileged = true;
-        };
+#### Disabling for now, since calls aren't working ####
+#        CarrierServices = {
+#          apk = "${productPath}/priv-app/CarrierServices/CarrierServices.apk"; # Google Carrier Services. com.google.android.ims (needed for wifi calls)
+#          certificate = "PRESIGNED";
+#          privileged = true;
+#        };
         CarrierSettings = {
           apk = "${productPath}/priv-app/CarrierSettings/CarrierSettings.apk"; # com.google.android.carrier
           certificate = "PRESIGNED";
           privileged = true;
         };
         CarrierSetup = {
-          apk = "${productPath}/priv-app/CarrierSetup/CarrierSetup.apk"; # com.google.android.carriersetup
+          apk = "${systemExtPath}/priv-app/CarrierSetup/CarrierSetup.apk"; # com.google.android.carriersetup
           certificate = "PRESIGNED";
           privileged = true;
         };
