@@ -17,7 +17,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
   buildDateTime = mkMerge [
-    (mkIf (config.androidVersion == 11) (mkDefault 1601512431))
+    (mkIf (config.androidVersion == 11) (mkDefault 1601774578))
     (mkIf (config.androidVersion == 10) (mkDefault 1599972803))
   ];
 
@@ -58,10 +58,16 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   webview.vanadium.enable = mkDefault true;
   webview.vanadium.availableByDefault = mkDefault true;
 
+  # Temporarily use a recent upstream prebuilt webview until we use a chromium version that supports API >= 30
+  webview.prebuilt.enable = mkIf (config.androidVersion == 11) (mkDefault true);
+  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
+  webview.prebuilt.availableByDefault = mkDefault true;
+  webview.prebuilt.packageName = "com.google.android.webview";
+
   apps.seedvault.enable = mkDefault true;
 
   # Remove upstream prebuilt versions from build. We build from source ourselves.
-  removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "Seedvault" ];
+  removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "webview" "Seedvault" ];
   source.dirs."external/vanadium".enable = false;
   source.dirs."external/seedvault".enable = false;
   source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own pinned version
