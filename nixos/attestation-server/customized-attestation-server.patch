@@ -1,4 +1,4 @@
-From 072110fc8323585c07b6dfeb5163e6b93cc94bfb Mon Sep 17 00:00:00 2001
+From 722dce384dec4b83f4d32eafecaa39b51cd31336 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:00:46 -0400
 Subject: [PATCH 1/4] Custom listen settings
@@ -8,10 +8,10 @@ Subject: [PATCH 1/4] Custom listen settings
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index e631b09..0a58bf2 100644
+index ccfed9a..bd9910f 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -229,7 +229,7 @@ public class AttestationServer {
+@@ -296,7 +296,7 @@ public class AttestationServer {
          new Thread(new Maintenance()).start();
  
          System.setProperty("sun.net.httpserver.nodelay", "true");
@@ -24,7 +24,7 @@ index e631b09..0a58bf2 100644
 2.28.0
 
 
-From 5511cac1b00f5a051296e916d3cb4e96f4984d03 Mon Sep 17 00:00:00 2001
+From 0cea0b3cbfa1442f28d8071f95da7cfd83903d59 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:09 -0400
 Subject: [PATCH 2/4] Custom domain
@@ -53,10 +53,10 @@ index 6b1c408..cf36351 100644
  
                                  Transport.send(message);
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index 0a58bf2..27b3a81 100644
+index bd9910f..bf6458d 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -766,7 +766,7 @@ public class AttestationServer {
+@@ -851,7 +851,7 @@ public class AttestationServer {
              exchange.getResponseHeaders().set("Content-Type", "image/png");
              exchange.sendResponseHeaders(200, 0);
              try (final OutputStream output = exchange.getResponseBody()) {
@@ -165,7 +165,7 @@ index 3092634..8a94ee4 100644
          </script>
      </body>
 diff --git a/static/index.html b/static/index.html
-index 848a784..5d5ffef 100644
+index eecec80..ef2c567 100644
 --- a/static/index.html
 +++ b/static/index.html
 @@ -12,17 +12,17 @@
@@ -187,7 +187,7 @@ index 848a784..5d5ffef 100644
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/"/>
 +        <link rel="canonical" href="https://@domain@/"/>
-         <script type="module" src="/monitoring.js?8"></script>
+         <script type="module" src="/monitoring.js?11"></script>
      </head>
      <body>
 diff --git a/static/robots.txt b/static/robots.txt
@@ -244,7 +244,7 @@ index 504e64b..f7c9ed7 100644
 2.28.0
 
 
-From b71ed2438cb79f80ed6fa80ca10c81b9098dd0b7 Mon Sep 17 00:00:00 2001
+From 174681f38a169bf84a1094407fb11e603ba25fca Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:18 -0400
 Subject: [PATCH 3/4] Custom fingerprints
@@ -254,7 +254,7 @@ Subject: [PATCH 3/4] Custom fingerprints
  1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index 9a1a7f0..ed02175 100644
+index e2d67a2..33f6f00 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -166,7 +166,7 @@ class AttestationProtocol {
@@ -300,7 +300,7 @@ index 9a1a7f0..ed02175 100644
 2.28.0
 
 
-From 22f90b0973acd51ef315537222cb062035c10b71 Mon Sep 17 00:00:00 2001
+From 62f2095eaf0f1146d5404fba4d74d4a1cd2c41b6 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:50:29 -0400
 Subject: [PATCH 4/4] Custom appId
@@ -310,7 +310,7 @@ Subject: [PATCH 4/4] Custom appId
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index ed02175..44f755f 100644
+index 33f6f00..4ff38fa 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -161,7 +161,7 @@ class AttestationProtocol {
