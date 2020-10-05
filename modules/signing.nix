@@ -104,23 +104,41 @@ in
 
       export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
-      for key in ${toString keysToGenerate}; do
-        # make_key exits with unsuccessful code 1 instead of 0, need ! to negate
-        ! make_key "$key" "$1"
+      KEYS=( ${toString keysToGenerate} )
+      APEX_KEYS=( ${toString config.signing.apex.packageNames} )
+
+      for key in "''${KEYS[@]}"; do
+        if [[ ! -e "$key".pk8 ]]; then
+          echo "Generating $key key"
+          # make_key exits with unsuccessful code 1 instead of 0
+          make_key "$key" "/CN=Robotnix ${config.device}/" && exit 1
+        else
+          echo "Skipping generating $key since it is already exists"
+        fi
+      done
+
+      for key in "''${APEX_KEYS[@]}"; do
+        if [[ ! -e "$key".pem ]]; then
+          echo "Generating $key APEX AVB key"
+          openssl genrsa -out "$key".pem 4096
+          avbtool extract_public_key --key "$key".pem --output "$key".avbpubkey
+        else
+          echo "Skipping generating $key APEX key since it is already exists"
+        fi
       done
 
       ${optionalString (config.signing.avb.mode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key"}
 
-      # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
       ${optionalString (config.signing.avb.mode != "verity_only") ''
+      if [[ ! -e "avb.pem" ]]; then
+        # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
+        echo "Generating Device AVB key"
         openssl genrsa -out avb.pem 2048
         avbtool extract_public_key --key avb.pem --output avb_pkmd.bin
+      else
+        echo "Skipping generating device AVB key since it is already exists"
+      fi
       ''}
-
-      ${concatMapStringsSep "\n" (k: ''
-        openssl genrsa -out ${k}.pem 4096
-        avbtool extract_public_key --key ${k}.pem --output ${k}.avbpubkey
-      '') config.signing.apex.packageNames}
     '');
   };
 }

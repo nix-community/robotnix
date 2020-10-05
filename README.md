@@ -63,7 +63,7 @@ After creating a configuration file, generate keys for your device:
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
 $ mkdir keys/crosshatch
 $ cd keys/crosshatch
-$ ../../generate-keys "/CN=Robotnix" # Use appropriate x509 cert fields
+$ ../../generate-keys
 $ cd ../..
 ```
 
