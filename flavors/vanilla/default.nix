@@ -13,6 +13,11 @@ let
     ++ [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
+  # Replaces references to SystemUIGoogle with SystemUI in device source tree
+  patchSystemUIGoogle = ''
+    substituteInPlace device.mk --replace SystemUIGoogle SystemUI
+    substituteInPlace overlay/frameworks/base/core/res/res/values/config.xml --replace SystemUIGoogle SystemUI
+  '';
 in mkIf (config.flavor == "vanilla") (mkMerge [
 
 ### Generic stuff ###
@@ -50,6 +55,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 
 (mkIf (elem config.androidVersion [ 9 10 ]) {
   source.dirs."device/google/marlin".patches = [ (./. + "/${toString config.androidVersion}/marlin-fix-device-names.patch") ];
+  # patch location for marlin is different
+  source.dirs."device/google/marlin".postPatch = "substituteInPlace common/base.mk --replace SystemUIGoogle SystemUI";
 })
 (mkIf (elem config.androidVersion [ 9 10 11 ]) {
   source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}/disable-quicksearch.patch") ];
@@ -57,10 +64,15 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   source.dirs."device/google/muskie".patches = [ (./. + "/${toString config.androidVersion}/muskie-fix-device-names.patch") ];
   source.dirs."device/google/crosshatch".patches = [ (./. + "/${toString config.androidVersion}/crosshatch-fix-device-names.patch") ];
   source.dirs."device/google/bonito".patches = [ (./. + "/${toString config.androidVersion}/bonito-fix-device-names.patch") ];
+  source.dirs."device/google/wahoo".postPatch = patchSystemUIGoogle;
+  source.dirs."device/google/crosshatch".postPatch = patchSystemUIGoogle;
+  source.dirs."device/google/bonito".postPatch = patchSystemUIGoogle;
 })
 (mkIf (elem config.androidVersion [ 11 ]) {
   source.dirs."device/google/coral".patches = [ (./. + "/${toString config.androidVersion}/coral-fix-device-names.patch") ];
   source.dirs."device/google/sunfish".patches = [ (./. + "/${toString config.androidVersion}/sunfish-fix-device-names.patch") ];
+  source.dirs."device/google/coral".postPatch = patchSystemUIGoogle;
+  source.dirs."device/google/sunfish".postPatch = patchSystemUIGoogle;
 })
 
 ### Android 10 stuff ###
