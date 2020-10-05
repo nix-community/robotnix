@@ -17,8 +17,6 @@ mkIf (config.androidVersion == 11) {
     );
   };
 
-  signing.apex.enable = mkDefault true;
-
   kernel.clangVersion = mkDefault "r370808";
 
   # Android 11 ninja filters env vars for more correct incrementalism.

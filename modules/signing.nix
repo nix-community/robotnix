@@ -44,6 +44,19 @@ in
   };
 
   config = {
+    signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
+    signing.apex.packageNames = map (s: "com.android.${s}") (
+      optionals (config.androidVersion == 10) [ "runtime.release" ]
+      ++ optionals (config.androidVersion >= 10) [
+        "conscrypt" "media" "media.swcodec" "resolv" "tzdata"
+      ]
+      ++ optionals (config.androidVersion >= 11) [
+        "adbd" "art.release" "cellbroadcast" "extservices" "i18n"
+        "ipsec" "mediaprovider" "neuralnetworks" "os.statsd" "runtime"
+        "permission" "sdkext" "telephony" "tethering" "wifi"
+      ]
+    );
+
     signing.signTargetFilesArgs = let
       avbFlags = {
         verity_only = [
@@ -70,6 +83,10 @@ in
       ];
     in
       optional (config.androidVersion >= 10) "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"
+      ++ optionals ((config.androidVersion >= 11) && (config.flavor == "vanilla")) [
+        "--key_mapping frameworks/base/packages/OsuLogin/certs/com.android.hotspot2.osulogin=$KEYSDIR/com.android.hotspot2.osulogin"
+        "--key_mapping frameworks/opt/net/wifi/service/resources-certs/com.android.wifi.resources=$KEYSDIR/com.android.wifi.resources"
+      ]
       ++ optionals cfg.avb.enable avbFlags
       ++ optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames);
 
@@ -95,6 +112,7 @@ in
       keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
                         ++ (optional (config.signing.avb.mode == "verity_only") "verity")
                         ++ (optionals (config.androidVersion >= 10) [ "networkstack" ])
+                        ++ (optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
                         ++ (optional config.signing.apex.enable config.signing.apex.packageNames);
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
     # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
