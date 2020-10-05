@@ -13,7 +13,7 @@ let
 in
 buildGradle rec {
   name = "Auditor-${version}.apk";
-  version = "20"; # Latest as of 2020-09-28
+  version = "21"; # Latest as of 2020-10-05
 
   envSpec = ./gradle-env.json;
 
@@ -21,7 +21,7 @@ buildGradle rec {
     owner = "grapheneos";
     repo = "Auditor";
     rev = version;
-    sha256 = "1nf2450gsrf7ncgc25mhy7q5221p7kdnh0q8f90ig3rar78b64m9";
+    sha256 = "1p9wagad5p3vgw57hh0r2qdj89ngjd155ksfyglh8bzdyq0af4y4";
   };
 
   patches = [
