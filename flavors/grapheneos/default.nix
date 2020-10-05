@@ -2,7 +2,7 @@
 with lib;
 let
   grapheneOSRelease =
-    if config.androidVersion == 11 then "${config.apv.buildID}.2020.09.29.20"
+    if config.androidVersion == 11 then "${config.apv.buildID}.2020.10.01.23"
     else if config.androidVersion == 10 then "${config.apv.buildID}.2020.09.11.14"
     else throw "Invalid androidVersion for GrapheneOS";
 
@@ -17,7 +17,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
   buildDateTime = mkMerge [
-    (mkIf (config.androidVersion == 11) (mkDefault 1601774578))
+    (mkIf (config.androidVersion == 11) (mkDefault 1601920331))
     (mkIf (config.androidVersion == 10) (mkDefault 1599972803))
   ];
 
