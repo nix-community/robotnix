@@ -43,10 +43,13 @@ in
 {
   inherit (pkgs) diffoscope;
 
-  testGenerateKeys = pkgs.runCommand "test-generate-keys" {} ''
+  testGenerateKeys = let
+    generateKeysScript = (robotnix configs.grapheneos-crosshatch).generateKeysScript;
+  in pkgs.runCommand "test-generate-keys" { nativeBuildInputs = [ pkgs.shellcheck ]; } ''
     mkdir -p $out
     cd $out
-    ${(robotnix configs.grapheneos-crosshatch).generateKeysScript} "/CN=Robotnix"
+    shellcheck ${generateKeysScript}
+    ${generateKeysScript}
   '';
 
   check = lib.mapAttrs (name: c: (robotnix c).build.checkAndroid) configs;
