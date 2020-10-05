@@ -1,0 +1,38 @@
+From 93d1e7efdf84520bf7451caa19e3895d98bd16bc Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 20:08:17 -0400
+Subject: [PATCH 4/4] fsck.f2fs: use SOURCE_DATE_EPOCH as time if available
+
+Change-Id: Ia98b7fc2f03b1de3d1fd4aa28e512aef61a22bfe
+---
+ fsck/fsck.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fsck/fsck.c b/fsck/fsck.c
+index c249dfa..66939a8 100644
+--- a/fsck/fsck.c
++++ b/fsck/fsck.c
+@@ -11,6 +11,7 @@
+ #include "fsck.h"
+ #include "xattr.h"
+ #include "quotaio.h"
++#include <stdlib.h>
+ #include <time.h>
+ 
+ char *tree_mark;
+@@ -2462,7 +2463,11 @@ static struct f2fs_node *fsck_get_lpf(struct f2fs_sb_info *sbi)
+ 		de.file_type = F2FS_FT_DIR,
+ 		de.uid = getuid();
+ 		de.gid = getgid();
+-		de.mtime = time(NULL);
++		if (getenv("SOURCE_DATE_EPOCH") != NULL) {
++		    de.mtime = atoi(getenv("SOURCE_DATE_EPOCH"));
++		} else {
++		    de.mtime = time(NULL);
++		}
+ 
+ 		err = f2fs_mkdir(sbi, &de);
+ 		if (err) {
+-- 
+2.28.0
+

@@ -1,0 +1,38 @@
+From 39ca3302100b51f1ac28666b2ce1f08b192b00b1 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 20:13:54 -0400
+Subject: [PATCH] mkf2fsuserimg.sh: add UUID option
+
+Change-Id: I9a870cf664dbd42aed3e88372f57bef63a9f1351
+---
+ f2fs_utils/mkf2fsuserimg.sh | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/f2fs_utils/mkf2fsuserimg.sh b/f2fs_utils/mkf2fsuserimg.sh
+index 264f0ab9..f14677bb 100755
+--- a/f2fs_utils/mkf2fsuserimg.sh
++++ b/f2fs_utils/mkf2fsuserimg.sh
+@@ -8,7 +8,7 @@ Usage:
+ ${0##*/} OUTPUT_FILE SIZE
+          [-S] [-C FS_CONFIG] [-f SRC_DIR] [-D PRODUCT_OUT]
+          [-s FILE_CONTEXTS] [-t MOUNT_POINT] [-T TIMESTAMP]
+-         [-L LABEL] [--prjquota] [--casefold]
++         [-L LABEL] [-U UUID] [--prjquota] [--casefold]
+ EOT
+ }
+ 
+@@ -76,6 +76,11 @@ if [[ "$1" == "-L" ]]; then
+   shift; shift
+ fi
+ 
++if [[ "$1" == "-U" ]]; then
++  MKFS_OPTS+=" -U $2"
++  shift; shift
++fi
++
+ if [[ "$1" == "--prjquota" ]]; then
+   MKFS_OPTS+=" -O project_quota,extra_attr"
+   shift;
+-- 
+2.28.0
+

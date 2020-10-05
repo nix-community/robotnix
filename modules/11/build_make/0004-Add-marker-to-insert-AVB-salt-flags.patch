@@ -1,0 +1,26 @@
+From b9f6993df3257c48f27ee71460bbd91a626edd79 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 13:50:04 -0400
+Subject: [PATCH 4/5] Add marker to insert AVB salt flags
+
+Change-Id: I3e77bf29f6ed9b1853411624d0f09aaead25d3b1
+---
+ core/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/core/Makefile b/core/Makefile
+index c4cd2de15..00f68905c 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -3504,6 +3504,8 @@ BOARD_AVB_ODM_ADD_HASHTREE_FOOTER_ARGS += \
+     --prop com.android.build.odm.security_patch:$(ODM_SECURITY_PATCH)
+ endif
+ 
++### AVB SALT MARKER ###
++
+ BOOT_FOOTER_ARGS := BOARD_AVB_BOOT_ADD_HASH_FOOTER_ARGS
+ VENDOR_BOOT_FOOTER_ARGS := BOARD_AVB_VENDOR_BOOT_ADD_HASH_FOOTER_ARGS
+ DTBO_FOOTER_ARGS := BOARD_AVB_DTBO_ADD_HASH_FOOTER_ARGS
+-- 
+2.28.0
+

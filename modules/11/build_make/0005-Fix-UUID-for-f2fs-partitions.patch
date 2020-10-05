@@ -1,0 +1,26 @@
+From 5843f5786163f4699daf9210a797d10458d4dfdd Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 20:10:45 -0400
+Subject: [PATCH 5/5] Fix UUID for f2fs partitions
+
+Change-Id: Ib18acc29fde0a7999ebddfc733fb3e5bb6eaec3f
+---
+ tools/releasetools/build_image.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/releasetools/build_image.py b/tools/releasetools/build_image.py
+index 31b8c7712..568ea5dab 100755
+--- a/tools/releasetools/build_image.py
++++ b/tools/releasetools/build_image.py
+@@ -333,6 +333,8 @@ def BuildImageMkfs(in_dir, prop_dict, out_file, target_out, fs_config):
+     if "timestamp" in prop_dict:
+       build_command.extend(["-T", str(prop_dict["timestamp"])])
+     build_command.extend(["-L", prop_dict["mount_point"]])
++    if "uuid" in prop_dict:
++      build_command.extend(["-U", prop_dict["uuid"]])
+     if (needs_projid):
+       build_command.append("--prjquota")
+     if (needs_casefold):
+-- 
+2.28.0
+

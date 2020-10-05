@@ -1,7 +1,7 @@
-From 36b666f31eb900acaf47b21b772992871be4b2bf Mon Sep 17 00:00:00 2001
+From 1ed545e6660183979a627d4411f55e2a14bcb40c Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 17 May 2020 00:44:40 -0400
-Subject: [PATCH 2/6] Partition size fix
+Subject: [PATCH 2/5] Partition size fix
 
 Proper fix was upstreamed in
 https://android-review.googlesource.com/c/platform/build/+/1269603
@@ -12,7 +12,7 @@ Change-Id: I990caa63a4ebee9a72d3be45df3c17ad5ffc961e
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/releasetools/build_image.py b/tools/releasetools/build_image.py
-index 4136ed432..97f4ba7c7 100755
+index 8cf074147..31b8c7712 100755
 --- a/tools/releasetools/build_image.py
 +++ b/tools/releasetools/build_image.py
 @@ -57,7 +57,7 @@ def GetDiskUsage(path):
@@ -25,5 +25,5 @@ index 4136ed432..97f4ba7c7 100755
    return int(output.split()[0]) * 1024
  
 -- 
-2.26.1
+2.28.0
 

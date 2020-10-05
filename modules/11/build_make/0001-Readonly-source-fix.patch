@@ -1,7 +1,7 @@
-From c4026fd09ed06e6c6b6ec9fdce48fa29bbfad542 Mon Sep 17 00:00:00 2001
+From 844760ee93243a3dbccd172b8e3cec8a904309ba Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 17 May 2020 00:42:48 -0400
-Subject: [PATCH 1/6] Readonly source fix
+Subject: [PATCH 1/5] Readonly source fix
 
 Have CopyFile just always set u+w on copied files. Fixes a bunch of
 issues that would be too difficult to track down otherwise. HACK
@@ -13,10 +13,10 @@ Change-Id: Ic905ab7c3c41f013fc70c92b375f5dc41d5cf586
  2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/core/Makefile b/core/Makefile
-index 4253b7200..ba01f42d9 100644
+index 45ad60f41..c4cd2de15 100644
 --- a/core/Makefile
 +++ b/core/Makefile
-@@ -3028,6 +3028,7 @@ INSTALLED_DTBOIMAGE_TARGET := $(PRODUCT_OUT)/dtbo.img
+@@ -3336,6 +3336,7 @@ INSTALLED_DTBOIMAGE_TARGET := $(PRODUCT_OUT)/dtbo.img
  ifeq ($(BOARD_AVB_ENABLE),true)
  $(INSTALLED_DTBOIMAGE_TARGET): $(BOARD_PREBUILT_DTBOIMAGE) $(AVBTOOL) $(BOARD_AVB_DTBO_KEY_PATH)
  	cp $(BOARD_PREBUILT_DTBOIMAGE) $@
@@ -41,5 +41,5 @@ index f9bda86fd..44b36e4bd 100644
  #ifndef _WIN32
          /*
 -- 
-2.26.1
+2.28.0
 
