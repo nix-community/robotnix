@@ -19,7 +19,6 @@ with lib;
   # Build with ccache
   ccache.enable = true;
 
-
   apps = {
     updater.enable = true;
     updater.url = "https://daniel.fullmer.me/android/";
@@ -38,8 +37,6 @@ with lib;
     sha256 = "1mcn77l2m45qms7ynww2hzx0d6mja03bzj4di0s9j7spycp4540i";
   };
   microg.enable = true;
-  # Using cloud messaging, so enabling: https://source.android.com/devices/tech/power/platform_mgmt#integrate-doze
-  resources."frameworks/base/core/res".config_enableAutoPowerModes = true;
 
   google.fi.enable = true;
 

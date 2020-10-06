@@ -46,6 +46,8 @@ let
   LineageOSRelease = "lineage-17.1";
 in mkIf (config.flavor == "lineageos")
 {
+  androidVersion = mkDefault 10;
+
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
   buildDateTime = mkDefault 1599267169;

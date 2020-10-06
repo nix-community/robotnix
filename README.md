@@ -120,7 +120,7 @@ Contributions and fixes from LineageOS users are especially welcome!
 
 To build and run an emulator with an attached vanilla system image, use (for example):
 ```console
-$ nix-build ./default.nix --arg configuration '{device="x86"; flavor="vanilla";}' -A build.emulator
+$ nix-build ./default.nix --arg configuration '{device="x86_64"; flavor="vanilla";}' -A build.emulator
 $ ./result
 ```
 

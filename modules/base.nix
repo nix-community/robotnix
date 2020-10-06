@@ -99,13 +99,13 @@ in
     };
 
     androidVersion = mkOption {
-      default = 10;
+      default = 11;
       type = types.int;
       description = "Used to select which android version to use";
     };
 
     apiLevel = mkOption {
-      default = 29;
+      default = 30;
       type = types.int;
       internal = true;
     };

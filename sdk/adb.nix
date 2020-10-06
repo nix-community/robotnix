@@ -4,7 +4,6 @@ let
     configuration = {
       productName = "sdk";
       variant = "eng";
-      androidVersion = 11;
       source.dirs = builtins.fromJSON (builtins.readFile ./repo-platform-tools-30.0.0.json);
     };
   }).build.mkAndroid {

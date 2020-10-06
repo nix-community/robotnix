@@ -4,10 +4,10 @@ let
   robotnix = configuration: import ./default.nix { inherit configuration; };
 
   configs = (lib.listToAttrs (builtins.map (c: lib.nameValuePair "${c.flavor}-${c.device}" c) [
-    { device="x86";        flavor="vanilla"; }
+    { device="x86_64";     flavor="vanilla"; }
     { device="arm64";      flavor="vanilla"; }
-    { device="marlin";     flavor="vanilla"; }
-    { device="sailfish";   flavor="vanilla"; }
+    { device="marlin";     flavor="vanilla"; androidVersion=10; } # Out-of-date
+    { device="sailfish";   flavor="vanilla"; androidVersion=10; } # Out-of-date
     { device="taimen";     flavor="vanilla"; }
     { device="walleye";    flavor="vanilla"; }
     { device="crosshatch"; flavor="vanilla"; }
@@ -18,7 +18,7 @@ let
     { device="flame";      flavor="vanilla"; }
     { device="sunfish";    flavor="vanilla"; }
 
-    { device="x86";        flavor="grapheneos"; }
+    { device="x86_64";     flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
     { device="taimen";     flavor="grapheneos"; }
     { device="walleye";    flavor="grapheneos"; }
@@ -32,10 +32,6 @@ let
     { device="marlin";     flavor="lineageos"; }
     { device="pioneer";    flavor="lineageos"; }
 
-    { device="x86_64";     flavor="vanilla"; androidVersion=11; }
-    { device="crosshatch"; flavor="vanilla"; androidVersion=11; }
-    { device="x86_64";     flavor="grapheneos"; androidVersion=11; }
-    { device="crosshatch"; flavor="grapheneos"; androidVersion=11; }
   ]));
 
   defaultBuild = robotnix { device="arm64"; flavor="vanilla"; };

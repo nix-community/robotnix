@@ -5,6 +5,7 @@
     # TODO: Find out what tag the upstream SDK was built with
     source.dirs = builtins.fromJSON (builtins.readFile ../flavors/vanilla/repo-android-10.0.0_r41.json);
     buildNumber = "eng.10.0.0_r41";
+    androidVersion = 10;
   };
 }).build.mkAndroid {
   name = "android-sdk";

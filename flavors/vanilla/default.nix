@@ -27,7 +27,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   source.manifest.url = mkDefault "https://android.googlesource.com/platform/manifest";
 
   warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
-    "${config.device} is not a supported device for vanilla";
+    "${config.device} is not a supported device for vanilla"
+    ++ optional (config.androidVersion < 11) "Selected older version of android. Security updates may be out-of-date";
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
 }

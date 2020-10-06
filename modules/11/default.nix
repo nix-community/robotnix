@@ -7,8 +7,6 @@ let
   hash = builtins.hashString "sha256" "${config.buildNumber} ${builtins.toString config.buildDateTime}";
 in
 mkIf (config.androidVersion == 11) {
-  warnings = [ "Android 11 support is experimental" ];
-
   apiLevel = 30;
 
   source.dirs."build/make" = {
