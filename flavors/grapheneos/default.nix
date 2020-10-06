@@ -2,7 +2,7 @@
 with lib;
 let
   grapheneOSRelease =
-    if config.androidVersion == 11 then "${config.apv.buildID}.2020.10.01.23"
+    if config.androidVersion == 11 then "${config.apv.buildID}.2020.10.06.02"
     else if config.androidVersion == 10 then "${config.apv.buildID}.2020.09.11.14"
     else throw "Invalid androidVersion for GrapheneOS";
 
@@ -17,7 +17,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
   buildDateTime = mkMerge [
-    (mkIf (config.androidVersion == 11) (mkDefault 1601920331))
+    (mkIf (config.androidVersion == 11) (mkDefault 1602000475))
     (mkIf (config.androidVersion == 10) (mkDefault 1599972803))
   ];
 
@@ -25,7 +25,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkMerge [
-    (mkIf (config.androidVersion == 11) (mkDefault "RP1A.200720.009"))
+    (mkIf (config.androidVersion == 11) (mkDefault "RP1A.201005.004"))
     (mkIf (config.androidVersion == 10) (mkDefault "QQ3A.200805.001"))
   ];
 
@@ -96,7 +96,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     rev = grapheneOSRelease;
     sha256 = {
       "10" = "0l86yrj40jcm144sc7hmqc6mz5k67fh3gn2yf8hd6dp28ynrwrhd";
-      "11" = "1zbqqjwdnibahcghsw3qrgdk30dsnbnxq1z66c9g1mni48rhxy11";
+      "11" = "1z6bvb23gkzq3ww54kyfazc1zgi2blm29kiap05jymvp6kqw2qpn";
     }."${builtins.toString config.androidVersion}";
     fetchSubmodules = true;
   };
@@ -116,7 +116,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     rev = grapheneOSRelease;
     sha256 = {
       "10" = "0jjzp37q01xz32ygji8drxfa55g5lb2qh9n2l39313w94g999ci9";
-      "11" = "0jdq96jfk61qn6wyxx71brfpm3alsbj93ywfqrid8jcsim1i5xgj";
+      "11" = "1nr3gdzbzh6r1r9f750j8qja6ffzdh8bjfhsv3639v98iiljpvdy";
     }."${builtins.toString config.androidVersion}";
     fetchSubmodules = true;
   };
