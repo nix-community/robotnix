@@ -158,7 +158,16 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1600909299; # 2020-09-23
+  buildDateTime = mkDefault 1601949142;
+
+  source.manifest.rev = mkMerge [
+    (mkIf (config.deviceFamily != "sunfish") (mkDefault "android-11.0.0_r4"))
+    (mkIf (config.deviceFamily == "sunfish") (mkDefault "android-11.0.0_r5"))
+  ];
+  apv.buildID = mkMerge [
+    (mkIf (config.deviceFamily != "sunfish") (mkDefault "RP1A.201005.004"))
+    (mkIf (config.deviceFamily == "sunfish") (mkDefault "RP1A.201005.006"))
+  ];
 
   # Temporarily use a recent upstream prebuilt webview until we use a chromium version that supports API >= 30
   source.dirs."external/chromium-webview".src = pkgs.fetchgit {
@@ -168,16 +177,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   };
   webview.prebuilt.enable = true;
   webview.prebuilt.packageName = "com.google.android.webview";
-}
-(mkIf (config.device != "sunfish") {
-  source.manifest.rev = mkDefault "android-11.0.0_r1";
-  apv.buildID = mkDefault "RP1A.200720.009";
-})
-(mkIf (config.device == "sunfish") {
-  source.manifest.rev = mkDefault "android-11.0.0_r3";
-  apv.buildID = mkDefault "RP1A.200720.011";
-})
-{
+
   # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
   # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
   # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
