@@ -1,14 +1,13 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "85.0.4183.82";
+  version = "86.0.4240.73";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
-    #rev = version;
-    rev = "21c6b87914b93228080f30ade2f172f1621c324b"; # The tagged release has patches that don't work.
-    sha256 = "13g65xv8974hf4p0m8jhrf5nnv1rghrfx7kkqgyzpsmc5yjzlf3n";
+    rev = version;
+    sha256 = "1y9ff9fispk62bpj1vjsxm8p7g071kl8qff2p26dy2yl8d2r2l2g";
   };
 
 in (chromium.override {
@@ -53,6 +52,7 @@ in (chromium.override {
     use_openh264=true;
     chrome_pgo_phase=0;
     use_sysroot=false;
+    webview_includes_weblayer=false;
 
     # XXX: Hack. Not sure why it's not being set correctly when building webview
     rtc_use_x11=false;
