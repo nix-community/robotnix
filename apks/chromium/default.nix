@@ -13,7 +13,7 @@
 , buildTargets ? [ "chrome_modern_public_apk" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
-, version ? "85.0.4183.127"
+, version ? "86.0.4240.75"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_apk + system_webview_apk
@@ -58,7 +58,6 @@ let
 
     is_official_build = true;
     is_debug = false;
-    use_jumbo_build = false; # `true` gives at least 2X compilation speedup, but it does not work for some versions
 
     enable_nacl = false;
     is_component_build = false;
@@ -176,7 +175,11 @@ in stdenvNoCC.mkDerivation rec {
   postPatch = ''
     ( cd src
 
-      patchShebangs --build .
+      # `patchShebangs --build .` would fail (see https://github.com/NixOS/nixpkgs/issues/99539)
+      for f in $(find . -type f -executable ! -regex '.+\.make$'); do
+        patchShebangs --build "$f"
+      done
+
 
       mkdir -p buildtools/linux64
       ln -s --force ${llvmPackages_10.clang.cc}/bin/clang-format buildtools/linux64/clang-format || true
