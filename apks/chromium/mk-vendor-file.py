@@ -71,7 +71,7 @@ def make_vendor_file(chromium_version, target_os):
     # first checkout depot_tools for gclient.py which will help to produce list of deps
     if not os.path.isdir(os.path.join(topdir, "depot_tools")):
         checkout_git("https://chromium.googlesource.com/chromium/tools/depot_tools",
-                     "fcde3ba0a657dd3d5cac15ab8a1b6361e293c2fe",
+                     "8274c1978a883636abe416fd09835df5362419a2",
                      os.path.join(topdir, "depot_tools"))
 
     # Import gclient_eval from the just fetched sources
@@ -134,8 +134,7 @@ def make_vendor_file(chromium_version, target_os):
         subprocess.check_call(["python2", "depot_tools/gclient.py", "config", "https://chromium.googlesource.com/chromium/src.git"], cwd=topdir)
         flat = subprocess.check_output(["python2", "depot_tools/gclient.py", "flatten", "--pin-all-deps"], cwd=topdir)
 
-        content = gclient_eval.Parse(flat, validate_syntax=True, filename='DEPS',
-                             vars_override={}, builtin_vars=builtin_vars)
+        content = gclient_eval.Parse(flat, filename='DEPS', vars_override={}, builtin_vars=builtin_vars)
 
         merged_vars = dict(content['vars'])
         merged_vars.update(builtin_vars)
