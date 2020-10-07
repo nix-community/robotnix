@@ -2,7 +2,21 @@
 
 with lib;
 let
-  aapt2 = "${pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-29-0-2 ])}/share/android-sdk/build-tools/29.0.2/aapt2";
+  # aapt2 from android build-tools doesn't work here:
+  # error: failed to deserialize resources.pb: duplicate configuration in resource table.
+  # The version from chromium works, however:  https://bugs.chromium.org/p/chromium/issues/detail?id=1106115
+  #aapt2 = "${pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-30-0-1 ])}/share/android-sdk/build-tools/30.0.1/aapt2";
+  aapt2 = pkgs.stdenv.mkDerivation { # TODO: Move this into the chromium derivation. Use their own aapt2/bundletool.
+    name = "aapt2";
+    src = pkgs.fetchcipd {
+      package = "chromium/third_party/android_build_tools/aapt2";
+      version = "R2k5wwOlIaS6sjv2TIyHotiPJod-6KqnZO8NH-KFK8sC";
+      sha256 = "1kkq9wjwnagaaksnifcs3j4k739k39rv5klm4p99bf6vw6wh6jm0";
+    };
+    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+    installPhase = "mkdir -p $out/bin && cp aapt2 $out/bin/";
+  } + "/bin/aapt2";
+
   # Create a universal apk from an "android app bundle"
   aab2apk = aab: pkgs.runCommand "aab-universal.apk" { nativeBuildInputs = with pkgs; [ bundletool unzip ]; } ''
     bundletool build-apks build-apks --bundle ${aab}  --output result.apks --mode universal --aapt2 ${aapt2}
@@ -18,7 +32,7 @@ in
   };
 
   config = (mkMerge (flatten (map
-    ({name, displayName}: let
+    ({name, displayName, chromeModernIsBundled ? false}: let
       # There is a lot of shared code between chrome app and chrome webview. So we
       # build them in a single derivation. This is not optimal if the user is
       # enabling/disabling the apps/webview independently, but the benefits
@@ -34,7 +48,8 @@ in
         buildTargets =
           if isTriChrome then [ "trichrome_webview_apk" "trichrome_chrome_bundle" "trichrome_library_apk" ]
           else
-            (optional config.apps.${name}.enable "chrome_modern_public_apk") ++
+            (optional (config.apps.${name}.enable && chromeModernIsBundled) "chrome_modern_public_bundle") ++
+            (optional (config.apps.${name}.enable  && !chromeModernIsBundled) "chrome_modern_public_apk") ++
             (optional config.webview.${name}.enable "system_webview_apk");
           inherit packageName webviewPackageName displayName;
           customGnFlags = customGnFlags // optionalAttrs isTriChrome {
@@ -45,8 +60,8 @@ in
     in [
       (mkIf (config.apps.${name}.enable) {
         apps.prebuilt.${name}.apk =
-          if isTriChrome
-          then aab2apk "${browser}/TrichromeChrome.aab" # TODO: Convert to apk with bundletool
+          if isTriChrome then aab2apk "${browser}/TrichromeChrome.aab"
+          else if chromeModernIsBundled then aab2apk "${browser}/ChromeModernPublic.aab"
           else "${browser}/ChromeModernPublic.apk";
       })
 
@@ -65,8 +80,8 @@ in
         apps.prebuilt."${name}TrichromeLibrary".apk = "${browser}/TrichromeLibrary.apk";
       })
     ])
-    [ { name = "chromium"; displayName = "Chromium"; }
-      { name = "bromite"; displayName = "Bromite"; }
+    [ { name = "chromium"; displayName = "Chromium"; chromeModernIsBundled = true; }
+      { name = "bromite"; displayName = "Bromite"; chromeModernIsBundled = true; }
       { name = "vanadium"; displayName = "Vanadium"; }
     ]
   )));

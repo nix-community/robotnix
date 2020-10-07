@@ -10,13 +10,13 @@
 , enableRebranding ? false
 , customGnFlags ? {}
 , targetCPU ? "arm64"
-, buildTargets ? [ "chrome_modern_public_apk" ]
+, buildTargets ? [ "chrome_modern_public_bundle" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
 , version ? "86.0.4240.75"
 , versionCode ? null
 # Potential buildTargets:
-# chrome_modern_public_apk + system_webview_apk
+# chrome_modern_public_bundle + system_webview_apk
 # trichrome_webview_apk + trichrome_chrome_bundle + trichome_library_apk
 # monochrome_public_apk
 }:
