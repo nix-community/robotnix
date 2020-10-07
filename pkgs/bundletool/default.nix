@@ -28,11 +28,11 @@
 
 stdenv.mkDerivation rec {
   pname = "bundletool";
-  version = "0.13.3";
+  version = "1.2.0";
 
   src = fetchurl {
     url = "https://github.com/google/bundletool/releases/download/${version}/bundletool-all-${version}.jar";
-    sha256 = "186hi4vxjh3gds0f4xsaawlryzpb2782pd3xlf50a8fcxrjankr5";
+    sha256 = "0dx83k7p2ymy0d10xiga9v4xhznyxyrzyk1x279sq54sdy61dvr5";
   };
 
   nativeBuildInputs = [ makeWrapper ];
