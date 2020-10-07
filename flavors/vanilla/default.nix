@@ -170,15 +170,6 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     (mkIf (config.deviceFamily == "sunfish") (mkDefault "RP1A.201005.006"))
   ];
 
-  # Temporarily use a recent upstream prebuilt webview until we use a chromium version that supports API >= 30
-  source.dirs."external/chromium-webview".src = pkgs.fetchgit {
-    url = "https://github.com/GrapheneOS/platform_external_chromium-webview";
-    rev = "7a4cedd75b8842a070f345e991ca595933e64197";
-    sha256 = "1fw8r3kvs6nbaykahxj9s4kv21vigpl9cfqzipbwlxgdr83fv7zr";
-  };
-  webview.prebuilt.enable = true;
-  webview.prebuilt.packageName = "com.google.android.webview";
-
   # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
   # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
   # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
