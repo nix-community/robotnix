@@ -45,8 +45,8 @@ in
 
       FakeStore = {
         apk = pkgs.fetchurl {
-          url = "https://github.com/microg/android_packages_apps_FakeStore/releases/download/v0.0.2/FakeStore.apk";
-          sha256 = "0sc7wijslvji93h430fvy6gl5rnbrl7ynwbrai1895gplvjkigvz";
+          url = "https://github.com/microg/android_packages_apps_FakeStore/releases/download/v0.1.0/FakeStore-v0.1.0.apk";
+          sha256 = "1kp5v4qajp4cdx8pxw6j4776bcwc9f8jgfpiyllpk1kbhq92w1ci";
         };
         packageName = "com.android.vending";
         privileged = true;
