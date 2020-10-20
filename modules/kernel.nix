@@ -149,6 +149,9 @@ in
       installPhase = ''
         mkdir -p $out
       '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames);
+
+      dontFixup = true;
+      dontStrip = true;
     } // optionalAttrs (config.deviceFamily == "coral") {
       # HACK: Needed for coral (pixel 4) (Don't turn this on for other devices)
       DTC_EXT = "${prebuiltMisc}/bin/dtc";
