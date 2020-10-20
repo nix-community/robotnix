@@ -148,6 +148,7 @@ in
 
       installPhase = ''
         mkdir -p $out
+        shopt -s globstar nullglob
       '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames);
 
       dontFixup = true;
