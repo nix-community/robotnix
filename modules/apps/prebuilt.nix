@@ -27,11 +27,14 @@ let
     include $(BUILD_PREBUILT)
     '');
 
-  apksigner = let build-tools = pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-29-0-2 ]);
-    in pkgs.runCommand "apksigner" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
+  build-tools =
+    (pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-30-0-2 ]))
+    + "/share/android-sdk/build-tools/30.0.2";
+
+  apksigner = pkgs.runCommand "apksigner" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir -p $out/bin
       makeWrapper "${pkgs.jre8_headless}/bin/java" "$out/bin/apksigner" \
-        --add-flags "-jar ${build-tools}/share/android-sdk/build-tools/29.0.2/lib/apksigner.jar"
+        --add-flags "-jar ${build-tools}/lib/apksigner.jar"
     '';
 
   signApk = {name, apk, keyPath}: pkgs.runCommand "${name}-signed.apk" { nativeBuildInputs = [ pkgs.jre8_headless ]; } ''
@@ -161,9 +164,28 @@ in
                 then prebuilt.apk
                 else prebuilt.signedApk;
         in pkgs.runCommand "prebuilt_${prebuilt.name}" {} ''
+          set -euo pipefail
+
           mkdir -p $out
           cp ${androidmk prebuilt} $out/Android.mk
           cp ${apk} $out/${prebuilt.name}.apk
+
+          ### Check minSdkVersion, targetSdkVersion
+          # TODO: Also check permissions?
+          MANIFEST_DUMP=$(${build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${apk})
+
+          # It would be better if we could convert it back into true XML and then select based on XPath
+          MIN_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep minSdkVersion | cut -d= -f2)
+          TARGET_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep targetSdkVersion | cut -d= -f2)
+
+          if [[ "$MIN_SDK_VERSION" -gt "${builtins.toString config.apiLevel}" ]]; then
+            echo "ERROR: OS API level is (${builtins.toString config.apiLevel}) but APK requires at least $MIN_SDK_VERSION"
+            exit 1
+          fi
+
+          if [[ "$TARGET_SDK_VERSION" -lt "${builtins.toString config.apiLevel}" ]]; then
+            echo "WARNING: APK was compiled against an older SDK API level ($TARGET_SDK_VERSION) than used in OS (${builtins.toString config.apiLevel})"
+          fi
         '';
       };
     }) (attrValues cfg));
