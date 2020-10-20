@@ -159,9 +159,7 @@ in
     });
 
     source = mkIf cfg.useCustom {
-      dirs.${cfg.relpath}.postPatch = ''
-        cp -fv ${config.build.kernel}/* .
-      '';
+      dirs.${cfg.relpath}.src = lib.mkForce config.build.kernel;
     };
   };
 }
