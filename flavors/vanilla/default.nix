@@ -116,10 +116,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
       arch/arm64/boot/Makefile
   '';
 
-  # TODO: Only build kernel for marlin since it needs verity key in build.
-  # Kernel sources for crosshatch and bonito require multiple repos--which
-  # could normally be fetched with repo at https://android.googlesource.com/kernel/manifest
-  # but google didn't push a branch like android-msm-crosshatch-4.9-pie-qpr3 to that repo.
+  # TODO: Currently, only build kernel for marlin since it needs verity key in build.
+  # Could also build for other devices, like is done for Android 11
   kernel.useCustom = mkDefault config.signing.enable;
 })
 
