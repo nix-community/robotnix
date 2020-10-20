@@ -130,7 +130,7 @@ in
       ] ++ lib.optionals (cfg.compiler == "clang") [
         "CC=clang"
         "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
-      ] ++ lib.optionals (config.deviceFamily == "coral") [
+      ] ++ lib.optionals (elem config.deviceFamily [ "coral" "sunfish" ]) [
         # HACK: Otherwise fails with  aarch64-linux-android-ld.gold: error: arch/arm64/lib/lib.a: member at 4210 is not an ELF object
         "LD=ld.lld"
       ];
@@ -153,7 +153,7 @@ in
 
       dontFixup = true;
       dontStrip = true;
-    } // optionalAttrs (config.deviceFamily == "coral") {
+    } // optionalAttrs (elem config.deviceFamily [ "coral" "sunfish" ]) {
       # HACK: Needed for coral (pixel 4) (Don't turn this on for other devices)
       DTC_EXT = "${prebuiltMisc}/bin/dtc";
       DTC_OVERLAY_TEST_EXT = "${prebuiltMisc}/bin/ufdt_apply_overlay";
