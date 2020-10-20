@@ -2,11 +2,6 @@
 with lib;
 let
   # https://source.android.com/setup/start/build-numbers
-  # TODO: Make an autoupdate script too.
-  kernelSrc = { rev, sha256 }: pkgs.fetchgit {
-    url = "https://android.googlesource.com/kernel/msm";
-    inherit rev sha256;
-  };
 
   phoneDeviceFamilies =
     (optional (config.androidVersion <= 10) "marlin")
@@ -97,32 +92,6 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     })
   ];
 }
-# TODO: Build kernels for non marlin/sailfish devices
-(mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") {
-  kernel.src = kernelSrc {
-    rev = "android-10.0.0_r0.71";
-    sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-  };
-})
-(mkIf (config.deviceFamily == "crosshatch") {
-  kernel.configName = "b1c1";
-  kernel.src = kernelSrc {
-    rev = "android-10.0.0_r0.72";
-    sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-  };
-})
-(mkIf (config.deviceFamily == "bonito") {
-  kernel.src = kernelSrc {
-    rev = "android-10.0.0_r0.73";
-    sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-  };
-})
-(mkIf (config.deviceFamily == "coral") {
-  kernel.src = kernelSrc {
-    tag = "android-10.0.0_r0.74";
-    sha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-  };
-})
 (mkIf (config.deviceFamily == "marlin") {
   warnings = [ "marlin and sailfish are no longer receiving monthly security updates from Google. Support is left just for testing" ];
 
@@ -134,7 +103,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     echo QQ3A.200805.001 > ${config.device}/build_id.txt
   '';
 
-  kernel.src = kernelSrc {
+  kernel.src = pkgs.fetchgit {
+    url = "https://android.googlesource.com/kernel/msm";
     rev = "android-10.0.0_r0.23";
     sha256 = "0wy6h97g9j5sma67brn9vxq7jzf169j2gzq4ai96v4h68lz39lq9";
   };
@@ -180,6 +150,41 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     ++ optional (config.deviceFamily == "coral") "0:8:15";
   resourceTypeOverrides."frameworks/base/core/res".config_biometric_sensors = "string-array";
 }
+(mkIf (elem config.deviceFamily phoneDeviceFamilies) (let
+  kernelTag = {
+    "taimen" = "android-11.0.0_r0.6";
+    "muskie" = "android-11.0.0_r0.6";
+    "crosshatch" = "android-11.0.0_r0.8";
+    "bonito" = "android-11.0.0_r0.10";
+    "coral" = "android-11.0.0_r0.12";
+    "sunfish" = "android-11.0.0_r0.14";
+  }.${config.deviceFamily};
+  kernelMetadata = (lib.importJSON ./kernel-metadata.json).${kernelTag};
+  kernelHashes = (lib.importJSON ./kernel-hashes.json).${kernelTag};
+in {
+  kernel.useCustom = mkDefault true;
+  kernel.configName = mkMerge [
+    (mkIf (elem config.deviceFamily [ "taimen" "muskie" ]) "wahoo")
+    (mkIf (config.deviceFamily == "crosshatch") "b1c1")
+  ];
+
+  # TODO: Could extract the bind-mounting thing in source.nix into something
+  # that works for kernels too. Probably not worth the effort for the payoff
+  # though.
+  kernel.src = let
+    fetchedRepo = repo: pkgs.fetchgit {
+      inherit (kernelHashes."https://android.googlesource.com/${repo}") url rev sha256;
+    };
+  in pkgs.runCommand "kernel-src" {}
+    (concatStringsSep "\n" (lib.mapAttrsToList (repo: relpath: ''
+      ${lib.optionalString (relpath != "") "mkdir -p $out/$(dirname ${relpath})"}
+      cp -r ${fetchedRepo repo} $out/${relpath}
+      chmod u+w -R $out/${relpath}
+    '') kernelMetadata));
+
+  kernel.buildProductFilenames = [ "**/*.ko" ]; # Copy kernel modules if they exist
+}))
+
 ]))
 
 ])
