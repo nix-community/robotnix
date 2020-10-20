@@ -55,8 +55,6 @@ mkMerge [
     source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.name config.kernel.configName ];
 
     signing.avb.enable = mkDefault true;
-
-    kernel.buildProductFilenames = [ "**/*.ko" ]; # Copy kernel modules if they exist
   })
 
   # Device-specific overrides
