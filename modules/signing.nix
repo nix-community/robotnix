@@ -3,6 +3,11 @@
 with lib;
 let
   cfg = config.signing;
+  keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
+                    ++ (optional (config.signing.avb.mode == "verity_only") "verity")
+                    ++ (optionals (config.androidVersion >= 10) [ "networkstack" ])
+                    ++ (optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
+                    ++ (optional config.signing.apex.enable config.signing.apex.packageNames);
 in
 {
   options = {
@@ -41,6 +46,7 @@ in
     };
 
     generateKeysScript = mkOption { type = types.path; internal = true; };
+    verifyKeysScript = mkOption { type = types.path; internal = true; };
   };
 
   config = {
@@ -108,12 +114,6 @@ in
 
         patchShebangs $out/bin
       '';
-
-      keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
-                        ++ (optional (config.signing.avb.mode == "verity_only") "verity")
-                        ++ (optionals (config.androidVersion >= 10) [ "networkstack" ])
-                        ++ (optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
-                        ++ (optional config.signing.apex.enable config.signing.apex.packageNames);
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
     # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
     in mkDefault (pkgs.writeScript "generate_keys.sh" ''
@@ -145,7 +145,12 @@ in
         fi
       done
 
-      ${optionalString (config.signing.avb.mode == "verity_only") "generate_verity_key -convert verity.x509.pem verity_key"}
+      ${optionalString (config.signing.avb.mode == "verity_only") ''
+      if [[ ! -e "verity_key.pub" ]]; then
+          generate_verity_key -convert verity.x509.pem verity_key
+      fi
+      ''}
+
 
       ${optionalString (config.signing.avb.mode != "verity_only") ''
       if [[ ! -e "avb.pem" ]]; then
@@ -157,6 +162,57 @@ in
         echo "Skipping generating device AVB key since it is already exists"
       fi
       ''}
+    '');
+
+    # Check that all needed keys are available.
+    verifyKeysScript = mkDefault (pkgs.writeScript "verify_keys.sh" ''
+      #!${pkgs.runtimeShell}
+      set -euo pipefail
+
+      if [[ $# -ge 0 ]]; then
+        cd $1
+      fi
+
+      KEYS=( ${toString keysToGenerate} )
+      APEX_KEYS=( ${toString config.signing.apex.packageNames} )
+
+      RETVAL=0
+
+      for key in "''${KEYS[@]}"; do
+        if [[ ! -e "$key".pk8 ]]; then
+          echo "Missing $key key"
+          RETVAL=1
+        fi
+      done
+
+      for key in "''${APEX_KEYS[@]}"; do
+        if [[ ! -e "$key".pem ]]; then
+          echo "Missing $key APEX AVB key"
+          RETVAL=1
+        fi
+      done
+
+      ${optionalString (config.signing.avb.mode == "verity_only") ''
+      if [[ ! -e "verity_key.pub" ]]; then
+        echo "Missing verity_key.pub"
+        RETVAL=1
+      fi
+      ''}
+
+      ${optionalString (config.signing.avb.mode != "verity_only") ''
+      if [[ ! -e "avb.pem" ]]; then
+        echo "Missing Device AVB key"
+        RETVAL=1
+      fi
+      ''}
+
+      if [[ "$RETVAL" -ne 0 ]]; then
+        echo  Certain keys were missing from KEYSDIR. Have you run generateKeysScript?
+        echo  Additionally, some robotnix configuration options require that you re-run
+        echo  generateKeysScript to create additional new keys.  This should not overwrite
+        echo  existing keys.
+      fi
+      exit $RETVAL
     '');
   };
 }
