@@ -113,6 +113,10 @@ in
             sed -i "$mf" -e 's|/usr/bin/||g ; s|/bin/||g ; s|/sbin/||g'
         done
         sed -i scripts/ld-version.sh -e "s|/usr/bin/awk|${pkgs.gawk}/bin/awk|"
+
+        if [[ -f scripts/generate_initcall_order.pl ]]; then
+          patchShebangs scripts/generate_initcall_order.pl
+        fi
       '';
 
       nativeBuildInputs = with pkgs; [
