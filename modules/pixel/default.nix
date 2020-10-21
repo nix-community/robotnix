@@ -129,5 +129,10 @@ mkMerge [
   })
   (mkIf (config.deviceFamily == "sunfish") {
     signing.avb.mode = "vbmeta_chained_v2";
+    kernel.buildProductFilenames = [
+      "arch/arm64/boot/Image.lz4"
+      "arch/arm64/boot/dtbo.img"
+      "arch/arm64/boot/dts/google/qcom-base/sdmmagpie.dtb"
+    ];
   })
 ]

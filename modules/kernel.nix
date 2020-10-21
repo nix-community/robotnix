@@ -113,6 +113,10 @@ in
             sed -i "$mf" -e 's|/usr/bin/||g ; s|/bin/||g ; s|/sbin/||g'
         done
         sed -i scripts/ld-version.sh -e "s|/usr/bin/awk|${pkgs.gawk}/bin/awk|"
+
+        if [[ -f scripts/generate_initcall_order.pl ]]; then
+          patchShebangs scripts/generate_initcall_order.pl
+        fi
       '';
 
       nativeBuildInputs = with pkgs; [
@@ -130,7 +134,7 @@ in
       ] ++ lib.optionals (cfg.compiler == "clang") [
         "CC=clang"
         "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
-      ] ++ lib.optionals (config.deviceFamily == "coral") [
+      ] ++ lib.optionals (elem config.deviceFamily [ "coral" "sunfish" ]) [
         # HACK: Otherwise fails with  aarch64-linux-android-ld.gold: error: arch/arm64/lib/lib.a: member at 4210 is not an ELF object
         "LD=ld.lld"
       ];
@@ -148,16 +152,21 @@ in
 
       installPhase = ''
         mkdir -p $out
+        shopt -s globstar nullglob
       '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames);
 
       dontFixup = true;
       dontStrip = true;
-    } // optionalAttrs (config.deviceFamily == "coral") {
+    } // optionalAttrs (elem config.deviceFamily [ "coral" "sunfish" ]) {
       # HACK: Needed for coral (pixel 4) (Don't turn this on for other devices)
       DTC_EXT = "${prebuiltMisc}/bin/dtc";
       DTC_OVERLAY_TEST_EXT = "${prebuiltMisc}/bin/ufdt_apply_overlay";
     });
 
+    # We have to replace files here, instead of just using the
+    # config.build.kernel drv output in place of source.dirs.${cfg.relpath}.
+    # This is because there are some additional things in the prebuilt kernel
+    # output directory like kernel headers for sunfish under device/google/sunfish-kernel/sm7150
     source = mkIf cfg.useCustom {
       dirs.${cfg.relpath}.postPatch = ''
         cp -fv ${config.build.kernel}/* .
