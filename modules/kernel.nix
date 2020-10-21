@@ -159,6 +159,10 @@ in
       DTC_OVERLAY_TEST_EXT = "${prebuiltMisc}/bin/ufdt_apply_overlay";
     });
 
+    # We have to replace files here, instead of just using the
+    # config.build.kernel drv output in place of source.dirs.${cfg.relpath}.
+    # This is because there are some additional things in the prebuilt kernel
+    # output directory like kernel headers for sunfish under device/google/sunfish-kernel/sm7150
     source = mkIf cfg.useCustom {
       dirs.${cfg.relpath}.postPatch = ''
         cp -fv ${config.build.kernel}/* .
