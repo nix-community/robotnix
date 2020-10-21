@@ -41,11 +41,16 @@ in
 
   testGenerateKeys = let
     generateKeysScript = (robotnix configs.grapheneos-crosshatch).generateKeysScript;
+    verifyKeysScript = (robotnix configs.grapheneos-crosshatch).verifyKeysScript;
   in pkgs.runCommand "test-generate-keys" { nativeBuildInputs = [ pkgs.shellcheck ]; } ''
     mkdir -p $out
     cd $out
     shellcheck ${generateKeysScript}
+    shellcheck ${verifyKeysScript}
+
+    ${verifyKeysScript} . && exit 1 || true # verifyKeysScript should fail if we haven't generated keys yet
     ${generateKeysScript}
+    ${verifyKeysScript} .
   '';
 
   check = lib.mapAttrs (name: c: (robotnix c).build.checkAndroid) configs;

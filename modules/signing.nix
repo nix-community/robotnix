@@ -170,7 +170,7 @@ in
       set -euo pipefail
 
       if [[ $# -ge 0 ]]; then
-        cd $1
+        cd "$1"
       fi
 
       KEYS=( ${toString keysToGenerate} )
