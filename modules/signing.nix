@@ -60,6 +60,7 @@ in
         "adbd" "art.release" "cellbroadcast" "extservices" "i18n"
         "ipsec" "mediaprovider" "neuralnetworks" "os.statsd" "runtime"
         "permission" "sdkext" "telephony" "tethering" "wifi"
+        "vndk.current" "vndk.v27" "vndk.v28" "vndk.v29"
       ]
     );
 
