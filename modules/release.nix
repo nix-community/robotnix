@@ -149,9 +149,9 @@ in
       set -euo pipefail
 
       if [[ $# -ge 2 ]]; then
-        PREV_BUILDNUMER="$2"
+        PREV_BUILDNUMBER="$2"
       else
-        PREV_BUILDNUMER=""
+        PREV_BUILDNUMBER=""
       fi
       '' + (wrapScript { keysDir="$1"; commands=''
       if [[ "$KEYSDIR" ]]; then
@@ -162,7 +162,7 @@ in
       fi
       echo Building OTA zip
       ${otaScript { targetFiles=signedTargetFiles.name; out=ota.name; }}
-      if [[ ! -v PREV_BUILDNUMBER ]]; then
+      if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
         echo Building incremental OTA zip
         ${otaScript {
           targetFiles=signedTargetFiles.name;
