@@ -124,7 +124,7 @@ in
       export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
       KEYS=( ${toString keysToGenerate} )
-      APEX_KEYS=( ${toString config.signing.apex.packageNames} )
+      APEX_KEYS=( ${lib.optionalString config.signing.apex.enable (toString config.signing.apex.packageNames)} )
 
       for key in "''${KEYS[@]}"; do
         if [[ ! -e "$key".pk8 ]]; then
@@ -175,7 +175,7 @@ in
       fi
 
       KEYS=( ${toString keysToGenerate} )
-      APEX_KEYS=( ${toString config.signing.apex.packageNames} )
+      APEX_KEYS=( ${lib.optionalString config.signing.apex.enable (toString config.signing.apex.packageNames)} )
 
       RETVAL=0
 
