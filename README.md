@@ -11,7 +11,7 @@ Some optional modules include:
  - [GrapheneOS](https://grapheneos.org/) support
  - Experimental [LineageOS](https://lineageos.org/) support
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader with a user-specified key
- - Apps: [F-Droid](https://f-droid.org/) (including the privileged extention for automatic installation/updating), [Auditor](https://attestation.app/about), [Seedvault Backup](https://github.com/stevesoltys/backup)
+ - Apps: [F-Droid](https://f-droid.org/) (including the privileged extension for automatic installation/updating), [Auditor](https://attestation.app/about), [Seedvault Backup](https://github.com/stevesoltys/backup)
  - Browser / Webview: [Chromium](https://www.chromium.org/Home), [Bromite](https://www.bromite.org/), [Vanadium](https://github.com/GrapheneOS/Vanadium)
  - [Seamless OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
  - [MicroG](https://microg.org/)
