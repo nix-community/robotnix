@@ -86,6 +86,13 @@ To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 Additionally, the nix builder will also need read access to these keys.
 This can be set using `chgrp -R nixbld ./keys` and `chmod -R g+r ./keys`.
 
+### OTA Updater
+The Over-the-Air (OTA) updater can be enabled using `apps.updater.enable = true;`.
+The URL that the updater will query for updates is set using `apps.updater.url = "...";`.
+This URL needs to point to a directory containing the OTA update file, as well as some metadata.
+Conveniently, these files are generated as part of the `releaseScript` output.
+If instead, you are signing builds inside nix with the sandbox exception, the desired output can be built using `nix-build ... -A otaDir`.
+
 ### Testing / CI / Reproducibility
 
 All devices (Pixel 1-4(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.

@@ -75,10 +75,6 @@ let
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
       mv *-factory-*.zip ${out}
   '';
-
-  otaMetadata = pkgs.runCommand "${config.device}-${config.channel}" {} ''
-    ${pkgs.python3}/bin/python ${./generate_metadata.py} ${config.ota} > $out
-  '';
 in
 {
   options = {
@@ -107,6 +103,7 @@ in
     ota = mkOption { type = types.path; internal = true; };
     incrementalOta = mkOption { type = types.path; internal = true; };
     otaDir = mkOption { type = types.path; internal = true; };
+    otaMetadata = mkOption { type = types.path; internal = true; };
     img = mkOption { type = types.path; internal = true; };
     factoryImg = mkOption { type = types.path; internal = true; };
     bootImg = mkOption { type = types.path; internal = true; };
@@ -135,6 +132,10 @@ in
         metadata = builtins.readFile (prevBuildDir + "/${device}-${channel}");
       in mkDefault (head (splitString " " metadata));
     prevTargetFiles = mkDefault (prevBuildDir + "/${device}-target_files-${prevBuildNumber}.zip");
+
+    otaMetadata = mkDefault (pkgs.writeText "${device}-${channel}" ''
+      ${buildNumber} ${toString buildDateTime} ${apv.buildID}
+    '');
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
     otaDir = pkgs.linkFarm "${device}-otaDir" (
@@ -174,7 +175,8 @@ in
       ${imgScript { targetFiles=signedTargetFiles.name; out=img.name; }}
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
-      ${pkgs.python3}/bin/python ${./generate_metadata.py} ${ota.name} > ${device}-${channel}
+      echo Writing updater metadata
+      cat ${otaMetadata} > ${device}-${channel}
     ''; })));
   };
 }
