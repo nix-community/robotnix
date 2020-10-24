@@ -1,7 +1,7 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "86.0.4240.92";
+  version = "86.0.4240.112";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
