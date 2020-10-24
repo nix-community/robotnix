@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2020.10.06.02";
+  grapheneOSRelease = "${config.apv.buildID}.2020.10.23.04";
 
-  phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" "coral" ];
+  phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -11,12 +11,15 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1602000475;
+  buildDateTime = mkDefault 1603556145;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault "RP1A.201005.004";
+  apv.buildID = mkMerge [
+    (mkIf (config.deviceFamily != "sunfish") (mkDefault "RP1A.201005.004"))
+    (mkIf (config.deviceFamily == "sunfish") (mkDefault "RP1A.201005.006"))
+  ];
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -41,17 +44,13 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/wahoo".enable = false;
   source.dirs."kernel/google/crosshatch".enable = false;
   source.dirs."kernel/google/bonito".enable = false;
+  source.dirs."kernel/google/coral".enable = false;
+  source.dirs."kernel/google/sunfish".enable = false;
 
   # Enable Vanadium (GraphaneOS's chromium fork).
   apps.vanadium.enable = mkDefault true;
   webview.vanadium.enable = mkDefault true;
   webview.vanadium.availableByDefault = mkDefault true;
-
-  # Temporarily use a recent upstream prebuilt webview until we use a chromium version that supports API >= 30
-  webview.prebuilt.enable = mkIf (config.androidVersion == 11) (mkDefault true);
-  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
-  webview.prebuilt.availableByDefault = mkDefault true;
-  webview.prebuilt.packageName = "com.google.android.webview";
 
   apps.seedvault.enable = mkDefault true;
 
@@ -71,7 +70,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 }
-(mkIf (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" "coral" ]) {
+(mkIf (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ]) {
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
   kernel.configName = config.device;
@@ -83,7 +82,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "1z6bvb23gkzq3ww54kyfazc1zgi2blm29kiap05jymvp6kqw2qpn";
+    sha256 = "0wmg4yv65ibin70ybyqcv731kdrz1zys41s93iz90z2hvx091zm6";
     fetchSubmodules = true;
   };
 })
@@ -100,7 +99,16 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_coral";
     rev = grapheneOSRelease;
-    sha256 = "1nr3gdzbzh6r1r9f750j8qja6ffzdh8bjfhsv3639v98iiljpvdy";
+    sha256 = "1vpidzc8srd2csm1majk8yrkqp5c8kqrygihmwp7677r81a4mcbx";
+    fetchSubmodules = true;
+  };
+})
+(mkIf (config.deviceFamily == "sunfish") {
+  kernel.src = pkgs.fetchFromGitHub {
+    owner = "GrapheneOS";
+    repo = "kernel_google_sunfish";
+    rev = grapheneOSRelease;
+    sha256 = "16wiwhcdzl8wxhi00sphx3igczsyjyck7vn6na6zc8xdr6d0cxvz";
     fetchSubmodules = true;
   };
 })

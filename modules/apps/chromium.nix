@@ -32,7 +32,7 @@ in
   };
 
   config = (mkMerge (flatten (map
-    ({name, displayName, chromeModernIsBundled ? false}: let
+    ({ name, displayName, chromeModernIsBundled ? true }: let
       # There is a lot of shared code between chrome app and chrome webview. So we
       # build them in a single derivation. This is not optimal if the user is
       # enabling/disabling the apps/webview independently, but the benefits
@@ -80,8 +80,8 @@ in
         apps.prebuilt."${name}TrichromeLibrary".apk = "${browser}/TrichromeLibrary.apk";
       })
     ])
-    [ { name = "chromium"; displayName = "Chromium"; chromeModernIsBundled = true; }
-      { name = "bromite"; displayName = "Bromite"; chromeModernIsBundled = true; }
+    [ { name = "chromium"; displayName = "Chromium"; }
+      { name = "bromite"; displayName = "Bromite"; }
       { name = "vanadium"; displayName = "Vanadium"; }
     ]
   )));
