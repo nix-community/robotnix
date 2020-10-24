@@ -6,7 +6,7 @@ rec {
 
   fdroid = callPackage ./fdroid {};
 
-  seedvault = callPackage ./seedvault {};
+  seedvault_10 = callPackage ./seedvault_10 {}; # Old version that works with Android 10
 
   # Chromium-based browsers
   chromium = callPackage ./chromium/default.nix {};
