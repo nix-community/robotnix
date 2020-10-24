@@ -86,6 +86,11 @@ in
         description = "Version of prebuilt clang to use for kernel. See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md";
       };
 
+      linker = mkOption {
+        default = "gold";
+        type = types.strMatching "(gold|lld)";
+      };
+
       buildProductFilenames = mkOption {
         type = types.listOf types.str;
         description = "list of build products in kernel out/ to copy into relpath";
@@ -134,8 +139,8 @@ in
       ] ++ lib.optionals (cfg.compiler == "clang") [
         "CC=clang"
         "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
-      ] ++ lib.optionals (elem config.deviceFamily [ "coral" "sunfish" ]) [
-        # HACK: Otherwise fails with  aarch64-linux-android-ld.gold: error: arch/arm64/lib/lib.a: member at 4210 is not an ELF object
+      ] ++ lib.optional (cfg.linker == "lld") [
+        # Otherwise fails with  aarch64-linux-android-ld.gold: error: arch/arm64/lib/lib.a: member at 4210 is not an ELF object
         "LD=ld.lld"
       ];
 
