@@ -11,7 +11,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1603556145;
+  buildDateTime = mkDefault 1603762517;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
@@ -30,6 +30,44 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     ++ (optional (config.androidVersion != 11) "Unsupported androidVersion (!= 11) for GrapheneOS");
 }
 {
+  # TODO: Temporarily revert the SELinux improvements in GrapheneOS
+  # 2020.10.23.04, which breaks webview/Vanadium in Robotnix caused by (for
+  # example) the "remove base system app execmem" commit and others.
+  # webview/Vanadium ought to be signed by non-system keys.
+  source.dirs."system/sepolicy".src = pkgs.fetchgit {
+    url = "https://github.com/GrapheneOS/platform_system_sepolicy";
+    rev = "RP1A.201005.004.2020.10.06.02";
+    sha256 = "0wrmc9abkgrk92j18g0qvkfsw84kl3rmx5c86kycb9sbbg2hjmgn";
+  };
+  source.dirs."device/google/bonito-sepolicy".patches = [
+    (pkgs.fetchpatch {
+      url = "https://github.com/GrapheneOS/device_google_bonito-sepolicy/commit/2304fe5f0496a28158ef543dcecb3eab6d5bf3e1.patch";
+      sha256 = "0xirwffij0inwnj1svvg5na2ri8zkw5njdb5g6cc5h2gp11spfcs";
+      revert = true;
+    })
+  ];
+  source.dirs."device/google/crosshatch-sepolicy".patches = [
+    (pkgs.fetchpatch {
+      url = "https://github.com/GrapheneOS/device_google_crosshatch-sepolicy/commit/e67d01dac4917f8413118b6ba1d9ddc45e998c40.patch";
+      sha256 = "0xirwffij0inwnj1svvg5na2ri8zkw5njdb5g6cc5h2gp11spfcs";
+      revert = true;
+    })
+  ];
+  source.dirs."device/google/coral-sepolicy".patches = [
+    (pkgs.fetchpatch {
+      url = "https://github.com/GrapheneOS/device_google_coral-sepolicy/commit/bde429f13a9737b3e5ff074d4a27dc879c0c3e29.patch";
+      sha256 = "0ccmq79q0jyzqgw74wmg9w09mlymqm5g2sil6qi7y24f0wahlx8l";
+      revert = true;
+    })
+  ];
+  source.dirs."device/google/sunfish-sepolicy".patches = [
+    (pkgs.fetchpatch {
+      url = "https://github.com/GrapheneOS/device_google_sunfish-sepolicy/commit/0510011d062f96683ee923282a91ae882d5dcb95.patch";
+      sha256 = "1mwgiqbdk99vl7zrqb8n8hs7w8sxvdkrf5pz9n9i47kkdp86p6g3";
+      revert = true;
+    })
+  ];
+
   # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
   source.dirs."build/soong".patches = [
     (pkgs.fetchpatch {
