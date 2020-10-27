@@ -42,7 +42,7 @@ The command above will build an image signed with `test-keys`, so definitely don
 To flash the result to your device, run `fastboot update -w <img.zip>`.
 
 ## Requirements
-The AOSP project requires at least 250GB free disk space as well as 16GB RAM.
+The AOSP project requires at least 250GB free disk space as well as 16GB RAM. (Certain device kernels which use LTO+CFI may require even more memory)
 A typical build  requires approximately 40GB free disk space to check out the android source, 14GB for chromium, plus some additional free space for intermediate build products.
 Ensure your `/tmp` is not mounted using `tmpfs`, since the intermediate builds products are very large and will easily use all of your RAM (even if you have 32GB)!
 A user can use the `--cores` option for `nix-build` to set the number of cores to
