@@ -1,17 +1,17 @@
-From aa5ca380af0a7b00425dfa5e6de8db3ee53c0275 Mon Sep 17 00:00:00 2001
+From 4877076e4450d760b05928fdf6ca8fac96dab972 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Fri, 29 May 2020 18:14:48 -0400
-Subject: [PATCH 3/3] HACK: prefix tool names
+Subject: [PATCH 2/2] HACK: prefix tool names
 
 ---
  diffoscope/external_tools.py | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/diffoscope/external_tools.py b/diffoscope/external_tools.py
-index baf14cd1..858f7195 100644
+index e96ab71b..4c6cb703 100644
 --- a/diffoscope/external_tools.py
 +++ b/diffoscope/external_tools.py
-@@ -222,7 +222,10 @@ EXTERNAL_TOOLS = {
+@@ -223,7 +223,10 @@ EXTERNAL_TOOLS = {
  # May be populated at runtime by remapped names like
  # readelf -> arm-none-eabi-readelf, etc
  # diff -> gdiff, etc
@@ -24,5 +24,5 @@ index baf14cd1..858f7195 100644
  # GNU programs whose names differ on some non-GNU systems such as FreeBSD etc
  # AND where the CLI or output of the programs differ from the non-GNU system
 -- 
-2.26.1
+2.28.0
 
