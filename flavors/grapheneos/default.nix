@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2020.10.23.04";
+  grapheneOSRelease = "${config.apv.buildID}.2020.11.03.03";
 
-  phoneDeviceFamilies = [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ];
+  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -11,15 +11,12 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1603762517;
+  buildDateTime = mkDefault 1604435512;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkMerge [
-    (mkIf (config.deviceFamily != "sunfish") (mkDefault "RP1A.201005.004"))
-    (mkIf (config.deviceFamily == "sunfish") (mkDefault "RP1A.201005.006"))
-  ];
+  apv.buildID = mkDefault "RP1A.201105.002";
 
   # Not strictly necessary for me to set these, since I override the jsonFile
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -120,7 +117,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "0wmg4yv65ibin70ybyqcv731kdrz1zys41s93iz90z2hvx091zm6";
+    sha256 = "1hp6k886n34kj73wws234d209ykf1j3mg2mgzk9dckriw63m73my";
     fetchSubmodules = true;
   };
 })
@@ -137,7 +134,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_coral";
     rev = grapheneOSRelease;
-    sha256 = "1vpidzc8srd2csm1majk8yrkqp5c8kqrygihmwp7677r81a4mcbx";
+    sha256 = "0gsbbd8mq9sfj4s0km15vkzls26nff2g0ssi8jccb7zclfbqazqj";
     fetchSubmodules = true;
   };
 })
@@ -146,7 +143,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_sunfish";
     rev = grapheneOSRelease;
-    sha256 = "16wiwhcdzl8wxhi00sphx3igczsyjyck7vn6na6zc8xdr6d0cxvz";
+    sha256 = "1cxm3k9wvfbdv5w583mq2bp306j62k4g1cwlnbrgm53yfyqrimsd";
     fetchSubmodules = true;
   };
 })
