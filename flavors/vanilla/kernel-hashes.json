@@ -1,13 +1,13 @@
 {
-  "android-11.0.0_r0.10": {
+  "android-11.0.0_r0.22": {
     "https://android.googlesource.com/kernel/msm": {
-      "date": "2020-07-30T10:33:15+00:00",
+      "date": "2020-09-15T11:53:13-07:00",
       "deepClone": false,
       "fetchSubmodules": false,
       "leaveDotGit": false,
-      "path": "/nix/store/83adbm9chc7f6ghqfqd1jd9dfpr5q8v8-msm",
-      "rev": "51b9e1042e59d260cfc09c51c1c5b44d33928232",
-      "sha256": "00dyqazgb1bs86hvnvmxyl9vgrkrdgfkn87klrhw0xnv2pf05fhq",
+      "path": "/nix/store/q8j4y92mf9f7blz57bkirc67pv3hgw1z-msm",
+      "rev": "90fdcf28fd1c480650bd5ba5aa03f062ba789397",
+      "sha256": "03jsm9bzy3px22xk2z5caglzakg6i0c2jl27g40rj8k9rrsy0wwd",
       "url": "https://android.googlesource.com/kernel/msm"
     },
     "https://android.googlesource.com/kernel/msm-extra": {
@@ -51,15 +51,67 @@
       "url": "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api"
     }
   },
-  "android-11.0.0_r0.12": {
+  "android-11.0.0_r0.23": {
     "https://android.googlesource.com/kernel/msm": {
-      "date": "2020-07-30T16:18:51+08:00",
+      "date": "2020-09-15T11:53:13-07:00",
       "deepClone": false,
       "fetchSubmodules": false,
       "leaveDotGit": false,
-      "path": "/nix/store/fy0znphz2syibss3pacwb7p34zcq7v7d-msm",
-      "rev": "a1605987a054eabce43c0409b7fd1cce6b0c0076",
-      "sha256": "1xfw63j2xyf9v80khmczr52kk8dbbjfh4br60hw74qm2s9qzkijb",
+      "path": "/nix/store/q8j4y92mf9f7blz57bkirc67pv3hgw1z-msm",
+      "rev": "90fdcf28fd1c480650bd5ba5aa03f062ba789397",
+      "sha256": "03jsm9bzy3px22xk2z5caglzakg6i0c2jl27g40rj8k9rrsy0wwd",
+      "url": "https://android.googlesource.com/kernel/msm"
+    },
+    "https://android.googlesource.com/kernel/msm-extra": {
+      "date": "2020-06-08T18:03:19+08:00",
+      "deepClone": false,
+      "fetchSubmodules": false,
+      "leaveDotGit": false,
+      "path": "/nix/store/xc8nmsxhhbmd3q6rvnvix8qc6dqa6q64-msm-extra",
+      "rev": "f49c717db2d431ea5878f72f5f696f4b803ea3c2",
+      "sha256": "016kvrq0mkm9wlla0dlj8sdfn062ps755n74ya79dbxyhnni8zgw",
+      "url": "https://android.googlesource.com/kernel/msm-extra"
+    },
+    "https://android.googlesource.com/kernel/msm-modules/qca-wfi-host-cmn": {
+      "date": "2020-03-16T16:08:13+08:00",
+      "deepClone": false,
+      "fetchSubmodules": false,
+      "leaveDotGit": false,
+      "path": "/nix/store/36x5a7c1dqlw2b35wk5k5vnhvrkr6xsk-qca-wfi-host-cmn",
+      "rev": "51363f51d4b485b6e70987a426dc6eb791bb99dd",
+      "sha256": "0f3mwsikdj3nsvyyw4nv5qhpyd7yfxffzvirrxb37j8vg9n8d9xy",
+      "url": "https://android.googlesource.com/kernel/msm-modules/qca-wfi-host-cmn"
+    },
+    "https://android.googlesource.com/kernel/msm-modules/qcacld": {
+      "date": "2020-06-24T01:05:19+00:00",
+      "deepClone": false,
+      "fetchSubmodules": false,
+      "leaveDotGit": false,
+      "path": "/nix/store/4hf13dymr5dqvq53ss1c9v2gymyzp84a-qcacld",
+      "rev": "e6b769be80938e5a974a2ac96d2cb70ae5ed3ef9",
+      "sha256": "02fm6zqzbzgxxjjjmr9bfnpy857fkkn60aqvly85jm8w6348vrhq",
+      "url": "https://android.googlesource.com/kernel/msm-modules/qcacld"
+    },
+    "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api": {
+      "date": "2020-03-20T17:29:43+08:00",
+      "deepClone": false,
+      "fetchSubmodules": false,
+      "leaveDotGit": false,
+      "path": "/nix/store/ahgnxwznrp258p32d5n0d1ipq40qyxpc-wlan-fw-api",
+      "rev": "f0fd7e2fcfa46be30b793032c7d421f6adcebb05",
+      "sha256": "08693q8r6xdhn9j1hr94v3vd6qz4ds8vhacjfgw3kgc3pw8gchzn",
+      "url": "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api"
+    }
+  },
+  "android-11.0.0_r0.24": {
+    "https://android.googlesource.com/kernel/msm": {
+      "date": "2020-09-15T12:00:03-07:00",
+      "deepClone": false,
+      "fetchSubmodules": false,
+      "leaveDotGit": false,
+      "path": "/nix/store/8kx01jlygy8nmii4fnbygnm8v16ni9yk-msm",
+      "rev": "a2ee893d6df19b189129b5e3c2fe7fdb8396ae4b",
+      "sha256": "0gfgqn5xd1igfdgz52bwi0a9qy9wp2js4maim4nbqc9iq4668b01",
       "url": "https://android.googlesource.com/kernel/msm"
     },
     "https://android.googlesource.com/kernel/msm-extra": {
@@ -113,15 +165,15 @@
       "url": "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api"
     }
   },
-  "android-11.0.0_r0.14": {
+  "android-11.0.0_r0.25": {
     "https://android.googlesource.com/kernel/msm": {
-      "date": "2020-07-30T16:15:35+08:00",
+      "date": "2020-09-15T19:03:21+00:00",
       "deepClone": false,
       "fetchSubmodules": false,
       "leaveDotGit": false,
-      "path": "/nix/store/b8jvccbjkx0j93fcnavbhziklsv58qvc-msm",
-      "rev": "538dda190bfb5d845bd1d71a439940367eca2a0a",
-      "sha256": "1fgqp6nc144zpsrsjkwkbzyy00hr50v2gjf1frijakzlg3srwr7z",
+      "path": "/nix/store/736cjwaaiplz92cy7yvjb5l2yw8kq4db-msm",
+      "rev": "23dc4aa3ae14c348d13606aa829da3dd1f372c3e",
+      "sha256": "1hacd983mrn106pixgd7l0730fpjlkphvs80q10c8hxic4km8xk3",
       "url": "https://android.googlesource.com/kernel/msm"
     },
     "https://android.googlesource.com/kernel/msm-extra": {
@@ -185,58 +237,6 @@
       "rev": "a176abe6ae2a29023a356b009263f7b35ca230e7",
       "sha256": "18w7dr6jgx25h0n8f4mphfn36ypwyy5nz44h60a5zw7b19dkmww3",
       "url": "https://android.googlesource.com/kernel/msm"
-    }
-  },
-  "android-11.0.0_r0.8": {
-    "https://android.googlesource.com/kernel/msm": {
-      "date": "2020-07-30T10:33:15+00:00",
-      "deepClone": false,
-      "fetchSubmodules": false,
-      "leaveDotGit": false,
-      "path": "/nix/store/83adbm9chc7f6ghqfqd1jd9dfpr5q8v8-msm",
-      "rev": "51b9e1042e59d260cfc09c51c1c5b44d33928232",
-      "sha256": "00dyqazgb1bs86hvnvmxyl9vgrkrdgfkn87klrhw0xnv2pf05fhq",
-      "url": "https://android.googlesource.com/kernel/msm"
-    },
-    "https://android.googlesource.com/kernel/msm-extra": {
-      "date": "2020-06-08T18:03:19+08:00",
-      "deepClone": false,
-      "fetchSubmodules": false,
-      "leaveDotGit": false,
-      "path": "/nix/store/xc8nmsxhhbmd3q6rvnvix8qc6dqa6q64-msm-extra",
-      "rev": "f49c717db2d431ea5878f72f5f696f4b803ea3c2",
-      "sha256": "016kvrq0mkm9wlla0dlj8sdfn062ps755n74ya79dbxyhnni8zgw",
-      "url": "https://android.googlesource.com/kernel/msm-extra"
-    },
-    "https://android.googlesource.com/kernel/msm-modules/qca-wfi-host-cmn": {
-      "date": "2020-03-16T16:08:13+08:00",
-      "deepClone": false,
-      "fetchSubmodules": false,
-      "leaveDotGit": false,
-      "path": "/nix/store/36x5a7c1dqlw2b35wk5k5vnhvrkr6xsk-qca-wfi-host-cmn",
-      "rev": "51363f51d4b485b6e70987a426dc6eb791bb99dd",
-      "sha256": "0f3mwsikdj3nsvyyw4nv5qhpyd7yfxffzvirrxb37j8vg9n8d9xy",
-      "url": "https://android.googlesource.com/kernel/msm-modules/qca-wfi-host-cmn"
-    },
-    "https://android.googlesource.com/kernel/msm-modules/qcacld": {
-      "date": "2020-06-24T01:05:19+00:00",
-      "deepClone": false,
-      "fetchSubmodules": false,
-      "leaveDotGit": false,
-      "path": "/nix/store/4hf13dymr5dqvq53ss1c9v2gymyzp84a-qcacld",
-      "rev": "e6b769be80938e5a974a2ac96d2cb70ae5ed3ef9",
-      "sha256": "02fm6zqzbzgxxjjjmr9bfnpy857fkkn60aqvly85jm8w6348vrhq",
-      "url": "https://android.googlesource.com/kernel/msm-modules/qcacld"
-    },
-    "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api": {
-      "date": "2020-03-20T17:29:43+08:00",
-      "deepClone": false,
-      "fetchSubmodules": false,
-      "leaveDotGit": false,
-      "path": "/nix/store/ahgnxwznrp258p32d5n0d1ipq40qyxpc-wlan-fw-api",
-      "rev": "f0fd7e2fcfa46be30b793032c7d421f6adcebb05",
-      "sha256": "08693q8r6xdhn9j1hr94v3vd6qz4ds8vhacjfgw3kgc3pw8gchzn",
-      "url": "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api"
     }
   }
 }

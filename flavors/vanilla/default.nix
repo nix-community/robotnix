@@ -127,16 +127,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1601949142;
+  buildDateTime = mkDefault 1604369588;
 
-  source.manifest.rev = mkMerge [
-    (mkIf (config.deviceFamily != "sunfish") (mkDefault "android-11.0.0_r4"))
-    (mkIf (config.deviceFamily == "sunfish") (mkDefault "android-11.0.0_r5"))
-  ];
-  apv.buildID = mkMerge [
-    (mkIf (config.deviceFamily != "sunfish") (mkDefault "RP1A.201005.004"))
-    (mkIf (config.deviceFamily == "sunfish") (mkDefault "RP1A.201005.006"))
-  ];
+  source.manifest.rev = mkDefault "android-11.0.0_r17";
+  apv.buildID = mkDefault "RP1A.201105.002";
 
   # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
   # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
@@ -152,10 +146,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   kernelTag = {
     "taimen" = "android-11.0.0_r0.6";
     "muskie" = "android-11.0.0_r0.6";
-    "crosshatch" = "android-11.0.0_r0.8";
-    "bonito" = "android-11.0.0_r0.10";
-    "coral" = "android-11.0.0_r0.12";
-    "sunfish" = "android-11.0.0_r0.14";
+    "crosshatch" = "android-11.0.0_r0.22";
+    "bonito" = "android-11.0.0_r0.23";
+    "coral" = "android-11.0.0_r0.24";
+    "sunfish" = "android-11.0.0_r0.25";
   }.${config.deviceFamily};
   kernelMetadata = (lib.importJSON ./kernel-metadata.json).${kernelTag};
   kernelHashes = (lib.importJSON ./kernel-hashes.json).${kernelTag};
@@ -182,6 +176,14 @@ in {
 
   kernel.buildProductFilenames = [ "**/*.ko" ]; # Copy kernel modules if they exist
 }))
+(mkIf (elem config.device [ "taimen" "walleye" ]) {
+  warnings = [ "taimen and walleye are no longer receiving monthly security updates from Google. Support is left just for testing" ];
+  apv.buildID = "RP1A.201005.004";
+  # HACK to use recent android source, but with old vendor files...
+  source.dirs."vendor/google_devices".postPatch = mkIf (elem config.device [ "taimen" "walleye" ]) ''
+    echo RP1A.201105.002 > ${config.device}/build_id.txt
+  '';
+})
 
 ]))
 
