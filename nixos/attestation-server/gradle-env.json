@@ -4,11 +4,11 @@
     "version": "unspecified",
     "path": "",
     "gradle": {
-      "version": "5.4.1",
+      "version": "6.3",
       "type": "bin",
-      "url": "https://services.gradle.org/distributions/gradle-5.4.1-bin.zip",
-      "sha256": "7bdbad1e4f54f13c8a78abc00c26d44dd8709d4aedb704d913fb1bb78ac025dc",
-      "nativeVersion": "0.17"
+      "url": "https://services.gradle.org/distributions/gradle-6.3-bin.zip",
+      "sha256": "038794feef1f4745c6347107b6726279d1c824f3fc634b60f86ace1e9fbd1768",
+      "nativeVersion": "0.22-milestone-1"
     },
     "dependencies": {
       "plugin": [],
@@ -78,61 +78,76 @@
           "id": {
             "group": "com.beust",
             "name": "jcommander",
-            "version": "1.72",
+            "version": "1.78",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "jcommander-1.72.jar",
-          "path": "com/beust/jcommander/1.72",
+          "name": "jcommander-1.78.jar",
+          "path": "com/beust/jcommander/1.78",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/beust/jcommander/1.72/jcommander-1.72.jar"
+            "https://repo.maven.apache.org/maven2/com/beust/jcommander/1.78/jcommander-1.78.jar"
           ],
-          "sha256": "e0de160b129b2414087e01fe845609cd55caec6820cfd4d0c90fabcc7bdb8c1e"
+          "sha256": "7891debb84b5f83e9bd57593ebece3399abbe0fd938cf306b3534c57913b9615"
         },
         {
           "id": {
             "group": "com.beust",
             "name": "jcommander",
-            "version": "1.72",
+            "version": "1.78",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "jcommander-1.72.pom",
-          "path": "com/beust/jcommander/1.72",
+          "name": "jcommander-1.78.pom",
+          "path": "com/beust/jcommander/1.78",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/beust/jcommander/1.72/jcommander-1.72.pom"
+            "https://repo.maven.apache.org/maven2/com/beust/jcommander/1.78/jcommander-1.78.pom"
           ],
-          "sha256": "c23f7e6b5b08bbf014bd16479e352ee040f4e9b73415f37e334df952797995eb"
+          "sha256": "6fee231c0aeee6de1256b6b5590ce9e6f6cf6c39797ed668573520bc3412e2a7"
         },
         {
           "id": {
             "group": "com.github.ben-manes.caffeine",
             "name": "caffeine",
-            "version": "2.8.0",
+            "version": "2.8.6",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "caffeine-2.8.0.jar",
-          "path": "com/github/ben-manes/caffeine/caffeine/2.8.0",
+          "name": "caffeine-2.8.6.jar",
+          "path": "com/github/ben-manes/caffeine/caffeine/2.8.6",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.8.0/caffeine-2.8.0.jar"
+            "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.8.6/caffeine-2.8.6.jar"
           ],
-          "sha256": "b1107a4097be4515a923a55bc63da04e411e6964aa045bece1bc7acb84872ed7"
+          "sha256": "230af102f4b41ca93b84447fcb6d105b7d736290a6142a99bcddcf3ca402fdbf"
         },
         {
           "id": {
             "group": "com.github.ben-manes.caffeine",
             "name": "caffeine",
-            "version": "2.8.0",
+            "version": "2.8.6",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "caffeine-2.8.6.module",
+          "path": "com/github/ben-manes/caffeine/caffeine/2.8.6",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.8.6/caffeine-2.8.6.module"
+          ],
+          "sha256": "e6dd9f48ec730e8fdcb810730629164a7dd4f770c97734b6a931b874bcbc187c"
+        },
+        {
+          "id": {
+            "group": "com.github.ben-manes.caffeine",
+            "name": "caffeine",
+            "version": "2.8.6",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "caffeine-2.8.0.pom",
-          "path": "com/github/ben-manes/caffeine/caffeine/2.8.0",
+          "name": "caffeine-2.8.6.pom",
+          "path": "com/github/ben-manes/caffeine/caffeine/2.8.6",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.8.0/caffeine-2.8.0.pom"
+            "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.8.6/caffeine-2.8.6.pom"
           ],
-          "sha256": "bd2d0b60e02b3d0da3ebc6c2f29466e7bbab321124c62de8cb831da4f100d0af"
+          "sha256": "c222d81374c4daa85b758cf5e0ea0923b0995812303b3fa01694052c20558e17"
         },
         {
           "id": {
@@ -198,46 +213,46 @@
           "id": {
             "group": "com.google.errorprone",
             "name": "error_prone_annotations",
-            "version": "2.3.3",
+            "version": "2.4.0",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "error_prone_annotations-2.3.3.jar",
-          "path": "com/google/errorprone/error_prone_annotations/2.3.3",
+          "name": "error_prone_annotations-2.4.0.jar",
+          "path": "com/google/errorprone/error_prone_annotations/2.4.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3.jar"
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.4.0/error_prone_annotations-2.4.0.jar"
           ],
-          "sha256": "ec59f1b702d9afc09e8c3929f5c42777dec623a6ea2731ac694332c7d7680f5a"
+          "sha256": "5f2a0648230a662e8be049df308d583d7369f13af683e44ddf5829b6d741a228"
         },
         {
           "id": {
             "group": "com.google.errorprone",
             "name": "error_prone_annotations",
-            "version": "2.3.3",
+            "version": "2.4.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "error_prone_annotations-2.3.3.pom",
-          "path": "com/google/errorprone/error_prone_annotations/2.3.3",
+          "name": "error_prone_annotations-2.4.0.pom",
+          "path": "com/google/errorprone/error_prone_annotations/2.4.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3.pom"
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.4.0/error_prone_annotations-2.4.0.pom"
           ],
-          "sha256": "bfd69255a0c0113afee4da0136bb80b1268cbb0d61df0069d8d22b3bef2568d5"
+          "sha256": "7ea54bfa260ea03d4f084158d284ac8737a5507f77c80f9634da8bdcc018474f"
         },
         {
           "id": {
             "group": "com.google.errorprone",
             "name": "error_prone_parent",
-            "version": "2.3.3",
+            "version": "2.4.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "error_prone_parent-2.3.3.pom",
-          "path": "com/google/errorprone/error_prone_parent/2.3.3",
+          "name": "error_prone_parent-2.4.0.pom",
+          "path": "com/google/errorprone/error_prone_parent/2.4.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.3.3/error_prone_parent-2.3.3.pom"
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.4.0/error_prone_parent-2.4.0.pom"
           ],
-          "sha256": "6b05a6f52e2b65b4efce3cbba5335b081b1dca4b97de690234cd536479a40f32"
+          "sha256": "dedda0cda4da752ac80de0d21c829cd3fb919bd2256814260eb3abce2f4e869a"
         },
         {
           "id": {
@@ -273,31 +288,31 @@
           "id": {
             "group": "com.google.guava",
             "name": "guava",
-            "version": "28.1-jre",
+            "version": "30.0-jre",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "guava-28.1-jre.jar",
-          "path": "com/google/guava/guava/28.1-jre",
+          "name": "guava-30.0-jre.jar",
+          "path": "com/google/guava/guava/30.0-jre",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre.jar"
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava/30.0-jre/guava-30.0-jre.jar"
           ],
-          "sha256": "30beb8b8527bd07c6e747e77f1a92122c2f29d57ce347461a4a55eb26e382da4"
+          "sha256": "56b292df9ec29d102820c1fd7dd581cd749d5c416c7b3aeac008dbda3b984cc2"
         },
         {
           "id": {
             "group": "com.google.guava",
             "name": "guava",
-            "version": "28.1-jre",
+            "version": "30.0-jre",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "guava-28.1-jre.pom",
-          "path": "com/google/guava/guava/28.1-jre",
+          "name": "guava-30.0-jre.pom",
+          "path": "com/google/guava/guava/30.0-jre",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre.pom"
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava/30.0-jre/guava-30.0-jre.pom"
           ],
-          "sha256": "74af0e8dd935894ce9bcb8e2842dd0001581b84cb6a7751c3ef9314011399ba4"
+          "sha256": "3f881774161282f6730d2b8e74a8e1ac753b8a734781a526f880b1b8bdb89451"
         },
         {
           "id": {
@@ -318,16 +333,16 @@
           "id": {
             "group": "com.google.guava",
             "name": "guava-parent",
-            "version": "28.1-jre",
+            "version": "30.0-jre",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "guava-parent-28.1-jre.pom",
-          "path": "com/google/guava/guava-parent/28.1-jre",
+          "name": "guava-parent-30.0-jre.pom",
+          "path": "com/google/guava/guava-parent/30.0-jre",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/28.1-jre/guava-parent-28.1-jre.pom"
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/30.0-jre/guava-parent-30.0-jre.pom"
           ],
-          "sha256": "f31a5846bd9e14a4c374da1b9b146a5715ecdca925e071e1d2bf4da2daaded90"
+          "sha256": "65736c957cdf13b356206fe61392b5ea48760ffb5174504f190dcc3b644e399c"
         },
         {
           "id": {
@@ -393,406 +408,346 @@
           "id": {
             "group": "com.google.zxing",
             "name": "core",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "core-3.4.0.jar",
-          "path": "com/google/zxing/core/3.4.0",
+          "name": "core-3.4.1.jar",
+          "path": "com/google/zxing/core/3.4.1",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/zxing/core/3.4.0/core-3.4.0.jar"
+            "https://repo.maven.apache.org/maven2/com/google/zxing/core/3.4.1/core-3.4.1.jar"
           ],
-          "sha256": "65004806a669234c698fbe0755258100375fb01fe93b538455f3903713d4a50d"
+          "sha256": "acfa30338c26267b6cab665509c2251bb96e8350bfcad89d59b949ba77011f8d"
         },
         {
           "id": {
             "group": "com.google.zxing",
             "name": "core",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "core-3.4.0.pom",
-          "path": "com/google/zxing/core/3.4.0",
+          "name": "core-3.4.1.pom",
+          "path": "com/google/zxing/core/3.4.1",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/zxing/core/3.4.0/core-3.4.0.pom"
+            "https://repo.maven.apache.org/maven2/com/google/zxing/core/3.4.1/core-3.4.1.pom"
           ],
-          "sha256": "0b3aa550ee9b33da83530c7b3ce0985434323597b0f995d9aea1246df7b07832"
+          "sha256": "b1a0faee424a3c775534c81fa16f5a5d5aa65ca40e6ad857f6961b333ea39fd3"
         },
         {
           "id": {
             "group": "com.google.zxing",
             "name": "javase",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "javase-3.4.0.jar",
-          "path": "com/google/zxing/javase/3.4.0",
+          "name": "javase-3.4.1.jar",
+          "path": "com/google/zxing/javase/3.4.1",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/zxing/javase/3.4.0/javase-3.4.0.jar"
+            "https://repo.maven.apache.org/maven2/com/google/zxing/javase/3.4.1/javase-3.4.1.jar"
           ],
-          "sha256": "7aeef746a544effcd9e499214d9f315e69c3a835e7c81abfb703be79f859a6d7"
+          "sha256": "d7ee1a035cb26b7fd525981c33da947b4b39ccca15e4a92b0bae3e322bfcdc20"
         },
         {
           "id": {
             "group": "com.google.zxing",
             "name": "javase",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "javase-3.4.0.pom",
-          "path": "com/google/zxing/javase/3.4.0",
+          "name": "javase-3.4.1.pom",
+          "path": "com/google/zxing/javase/3.4.1",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/zxing/javase/3.4.0/javase-3.4.0.pom"
+            "https://repo.maven.apache.org/maven2/com/google/zxing/javase/3.4.1/javase-3.4.1.pom"
           ],
-          "sha256": "cc0138c230357e64ad759a40c0e362ba8837c9fd4f4abe64c35bb3fd52a10a7a"
+          "sha256": "f929c282b50205ef93c820c6f2577789c2c7d004f4dbcf36f94e924847d67c33"
         },
         {
           "id": {
             "group": "com.google.zxing",
             "name": "zxing-parent",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "zxing-parent-3.4.0.pom",
-          "path": "com/google/zxing/zxing-parent/3.4.0",
+          "name": "zxing-parent-3.4.1.pom",
+          "path": "com/google/zxing/zxing-parent/3.4.1",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/google/zxing/zxing-parent/3.4.0/zxing-parent-3.4.0.pom"
+            "https://repo.maven.apache.org/maven2/com/google/zxing/zxing-parent/3.4.1/zxing-parent-3.4.1.pom"
           ],
-          "sha256": "ea1a8d659af89c2ddd4727deb6d5af12475d12c8b845dfc9d75013d08ff113ef"
+          "sha256": "20281fe11b8e4bd4c17deec561444d1575bd532fecb73ecf6b89efdad7cd8938"
+        },
+        {
+          "id": {
+            "group": "com.sun.activation",
+            "name": "all",
+            "version": "2.0.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "all-2.0.0.pom",
+          "path": "com/sun/activation/all/2.0.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/all/2.0.0/all-2.0.0.pom"
+          ],
+          "sha256": "38753c221e3ece65ea9db515dfbf7cc3e8a55aab48c2f35e0f2008b8abe2f16e"
+        },
+        {
+          "id": {
+            "group": "com.sun.activation",
+            "name": "jakarta.activation",
+            "version": "2.0.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "jakarta.activation-2.0.0.jar",
+          "path": "com/sun/activation/jakarta.activation/2.0.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/jakarta.activation/2.0.0/jakarta.activation-2.0.0.jar"
+          ],
+          "sha256": "db9c7e30f4d61ec33fd47942c9b7cf6e094025e7d5d8e20db73fce5a912a4366"
+        },
+        {
+          "id": {
+            "group": "com.sun.activation",
+            "name": "jakarta.activation",
+            "version": "2.0.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "jakarta.activation-2.0.0.pom",
+          "path": "com/sun/activation/jakarta.activation/2.0.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/jakarta.activation/2.0.0/jakarta.activation-2.0.0.pom"
+          ],
+          "sha256": "c95fbea55807f1dcf7090cdaaae5f0133ca2322b33ebf6ea3913ab5e08772bcd"
         },
         {
           "id": {
             "group": "com.sun.mail",
             "name": "all",
-            "version": "1.6.2",
+            "version": "2.0.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "all-1.6.2.pom",
-          "path": "com/sun/mail/all/1.6.2",
+          "name": "all-2.0.0.pom",
+          "path": "com/sun/mail/all/2.0.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/sun/mail/all/1.6.2/all-1.6.2.pom"
+            "https://repo.maven.apache.org/maven2/com/sun/mail/all/2.0.0/all-2.0.0.pom"
           ],
-          "sha256": "4b7e83aa9b77d65e007e97cb50f9b89cdb754faaf16411e5fd94d1e3dab76eb3"
+          "sha256": "e21ae1341ad8145ae0700a28805d3c5338c101f2bdcb74759a34213ff851651a"
         },
         {
           "id": {
             "group": "com.sun.mail",
-            "name": "javax.mail",
-            "version": "1.6.2",
+            "name": "jakarta.mail",
+            "version": "2.0.0",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "javax.mail-1.6.2.jar",
-          "path": "com/sun/mail/javax.mail/1.6.2",
+          "name": "jakarta.mail-2.0.0.jar",
+          "path": "com/sun/mail/jakarta.mail/2.0.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/sun/mail/javax.mail/1.6.2/javax.mail-1.6.2.jar"
+            "https://repo.maven.apache.org/maven2/com/sun/mail/jakarta.mail/2.0.0/jakarta.mail-2.0.0.jar"
           ],
-          "sha256": "45b515e7104944c09e45b9c7bb1ce5dff640486374852dd2b2e80cc3752dfa11"
+          "sha256": "d1f6d4fc0f95980c3e8b31b360f11ea4cf7d8ec18f169fe809d6c701e9b366c2"
         },
         {
           "id": {
             "group": "com.sun.mail",
-            "name": "javax.mail",
-            "version": "1.6.2",
+            "name": "jakarta.mail",
+            "version": "2.0.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "javax.mail-1.6.2.pom",
-          "path": "com/sun/mail/javax.mail/1.6.2",
+          "name": "jakarta.mail-2.0.0.pom",
+          "path": "com/sun/mail/jakarta.mail/2.0.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/com/sun/mail/javax.mail/1.6.2/javax.mail-1.6.2.pom"
+            "https://repo.maven.apache.org/maven2/com/sun/mail/jakarta.mail/2.0.0/jakarta.mail-2.0.0.pom"
           ],
-          "sha256": "c4229c05b5836f002521363d3435f3d072662744548bf17e7e7adecafe68b9fd"
+          "sha256": "f1256de323d125dd44819e934683eff6d226ad24ef25d7974238623b37060291"
         },
         {
           "id": {
-            "group": "javax.activation",
-            "name": "activation",
-            "version": "1.1.1",
+            "group": "jakarta.json",
+            "name": "jakarta.json-api",
+            "version": "2.0.0",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "activation-1.1.1.jar",
-          "path": "javax/activation/activation/1.1.1",
+          "name": "jakarta.json-api-2.0.0.jar",
+          "path": "jakarta/json/jakarta.json-api/2.0.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/javax/activation/activation/1.1.1/activation-1.1.1.jar"
+            "https://repo.maven.apache.org/maven2/jakarta/json/jakarta.json-api/2.0.0/jakarta.json-api-2.0.0.jar"
           ],
-          "sha256": "ae475120e9fcd99b4b00b38329bd61cdc5eb754eee03fe66c01f50e137724f99"
+          "sha256": "f48b744dcd97c2bd4c2bdaed026ccd0e7ad754ec9093b3e765adc84aaf736d49"
         },
         {
           "id": {
-            "group": "javax.activation",
-            "name": "activation",
-            "version": "1.1.1",
+            "group": "jakarta.json",
+            "name": "jakarta.json-api",
+            "version": "2.0.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "activation-1.1.1.pom",
-          "path": "javax/activation/activation/1.1.1",
+          "name": "jakarta.json-api-2.0.0.pom",
+          "path": "jakarta/json/jakarta.json-api/2.0.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/javax/activation/activation/1.1.1/activation-1.1.1.pom"
+            "https://repo.maven.apache.org/maven2/jakarta/json/jakarta.json-api/2.0.0/jakarta.json-api-2.0.0.pom"
           ],
-          "sha256": "238149e049fbbc4334eac8edd59cca565a7508e2839841e7d36cd2681158fff0"
-        },
-        {
-          "id": {
-            "group": "javax.json",
-            "name": "javax.json-api",
-            "version": "1.1.4",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "javax.json-api-1.1.4.jar",
-          "path": "javax/json/javax.json-api/1.1.4",
-          "urls": [
-            "https://repo.maven.apache.org/maven2/javax/json/javax.json-api/1.1.4/javax.json-api-1.1.4.jar"
-          ],
-          "sha256": "0bdb79a0a5e0cce2d8d2d339ad53453cdf90045fe34c5e4b19b064bb1aee5876"
-        },
-        {
-          "id": {
-            "group": "javax.json",
-            "name": "javax.json-api",
-            "version": "1.1.4",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "javax.json-api-1.1.4.pom",
-          "path": "javax/json/javax.json-api/1.1.4",
-          "urls": [
-            "https://repo.maven.apache.org/maven2/javax/json/javax.json-api/1.1.4/javax.json-api-1.1.4.pom"
-          ],
-          "sha256": "74aad3da3586a6e68f15764f256a20e956813610b5078748333ce1a93a83236d"
-        },
-        {
-          "id": {
-            "group": "net.java",
-            "name": "jvnet-parent",
-            "version": "1",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "jvnet-parent-1.pom",
-          "path": "net/java/jvnet-parent/1",
-          "urls": [
-            "https://repo.maven.apache.org/maven2/net/java/jvnet-parent/1/jvnet-parent-1.pom"
-          ],
-          "sha256": "281440811268e65d9e266b3cc898297e214e04f09740d0386ceeb4a8923d63bf"
-        },
-        {
-          "id": {
-            "group": "net.java",
-            "name": "jvnet-parent",
-            "version": "5",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "jvnet-parent-5.pom",
-          "path": "net/java/jvnet-parent/5",
-          "urls": [
-            "https://repo.maven.apache.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom"
-          ],
-          "sha256": "1af699f8d9ddab67f9a0d202fbd7915eb0362a5a6dfd5ffc54cafa3465c9cb0a"
+          "sha256": "5ee407d1402660777d57d24d361d847361e480fd33db3be0aa9787252bfdbb38"
         },
         {
           "id": {
             "group": "org.bouncycastle",
             "name": "bcpkix-jdk15on",
-            "version": "1.64",
+            "version": "1.66",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "bcpkix-jdk15on-1.64.jar",
-          "path": "org/bouncycastle/bcpkix-jdk15on/1.64",
+          "name": "bcpkix-jdk15on-1.66.jar",
+          "path": "org/bouncycastle/bcpkix-jdk15on/1.66",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15on/1.64/bcpkix-jdk15on-1.64.jar"
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15on/1.66/bcpkix-jdk15on-1.66.jar"
           ],
-          "sha256": "84669138b1d99143e2c009024f67824ab8d3edb9b05b7591f5ebfb020a4bda71"
+          "sha256": "02d61268352fdb35dba996c9ca68a3f793d7b8bfa75754aac66d696517a421bd"
         },
         {
           "id": {
             "group": "org.bouncycastle",
             "name": "bcpkix-jdk15on",
-            "version": "1.64",
+            "version": "1.66",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "bcpkix-jdk15on-1.64.pom",
-          "path": "org/bouncycastle/bcpkix-jdk15on/1.64",
+          "name": "bcpkix-jdk15on-1.66.pom",
+          "path": "org/bouncycastle/bcpkix-jdk15on/1.66",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15on/1.64/bcpkix-jdk15on-1.64.pom"
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15on/1.66/bcpkix-jdk15on-1.66.pom"
           ],
-          "sha256": "350235c743e4278cd2e4af9edc1eab4b35b2984de0c5d80b9ca9174d8fed646a"
+          "sha256": "9015fe497ee5b61fa74fbd610919c3aac06b42795abcee3a2160a4b8bbf21aeb"
         },
         {
           "id": {
             "group": "org.bouncycastle",
             "name": "bcprov-jdk15on",
-            "version": "1.64",
+            "version": "1.66",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "bcprov-jdk15on-1.64.jar",
-          "path": "org/bouncycastle/bcprov-jdk15on/1.64",
+          "name": "bcprov-jdk15on-1.66.jar",
+          "path": "org/bouncycastle/bcprov-jdk15on/1.66",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15on/1.64/bcprov-jdk15on-1.64.jar"
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15on/1.66/bcprov-jdk15on-1.66.jar"
           ],
-          "sha256": "a4f463ce552b908a722fa198ef4892a226b3225e453f8df10d5c0a5bfe5db6b6"
+          "sha256": "1b861dba1c5445de9b38a1789c211ef28b9d07e26d1fa38bee717e5b51162ffe"
         },
         {
           "id": {
             "group": "org.bouncycastle",
             "name": "bcprov-jdk15on",
-            "version": "1.64",
+            "version": "1.66",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "bcprov-jdk15on-1.64.pom",
-          "path": "org/bouncycastle/bcprov-jdk15on/1.64",
+          "name": "bcprov-jdk15on-1.66.pom",
+          "path": "org/bouncycastle/bcprov-jdk15on/1.66",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15on/1.64/bcprov-jdk15on-1.64.pom"
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15on/1.66/bcprov-jdk15on-1.66.pom"
           ],
-          "sha256": "87852f79d94c1cc65799bd6e276f309e672e6118e0a3eb800db091ab03419a79"
+          "sha256": "aa4d16a19b2dfaceab94c6436c6404eae5b0fb75349f9fe061036465b420f270"
         },
         {
           "id": {
             "group": "org.checkerframework",
             "name": "checker-qual",
-            "version": "2.10.0",
+            "version": "3.7.0",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "checker-qual-2.10.0.jar",
-          "path": "org/checkerframework/checker-qual/2.10.0",
+          "name": "checker-qual-3.7.0.jar",
+          "path": "org/checkerframework/checker-qual/3.7.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/2.10.0/checker-qual-2.10.0.jar"
+            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.7.0/checker-qual-3.7.0.jar"
           ],
-          "sha256": "d261fde25d590f6b69db7721d469ac1b0a19a17ccaaaa751c31f0d8b8260b894"
+          "sha256": "be2039732159d13f3f00867f22223992178a3b28b8a143724eba4206a8fdfff3"
         },
         {
           "id": {
             "group": "org.checkerframework",
             "name": "checker-qual",
-            "version": "2.10.0",
+            "version": "3.7.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "checker-qual-2.10.0.pom",
-          "path": "org/checkerframework/checker-qual/2.10.0",
+          "name": "checker-qual-3.7.0.pom",
+          "path": "org/checkerframework/checker-qual/3.7.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/2.10.0/checker-qual-2.10.0.pom"
+            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.7.0/checker-qual-3.7.0.pom"
           ],
-          "sha256": "246e47e395f8d7a8c12b7222b166bc3a1d3809bc3a3d30de97470aa38d952a4b"
+          "sha256": "081aa660426988ff9df435891014062f287b17d7e5648e16de02b39bff8dfa0d"
         },
         {
           "id": {
-            "group": "org.codehaus.mojo",
-            "name": "animal-sniffer-annotations",
-            "version": "1.18",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "animal-sniffer-annotations-1.18.jar",
-          "path": "org/codehaus/mojo/animal-sniffer-annotations/1.18",
-          "urls": [
-            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.jar"
-          ],
-          "sha256": "47f05852b48ee9baefef80fa3d8cea60efa4753c0013121dd7fe5eef2e5c729d"
-        },
-        {
-          "id": {
-            "group": "org.codehaus.mojo",
-            "name": "animal-sniffer-annotations",
-            "version": "1.18",
+            "group": "org.eclipse.ee4j",
+            "name": "project",
+            "version": "1.0.6",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "animal-sniffer-annotations-1.18.pom",
-          "path": "org/codehaus/mojo/animal-sniffer-annotations/1.18",
+          "name": "project-1.0.6.pom",
+          "path": "org/eclipse/ee4j/project/1.0.6",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.pom"
+            "https://repo.maven.apache.org/maven2/org/eclipse/ee4j/project/1.0.6/project-1.0.6.pom"
           ],
-          "sha256": "adf522f4839c35f5329ea97c407aebebfa8807b644852dc4d5cd7c97b7a6d2e0"
-        },
-        {
-          "id": {
-            "group": "org.codehaus.mojo",
-            "name": "animal-sniffer-parent",
-            "version": "1.18",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "animal-sniffer-parent-1.18.pom",
-          "path": "org/codehaus/mojo/animal-sniffer-parent/1.18",
-          "urls": [
-            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-parent/1.18/animal-sniffer-parent-1.18.pom"
-          ],
-          "sha256": "4e9df546a47cf6304a1317c46870100a8726fbea11b0dd18322f957e4070973c"
-        },
-        {
-          "id": {
-            "group": "org.codehaus.mojo",
-            "name": "mojo-parent",
-            "version": "50",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "mojo-parent-50.pom",
-          "path": "org/codehaus/mojo/mojo-parent/50",
-          "urls": [
-            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/mojo-parent/50/mojo-parent-50.pom"
-          ],
-          "sha256": "f819cad1b15b6a7791c8b601e96bde33765e4681395807db4537d2f0dedd493b"
+          "sha256": "4e7d8329d8da7dcf30779d824241be145f27108932f5a5a24eb907677bc8d72d"
         },
         {
           "id": {
             "group": "org.glassfish",
-            "name": "javax.json",
-            "version": "1.1.4",
+            "name": "jakarta.json",
+            "version": "2.0.0",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "javax.json-1.1.4.jar",
-          "path": "org/glassfish/javax.json/1.1.4",
+          "name": "jakarta.json-2.0.0.jar",
+          "path": "org/glassfish/jakarta.json/2.0.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/glassfish/javax.json/1.1.4/javax.json-1.1.4.jar"
+            "https://repo.maven.apache.org/maven2/org/glassfish/jakarta.json/2.0.0/jakarta.json-2.0.0.jar"
           ],
-          "sha256": "17fdeb7e22375a7fb40bb0551306f6dcf2b5743078668adcdf6c642c9a9ec955"
+          "sha256": "642135f9b9bbe419e7e5d90d8254667f1ae1fb55d46b8294aaf2b3c4e15f9ec6"
         },
         {
           "id": {
             "group": "org.glassfish",
-            "name": "javax.json",
-            "version": "1.1.4",
+            "name": "jakarta.json",
+            "version": "2.0.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "javax.json-1.1.4.pom",
-          "path": "org/glassfish/javax.json/1.1.4",
+          "name": "jakarta.json-2.0.0.pom",
+          "path": "org/glassfish/jakarta.json/2.0.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/glassfish/javax.json/1.1.4/javax.json-1.1.4.pom"
+            "https://repo.maven.apache.org/maven2/org/glassfish/jakarta.json/2.0.0/jakarta.json-2.0.0.pom"
           ],
-          "sha256": "50d2a59155284109a708675b52ebb4598500e43693967cff1401cb26b97f8853"
+          "sha256": "0a836bbf7b56558c2f2c18ea60c64dd88dbb46ef4f9d09428fe5ea372557b9d9"
         },
         {
           "id": {
             "group": "org.glassfish",
             "name": "json",
-            "version": "1.1.4",
+            "version": "2.0.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "json-1.1.4.pom",
-          "path": "org/glassfish/json/1.1.4",
+          "name": "json-2.0.0.pom",
+          "path": "org/glassfish/json/2.0.0",
           "urls": [
-            "https://repo.maven.apache.org/maven2/org/glassfish/json/1.1.4/json-1.1.4.pom"
+            "https://repo.maven.apache.org/maven2/org/glassfish/json/2.0.0/json-2.0.0.pom"
           ],
-          "sha256": "da3f53be1d45ef3af667fdfa26f54c3ebc0e196b8c4dfb646491dbe3e31cb20b"
+          "sha256": "ed962dfc8ca051ba7da7b96ab0b87dbaaf0851f8e4cfa6aedb7fa3991f7d1d92"
         },
         {
           "id": {

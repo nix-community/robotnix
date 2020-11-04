@@ -23,8 +23,8 @@ buildGradle {
   src = fetchFromGitHub {
     owner = "grapheneos";
     repo = "AttestationServer";
-    rev = "e4b894f1fc2bd5e8fb9bd41fe7b8cb9913027510";
-    sha256 = "0bkl2kfzap3ffwa7bys7qg9myk40vw016yr79am8rhk2dgxdvgw4";
+    rev = "783e0fbaf70ef0bc97c98b4c140022f8cec69f18";
+    sha256 = "1xj890jlwvhbwxizlbp28c5yy5llbvc6cz9r7gbblhqsa77jqsm0";
   };
 
   patches = [ (substituteAll {
