@@ -18,7 +18,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Generic stuff ###
 {
   source.dirs = lib.importJSON (./. + "/repo-${config.source.manifest.rev}.json");
-  # Not strictly necessary for me to set this, since I override the jsonFile
+  # Not strictly necessary for me to set this, since I override the source.dirs
   source.manifest.url = mkDefault "https://android.googlesource.com/platform/manifest";
 
   warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))

@@ -18,7 +18,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkDefault "RP1A.201105.002";
 
-  # Not strictly necessary for me to set these, since I override the jsonFile
+  # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
   source.manifest.rev = mkDefault "refs/tags/${grapheneOSRelease}";
 

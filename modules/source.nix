@@ -157,7 +157,7 @@ in
 {
   options = {
     source = {
-      # End-user should either set source.manifest.* or source.jsonFile
+      # End-user should either set source.manifest.* or source.dirs
       manifest = {
         url = mkOption {
           type = types.str;
@@ -175,7 +175,7 @@ in
       evalTimeFetching = mkOption {
         default = false;
         description = ''
-          Set config.source.jsonFile automatically using IFD with information
+          Set config.source.dirs automatically using IFD with information
           from `source.manifest`. Also enables use of builtins.fetchGit instead
           of pkgs.fetchgit if not all sha256 hashes are available. (Useful for
           development)
