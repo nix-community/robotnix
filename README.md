@@ -32,7 +32,7 @@ Future goals include:
 This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
 
 ## Quick Start
-Here is a single command to build an `img` which can be flashed onto a device.
+Here is a single command to build an `img` which can be flashed onto a Pixel 3 XL (`crosshatch`).
 ```console
 $ nix-build "https://github.com/danielfullmer/robotnix/archive/master.tar.gz" \
     --arg configuration '{ device="crosshatch"; flavor="vanilla"; }' \
