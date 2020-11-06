@@ -127,7 +127,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1604369588;
+  buildDateTime = mkDefault 1604648934;
 
   source.manifest.rev = mkDefault "android-11.0.0_r17";
   apv.buildID = mkDefault "RP1A.201105.002";
@@ -141,6 +141,14 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     optional (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) "0:2:15"
     ++ optional (config.deviceFamily == "coral") "0:8:15";
   resourceTypeOverrides."frameworks/base/core/res".config_biometric_sensors = "string-array";
+
+  # Clock app needs battery optimization exemption. Currently not in AOSP
+  source.dirs."packages/apps/DeskClock".patches = [
+    (pkgs.fetchpatch {
+      url = "https://github.com/GrapheneOS/platform_packages_apps_DeskClock/commit/0b21e707d7dca4c9c3e4ff030bef8fae3abed088.patch";
+      sha256 = "0mzjzxyl8g2i520902bhc3ww3vbcwcx06m3zg033z0w6pw87apqc";
+    })
+  ];
 }
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) (let
   kernelTag = {
