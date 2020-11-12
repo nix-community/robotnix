@@ -31,14 +31,24 @@ let
 in
 (stdenv.mkDerivation {
   pname = "android-prepare-vendor";
-  version = "2020-08-26";
+  version =
+    if api >= 30 then "2020-09-18"
+    else "2020-08-26";
 
-  src = fetchFromGitHub { # api == "29"
-    owner = "AOSPAlliance";
-    repo = "android-prepare-vendor";
-    rev = "a9602ca6ef16ff10641d668dcb203f89f402d40d";
-    sha256 = "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
-  };
+  src = if api >= 30 then
+    fetchFromGitHub {
+      owner = "AOSPAlliance";
+      repo = "android-prepare-vendor";
+      rev = "7f19a8ec5b645bfffcf46d5d5ab1eed1d07703ab"; # Android11 branch. 2020-09-18
+      sha256 = "19axrmvqnj44yzd2198477x4kgazb8cffgmvy4bwwbmby502shwp";
+    }
+  else
+    fetchFromGitHub {
+      owner = "AOSPAlliance";
+      repo = "android-prepare-vendor";
+      rev = "a9602ca6ef16ff10641d668dcb203f89f402d40d"; # Android10 branch. 2020-08-26
+      sha256 = "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
+    };
 
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = [
