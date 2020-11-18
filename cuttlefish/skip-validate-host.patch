@@ -1,0 +1,13 @@
+diff --git a/host/libs/vm_manager/host_configuration.cpp b/host/libs/vm_manager/host_configuration.cpp
+index f49f74db..f59ba147 100644
+--- a/host/libs/vm_manager/host_configuration.cpp
++++ b/host/libs/vm_manager/host_configuration.cpp
+@@ -76,6 +76,8 @@ bool LinuxVersionAtLeast(std::vector<std::string>* config_commands,
+ } // namespace
+ 
+ bool ValidateHostConfiguration(std::vector<std::string>* config_commands) {
++  return true;
++
+   // if we can't detect the kernel version, just fail
+   auto version = GetLinuxVersion();
+   if (version == invalid_linux_version) {
