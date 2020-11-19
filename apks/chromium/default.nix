@@ -1,7 +1,7 @@
 { pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook, buildPackages
-, python2, ninja, llvmPackages_10, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
+, python2, ninja, llvmPackages_11, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
 , dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, utillinux, kerberos, gdk-pixbuf
-, glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libXdamage
+, glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libXdamage, libxkbcommon
 , zlib, ncurses5, libxml2, binutils, perl
 , substituteAll, fetchgerritpatchset
 
@@ -13,7 +13,7 @@
 , buildTargets ? [ "chrome_modern_public_bundle" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
-, version ? "86.0.4240.185"
+, version ? "87.0.4280.66"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_bundle + system_webview_apk
@@ -148,14 +148,16 @@ in stdenvNoCC.mkDerivation rec {
 
   # Even though we are building for android, it still complains if its missing linux libs/headers>..
   buildInputs = [
-    dbus at-spi2-atk atk at-spi2-core nspr nss pciutils utillinux kerberos
+    dbus at-spi2-atk atk at-spi2-core nspr nss pciutils utillinux kerberos libxkbcommon
     gdk-pixbuf glib gtk3 alsaLib libXScrnSaver libXcursor libXtst libXdamage
   ];
 
   patches =
     lib.optional enableRebranding
       (substituteAll {
-        src = ./rebranding.patch;
+        src = if lib.versionAtLeast version "87"
+          then ./rebranding-87.patch
+          else ./rebranding.patch;
         inherit displayName;
       })
     ++ lib.optional ((lib.versionAtLeast version "84") && (lib.versionOlder version "85"))
@@ -182,7 +184,7 @@ in stdenvNoCC.mkDerivation rec {
 
 
       mkdir -p buildtools/linux64
-      ln -s --force ${llvmPackages_10.clang.cc}/bin/clang-format buildtools/linux64/clang-format || true
+      ln -s --force ${llvmPackages_11.clang.cc}/bin/clang-format buildtools/linux64/clang-format || true
 
       mkdir -p third_party/node/linux/node-linux-x64/bin
       ln -s --force ${nodejs}/bin/node                    third_party/node/linux/node-linux-x64/bin/node      || true

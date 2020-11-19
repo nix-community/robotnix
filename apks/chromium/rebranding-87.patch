@@ -1,0 +1,28 @@
+diff --git a/android_webview/nonembedded/java/AndroidManifest.xml b/android_webview/nonembedded/java/AndroidManifest.xml
+index bf7088de00..2e37cfc4a3 100644
+--- a/android_webview/nonembedded/java/AndroidManifest.xml
++++ b/android_webview/nonembedded/java/AndroidManifest.xml
+@@ -21,7 +21,7 @@
+     <!-- Required by WebView Developer UI only -->
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+ 
+-    <application android:label="{{ application_label|default('Android System WebView') }}"
++    <application android:label="{{ application_label|default('@displayName@ WebView') }}"
+                  android:icon="@{{manifest_package|default('com.android.webview')}}:drawable/icon_webview"
+                  android:name="{{ application_name|default('org.chromium.android_webview.nonembedded.WebViewApkApplication') }}"
+                  android:multiArch="true"
+diff --git a/chrome/android/java/res_chromium/values/channel_constants.xml b/chrome/android/java/res_chromium/values/channel_constants.xml
+index b7b3bfc296..8c0855ea02 100644
+--- a/chrome/android/java/res_chromium_base/values/channel_constants.xml
++++ b/chrome/android/java/res_chromium_base/values/channel_constants.xml
+@@ -5,7 +5,7 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android">
+     <!-- The application name displayed to the user. -->
+-    <string name="app_name" translatable="false">Chromium</string>
+-    <string name="bookmark_widget_title" translatable="false">Chromium bookmarks</string>
+-    <string name="search_widget_title" translatable="false">Chromium search</string>
++    <string name="app_name" translatable="false">@displayName@</string>
++    <string name="bookmark_widget_title" translatable="false">@displayName@ bookmarks</string>
++    <string name="search_widget_title" translatable="false">@displayName@ search</string>
+ </resources>
