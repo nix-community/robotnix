@@ -1,13 +1,13 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "86.0.4240.194";
+  version = "87.0.4280.67";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "18qcbp1i777qpk4jbdq4k37c81ibppsvxh1p2acaqb2p6czy16kc";
+    sha256 = "04r6b8zcbqwi3qxf4k4i86ivmxc2mf6gn5ni8qixfjnj93q2hpgv";
   };
 
 in (chromium.override {
@@ -36,7 +36,6 @@ in (chromium.override {
     enable_platform_hevc=true;
     enable_remoting=false;
     enable_reporting=true; # Otherwise, fails with undefined symbol: content::CrossOriginEmbedderPolicyReporter::CrossOriginEmbedderPolicyReporter
-    enable_resource_whitelist_generation=false;
     enable_vr=false;
     fieldtrial_testing_like_official_build=true;
     icu_use_data_file=true;
