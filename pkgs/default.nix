@@ -43,6 +43,13 @@ let
     fetchgerritpatchset = super.callPackage ./fetchgerritpatchset {};
 
     nix-prefetch-git = super.callPackage ./nix-prefetch-git {};
+
+    ###
+
+    inherit (super.callPackage ./build-tools {})
+      build-tools
+      apksigner
+      signApk;
   };
 in
   import nixpkgs (args // {
