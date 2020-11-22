@@ -24,6 +24,19 @@ let
       cp ${apk} $out
       ${apksigner}/bin/apksigner sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
     '';
+
+  # Currently only supports 1 signer.
+  verifyApk = { apk, sha256, name ? (getName "verifyApk" apk) + ".apk" }: runCommand name {} ''
+    sha256=$(${apksigner}/bin/apksigner verify --print-certs ${apk} | grep "^Signer #1 certificate SHA-256 digest: " | cut -d" " -f6 || exit 1)
+
+    if [[ "$sha256" = "${sha256}" ]]; then
+      echo "${name} APK certificate digest matches ${sha256}"
+      ln -s ${apk} $out
+    else
+      echo "${name} APK certificate digest $sha256 is not ${sha256}"
+      exit 1
+    fi
+  '';
 in {
-  inherit build-tools apksigner signApk;
+  inherit build-tools apksigner signApk verifyApk;
 }

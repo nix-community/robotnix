@@ -49,7 +49,8 @@ let
     inherit (super.callPackage ./build-tools {})
       build-tools
       apksigner
-      signApk;
+      signApk
+      verifyApk;
   };
 in
   import nixpkgs (args // {
