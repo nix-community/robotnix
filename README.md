@@ -168,5 +168,6 @@ If you find Robotnix helpful, please consider donating to the project.
 Especially consider making a donation if you rely on regular Robotnix updates for your personal device.
 Donations will be used to support ongoing Android updates, developer hardware and build infrastructure, as well as future improvements.
 Your support is greatly appreciated.
+ - My GitHub sponsors page is [here](https://github.com/sponsors/danielfullmer).
  - Paypal donations may be made using this [link](https://www.paypal.com/donate/?cmd=_donations&business=FAV4QV9CTLXF2&currency_code=USD).
  - Bitcoin donations may be directed toward `3GEtqfkPkSSrRFpdcfy4T6YALgTwRyufip`.
