@@ -1,0 +1,42 @@
+{ lib, runCommand, androidPkgs, makeWrapper, jre8_headless }:
+
+let
+  # getName snippet originally from nixpkgs/pkgs/build-support/trivial-builders.nix
+  getName = fname: apk:
+    if lib.elem (builtins.typeOf apk) [ "path" "string" ]
+      then lib.removeSuffix ".apk" (builtins.baseNameOf apk)
+      else
+        if builtins.isAttrs apk && builtins.hasAttr "name" apk
+        then lib.removeSuffix ".apk" apk.name
+        else throw "${fname}: please supply a `name` argument because a default name can only be computed when the `apk` is a path or is an attribute set with a `name` attribute.";
+
+  build-tools =
+    (androidPkgs.sdk (p: with p.stable; [ tools build-tools-30-0-2 ]))
+    + "/share/android-sdk/build-tools/30.0.2";
+
+  apksigner = runCommand "apksigner" { nativeBuildInputs = [ makeWrapper ]; } ''
+      mkdir -p $out/bin
+      makeWrapper "${jre8_headless}/bin/java" "$out/bin/apksigner" \
+        --add-flags "-jar ${build-tools}/lib/apksigner.jar"
+    '';
+
+  signApk = { apk, keyPath, name ? (getName "signApk" apk) + "-signed.apk" }: runCommand name {} ''
+      cp ${apk} $out
+      ${apksigner}/bin/apksigner sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
+    '';
+
+  # Currently only supports 1 signer.
+  verifyApk = { apk, sha256, name ? (getName "verifyApk" apk) + ".apk" }: runCommand name {} ''
+    sha256=$(${apksigner}/bin/apksigner verify --print-certs ${apk} | grep "^Signer #1 certificate SHA-256 digest: " | cut -d" " -f6 || exit 1)
+
+    if [[ "$sha256" = "${sha256}" ]]; then
+      echo "${name} APK certificate digest matches ${sha256}"
+      ln -s ${apk} $out
+    else
+      echo "${name} APK certificate digest $sha256 is not ${sha256}"
+      exit 1
+    fi
+  '';
+in {
+  inherit build-tools apksigner signApk verifyApk;
+}

@@ -27,21 +27,6 @@ let
     include $(BUILD_PREBUILT)
     '');
 
-  build-tools =
-    (pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-30-0-2 ]))
-    + "/share/android-sdk/build-tools/30.0.2";
-
-  apksigner = pkgs.runCommand "apksigner" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
-      mkdir -p $out/bin
-      makeWrapper "${pkgs.jre8_headless}/bin/java" "$out/bin/apksigner" \
-        --add-flags "-jar ${build-tools}/lib/apksigner.jar"
-    '';
-
-  signApk = {name, apk, keyPath}: pkgs.runCommand "${name}-signed.apk" { nativeBuildInputs = [ pkgs.jre8_headless ]; } ''
-    cp ${apk} $out
-    ${apksigner}/bin/apksigner sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
-  '';
-
   # TODO: Uses IFD. Try to avoid using this.
   apkFingerprint = apk: (import pkgs.runCommand "apk-fingerprint" { nativeBuildInputs = [ pkgs.jre8_headless ]; } ''
     fingerprint=$(keytool -printcert -jarfile ${apk} | grep "SHA256:" | tr --delete ':' | cut --delimiter ' ' --fields 3)
@@ -139,8 +124,8 @@ in
 
           # Uses the sandbox exception in /keys
           signedApk = mkDefault (
-            if config.certificate == "PRESIGNED" then config.apk else (signApk {
-              inherit (config) name apk;
+            if config.certificate == "PRESIGNED" then config.apk else (pkgs.signApk {
+              inherit (config) apk;
               keyPath = _config.build.sandboxKeyPath config.certificate;
             }));
 
@@ -172,7 +157,7 @@ in
 
           ### Check minSdkVersion, targetSdkVersion
           # TODO: Also check permissions?
-          MANIFEST_DUMP=$(${build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${apk})
+          MANIFEST_DUMP=$(${pkgs.build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${apk})
 
           # It would be better if we could convert it back into true XML and then select based on XPath
           MIN_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep minSdkVersion | cut -d= -f2)
