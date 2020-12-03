@@ -288,7 +288,7 @@ in
           # export OUT_DIR=$rootDir/out
           buildPhase = ''
             # Become the original user--not fake root.
-            ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID} robotnix-build
+            ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID robotnix-build
 
             source build/envsetup.sh
             choosecombo ${config.buildType} ${config.productName} ${config.variant}
