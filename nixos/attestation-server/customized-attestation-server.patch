@@ -1,4 +1,4 @@
-From e0a09c748e6b28652bfaf09da34d5ba02af72123 Mon Sep 17 00:00:00 2001
+From 0da031da71698f77f02eb2faecd15713e6dd6382 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:00:46 -0400
 Subject: [PATCH 1/4] Custom listen settings
@@ -23,8 +23,7 @@ index c55a648..fd8697d 100644
 -- 
 2.28.0
 
-
-From ce0af94c659bcdae3dcf8885eed80640bcb89ac6 Mon Sep 17 00:00:00 2001
+From ac3b0e584fd5fa2692d5c63cb66439a07316ee74 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:09 -0400
 Subject: [PATCH 2/4] Custom domain
@@ -247,18 +246,17 @@ index 607b58a..de6a21e 100644
 -- 
 2.28.0
 
-
-From 98d7e95845756e9d38f0a2392df7f2557c6eb2a5 Mon Sep 17 00:00:00 2001
+From 847c2655aa8314c4404fc59353e3b574adea392f Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:18 -0400
 Subject: [PATCH 3/4] Custom fingerprints
 
 ---
- .../app/attestation/server/AttestationProtocol.java   | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ .../attestation/server/AttestationProtocol.java   | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index 1574d51..78be916 100644
+index 1574d51..9354181 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -166,7 +166,7 @@ class AttestationProtocol {
@@ -278,7 +276,7 @@ index 1574d51..78be916 100644
  
      static class DeviceInfo {
          final String name;
-@@ -312,6 +313,11 @@ class AttestationProtocol {
+@@ -312,6 +313,13 @@ class AttestationProtocol {
                      new DeviceInfo(DEVICE_PIXEL_2_GENERIC, 2, 3, true, true, OS_CALYX))
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_CALYX))
@@ -287,24 +285,27 @@ index 1574d51..78be916 100644
 +                    new DeviceInfo(DEVICE_PIXEL_2_GENERIC, 2, 3, true, true, OS_ROBOTNIX))
 +            .put("@crosshatch_avbFingerprint@",
 +                    new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@sunfish_avbFingerprint@",
++                    new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
-@@ -455,6 +461,9 @@ class AttestationProtocol {
+@@ -455,6 +463,11 @@ class AttestationProtocol {
              // CalyxOS
              .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
                      new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_CALYX))
 +            // Robotnix
 +            .put("@crosshatch_avbFingerprint@",
 +                    new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@sunfish_avbFingerprint@",
++                    new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 -- 
 2.28.0
 
-
-From 8187acf88d7fd0d7d5788856ed529d564294b005 Mon Sep 17 00:00:00 2001
+From 2c41e873542b1adb5cc889046dff11a1b6d5f258 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:50:29 -0400
 Subject: [PATCH 4/4] Custom appId
@@ -314,7 +315,7 @@ Subject: [PATCH 4/4] Custom appId
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index 78be916..4fafe3e 100644
+index 9354181..1a3df0b 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -161,7 +161,7 @@ class AttestationProtocol {
