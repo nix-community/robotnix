@@ -32,6 +32,7 @@ buildGradle rec {
 
     taimen_avbFingerprint = if (deviceFamily == "taimen") then avbFingerprint else "DISABLED_CUSTOM_TAIMEN";
     crosshatch_avbFingerprint = if (deviceFamily == "crosshatch") then avbFingerprint else "DISABLED_CUSTOM_CROSSHATCH";
+    sunfish_avbFingerprint = if (deviceFamily == "sunfish") then avbFingerprint else "DISABLED_CUSTOM_SUNFISH";
   }) ];
 
   gradleFlags = [ "assembleRelease" ];

@@ -51,6 +51,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [ {
+      assertion = builtins.elem cfg.deviceFamily [ "taimen" "crosshatch" "sunfish" ];
+      message = "Device ${cfg.deviceFamily} is currently unsupported.";
+    } ];
+
     systemd.services.attestation-server = {
       description = "Attestation Server";
       wantedBy = [ "multi-user.target" ];

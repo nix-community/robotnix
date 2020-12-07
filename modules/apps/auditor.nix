@@ -18,6 +18,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [ {
+      assertion = builtins.elem config.deviceFamily [ "taimen" "crosshatch" "sunfish" ];
+      message = "Device ${config.deviceFamily} is currently unsupported.";
+    } ];
+
     apps.prebuilt.Auditor = {
       # TODO: Generate this one with a script
       # TODO: Can sign with custom certs at the release stage instead
