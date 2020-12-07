@@ -47,9 +47,46 @@ in
 
     generateKeysScript = mkOption { type = types.path; internal = true; };
     verifyKeysScript = mkOption { type = types.path; internal = true; };
+
+    keyStorePath = mkOption {
+      type = types.str;
+      description = "Absolute path to generated keys for signing";
+    };
   };
 
   config = {
+    keyStorePath = mkIf (!config.signing.enable) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
+
+    build = let
+      # TODO: Find a better way to do this?
+      putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
+    in {
+      # TODO: Is there a nix-native way to get this information instead of using IFD
+      _keyPath = keyStorePath: name:
+        let deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
+        in if builtins.elem name deviceCertificates
+          then (if config.signing.enable
+            then "${keyStorePath}/${config.device}/${name}"
+            else "${keyStorePath}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
+          else "${keyStorePath}/${name}";
+      keyPath = name: config.build._keyPath config.keyStorePath name;
+      sandboxKeyPath = name: (if config.signing.enable
+        then config.build._keyPath "/keys" name
+        else config.build.keyPath name);
+
+      x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
+      fingerprints = name:
+        let
+          avb_pkmd = putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin";
+      in if (name == "avb")
+        then (import (pkgs.runCommand "avb-fingerprint" {} ''
+          sha256sum ${avb_pkmd} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out
+        ''))
+        else (import (pkgs.runCommand "cert-fingerprint" {} ''
+          ${pkgs.openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${config.build.x509 name} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
+        ''));
+    };
+
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
     signing.apex.packageNames = map (s: "com.android.${s}") (
       optionals (config.androidVersion == 10) [ "runtime.release" ]

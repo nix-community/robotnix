@@ -5,9 +5,6 @@ let
   usePatchedCoreutils = false;
   fakeuser = pkgs.callPackage ./fakeuser {};
 
-  # TODO: Not exactly sure what i'm doing.
-  putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
-
   # Taken from https://github.com/edolstra/flake-compat/
   # Format number of seconds in the Unix epoch as %Y.%m.%d.%H
   formatSecondsSinceEpoch = t:
@@ -142,11 +139,6 @@ in
       internal = true;
     };
 
-    keyStorePath = mkOption {
-      type = types.str;
-      description = "Absolute path to generated keys for signing";
-    };
-
     ccache.enable = mkEnableOption "ccache";
 
     envPackages = mkOption {
@@ -179,12 +171,6 @@ in
     buildNumber = mkOptionDefault (formatSecondsSinceEpoch config.buildDateTime);
 
     productName = mkIf (config.device != null) (mkOptionDefault "${config.productNamePrefix}${config.device}");
-
-    # Some derivations (like fdroid) need to know the fingerprints of the keys
-    # even if we aren't signing. Set test-keys in that case. This is not an
-    # unconditional default because we want the user to be forced to set
-    # keyStorePath themselves if they select signing.enable.
-    keyStorePath = mkIf (!config.signing.enable) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
 
     system.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.system.additionalProductPackages;
     product.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.product.additionalProductPackages;
@@ -226,31 +212,6 @@ in
     ];
 
     build = rec {
-      # TODO: Is there a nix-native way to get this information instead of using IFD
-      _keyPath = keyStorePath: name:
-        let deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
-        in if builtins.elem name deviceCertificates
-          then (if config.signing.enable
-            then "${keyStorePath}/${config.device}/${name}"
-            else "${keyStorePath}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
-          else "${keyStorePath}/${name}";
-      keyPath = name: config.build._keyPath config.keyStorePath name;
-      sandboxKeyPath = name: (if config.signing.enable
-        then config.build._keyPath "/keys" name
-        else config.build.keyPath name);
-
-      x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
-      fingerprints = name:
-        let
-          avb_pkmd = putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin";
-      in if (name == "avb")
-        then (import (pkgs.runCommand "avb-fingerprint" {} ''
-          sha256sum ${avb_pkmd} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out
-        ''))
-        else (import (pkgs.runCommand "cert-fingerprint" {} ''
-          ${pkgs.openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${config.build.x509 name} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
-        ''));
-
       mkAndroid =
         { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
         # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
