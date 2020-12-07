@@ -1,5 +1,9 @@
 # Adding F-Droid repositories
 
+F-Droid can manage multiple repositories to fetch apps from.  These can be set
+up manually in the app, but with Robotnix it is also possible to preload
+F-Droid with some repositories at build time.
+
 To add an F-Droid repository you need at least the URL and a public key.
 Obtaining the URL is in general very easy but it's not obvious where to obtain
 the public key.

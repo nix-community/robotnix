@@ -53,14 +53,8 @@
       };
     }
     ```
-    You also need to have signing enabled during build time.  Trying to build
-    for later signing with the release script doesn't build. (TODO: Probably a bug)
-    ```
-    Can't open /nix/store/a791pqlmh0npazbd6g310ga3b02mpz78-build=make-patched/target/product/security/auditor.x509.pem for reading, No such file or directory
-    140737348248832:error:02001002:system library:fopen:No such file or directory:crypto/bio/bss_file.c:69:fopen('/nix/store/a791pqlmh0npazbd6g310ga3b02mpz78-build=make-patched/target/product/security/auditor.x509.pem','r')
-    140737348248832:error:2006D080:BIO routines:BIO_new_file:no such file:crypto/bio/bss_file.c:76:
-    unable to load certificate
-    ```
+    You also need to have signing enabled during build time because the Auditor
+    app needs to know its own signing key during build.
 
  3. That's it from the Android side.  Note that the custom Auditor app will be
     named “Robotnix Auditor”.  When you build GrapheneOS the normal Auditor app
@@ -93,8 +87,8 @@
         ((builtins.fetchTarball {
           name = "robotnix";
           url =
-            "https://github.com/danielfullmer/robotnix/archive/master.tar.gz";
-          sha256 = "0000000000000000000000000000000000000000000000000000";
+            "https://github.com/danielfullmer/robotnix/archive/61b91d145f0b08cf0d4d73fb1d7ba74b9899b788.zip";
+          sha256 = "1dihmdw5w891jq2fm7mcx30ydjjd33ggbb60898841x5pzjx6ynv";
         }) + "/nixos")
       ];
 
@@ -107,12 +101,12 @@
       };
       services.nginx.virtualHosts."${config.services.attestation-server.domain}" = {
         enableACME = true;
-        #locations."/api/create_account".return = "404"; # uncomment to disable registration
+        #locations."/api/create_account".return = "404"; # uncomment to disable account creation
       };
     }
     ```
 
- 3. Register and optionally disable the registration.  The start the “Robotnix
+ 3. Register and optionally disable account creation.  The start the “Robotnix
     Auditor” app on your phone and open the menu (three dots).  Choose “Enable
     remote verification” and scan the QR code on your attestation server.
 
