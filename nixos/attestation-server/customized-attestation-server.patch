@@ -1,4 +1,4 @@
-From 0da031da71698f77f02eb2faecd15713e6dd6382 Mon Sep 17 00:00:00 2001
+From 53fef77c2b4ea5065bfb941feb4c760ac79a8a3b Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:00:46 -0400
 Subject: [PATCH 1/4] Custom listen settings
@@ -8,11 +8,11 @@ Subject: [PATCH 1/4] Custom listen settings
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index c55a648..fd8697d 100644
+index 5031ed4..c83aef4 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -327,7 +327,7 @@ public class AttestationServer {
-         new Thread(new Maintenance()).start();
+@@ -335,7 +335,7 @@ public class AttestationServer {
+         executor.prestartAllCoreThreads();
  
          System.setProperty("sun.net.httpserver.nodelay", "true");
 -        final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
@@ -21,9 +21,10 @@ index c55a648..fd8697d 100644
          server.createContext("/api/change_password", new ChangePasswordHandler());
          server.createContext("/api/login", new LoginHandler());
 -- 
-2.28.0
+2.29.0
 
-From ac3b0e584fd5fa2692d5c63cb66439a07316ee74 Mon Sep 17 00:00:00 2001
+
+From 0fc893a4dab37dd5441a86689c14547af52c5cf4 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:09 -0400
 Subject: [PATCH 2/4] Custom domain
@@ -31,12 +32,12 @@ Subject: [PATCH 2/4] Custom domain
 ---
  .../attestation/server/AlertDispatcher.java   |  2 +-
  .../attestation/server/AttestationServer.java |  2 +-
- static/about.html                             | 10 +++---
- static/contact.html                           | 34 ++++---------------
- static/index.html                             |  8 ++---
+ static/about.html                             | 10 ++++----
+ static/contact.html                           | 24 ++++++-------------
+ static/index.html                             |  8 +++----
  static/robots.txt                             |  2 +-
- static/tutorial.html                          | 14 ++++----
- 7 files changed, 26 insertions(+), 46 deletions(-)
+ static/tutorial.html                          | 14 +++++------
+ 7 files changed, 26 insertions(+), 36 deletions(-)
 
 diff --git a/src/main/java/app/attestation/server/AlertDispatcher.java b/src/main/java/app/attestation/server/AlertDispatcher.java
 index 61814d4..78e3b37 100644
@@ -52,10 +53,10 @@ index 61814d4..78e3b37 100644
  
                                  Transport.send(message);
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index fd8697d..4515d79 100644
+index c83aef4..e17c4ed 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -882,7 +882,7 @@ public class AttestationServer {
+@@ -892,7 +892,7 @@ public class AttestationServer {
              exchange.getResponseHeaders().set("Content-Type", "image/png");
              exchange.sendResponseHeaders(200, 0);
              try (final OutputStream output = exchange.getResponseBody()) {
@@ -65,7 +66,7 @@ index fd8697d..4515d79 100644
                      BaseEncoding.base64().encode(account.subscribeKey) + " " +
                      account.verifyInterval;
 diff --git a/static/about.html b/static/about.html
-index 4cbd08c..e33d00a 100644
+index 8749f9d..6054ae0 100644
 --- a/static/about.html
 +++ b/static/about.html
 @@ -12,18 +12,18 @@
@@ -84,14 +85,14 @@ index 4cbd08c..e33d00a 100644
          <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?10"/>
+         <link rel="stylesheet" href="/attestation.css?14"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/about"/>
 +        <link rel="canonical" href="https://@domain@/about"/>
+         <link rel="license" href="/LICENSE.txt"/>
      </head>
      <body>
-         <nav>
-@@ -57,7 +57,7 @@
+@@ -58,7 +58,7 @@
              pairing process between the device performing verification (Auditor) and the device
              being verified (Auditee) to implement a Trust On First Use (TOFU) model. The device
              performing verification can either be another Android device running the app in the
@@ -101,7 +102,7 @@ index 4cbd08c..e33d00a 100644
              alerts. See <a href="/tutorial">the tutorial</a> for usage instructions. The protocol
              used for both local and remote attestation is
 diff --git a/static/contact.html b/static/contact.html
-index 491d03c..b272e00 100644
+index 05d3b5e..6e2da66 100644
 --- a/static/contact.html
 +++ b/static/contact.html
 @@ -12,18 +12,18 @@
@@ -120,45 +121,30 @@ index 491d03c..b272e00 100644
          <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?10"/>
+         <link rel="stylesheet" href="/attestation.css?14"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/contact"/>
 +        <link rel="canonical" href="https://@domain@/contact"/>
+         <link rel="license" href="/LICENSE.txt"/>
      </head>
      <body>
-         <nav>
-@@ -41,34 +41,14 @@
-             <h1 id="contact">
-                 <a href="#contact">Contact</a>
-             </h1>
--
--            <p>Do not contact us with offers to sell us products or services.</p>
--
--            <p>Please do not send multiple copies / versions of the same email to different
--            addresses. Either send it to a single address or CC the other addresses. In general,
--            it's the same person handling every email address, and they don't need to see multiple
--            copies of the same email in their inbox.</p>
--
--            <p>You can contact <a href="mailto:contact@attestation.app">contact@attestation.app</a>
--            for topics related to the attestation project. Please don't send emails unrelated to
--            the attestation project to this address.</p>
--
--            <p>The <a href="mailto:security@attestation.app">security@attestation.app</a>
--            address is for reporting high priority security issues related to the attestation
--            project. Please don't send other kinds of emails to this address. It is not a way of
--            increasing the priority of emails that are not security reports. Your emails will be
--            treated as a much lower priority if you misuse this address.</p>
--
--            <p>The email address of the lead developer is
--            <a href="mailto:daniel.micay@attestation.app">daniel.micay@attestation.app</a>.</p>
-         </main>
-         <script type="application/ld+json">
+@@ -67,19 +67,9 @@
              {
                  "@context": "https://schema.org",
                  "@type": "Organization",
 -                "url": "https://attestation.app/",
 -                "logo": "https://attestation.app/ic_launcher-web.png",
--                "email": "contact@attestation.app"
+-                "email": "contact@attestation.app",
+-                "founder": {
+-                    "@type": "Person",
+-                    "name": "Daniel Micay",
+-                    "email": "daniel.micay@grapheneos.org",
+-                    "sameAs": [
+-                        "https://twitter.com/DanielMicay",
+-                        "https://github.com/thestinger",
+-                        "https://reddit.com/u/DanielMicay"
+-                    ]
+-                }
 +                "url": "https://@domain@/",
 +                "logo": "https://@domain@/ic_launcher-web.png",
 +                "email": "contact@@domain@"
@@ -166,7 +152,7 @@ index 491d03c..b272e00 100644
          </script>
      </body>
 diff --git a/static/index.html b/static/index.html
-index bcca994..163cdbd 100644
+index 4a02bd8..2c43003 100644
 --- a/static/index.html
 +++ b/static/index.html
 @@ -12,18 +12,18 @@
@@ -185,13 +171,13 @@ index bcca994..163cdbd 100644
          <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?10"/>
+         <link rel="stylesheet" href="/attestation.css?14"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/"/>
 +        <link rel="canonical" href="https://@domain@/"/>
-         <script type="module" src="/monitoring.js?11"></script>
+         <link rel="license" href="/LICENSE.txt"/>
+         <script type="module" src="/monitoring.js?13"></script>
      </head>
-     <body>
 diff --git a/static/robots.txt b/static/robots.txt
 index 2747cbe..acceea4 100644
 --- a/static/robots.txt
@@ -201,7 +187,7 @@ index 2747cbe..acceea4 100644
 -Sitemap: https://attestation.app/sitemap.xml
 +Sitemap: https://@domain@/sitemap.xml
 diff --git a/static/tutorial.html b/static/tutorial.html
-index 607b58a..de6a21e 100644
+index 894c116..86b1e4b 100644
 --- a/static/tutorial.html
 +++ b/static/tutorial.html
 @@ -12,18 +12,18 @@
@@ -220,43 +206,44 @@ index 607b58a..de6a21e 100644
          <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?10"/>
+         <link rel="stylesheet" href="/attestation.css?14"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/tutorial"/>
 +        <link rel="canonical" href="https://@domain@/tutorial"/>
+         <link rel="license" href="/LICENSE.txt"/>
      </head>
      <body>
-         <nav>
-@@ -75,12 +75,12 @@
-             on each Auditor for the same Auditee.</p>
-             <p>To set up regularly scheduled remote verification via the remote attestation service:</p>
-             <ol>
--                <li>create an account on https://attestation.app/ from a separate device</li>
-+                <li>create an account on https://@domain@/ from a separate device</li>
-                 <li>press the menu button in the app</li>
-                 <li>press the 'Enable remote verification' action in the menu</li>
--                <li>scan the account QR code displayed on https://attestation.app/</li>
-+                <li>scan the account QR code displayed on https://@domain@/</li>
-                 <li>configure an alert email address to receive alerts if the device fails to provide valid attestations in time</li>
--                <li>refresh https://attestation.app/ to view the initial attestation result</li>
-+                <li>refresh https://@domain@/ to view the initial attestation result</li>
-             </ol>
-             <h2 id="expanding-device-support">
-                 <a href="#expanding-device-support">Expanding device support</a>
+@@ -84,12 +84,12 @@
+                 on each Auditor for the same Auditee.</p>
+                 <p>To set up regularly scheduled remote verification via the remote attestation service:</p>
+                 <ol>
+-                    <li>create an account on https://attestation.app/ from a separate device</li>
++                    <li>create an account on https://@domain@/ from a separate device</li>
+                     <li>press the menu button in the app</li>
+                     <li>press the 'Enable remote verification' action in the menu</li>
+-                    <li>scan the account QR code displayed on https://attestation.app/</li>
++                    <li>scan the account QR code displayed on https://@domain@/</li>
+                     <li>configure an alert email address to receive alerts if the device fails to provide valid attestations in time</li>
+-                    <li>refresh https://attestation.app/ to view the initial attestation result</li>
++                    <li>refresh https://@domain@/ to view the initial attestation result</li>
+                 </ol>
+             </section>
+ 
 -- 
-2.28.0
+2.29.0
 
-From 847c2655aa8314c4404fc59353e3b574adea392f Mon Sep 17 00:00:00 2001
+
+From b82d2ee4bbf4ad44554e37dece5237920b83f9ec Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:18 -0400
 Subject: [PATCH 3/4] Custom fingerprints
 
 ---
- .../attestation/server/AttestationProtocol.java   | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ .../server/AttestationProtocol.java           | 37 ++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index 1574d51..9354181 100644
+index dd26b9d..af7f20a 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -166,7 +166,7 @@ class AttestationProtocol {
@@ -268,44 +255,67 @@ index 1574d51..9354181 100644
      private static final int OS_VERSION_MINIMUM = 80000;
      private static final int OS_PATCH_LEVEL_MINIMUM = 201801;
      private static final int VENDOR_PATCH_LEVEL_MINIMUM = 201808;
-@@ -241,6 +241,7 @@ class AttestationProtocol {
+@@ -239,6 +239,7 @@ class AttestationProtocol {
+ 
      private static final String OS_STOCK = "Stock";
      private static final String OS_GRAPHENE = "GrapheneOS";
-     private static final String OS_CALYX = "CalyxOS";
 +    private static final String OS_ROBOTNIX = "Robotnix";
  
      static class DeviceInfo {
          final String name;
-@@ -312,6 +313,13 @@ class AttestationProtocol {
-                     new DeviceInfo(DEVICE_PIXEL_2_GENERIC, 2, 3, true, true, OS_CALYX))
-             .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
-                     new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_CALYX))
+@@ -305,6 +306,25 @@ class AttestationProtocol {
+                     new DeviceInfo(DEVICE_PIXEL_4_XL, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
+             .put("9F2454A1657B1B5AD7F2336B39A2611F7A40B2E0DDFD0D6553A359605928DF29",
+                     new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
 +            // Robotnix (TODO: support multiple devices. Needs different key for each device?)
-+            .put("@taimen_avbFingerprint@",
-+                    new DeviceInfo(DEVICE_PIXEL_2_GENERIC, 2, 3, true, true, OS_ROBOTNIX))
-+            .put("@crosshatch_avbFingerprint@",
-+                    new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
-+            .put("@sunfish_avbFingerprint@",
++            .put("@walleye@",
++                    new DeviceInfo(DEVICE_PIXEL_2, 2, 3, true, true, OS_ROBOTNIX))
++            .put("@taimen@",
++                    new DeviceInfo(DEVICE_PIXEL_2_XL, 2, 3, true, true, OS_ROBOTNIX))
++            .put("@blueline@",
++                    new DeviceInfo(DEVICE_PIXEL_3, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@crosshatch@",
++                    new DeviceInfo(DEVICE_PIXEL_3_XL, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@sargo@",
++                    new DeviceInfo(DEVICE_PIXEL_3A, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@bonito@",
++                    new DeviceInfo(DEVICE_PIXEL_3A_XL, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@flame@",
++                    new DeviceInfo(DEVICE_PIXEL_4, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@coral@",
++                    new DeviceInfo(DEVICE_PIXEL_4_XL, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@sunfish@",
 +                    new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
-@@ -455,6 +463,11 @@ class AttestationProtocol {
-             // CalyxOS
-             .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
-                     new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_CALYX))
+@@ -445,6 +465,21 @@ class AttestationProtocol {
+                     new DeviceInfo(DEVICE_PIXEL_4_XL, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
+             .put("9F2454A1657B1B5AD7F2336B39A2611F7A40B2E0DDFD0D6553A359605928DF29",
+                     new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
 +            // Robotnix
-+            .put("@crosshatch_avbFingerprint@",
-+                    new DeviceInfo(DEVICE_PIXEL_3_GENERIC, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
-+            .put("@sunfish_avbFingerprint@",
++            .put("@blueline@",
++                    new DeviceInfo(DEVICE_PIXEL_3, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@crosshatch@",
++                    new DeviceInfo(DEVICE_PIXEL_3_XL, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@sargo@",
++                    new DeviceInfo(DEVICE_PIXEL_3A, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@bonito@",
++                    new DeviceInfo(DEVICE_PIXEL_3A_XL, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@flame@",
++                    new DeviceInfo(DEVICE_PIXEL_4, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@coral@",
++                    new DeviceInfo(DEVICE_PIXEL_4_XL, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@sunfish@",
 +                    new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 -- 
-2.28.0
+2.29.0
 
-From 2c41e873542b1adb5cc889046dff11a1b6d5f258 Mon Sep 17 00:00:00 2001
+
+From 01f45ac83984de5c39ab196fb441c9fc11c55415 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:50:29 -0400
 Subject: [PATCH 4/4] Custom appId
@@ -315,7 +325,7 @@ Subject: [PATCH 4/4] Custom appId
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index 9354181..1a3df0b 100644
+index af7f20a..4135b05 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -161,7 +161,7 @@ class AttestationProtocol {
@@ -328,5 +338,5 @@ index 9354181..1a3df0b 100644
      private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
              "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
 -- 
-2.28.0
+2.29.0
 

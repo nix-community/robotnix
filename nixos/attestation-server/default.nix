@@ -4,7 +4,7 @@
   applicationId ? "org.robotnix.auditor",
   domain ? "example.org",
   signatureFingerprint ? "",
-  deviceFamily ? "",
+  device ? "",
   avbFingerprint ? ""
 }:
 let
@@ -13,28 +13,28 @@ let
       java = jdk11_headless;
     };
   };
+  supportedDevices = import ../../apks/auditor/supported-devices.nix;
 in
 buildGradle {
   pname = "AttestationServer";
-  version = "2020-11-03";
+  version = "2020-12-08";
 
   envSpec = ./gradle-env.json;
 
   src = fetchFromGitHub {
     owner = "grapheneos";
     repo = "AttestationServer";
-    rev = "783e0fbaf70ef0bc97c98b4c140022f8cec69f18";
-    sha256 = "1xj890jlwvhbwxizlbp28c5yy5llbvc6cz9r7gbblhqsa77jqsm0";
+    rev = "ed6eb689731c56bcd3cd92e099ea780024385a14";
+    sha256 = "0q8c4hzvcwkki9ra3jr865jg1qhrigiz6mhyf2q4ggf23r30ahf5";
   };
 
-  patches = [ (substituteAll {
-    src = ./customized-attestation-server.patch;
-    inherit listenHost port domain applicationId signatureFingerprint;
-
-    taimen_avbFingerprint = if (deviceFamily == "taimen") then avbFingerprint else "DISABLED_CUSTOM_TAIMEN";
-    crosshatch_avbFingerprint = if (deviceFamily == "crosshatch") then avbFingerprint else "DISABLED_CUSTOM_CROSSHATCH";
-    sunfish_avbFingerprint = if (deviceFamily == "sunfish") then avbFingerprint else "DISABLED_CUSTOM_SUNFISH";
-  }) ];
+  patches = [
+    (substituteAll ({
+      src = ./customized-attestation-server.patch;
+      inherit listenHost port domain applicationId signatureFingerprint;
+    }
+    // lib.genAttrs supportedDevices (d: if (device == d) then avbFingerprint else "DISABLED_CUSTOM_${d}")))
+  ];
 
   JAVA_TOOL_OPTIONS = "-Dfile.encoding=UTF8";
 

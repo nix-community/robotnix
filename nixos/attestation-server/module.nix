@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.services.attestation-server;
+  supportedDevices = import ../../apks/auditor/supported-devices.nix;
 in
 {
   options.services.attestation-server = {
@@ -27,7 +28,7 @@ in
       type = types.str;
     };
 
-    deviceFamily = mkOption {
+    device = mkOption {
       default = "";
       type = types.str;
     };
@@ -39,7 +40,7 @@ in
 
     package = mkOption {
       default = pkgs.attestation-server.override {
-        inherit (cfg) listenHost port domain signatureFingerprint deviceFamily avbFingerprint;
+        inherit (cfg) listenHost port domain signatureFingerprint device avbFingerprint;
       };
       type = types.path;
     };
@@ -52,8 +53,8 @@ in
 
   config = mkIf cfg.enable {
     assertions = [ {
-      assertion = builtins.elem cfg.deviceFamily [ "taimen" "crosshatch" "sunfish" ];
-      message = "Device ${cfg.deviceFamily} is currently unsupported.";
+      assertion = builtins.elem cfg.device supportedDevices;
+      message = "Device ${cfg.device} is currently unsupported for use with attestation server.";
     } ];
 
     systemd.services.attestation-server = {

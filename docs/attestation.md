@@ -96,7 +96,7 @@
       services.attestation-server = {
         enable = true;
         domain = "attestation.example.com";
-        deviceFamily = "sunfish";
+        device = "sunfish";
         signatureFingerprint = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         avbFingerprint = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
       };
