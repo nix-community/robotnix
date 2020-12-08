@@ -3,12 +3,16 @@
 with lib;
 let
   cfg = config.signing;
-  keysToGenerate = map (key: "${config.device}/${key}") [ "releasekey" "platform" "shared" "media" ]
+  keysToGenerate = unique (
+                    map (key: "${config.device}/${key}") [ "releasekey" "platform" "shared" "media" ]
                     ++ (optional (config.signing.avb.mode == "verity_only") "${config.device}/verity")
                     ++ (optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
                     ++ (optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
                     ++ (optional config.signing.apex.enable config.signing.apex.packageNames)
-                    ++ (mapAttrsToList (name: prebuilt: prebuilt.certificate) config.apps.prebuilt);
+                    ++ (mapAttrsToList
+                        (name: prebuilt: prebuilt.certificate)
+                        (filterAttrs (name: prebuilt: prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
+                    );
 in
 {
   options = {
