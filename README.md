@@ -86,6 +86,9 @@ To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
 Additionally, the nix builder will also need read access to these keys.
 This can be set using `chgrp -R nixbld ./keys` and `chmod -R g+r ./keys`.
 
+### Installation
+See `docs/installation.md` for details on flashing and updating for Pixel devices.
+
 ### OTA Updater
 The Over-the-Air (OTA) updater can be enabled using `apps.updater.enable = true;`.
 The URL that the updater will query for updates is set using `apps.updater.url = "...";`.

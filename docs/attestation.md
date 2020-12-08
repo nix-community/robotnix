@@ -12,7 +12,7 @@
     	-o generate-keys
     $ cp -L generate-keys auditor-keys
     ```
-    Then delete the line with the assignment of the `KEYS`variable and replace it
+    Then delete the line with the assignment of the `KEYS` variable and replace it
     with `KEYS=( auditor )`.  I have also changed the common name of the
     certificate to `Robotnix auditor` because it is not device dependent.  The
     resulting script should look something like this (with potentially different
@@ -86,6 +86,7 @@
       imports = [
         ((builtins.fetchTarball {
           name = "robotnix";
+          # Replace the git revision and sha256 with ones referring to a recent commit
           url =
             "https://github.com/danielfullmer/robotnix/archive/61b91d145f0b08cf0d4d73fb1d7ba74b9899b788.zip";
           sha256 = "1dihmdw5w891jq2fm7mcx30ydjjd33ggbb60898841x5pzjx6ynv";
