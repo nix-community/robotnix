@@ -16,8 +16,10 @@ let
     LOCAL_MODULE_TAGS := optional
 
     LOCAL_PRIVILEGED_MODULE := ${boolToString prebuilt.privileged}
-    LOCAL_CERTIFICATE := ${if builtins.elem prebuilt.certificate deviceCertificates
-      then (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
+    LOCAL_CERTIFICATE := ${
+      if (prebuilt.certificate == "PRESIGNED") then "PRESIGNED"
+      else if builtins.elem prebuilt.certificate deviceCertificates
+        then (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
       else "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}"
     }
     ${optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
@@ -187,7 +189,7 @@ in
           if [[ "$TARGET_SDK_VERSION" -lt "${builtins.toString config.apiLevel}" ]]; then
             echo "WARNING: APK was compiled against an older SDK API level ($TARGET_SDK_VERSION) than used in OS (${builtins.toString config.apiLevel})"
           fi
-        '' + optionalString (!(builtins.elem prebuilt.certificate deviceCertificates)) ''
+        '' + optionalString ((prebuilt.certificate != "PRESIGNED") && !(builtins.elem prebuilt.certificate deviceCertificates)) ''
           cp ${prebuilt.snakeoilKeyPath}/${prebuilt.certificate}.{pk8,x509.pem} $out/
         '');
       };
