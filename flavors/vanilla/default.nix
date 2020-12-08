@@ -49,26 +49,21 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
 }
 
-(mkIf (elem config.androidVersion [ 9 10 ]) {
-  source.dirs."device/google/marlin".patches = [ (./. + "/${toString config.androidVersion}/marlin-fix-device-names.patch") ];
+(mkIf (elem config.androidVersion [ 9 10 11 ]) {
+  source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}/disable-quicksearch.patch") ];
+})
+(mkIf ((elem config.deviceFamily phoneDeviceFamilies)  && (elem config.androidVersion [ 9 10 11 ])) {
+  source.dirs."device/google/${config.deviceFamily}".patches = [ (./. + "/${toString config.androidVersion}/${config.deviceFamily}-fix-device-names.patch") ];
+})
+(mkIf ((config.deviceFamily == "marlin") && (elem config.androidVersion [ 9 10 ])) {
   # patch location for marlin is different
   source.dirs."device/google/marlin".postPatch = "substituteInPlace common/base.mk --replace SystemUIGoogle SystemUI";
 })
-(mkIf (elem config.androidVersion [ 9 10 11 ]) {
-  source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}/disable-quicksearch.patch") ];
-  source.dirs."device/google/taimen".patches = [ (./. + "/${toString config.androidVersion}/taimen-fix-device-names.patch") ];
-  source.dirs."device/google/muskie".patches = [ (./. + "/${toString config.androidVersion}/muskie-fix-device-names.patch") ];
-  source.dirs."device/google/crosshatch".patches = [ (./. + "/${toString config.androidVersion}/crosshatch-fix-device-names.patch") ];
-  source.dirs."device/google/bonito".patches = [ (./. + "/${toString config.androidVersion}/bonito-fix-device-names.patch") ];
+(mkIf ((elem config.deviceFamily [ "taimen" "muskie" ]) && (elem config.androidVersion [ 9 10 11 ])) {
   source.dirs."device/google/wahoo".postPatch = patchSystemUIGoogle;
-  source.dirs."device/google/crosshatch".postPatch = patchSystemUIGoogle;
-  source.dirs."device/google/bonito".postPatch = patchSystemUIGoogle;
 })
-(mkIf (elem config.androidVersion [ 11 ]) {
-  source.dirs."device/google/coral".patches = [ (./. + "/${toString config.androidVersion}/coral-fix-device-names.patch") ];
-  source.dirs."device/google/sunfish".patches = [ (./. + "/${toString config.androidVersion}/sunfish-fix-device-names.patch") ];
-  source.dirs."device/google/coral".postPatch = patchSystemUIGoogle;
-  source.dirs."device/google/sunfish".postPatch = patchSystemUIGoogle;
+(mkIf ((elem config.deviceFamily phoneDeviceFamilies) && (!(elem config.deviceFamily [ "marlin" "taimen" "muskie" ]))  && (elem config.androidVersion [ 9 10 11 ])) {
+  source.dirs."device/google/${config.deviceFamily}".postPatch = patchSystemUIGoogle;
 })
 
 ### Android 10 stuff ###
