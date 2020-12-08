@@ -126,14 +126,14 @@ in
       ];
       keyMappings = {
          # Default key mappings from sign_target_files_apks.py
-        "build/target/product/security/devkey" = "${config.device}/releasekey";
-        "build/target/product/security/testkey" = "${config.device}/releasekey";
-        "build/target/product/security/media" = "${config.device}/media";
-        "build/target/product/security/shared" = "${config.device}/shared";
-        "build/target/product/security/platform" = "${config.device}/platform";
+        "build/make/target/product/security/devkey" = "${config.device}/releasekey";
+        "build/make/target/product/security/testkey" = "${config.device}/releasekey";
+        "build/make/target/product/security/media" = "${config.device}/media";
+        "build/make/target/product/security/shared" = "${config.device}/shared";
+        "build/make/target/product/security/platform" = "${config.device}/platform";
       }
       // optionalAttrs (config.androidVersion >= 10) {
-        "build/target/product/security/networkstack" = "${config.device}/networkstack";
+        "build/make/target/product/security/networkstack" = "${config.device}/networkstack";
       }
       // optionalAttrs (config.androidVersion >= 11) {
         "frameworks/base/packages/OsuLogin/certs/com.android.hotspot2.osulogin" = "com.android.hotspot2.osulogin";
