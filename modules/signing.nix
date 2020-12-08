@@ -61,7 +61,6 @@ in
       # TODO: Find a better way to do this?
       putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
     in {
-      # TODO: Is there a nix-native way to get this information instead of using IFD
       _keyPath = keyStorePath: name:
         let deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
         in if builtins.elem name deviceCertificates
@@ -76,15 +75,10 @@ in
 
       x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
       fingerprints = name:
-        let
-          avb_pkmd = putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin";
-      in if (name == "avb")
-        then (import (pkgs.runCommand "avb-fingerprint" {} ''
-          sha256sum ${avb_pkmd} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out
-        ''))
-        else (import (pkgs.runCommand "cert-fingerprint" {} ''
-          ${pkgs.openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${config.build.x509 name} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
-        ''));
+        if (name == "avb")
+          # TODO: Is there a nix-native way to get this information instead of using IFD
+          then pkgs.robotnix.sha256Fingerprint (putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin")
+          else pkgs.robotnix.certFingerprint (config.build.x509 name);
     };
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);

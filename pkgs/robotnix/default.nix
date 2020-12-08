@@ -1,6 +1,20 @@
-{ lib, runCommand, androidPkgs, makeWrapper, jre8_headless }:
+{ lib, runCommand, androidPkgs, makeWrapper, jre8_headless, openssl }:
 
 let
+  # Try to avoid using the derivations below, since they rely on "import-from-derivation"
+  apkFingerprint = apk: (import runCommand "apk-fingerprint" { nativeBuildInputs = [ jre8_headless ]; } ''
+    fingerprint=$(keytool -printcert -jarfile ${apk} | grep "SHA256:" | tr --delete ':' | cut --delimiter ' ' --fields 3)
+    echo "\"$fingerprint\"" > $out
+  '');
+
+  certFingerprint = cert: (import (runCommand "cert-fingerprint" {} ''
+    ${openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${cert} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
+  ''));
+
+  sha256Fingerprint = file: (import (runCommand "sha256-fingerprint" {} ''
+    sha256sum ${file} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out
+  ''));
+
   # getName snippet originally from nixpkgs/pkgs/build-support/trivial-builders.nix
   getName = fname: apk:
     if lib.elem (builtins.typeOf apk) [ "path" "string" ]
@@ -38,5 +52,7 @@ let
     fi
   '';
 in {
-  inherit build-tools apksigner signApk verifyApk;
+  inherit
+    build-tools apksigner signApk verifyApk
+    apkFingerprint certFingerprint sha256Fingerprint;
 }

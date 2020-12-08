@@ -4,7 +4,7 @@ with lib;
 
 let
   version = "0.2.14.204215";
-  verifyApk = apk: pkgs.verifyApk {
+  verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
     sha256 = "9bd06727e62796c0130eb6dab39b73157451582cbd138e86c468acc395d14165"; # O=NOGAPPS Project, C=DE
   };

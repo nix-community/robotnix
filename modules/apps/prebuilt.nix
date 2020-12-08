@@ -27,12 +27,6 @@ let
     include $(BUILD_PREBUILT)
     '');
 
-  # TODO: Uses IFD. Try to avoid using this.
-  apkFingerprint = apk: (import pkgs.runCommand "apk-fingerprint" { nativeBuildInputs = [ pkgs.jre8_headless ]; } ''
-    fingerprint=$(keytool -printcert -jarfile ${apk} | grep "SHA256:" | tr --delete ':' | cut --delimiter ' ' --fields 3)
-    echo "\"$fingerprint\"" > $out
-  '');
-
   # Cert names used by AOSP. Only some of these make sense to be used to sign packages
   deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ];
 in
@@ -124,14 +118,14 @@ in
 
           # Uses the sandbox exception in /keys
           signedApk = mkDefault (
-            if config.certificate == "PRESIGNED" then config.apk else (pkgs.signApk {
+            if config.certificate == "PRESIGNED" then config.apk else (pkgs.robotnix.signApk {
               inherit (config) apk;
               keyPath = _config.build.sandboxKeyPath config.certificate;
             }));
 
           fingerprint = mkDefault (
             if config.certificate == "PRESIGNED"
-            then apkFingerprint config.signedApk
+            then pkgs.robotnix.apkFingerprint config.signedApk
             else _config.build.fingerprints config.certificate
           );
         };
@@ -157,7 +151,7 @@ in
 
           ### Check minSdkVersion, targetSdkVersion
           # TODO: Also check permissions?
-          MANIFEST_DUMP=$(${pkgs.build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${apk})
+          MANIFEST_DUMP=$(${pkgs.robotnix.build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${apk})
 
           # It would be better if we could convert it back into true XML and then select based on XPath
           MIN_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep minSdkVersion | cut -d= -f2)

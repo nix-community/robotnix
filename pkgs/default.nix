@@ -46,11 +46,8 @@ let
 
     ###
 
-    inherit (super.callPackage ./build-tools {})
-      build-tools
-      apksigner
-      signApk
-      verifyApk;
+    # Robotnix helper derivations
+    robotnix = super.callPackage ./robotnix {};
   };
 in
   import nixpkgs (args // {

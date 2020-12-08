@@ -66,7 +66,7 @@ in
         config_priorityOnlyDndExemptPackages = [ "com.google.android.dialer" ]; # Found under PixelConfigOverlayCommon.apk
       };
       apps.prebuilt.GoogleDialer = {
-        apk = pkgs.verifyApk {
+        apk = pkgs.robotnix.verifyApk {
           apk = "${productPath}/priv-app/GoogleDialer/GoogleDialer.apk";
           sha256 = "e2d049f3a01192f620b1240615fa8c13badc553c22bc6fddfca45c84d8fc545d";
         };
@@ -81,14 +81,14 @@ in
       google.dialer.enable = true;
       apps.prebuilt = {
         Tycho = { # Google Fi app
-          apk = pkgs.verifyApk {
+          apk = pkgs.robotnix.verifyApk {
             apk = "${productPath}/app/Tycho/Tycho.apk";
             sha256 = "4c36af4a5bdad97c1f3d8b283416d244496c2ac5eafe8226079ef6f676fd1859";
           };
           certificate = "PRESIGNED";
         };
         GCS = { # Google Connectivity Services (does wifi VPN at least)
-          apk = pkgs.verifyApk {
+          apk = pkgs.robotnix.verifyApk {
             apk = "${productPath}/priv-app/GCS/GCS.apk";
             sha256 = "8efed9b84a6320eafde625cea7bb6bae0e320473d0e3c04fb0cd43b779078e1d";
           };
@@ -97,7 +97,7 @@ in
         };
 #### Disabling for now, since calls aren't working ####
 #        CarrierServices = {
-#          apk = pkgs.verifyApk {
+#          apk = pkgs.robotnix.verifyApk {
 #            apk = "${productPath}/priv-app/CarrierServices/CarrierServices.apk"; # Google Carrier Services. com.google.android.ims (needed for wifi calls)
 #            sha256 = "c25d5afacb6783109d6136d79353fad4f6541c3545d25228a18703d043ca783f";
 #          };
@@ -105,7 +105,7 @@ in
 #          privileged = true;
 #        };
         CarrierSettings = { # com.google.android.carrier
-          apk = pkgs.verifyApk {
+          apk = pkgs.robotnix.verifyApk {
             apk = "${productPath}/priv-app/CarrierSettings/CarrierSettings.apk";
             sha256 = "383d1e1b525ec6fb8204c5bf9b8390d37fd157e78b8b7212d61487b178066d20";
           };
@@ -119,7 +119,7 @@ in
         };
       } // (optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Generalize to other devices with esim
         EuiccGoogle = {
-          apk = pkgs.verifyApk {
+          apk = pkgs.robotnix.verifyApk {
             apk = "${productPath}/priv-app/EuiccGoogle/EuiccGoogle.apk";
             sha256 = "7e26b6d5802a16799448ad635868f0345d6730310634684c0ae44e7e9f7ea764";
           };
@@ -128,7 +128,7 @@ in
         };
       }) // (optionalAttrs ((config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
         EuiccSupportPixel = {
-          apk = pkgs.verifyApk {
+          apk = pkgs.robotnix.verifyApk {
             apk = "${productPath}/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk";
             sha256 = "e0afeca77af15aee48a25ead314c576f8f274682a8fba3365610878f7c1ddb6b";
           };
