@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2020.11.27.15";
+  grapheneOSRelease = "${config.apv.buildID}.2020.12.08.08";
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
@@ -11,12 +11,12 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1607246070;
+  buildDateTime = mkDefault 1607444862;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault "RP1A.201105.002";
+  apv.buildID = mkDefault (if (elem config.deviceFamily [ "crosshatch" "bonito"]) then "RQ1A.201205.003" else "RQ1A.201205.008");
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -79,7 +79,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "1hp6k886n34kj73wws234d209ykf1j3mg2mgzk9dckriw63m73my";
+    sha256 = "0qgbpkppb6c3hjhz4qjapkkm58c1h936x8m2ldkv381y5wiwcqgf";
     fetchSubmodules = true;
   };
 })
@@ -96,7 +96,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_coral";
     rev = grapheneOSRelease;
-    sha256 = "0gsbbd8mq9sfj4s0km15vkzls26nff2g0ssi8jccb7zclfbqazqj";
+    sha256 = "0s7nnjx25ibjmki6hywj0gd157rzl25dcv921p9i59wlw1blzkiz";
     fetchSubmodules = true;
   };
 })
@@ -105,7 +105,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_sunfish";
     rev = grapheneOSRelease;
-    sha256 = "1cxm3k9wvfbdv5w583mq2bp306j62k4g1cwlnbrgm53yfyqrimsd";
+    sha256 = "0p9azr0lijizdhg0s7dmhcinb3jimb2xbh46hlnvqpkyd4g17ypc";
     fetchSubmodules = true;
   };
 })
