@@ -4,16 +4,17 @@
   applicationName ? "Robotnix Auditor",
   applicationId ? "org.robotnix.auditor",
   signatureFingerprint ? "", # Signature that this app will be signed by.
-  deviceFamily ? "",
+  device ? "",
   avbFingerprint ? ""
 }:
 let
-  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-30 build-tools-29-0-3 ]);
+  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-30 build-tools-30-0-2 ]);
   buildGradle = callPackage ./gradle-env.nix {};
+  supportedDevices = import ./supported-devices.nix;
 in
 buildGradle rec {
   name = "Auditor-${version}.apk";
-  version = "22"; # Latest as of 2020-11-03
+  version = "23"; # Latest as of 2020-12-08
 
   envSpec = ./gradle-env.json;
 
@@ -21,19 +22,18 @@ buildGradle rec {
     owner = "grapheneos";
     repo = "Auditor";
     rev = version;
-    sha256 = "0rfi7jcjjms86x1mhbhb727sq784kp9kbkxng5rjxrddhm2d3cd5";
+    sha256 = "116cpkqs32xgl3dp7z14lljz8grdzvys99i0gscm7hsqamjbysx2";
   };
 
   patches = [
-    (substituteAll {
-    src = ./customized-auditor.patch;
-    inherit domain applicationName applicationId ;
-    signatureFingerprint = lib.toUpper signatureFingerprint;
-
-    taimen_avbFingerprint = if (deviceFamily == "taimen") then avbFingerprint else "DISABLED_CUSTOM_TAIMEN";
-    crosshatch_avbFingerprint = if (deviceFamily == "crosshatch") then avbFingerprint else "DISABLED_CUSTOM_CROSSHATCH";
-    sunfish_avbFingerprint = if (deviceFamily == "sunfish") then avbFingerprint else "DISABLED_CUSTOM_SUNFISH";
-  }) ];
+    # TODO: Enable support for passing multiple device fingerprints
+    (substituteAll ({
+      src = ./customized-auditor.patch;
+      inherit domain applicationName applicationId ;
+      signatureFingerprint = lib.toUpper signatureFingerprint;
+    }
+    // lib.genAttrs supportedDevices (d: if (device == d) then avbFingerprint else "DISABLED_CUSTOM_${d}")))
+  ];
 
   gradleFlags = [ "assembleRelease" ];
 

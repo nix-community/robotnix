@@ -3,6 +3,7 @@
 with lib;
 let
   cfg = config.apps.auditor;
+  supportedDevices = import ../../apks/auditor/supported-devices.nix;
 in
 {
   options = {
@@ -19,15 +20,15 @@ in
 
   config = mkIf cfg.enable {
     assertions = [ {
-      assertion = builtins.elem config.deviceFamily [ "taimen" "crosshatch" "sunfish" ];
-      message = "Device ${config.deviceFamily} is currently unsupported.";
+      assertion = builtins.elem config.device supportedDevices;
+      message = "Device ${config.device} is currently unsupported for use with auditor app.";
     } ];
 
     apps.prebuilt.Auditor = {
       apk = apks.auditor.override {
         inherit (cfg) domain;
+        inherit (config) device;
         signatureFingerprint = config.apps.prebuilt."Auditor".fingerprint;
-        deviceFamily = config.deviceFamily;
         avbFingerprint = config.build.fingerprints "avb";
       };
     };

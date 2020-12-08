@@ -1,4 +1,4 @@
-From aa43a3a1aa34e59419db74a8606c104a394e71f6 Mon Sep 17 00:00:00 2001
+From ec4157c9d36fb3918ebd40274e7e790144e0016f Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 15:53:34 -0400
 Subject: [PATCH 1/4] Custom domain
@@ -21,20 +21,21 @@ index 78eb7c5..8d14f81 100644
      private static final String VERIFY_URL = "https://" + DOMAIN + "/verify";
      private static final int CONNECT_TIMEOUT = 60000;
 -- 
-2.28.0
+2.29.0
 
-From d05a45e15a7d80da71269d9eac359119c633237d Mon Sep 17 00:00:00 2001
+
+From bbe05a962ee10e769ef6720562e3fca7aa290348 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 16:17:57 -0400
 Subject: [PATCH 2/4] Custom fingerprints
 
 ---
- .../attestation/auditor/AttestationProtocol.java   | 14 +++++++++++++-
- app/src/main/res/values/strings.xml                |  1 +
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ .../auditor/AttestationProtocol.java          | 36 ++++++++++++++++++-
+ app/src/main/res/values/strings.xml           |  1 +
+ 2 files changed, 36 insertions(+), 1 deletion(-)
 
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index fd3defe..2bf731f 100644
+index 27917b7..c299aec 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -225,7 +225,7 @@ class AttestationProtocol {
@@ -46,46 +47,69 @@ index fd3defe..2bf731f 100644
      private static final int OS_VERSION_MINIMUM = 80000;
      private static final int OS_PATCH_LEVEL_MINIMUM = 201801;
      private static final int VENDOR_PATCH_LEVEL_MINIMUM = 201808;
-@@ -316,6 +316,13 @@ class AttestationProtocol {
-                     new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_calyx))
-             .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
-                     new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
+@@ -311,6 +311,25 @@ class AttestationProtocol {
+                     new DeviceInfo(R.string.device_pixel_4_xl, 3, 4, false /* uses new API */, true, R.string.os_graphene))
+             .put("9F2454A1657B1B5AD7F2336B39A2611F7A40B2E0DDFD0D6553A359605928DF29",
+                     new DeviceInfo(R.string.device_pixel_4a, 3, 4, false /* uses new API */, true, R.string.os_graphene))
 +            // Robotnix
-+            .put("@taimen_avbFingerprint@",
-+                    new DeviceInfo(R.string.device_pixel_2_generic, 2, 3, true, true, R.string.os_robotnix))
-+            .put("@crosshatch_avbFingerprint@",
-+                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
-+            .put("@sunfish_avbFingerprint@",
++            .put("@walleye@",
++                    new DeviceInfo(R.string.device_pixel_2, 2, 3, true, true, R.string.os_robotnix))
++            .put("@taimen@",
++                    new DeviceInfo(R.string.device_pixel_2_xl, 2, 3, true, true, R.string.os_robotnix))
++            .put("@blueline@",
++                    new DeviceInfo(R.string.device_pixel_3, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@crosshatch@",
++                    new DeviceInfo(R.string.device_pixel_3_xl, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@sargo@",
++                    new DeviceInfo(R.string.device_pixel_3a, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@bonito@",
++                    new DeviceInfo(R.string.device_pixel_3a_xl, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@flame@",
++                    new DeviceInfo(R.string.device_pixel_4, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@coral@",
++                    new DeviceInfo(R.string.device_pixel_4_xl, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@sunfish@",
 +                    new DeviceInfo(R.string.device_pixel_4a, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
              .build();
      private static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
-@@ -459,6 +466,11 @@ class AttestationProtocol {
-             // CalyxOS
-             .put("B4DE537A5F4B8FDAB6789EB2C06EC6E065E48A79EDD493A91F635004DD89F3E2",
-                     new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_calyx))
+@@ -451,6 +470,21 @@ class AttestationProtocol {
+                     new DeviceInfo(R.string.device_pixel_4_xl, 3, 4, false /* uses new API */, true, R.string.os_graphene))
+             .put("9F2454A1657B1B5AD7F2336B39A2611F7A40B2E0DDFD0D6553A359605928DF29",
+                     new DeviceInfo(R.string.device_pixel_4a, 3, 4, false /* uses new API */, true, R.string.os_graphene))
 +            // Robotnix
-+            .put("@crosshatch_avbFingerprint@",
-+                    new DeviceInfo(R.string.device_pixel_3_generic, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
-+            .put("@sunfish_avbFingerprint@",
++            .put("@blueline@",
++                    new DeviceInfo(R.string.device_pixel_3, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@crosshatch@",
++                    new DeviceInfo(R.string.device_pixel_3_xl, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@sargo@",
++                    new DeviceInfo(R.string.device_pixel_3a, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@bonito@",
++                    new DeviceInfo(R.string.device_pixel_3a_xl, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@flame@",
++                    new DeviceInfo(R.string.device_pixel_4, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@coral@",
++                    new DeviceInfo(R.string.device_pixel_4_xl, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@sunfish@",
 +                    new DeviceInfo(R.string.device_pixel_4a, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
              .build();
      private static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 1a9978e..eeae4b6 100644
+index 6838e3d..7252f4c 100644
 --- a/app/src/main/res/values/strings.xml
 +++ b/app/src/main/res/values/strings.xml
-@@ -141,4 +141,5 @@
+@@ -139,4 +139,5 @@
+ 
      <string name="os_stock">Stock</string>
      <string name="os_graphene">GrapheneOS</string>
-     <string name="os_calyx">CalyxOS</string>
 +    <string name="os_robotnix">Robotnix</string>
  </resources>
 -- 
-2.28.0
+2.29.0
 
-From adc333c02f5521f0df651826b61d122d1fcaba0a Mon Sep 17 00:00:00 2001
+
+From 0d577fa6bf172fb42a2ec04c83cb9ddf978bbe39 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:49:04 -0400
 Subject: [PATCH 3/4] Customize appId
@@ -96,20 +120,20 @@ Subject: [PATCH 3/4] Customize appId
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/app/build.gradle b/app/build.gradle
-index 0f0025f..24faa54 100644
+index 77ab02a..a975000 100644
 --- a/app/build.gradle
 +++ b/app/build.gradle
 @@ -4,7 +4,7 @@ android {
      compileSdkVersion 30
-     buildToolsVersion "29.0.3"
+     buildToolsVersion "30.0.2"
      defaultConfig {
 -        applicationId "app.attestation.auditor"
 +        applicationId "@applicationId@"
          minSdkVersion 24
          targetSdkVersion 30
-         versionCode 22
+         versionCode 23
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index 2bf731f..6613671 100644
+index c299aec..608756b 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -220,7 +220,7 @@ class AttestationProtocol {
@@ -122,9 +146,10 @@ index 2bf731f..6613671 100644
      private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
              "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
 -- 
-2.28.0
+2.29.0
 
-From cac1f1d68d020e8127c6fa4c3e172ae556d332be Mon Sep 17 00:00:00 2001
+
+From 5c397048d1e40dbf2b12a781a53ec0b31fc3af3f Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 17:03:03 -0400
 Subject: [PATCH 4/4] Change application name to Robotnix Auditor for clarity
@@ -134,7 +159,7 @@ Subject: [PATCH 4/4] Change application name to Robotnix Auditor for clarity
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index eeae4b6..ca6dc24 100644
+index 7252f4c..15d6f46 100644
 --- a/app/src/main/res/values/strings.xml
 +++ b/app/src/main/res/values/strings.xml
 @@ -1,5 +1,5 @@
@@ -145,5 +170,5 @@ index eeae4b6..ca6dc24 100644
      <string name="unsupported_auditee">Device is not one of the supported models with hardware-based attestation.</string>
      <string name="camera_permission_denied">Camera permission is required to scan QR codes. Please try again.</string>
 -- 
-2.28.0
+2.29.0
 
