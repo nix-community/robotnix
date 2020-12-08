@@ -48,9 +48,9 @@ in
     shellcheck ${generateKeysScript}
     shellcheck ${verifyKeysScript}
 
-    ${verifyKeysScript} . && exit 1 || true # verifyKeysScript should fail if we haven't generated keys yet
-    ${generateKeysScript}
-    ${verifyKeysScript} .
+    ${verifyKeysScript} $PWD && exit 1 || true # verifyKeysScript should fail if we haven't generated keys yet
+    ${generateKeysScript} $PWD
+    ${verifyKeysScript} $PWD
   '';
 
   check = lib.mapAttrs (name: c: (robotnix c).build.checkAndroid) configs;

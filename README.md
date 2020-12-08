@@ -61,18 +61,16 @@ After creating a configuration file, generate keys for your device:
 
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
-$ mkdir keys/crosshatch
-$ cd keys/crosshatch
-$ ../../generate-keys
-$ cd ../..
+$ ./generate-keys ./keys
 ```
 
+This will create a `keys` directory containing the app and device keys needed for the build.
 Next, build and sign your release.
 There are two ways to do this.
 The first option involves creating a "release script" which does the final build steps of signing target files and creating ota/img files outside of nix:
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A releaseScript -o release
-$ ./release ./keys/crosshatch
+$ ./release ./keys
 ```
 One advantage of using a release script as above is that the build can take place on a different machine than the signing.
 `nix-copy-closure` could be used to transfer this script and its dependencies to another computer to finish the release.

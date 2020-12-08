@@ -24,13 +24,9 @@ in
     } ];
 
     apps.prebuilt.Auditor = {
-      # TODO: Generate this one with a script
-      # TODO: Can sign with custom certs at the release stage instead
-      # Needs a special auditor key that is the same across devices.
-      certificate = "auditor";
       apk = apks.auditor.override {
         inherit (cfg) domain;
-        signatureFingerprint = config.build.fingerprints "auditor";
+        signatureFingerprint = config.apps.prebuilt."Auditor".fingerprint;
         deviceFamily = config.deviceFamily;
         avbFingerprint = config.build.fingerprints "avb";
       };

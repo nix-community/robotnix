@@ -32,14 +32,14 @@ let
 
   runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
     commands = script (args // {out="$out";});
-    keysDir = optionalString config.signing.enable "/keys/${config.device}";
+    keysDir = optionalString config.signing.enable "/keys";
   });
 
   signedTargetFilesScript = { targetFiles, out }: ''
   ( OUT=$(realpath ${out})
     cd ${otaTools}; # Enter otaTools dir so relative paths are correct for finding original keys
     ${otaTools}/releasetools/sign_target_files_apks.py \
-      -o -d $KEYSDIR ${toString config.signing.signTargetFilesArgs} \
+      -o ${toString config.signing.signTargetFilesArgs} \
       ${targetFiles} $OUT
   )
   '';

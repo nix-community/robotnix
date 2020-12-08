@@ -60,8 +60,11 @@ with lib;
       }
     ];
 
-    apps.prebuilt = lib.mapAttrs' (name: m: nameValuePair "Webview${name}" {
+    apps.prebuilt = lib.mapAttrs' (name: m: nameValuePair "${name}webview" {
       inherit (m) apk;
+
+      # Don't generate a cert if it's the prebuilt version from upstream
+      certificate = if (name != "prebuilt") then "${name}webview" else "PRESIGNED";
 
       # Extra stuff from the Android.mk from the example webview module in AOSP. Unsure if these are needed.
       extraConfig = ''

@@ -3,11 +3,12 @@
 with lib;
 let
   cfg = config.signing;
-  keysToGenerate = [ "releasekey" "platform" "shared" "media" ]
-                    ++ (optional (config.signing.avb.mode == "verity_only") "verity")
-                    ++ (optionals (config.androidVersion >= 10) [ "networkstack" ])
+  keysToGenerate = map (key: "${config.device}/${key}") [ "releasekey" "platform" "shared" "media" ]
+                    ++ (optional (config.signing.avb.mode == "verity_only") "${config.device}/verity")
+                    ++ (optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
                     ++ (optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
-                    ++ (optional config.signing.apex.enable config.signing.apex.packageNames);
+                    ++ (optional config.signing.apex.enable config.signing.apex.packageNames)
+                    ++ (mapAttrsToList (name: prebuilt: prebuilt.certificate) config.apps.prebuilt);
 in
 {
   options = {
@@ -66,7 +67,7 @@ in
         in if builtins.elem name deviceCertificates
           then (if config.signing.enable
             then "${keyStorePath}/${config.device}/${name}"
-            else "${keyStorePath}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
+            else "${config.source.dirs."build/make".src}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
           else "${keyStorePath}/${name}";
       keyPath = name: config.build._keyPath config.keyStorePath name;
       sandboxKeyPath = name: (if config.signing.enable
@@ -98,33 +99,48 @@ in
     signing.signTargetFilesArgs = let
       avbFlags = {
         verity_only = [
-          "--replace_verity_public_key $KEYSDIR/verity_key.pub"
-          "--replace_verity_private_key $KEYSDIR/verity"
-          "--replace_verity_keyid $KEYSDIR/verity.x509.pem"
+          "--replace_verity_public_key $KEYSDIR/${config.device}/verity_key.pub"
+          "--replace_verity_private_key $KEYSDIR/${config.device}/verity"
+          "--replace_verity_keyid $KEYSDIR/${config.device}/verity.x509.pem"
         ];
         vbmeta_simple = [
-          "--avb_vbmeta_key $KEYSDIR/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
+          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
         ];
         vbmeta_chained = [
-          "--avb_vbmeta_key $KEYSDIR/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
-          "--avb_system_key $KEYSDIR/avb.pem" "--avb_system_algorithm SHA256_RSA2048"
+          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
+          "--avb_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_system_algorithm SHA256_RSA2048"
         ];
         vbmeta_chained_v2 = [
-          "--avb_vbmeta_key $KEYSDIR/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
-          "--avb_system_key $KEYSDIR/avb.pem" "--avb_system_algorithm SHA256_RSA2048"
-          "--avb_vbmeta_system_key $KEYSDIR/avb.pem" "--avb_vbmeta_system_algorithm SHA256_RSA2048"
+          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
+          "--avb_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_system_algorithm SHA256_RSA2048"
+          "--avb_vbmeta_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_system_algorithm SHA256_RSA2048"
         ];
       }.${cfg.avb.mode}
       ++ optionals ((config.androidVersion >= 10) && (cfg.avb.mode != "verity_only")) [
-        "--avb_system_other_key $KEYSDIR/avb.pem"
+        "--avb_system_other_key $KEYSDIR/${config.device}/avb.pem"
         "--avb_system_other_algorithm SHA256_RSA2048"
       ];
+      keyMappings = {
+         # Default key mappings from sign_target_files_apks.py
+        "build/target/product/security/devkey" = "${config.device}/releasekey";
+        "build/target/product/security/testkey" = "${config.device}/releasekey";
+        "build/target/product/security/media" = "${config.device}/media";
+        "build/target/product/security/shared" = "${config.device}/shared";
+        "build/target/product/security/platform" = "${config.device}/platform";
+      }
+      // optionalAttrs (config.androidVersion >= 10) {
+        "build/target/product/security/networkstack" = "${config.device}/networkstack";
+      }
+      // optionalAttrs (config.androidVersion >= 11) {
+        "frameworks/base/packages/OsuLogin/certs/com.android.hotspot2.osulogin" = "com.android.hotspot2.osulogin";
+        "frameworks/opt/net/wifi/service/resources-certs/com.android.wifi.resources" = "com.android.wifi.resources";
+      }
+      # App-specific keys
+      // mapAttrs'
+        (name: prebuilt: nameValuePair "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}" prebuilt.certificate)
+        config.apps.prebuilt;
     in
-      optional (config.androidVersion >= 10) "--key_mapping build/target/product/security/networkstack=$KEYSDIR/networkstack"
-      ++ optionals ((config.androidVersion >= 11) && (config.flavor == "vanilla")) [
-        "--key_mapping frameworks/base/packages/OsuLogin/certs/com.android.hotspot2.osulogin=$KEYSDIR/com.android.hotspot2.osulogin"
-        "--key_mapping frameworks/opt/net/wifi/service/resources-certs/com.android.wifi.resources=$KEYSDIR/com.android.wifi.resources"
-      ]
+      mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") keyMappings
       ++ optionals cfg.avb.enable avbFlags
       ++ optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames);
 
@@ -152,16 +168,27 @@ in
       #!${pkgs.runtimeShell}
       set -euo pipefail
 
+      if [[ "$#" -ne 1 ]]; then
+        echo "Usage: $0 <keysdir>"
+        echo "$#"
+        exit 1
+      fi
+
+      mkdir -p "$1"
+      cd "$1"
+
       export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
       KEYS=( ${toString keysToGenerate} )
       APEX_KEYS=( ${lib.optionalString config.signing.apex.enable (toString config.signing.apex.packageNames)} )
 
+      mkdir -p "${config.device}"
+
       for key in "''${KEYS[@]}"; do
         if [[ ! -e "$key".pk8 ]]; then
           echo "Generating $key key"
           # make_key exits with unsuccessful code 1 instead of 0
-          make_key "$key" "/CN=Robotnix ${config.device}/" && exit 1
+          make_key "$key" "/CN=Robotnix ''${key/\// }/" && exit 1
         else
           echo "Skipping generating $key since it is already exists"
         fi
@@ -178,18 +205,17 @@ in
       done
 
       ${optionalString (config.signing.avb.mode == "verity_only") ''
-      if [[ ! -e "verity_key.pub" ]]; then
-          generate_verity_key -convert verity.x509.pem verity_key
+      if [[ ! -e "${config.device}/verity_key.pub" ]]; then
+          generate_verity_key -convert ${config.device}/verity.x509.pem ${config.device}/verity_key
       fi
       ''}
 
-
       ${optionalString (config.signing.avb.mode != "verity_only") ''
-      if [[ ! -e "avb.pem" ]]; then
+      if [[ ! -e "${config.device}/avb.pem" ]]; then
         # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
         echo "Generating Device AVB key"
-        openssl genrsa -out avb.pem 2048
-        avbtool extract_public_key --key avb.pem --output avb_pkmd.bin
+        openssl genrsa -out ${config.device}/avb.pem 2048
+        avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
       else
         echo "Skipping generating device AVB key since it is already exists"
       fi
@@ -197,13 +223,17 @@ in
     '');
 
     # Check that all needed keys are available.
+    # TODO: Remove code duplicated with generate_keys.sh
     verifyKeysScript = mkDefault (pkgs.writeScript "verify_keys.sh" ''
       #!${pkgs.runtimeShell}
       set -euo pipefail
 
-      if [[ $# -ge 0 ]]; then
-        cd "$1"
+      if [[ "$#" -ne 1 ]]; then
+        echo "Usage: $0 <keysdir>"
+        exit 1
       fi
+
+      cd "$1"
 
       KEYS=( ${toString keysToGenerate} )
       APEX_KEYS=( ${lib.optionalString config.signing.apex.enable (toString config.signing.apex.packageNames)} )
@@ -225,24 +255,26 @@ in
       done
 
       ${optionalString (config.signing.avb.mode == "verity_only") ''
-      if [[ ! -e "verity_key.pub" ]]; then
+      if [[ ! -e "${config.device}/verity_key.pub" ]]; then
         echo "Missing verity_key.pub"
         RETVAL=1
       fi
       ''}
 
       ${optionalString (config.signing.avb.mode != "verity_only") ''
-      if [[ ! -e "avb.pem" ]]; then
+      if [[ ! -e "${config.device}/avb.pem" ]]; then
         echo "Missing Device AVB key"
         RETVAL=1
       fi
       ''}
 
       if [[ "$RETVAL" -ne 0 ]]; then
-        echo  Certain keys were missing from KEYSDIR. Have you run generateKeysScript?
-        echo  Additionally, some robotnix configuration options require that you re-run
-        echo  generateKeysScript to create additional new keys.  This should not overwrite
-        echo  existing keys.
+        echo Certain keys were missing from KEYSDIR. Have you run generateKeysScript?
+        echo Additionally, some robotnix configuration options require that you re-run
+        echo generateKeysScript to create additional new keys.  This should not overwrite
+        echo existing keys. If you have previously generated keys and see this message
+        echo after recent changes in early December 2020,  running this after recent
+        echo changes in early December 2020, read the release notes in NEWS.md.
       fi
       exit $RETVAL
     '');

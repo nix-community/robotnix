@@ -18,7 +18,7 @@ let
     LOCAL_PRIVILEGED_MODULE := ${boolToString prebuilt.privileged}
     LOCAL_CERTIFICATE := ${if builtins.elem prebuilt.certificate deviceCertificates
       then (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
-      else "PRESIGNED"
+      else "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}"
     }
     ${optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
     ${optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
@@ -27,7 +27,7 @@ let
     include $(BUILD_PREBUILT)
     '');
 
-  # Cert names used by AOSP. Only some of these make sense to be used to sign packages
+  # Device-specific certificate names used by AOSP
   deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ];
 in
 {
@@ -53,7 +53,7 @@ in
           };
 
           fingerprint = mkOption {
-            description = "SHA256 fingerprint of signed apk";
+            description = "SHA256 fingerprint from certificate used to sign apk";
             type = types.strMatching "[0-9A-F]{64}"; # TODO: Type check fingerprints elsewhere
             apply = toUpper;
             internal = true;
@@ -65,13 +65,19 @@ in
           };
 
           certificate = mkOption {
-            default = "releasekey";
+            default = toLower name;
             type = types.str;
             description = ''
-              Certificate name to sign apk with.  If it is a device certificate, the cert/key will be ''${keyStorePath}/''${device}/''${certificate}.{x509.pem,pk8}
+              Certificate name to sign apk with.  Defaults to the name of the prebuilt app.
+              If it is a device-specific certificate, the cert/key will be ''${keyStorePath}/''${device}/''${certificate}.{x509.pem,pk8}
               Otherwise, it will be ''${keyStorePath}/''${certificate}.{x509.pem,pk8}
               Finally, the special string "PRESIGNED" will just use the apk as-is.
             '';
+          };
+
+          snakeoilKeyPath = mkOption {
+            type = types.path;
+            internal = true;
           };
 
           privileged = mkOption {
@@ -125,9 +131,30 @@ in
 
           fingerprint = mkDefault (
             if config.certificate == "PRESIGNED"
-            then pkgs.robotnix.apkFingerprint config.signedApk
+              then pkgs.robotnix.apkFingerprint config.signedApk
+            else if (!_config.signing.enable)
+              then pkgs.robotnix.certFingerprint "${config.snakeoilKeyPath}/${config.certificate}.x509.pem"
             else _config.build.fingerprints config.certificate
           );
+
+          snakeoilKeyPath = pkgs.runCommand "${config.certificate}-snakeoil-cert" {} ''
+            echo "Generating snakeoil key for ${config.name} (will be replaced when signing target files)"
+            # Using certtool + sha256 of the cert name as seed for reproducibility. Seed needs 28 bytes for 2048 bit keys.
+            ${pkgs.gnutls}/bin/certtool \
+              --generate-privkey --outfile ${config.certificate}.key \
+              --key-type=rsa --bits=2048 \
+              --seed=${builtins.substring 0 (28*2) (builtins.hashString "sha256" config.certificate)}
+            # Set serial number and fake time for reproducibility
+            ${pkgs.libfaketime}/bin/faketime -f "2020-01-01 00:00:01" \
+              ${pkgs.openssl}/bin/openssl req -new -x509 -sha256 \
+                -key ${config.certificate}.key -out ${config.certificate}.x509.pem \
+                -days 10000 -subj "/CN=Robotnix ${config.certificate}" \
+                -set_serial 0
+            # Convert to DER format
+            ${pkgs.openssl}/bin/openssl pkcs8 -in ${config.certificate}.key -topk8 -nocrypt -outform DER -out ${config.certificate}.pk8
+            mkdir -p $out/
+            cp ${config.certificate}.{pk8,x509.pem} $out/
+          '';
         };
       }));
     };
@@ -137,21 +164,16 @@ in
     source.dirs = listToAttrs (map (prebuilt: {
       name = "robotnix/prebuilt/${prebuilt.name}";
       value = {
-        src = let
-          # Don't use the signed version if it's an apk that is going to get signed when signing target-files.
-          apk = if builtins.elem prebuilt.certificate deviceCertificates
-                then prebuilt.apk
-                else prebuilt.signedApk;
-        in pkgs.runCommand "prebuilt_${prebuilt.name}" {} ''
+        src = pkgs.runCommand "prebuilt_${prebuilt.name}" {} (''
           set -euo pipefail
 
           mkdir -p $out
           cp ${androidmk prebuilt} $out/Android.mk
-          cp ${apk} $out/${prebuilt.name}.apk
+          cp ${prebuilt.apk} $out/${prebuilt.name}.apk
 
           ### Check minSdkVersion, targetSdkVersion
           # TODO: Also check permissions?
-          MANIFEST_DUMP=$(${pkgs.robotnix.build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${apk})
+          MANIFEST_DUMP=$(${pkgs.robotnix.build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${prebuilt.apk})
 
           # It would be better if we could convert it back into true XML and then select based on XPath
           MIN_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep minSdkVersion | cut -d= -f2)
@@ -165,7 +187,9 @@ in
           if [[ "$TARGET_SDK_VERSION" -lt "${builtins.toString config.apiLevel}" ]]; then
             echo "WARNING: APK was compiled against an older SDK API level ($TARGET_SDK_VERSION) than used in OS (${builtins.toString config.apiLevel})"
           fi
-        '';
+        '' + optionalString (!(builtins.elem prebuilt.certificate deviceCertificates)) ''
+          cp ${prebuilt.snakeoilKeyPath}/${prebuilt.certificate}.{pk8,x509.pem} $out/
+        '');
       };
     }) (attrValues cfg));
 

@@ -40,12 +40,16 @@ in
         privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" "UPDATE_APP_OPS_STATS" ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         allowInPowerSave = true;
+        certificate = "microg";
       };
 
-      GsfProxy.apk = verifyApk (pkgs.fetchurl {
-        url = "https://github.com/microg/android_packages_apps_GsfProxy/releases/download/v0.1.0/GsfProxy.apk";
-        sha256 = "14ln6i1qg435x223x3vndd608mra19d58yqqhhf6mw018cbip2c6";
-      });
+      GsfProxy = {
+        apk = verifyApk (pkgs.fetchurl {
+          url = "https://github.com/microg/android_packages_apps_GsfProxy/releases/download/v0.1.0/GsfProxy.apk";
+          sha256 = "14ln6i1qg435x223x3vndd608mra19d58yqqhhf6mw018cbip2c6";
+        });
+        certificate = "microg";
+      };
 
       FakeStore = {
         apk = verifyApk (pkgs.fetchurl {
@@ -56,6 +60,7 @@ in
         privileged = true;
         privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
+        certificate = "microg";
       };
     };
   };
