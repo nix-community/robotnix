@@ -47,7 +47,7 @@ let
     ${otaTools}/releasetools/ota_from_target_files.py  \
       --block \
       ${if config.signing.enable
-        then "-k $KEYSDIR/releasekey"
+        then "-k $KEYSDIR/${config.device}/releasekey"
         else "-k ${config.source.dirs."build/make".src}/target/product/security/testkey"
       } \
       ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
