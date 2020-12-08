@@ -147,8 +147,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 }
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) (let
   kernelTag = {
-    "taimen" = "android-11.0.0_r0.6";
-    "muskie" = "android-11.0.0_r0.6";
+    "taimen" = "android-11.0.0_r0.34";
+    "muskie" = "android-11.0.0_r0.34";
     "crosshatch" = "android-11.0.0_r0.28";
     "bonito" = "android-11.0.0_r0.29";
     "coral" = "android-11.0.0_r0.30";
@@ -180,13 +180,9 @@ in {
   kernel.buildProductFilenames = [ "**/*.ko" ]; # Copy kernel modules if they exist
 }))
 (mkIf (elem config.device [ "taimen" "walleye" ]) {
-  warnings = [ "taimen and walleye are no longer receiving monthly security updates from Google. Support is left just for testing" ];
-  source.manifest.rev = "android-11.0.0_r17"; # More recent sources don't even include device/google/muskie
-  apv.buildID = "RP1A.201005.004";
-  # HACK to use recent android source, but with old vendor files...
-  source.dirs."vendor/google_devices".postPatch = mkIf (elem config.device [ "taimen" "walleye" ]) ''
-    echo RP1A.201105.002 > ${config.device}/build_id.txt
-  '';
+  warnings = [ "taimen and walleye are no longer receiving monthly vendor security updates from Google. Support is left just for testing" ];
+  source.manifest.rev = "android-11.0.0_r25"; # More recent sources don't even include device/google/muskie
+  apv.buildID = "RP1A.201005.004.A1";
 })
 
 ]))
