@@ -122,10 +122,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1604648934;
+  buildDateTime = mkDefault 1607400049;
 
-  source.manifest.rev = mkDefault "android-11.0.0_r17";
-  apv.buildID = mkDefault "RP1A.201105.002";
+  source.manifest.rev = mkDefault (if (elem config.deviceFamily [ "crosshatch" "bonito"]) then "android-11.0.0_r18" else "android-11.0.0_r19");
+  apv.buildID = mkDefault (if (elem config.deviceFamily [ "crosshatch" "bonito"]) then "RQ1A.201205.003" else "RQ1A.201205.008");
 
   # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
   # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
@@ -149,10 +149,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   kernelTag = {
     "taimen" = "android-11.0.0_r0.6";
     "muskie" = "android-11.0.0_r0.6";
-    "crosshatch" = "android-11.0.0_r0.22";
-    "bonito" = "android-11.0.0_r0.23";
-    "coral" = "android-11.0.0_r0.24";
-    "sunfish" = "android-11.0.0_r0.25";
+    "crosshatch" = "android-11.0.0_r0.28";
+    "bonito" = "android-11.0.0_r0.29";
+    "coral" = "android-11.0.0_r0.30";
+    "sunfish" = "android-11.0.0_r0.31";
   }.${config.deviceFamily};
   kernelMetadata = (lib.importJSON ./kernel-metadata.json).${kernelTag};
   kernelHashes = (lib.importJSON ./kernel-hashes.json).${kernelTag};
@@ -181,6 +181,7 @@ in {
 }))
 (mkIf (elem config.device [ "taimen" "walleye" ]) {
   warnings = [ "taimen and walleye are no longer receiving monthly security updates from Google. Support is left just for testing" ];
+  source.manifest.rev = "android-11.0.0_r17"; # More recent sources don't even include device/google/muskie
   apv.buildID = "RP1A.201005.004";
   # HACK to use recent android source, but with old vendor files...
   source.dirs."vendor/google_devices".postPatch = mkIf (elem config.device [ "taimen" "walleye" ]) ''
