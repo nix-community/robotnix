@@ -29,11 +29,11 @@ device-specific `releasekey`.  This allows us to share these keys between
 multiple devices, push the same app updates to multiple devices, and remove an
 ugly SELinux workaround for GrapheneOS that robotnix required.
 
-Unfortunately, changing app keys will lose any data associated with those apps.
+Unfortunately, changing app keys may lose any data associated with those apps.
 Fortunately, most data associated with those apps should be easy to re-create.
 (Re-login to services in chromium, re-add F-Droid repos, etc.)
-I hope to avoid breaking changes like this in the future by getting these
-changes done relatively early in the projects' life.
+I hope to avoid potentially breaking changes like this in the future by getting
+these changes done relatively early in the projects' life.
 
 If you've previously generated robotnix keys, you will need to do the
 following to update to the new key directory layout: Move all keys and
