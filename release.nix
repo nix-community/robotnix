@@ -53,7 +53,7 @@ in
     ${verifyKeysScript} $PWD
   '';
 
-  check = lib.mapAttrs (name: c: (robotnix c).build.checkAndroid) configs;
+  check = lib.mapAttrs (name: c: (robotnix c).config.build.checkAndroid) configs;
 
   vanilla-arm64-generateKeysScript = defaultBuild.generateKeysScript;
   vanilla-arm64-ota = defaultBuild.ota;
@@ -61,7 +61,7 @@ in
 
   sdk = import ./sdk;
 
-  grapheneos-emulator = (robotnix { device="x86"; flavor="grapheneos"; }).build.emulator;
-  vanilla-emulator = (robotnix { device="x86"; flavor="vanilla"; }).build.emulator;
-  danielfullmer-emulator = (robotnix { device="x86"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).build.emulator;
+  grapheneos-emulator = (robotnix { device="x86"; flavor="grapheneos"; }).emulator;
+  vanilla-emulator = (robotnix { device="x86"; flavor="vanilla"; }).emulator;
+  danielfullmer-emulator = (robotnix { device="x86"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).emulator;
 } // (lib.mapAttrs (name: c: (robotnix c).img) configs)

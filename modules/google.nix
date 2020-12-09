@@ -23,7 +23,7 @@ let
         flavor = "vanilla";
         inherit (config) androidVersion;
       };
-    }).build.apv.unpackedImg;
+    }).config.build.apv.unpackedImg;
 in
 {
   # TODO: Add other google stuff. Ensure that either google play services or microg is enabled if these are.

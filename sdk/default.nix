@@ -7,7 +7,7 @@
     buildNumber = "eng.10.0.0_r41";
     androidVersion = 10;
   };
-}).build.mkAndroid {
+}).config.build.mkAndroid {
   name = "android-sdk";
   makeTargets = [ "sdk" "sdk_repo" ];
   installPhase = ''

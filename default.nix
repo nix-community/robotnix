@@ -65,4 +65,16 @@ let
     then throw "\nFailed assertions:\n${lib.concatStringsSep "\n" (map (x: "- ${x}") failedAssertions)}"
     else lib.showWarnings eval.config.warnings eval.config;
 
-in config
+in {
+  inherit (eval) pkgs config options;
+
+  # Things that are nice to have at the top-level, since they might get moved
+  # in the future:
+  inherit (eval.config)
+    unsignedTargetFiles signedTargetFiles
+    ota incrementalOta img factoryImg bootImg otaDir
+    releaseScript generateKeysScript verifyKeysScript;
+
+  inherit (eval.config.build)
+    emulator;
+}
