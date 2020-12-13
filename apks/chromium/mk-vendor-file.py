@@ -218,12 +218,17 @@ def make_vendor_file(chromium_version, target_os):
                 vendor_nix.write(nix_str_cipd(path, dep))
 
         # Some additional non-git/cipd sources
-        for path, name in [("src/third_party/node/node_modules", "chromium-nodejs"),
-                        ("src/third_party/test_fonts/test_fonts", "chromium-fonts")]:
-            sha1 = open(os.path.join(topdir, path + ".tar.gz.sha1")).read().strip()
-            vendor_nix.write(
+        for path, name in [
+                ("src/third_party/node/node_modules.tar.gz", "chromium-nodejs"),
+                ("src/third_party/test_fonts/test_fonts.tar.gz", "chromium-fonts"),
+                ("src/third_party/subresource-filter-ruleset/data/UnindexedRules", "chromium-ads-detection"),
+                ]:
+            sha1 = open(os.path.join(topdir, path + ".sha1")).read().strip()
+            if path.endswith(".tar.gz"):
+                path = path[:-len(".tar.gz")]
+                vendor_nix.write(
 '''
-"%(path)s" = runCommand "download_from_google_storage" {} ''
+"%(path)s" = runCommand "download_from_google_storage-%(name)s" {} ''
     mkdir $out
     tar xf ${fetchurl {
                 url  = "https://commondatastorage.googleapis.com/%(name)s/%(sha1)s";
@@ -231,6 +236,15 @@ def make_vendor_file(chromium_version, target_os):
             }} --strip-components=1 -C $out
 '';
 ''' % { "path": path, "name": name, "sha1": sha1 })
+            else:
+                vendor_nix.write(
+'''
+"%(path)s" = fetchurl {
+                url  = "https://commondatastorage.googleapis.com/%(name)s/%(sha1)s";
+                sha1 = "%(sha1)s";
+            };
+''' % { "path": path, "name": name, "sha1": sha1 })
+
 
         # condition: checkout_android or checkout_linux
         # TODO: Memoize

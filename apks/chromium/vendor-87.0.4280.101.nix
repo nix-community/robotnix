@@ -404,7 +404,7 @@
   "src/tools/swarming_client"                                                                = fetchgit { url = "https://chromium.googlesource.com/infra/luci/client-py.git"                                                                    ; rev = "44c13d73156581ea09b9389001e58c23a4b8d70a"; sha256 = "0d2v18g6z57cxzlwavfyxds7zzwmba73n26g4ibv0psigrvhnlp4"; };
   "src/v8"                                                                                   = fetchgit { url = "https://chromium.googlesource.com/v8/v8.git"                                                                                   ; rev = "45d51f3f97a6058fced26b9c378fba5dcd924704"; sha256 = "1sr3rdd20b9px2spc4nxns2x4h4455fll8hw4rnmh4fda2gl5h9a"; };
 
-"src/third_party/node/node_modules" = runCommand "download_from_google_storage" {} ''
+"src/third_party/node/node_modules" = runCommand "download_from_google_storage-chromium-nodejs" {} ''
     mkdir $out
     tar xf ${fetchurl {
                 url  = "https://commondatastorage.googleapis.com/chromium-nodejs/a9603a3dc03fa41af9cc5c8ac28d23d1f98dfe3c";
@@ -412,13 +412,18 @@
             }} --strip-components=1 -C $out
 '';
 
-"src/third_party/test_fonts/test_fonts" = runCommand "download_from_google_storage" {} ''
+"src/third_party/test_fonts/test_fonts" = runCommand "download_from_google_storage-chromium-fonts" {} ''
     mkdir $out
     tar xf ${fetchurl {
                 url  = "https://commondatastorage.googleapis.com/chromium-fonts/cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb";
                 sha1 = "cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb";
             }} --strip-components=1 -C $out
 '';
+
+"src/third_party/subresource-filter-ruleset/data/UnindexedRules" = fetchurl {
+                url  = "https://commondatastorage.googleapis.com/chromium-ads-detection/232b6053a78a7b257787cea6357a7c5d7615e858";
+                sha1 = "232b6053a78a7b257787cea6357a7c5d7615e858";
+            };
 
 "src/chrome/android/profiles/afdo.prof" = runCommand "download_afdo_profile" {} ''
     bzip2 -d -c ${fetchurl {
