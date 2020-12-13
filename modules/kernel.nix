@@ -127,6 +127,7 @@ in
       nativeBuildInputs = with pkgs; [
         perl bc nettools openssl rsync gmp libmpc mpfr lz4 which
         prebuiltGCC prebuiltGCCarm32 prebuiltMisc
+        nukeReferences
       ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ];  # TODO: Generalize to other arches
 
       enableParallelBuilding = true;
@@ -158,7 +159,12 @@ in
       installPhase = ''
         mkdir -p $out
         shopt -s globstar nullglob
-      '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames);
+      '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames)
+      + ''
+
+        # This is also done in nixpkgs for wireless modules
+        nuke-refs $(find $out -name "*.ko")
+      '';
 
       dontFixup = true;
       dontStrip = true;
