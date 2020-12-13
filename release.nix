@@ -20,8 +20,6 @@ let
 
     { device="x86_64";     flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
-    { device="taimen";     flavor="grapheneos"; }
-    { device="walleye";    flavor="grapheneos"; }
     { device="crosshatch"; flavor="grapheneos"; }
     { device="blueline";   flavor="grapheneos"; }
     { device="bonito";     flavor="grapheneos"; }

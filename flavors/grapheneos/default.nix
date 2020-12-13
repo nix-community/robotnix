@@ -67,7 +67,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 }
-(mkIf (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ]) {
+(mkIf (elem config.deviceFamily [ "crosshatch" "bonito" "coral" "sunfish" ]) {
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
   kernel.configName = config.device;
