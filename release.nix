@@ -33,6 +33,8 @@ let
 
   ]));
 
+  builtConfigs = lib.mapAttrs (name: c: robotnix c) configs;
+
   defaultBuild = robotnix { device="arm64"; flavor="vanilla"; };
 in
 {
@@ -63,4 +65,20 @@ in
   grapheneos-emulator = (robotnix { device="x86"; flavor="grapheneos"; }).emulator;
   vanilla-emulator = (robotnix { device="x86"; flavor="vanilla"; }).emulator;
   danielfullmer-emulator = (robotnix { device="x86"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).emulator;
-} // (lib.mapAttrs (name: c: (robotnix c).img) configs)
+
+  # Stuff to upload to binary cache
+  cached = let
+    browsers = {
+      inherit ((robotnix { device = "arm64"; flavor="vanilla"; }).config.build)
+        chromium bromite;
+
+      inherit ((robotnix { device = "arm64"; flavor="grapheneos"; }).config.build)
+        vanadium;
+    };
+
+    kernels =
+      lib.mapAttrs (name: c: c.config.build.kernel)
+        (lib.filterAttrs (name: c: c.config.kernel.useCustom) builtConfigs);
+  in { inherit browsers kernels; } // browsers // kernels;
+
+} // lib.mapAttrs (name: c: c.img) builtConfigs

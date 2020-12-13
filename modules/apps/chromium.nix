@@ -74,6 +74,8 @@ in
             then "${browser}/TrichromeWebView.apk"
             else "${browser}/SystemWebView.apk";
         };
+
+        build.${name} = browser; # Put here for convenience
       }
 
       (mkIf isTriChrome {

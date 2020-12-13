@@ -87,6 +87,14 @@ This can be set using `chgrp -R nixbld ./keys` and `chmod -R g+r ./keys`.
 ### Installation
 See `docs/installation.md` for details on flashing and updating for Pixel devices.
 
+### Binary Cache
+Robotnix now has an optional binary cache provided by cachix.
+Currently, only the device kernels and browser builds are published through the binary cache.
+This is because these derivation outputs are most likely to be shared between
+users, and those outputs also can take a very long time to build.
+The build products previously discussed should be uploaded for at least every robotnix release tag.
+To use, install `cachix`, run `cachix use robotnix`, and then build robotnix like normal.
+
 ### OTA Updater
 The Over-the-Air (OTA) updater can be enabled using `apps.updater.enable = true;`.
 The URL that the updater will query for updates is set using `apps.updater.url = "...";`.
