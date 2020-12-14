@@ -54,6 +54,11 @@ in
       default = true;
       type = types.bool;
     };
+
+    nginx.enableACME = mkOption {
+      default = false;
+      type = types.bool;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -89,6 +94,7 @@ in
         locations."/challenge".proxyPass = "http://${cfg.listenHost}:${toString cfg.port}/challenge";
         locations."/verify".proxyPass = "http://${cfg.listenHost}:${toString cfg.port}/verify";
         forceSSL = true;
+        enableACME = cfg.nginx.enableACME;
       } (optionalAttrs cfg.disableAccountCreation {
         locations."/api/create_account".return = "403";
       });

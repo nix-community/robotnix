@@ -61,6 +61,7 @@
         signatureFingerprint = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         avbFingerprint = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
         #disableAccountCreation = true; # optionally uncomment after creating your account
+        #nginx.enableACME = true; # optionally uncomment if you want to use Let's Encrypt for HTTPS
       };
     }
     ```
