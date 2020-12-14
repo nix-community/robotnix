@@ -50,6 +50,33 @@ in
       type = types.bool;
     };
 
+    email = {
+      username = mkOption {
+        default = "";
+        type = types.str;
+      };
+
+      passwordFile = mkOption {
+        default = null;
+        type = types.nullOr types.str;
+      };
+
+      host = mkOption {
+        default = "";
+        type = types.str;
+      };
+
+      port = mkOption {
+        default = 587;
+        type = types.int;
+      };
+
+      local = mkOption {
+        default = false;
+        type = types.bool;
+      };
+    };
+
     nginx.enable = mkOption {
       default = true;
       type = types.bool;
@@ -74,6 +101,30 @@ in
 
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/AttestationServer";
+        ExecStartPre = let
+          inherit (cfg.email) username passwordFile host port local;
+          # In SQLite readfile reads a file as a BLOB which is not very useful.
+          # However, we can use TRIM to convert it to a string and we have to
+          # truncate the trailing newline (\n = char(10)) anyway.
+          values = concatStringsSep ", " [
+            "('emailUsername', '${username}')"
+            "('emailPassword', TRIM(readfile('%S/attestation/emailPassword'), char(10)))"
+            "('emailHost', '${host}')"
+            "('emailPort', '${toString port}')"
+            "('emailLocal', '${if local then "1" else "0"}')"
+          ];
+        in optionals (passwordFile != null) [
+          # Note the leading + on the first command. The passwordFile could be
+          # anywhere in the file system, so it has to be copied as root and
+          # permissions fixed to be accessible by the service.
+          "+${pkgs.coreutils}/bin/install -m 0600 -o %N -g %N ${passwordFile} %S/attestation/emailPassword"
+          ''${pkgs.sqlite}/bin/sqlite3 %S/attestation/attestation.db "INSERT OR REPLACE INTO Configuration VALUES ${values}"''
+          "${pkgs.coreutils}/bin/rm -f %S/attestation/emailPassword"
+        ];
+
+        # When sending TERM, e.g. for restart, AttestationServer fails with
+        # this exit code.
+        SuccessExitStatus = [ 143 ];
 
         DynamicUser = true;
         ProtectSystem = "strict";
