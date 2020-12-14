@@ -67,8 +67,12 @@ in
       };
 
       port = mkOption {
-        default = 587;
+        default = 465;
         type = types.int;
+        description = ''
+          Port to connect to for sending email. Must support "implicit TLS" / SMTPS, which defaults to port 465.
+          STARTTLS is deliberately not supported: https://github.com/GrapheneOS/AttestationServer#email-alert-configuration
+        '';
       };
 
       local = mkOption {
