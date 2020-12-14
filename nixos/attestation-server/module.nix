@@ -45,6 +45,11 @@ in
       type = types.path;
     };
 
+    disableAccountCreation = mkOption {
+      default = false;
+      type = types.bool;
+    };
+
     nginx.enable = mkOption {
       default = true;
       type = types.bool;
@@ -78,13 +83,15 @@ in
 
     services.nginx = mkIf cfg.nginx.enable {
       enable = true;
-      virtualHosts."${config.services.attestation-server.domain}" = {
+      virtualHosts."${config.services.attestation-server.domain}" = recursiveUpdate {
         locations."/".root = cfg.package.static;
         locations."/api/".proxyPass = "http://${cfg.listenHost}:${toString cfg.port}/api/";
         locations."/challenge".proxyPass = "http://${cfg.listenHost}:${toString cfg.port}/challenge";
         locations."/verify".proxyPass = "http://${cfg.listenHost}:${toString cfg.port}/verify";
         forceSSL = true;
-      };
+      } (optionalAttrs cfg.disableAccountCreation {
+        locations."/api/create_account".return = "403";
+      });
     };
   };
 }

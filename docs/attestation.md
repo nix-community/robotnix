@@ -60,10 +60,7 @@
         device = "sunfish";
         signatureFingerprint = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         avbFingerprint = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
-      };
-      services.nginx.virtualHosts."${config.services.attestation-server.domain}" = {
-        enableACME = true;
-        #locations."/api/create_account".return = "404"; # uncomment to disable account creation
+        #disableAccountCreation = true; # optionally uncomment after creating your account
       };
     }
     ```
