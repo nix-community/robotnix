@@ -18,7 +18,10 @@ in
 
       url = mkOption {
         type = types.str;
-        description = "URL for OTA updates (requires trailing slash)";
+        description = "URL for OTA updates";
+        apply = x: if builtins.substring ((builtins.stringLength x) -1) 1 x == "/"
+          then x
+          else "${x}/";
       };
     };
   };
