@@ -131,12 +131,20 @@ in
               keyPath = _config.build.sandboxKeyPath config.certificate;
             }));
 
-          fingerprint = mkDefault (
+          fingerprint = let
+              snakeoilFingerprint = pkgs.robotnix.certFingerprint "${config.snakeoilKeyPath}/${config.certificate}.x509.pem";
+            in mkDefault (
             if config.certificate == "PRESIGNED"
-              then pkgs.robotnix.apkFingerprint config.signedApk
-            else if (!_config.signing.enable)
-              then pkgs.robotnix.certFingerprint "${config.snakeoilKeyPath}/${config.certificate}.x509.pem"
-            else _config.build.fingerprints config.certificate
+              then pkgs.robotnix.apkFingerprint config.signedApk # TODO: IFD
+              else if (!_config.signing.enable)
+                then
+                  builtins.trace ''
+                    Used IFD to get fingerprint of reproducible app certificate.
+                    Recommend setting:
+                    apps.prebuilt.${config.name}.fingerprint = mkIf (!config.signing.enable) "${snakeoilFingerprint}"
+                    ''
+                    snakeoilFingerprint
+                else _config.build.fingerprints config.certificate
           );
 
           snakeoilKeyPath = pkgs.runCommand "${config.certificate}-snakeoil-cert" {} ''

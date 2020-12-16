@@ -56,7 +56,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    apps.prebuilt."F-Droid".apk = apks.fdroid;
+    apps.prebuilt."F-Droid" = {
+      apk = apks.fdroid;
+      fingerprint = mkIf (!config.signing.enable) "7352DAE94B237866E7FB44FD94ADE44E8B6E05397E7D1FB45616A00E225063FF";
+    };
 
     # TODO: Put this under product/
     source.dirs."robotnix/apps/F-DroidPrivilegedExtension" = {
