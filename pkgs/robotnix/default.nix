@@ -11,9 +11,7 @@ let
     ${openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${cert} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
   ''));
 
-  sha256Fingerprint = file: (import (runCommand "sha256-fingerprint" {} ''
-    sha256sum ${file} | awk '{print $1}' | awk '{ print "\"" toupper($0) "\"" }' > $out
-  ''));
+  sha256Fingerprint = file: lib.toUpper (builtins.hashFile "sha256" file);
 
   # getName snippet originally from nixpkgs/pkgs/build-support/trivial-builders.nix
   getName = fname: apk:
