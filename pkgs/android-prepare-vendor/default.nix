@@ -1,6 +1,6 @@
 { stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
   simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2,
-  api ? 29
+  api ? 30
 }:
 
 let
@@ -28,27 +28,29 @@ let
       cp -r * $out
     '';
   };
+
+  owner = "AOSPAlliance";
+  repo = "android-prepare-vendor";
+  version =
+    if api >= 30
+    then "2020-09-18"
+    else "2020-08-26";
+  rev =
+    if api >= 30
+    then "7f19a8ec5b645bfffcf46d5d5ab1eed1d07703ab" # Android11 branch. 2020-09-18
+    else "a9602ca6ef16ff10641d668dcb203f89f402d40d"; # Android10 branch. 2020-08-26
+  sha256 =
+    if api >= 30
+    then "19axrmvqnj44yzd2198477x4kgazb8cffgmvy4bwwbmby502shwp"
+    else "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
 in
 (stdenv.mkDerivation {
   pname = "android-prepare-vendor";
-  version =
-    if api >= 30 then "2020-09-18"
-    else "2020-08-26";
+  inherit version;
 
-  src = if api >= 30 then
-    fetchFromGitHub {
-      owner = "AOSPAlliance";
-      repo = "android-prepare-vendor";
-      rev = "7f19a8ec5b645bfffcf46d5d5ab1eed1d07703ab"; # Android11 branch. 2020-09-18
-      sha256 = "19axrmvqnj44yzd2198477x4kgazb8cffgmvy4bwwbmby502shwp";
-    }
-  else
-    fetchFromGitHub {
-      owner = "AOSPAlliance";
-      repo = "android-prepare-vendor";
-      rev = "a9602ca6ef16ff10641d668dcb203f89f402d40d"; # Android10 branch. 2020-08-26
-      sha256 = "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
-    };
+  src = fetchFromGitHub {
+    inherit owner repo rev sha256;
+  };
 
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = [
@@ -92,4 +94,10 @@ in
     wrapProgram $out/scripts/extract_android_ota_payload/extract_android_ota_payload.py \
       --prefix PYTHONPATH : "$PYTHONPATH"
   '';
+
+  # To allow eval-time fetching of config resources from this repo.
+  passthru.evalTimeSrc = builtins.fetchGit {
+    url = "https://github.com/${owner}/${repo}";
+    inherit rev;
+  };
 })

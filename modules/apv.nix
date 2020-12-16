@@ -9,7 +9,7 @@ let
   apiStr = builtins.toString config.apiLevel;
   android-prepare-vendor = pkgs.android-prepare-vendor.override { api = config.apiLevel; };
 
-  configFile = android-prepare-vendor.src + "/${config.device}/config.json";
+  configFile = "${android-prepare-vendor.evalTimeSrc}/${config.device}/config.json";
   apvConfig = builtins.fromJSON (builtins.readFile configFile);
 
   # TODO: There's probably a better way to do this
