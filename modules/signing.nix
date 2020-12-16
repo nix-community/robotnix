@@ -13,6 +13,15 @@ let
                         (name: prebuilt: prebuilt.certificate)
                         (filterAttrs (name: prebuilt: prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
                     );
+
+  # Cert fingerprints from default AOSP test-keys: build/make/tools/releasetools/testdata
+  defaultDeviceCertFingerprints = {
+    "releasekey" = "A40DA80A59D170CAA950CF15C18C454D47A39B26989D8B640ECD745BA71BF5DC";
+    "platform" = "C8A2E9BCCF597C2FB6DC66BEE293FC13F2FC47EC77BC6B2B0D52C11F51192AB8";
+    "media" = "465983F7791F2ABEB43EA2CBDC7F21A8260B72BC08A55C839FC1A43BC741A81E";
+    "shared" = "28BBFE4A7B97E74681DC55C2FBB6CCB8D6C74963733F6AF6AE74D8C3A6E879FD";
+    "verity" = "8AD127ABAE8285B582EA36745F220AB8FE397FFB3B068DF19CA22D122C7B3B86";
+  };
 in
 {
   options = {
@@ -71,7 +80,7 @@ in
         in if builtins.elem name deviceCertificates
           then (if config.signing.enable
             then "${keyStorePath}/${config.device}/${name}"
-            else "${config.source.dirs."build/make".src}/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
+            else "${config.source.dirs."build/make".src}/target/product/security/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
           else "${keyStorePath}/${name}";
       keyPath = name: config.build._keyPath config.keyStorePath name;
       sandboxKeyPath = name: (if config.signing.enable
@@ -81,9 +90,10 @@ in
       x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
       fingerprints = name:
         if (name == "avb")
-          # TODO: Is there a nix-native way to get this information instead of using IFD
           then pkgs.robotnix.sha256Fingerprint (putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin")
-          else pkgs.robotnix.certFingerprint (config.build.x509 name);
+          else if (!config.signing.enable && elem name (attrNames defaultDeviceCertFingerprints))
+            then defaultDeviceCertFingerprints.${name}
+            else pkgs.robotnix.certFingerprint (config.build.x509 name); # IFD
     };
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
