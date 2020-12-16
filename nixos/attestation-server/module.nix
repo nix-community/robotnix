@@ -118,9 +118,12 @@ in
             "('emailLocal', '${if local then "1" else "0"}')"
           ];
         in optionals (passwordFile != null) [
-          # Note the leading + on the first command. The passwordFile could be
+          # Note the leading + on the second command. The passwordFile could be
           # anywhere in the file system, so it has to be copied as root and
-          # permissions fixed to be accessible by the service.
+          # permissions fixed to be accessible by the service.  However, if the
+          # first command is run as root the allocation of uid and gid for the
+          # service seems to be delayed, so we just run something else first.
+          "${pkgs.coreutils}/bin/touch %S/attestation/emailPassword"
           "+${pkgs.coreutils}/bin/install -m 0600 -o %N -g %N ${passwordFile} %S/attestation/emailPassword"
           ''${pkgs.sqlite}/bin/sqlite3 %S/attestation/attestation.db "INSERT OR REPLACE INTO Configuration VALUES ${values}"''
           "${pkgs.coreutils}/bin/rm -f %S/attestation/emailPassword"
