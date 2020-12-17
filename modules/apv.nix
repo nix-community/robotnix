@@ -168,24 +168,24 @@ in
           ln -s ${config.build.apv.unpackedImg} $out/upstream
           ln -s ${builtVendor} $out/built
 
-          find ${config.build.apv.unpackedImg}/vendor -printf "%P\n" | sort > $out/upstream-vendor
-          find ${builtVendor}/vendor -printf "%P\n" | sort > $out/built-vendor
-          diff -u $out/upstream-vendor $out/built-vendor > $out/diff-vendor || true
+          find ${config.build.apv.unpackedImg}/vendor -printf "%P\n" | sort > $out/vendor.upstream
+          find ${builtVendor}/vendor -printf "%P\n" | sort > $out/vendor.built
+          diff -u $out/vendor.upstream $out/vendor.built > $out/vendor.diff || true
 
-          find ${config.build.apv.unpackedImg}/system -printf "%P\n" | sort > $out/upstream-system
-          find ${builtVendor}/system -printf "%P\n" | sort > $out/built-system
-          diff -u $out/upstream-system $out/built-system > $out/diff-system || true
+          find ${config.build.apv.unpackedImg}/system -printf "%P\n" | sort > $out/system.upstream
+          find ${builtVendor}/system -printf "%P\n" | sort > $out/system.built
+          diff -u $out/system.upstream $out/system.built > $out/system.diff || true
 
           if [[ -d ${config.build.apv.unpackedImg}/product ]]; then
-            find ${config.build.apv.unpackedImg}/product -printf "%P\n" | sort > $out/upstream-product
-            find ${builtVendor}/product -printf "%P\n" | sort > $out/built-product
-            diff -u $out/upstream-product $out/built-product > $out/diff-product || true
+            find ${config.build.apv.unpackedImg}/product -printf "%P\n" | sort > $out/product.upstream
+            find ${builtVendor}/product -printf "%P\n" | sort > $out/product.built
+            diff -u $out/product.upstream $out/product.built > $out/product.diff || true
           fi
 
           if [[ -d ${config.build.apv.unpackedImg}/system_ext ]]; then
-            find ${config.build.apv.unpackedImg}/system_ext -printf "%P\n" | sort > $out/upstream-system_ext
-            find ${builtVendor}/system_ext -printf "%P\n" | sort > $out/built-system_ext
-            diff -u $out/upstream-system_ext $out/built-system_ext > $out/diff-system_ext || true
+            find ${config.build.apv.unpackedImg}/system_ext -printf "%P\n" | sort > $out/system_ext.upstream
+            find ${builtVendor}/system_ext -printf "%P\n" | sort > $out/system_ext.built
+            diff -u $out/system_ext.upstream $out/system_ext.built > $out/system_ext.diff || true
           fi
         '';
     };
