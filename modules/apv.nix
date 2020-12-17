@@ -162,7 +162,7 @@ in
 
       # For debugging differences between upstream vendor files and ours
       diff = let
-          builtVendor = unpackImg config.factoryImg;
+          builtVendor = unpackImg config.build.factoryImg;
         in pkgs.runCommand "vendor-diff" {} ''
           mkdir -p $out
           ln -s ${config.build.apv.unpackedImg} $out/upstream

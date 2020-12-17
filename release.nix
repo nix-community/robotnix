@@ -70,6 +70,8 @@ in
   vanilla-emulator = (robotnix { device="x86"; flavor="vanilla"; }).emulator;
   danielfullmer-emulator = (robotnix { device="x86"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).emulator;
 
+  example-apv-diff = (robotnix { device="crosshatch"; flavor="grapheneos"; }).config.build.apv.diff;
+
   # Stuff to upload to binary cache
   cached = lib.recurseIntoAttrs {
     browsers = lib.recurseIntoAttrs {
