@@ -30,7 +30,6 @@ let
 
     { device="marlin";     flavor="lineageos"; }
     { device="pioneer";    flavor="lineageos"; }
-
   ]));
 
   builtConfigs = lib.mapAttrs (name: c: robotnix c) configs;
@@ -41,8 +40,8 @@ in
   inherit (pkgs) diffoscope;
 
   testGenerateKeys = let
-    generateKeysScript = (robotnix configs.grapheneos-crosshatch).generateKeysScript;
-    verifyKeysScript = (robotnix configs.grapheneos-crosshatch).verifyKeysScript;
+    inherit ((robotnix { device="crosshatch"; flavor="vanilla"; }))
+      generateKeysScript verifyKeysScript;
   in pkgs.runCommand "test-generate-keys" { nativeBuildInputs = [ pkgs.shellcheck ]; } ''
     mkdir -p $out
     cd $out
@@ -56,9 +55,14 @@ in
 
   check = lib.mapAttrs (name: c: (robotnix c).config.build.checkAndroid) configs;
 
-  vanilla-arm64-generateKeysScript = defaultBuild.generateKeysScript;
-  vanilla-arm64-ota = defaultBuild.ota;
-  vanilla-arm64-factoryImg = defaultBuild.factoryImg;
+  imgs = lib.recurseIntoAttrs (lib.mapAttrs (name: c: c.img) builtConfigs);
+
+  # For testing instantiation
+  vanilla-arm64 = lib.recurseIntoAttrs {
+    inherit (defaultBuild)
+      targetFiles ota img factoryImg bootImg otaDir
+      releaseScript;
+  };
 
   sdk = import ./sdk;
 
@@ -67,8 +71,8 @@ in
   danielfullmer-emulator = (robotnix { device="x86"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).emulator;
 
   # Stuff to upload to binary cache
-  cached = let
-    browsers = {
+  cached = lib.recurseIntoAttrs {
+    browsers = lib.recurseIntoAttrs {
       inherit ((robotnix { device = "arm64"; flavor="vanilla"; }).config.build)
         chromium bromite;
 
@@ -76,9 +80,8 @@ in
         vanadium;
     };
 
-    kernels =
-      lib.mapAttrs (name: c: c.config.build.kernel)
-        (lib.filterAttrs (name: c: c.config.kernel.useCustom) builtConfigs);
-  in { inherit browsers kernels; } // browsers // kernels;
-
-} // lib.mapAttrs (name: c: c.img) builtConfigs
+    kernels = lib.recurseIntoAttrs
+      (lib.mapAttrs (name: c: c.config.build.kernel)
+        (lib.filterAttrs (name: c: c.config.kernel.useCustom) builtConfigs));
+  };
+}

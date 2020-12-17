@@ -70,11 +70,9 @@ in {
 
   # Things that are nice to have at the top-level, since they might get moved
   # in the future:
-  inherit (eval.config)
-    unsignedTargetFiles signedTargetFiles
-    ota incrementalOta img factoryImg bootImg otaDir
-    releaseScript generateKeysScript verifyKeysScript;
-
   inherit (eval.config.build)
+    targetFiles unsignedTargetFiles signedTargetFiles
+    ota incrementalOta img factoryImg bootImg otaDir
+    releaseScript generateKeysScript verifyKeysScript
     emulator;
 }

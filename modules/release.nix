@@ -18,7 +18,7 @@ let
         echo 'Missing KEYSDIR directory, did you use "--option extra-sandbox-paths /keys=..." ?'
         exit 1
       fi
-      ${config.verifyKeysScript} "$KEYSDIR" || exit 1
+      ${config.build.verifyKeysScript} "$KEYSDIR" || exit 1
       NEW_KEYSDIR=$(mktemp -d /dev/shm/robotnix_keys.XXXXXXXXXX)
       trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
       cp -r "$KEYSDIR"/* "$NEW_KEYSDIR"
@@ -98,54 +98,44 @@ in
     };
 
     # Build products. Put here for convenience--but it's not a great interface
-    unsignedTargetFiles = mkOption { type = types.path; internal = true; };
-    signedTargetFiles = mkOption { type = types.path; internal = true; };
-    ota = mkOption { type = types.path; internal = true; };
-    incrementalOta = mkOption { type = types.path; internal = true; };
-    otaDir = mkOption { type = types.path; internal = true; };
-    otaMetadata = mkOption { type = types.path; internal = true; };
-    img = mkOption { type = types.path; internal = true; };
-    factoryImg = mkOption { type = types.path; internal = true; };
-    bootImg = mkOption { type = types.path; internal = true; };
-    releaseScript = mkOption { type = types.path; internal = true;};
-
     prevBuildDir = mkOption { type = types.str; internal = true; };
     prevBuildNumber = mkOption { type = types.str; internal = true; };
     prevTargetFiles = mkOption { type = types.path; internal = true; };
   };
 
-  config = with config; let # "with config" is ugly--but the scripts below get too verbose otherwise
-    targetFiles = if signing.enable then signedTargetFiles else unsignedTargetFiles;
-  in {
-    # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
-    unsignedTargetFiles = mkDefault (build.android + "/${productName}-target_files-${buildNumber}.zip");
-    signedTargetFiles = mkDefault (runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;});
-    ota = mkDefault (runWrappedCommand "ota_update" otaScript { inherit targetFiles; });
-    incrementalOta = mkDefault (runWrappedCommand "incremental-${prevBuildNumber}" otaScript { inherit targetFiles prevTargetFiles; });
-    img = mkDefault (runWrappedCommand "img" imgScript { inherit targetFiles; });
-    factoryImg = mkDefault (runWrappedCommand "factory" factoryImgScript { inherit targetFiles img; });
-
-    # Pull this out of target files, because (at least) verity key gets put into boot ramdisk
-    bootImg = mkDefault (pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out");
-
+  config = {
     prevBuildNumber = let
         metadata = builtins.readFile (prevBuildDir + "/${device}-${channel}");
       in mkDefault (head (splitString " " metadata));
     prevTargetFiles = mkDefault (prevBuildDir + "/${device}-target_files-${prevBuildNumber}.zip");
+  };
 
-    otaMetadata = mkDefault (pkgs.writeText "${device}-${channel}" ''
-      ${buildNumber} ${toString buildDateTime} ${apv.buildID}
-    '');
+  config.build = rec {
+    # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
+    unsignedTargetFiles = config.build.android + "/${config.productName}-target_files-${config.buildNumber}.zip";
+    signedTargetFiles = runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;};
+    targetFiles = if config.signing.enable then signedTargetFiles else unsignedTargetFiles;
+    ota = runWrappedCommand "ota_update" otaScript { inherit targetFiles; };
+    incrementalOta = runWrappedCommand "incremental-${config.prevBuildNumber}" otaScript { inherit targetFiles prevTargetFiles; };
+    img = runWrappedCommand "img" imgScript { inherit targetFiles; };
+    factoryImg = runWrappedCommand "factory" factoryImgScript { inherit targetFiles img; };
+
+    # Pull this out of target files, because (at least) verity key gets put into boot ramdisk
+    bootImg = pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out";
+
+    otaMetadata = pkgs.writeText "${config.device}-${config.channel}" ''
+      ${config.buildNumber} ${toString config.buildDateTime} ${config.apv.buildID}
+    '';
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
-    otaDir = pkgs.linkFarm "${device}-otaDir" (
-      (map (p: {name=p.name; path=p;}) ([ ota otaMetadata ] ++ (optional incremental incrementalOta)))
-      ++ [{ name="${device}-target_files-${buildNumber}.zip"; path=targetFiles; }]
+    otaDir = pkgs.linkFarm "${config.device}-otaDir" (
+      (map (p: {name=p.name; path=p;}) ([ ota otaMetadata ] ++ (optional config.incremental incrementalOta)))
+      ++ [{ name="${config.device}-target_files-${config.buildNumber}.zip"; path=targetFiles; }]
     );
 
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
     # Maybe just remove this script? It's definitely complicated--and often untested
-    releaseScript = mkDefault (pkgs.writeScript "release.sh" (''
+    releaseScript = pkgs.writeScript "release.sh" (''
       #!${pkgs.runtimeShell}
       set -euo pipefail
 
@@ -167,8 +157,8 @@ in
         echo Building incremental OTA zip
         ${otaScript {
           targetFiles=signedTargetFiles.name;
-          prevTargetFiles="${device}-target_files-$PREV_BUILDNUMBER.zip";
-          out="${device}-incremental-$PREV_BUILDNUMBER-${buildNumber}.zip";
+          prevTargetFiles="${config.device}-target_files-$PREV_BUILDNUMBER.zip";
+          out="${config.device}-incremental-$PREV_BUILDNUMBER-${config.buildNumber}.zip";
         }}
       fi
       echo Building .img file
@@ -176,7 +166,7 @@ in
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
       echo Writing updater metadata
-      cat ${otaMetadata} > ${device}-${channel}
-    ''; })));
+      cat ${otaMetadata} > ${config.device}-${config.channel}
+    ''; }));
   };
 }

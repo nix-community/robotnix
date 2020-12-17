@@ -3,6 +3,10 @@
 with lib;
 let
   cfg = config.signing;
+
+  # TODO: Find a better way to do this?
+  putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
+
   keysToGenerate = unique (
                     map (key: "${config.device}/${key}") [ "releasekey" "platform" "shared" "media" ]
                     ++ (optional (config.signing.avb.mode == "verity_only") "${config.device}/verity")
@@ -59,9 +63,6 @@ in
       };
     };
 
-    generateKeysScript = mkOption { type = types.path; internal = true; };
-    verifyKeysScript = mkOption { type = types.path; internal = true; };
-
     keyStorePath = mkOption {
       type = types.str;
       description = "Absolute path to generated keys for signing";
@@ -71,30 +72,25 @@ in
   config = {
     keyStorePath = mkIf (!config.signing.enable) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
 
-    build = let
-      # TODO: Find a better way to do this?
-      putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
-    in {
-      _keyPath = keyStorePath: name:
-        let deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
-        in if builtins.elem name deviceCertificates
-          then (if config.signing.enable
-            then "${keyStorePath}/${config.device}/${name}"
-            else "${config.source.dirs."build/make".src}/target/product/security/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
-          else "${keyStorePath}/${name}";
-      keyPath = name: config.build._keyPath config.keyStorePath name;
-      sandboxKeyPath = name: (if config.signing.enable
-        then config.build._keyPath "/keys" name
-        else config.build.keyPath name);
+    build._keyPath = keyStorePath: name:
+      let deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
+      in if builtins.elem name deviceCertificates
+        then (if config.signing.enable
+          then "${keyStorePath}/${config.device}/${name}"
+          else "${config.source.dirs."build/make".src}/target/product/security/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
+        else "${keyStorePath}/${name}";
+    build.keyPath = name: config.build._keyPath config.keyStorePath name;
+    build.sandboxKeyPath = name: (if config.signing.enable
+      then config.build._keyPath "/keys" name
+      else config.build.keyPath name);
 
-      x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
-      fingerprints = name:
-        if (name == "avb")
-          then pkgs.robotnix.sha256Fingerprint (putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin")
-          else if (!config.signing.enable && elem name (attrNames defaultDeviceCertFingerprints))
-            then defaultDeviceCertFingerprints.${name}
-            else pkgs.robotnix.certFingerprint (config.build.x509 name); # IFD
-    };
+    build.x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
+    build.fingerprints = name:
+      if (name == "avb")
+        then pkgs.robotnix.sha256Fingerprint (putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin")
+        else if (!config.signing.enable && elem name (attrNames defaultDeviceCertFingerprints))
+          then defaultDeviceCertFingerprints.${name}
+          else pkgs.robotnix.certFingerprint (config.build.x509 name); # IFD
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
     signing.apex.packageNames = map (s: "com.android.${s}") (
@@ -158,7 +154,7 @@ in
       ++ optionals cfg.avb.enable avbFlags
       ++ optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames);
 
-    generateKeysScript = let
+    build.generateKeysScript = let
       # Get a bunch of utilities to generate keys
       keyTools = pkgs.runCommandCC "android-key-tools" { buildInputs = [ pkgs.python ]; } ''
         mkdir -p $out/bin
@@ -178,7 +174,7 @@ in
       '';
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
     # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
-    in mkDefault (pkgs.writeScript "generate_keys.sh" ''
+    in pkgs.writeScript "generate_keys.sh" ''
       #!${pkgs.runtimeShell}
       set -euo pipefail
 
@@ -234,11 +230,11 @@ in
         echo "Skipping generating device AVB key since it is already exists"
       fi
       ''}
-    '');
+    '';
 
     # Check that all needed keys are available.
     # TODO: Remove code duplicated with generate_keys.sh
-    verifyKeysScript = mkDefault (pkgs.writeScript "verify_keys.sh" ''
+    build.verifyKeysScript = pkgs.writeScript "verify_keys.sh" ''
       #!${pkgs.runtimeShell}
       set -euo pipefail
 
@@ -291,6 +287,6 @@ in
         echo in NEWS.md.
       fi
       exit $RETVAL
-    '');
+    '';
   };
 }
