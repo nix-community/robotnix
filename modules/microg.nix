@@ -3,7 +3,11 @@
 with lib;
 
 let
-  version = "0.2.14.204215";
+  version = {
+    part1 = "0.2.15";
+    part2 = "204713";
+    part3 = "030";
+  };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
     sha256 = "9bd06727e62796c0130eb6dab39b73157451582cbd138e86c468acc395d14165"; # O=NOGAPPS Project, C=DE
@@ -32,8 +36,8 @@ in
     apps.prebuilt = {
       GmsCore = { 
         apk = verifyApk (pkgs.fetchurl {
-          url = "https://github.com/microg/android_packages_apps_GmsCore/releases/download/v${version}/GmsCore-v${version}.apk";
-          sha256 = "0s7n01fqcwrlfxcm45mrp6clvxb2a746hgv6amhp3idi1khgb415";
+          url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
+          sha256 = "0v5hv1m3ji7zyll0ihm7h3qbghxfjnhl2jjy47g8864sa9mvprih";
         });
         packageName = "com.google.android.gms";
         privileged = true;
