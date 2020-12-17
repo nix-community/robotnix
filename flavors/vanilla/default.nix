@@ -52,8 +52,13 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf (elem config.androidVersion [ 9 10 11 ]) {
   source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}/disable-quicksearch.patch") ];
 })
-(mkIf ((elem config.deviceFamily phoneDeviceFamilies)  && (elem config.androidVersion [ 9 10 11 ])) {
-  source.dirs."device/google/${config.deviceFamily}".patches = [ (./. + "/${toString config.androidVersion}/${config.deviceFamily}-fix-device-names.patch") ];
+(mkIf (elem config.deviceFamily phoneDeviceFamilies) {
+  # This might potentially patch multiple files, referring to different
+  # devices, all with the name for this device.  This is OK.
+  source.dirs."device/google/${config.deviceFamily}".postPatch = ''
+    sed -i 's/PRODUCT_MODEL :=.*/PRODUCT_MODEL := ${config.deviceDisplayName}/' aosp_*.mk
+    sed -i 's/PRODUCT_MANUFACTURER :=.*/PRODUCT_MANUFACTURER := Google/' aosp_*.mk
+  '';
 })
 (mkIf ((config.deviceFamily == "marlin") && (elem config.androidVersion [ 9 10 ])) {
   # patch location for marlin is different
