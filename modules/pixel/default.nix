@@ -13,20 +13,19 @@ let
   in
     pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);
 
-  deviceFamilyMap = {
-    marlin = "marlin"; # Pixel XL
-    sailfish = "marlin"; # Pixel
-    taimen = "taimen"; # Pixel 2 XL
-    walleye = "muskie"; # Pixel 2
-    crosshatch = "crosshatch"; # Pixel 3 XL
-    blueline = "crosshatch"; # Pixel 3
-    bonito = "bonito"; # Pixel 3a XL
-    sargo = "bonito"; # Pixel 3a
-    coral = "coral"; # Pixel 4 XL
-    flame = "coral"; # Pixel 4
-    sunfish = "sunfish"; # Pixel 4a
+  deviceMap = {
+    marlin = { family = "marlin"; name = "Pixel XL"; };
+    sailfish = { family = "marlin"; name = "Pixel"; };
+    taimen = { family = "taimen"; name = "Pixel 2 XL"; };
+    walleye = { family = "muskie"; name = "Pixel 2"; };
+    crosshatch = { family = "crosshatch"; name = "Pixel 3 XL"; };
+    blueline = { family = "crosshatch"; name = "Pixel 3"; };
+    bonito = { family = "bonito"; name = "Pixel 3a XL"; };
+    sargo = { family = "bonito"; name = "Pixel 3a"; };
+    coral = { family = "coral"; name = "Pixel 4 XL"; };
+    flame = { family = "coral"; name = "Pixel 4"; };
+    sunfish = { family = "sunfish"; name = "Pixel 4a"; };
   };
-  deviceFamily = deviceFamilyMap.${config.device};
 
   # Make a uuid based on some string data
   uuidgen = str: let
@@ -39,8 +38,9 @@ let
   hashSeed = uuidgen "persist-hash-${config.buildNumber}-${builtins.toString config.buildDateTime}";
 in
 mkMerge [
-  (mkIf ((config.flavor != "lineageos") && (config.device != null) && (hasAttr config.device deviceFamilyMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
-    deviceFamily = mkDefault deviceFamily;
+  (mkIf ((config.flavor != "lineageos") && (config.device != null) && (hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
+    deviceFamily = mkDefault (deviceMap.${config.device}.family or config.device);
+    deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
 
     kernel.name = mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") (mkDefault "wahoo");
@@ -48,10 +48,9 @@ mkMerge [
     apv.img = mkIf config.apv.enable (mkDefault (fetchItem imgList));
     apv.ota = mkIf config.apv.enable (mkDefault (fetchItem otaList));
 
-    source.excludeGroups = mkDefault [
-      # Exclude all devices by default
-      "marlin" "muskie" "wahoo" "taimen" "crosshatch" "bonito" "coral" "sunfish"
-    ];
+    # Exclude all devices by default
+    source.excludeGroups = mkDefault (attrNames deviceMap);
+    # But include names related to our device
     source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.name config.kernel.configName ];
 
     signing.avb.enable = mkDefault true;

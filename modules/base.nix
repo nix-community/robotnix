@@ -47,6 +47,14 @@ in
       example = "marlin";
     };
 
+    deviceDisplayName = mkOption {
+      default = null;
+      type = types.nullOr types.str;
+      description = "Display name of device build target";
+      example = "Pixel XL";
+      internal = true;
+    };
+
     deviceFamily = mkOption {
       default = null;
       type = types.nullOr types.str;
