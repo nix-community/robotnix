@@ -1,7 +1,7 @@
 let
   pkgs = import ./pkgs {};
   lib = pkgs.lib;
-  robotnix = configuration: import ./default.nix { inherit configuration; };
+  robotnix = configuration: import ./default.nix { inherit configuration pkgs; };
 
   configs = (lib.listToAttrs (builtins.map (c: lib.nameValuePair "${c.flavor}-${c.device}" c) [
     { device="x86_64";     flavor="vanilla"; }
