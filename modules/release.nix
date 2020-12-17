@@ -105,9 +105,9 @@ in
 
   config = {
     prevBuildNumber = let
-        metadata = builtins.readFile (prevBuildDir + "/${device}-${channel}");
+        metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.channel}");
       in mkDefault (head (splitString " " metadata));
-    prevTargetFiles = mkDefault (prevBuildDir + "/${device}-target_files-${prevBuildNumber}.zip");
+    prevTargetFiles = mkDefault (config.prevBuildDir + "/${config.device}-target_files-${config.prevBuildNumber}.zip");
   };
 
   config.build = rec {
@@ -116,7 +116,7 @@ in
     signedTargetFiles = runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;};
     targetFiles = if config.signing.enable then signedTargetFiles else unsignedTargetFiles;
     ota = runWrappedCommand "ota_update" otaScript { inherit targetFiles; };
-    incrementalOta = runWrappedCommand "incremental-${config.prevBuildNumber}" otaScript { inherit targetFiles prevTargetFiles; };
+    incrementalOta = runWrappedCommand "incremental-${config.prevBuildNumber}" otaScript { inherit targetFiles; inherit (config) prevTargetFiles; };
     img = runWrappedCommand "img" imgScript { inherit targetFiles; };
     factoryImg = runWrappedCommand "factory" factoryImgScript { inherit targetFiles img; };
 
