@@ -67,7 +67,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf ((elem config.deviceFamily [ "taimen" "muskie" ]) && (elem config.androidVersion [ 9 10 11 ])) {
   source.dirs."device/google/wahoo".postPatch = patchSystemUIGoogle;
 })
-(mkIf ((elem config.deviceFamily phoneDeviceFamilies) && (!(elem config.deviceFamily [ "marlin" "taimen" "muskie" ]))  && (elem config.androidVersion [ 9 10 11 ])) {
+(mkIf ((elem config.deviceFamily [ "crosshatch" "bonito" "coral" "sunfish" ])  && (elem config.androidVersion [ 9 10 11 ])) {
   source.dirs."device/google/${config.deviceFamily}".postPatch = patchSystemUIGoogle;
 })
 
