@@ -32,11 +32,11 @@ in
   };
 
   config = (mkMerge (flatten (map
-    ({ name, displayName, chromeModernIsBundled ? true }: let
+    ({ name, displayName, buildSeparately ? false, chromeModernIsBundled ? true }: let
       # There is a lot of shared code between chrome app and chrome webview. So we
-      # build them in a single derivation. This is not optimal if the user is
-      # enabling/disabling the apps/webview independently, but the benefits
-      # outweigh the costs.
+      # default to building them in a single derivation. This is not optimal if
+      # the user is enabling/disabling the apps/webview independently, but the
+      # benefits outweigh the costs.
       packageName = "org.robotnix.${name}"; # Override package names here so we don't have to worry about conflicts
       webviewPackageName = "org.robotnix.${name}.webview";
       trichromeLibraryPackageName = "org.robotnix.${name}.trichromelibrary";
@@ -44,20 +44,35 @@ in
       #isTriChrome = (config.androidVersion >= 10) && config.apps.${name}.enable && config.webview.${name}.enable;
       isTriChrome = false; # FIXME: Disable trichrome for now since it depends on a certificate and breaks nix caching
 
-      browser = apks.${name}.override ({ customGnFlags ? {}, ... }: {
+      _browser = buildTargets: apks.${name}.override ({ customGnFlags ? {}, ... }: {
+        inherit packageName webviewPackageName trichromeLibraryPackageName displayName buildTargets;
         targetCPU = { arm64 = "arm64"; arm = "arm"; x86_64 = "x64"; x86 = "x86";}.${config.arch};
-        buildTargets =
-          if isTriChrome then [ "trichrome_webview_apk" "trichrome_chrome_bundle" "trichrome_library_apk" ]
-          else
-            (optional (config.apps.${name}.enable && chromeModernIsBundled) "chrome_modern_public_bundle") ++
-            (optional (config.apps.${name}.enable  && !chromeModernIsBundled) "chrome_modern_public_apk") ++
-            (optional config.webview.${name}.enable "system_webview_apk");
-          inherit packageName webviewPackageName trichromeLibraryPackageName displayName;
-          customGnFlags = customGnFlags // optionalAttrs isTriChrome {
-            # Lots of indirection here. If not careful, it might cause infinite recursion.
-            trichrome_certdigest = toLower config.apps.prebuilt."${name}TrichromeLibrary".fingerprint;
-          };
+        customGnFlags = customGnFlags // optionalAttrs isTriChrome {
+          # Lots of indirection here. If not careful, it might cause infinite recursion.
+          trichrome_certdigest = toLower config.apps.prebuilt."${name}TrichromeLibrary".fingerprint;
+        };
       });
+      chromiumTargets =
+        if isTriChrome then [ "trichrome_chrome_bundle" "trichrome_library_apk" ]
+        else if chromeModernIsBundled then [ "chrome_modern_public_bundle" ]
+        else [ "chrome_modern_public_apk" ];
+      webviewTargets =
+        if isTriChrome then [ "trichrome_webview_apk" "trichrome_library_apk" ]
+        else [ "system_webview_apk" ];
+
+      browser =
+        if buildSeparately
+        then pkgs.symlinkJoin {
+          inherit name;
+          paths =
+            optional config.apps.${name}.enable (_browser chromiumTargets)
+            ++ optional config.webview.${name}.enable (_browser webviewTargets);
+        }
+        else _browser (unique (
+          optionals config.apps.${name}.enable chromiumTargets
+          ++ optionals config.webview.${name}.enable webviewTargets
+        ));
+
     in [
       (mkIf (config.apps.${name}.enable) {
         apps.prebuilt.${name}.apk =
@@ -84,7 +99,9 @@ in
       })
     ])
     [ { name = "chromium"; displayName = "Chromium"; }
-      { name = "bromite"; displayName = "Bromite"; }
+      # For an unknown reason, Bromite fails to build chrome_modern_public_bundle
+      # simultaneously with system_webview_apk as of 2020-12-22
+      { name = "bromite"; displayName = "Bromite"; buildSeparately = true; }
       { name = "vanadium"; displayName = "Vanadium"; }
     ]
   )));
