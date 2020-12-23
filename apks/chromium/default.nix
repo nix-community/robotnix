@@ -13,6 +13,7 @@
 , buildTargets ? [ "chrome_modern_public_bundle" ]
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
+, trichromeLibraryPackageName ? "org.chromium.trichromelibrary"
 , version ? "87.0.4280.101"
 , versionCode ? null
 # Potential buildTargets:
@@ -54,7 +55,7 @@ let
     android_default_version_code = _versionCode;
     chrome_public_manifest_package = packageName;
     system_webview_package_name = webviewPackageName;
-    # trichrome_library_package = "org.grapheneos.vanadium.trichromelibrary" # TODO
+    trichrome_library_package = trichromeLibraryPackageName;
 
     is_official_build = true;
     is_debug = false;

@@ -39,6 +39,7 @@ in
       # outweigh the costs.
       packageName = "org.robotnix.${name}"; # Override package names here so we don't have to worry about conflicts
       webviewPackageName = "org.robotnix.${name}.webview";
+      trichromeLibraryPackageName = "org.robotnix.${name}.trichromelibrary";
 
       #isTriChrome = (config.androidVersion >= 10) && config.apps.${name}.enable && config.webview.${name}.enable;
       isTriChrome = false; # FIXME: Disable trichrome for now since it depends on a certificate and breaks nix caching
@@ -51,7 +52,7 @@ in
             (optional (config.apps.${name}.enable && chromeModernIsBundled) "chrome_modern_public_bundle") ++
             (optional (config.apps.${name}.enable  && !chromeModernIsBundled) "chrome_modern_public_apk") ++
             (optional config.webview.${name}.enable "system_webview_apk");
-          inherit packageName webviewPackageName displayName;
+          inherit packageName webviewPackageName trichromeLibraryPackageName displayName;
           customGnFlags = customGnFlags // optionalAttrs isTriChrome {
             # Lots of indirection here. If not careful, it might cause infinite recursion.
             trichrome_certdigest = toLower config.apps.prebuilt."${name}TrichromeLibrary".fingerprint;
