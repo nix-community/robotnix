@@ -258,6 +258,7 @@ in
           buildPhase = ''
             # Become the original user--not fake root.
             ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID robotnix-build
+            set -e -o pipefail
 
             source build/envsetup.sh
             choosecombo ${config.buildType} ${config.productName} ${config.variant}
@@ -267,7 +268,7 @@ in
 
             #export NINJA_ARGS="${toString ninjaArgs}"
             export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
-            (make ${toString makeTargets} | cat) || exit 1
+            m ${toString makeTargets} | cat
             echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 
             EOF2

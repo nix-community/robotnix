@@ -222,9 +222,9 @@ in stdenvNoCC.mkDerivation rec {
   # https://chromium.googlesource.com/chromium/src/+/master/docs/android_build_instructions.md
   buildPhase = ''
     chromium-fhs << 'EOF'
-    ( cd src
-      ninja -C out/Release ${builtins.toString buildTargets} | cat
-    )
+    set -euo pipefail
+    cd src
+    ninja -C out/Release ${builtins.toString buildTargets} | cat
     EOF
   '';
 
