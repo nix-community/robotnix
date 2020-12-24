@@ -128,7 +128,10 @@ in
           signedApk = mkDefault (
             if config.certificate == "PRESIGNED" then config.apk else (pkgs.robotnix.signApk {
               inherit (config) apk;
-              keyPath = _config.build.sandboxKeyPath config.certificate;
+              keyPath =
+                if _config.signing.enable
+                then _config.build.sandboxKeyPath config.certificate
+                else "${config.snakeoilKeyPath}/${config.certificate}";
             }));
 
           fingerprint = let
