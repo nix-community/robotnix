@@ -96,8 +96,8 @@ in
   '';
 
   # To allow eval-time fetching of config resources from this repo.
-  passthru.evalTimeSrc = builtins.fetchGit {
-    url = "https://github.com/${owner}/${repo}";
-    inherit rev;
+  passthru.evalTimeSrc = builtins.fetchTarball {
+    url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
+    inherit sha256;
   };
 })
