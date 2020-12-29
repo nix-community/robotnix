@@ -45,13 +45,8 @@ let
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
     ${otaTools}/releasetools/ota_from_target_files.py  \
-      --block \
-      ${if config.signing.enable
-        then "-k $KEYSDIR/${config.device}/releasekey"
-        else "-k ${config.source.dirs."build/make".src}/target/product/security/testkey"
-      } \
+      ${toString config.otaArgs} \
       ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
-      ${optionalString config.retrofit "--retrofit_dynamic_partitions"} \
       ${targetFiles} ${out}
   '';
   imgScript = { targetFiles, out }: ''${otaTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
@@ -97,6 +92,12 @@ in
       # https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legacy#generating-update-packages
     };
 
+    otaArgs = mkOption {
+      default = [];
+      type = types.listOf types.str;
+      internal = true;
+    };
+
     # Build products. Put here for convenience--but it's not a great interface
     prevBuildDir = mkOption { type = types.str; internal = true; };
     prevBuildNumber = mkOption { type = types.str; internal = true; };
@@ -108,6 +109,10 @@ in
         metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.channel}");
       in mkDefault (head (splitString " " metadata));
     prevTargetFiles = mkDefault (config.prevBuildDir + "/${config.device}-target_files-${config.prevBuildNumber}.zip");
+
+    otaArgs =
+      [ "--block" ]
+      ++ optional config.retrofit "--retrofit_dynamic_partitions";
   };
 
   config.build = rec {
