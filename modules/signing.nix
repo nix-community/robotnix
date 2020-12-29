@@ -154,6 +154,11 @@ in
       ++ optionals cfg.avb.enable avbFlags
       ++ optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames);
 
+    otaArgs =
+      if config.signing.enable
+      then [ "-k $KEYSDIR/${config.device}/releasekey" ]
+      else [ "-k ${config.source.dirs."build/make".src}/target/product/security/testkey" ];
+
     build.generateKeysScript = let
       # Get a bunch of utilities to generate keys
       keyTools = pkgs.runCommandCC "android-key-tools" { buildInputs = [ pkgs.python ]; } ''
