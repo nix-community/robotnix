@@ -122,4 +122,8 @@ in mkIf (config.flavor == "lineageos")
   # tried had flattened APEX packages as of 2020-07-22
   signing.apex.enable = false;
   envVars.OVERRIDE_TARGET_FLATTEN_APEX = "true";
+
+  # LineageOS needs this additional command line argument to enable
+  # backuptool.sh, which runs scripts under /system/addons.d
+  otaArgs = [ "--backup=true" ];
 }
