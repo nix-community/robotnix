@@ -288,7 +288,7 @@ in
         echo Additionally, some robotnix configuration options require that you re-run
         echo generateKeysScript to create additional new keys.  This should not overwrite
         echo existing keys. If you have previously generated keys and see this message
-        echo after recent changes in early December 2020, pleaseread the release notes
+        echo after recent changes in early December 2020, please read the release notes
         echo in NEWS.md.
       fi
       exit $RETVAL
