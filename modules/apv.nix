@@ -19,6 +19,9 @@ let
     in _config // {
       system-bytecode = _config.system-bytecode ++ cfg.systemBytecode;
       system-other = _config.system-other ++ cfg.systemOther;
+    } // optionalAttrs (_config ? product-other) {
+      # We don't use the apns-conf.xml generator currently
+      product-other = filter (n: n != "product/etc/apns-conf.xml") _config.product-other;
     };
   };
   mergedConfigFile = builtins.toFile "config.json" (builtins.toJSON mergedConfig);
