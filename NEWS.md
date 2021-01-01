@@ -36,13 +36,13 @@ I hope to avoid potentially breaking changes like this in the future by getting
 these changes done relatively early in the projects' life.
 
 If you've previously generated robotnix keys, you will need to do the
-following to update to the new key directory layout: Move all keys and
-certificates beginning with `com.android` from the device subdir (e.g.
-`crosshatch`) under your `keyStorePath` to the parent directory. The files
-beginning with `releasekey`, `platform`, `shared`, `media`, `networkstack`,
-and `avb`/`verity` (if you have it) are device-specific, and should remain
-under the device subdirectory.  For example, I ran the following command on my
-machine:
+following to update to the new key directory layout: Move any keys and
+certificates (if they exist) beginning with `com.android` from the device
+subdir (e.g.  `crosshatch`) under your `keyStorePath` to the parent directory.
+The files beginning with `releasekey`, `platform`, `shared`, `media`,
+`networkstack`, and `avb`/`verity` (if you have it) are device-specific, and
+should remain under the device subdirectory.  For example, I ran the following
+command on my machine:
  ```shell
 $ mv /var/secrets/android-keys/crosshatch/com.android.* /var/secrets/android-keys/
  ```
