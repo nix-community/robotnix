@@ -163,30 +163,26 @@ in
       # For debugging differences between upstream vendor files and ours
       diff = let
           builtVendor = unpackImg config.build.factoryImg;
-        in pkgs.runCommand "vendor-diff" {} ''
+        in pkgs.runCommand "vendor-diff" { nativeBuildInputs = [ pkgs.binutils ]; } ''
           mkdir -p $out
           ln -s ${config.build.apv.unpackedImg} $out/upstream
           ln -s ${builtVendor} $out/built
 
-          find ${config.build.apv.unpackedImg}/vendor -printf "%P\n" | sort > $out/vendor.upstream
-          find ${builtVendor}/vendor -printf "%P\n" | sort > $out/vendor.built
-          diff -u $out/vendor.upstream $out/vendor.built > $out/vendor.diff || true
+          function diff_partition() {
+            local partition=$1
+            if [[ -d ${config.build.apv.unpackedImg}/$partition ]]; then
+              find ${config.build.apv.unpackedImg}/$partition -printf "%P\n" | sort > $out/$partition.upstream
+              find ${builtVendor}/$partition -printf "%P\n" | sort > $out/$partition.built
+              diff -u $out/$partition.upstream $out/$partition.built > $out/$partition.diff || true
+            fi
+          }
 
-          find ${config.build.apv.unpackedImg}/system -printf "%P\n" | sort > $out/system.upstream
-          find ${builtVendor}/system -printf "%P\n" | sort > $out/system.built
-          diff -u $out/system.upstream $out/system.built > $out/system.diff || true
+          diff_partition "vendor"
+          diff_partition "system_ext"
+          diff_partition "system"
+          diff_partition "product"
 
-          if [[ -d ${config.build.apv.unpackedImg}/product ]]; then
-            find ${config.build.apv.unpackedImg}/product -printf "%P\n" | sort > $out/product.upstream
-            find ${builtVendor}/product -printf "%P\n" | sort > $out/product.built
-            diff -u $out/product.upstream $out/product.built > $out/product.diff || true
-          fi
-
-          if [[ -d ${config.build.apv.unpackedImg}/system_ext ]]; then
-            find ${config.build.apv.unpackedImg}/system_ext -printf "%P\n" | sort > $out/system_ext.upstream
-            find ${builtVendor}/system_ext -printf "%P\n" | sort > $out/system_ext.built
-            diff -u $out/system_ext.upstream $out/system_ext.built > $out/system_ext.diff || true
-          fi
+          bash ${./apv-lib-check.sh} $out/built $out/upstream | sort > $out/shared-libs-report.txt
         '';
     };
 
