@@ -127,10 +127,16 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1607400049;
+  buildDateTime = mkDefault 1609802811;
 
-  source.manifest.rev = mkDefault (if (elem config.deviceFamily [ "crosshatch" "bonito"]) then "android-11.0.0_r18" else "android-11.0.0_r19");
-  apv.buildID = mkDefault (if (elem config.deviceFamily [ "crosshatch" "bonito"]) then "RQ1A.201205.003" else "RQ1A.201205.008");
+  source.manifest.rev = mkDefault (
+    if (elem config.deviceFamily [ "sunfish" "bonito"]) then "android-11.0.0_r26"
+    else "android-11.0.0_r27"
+  );
+  apv.buildID = mkDefault (
+    if (elem config.deviceFamily [ "sunfish" "bonito"]) then "RQ1A.210105.002"
+    else "RQ1A.210105.003"
+  );
 
   # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
   # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
@@ -154,10 +160,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   kernelTag = {
     "taimen" = "android-11.0.0_r0.34";
     "muskie" = "android-11.0.0_r0.34";
-    "crosshatch" = "android-11.0.0_r0.28";
-    "bonito" = "android-11.0.0_r0.29";
-    "coral" = "android-11.0.0_r0.30";
-    "sunfish" = "android-11.0.0_r0.31";
+    "crosshatch" = "android-11.0.0_r0.42";
+    "bonito" = "android-11.0.0_r0.43";
+    "coral" = "android-11.0.0_r0.44";
+    "sunfish" = "android-11.0.0_r0.45";
   }.${config.deviceFamily};
   kernelMetadata = (lib.importJSON ./kernel-metadata.json).${kernelTag};
   kernelHashes = (lib.importJSON ./kernel-hashes.json).${kernelTag};
