@@ -181,3 +181,6 @@ Your support is greatly appreciated.
  - My GitHub sponsors page is [here](https://github.com/sponsors/danielfullmer).
  - Paypal donations may be made using this [link](https://www.paypal.com/donate/?cmd=_donations&business=FAV4QV9CTLXF2&currency_code=USD).
  - Bitcoin donations may be directed toward `3GEtqfkPkSSrRFpdcfy4T6YALgTwRyufip`.
+
+## Community
+The `#robotnix` IRC channel on Freenode is available for a place to chat about the project, ask questions, and discuss robotnix development.

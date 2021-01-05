@@ -3,6 +3,24 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+
+# 2021-01-05
+I've started the `#robotnix` IRC channel on Freenode for a place to chat about the project, ask questions, and discuss robotnix development.
+
+## Highlights:
+- New binary cache: Now publishing certain build products on `robotnix.cachix.org`, including Pixel device kernels and Chromium variants browser / webview. (See the binary cache section of README.md)
+- Updated vanilla flavor to January 2021 release
+- Updated GrapheneOS flavor to January 2021 release
+- Updated LineageOS flavor to 2021-12-29 (thanks @Atemu)
+- Improvements to NixOS module for attestation-server (thanks @hmenke)
+- MicroG updates (thanks @petabyteboy)
+- Fixed `nix-instantiate` GitHub action and improved evaluation speed by importing pkgs only once in `release.nix`.
+- Removed various uncessary usages of "import-from-derivation" (IFD)
+- Fixed `backuptool.sh` usage by OTA files in LineageOS builds
+- Fixed broken Bromite chromium / webview builds
+
+There are no intentional backward incompatible changes since the last release.
+
 # 2020-12-08
 
 ## Highlights:
