@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2020.12.12.03";
+  grapheneOSRelease = "${config.apv.buildID}.2021.01.05.03";
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
@@ -11,12 +11,15 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1607833703;
+  buildDateTime = mkDefault 1609869255;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault (if (elem config.deviceFamily [ "crosshatch" "bonito"]) then "RQ1A.201205.003" else "RQ1A.201205.008");
+  apv.buildID = mkDefault (
+    if (elem config.deviceFamily [ "sunfish" "bonito"]) then "RQ1A.210105.002"
+    else "RQ1A.210105.003"
+  );
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -79,7 +82,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "0qgbpkppb6c3hjhz4qjapkkm58c1h936x8m2ldkv381y5wiwcqgf";
+    sha256 = "185lxabjq4rhfzid157l8bynkx7czdxkm7nwm4rddiqaaapdmyg5";
     fetchSubmodules = true;
   };
 })
@@ -96,7 +99,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_coral";
     rev = grapheneOSRelease;
-    sha256 = "0s7nnjx25ibjmki6hywj0gd157rzl25dcv921p9i59wlw1blzkiz";
+    sha256 = "13xn68fv9d6fb6gx64s58bni0zqknzgzdvsvx7acqapxi267lf8j";
     fetchSubmodules = true;
   };
 })
@@ -105,7 +108,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_sunfish";
     rev = grapheneOSRelease;
-    sha256 = "0p9azr0lijizdhg0s7dmhcinb3jimb2xbh46hlnvqpkyd4g17ypc";
+    sha256 = "0ffv3ll7c42m1vm0s3daq9k5g0qimpvndjbfnjgrhl83sj8040fm";
     fetchSubmodules = true;
   };
 })
