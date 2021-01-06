@@ -91,4 +91,8 @@ in
       (lib.mapAttrs (name: c: c.config.build.kernel)
         (lib.filterAttrs (name: c: c.config.kernel.useCustom) builtConfigs));
   };
+
+  tests = lib.recurseIntoAttrs {
+    attestation-server = import ./nixos/attestation-server/test.nix { inherit pkgs; };
+  };
 }
