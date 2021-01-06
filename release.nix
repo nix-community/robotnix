@@ -57,6 +57,10 @@ in
 
   imgs = lib.recurseIntoAttrs (lib.mapAttrs (name: c: c.img) builtConfigs);
 
+  lineageosImgs = let
+    deviceMetadata = lib.importJSON ./flavors/lineageos/device-metadata.json;
+  in lib.dontRecurseIntoAttrs (lib.mapAttrs (name: x: (robotnix { device=name; flavor="lineageos"; }).img) deviceMetadata);
+
   # For testing instantiation
   vanilla-arm64 = lib.recurseIntoAttrs {
     inherit (defaultBuild)
