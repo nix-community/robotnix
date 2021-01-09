@@ -12,11 +12,12 @@ import "${pkgs.path}/nixos/tests/make-test-python.nix" ({ pkgs, ... }: {
       device = "crosshatch";
       signatureFingerprint = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
       avbFingerprint = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
-      email = {
-        host = "example.com";
-        username = "test";
-        passwordFile = "${pkgs.writeText "fake-password" "testing123"}"; # NOTE: Don't use writeText like this with a real password!
-      };
+      # TODO: Uncomment when https://github.com/danielfullmer/robotnix/issues/80 is resolved
+      # email = {
+      #   host = "example.com";
+      #   username = "test";
+      #   passwordFile = "${pkgs.writeText "fake-password" "testing123"}"; # NOTE: Don't use writeText like this with a real password!
+      # };
       nginx.enable = false;
     };
   };
