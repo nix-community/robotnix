@@ -4,9 +4,9 @@ with lib;
 
 let
   version = {
-    part1 = "0.2.16";
-    part2 = "204713";
-    part3 = "032";
+    part1 = "0.2.17";
+    part2 = "204714";
+    part3 = "034";
   };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
@@ -37,7 +37,7 @@ in
       GmsCore = { 
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "0mx9cchdba7zz57aq6pwffbw54vy06xcv7gqw7v1kz02v9sgmspy";
+          sha256 = "0lfypc2v1dcgddy8alidnbbda066xlxm6wnj8x449623sdf2crqy";
         });
         packageName = "com.google.android.gms";
         privileged = true;
