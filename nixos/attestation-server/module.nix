@@ -118,16 +118,15 @@ in
             "('emailLocal', '${if local then "1" else "0"}')"
           ];
         in optionals (passwordFile != null) [
-          # Note the leading + on the second command. The passwordFile could be
+          # Note the leading + on the first command. The passwordFile could be
           # anywhere in the file system, so it has to be copied as root and
-          # permissions fixed to be accessible by the service.  However, if the
-          # first command is run as root the allocation of uid and gid for the
-          # service seems to be delayed, so we just run something else first.
-          "${pkgs.coreutils}/bin/touch %S/attestation/emailPassword"
-          "+${pkgs.coreutils}/bin/install -m 0600 -o %N -g %N ${passwordFile} %S/attestation/emailPassword"
+          # permissions fixed to be accessible by the service.
+          "+${pkgs.coreutils}/bin/install -m 0640 -g keys ${passwordFile} %S/attestation/emailPassword"
+          ''${pkgs.sqlite}/bin/sqlite3 %S/attestation/attestation.db "CREATE TABLE IF NOT EXISTS Configuration (key TEXT PRIMARY KEY NOT NULL, value NOT NULL)"''
           ''${pkgs.sqlite}/bin/sqlite3 %S/attestation/attestation.db "INSERT OR REPLACE INTO Configuration VALUES ${values}"''
           "${pkgs.coreutils}/bin/rm -f %S/attestation/emailPassword"
         ];
+        SupplementaryGroups = [ "keys" ];
 
         # When sending TERM, e.g. for restart, AttestationServer fails with
         # this exit code.
