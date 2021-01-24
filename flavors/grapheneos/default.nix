@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2021.01.05.03";
+  grapheneOSRelease = "${config.apv.buildID}.2021.01.23.03";
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
@@ -11,7 +11,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1609869255;
+  buildDateTime = mkDefault 1611467048;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
@@ -82,7 +82,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "185lxabjq4rhfzid157l8bynkx7czdxkm7nwm4rddiqaaapdmyg5";
+    sha256 = "0nh7j70vjldfx9l612f6mv704dj25gsjbgxyk9gqawymhckqyzc0";
     fetchSubmodules = true;
   };
 })
@@ -99,7 +99,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_coral";
     rev = grapheneOSRelease;
-    sha256 = "13xn68fv9d6fb6gx64s58bni0zqknzgzdvsvx7acqapxi267lf8j";
+    sha256 = "06klgyb3rh5awghrzr04msmpglbvlp2ldvkr9q6w6kxwlcf4bkmg";
     fetchSubmodules = true;
   };
 })
@@ -108,7 +108,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_sunfish";
     rev = grapheneOSRelease;
-    sha256 = "0ffv3ll7c42m1vm0s3daq9k5g0qimpvndjbfnjgrhl83sj8040fm";
+    sha256 = "1in37ycdis4pqmp3xin5m4zxwn1g12kpn5ps8lm5lqj0n0cigis6";
     fetchSubmodules = true;
   };
 })
