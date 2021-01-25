@@ -1,9 +1,11 @@
 { stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
-  simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2,
+  simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3,
   api ? 30
 }:
 
 let
+  python = if api >= 30 then python3 else python2;
+
   dexrepair = callPackage ./dexrepair.nix {};
   apiStr = builtins.toString api;
 
@@ -33,15 +35,15 @@ let
   repo = "android-prepare-vendor";
   version =
     if api >= 30
-    then "2020-09-18"
+    then "2021-01-25"
     else "2020-08-26";
   rev =
     if api >= 30
-    then "7f19a8ec5b645bfffcf46d5d5ab1eed1d07703ab" # Android11 branch. 2020-09-18
-    else "a9602ca6ef16ff10641d668dcb203f89f402d40d"; # Android10 branch. 2020-08-26
+    then "4e3aea63bd5b16b409cce34538b218b186654f5e" # Android11 branch
+    else "a9602ca6ef16ff10641d668dcb203f89f402d40d"; # Android10 branch
   sha256 =
     if api >= 30
-    then "19axrmvqnj44yzd2198477x4kgazb8cffgmvy4bwwbmby502shwp"
+    then "0k7npw8ba5633is6hrc1bkpp1wsm2pbnkpfp8dpambmpdym46gwq"
     else "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
 in
 (stdenv.mkDerivation {
@@ -54,7 +56,7 @@ in
 
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = [
-    (python2.withPackages (p: [ p.protobuf ])) # Python is used by "extract_android_ota_payload"
+    (python.withPackages (p: [ p.protobuf ])) # Python is used by "extract_android_ota_payload"
   ];
 
   patches = [
