@@ -156,7 +156,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     })
   ];
 }
-(mkIf (elem config.deviceFamily phoneDeviceFamilies && config.device != "redfin") (let
+(mkIf (elem config.deviceFamily phoneDeviceFamilies && (!(elem config.deviceFamily != "redfin"))) (let
   kernelTag = {
     "taimen" = "android-11.0.0_r0.34";
     "muskie" = "android-11.0.0_r0.34";

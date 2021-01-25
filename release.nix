@@ -17,6 +17,7 @@ let
     { device="coral";      flavor="vanilla"; }
     { device="flame";      flavor="vanilla"; }
     { device="sunfish";    flavor="vanilla"; }
+    { device="bramble";    flavor="vanilla"; }
     { device="redfin";     flavor="vanilla"; }
 
     { device="x86_64";     flavor="grapheneos"; }
