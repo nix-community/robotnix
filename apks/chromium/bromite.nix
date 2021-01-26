@@ -1,13 +1,13 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "87.0.4280.131";
+  version = "88.0.4324.95";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "1zl1jymy9n97lqh2ks9r74vb4dglyswbgqf62hnqj28x3dsc33n0";
+    sha256 = "0qwfv4m4mfmb30r2yz7yq0lybznqp5w3yyy37qr75jharxw429a3";
   };
 
 in (chromium.override {
@@ -65,9 +65,6 @@ in (chromium.override {
         echo Applying $patchfile
         ${git}/bin/git apply --unsafe-paths "${bromite_src}/build/patches/$patchfile"
       done
-
-      # Fixes issue with "sources" being unset in chrome/browser/safe_browsing/BUILD.gn
-      patch -p1 < ${./bromite-safe-browsing-gn-fix.patch}
     )
   '' + attrs.postPatch;
 })
