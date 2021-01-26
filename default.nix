@@ -41,7 +41,6 @@ let
       ./modules/assertions.nix
       ./modules/base.nix
       ./modules/emulator.nix
-      ./modules/emulator.nix
       ./modules/envpackages.nix
       ./modules/etc.nix
       ./modules/framework.nix
