@@ -35,6 +35,10 @@ let
   builtConfigs = lib.mapAttrs (name: c: robotnix c) configs;
 
   defaultBuild = robotnix { device="arm64"; flavor="vanilla"; };
+
+  tests = {
+    attestation-server = (import ./nixos/attestation-server/test.nix { inherit pkgs; }) {};
+  };
 in
 {
   inherit (pkgs) diffoscope;
@@ -76,6 +80,8 @@ in
 
   example-apv-diff = (robotnix { device="crosshatch"; flavor="grapheneos"; }).config.build.apv.diff;
 
+  tests = lib.recurseIntoAttrs tests;
+
   # Stuff to upload to binary cache
   cached = lib.recurseIntoAttrs {
     browsers = lib.recurseIntoAttrs {
@@ -90,9 +96,9 @@ in
     kernels = lib.recurseIntoAttrs
       (lib.mapAttrs (name: c: c.config.build.kernel)
         (lib.filterAttrs (name: c: c.config.kernel.useCustom) builtConfigs));
-  };
 
-  tests = lib.recurseIntoAttrs {
-    attestation-server = import ./nixos/attestation-server/test.nix { inherit pkgs; };
+    tests = lib.recurseIntoAttrs {
+      attestation-server = tests.attestation-server.test;
+    };
   };
 }
