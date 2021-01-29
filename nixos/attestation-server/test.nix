@@ -24,5 +24,6 @@ import "${pkgs.path}/nixos/tests/make-test-python.nix" ({ pkgs, ... }: {
   testScript = ''
     machine.wait_for_unit("attestation-server.service")
     machine.wait_until_succeeds("curl http://127.0.0.1:8085/")
+    machine.succeed("curl -fsSL -X POST http://127.0.0.1:8085/challenge | hexdump -C")
   '';
 })
