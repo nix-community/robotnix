@@ -23,4 +23,7 @@ jobs:
       with:
         extra_nix_config: |
           system-features = nixos-test benchmark big-parallel kvm
+    - uses: cachix/cachix-action@v8
+      with:
+        name: robotnix
     - run: nix-build ./release.nix -A tests.attestation-server
