@@ -2,7 +2,6 @@
 
 with lib;
 let
-  usePatchedCoreutils = false;
   fakeuser = pkgs.callPackage ./fakeuser {};
 
   # Taken from https://github.com/edolstra/flake-compat/
@@ -245,8 +244,6 @@ in
           nativeBuildInputs = [ config.build.env fakeuser ];
 
           unpackPhase = ''
-            ${optionalString usePatchedCoreutils "export PATH=${callPackage ../misc/coreutils.nix {}}/bin/:$PATH"}
-
             export rootDir=$PWD
             source ${config.build.unpackScript}
           '';
