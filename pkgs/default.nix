@@ -6,7 +6,18 @@ let
     url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
     sha256 = narHash;
   });
+
+  androidPkgs = fetchTarball (with lock.nodes.androidPkgs.locked; {
+    url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
+    sha256 = narHash;
+  });
+
 in
 import nixpkgs ({
-  overlays = overlays ++ [ (import ./overlay.nix) ];
+  overlays = overlays ++ [
+    (self: super: {
+      androidPkgs = import androidPkgs {};
+    })
+    (import ./overlay.nix)
+  ];
 } // builtins.removeAttrs args [ "overlays" ])

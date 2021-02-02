@@ -1,6 +1,6 @@
 { callPackage, substituteAll, fetchFromGitLab, androidPkgs, jdk, gradle }:
 let
-  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-28 build-tools-28-0-3 ]);
+  androidsdk = androidPkgs.sdk (p: with p; [ cmdline-tools-latest platforms-android-28 build-tools-28-0-3 ]);
   buildGradle = callPackage ./gradle-env.nix {};
 in
 buildGradle rec {

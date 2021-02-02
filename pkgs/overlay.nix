@@ -1,9 +1,4 @@
 self: super: {
-  androidPkgs = import (builtins.fetchTarball {
-    url = "https://github.com/tadfisher/android-nixpkgs/archive/b1ade09a9ea7f92c15a0a572c6a4b1a813c0cd96.tar.gz";
-    sha256 = "15zb11pcl1qrw34vq6j0ckq025nhksins12rzm35bs9j6hnq1cna";
-  }) { pkgs = self; };
-
   android-emulator = super.callPackage ./android-emulator {};
 
   android-prepare-vendor = super.callPackage ./android-prepare-vendor {};

@@ -32,7 +32,7 @@ with lib;
     ])
     (mkIf (config.androidVersion <= 9) [
       # stuff that was in the earlier buildenv. Not entirely sure everything here is necessary
-      (androidPkgs.sdk (p: with p.stable; [ tools platform-tools ]))
+      (androidPkgs.sdk (p: with p; [ cmdline-tools-latest platform-tools ]))
       openssl.dev
       bison
       curl
