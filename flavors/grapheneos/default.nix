@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2021.01.23.03";
+  grapheneOSRelease = "${config.apv.buildID}.2021.02.02.09";
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
@@ -11,15 +11,12 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # significant a change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1611467048;
+  buildDateTime = mkDefault 1612299474;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault (
-    if (elem config.deviceFamily [ "sunfish" "bonito"]) then "RQ1A.210105.002"
-    else "RQ1A.210105.003"
-  );
+  apv.buildID = mkDefault "RQ1A.210205.004";
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -82,7 +79,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_crosshatch";
     rev = grapheneOSRelease;
-    sha256 = "0nh7j70vjldfx9l612f6mv704dj25gsjbgxyk9gqawymhckqyzc0";
+    sha256 = "0p5g036s1f9mrzmzjd9c1mblq2q6rz4x1q1r5s1pcbb0f4rbri62";
     fetchSubmodules = true;
   };
 })
@@ -99,7 +96,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_coral";
     rev = grapheneOSRelease;
-    sha256 = "06klgyb3rh5awghrzr04msmpglbvlp2ldvkr9q6w6kxwlcf4bkmg";
+    sha256 = "1m8g6sss6ihwlq1m1cpkmf0dbv687qk3k32mpj454l670nyv4ss8";
     fetchSubmodules = true;
   };
 })
@@ -108,7 +105,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     owner = "GrapheneOS";
     repo = "kernel_google_sunfish";
     rev = grapheneOSRelease;
-    sha256 = "1in37ycdis4pqmp3xin5m4zxwn1g12kpn5ps8lm5lqj0n0cigis6";
+    sha256 = "0gfp29a4dnkpc5yrwkch5j3g2gnqvrlsyvzidc3cn9qdf3nwsxn9";
     fetchSubmodules = true;
   };
 })
