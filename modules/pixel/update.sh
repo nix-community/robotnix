@@ -1,5 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p curl go-pup jq
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
 
 curl --fail -s --cookie "devsite_wall_acks=nexus-image-tos" https://developers.google.com/android/images \
     | pup "div table tbody tr json{}" \

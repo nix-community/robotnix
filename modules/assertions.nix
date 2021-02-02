@@ -1,4 +1,6 @@
 # From nixpkgs/nixos/modules/misc/assertions.nix
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
 
 { lib, ... }:
 

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
+
 # Installing for the first time and verified boot
 
 It is assumed that you have successfully built your image and signed it with

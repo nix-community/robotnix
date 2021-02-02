@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 #{ callPackage, substituteAll, fetchFromGitHub, buildGradle, jdk, gradle }:
 #
 # TODO: Issues with gradle + protoc

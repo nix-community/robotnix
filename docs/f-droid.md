@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
+
 # Adding F-Droid repositories
 
 F-Droid can manage multiple repositories to fetch apps from.  These can be set

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { pkgs }:
 
 import "${pkgs.path}/nixos/tests/make-test-python.nix" ({ pkgs, ... }: {

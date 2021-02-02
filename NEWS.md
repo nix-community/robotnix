@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
+
 Updates are added to this file approximately monthly, or whenever significant
 changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive

@@ -1,5 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i python -p python3 -I nixpkgs=../../pkgs
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
 
 import json
 import urllib.request
