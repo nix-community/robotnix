@@ -15,9 +15,7 @@ let
       }
     else
       pkgs.fetchgit { # Build-time source fetching. This should be preferred, but is slightly less convenient when developing.
-        inherit (p) url rev sha256;
-        # Submodules are manually specified as "nested projects". No support for that in repo2nix. See https://gerrit.googlesource.com/git-repo/+/master/docs/manifest-format.md
-        fetchSubmodules = false;
+        inherit (p) url rev sha256 fetchSubmodules;
         deepClone = false;
       };
 
@@ -113,6 +111,12 @@ let
       sha256 = mkOption {
         type = types.nullOr types.str;
         default = null;
+        internal = true;
+      };
+
+      fetchSubmodules = mkOption {
+        type = types.bool;
+        default = false;
         internal = true;
       };
 
