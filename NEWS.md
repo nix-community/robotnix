@@ -3,6 +3,17 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2021-02-02
+## Highlights:
+- Updated vanilla flavor to RQ1A.210205.004
+- Updated GrapheneOS flavor to 2021.02.02.09
+- Chromium / Bromite / Vanadium  updated to 88.0.4324.141
+- F-Droid updated to 1.11
+- MicroG updated to 2.0.17.204714 (thanks @petabyteboy)
+- Added basic test for attestation server
+- Fixed attestation server module not starting properly on boot (thanks @hmenke)
+
+There are no intentional backward incompatible changes since the last release.
 
 # 2021-01-05
 I've started the `#robotnix` IRC channel on Freenode for a place to chat about the project, ask questions, and discuss robotnix development.
