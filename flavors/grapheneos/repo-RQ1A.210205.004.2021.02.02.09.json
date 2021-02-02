@@ -5506,17 +5506,19 @@
     "url": "https://github.com/GrapheneOS/kernel_configs"
   },
   "kernel/google/coral": {
+    "fetchSubmodules": true,
     "groups": [],
     "rev": "8c7660d55a0c261e9ca9446b06b1a505bbddb634",
     "revisionExpr": "8c7660d55a0c261e9ca9446b06b1a505bbddb634",
-    "sha256": "0lbi6865ns9bdvwd1argnvcri4zbk3l71h5cgi50fwcn2dap95qn",
+    "sha256": "1m8g6sss6ihwlq1m1cpkmf0dbv687qk3k32mpj454l670nyv4ss8",
     "url": "https://github.com/GrapheneOS/kernel_google_coral"
   },
   "kernel/google/crosshatch": {
+    "fetchSubmodules": true,
     "groups": [],
     "rev": "d83586c517bb4de483e49e14f66fc6fc47304003",
     "revisionExpr": "d83586c517bb4de483e49e14f66fc6fc47304003",
-    "sha256": "1sz5424y67gr9svy8dvcmik2zckbskpryypbjwbppxk0kcmri3nq",
+    "sha256": "0p5g036s1f9mrzmzjd9c1mblq2q6rz4x1q1r5s1pcbb0f4rbri62",
     "url": "https://github.com/GrapheneOS/kernel_google_crosshatch"
   },
   "kernel/google/redbull": {
@@ -5527,10 +5529,11 @@
     "url": "https://github.com/GrapheneOS/kernel_google_redbull"
   },
   "kernel/google/sunfish": {
+    "fetchSubmodules": true,
     "groups": [],
     "rev": "ba4a4f9089457c8c6891db031a792ed4a2dd4c7c",
     "revisionExpr": "ba4a4f9089457c8c6891db031a792ed4a2dd4c7c",
-    "sha256": "1bz87my9fb75p4mzjph22myc7c2wwk2f7926xjmwvgbx3h1m49xc",
+    "sha256": "0gfp29a4dnkpc5yrwkch5j3g2gnqvrlsyvzidc3cn9qdf3nwsxn9",
     "url": "https://github.com/GrapheneOS/kernel_google_sunfish"
   },
   "kernel/prebuilts/4.19/arm64": {

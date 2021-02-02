@@ -13,6 +13,9 @@ fi
 args=(
     --ref-type tag
     "https://github.com/GrapheneOS/platform_manifest"
+    --project-fetch-submodules "kernel/google/crosshatch"
+    --project-fetch-submodules "kernel/google/coral"
+    --project-fetch-submodules "kernel/google/sunfish"
     "$@"
     ../*/repo-*.json
 )

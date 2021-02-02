@@ -67,46 +67,21 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 }
-(mkIf (elem config.deviceFamily [ "crosshatch" "bonito" "coral" "sunfish" ]) {
+(mkIf (elem config.deviceFamily phoneDeviceFamilies) {
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
   kernel.configName = config.device;
   kernel.relpath = "device/google/${config.device}-kernel";
 })
-(mkIf (elem config.deviceFamily [ "crosshatch" "bonito" ]) {
-  # Hack for crosshatch/bonito since they use submodules and repo2nix doesn't support that yet.
-  kernel.src = pkgs.fetchFromGitHub {
-    owner = "GrapheneOS";
-    repo = "kernel_google_crosshatch";
-    rev = grapheneOSRelease;
-    sha256 = "0p5g036s1f9mrzmzjd9c1mblq2q6rz4x1q1r5s1pcbb0f4rbri62";
-    fetchSubmodules = true;
-  };
-})
-(mkIf (config.device == "sargo") { # TODO: Ugly hack
-  kernel.configName = mkForce "bonito";
-  kernel.relpath = mkForce "device/google/bonito-kernel";
-})
-(mkIf (config.device == "blueline") { # TODO: Ugly hack
-  kernel.relpath = mkForce "device/google/blueline-kernel";
-})
-(mkIf (config.deviceFamily == "coral") {
-  kernel.configName = mkForce "floral";
-  kernel.src = pkgs.fetchFromGitHub {
-    owner = "GrapheneOS";
-    repo = "kernel_google_coral";
-    rev = grapheneOSRelease;
-    sha256 = "1m8g6sss6ihwlq1m1cpkmf0dbv687qk3k32mpj454l670nyv4ss8";
-    fetchSubmodules = true;
-  };
-})
-(mkIf (config.deviceFamily == "sunfish") {
-  kernel.src = pkgs.fetchFromGitHub {
-    owner = "GrapheneOS";
-    repo = "kernel_google_sunfish";
-    rev = grapheneOSRelease;
-    sha256 = "0gfp29a4dnkpc5yrwkch5j3g2gnqvrlsyvzidc3cn9qdf3nwsxn9";
-    fetchSubmodules = true;
-  };
-})
+{
+  # Hackish exceptions
+  kernel.src = mkIf (config.deviceFamily == "bonito") (mkForce config.source.dirs."kernel/google/crosshatch".src);
+  kernel.configName = mkMerge [
+    (mkIf (config.device       == "sargo") (mkForce "bonito"))
+    (mkIf (config.deviceFamily == "coral") (mkForce "floral"))
+  ];
+  kernel.relpath = mkMerge [
+    (mkIf (config.device == "sargo") (mkForce "device/google/bonito-kernel"))
+  ];
+}
 ])
