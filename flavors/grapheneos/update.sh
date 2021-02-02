@@ -11,7 +11,6 @@ else
 fi
 
 args=(
-    --mirror "https://android.googlesource.com=/mnt/cache/mirror"
     --ref-type tag
     "https://github.com/GrapheneOS/platform_manifest"
     "$@"
