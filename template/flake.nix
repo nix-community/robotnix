@@ -1,14 +1,14 @@
 {
   description = "A basic example robotnix configuration";
 
-  inputs = {
-    robotnix.url = "github:danielfullmer/robotnix/flake"; # Currently only the flake branch has a flake.nix file
-  };
+  inputs.robotnix.url = "github:danielfullmer/robotnix";
 
   outputs = { self, robotnix }: {
+    # Build the .img with "nix build"
+    # Build other outputs with (for example): "nix build .#robontixConfiguration.dailydriver.ota"
     defaultPackage.x86_64-linux = self.robotnixConfigurations."dailydriver".img;
 
-    robotnixConfigurations."dailydriver" = robotnix.robotnixSystem ({ config, pkgs, ... }: {
+    robotnixConfigurations."dailydriver" = robotnix.lib.robotnixSystem ({ config, pkgs, ... }: {
       # These two are required options
       device = "crosshatch";
       flavor = "vanilla"; # "grapheneos" is another option

@@ -11,7 +11,7 @@
 
   outputs = { self, nixpkgs, androidPkgs, ... }: {
     # robotnixSystem evaluates a robotnix configuration
-    robotnixSystem = configuration: import ./default.nix {
+    lib.robotnixSystem = configuration: import ./default.nix {
       inherit configuration;
       pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays [
         (self: super: {

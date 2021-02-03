@@ -16,7 +16,7 @@ in
 import nixpkgs ({
   overlays = overlays ++ [
     (self: super: {
-      androidPkgs = import androidPkgs { pkgs = super; };
+      androidPkgs = import androidPkgs { pkgs = self; };
     })
     (import ./overlay.nix)
   ];
