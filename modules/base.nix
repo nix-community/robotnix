@@ -431,6 +431,7 @@ in
         ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeScript "debug-enter-env2.sh" ''
         export rootDir=$PWD
         source ${config.build.unpackScript}
+        ${concatStringsSep "\n" (mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}
 
         # Become the original user--not fake root. Enter an FHS user namespace
         ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${config.build.env}/bin/robotnix-build
