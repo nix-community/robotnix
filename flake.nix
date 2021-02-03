@@ -3,10 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
-    androidPkgs = {
-      url = "github:tadfisher/android-nixpkgs/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
   };
 
   outputs = { self, nixpkgs, androidPkgs, ... }: {
