@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.services.attestation-server;
   supportedDevices = import ../../apks/auditor/supported-devices.nix;
+  attestation-server = pkgs.callPackage ./default.nix {};
 in
 {
   options.services.attestation-server = {
@@ -39,7 +40,7 @@ in
     };
 
     package = mkOption {
-      default = pkgs.attestation-server.override {
+      default = attestation-server.override {
         inherit (cfg) listenHost port domain signatureFingerprint device avbFingerprint;
       };
       type = types.path;

@@ -26,7 +26,8 @@
       description = "A basic robotnix configuration";
     };
 
-    nixosModule = import ./nixos;
+    nixosModule = import ./nixos; # Contains all robotnix nixos modules
+    nixosModules.attestation-server = import ./nixos/attestation-server/module.nix;
 
     checks.x86_64-linux = {};
   };
