@@ -3,16 +3,14 @@
     "androidPkgs": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1612210576,
-        "narHash": "sha256-ZCjVlPZj0t1Lwr0Sx2LGeE7yFDN8pY3GUV7LrW1yqmU=",
+        "lastModified": 1612383582,
+        "narHash": "sha256-a3Gsku0X1u2ZkF0i09ogKHRI30bVEjMFwutz7u5CgL0=",
         "owner": "tadfisher",
         "repo": "android-nixpkgs",
-        "rev": "beeaa10114a1f33f66a03f0bfd1e98719e41dc0d",
+        "rev": "63eb915c84f71123f038ab25852cc4e70911f4fe",
         "type": "github"
       },
       "original": {
@@ -39,11 +37,27 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1611413872,
-        "narHash": "sha256-nD9e3f9P+YQ1qDSHdRXIAor40eqANBv1o03zGvpJsnM=",
+        "lastModified": 1610219734,
+        "narHash": "sha256-hCsGe2nDz+SX4uO+lj0qPVcSGZdt52R9Yk5MOYs4djw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fe08be60cb84148a3dba29cfdb090fa185cacdaa",
+        "rev": "257cbbcd3ab7bd96f5d24d50adc807de7c82e06d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1612285001,
+        "narHash": "sha256-YTdd03F2+rZEqpfD12+Mwt3EuV/GdlvJ5QhnzujrZAQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "90cec09c3642b9be6699015a35e404ecb503aa0d",
         "type": "github"
       },
       "original": {
@@ -56,7 +70,7 @@
     "root": {
       "inputs": {
         "androidPkgs": "androidPkgs",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },
