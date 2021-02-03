@@ -41,7 +41,8 @@ def checkout_git(url, rev, fetch_submodules=False):
 
 def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                    override_project_revs: Dict[str, str], force_refresh: bool,
-                   mirrors: Dict[str, str], project_fetch_submodules: List[str]):
+                   mirrors: Dict[str, str], project_fetch_submodules: List[str],
+                   include_prefix: List[str]):
     if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
     else:
@@ -62,6 +63,9 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
             save(filename, data)
 
     for relpath, p in data.items():
+        if len(include_prefix) > 0 and (not any(relpath.startswith(p) for p in include_prefix)):
+            continue
+
         # TODO: Incorporate "sync-s" setting from upstream manifest if it exists
         fetch_submodules = relpath in project_fetch_submodules
 
@@ -112,6 +116,7 @@ def main():
     parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--project-fetch-submodules', action="append", default=[], help="fetch submodules for the specified project path")
+    parser.add_argument('--include-prefix', action="append", default=[], help="only include paths if they start with the specified prefix")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
@@ -148,7 +153,8 @@ def main():
     make_repo_file(args.url, args.ref, filename, ref_type,
                    override_project_revs, force_refresh=args.force,
                    mirrors=mirrors,
-                   project_fetch_submodules=args.project_fetch_submodules
+                   project_fetch_submodules=args.project_fetch_submodules,
+                   include_prefix=args.include_prefix
                    )
 
 if __name__ == "__main__":
