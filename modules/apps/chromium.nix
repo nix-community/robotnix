@@ -5,7 +5,7 @@ let
   # aapt2 from android build-tools doesn't work here:
   # error: failed to deserialize resources.pb: duplicate configuration in resource table.
   # The version from chromium works, however:  https://bugs.chromium.org/p/chromium/issues/detail?id=1106115
-  #aapt2 = "${pkgs.androidPkgs.sdk (p: with p.stable; [ tools build-tools-30-0-1 ])}/share/android-sdk/build-tools/30.0.1/aapt2";
+  #aapt2 = "${pkgs.androidPkgs.sdk (p: with p; [ cmdline-tools-latest build-tools-30-0-1 ])}/share/android-sdk/build-tools/30.0.1/aapt2";
   aapt2 = pkgs.stdenv.mkDerivation { # TODO: Move this into the chromium derivation. Use their own aapt2/bundletool.
     name = "aapt2";
     src = pkgs.fetchcipd {

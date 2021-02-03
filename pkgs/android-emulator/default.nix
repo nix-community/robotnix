@@ -83,7 +83,7 @@ let
     ${android-emulator}/emulator @Pixel2 -gpu swiftshader_indirect $@
   '';
 
-  android-emulator = androidPkgs.packages.canary.emulator.overrideAttrs ({ passthru ? {}, ...}: {
+  android-emulator = androidPkgs.packages.emulator.overrideAttrs ({ passthru ? {}, ...}: {
     passthru = passthru // {
       inherit bindImg;
     };

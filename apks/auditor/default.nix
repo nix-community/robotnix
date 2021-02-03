@@ -8,7 +8,7 @@
   avbFingerprint ? ""
 }:
 let
-  androidsdk = androidPkgs.sdk (p: with p.stable; [ tools platforms.android-30 build-tools-30-0-2 ]);
+  androidsdk = androidPkgs.sdk (p: with p; [ cmdline-tools-latest platforms-android-30 build-tools-30-0-2 ]);
   buildGradle = callPackage ./gradle-env.nix {};
   supportedDevices = import ./supported-devices.nix;
 in
