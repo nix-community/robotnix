@@ -111,7 +111,7 @@ def main():
                         choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
     parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
-    parser.add_argument('--project-fetch-submodules', action="append", help="fetch submodules for the specified project path")
+    parser.add_argument('--project-fetch-submodules', action="append", default=[], help="fetch submodules for the specified project path")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
