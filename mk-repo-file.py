@@ -7,13 +7,14 @@ from enum import Enum
 import argparse
 import json
 import os
+import re
 import subprocess
 import tempfile
 
 REPO_FLAGS = [
     "--quiet",
     "--repo-url=https://github.com/danielfullmer/tools_repo",
-    "--repo-branch=master",
+    "--repo-branch=2d74a332a378c18c4464dae2d62dd46b86f8358e",
     "--no-repo-verify",
     "--depth=1",
 ]
@@ -39,6 +40,12 @@ def checkout_git(url, rev, fetch_submodules=False):
     json_text = subprocess.check_output(args).decode()
     return json.loads(json_text)
 
+def ls_remote(url, rev):
+    remote_info = subprocess.check_output([ "git", "ls-remote", url, rev ]).decode()
+    remote_rev = remote_info.split('\t')[0]
+    assert remote_rev != ""
+    return remote_rev
+
 def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                    override_project_revs: Dict[str, str], force_refresh: bool,
                    mirrors: Dict[str, str], project_fetch_submodules: List[str],
@@ -52,19 +59,27 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
             json_text = subprocess.check_output(['repo', 'dumpjson'] + (["--local-only"] if override_project_revs else []), cwd=tmpdir).decode()
             data = json.loads(json_text)
 
-            for project, rev in override_project_revs.items():
-                # We have to iterate over the whole output since we don't save
-                # the project name anymore, just the relpath, which isn't
-                # exactly the project name
-                for relpath, p in data.items():
-                    if p['url'].endswith(project):
-                        p['rev'] = rev
-
             save(filename, data)
 
     for relpath, p in data.items():
         if len(include_prefix) > 0 and (not any(relpath.startswith(p) for p in include_prefix)):
             continue
+
+        for project, rev in override_project_revs.items():
+            # We have to iterate over the whole output since we don't save
+            # the project name anymore, just the relpath, which isn't
+            # exactly the project name
+            if p['url'].endswith(project):
+                p['rev'] = rev
+
+        if 'rev' not in p:
+            if re.match("[0-9a-f]{40}", p['revisionExpr']):
+                # Fill out rev if we already have the information available
+                # Use revisionExpr if it is already a SHA1 hash
+                p['rev'] = p['revisionExpr']
+            else:
+                # Otherwise, fetch this information from the git remote
+                p['rev'] = ls_remote(p['url'], p['revisionExpr'])
 
         # TODO: Incorporate "sync-s" setting from upstream manifest if it exists
         fetch_submodules = relpath in project_fetch_submodules
