@@ -22,7 +22,7 @@ I've started the `#robotnix` IRC channel on Freenode for a place to chat about t
 - New binary cache: Now publishing certain build products on `robotnix.cachix.org`, including Pixel device kernels and Chromium variants browser / webview. (See the binary cache section of README.md)
 - Updated vanilla flavor to January 2021 release
 - Updated GrapheneOS flavor to January 2021 release
-- Updated LineageOS flavor to 2021-12-29 (thanks @Atemu)
+- Updated LineageOS flavor to 2020-12-29 (thanks @Atemu)
 - Improvements to NixOS module for attestation-server (thanks @hmenke)
 - MicroG updates (thanks @petabyteboy)
 - Fixed `nix-instantiate` GitHub action and improved evaluation speed by importing pkgs only once in `release.nix`.
