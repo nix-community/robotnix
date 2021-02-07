@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2021.02.06.05";
+  grapheneOSRelease = "${config.apv.buildID}.2021.02.07.17";
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
@@ -9,9 +9,9 @@ let
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
   # This a default datetime for robotnix that I update manually whenever
-  # significant a change is made to anything the build depends on. It does not
+  # a significant change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1612627459;
+  buildDateTime = mkDefault 1612726284;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
