@@ -24,8 +24,8 @@ in
     source.dirs."robotnix/seedvault".src = pkgs.fetchFromGitHub {
       owner = "stevesoltys";
       repo = "seedvault";
-      rev = "4906a00786012ac638cd89de8549c2bb3b9579e6"; # 2020-11-25
-      sha256 = "1n9j15hgp74s3m1a85bzdggwjj9bh5a42xm0bdscfgk85l5drw11";
+      rev = "263531fec940d68bb67ac33b2964ca2062fd7608"; # 2021-01-19
+      sha256 = "0n442fl339x1bw53wzqsrlg7bflhnfhykmnc87kckqxddd12wd0j";
     };
 
     product.additionalProductPackages = [ "Seedvault" ];
