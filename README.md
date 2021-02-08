@@ -29,7 +29,7 @@ Future goals include:
  - Automatic verification of build reproducibility
  - Replacing android prebuilt toolchains with nixpkgs equivalents.
  
-This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver) and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
+This has currently only been tested on crosshatch (Pixel 3 XL, my daily driver), sunfish (Pixel 4a), and marlin (Pixel XL, which is now deprecated by google and no longer receiving updates).
 
 ## Quick Start
 Here is a single command to build an `img` which can be flashed onto a Pixel 3 XL (`crosshatch`).
