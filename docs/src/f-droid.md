@@ -10,14 +10,11 @@ the public key.
 
 We'll take the microG repository as an example.  The repository is located at
 https://microg.org/fdroid/repo.  To obtain the repository index download the
-`index.jar` file from the repository root:
+`index.xml` file from the repository root:
 ```console
-$ curl -LO https://microg.org/fdroid/repo/index.jar
+$ curl -LO https://microg.org/fdroid/repo/index.xml
 ```
-Java Archives are simply ZIP files with a certain structure, so to get the
-repository index out of this file, we unzip the contained `index.xml`:
-```console
-$ unzip index.jar index.xml
+
 ```
 The content of this XML file contains metadata about the repository, including
 the public key:
