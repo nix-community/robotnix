@@ -1,0 +1,1139 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Robotnix</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to Robotnix</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Tutorials</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ota.html"><strong aria-hidden="true">2.2.</strong> OTA updates</a></li><li class="chapter-item expanded "><a href="f-droid.html"><strong aria-hidden="true">2.3.</strong> F-Droid repositories</a></li><li class="chapter-item expanded "><a href="attestation.html"><strong aria-hidden="true">2.4.</strong> Remote attestation</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Reference</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">3.1.</strong> Options</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Robotnix</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#robotnix---build-android-aosp-using-nix" id="robotnix---build-android-aosp-using-nix">robotnix - Build Android (AOSP) using Nix</a></h1>
+<p>Robotnix is a build system for Android (AOSP) images on top of the Nix package
+manager.  Instead of having to follow complicated instructions to install
+several build tools and fetch source code from multiple sources, robotnix
+encapsulates all this complexity in a simple Nix expression.</p>
+<h1><a class="header" href="#installing-for-the-first-time-and-verified-boot" id="installing-for-the-first-time-and-verified-boot">Installing for the first time and verified boot</a></h1>
+<p>It is assumed that you have successfully built your image and signed it with
+your own keys.  Make sure that you know the location of the image and the AVB
+signing key.  The instructions in this document were tested on the Google Pixel
+4a (sunfish).  For other devices please refer to
+https://source.android.com/setup/build/running</p>
+<ol start="0">
+<li>
+<p>Before you can begin you have to boot the stock OS and go to “Settings /
+System / Advanced / Developer options” and enable “OEM unlocking”.  On my
+device I had to insert a SIM card and connect to the network for that, so
+it looks like you have to connect your device with Google at least once.
+This is part of Google's so called Factory Reset Protection (FRP) for
+anti-theft protection
+(https://grapheneos.org/install#enabling-oem-unlocking).  However, <a href="https://www.kuketz-blog.de/grapheneos-das-android-fuer-sicherheits-und-datenschutzfreaks/#comment-52681">this
+comment</a>
+on a German IT privacy blog suggests that it is sufficient to allow access
+to the captive portal such that the phone thinks it is online.</p>
+</li>
+<li>
+<p>First reboot into the bootloader. You can either do that physically by
+turning off your phone and then holding both the POWER and the VOLUME DOWN
+button to turn it back on, or your can connect the phone to your computer
+with USB Debugging turned on and issue</p>
+<pre><code class="language-console">$ adb reboot bootloader
+</code></pre>
+</li>
+<li>
+<p>Connect your phone to your computer and run</p>
+<pre><code class="language-console">$ fastboot devices
+09071JEC217048  device
+</code></pre>
+</li>
+<li>
+<p>First flash your custom AVB signing key using</p>
+<pre><code class="language-console">$ fastboot erase avb_custom_key
+$ fastboot flash avb_custom_key avb_pkmd.bin
+$ fastboot reboot bootloader
+</code></pre>
+</li>
+<li>
+<p>To flash you image use</p>
+<pre><code class="language-console">$ fastboot -w --skip-reboot update sunfish-img-2020.11.06.04.zip
+$ fastboot reboot bootloader
+</code></pre>
+<p>This will erase the <code>userdata</code> partition (<code>-w</code>) and prevent the automatic
+reboot after flashing (<code>--skip-reboot</code>). Instead it reboots back into the
+bootloader from where the user can then manually trigger the reboot using</p>
+<pre><code class="language-console">$ fastboot reboot
+</code></pre>
+</li>
+<li>
+<p>At this point you want to relock the bootloader to enable the verified boot
+chain.</p>
+<pre><code>$ fastboot flashing lock
+</code></pre>
+<p>This step has to be confirmed on the device.</p>
+</li>
+<li>
+<p>After rebooting you will be greeted with an orange exclamation mark and a
+message like</p>
+<blockquote>
+<p>Your device is loading a different operating system.</p>
+<p>Visit this link on another device:
+g.co/ABH</p>
+<p>ID: BA135E0F</p>
+</blockquote>
+<p>This is expected because Android Verified Boot is designed to warn the user
+when not booting the stock OS, see
+https://source.android.com/security/verifiedboot/boot-flow.  In fact, the
+ID on the last line are the first eight characters of the fingerprint of
+your AVB key.</p>
+</li>
+</ol>
+<h1><a class="header" href="#building-ota-updates" id="building-ota-updates">Building OTA updates</a></h1>
+<p>Robotnix includes a convenient target which will build a directory containing
+OTA files ready to be sideloaded or served over the web.  To generate the OTA
+directory, build the <code>otaDir</code> attribute (here for sunfish):</p>
+<pre><code class="language-console">$ nix-build --arg configuration ./sunfish.nix -A otaDir -o ota-dir
+</code></pre>
+<p>The directory structure will look similar to this (arrows indicate symbolic
+links) with possibly different timestamps and hashes of course:</p>
+<pre><code class="language-console">$ tree -l ota-dir
+├── sunfish-ota_update-2021.02.06.16.zip -&gt; /nix/store/wwr49all6x868f0mdl11369ybfwyir0f-sunfish-ota_update-2021.02.06.16.zip
+├── sunfish-stable -&gt; /nix/store/c1rp46m9spncanacglqs5mxk6znfs44s-sunfish-stable
+└── sunfish-target_files-2021.02.06.16.zip -&gt; /nix/store/8ys21rzjqhi2055d7bd4iwa15fv1m446-sunfish-signed_target_files-2021.02.06.16.zip
+</code></pre>
+<p>The file <code>sunfish-ota_update-2021.02.06.16.zip</code> can be sideloaded with adb as
+described in the next section.</p>
+<h1><a class="header" href="#installing-ota-updates-with-adb" id="installing-ota-updates-with-adb">Installing OTA updates with adb</a></h1>
+<p>To install OTA updates you have to put the device in sideload-mode.</p>
+<ol>
+<li>
+<p>First reboot into the bootloader. You can either do that physically by
+turning off your phone and then holding both the POWER and the VOLUME DOWN
+button to turn it back on, or your can connect the phone to your computer
+with USB Debugging turned on and issue</p>
+<pre><code class="language-console">$ adb reboot recovery
+</code></pre>
+<p>If you used the physical method, at the bootloader prompt use the VOLUME
+keys to select “Recovery Mode” and confirm with the POWER button.</p>
+</li>
+<li>
+<p>Now the recovery mode should have started and you should see a dead robot
+with a read exclamation mark on top. If you see “No command” on the screen,
+press and hold POWER. While holding POWER, press VOLUME UP and release
+both.</p>
+</li>
+<li>
+<p>At the recovery menu use the VOLUME keys to select “Apply update from ADB”
+and use POWER to confirm.</p>
+</li>
+<li>
+<p>Connect your phone to your computer and run</p>
+<pre><code class="language-console">$ adb devices
+List of devices attached
+09071JEC217048  sideload
+</code></pre>
+<p>The output should show that the device is in sideload mode.</p>
+</li>
+<li>
+<p>Now you can proceed to sideload the new update.</p>
+<pre><code class="language-console">$ adb sideload sunfish-ota_update-2021.02.06.16.zip
+</code></pre>
+<p>The sideload might terminate at 94% with “adb: failed to read command:
+Success”.  This is not an error even though it is not obvious, see also
+<a href="https://np.reddit.com/r/LineageOS/comments/dt2et4/adb_failed_to_read_command_success/f6u352m">here</a>.</p>
+</li>
+<li>
+<p>Once finished and the device doesn't automatically reboot just select
+reboot from the menu and confirm.</p>
+</li>
+</ol>
+<h1><a class="header" href="#actually-serving-ota-updates-over-the-air" id="actually-serving-ota-updates-over-the-air">Actually serving OTA updates over the air</a></h1>
+<blockquote>
+<p><em>Note:</em> These instructions were only tested with the GrapheneOS flavor.  This
+method does not work for the LineageOS flavor because it uses its own updater.</p>
+</blockquote>
+<p>Essentially this boils down to just serving the <code>otaDir</code> build output on the
+web, e.g. with nginx.  To receive OTA updates on the device, enable the updater
+and point it to the domain and possibly subdirectory that you will be serving
+OTA updates from:</p>
+<pre><code class="language-nix"># device configuration
+{
+  apps = {
+    updater.enable = true;
+    updater.url = &quot;https://example.com/android/&quot;;
+  };
+}
+</code></pre>
+<p>On the server, it is as easy as serving a directory at the required
+endpoint:</p>
+<pre><code class="language-nix"># NixOS server configuration
+{
+  services.nginx.enable = true;
+  systemd.services.nginx.serviceConfig.ReadOnlyPaths = [ &quot;/var/www&quot; ];
+  services.nginx.virtualHosts.&quot;example.com&quot; = {
+    forceSSL = true;
+    enableACME = true;
+    locations.&quot;/android/&quot; = {
+      root = &quot;/var/www&quot;;
+      tryFiles = &quot;$uri $uri/ =404&quot;;
+    };
+  };
+}
+</code></pre>
+<p>The directory simply contains symlinks to the store paths that were contained in
+the <code>otaDir</code> output that was built earlier.  I choose to just copy the result
+symlink to <code>/var/www/android</code>.</p>
+<pre><code class="language-console">$ cp --no-dereference ota-dir /var/www/android
+$ tree -l /var/www
+/var/www
+└── android -&gt; /nix/store/dbjcl9lwn6xif9c0fy8d2wwpn9zi4hw4-sunfish-otaDir                   
+    ├── sunfish-ota_update-2021.02.06.16.zip -&gt; /nix/store/wwr49all6x868f0mdl11369ybfwyir0f-sunfish-ota_update-2021.02.06.16.zip
+    ├── sunfish-stable -&gt; /nix/store/c1rp46m9spncanacglqs5mxk6znfs44s-sunfish-stable                             
+    └── sunfish-target_files-2021.02.06.16.zip -&gt; /nix/store/8ys21rzjqhi2055d7bd4iwa15fv1m446-sunfish-signed_target_files-2021.02.06.16.zip
+</code></pre>
+<p>Of course, this doesn't have to be located at <code>/var/www</code> and it's totally
+possible to integrate updating of the OTA directory into your other robotnix
+build automation.  In this case it is as easy as updating the <code>/var/www/android</code>
+symlink with the new build output.</p>
+<p>Here it was assumed that Robotnix was built on the same machine that you will
+serve the OTA from.  If that is not the case you can conveniently copy the
+closure to a remote host using <code>nix copy</code> as in</p>
+<pre><code class="language-console">$ nix copy --to ssh://user@example.com ./ota-dir
+</code></pre>
+<p>Don't forget to add the store path of the <code>ota-dir</code> as a garbage collector root
+on the remote machine or it might be collected in the next sweep.</p>
+<h1><a class="header" href="#adding-f-droid-repositories" id="adding-f-droid-repositories">Adding F-Droid repositories</a></h1>
+<p>F-Droid can manage multiple repositories to fetch apps from.  These can be set
+up manually in the app, but with Robotnix it is also possible to preload
+F-Droid with some repositories at build time.</p>
+<p>To add an F-Droid repository you need at least the URL and a public key.
+Obtaining the URL is in general very easy but it's not obvious where to obtain
+the public key.</p>
+<p>We'll take the microG repository as an example.  The repository is located at
+https://microg.org/fdroid/repo.  To obtain the repository index download the
+<code>index.jar</code> file from the repository root:</p>
+<pre><code class="language-console">$ curl -LO https://microg.org/fdroid/repo/index.jar
+</code></pre>
+<p>Java Archives are simply ZIP files with a certain structure, so to get the
+repository index out of this file, we unzip the contained <code>index.xml</code>:</p>
+<pre><code class="language-console">$ unzip index.jar index.xml
+</code></pre>
+<p>The content of this XML file contains metadata about the repository, including
+the public key:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;fdroid&gt;
+	&lt;repo name=&quot;microG F-Droid repo&quot; icon=&quot;fdroid-icon.png&quot; url=&quot;https://microg.org/fdroid/repo&quot; version=&quot;19&quot; timestamp=&quot;1606314565&quot; pubkey=&quot;308202ed308201d5a003020102020426ffa009300d06092a864886f70d01010b05003027310b300906035504061302444531183016060355040a130f4e4f47415050532050726f6a656374301e170d3132313030363132303533325a170d3337303933303132303533325a3027310b300906035504061302444531183016060355040a130f4e4f47415050532050726f6a65637430820122300d06092a864886f70d01010105000382010f003082010a02820101009a8d2a5336b0eaaad89ce447828c7753b157459b79e3215dc962ca48f58c2cd7650df67d2dd7bda0880c682791f32b35c504e43e77b43c3e4e541f86e35a8293a54fb46e6b16af54d3a4eda458f1a7c8bc1b7479861ca7043337180e40079d9cdccb7e051ada9b6c88c9ec635541e2ebf0842521c3024c826f6fd6db6fd117c74e859d5af4db04448965ab5469b71ce719939a06ef30580f50febf96c474a7d265bb63f86a822ff7b643de6b76e966a18553c2858416cf3309dd24278374bdd82b4404ef6f7f122cec93859351fc6e5ea947e3ceb9d67374fe970e593e5cd05c905e1d24f5a5484f4aadef766e498adf64f7cf04bddd602ae8137b6eea40722d0203010001a321301f301d0603551d0e04160414110b7aa9ebc840b20399f69a431f4dba6ac42a64300d06092a864886f70d01010b0500038201010007c32ad893349cf86952fb5a49cfdc9b13f5e3c800aece77b2e7e0e9c83e34052f140f357ec7e6f4b432dc1ed542218a14835acd2df2deea7efd3fd5e8f1c34e1fb39ec6a427c6e6f4178b609b369040ac1f8844b789f3694dc640de06e44b247afed11637173f36f5886170fafd74954049858c6096308fc93c1bc4dd5685fa7a1f982a422f2a3b36baa8c9500474cf2af91c39cbec1bc898d10194d368aa5e91f1137ec115087c31962d8f76cd120d28c249cf76f4c70f5baa08c70a7234ce4123be080cee789477401965cfe537b924ef36747e8caca62dfefdd1a6288dcb1c4fd2aaa6131a7ad254e9742022cfd597d2ca5c660ce9e41ff537e5a4041e37&quot;&gt;
+		&lt;description&gt;This is a repository of microG apps to be used with F-Droid. Applications in this repository are signed official binaries built by the microG Team from the corresponding source code. &lt;/description&gt;
+	&lt;/repo&gt;
+	&lt;application id=&quot;...&quot;&gt;
+		&lt;!-- ... list of contained applications ... --&gt;
+	&lt;/application&gt;
+&lt;/fdroid&gt;
+</code></pre>
+<p>Simply copy the <code>name</code> and <code>pubkey</code> fields and use them as the name and public
+key for the corresponding Nix expression respectively.</p>
+<pre><code class="language-nix">{
+  apps.fdroid.additionalRepos = {
+    &quot;microG F-Droid repo&quot; = {
+      enable = true;
+      url = &quot;https://microg.org/fdroid/repo&quot;;
+      pubkey = &quot;308202ed308201d5a003020102020426ffa009300d06092a864886f70d01010b05003027310b300906035504061302444531183016060355040a130f4e4f47415050532050726f6a656374301e170d3132313030363132303533325a170d3337303933303132303533325a3027310b300906035504061302444531183016060355040a130f4e4f47415050532050726f6a65637430820122300d06092a864886f70d01010105000382010f003082010a02820101009a8d2a5336b0eaaad89ce447828c7753b157459b79e3215dc962ca48f58c2cd7650df67d2dd7bda0880c682791f32b35c504e43e77b43c3e4e541f86e35a8293a54fb46e6b16af54d3a4eda458f1a7c8bc1b7479861ca7043337180e40079d9cdccb7e051ada9b6c88c9ec635541e2ebf0842521c3024c826f6fd6db6fd117c74e859d5af4db04448965ab5469b71ce719939a06ef30580f50febf96c474a7d265bb63f86a822ff7b643de6b76e966a18553c2858416cf3309dd24278374bdd82b4404ef6f7f122cec93859351fc6e5ea947e3ceb9d67374fe970e593e5cd05c905e1d24f5a5484f4aadef766e498adf64f7cf04bddd602ae8137b6eea40722d0203010001a321301f301d0603551d0e04160414110b7aa9ebc840b20399f69a431f4dba6ac42a64300d06092a864886f70d01010b0500038201010007c32ad893349cf86952fb5a49cfdc9b13f5e3c800aece77b2e7e0e9c83e34052f140f357ec7e6f4b432dc1ed542218a14835acd2df2deea7efd3fd5e8f1c34e1fb39ec6a427c6e6f4178b609b369040ac1f8844b789f3694dc640de06e44b247afed11637173f36f5886170fafd74954049858c6096308fc93c1bc4dd5685fa7a1f982a422f2a3b36baa8c9500474cf2af91c39cbec1bc898d10194d368aa5e91f1137ec115087c31962d8f76cd120d28c249cf76f4c70f5baa08c70a7234ce4123be080cee789477401965cfe537b924ef36747e8caca62dfefdd1a6288dcb1c4fd2aaa6131a7ad254e9742022cfd597d2ca5c660ce9e41ff537e5a4041e37&quot;;
+    };
+  };
+}
+</code></pre>
+<p>The name can really be anything, but the one that is provided here is the one
+that shows up before refreshing the F-Droid repo list for the first time, so if
+you want that to look pretty, give it a pretty name here.</p>
+<h1><a class="header" href="#set-up-remote-attestation" id="set-up-remote-attestation">Set up remote attestation</a></h1>
+<h2><a class="header" href="#android-side" id="android-side">Android side</a></h2>
+<ol>
+<li>
+<p>You can enable the Auditor app in the configuration:</p>
+<pre><code class="language-nix">{
+  keyStorePath = &quot;/dev/shm/android-keys&quot;;
+  signing.enable = true;
+
+  apps = {
+    auditor.enable = true;
+    auditor.domain = &quot;attestation.example.com&quot;;
+  };
+}
+</code></pre>
+<p>You also need to have signing enabled during build time because the Auditor
+app needs to know its own signing key during build.</p>
+</li>
+<li>
+<p>That's it from the Android side.  Note that the custom Auditor app will be
+named “Robotnix Auditor”.  When you build GrapheneOS the normal Auditor app
+will still be there, don't get confused (like I did).</p>
+</li>
+</ol>
+<h2><a class="header" href="#server-side" id="server-side">Server side</a></h2>
+<ol>
+<li>
+<p>Before we begin we have to obtain the fingerprint of the custom Auditor app
+and the AVB fingerprint.  To get the Auditor app fingerprint, we simply use
+OpenSSL to extract the fingerprint of the signing certificate:</p>
+<pre><code class="language-console">$ openssl x509 -noout -fingerprint -sha256 -in keys/auditor.x509.pem | awk -F '=' '{gsub(/:/,&quot;&quot;); print $2}'
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</code></pre>
+<p>The AVB fingerprint is a bit more tricky.  I own a Pixel 4a (sunfish) and
+on this device the AVB fingerprint is simply the SHA256 hash of the AVB
+key, but this is not the case on other devices.  Check the Auditor source
+code for details.</p>
+<pre><code class="language-console">$ sha256sum keys/sunfish/avb_pkmd.bin | awk '{print toupper($1)}'
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+</code></pre>
+</li>
+<li>
+<p>Now you can import Robotnix in your NixOS configuration with the
+aforementioned fingerprints.</p>
+<pre><code class="language-nix">{ config, lib, pkgs, ... }:
+{
+  imports = [
+    ((builtins.fetchTarball {
+      name = &quot;robotnix&quot;;
+      # Replace the git revision and sha256 with ones referring to a recent commit
+      url =
+        &quot;https://github.com/danielfullmer/robotnix/archive/61b91d145f0b08cf0d4d73fb1d7ba74b9899b788.zip&quot;;
+      sha256 = &quot;1dihmdw5w891jq2fm7mcx30ydjjd33ggbb60898841x5pzjx6ynv&quot;;
+    }) + &quot;/nixos&quot;)
+  ];
+
+  services.attestation-server = {
+    enable = true;
+    domain = &quot;attestation.example.com&quot;;
+    device = &quot;sunfish&quot;;
+    signatureFingerprint = &quot;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&quot;;
+    avbFingerprint = &quot;BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB&quot;;
+    #disableAccountCreation = true; # optionally uncomment after creating your account
+    #nginx.enableACME = true; # optionally uncomment if you want to use Let's Encrypt for HTTPS
+  };
+}
+</code></pre>
+</li>
+<li>
+<p>Register and optionally disable account creation.  The start the “Robotnix
+Auditor” app on your phone and open the menu (three dots).  Choose “Enable
+remote verification” and scan the QR code on your attestation server.</p>
+</li>
+<li>
+<p>The attestation server keeps its state in <code>/var/lib/private/attestation</code>.
+<strong>Make periodic backups!</strong></p>
+</li>
+</ol>
+<ul>
+<li>
+<p><code>androidVersion</code></p>
+<p>Used to select which android version to use</p>
+<p>Default: <code>11</code></p>
+<p>Type: signed integer</p>
+</li>
+<li>
+<p><code>apps.auditor.domain</code></p>
+<p>Domain running the AttestationServer (over https) for remote verification</p>
+<p>Default: <code>&quot;attestation.app&quot;</code></p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.auditor.enable</code></p>
+<p>Whether to enable Auditor.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.bromite.enable</code></p>
+<p>Whether to enable bromite browser.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.chromium.enable</code></p>
+<p>Whether to enable chromium browser.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.fdroid.additionalRepos</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>{}</code></p>
+<p>Type: attribute set of submodules</p>
+</li>
+<li>
+<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.description</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;Empty description&quot;</code></p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.enable</code></p>
+<p>Whether to enable ‹name›.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.name</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;‹name›&quot;</code></p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.pubkey</code></p>
+<p>This option has no description.</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.pushRequests</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;ignore&quot;</code></p>
+<p>Type: string matching the pattern (ignore|prompt|always)</p>
+</li>
+<li>
+<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.url</code></p>
+<p>This option has no description.</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.version</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>1</code></p>
+<p>Type: signed integer</p>
+</li>
+<li>
+<p><code>apps.fdroid.enable</code></p>
+<p>Whether to enable F-Droid.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.prebuilt</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>{}</code></p>
+<p>Type: attribute set of submodules</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.allowInPowerSave</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.apk</code></p>
+<p>This option has no description.</p>
+<p>Type: path</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.certificate</code></p>
+<p>Certificate name to sign apk with.  Defaults to the name of the prebuilt app.
+If it is a device-specific certificate, the cert/key will be ${keyStorePath}/${device}/${certificate}.{x509.pem,pk8}
+Otherwise, it will be ${keyStorePath}/${certificate}.{x509.pem,pk8}
+Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</p>
+<p>Default: <code>&quot;‹name›&quot;</code></p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.defaultPermissions</code></p>
+<p>Permissions which are to be enabled by default without user prompting</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.extraConfig</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;&quot;</code></p>
+<p>Type: strings concatenated with &quot;\n&quot;</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.name</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;‹name›&quot;</code></p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.packageName</code></p>
+<p>example: com.android.test</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.partition</code></p>
+<p>This option has no description.</p>
+<p>Type: string matching the pattern (vendor|system|product)</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.privappPermissions</code></p>
+<p>See https://developer.android.com/reference/android/Manifest.permission and note permissions which say
+&quot;not for use by third-party applications&quot;.</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>apps.prebuilt.&lt;name&gt;.privileged</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.seedvault.enable</code></p>
+<p>Whether to enable Seedvault (backup).</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.updater.enable</code></p>
+<p>Whether to enable updater.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apps.updater.url</code></p>
+<p>URL for OTA updates</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>apps.vanadium.enable</code></p>
+<p>Whether to enable vanadium browser.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apv.enable</code></p>
+<p>Whether to enable android-prepare-vendor.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>apv.img</code></p>
+<p>A factory image .zip from upstream whose vendor contents should be extracted and included in the build</p>
+<p>Default: <code>null</code></p>
+<p>Type: path</p>
+</li>
+<li>
+<p><code>apv.ota</code></p>
+<p>An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds need an OTA as well)</p>
+<p>Default: <code>null</code></p>
+<p>Type: path</p>
+</li>
+<li>
+<p><code>apv.systemBytecode</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>apv.systemOther</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>arch</code></p>
+<p>Architecture of phone, usually set automatically by device</p>
+<p>Default: <code>&quot;arm64&quot;</code></p>
+<p>Type: string matching the pattern (arm64|arm|x86_64|x86)</p>
+</li>
+<li>
+<p><code>buildDateTime</code></p>
+<p>Seconds since the epoch that this build is taking place. Needs to be monotone increasing for the updater to work. e.g. output of &quot;date +%s&quot;</p>
+<p>Default: <code>1</code></p>
+<p>Type: signed integer</p>
+</li>
+<li>
+<p><code>buildNumber</code></p>
+<p>Set this to something meaningful, like the date. Needs to be unique for each build for the updater to work</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>buildType</code></p>
+<p>one of &quot;release&quot;, &quot;debug&quot;</p>
+<p>Default: <code>&quot;release&quot;</code></p>
+<p>Type: string matching the pattern (release|debug)</p>
+</li>
+<li>
+<p><code>ccache.enable</code></p>
+<p>Whether to enable ccache.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>channel</code></p>
+<p>Default channel to use for updates (can be modified in app)</p>
+<p>Default: <code>&quot;stable&quot;</code></p>
+<p>Type: string matching the pattern (stable|beta)</p>
+</li>
+<li>
+<p><code>device</code></p>
+<p>Code name of device build target</p>
+<p>Default: <code>null</code></p>
+<p>Type: null or string</p>
+</li>
+<li>
+<p><code>etc</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>{}</code></p>
+<p>Type: attribute set of submodules</p>
+</li>
+<li>
+<p><code>etc.&lt;name&gt;.partition</code></p>
+<p>This option has no description.</p>
+<p>Type: string matching the pattern (vendor|system|product)</p>
+</li>
+<li>
+<p><code>etc.&lt;name&gt;.source</code></p>
+<p>This option has no description.</p>
+<p>Type: path</p>
+</li>
+<li>
+<p><code>etc.&lt;name&gt;.target</code></p>
+<p>This option has no description.</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>etc.&lt;name&gt;.text</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>null</code></p>
+<p>Type: null or string</p>
+</li>
+<li>
+<p><code>flavor</code></p>
+<p>One of robotnix's supported flavors.</p>
+<p>Default: <code>null</code></p>
+<p>Type: null or string</p>
+</li>
+<li>
+<p><code>framework</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>{}</code></p>
+<p>Type: attribute set of submodules</p>
+</li>
+<li>
+<p><code>framework.&lt;name&gt;.partition</code></p>
+<p>This option has no description.</p>
+<p>Type: string matching the pattern (vendor|system|product)</p>
+</li>
+<li>
+<p><code>framework.&lt;name&gt;.source</code></p>
+<p>This option has no description.</p>
+<p>Type: path</p>
+</li>
+<li>
+<p><code>framework.&lt;name&gt;.target</code></p>
+<p>This option has no description.</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>google.base.enable</code></p>
+<p>Whether to enable Base Google OEM files.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>google.dialer.enable</code></p>
+<p>Whether to enable Google Dialer.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>google.fi.enable</code></p>
+<p>Whether to enable Google Fi.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>hosts</code></p>
+<p>Custom hosts file</p>
+<p>Default: <code>null</code></p>
+<p>Type: null or path</p>
+</li>
+<li>
+<p><code>incremental</code></p>
+<p>Whether to include an incremental build in otaDir</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>kernel.buildProductFilenames</code></p>
+<p>list of build products in kernel out/ to copy into relpath</p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>kernel.clangVersion</code></p>
+<p>Version of prebuilt clang to use for kernel. See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>kernel.compiler</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;clang&quot;</code></p>
+<p>Type: string matching the pattern (gcc|clang)</p>
+</li>
+<li>
+<p><code>kernel.linker</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;gold&quot;</code></p>
+<p>Type: string matching the pattern (gold|lld)</p>
+</li>
+<li>
+<p><code>kernel.patches</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of paths</p>
+</li>
+<li>
+<p><code>kernel.postPatch</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;&quot;</code></p>
+<p>Type: strings concatenated with &quot;\n&quot;</p>
+</li>
+<li>
+<p><code>kernel.relpath</code></p>
+<p>Relative path in source tree to place kernel build artifacts</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>kernel.src</code></p>
+<p>This option has no description.</p>
+<p>Type: path</p>
+</li>
+<li>
+<p><code>kernel.useCustom</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>keyStorePath</code></p>
+<p>Absolute path to generated keys for signing</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>microg.enable</code></p>
+<p>Whether to enable microg.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>nixpkgs.overlays</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of unspecifieds</p>
+</li>
+<li>
+<p><code>product.additionalProductPackages</code></p>
+<p>PRODUCT_PACKAGES to add to build</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>productName</code></p>
+<p>Product name for choosecombo/lunch (defaults to aosp_${device})</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>productNamePrefix</code></p>
+<p>Prefix for product name used with choosecombo/lunch</p>
+<p>Default: <code>&quot;aosp_&quot;</code></p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>removedProductPackages</code></p>
+<p>PRODUCT_PACKAGES to remove from build</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>resourceTypeOverrides</code></p>
+<p>for overriding auto-detected resource type</p>
+<p>Default: <code>{}</code></p>
+<p>Type: attribute set of attribute set of string matching the pattern (bool|integer|dimen|color|string|integer-array|string-array)ss</p>
+</li>
+<li>
+<p><code>resources</code></p>
+<p>package resources. The first key refers to the relative path for the package, and the second key refers to the resource name</p>
+<p>Default: <code>{}</code></p>
+<p>Type: attribute set of attribute set of unspecifiedss</p>
+</li>
+<li>
+<p><code>retrofit</code></p>
+<p>Generate a retrofit OTA for upgrading a device without dynamic partitions</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>signing.apex.enable</code></p>
+<p>Whether to enable APEX signing.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>signing.apex.packageNames</code></p>
+<p>APEX packages which need to be signed</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>signing.avb.enable</code></p>
+<p>Whether to enable AVB signing.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>signing.avb.mode</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;vbmeta_chained&quot;</code></p>
+<p>Type: string matching the pattern (verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)</p>
+</li>
+<li>
+<p><code>signing.enable</code></p>
+<p>Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>source.dirs</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>{}</code></p>
+<p>Type: attribute set of submodules</p>
+</li>
+<li>
+<p><code>source.dirs.&lt;name&gt;.enable</code></p>
+<p>Include this directory in the android build source tree</p>
+<p>Default: <code>true</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>source.dirs.&lt;name&gt;.patches</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of paths</p>
+</li>
+<li>
+<p><code>source.dirs.&lt;name&gt;.postPatch</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;&quot;</code></p>
+<p>Type: strings concatenated with &quot;\n&quot;</p>
+</li>
+<li>
+<p><code>source.dirs.&lt;name&gt;.relpath</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;‹name›&quot;</code></p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>source.dirs.&lt;name&gt;.src</code></p>
+<p>This option has no description.</p>
+<p>Default: <code>&quot;empty&quot;</code></p>
+<p>Type: path</p>
+</li>
+<li>
+<p><code>source.evalTimeFetching</code></p>
+<p>Set config.source.dirs automatically using IFD with information
+from <code>source.manifest</code>. Also enables use of builtins.fetchGit instead
+of pkgs.fetchgit if not all sha256 hashes are available. (Useful for
+development)</p>
+<p>Default: <code>false</code></p>
+<p>Type: unspecified</p>
+</li>
+<li>
+<p><code>source.excludeGroups</code></p>
+<p>project groups to exclude from source tree</p>
+<p>Default: <code>[&quot;darwin&quot;,&quot;mips&quot;]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>source.includeGroups</code></p>
+<p>project groups to include in source tree (overrides excludeGroups)</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>source.manifest.rev</code></p>
+<p>This option has no description.</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>source.manifest.sha256</code></p>
+<p>This option has no description.</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>source.manifest.url</code></p>
+<p>This option has no description.</p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>system.additionalProductPackages</code></p>
+<p>PRODUCT_PACKAGES to add to build</p>
+<p>Default: <code>[]</code></p>
+<p>Type: list of strings</p>
+</li>
+<li>
+<p><code>variant</code></p>
+<p>one of &quot;user&quot;, &quot;userdebug&quot;, or &quot;eng&quot;</p>
+<p>Default: <code>&quot;user&quot;</code></p>
+<p>Type: string matching the pattern (user|userdebug|eng)</p>
+</li>
+<li>
+<p><code>webview</code></p>
+<p>This option has no description.</p>
+<p>Type: attribute set of submodules</p>
+</li>
+<li>
+<p><code>webview.&lt;name&gt;.apk</code></p>
+<p>This option has no description.</p>
+<p>Type: path</p>
+</li>
+<li>
+<p><code>webview.&lt;name&gt;.availableByDefault</code></p>
+<p>If true, this provider can be automatically
+selected by the framework, if it's the first valid choice. If
+false, this provider will only be used if the user selects it
+themselves from the developer settings menu.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>webview.&lt;name&gt;.description</code></p>
+<p>The name shown to the user in the developer settings menu.</p>
+<p>Default: <code>&quot;Android System WebView&quot;</code></p>
+<p>Type: string</p>
+</li>
+<li>
+<p><code>webview.&lt;name&gt;.enable</code></p>
+<p>Whether to enable ‹name› webview.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>webview.&lt;name&gt;.isFallback</code></p>
+<p>If true, this provider will be automatically
+disabled by the framework, preventing it from being used or updated
+by app stores, unless there is no other valid provider available.
+Only one provider can be a fallback.</p>
+<p>Default: <code>false</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
+<p><code>webview.&lt;name&gt;.packageName</code></p>
+<p>The Android package name of the APK.</p>
+<p>Default: <code>&quot;com.android.webview&quot;</code></p>
+<p>Type: string</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
