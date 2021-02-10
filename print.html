@@ -1030,7 +1030,9 @@ Also enables use of <code>builtins.fetchGit</code> instead of <code>pkgs.fetchgi
 </li>
 <li>
 <p><code>variant</code></p>
-<p>one of &quot;user&quot;, &quot;userdebug&quot;, or &quot;eng&quot;</p>
+<p>&quot;user&quot; has limited access and is suited for production.
+&quot;userdebug&quot; is like user but with root access and debug capability.
+&quot;eng&quot; is the development configuration with additional debugging tools.</p>
 <p>Default: <code>&quot;user&quot;</code></p>
 <p>Type: string matching the pattern (user|userdebug|eng)</p>
 </li>
