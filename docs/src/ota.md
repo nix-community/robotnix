@@ -110,7 +110,7 @@ possible to integrate updating of the OTA directory into your other robotnix
 build automation.  In this case it is as easy as updating the `/var/www/android`
 symlink with the new build output.
 
-Here it was assumed that Robotnix was built on the same machine that you will
+Here it was assumed that robotnix was built on the same machine that you will
 serve the OTA from.  If that is not the case you can conveniently copy the
 closure to a remote host using `nix copy` as in
 ``` console

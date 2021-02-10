@@ -39,7 +39,7 @@
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
     ```
 
- 2. Now you can import Robotnix in your NixOS configuration with the
+ 2. Now you can import robotnix in your NixOS configuration with the
     aforementioned fingerprints.
     ```nix
     { config, lib, pkgs, ... }:

@@ -27,7 +27,7 @@ in
       type = let
         _config = config;
       in types.attrsOf (types.submodule ({ name, config, ... }: {
-        # Robotnix etc.* options correspond to the etc.* options from NixOS
+        # robotnix etc.* options correspond to the etc.* options from NixOS
         options = {
           target = mkOption {
             type = types.str;

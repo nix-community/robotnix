@@ -172,10 +172,10 @@ Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/cca
 ## Notable mentions
 See also: [NixDroid](https://github.com/ajs124/NixDroid), [RattlesnakeOS](https://github.com/dan-v/rattlesnakeos-stack), [aosp-build](https://github.com/hashbang/aosp-build), and [CalyxOS](https://calyxos.org/)
 
-## Donating to Robotnix
+## Donating to robotnix
 
-If you find Robotnix helpful, please consider donating to the project.
-Especially consider making a donation if you rely on regular Robotnix updates for your personal device.
+If you find robotnix helpful, please consider donating to the project.
+Especially consider making a donation if you rely on regular robotnix updates for your personal device.
 Donations will be used to support ongoing Android updates, developer hardware and build infrastructure, as well as future improvements.
 Your support is greatly appreciated.
  - My GitHub sponsors page is [here](https://github.com/sponsors/danielfullmer).
