@@ -36,22 +36,27 @@ in
   options = {
     apps.prebuilt = mkOption {
       default = {};
+      description = "Prebuilt APKs to include in the robotnix build";
+
       type = let
         _config = config;
       in types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
           name = mkOption {
             default = name;
-            type = types.str; # No spaces (use strMatching?)
+            description = "Name of application. (No spaces)";
+            type = types.str; # TODO: Use strMatching to enforce no spaces?
           };
 
           apk = mkOption {
             type = types.path;
+            description = "APK file to include in build";
           };
 
           signedApk = mkOption {
             type = types.path;
             internal = true;
+            description = "Robotnix-signed version of APK file";
           };
 
           fingerprint = mkOption {
@@ -62,18 +67,19 @@ in
           };
 
           packageName = mkOption { # Only used with privapp permissions
-            type = types.str;
-            description = "example: com.android.test";
+            description = "APK's Java-style package name (applicationId). This setting only necessary to be set if also using `privappPermissions`.";
+            type = types.strMatching "[a-zA-Z0-9_.]";
+            example = "com.android.test";
           };
 
           certificate = mkOption {
             default = toLower name;
             type = types.str;
             description = ''
-              Certificate name to sign apk with.  Defaults to the name of the prebuilt app.
-              If it is a device-specific certificate, the cert/key will be ''${keyStorePath}/''${device}/''${certificate}.{x509.pem,pk8}
-              Otherwise, it will be ''${keyStorePath}/''${certificate}.{x509.pem,pk8}
-              Finally, the special string "PRESIGNED" will just use the apk as-is.
+              Name of certificate to sign APK with.  Defaults to the name of the prebuilt app.
+              If it is a device-specific certificate, the cert/key should be under `''${keyStorePath}/''${device}/''${certificate}.{x509.pem,pk8}`.
+              Otherwise, it should be `''${keyStorePath}/''${certificate}.{x509.pem,pk8}`.
+              Finally, the special string "PRESIGNED" will just use the APK as-is.
             '';
           };
 
@@ -85,12 +91,14 @@ in
           privileged = mkOption {
             default = false;
             type = types.bool;
+            description = "Whether this APK should be included as a privileged application.";
           };
 
           privappPermissions = mkOption {
             default = [];
             type = types.listOf types.str;
             description = ''
+              Privileged permissions to apply to this application.
               See https://developer.android.com/reference/android/Manifest.permission and note permissions which say
               "not for use by third-party applications".
             '';
@@ -100,24 +108,28 @@ in
           defaultPermissions = mkOption {
             default = [];
             type = types.listOf types.str;
-            description = ''
-              Permissions which are to be enabled by default without user prompting
-            '';
+            description = "Permissions to be enabled by default without user prompting.";
             example = ''[ "INSTALL_PACKAGES" ]'';
           };
 
           partition = mkOption {
+            description = "Partition on which to place this app";
             type = types.strMatching "(vendor|system|product)";
           };
 
           allowInPowerSave = mkOption {
             default = false;
             type = types.bool;
+            description = ''
+              Whether to allow this application to operate in \"power save\" mode.
+              Disables battery optimization for this app.
+            '';
           };
 
           extraConfig = mkOption {
             default = "";
             type = types.lines;
+            internal = true;
           };
         };
 

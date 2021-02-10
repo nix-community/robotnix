@@ -15,7 +15,7 @@ let
 in
 {
   options = {
-    microg.enable = mkEnableOption "microg";
+    microg.enable = mkEnableOption "MicroG";
   };
 
   config = mkIf config.microg.enable {

@@ -19,13 +19,18 @@ in
     resources = mkOption {
       default = {};
       type = types.attrsOf (types.attrsOf types.unspecified);
-      description = "package resources. The first key refers to the relative path for the package, and the second key refers to the resource name";
+      description = ''
+        Android resource overlays for packages included in source tree.
+        This is an attrset of attrsets of values.
+        The first key refers to the relative path for the package source, and the second key refers to the resource name.
+        e.g. `resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true;`
+      '';
     };
 
     resourceTypeOverrides = mkOption {
       default = {};
       type = types.attrsOf (types.attrsOf (types.strMatching "(bool|integer|dimen|color|string|integer-array|string-array)"));
-      description = "for overriding auto-detected resource type";
+      description = "Overrides auto-detection of overlay resource type set in `resources`.";
     };
   };
 

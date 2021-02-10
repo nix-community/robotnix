@@ -14,41 +14,55 @@ in
   options.apps.fdroid = {
     enable = mkEnableOption "F-Droid";
 
-    # See apps/src/main/java/org/fdroid/fdroid/data/DBHelper.java in fdroid source
-    # Note that changes to this setting will only take effect on a freshly
-    # installed device--or if the FDroid storage is cleared
+    # See also `apps/src/main/java/org/fdroid/fdroid/data/DBHelper.java` in F-Droid source
     additionalRepos = mkOption {
       default = {};
+      description = ''
+        Additional F-Droid repositories to include in the default build.
+        Note that changes to this setting will only take effect on a freshly
+        installed device--or if the F-Droid storage is cleared.
+      '';
       type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
-          enable = mkEnableOption name;
+          enable = mkOption {
+            default = false;
+            type = types.bool;
+            description = "Whether to enable this repository by default in F-Droid.";
+          };
 
           name = mkOption {
             default = name;
             type = types.str;
+            description = "Display name to use for this repository";
           };
 
           url = mkOption {
             type = types.str;
+            description = "URL for F-Droid repository";
           };
 
           description = mkOption {
-            default = "Empty description"; # fdroid parsing of additional_repos.xml requires all items to have text
             type = types.str;
+            default = "Empty description"; # fdroid parsing of additional_repos.xml requires all items to have text
+            description = "Longer textual description of this repository";
           };
 
-          version = mkOption { # Not sure what this one is for exactly
-            default = 1;
+          version = mkOption {
             type = types.int;
+            default = 0;
+            description = "Which version of fdroidserver built this repo";
+            internal = true;
           };
 
-          pushRequests = mkOption { # Repo metadata can specify apps to be installed/removed
+          pushRequests = mkOption {
             type = types.strMatching "(ignore|prompt|always)";
+            description = "Allow this repository to specify apps which should be automatically installed/uninstalled";
             default = "ignore";
           };
 
           pubkey = mkOption { # Wew these are long AF. TODO: Some way to generate these?
             type = types.str;
+            description = "Public key associated with this repository. Can be found in `/index.xml` under the repo URL.";
           };
         };
       }));

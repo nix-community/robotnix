@@ -12,8 +12,8 @@ in
 
       domain = mkOption {
         type = types.str;
-        default = "attestation.app";
-        description = "Domain running the AttestationServer (over https) for remote verification";
+        description = "Domain running the AttestationServer (over HTTPS) for remote verification";
+        example = "attestation.example.com";
       };
     };
   };
@@ -21,7 +21,7 @@ in
   config = mkIf cfg.enable {
     assertions = [ {
       assertion = builtins.elem config.device supportedDevices;
-      message = "Device ${config.device} is currently unsupported for use with auditor app.";
+      message = "Device ${config.device} is currently unsupported for use with Auditor app.";
     } ];
 
     apps.prebuilt.Auditor = {

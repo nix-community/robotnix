@@ -35,7 +35,10 @@ in
     flavor = mkOption {
       default = null;
       type = types.nullOr types.str;
-      description = "One of robotnix's supported flavors.";
+      description = ''
+        Set to one of robotnix's supported flavors.
+        Current options are `vanilla`, `grapheneos`, and `lineageos`.
+      '';
       example = "vanilla";
     };
 
@@ -51,7 +54,6 @@ in
       type = types.nullOr types.str;
       description = "Display name of device build target";
       example = "Pixel XL";
-      internal = true;
     };
 
     deviceFamily = mkOption {
@@ -74,7 +76,9 @@ in
 
     productName = mkOption {
       type = types.str;
-      description = "Product name for choosecombo/lunch (defaults to aosp_\${device})";
+      description = "Product name for choosecombo/lunch";
+      defaultText = "\${productNamePrefix}\${device}";
+      example = "aosp_crosshatch";
     };
 
     productNamePrefix = mkOption {
@@ -91,21 +95,29 @@ in
 
     buildNumber = mkOption {
       type = types.str;
-      description = "Set this to something meaningful, like the date. Needs to be unique for each build for the updater to work";
+      description = ''
+        Set this to something meaningful to identify the build.
+        Defaults to `YYYY.MM.DD.HH` based on `buildDateTime`.
+        Needs to be unique for each build to enable the updater to work
+      '';
       example = "2019.08.12.1";
     };
 
     buildDateTime = mkOption {
       default = 1;
       type = types.int;
-      description = "Seconds since the epoch that this build is taking place. Needs to be monotone increasing for the updater to work. e.g. output of \"date +%s\"";
+      description = ''
+        Seconds since the epoch that this build is taking place.
+        Needs to be monotonically increasing for each build to enable the updater to work.
+        e.g. output of `date +%s`
+        '';
       example = 1565645583;
     };
 
     androidVersion = mkOption {
       default = 11;
       type = types.int;
-      description = "Used to select which android version to use";
+      description = "Used to select which Android version to use";
     };
 
     apiLevel = mkOption {
@@ -117,19 +129,19 @@ in
     system.additionalProductPackages = mkOption {
       default = [];
       type = types.listOf types.str;
-      description = "PRODUCT_PACKAGES to add to build";
+      description = "`PRODUCT_PACKAGES` to add under `system` partition.";
     };
 
     product.additionalProductPackages = mkOption {
       default = [];
       type = types.listOf types.str;
-      description = "PRODUCT_PACKAGES to add to build";
+      description = "`PRODUCT_PACKAGES` to add under `product` partition.";
     };
 
     removedProductPackages = mkOption {
       default = [];
       type = types.listOf types.str;
-      description = "PRODUCT_PACKAGES to remove from build";
+      description = "`PRODUCT_PACKAGES` to remove from build";
     };
 
     system.extraConfig = mkOption {

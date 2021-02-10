@@ -82,14 +82,16 @@ in
     incremental = mkOption {
       default = false;
       type = types.bool;
-      description = "Whether to include an incremental build in otaDir";
+      description = "Whether to include an incremental build in `otaDir` output";
     };
 
     retrofit = mkOption {
       default = false;
       type = types.bool;
-      description = "Generate a retrofit OTA for upgrading a device without dynamic partitions";
-      # https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legacy#generating-update-packages
+      description = ''
+        Generate a retrofit OTA for upgrading a device without dynamic partitions.
+        See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legacy#generating-update-packages
+      '';
     };
 
     otaArgs = mkOption {

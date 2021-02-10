@@ -49,11 +49,12 @@ in
         mode = mkOption {
           type = types.strMatching "(verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)";
           default  = "vbmeta_chained";
+          description = "Mode of AVB signing to use.";
         };
       };
 
       apex = {
-        enable = mkEnableOption "APEX signing";
+        enable = mkEnableOption "signing APEX packages";
 
         packageNames = mkOption {
           default = [];
@@ -65,7 +66,11 @@ in
 
     keyStorePath = mkOption {
       type = types.str;
-      description = "Absolute path to generated keys for signing";
+      description = ''
+        String containing absolute path to generated keys for signing.
+        This must be a _string_ and not a "nix path" to ensure that your secret keys are not imported into the public `/nix/store`.
+      '';
+      example = "/var/secrets/android-keys";
     };
   };
 
