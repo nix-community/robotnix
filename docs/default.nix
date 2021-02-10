@@ -22,6 +22,9 @@ let
           '' + optionalString (option ? default) ''
             Default: `${builtins.toJSON option.default}`
 
+          '' + optionalString (option ? example) ''
+            Example: `${builtins.toJSON option.example}`
+
           '' + ''
             Type: ${option.type}
           '';
