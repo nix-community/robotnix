@@ -20,3 +20,4 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./manual/book
+        cname: docs.robotnix.org
