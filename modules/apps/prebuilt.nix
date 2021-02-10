@@ -68,7 +68,7 @@ in
 
           packageName = mkOption { # Only used with privapp permissions
             description = "APK's Java-style package name (applicationId). This setting only necessary to be set if also using `privappPermissions`.";
-            type = types.strMatching "[a-zA-Z0-9_.]";
+            type = types.strMatching "[a-zA-Z0-9_.]*";
             example = "com.android.test";
           };
 
