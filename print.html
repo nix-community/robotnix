@@ -367,16 +367,13 @@ Obtaining the URL is in general very easy but it's not obvious where to obtain
 the public key.</p>
 <p>We'll take the microG repository as an example.  The repository is located at
 https://microg.org/fdroid/repo.  To obtain the repository index download the
-<code>index.jar</code> file from the repository root:</p>
-<pre><code class="language-console">$ curl -LO https://microg.org/fdroid/repo/index.jar
+<code>index.xml</code> file from the repository root:</p>
+<pre><code class="language-console">$ curl -LO https://microg.org/fdroid/repo/index.xml
 </code></pre>
-<p>Java Archives are simply ZIP files with a certain structure, so to get the
-repository index out of this file, we unzip the contained <code>index.xml</code>:</p>
-<pre><code class="language-console">$ unzip index.jar index.xml
-</code></pre>
-<p>The content of this XML file contains metadata about the repository, including
-the public key:</p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+<pre><code>The content of this XML file contains metadata about the repository, including
+the public key:
+```xml
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;fdroid&gt;
 	&lt;repo name=&quot;microG F-Droid repo&quot; icon=&quot;fdroid-icon.png&quot; url=&quot;https://microg.org/fdroid/repo&quot; version=&quot;19&quot; timestamp=&quot;1606314565&quot; pubkey=&quot;308202ed308201d5a003020102020426ffa009300d06092a864886f70d01010b05003027310b300906035504061302444531183016060355040a130f4e4f47415050532050726f6a656374301e170d3132313030363132303533325a170d3337303933303132303533325a3027310b300906035504061302444531183016060355040a130f4e4f47415050532050726f6a65637430820122300d06092a864886f70d01010105000382010f003082010a02820101009a8d2a5336b0eaaad89ce447828c7753b157459b79e3215dc962ca48f58c2cd7650df67d2dd7bda0880c682791f32b35c504e43e77b43c3e4e541f86e35a8293a54fb46e6b16af54d3a4eda458f1a7c8bc1b7479861ca7043337180e40079d9cdccb7e051ada9b6c88c9ec635541e2ebf0842521c3024c826f6fd6db6fd117c74e859d5af4db04448965ab5469b71ce719939a06ef30580f50febf96c474a7d265bb63f86a822ff7b643de6b76e966a18553c2858416cf3309dd24278374bdd82b4404ef6f7f122cec93859351fc6e5ea947e3ceb9d67374fe970e593e5cd05c905e1d24f5a5484f4aadef766e498adf64f7cf04bddd602ae8137b6eea40722d0203010001a321301f301d0603551d0e04160414110b7aa9ebc840b20399f69a431f4dba6ac42a64300d06092a864886f70d01010b0500038201010007c32ad893349cf86952fb5a49cfdc9b13f5e3c800aece77b2e7e0e9c83e34052f140f357ec7e6f4b432dc1ed542218a14835acd2df2deea7efd3fd5e8f1c34e1fb39ec6a427c6e6f4178b609b369040ac1f8844b789f3694dc640de06e44b247afed11637173f36f5886170fafd74954049858c6096308fc93c1bc4dd5685fa7a1f982a422f2a3b36baa8c9500474cf2af91c39cbec1bc898d10194d368aa5e91f1137ec115087c31962d8f76cd120d28c249cf76f4c70f5baa08c70a7234ce4123be080cee789477401965cfe537b924ef36747e8caca62dfefdd1a6288dcb1c4fd2aaa6131a7ad254e9742022cfd597d2ca5c660ce9e41ff537e5a4041e37&quot;&gt;
 		&lt;description&gt;This is a repository of microG apps to be used with F-Droid. Applications in this repository are signed official binaries built by the microG Team from the corresponding source code. &lt;/description&gt;
@@ -482,150 +479,149 @@ remote verification” and scan the QR code on your attestation server.</p>
 <ul>
 <li>
 <p><code>androidVersion</code></p>
-<p>Used to select which android version to use</p>
+<p>Used to select which Android version to use</p>
 <p>Default: <code>11</code></p>
 <p>Type: signed integer</p>
 </li>
 <li>
 <p><code>apps.auditor.domain</code></p>
-<p>Domain running the AttestationServer (over https) for remote verification</p>
-<p>Default: <code>&quot;attestation.app&quot;</code></p>
+<p>Domain running the AttestationServer (over HTTPS) for remote verification</p>
+<p>Example: <code>&quot;attestation.example.com&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>apps.auditor.enable</code></p>
 <p>Whether to enable Auditor.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>apps.bromite.enable</code></p>
 <p>Whether to enable bromite browser.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>apps.chromium.enable</code></p>
 <p>Whether to enable chromium browser.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>apps.fdroid.additionalRepos</code></p>
-<p>This option has no description.</p>
+<p>Additional F-Droid repositories to include in the default build.
+Note that changes to this setting will only take effect on a freshly
+installed device--or if the F-Droid storage is cleared.</p>
 <p>Default: <code>{}</code></p>
 <p>Type: attribute set of submodules</p>
 </li>
 <li>
 <p><code>apps.fdroid.additionalRepos.&lt;name&gt;.description</code></p>
-<p>This option has no description.</p>
+<p>Longer textual description of this repository</p>
 <p>Default: <code>&quot;Empty description&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>apps.fdroid.additionalRepos.&lt;name&gt;.enable</code></p>
-<p>Whether to enable ‹name›.</p>
+<p>Whether to enable this repository by default in F-Droid.</p>
 <p>Default: <code>false</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>apps.fdroid.additionalRepos.&lt;name&gt;.name</code></p>
-<p>This option has no description.</p>
+<p>Display name to use for this repository</p>
 <p>Default: <code>&quot;‹name›&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>apps.fdroid.additionalRepos.&lt;name&gt;.pubkey</code></p>
-<p>This option has no description.</p>
+<p>Public key associated with this repository. Can be found in <code>/index.xml</code> under the repo URL.</p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>apps.fdroid.additionalRepos.&lt;name&gt;.pushRequests</code></p>
-<p>This option has no description.</p>
+<p>Allow this repository to specify apps which should be automatically installed/uninstalled</p>
 <p>Default: <code>&quot;ignore&quot;</code></p>
 <p>Type: string matching the pattern (ignore|prompt|always)</p>
 </li>
 <li>
 <p><code>apps.fdroid.additionalRepos.&lt;name&gt;.url</code></p>
-<p>This option has no description.</p>
+<p>URL for F-Droid repository</p>
 <p>Type: string</p>
-</li>
-<li>
-<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.version</code></p>
-<p>This option has no description.</p>
-<p>Default: <code>1</code></p>
-<p>Type: signed integer</p>
 </li>
 <li>
 <p><code>apps.fdroid.enable</code></p>
 <p>Whether to enable F-Droid.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>apps.prebuilt</code></p>
-<p>This option has no description.</p>
+<p>Prebuilt APKs to include in the robotnix build</p>
 <p>Default: <code>{}</code></p>
 <p>Type: attribute set of submodules</p>
 </li>
 <li>
 <p><code>apps.prebuilt.&lt;name&gt;.allowInPowerSave</code></p>
-<p>This option has no description.</p>
+<p>Whether to allow this application to operate in &quot;power save&quot; mode.
+Disables battery optimization for this app.</p>
 <p>Default: <code>false</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>apps.prebuilt.&lt;name&gt;.apk</code></p>
-<p>This option has no description.</p>
+<p>APK file to include in build</p>
 <p>Type: path</p>
 </li>
 <li>
 <p><code>apps.prebuilt.&lt;name&gt;.certificate</code></p>
-<p>Certificate name to sign apk with.  Defaults to the name of the prebuilt app.
-If it is a device-specific certificate, the cert/key will be ${keyStorePath}/${device}/${certificate}.{x509.pem,pk8}
-Otherwise, it will be ${keyStorePath}/${certificate}.{x509.pem,pk8}
-Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</p>
+<p>Name of certificate to sign APK with.  Defaults to the name of the prebuilt app.
+If it is a device-specific certificate, the cert/key should be under <code>${keyStorePath}/${device}/${certificate}.{x509.pem,pk8}</code>.
+Otherwise, it should be <code>${keyStorePath}/${certificate}.{x509.pem,pk8}</code>.
+Finally, the special string &quot;PRESIGNED&quot; will just use the APK as-is.</p>
 <p>Default: <code>&quot;‹name›&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>apps.prebuilt.&lt;name&gt;.defaultPermissions</code></p>
-<p>Permissions which are to be enabled by default without user prompting</p>
+<p>Permissions to be enabled by default without user prompting.</p>
 <p>Default: <code>[]</code></p>
+<p>Example: <code>&quot;[ \&quot;INSTALL_PACKAGES\&quot; ]&quot;</code></p>
 <p>Type: list of strings</p>
 </li>
 <li>
-<p><code>apps.prebuilt.&lt;name&gt;.extraConfig</code></p>
-<p>This option has no description.</p>
-<p>Default: <code>&quot;&quot;</code></p>
-<p>Type: strings concatenated with &quot;\n&quot;</p>
-</li>
-<li>
 <p><code>apps.prebuilt.&lt;name&gt;.name</code></p>
-<p>This option has no description.</p>
+<p>Name of application. (No spaces)</p>
 <p>Default: <code>&quot;‹name›&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>apps.prebuilt.&lt;name&gt;.packageName</code></p>
-<p>example: com.android.test</p>
-<p>Type: string</p>
+<p>APK's Java-style package name (applicationId). This setting only necessary to be set if also using <code>privappPermissions</code>.</p>
+<p>Example: <code>&quot;com.android.test&quot;</code></p>
+<p>Type: string matching the pattern [a-zA-Z0-9_.]</p>
 </li>
 <li>
 <p><code>apps.prebuilt.&lt;name&gt;.partition</code></p>
-<p>This option has no description.</p>
+<p>Partition on which to place this app</p>
 <p>Type: string matching the pattern (vendor|system|product)</p>
 </li>
 <li>
 <p><code>apps.prebuilt.&lt;name&gt;.privappPermissions</code></p>
-<p>See https://developer.android.com/reference/android/Manifest.permission and note permissions which say
+<p>Privileged permissions to apply to this application.
+See https://developer.android.com/reference/android/Manifest.permission and note permissions which say
 &quot;not for use by third-party applications&quot;.</p>
 <p>Default: <code>[]</code></p>
+<p>Example: <code>&quot;[ \&quot;INSTALL_PACKAGES\&quot; ]&quot;</code></p>
 <p>Type: list of strings</p>
 </li>
 <li>
 <p><code>apps.prebuilt.&lt;name&gt;.privileged</code></p>
-<p>This option has no description.</p>
+<p>Whether this APK should be included as a privileged application.</p>
 <p>Default: <code>false</code></p>
 <p>Type: boolean</p>
 </li>
@@ -633,12 +629,14 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 <p><code>apps.seedvault.enable</code></p>
 <p>Whether to enable Seedvault (backup).</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>apps.updater.enable</code></p>
-<p>Whether to enable updater.</p>
+<p>Whether to enable OTA Updater.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
@@ -650,37 +648,32 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 <p><code>apps.vanadium.enable</code></p>
 <p>Whether to enable vanadium browser.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
+</li>
+<li>
+<p><code>apv.buildID</code></p>
+<p>Build ID associated with the upstream img/ota (used to select images)</p>
+<p>Type: string</p>
 </li>
 <li>
 <p><code>apv.enable</code></p>
 <p>Whether to enable android-prepare-vendor.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>apv.img</code></p>
-<p>A factory image .zip from upstream whose vendor contents should be extracted and included in the build</p>
+<p>A factory image <code>.zip</code> from upstream whose vendor contents should be extracted and included in the build</p>
 <p>Default: <code>null</code></p>
 <p>Type: path</p>
 </li>
 <li>
 <p><code>apv.ota</code></p>
-<p>An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds need an OTA as well)</p>
+<p>An <code>OTA</code> from upstream whose vendor contents should be extracted and included in the build. (Android &gt;=10 builds require this in addition to <code>apv.img</code>)</p>
 <p>Default: <code>null</code></p>
 <p>Type: path</p>
-</li>
-<li>
-<p><code>apv.systemBytecode</code></p>
-<p>This option has no description.</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>apv.systemOther</code></p>
-<p>This option has no description.</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of strings</p>
 </li>
 <li>
 <p><code>arch</code></p>
@@ -690,13 +683,19 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 </li>
 <li>
 <p><code>buildDateTime</code></p>
-<p>Seconds since the epoch that this build is taking place. Needs to be monotone increasing for the updater to work. e.g. output of &quot;date +%s&quot;</p>
+<p>Seconds since the epoch that this build is taking place.
+Needs to be monotonically increasing for each build to enable the updater to work.
+e.g. output of <code>date +%s</code></p>
 <p>Default: <code>1</code></p>
+<p>Example: <code>1565645583</code></p>
 <p>Type: signed integer</p>
 </li>
 <li>
 <p><code>buildNumber</code></p>
-<p>Set this to something meaningful, like the date. Needs to be unique for each build for the updater to work</p>
+<p>Set this to something meaningful to identify the build.
+Defaults to <code>YYYY.MM.DD.HH</code> based on <code>buildDateTime</code>.
+Needs to be unique for each build to enable the updater to work</p>
+<p>Example: <code>&quot;2019.08.12.1&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
@@ -709,6 +708,7 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 <p><code>ccache.enable</code></p>
 <p>Whether to enable ccache.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
@@ -721,78 +721,70 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 <p><code>device</code></p>
 <p>Code name of device build target</p>
 <p>Default: <code>null</code></p>
+<p>Example: <code>&quot;marlin&quot;</code></p>
+<p>Type: null or string</p>
+</li>
+<li>
+<p><code>deviceDisplayName</code></p>
+<p>Display name of device build target</p>
+<p>Default: <code>null</code></p>
+<p>Example: <code>&quot;Pixel XL&quot;</code></p>
 <p>Type: null or string</p>
 </li>
 <li>
 <p><code>etc</code></p>
-<p>This option has no description.</p>
+<p>Set of files to be included under <code>/etc</code></p>
 <p>Default: <code>{}</code></p>
 <p>Type: attribute set of submodules</p>
 </li>
 <li>
 <p><code>etc.&lt;name&gt;.partition</code></p>
-<p>This option has no description.</p>
+<p>Partition on which to place this etc file</p>
 <p>Type: string matching the pattern (vendor|system|product)</p>
 </li>
 <li>
 <p><code>etc.&lt;name&gt;.source</code></p>
-<p>This option has no description.</p>
+<p>Path of the source file</p>
 <p>Type: path</p>
 </li>
 <li>
 <p><code>etc.&lt;name&gt;.target</code></p>
-<p>This option has no description.</p>
+<p>Name of symlink (relative to <code>/etc</code>). Defaults to the attribute name.</p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>etc.&lt;name&gt;.text</code></p>
-<p>This option has no description.</p>
+<p>Text of the file</p>
 <p>Default: <code>null</code></p>
 <p>Type: null or string</p>
 </li>
 <li>
 <p><code>flavor</code></p>
-<p>One of robotnix's supported flavors.</p>
+<p>Set to one of robotnix's supported flavors.
+Current options are <code>vanilla</code>, <code>grapheneos</code>, and <code>lineageos</code>.</p>
 <p>Default: <code>null</code></p>
+<p>Example: <code>&quot;vanilla&quot;</code></p>
 <p>Type: null or string</p>
 </li>
 <li>
-<p><code>framework</code></p>
-<p>This option has no description.</p>
-<p>Default: <code>{}</code></p>
-<p>Type: attribute set of submodules</p>
-</li>
-<li>
-<p><code>framework.&lt;name&gt;.partition</code></p>
-<p>This option has no description.</p>
-<p>Type: string matching the pattern (vendor|system|product)</p>
-</li>
-<li>
-<p><code>framework.&lt;name&gt;.source</code></p>
-<p>This option has no description.</p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>framework.&lt;name&gt;.target</code></p>
-<p>This option has no description.</p>
-<p>Type: string</p>
-</li>
-<li>
 <p><code>google.base.enable</code></p>
-<p>Whether to enable Base Google OEM files.</p>
+<p>Whether to enable Base Google OEM files (experimental).</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>google.dialer.enable</code></p>
-<p>Whether to enable Google Dialer.</p>
+<p>Whether to enable Google Dialer (experimental).</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>google.fi.enable</code></p>
-<p>Whether to enable Google Fi.</p>
+<p>Whether to enable Google Fi (experimental).</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
@@ -803,41 +795,49 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 </li>
 <li>
 <p><code>incremental</code></p>
-<p>Whether to include an incremental build in otaDir</p>
+<p>Whether to include an incremental build in <code>otaDir</code> output</p>
 <p>Default: <code>false</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>kernel.buildProductFilenames</code></p>
-<p>list of build products in kernel out/ to copy into relpath</p>
+<p>List of build products in kernel <code>out/</code> to copy into path specified by <code>kernel.relpath</code>.</p>
 <p>Type: list of strings</p>
 </li>
 <li>
 <p><code>kernel.clangVersion</code></p>
-<p>Version of prebuilt clang to use for kernel. See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md</p>
+<p>Version of prebuilt clang to use for kernel.
+See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md&quot;</p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>kernel.compiler</code></p>
-<p>This option has no description.</p>
+<p>Compilter to use for building kernel</p>
 <p>Default: <code>&quot;clang&quot;</code></p>
 <p>Type: string matching the pattern (gcc|clang)</p>
 </li>
 <li>
+<p><code>kernel.enable</code></p>
+<p>Whether to enable building custom kernel.</p>
+<p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
+<p>Type: boolean</p>
+</li>
+<li>
 <p><code>kernel.linker</code></p>
-<p>This option has no description.</p>
+<p>Linker to use for building kernel</p>
 <p>Default: <code>&quot;gold&quot;</code></p>
 <p>Type: string matching the pattern (gold|lld)</p>
 </li>
 <li>
 <p><code>kernel.patches</code></p>
-<p>This option has no description.</p>
+<p>List of patches to apply to kernel source</p>
 <p>Default: <code>[]</code></p>
 <p>Type: list of paths</p>
 </li>
 <li>
 <p><code>kernel.postPatch</code></p>
-<p>This option has no description.</p>
+<p>Commands to run after patching kernel source</p>
 <p>Default: <code>&quot;&quot;</code></p>
 <p>Type: strings concatenated with &quot;\n&quot;</p>
 </li>
@@ -848,41 +848,40 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 </li>
 <li>
 <p><code>kernel.src</code></p>
-<p>This option has no description.</p>
+<p>Path to kernel source</p>
 <p>Type: path</p>
 </li>
 <li>
-<p><code>kernel.useCustom</code></p>
-<p>This option has no description.</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
 <p><code>keyStorePath</code></p>
-<p>Absolute path to generated keys for signing</p>
+<p>String containing absolute path to generated keys for signing.
+This must be a <em>string</em> and not a &quot;nix path&quot; to ensure that your secret keys are not imported into the public <code>/nix/store</code>.</p>
+<p>Example: <code>&quot;/var/secrets/android-keys&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>microg.enable</code></p>
-<p>Whether to enable microg.</p>
+<p>Whether to enable MicroG.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>nixpkgs.overlays</code></p>
-<p>This option has no description.</p>
+<p>Nixpkgs overlays to override the default packages used while building robotnix.</p>
 <p>Default: <code>[]</code></p>
 <p>Type: list of unspecifieds</p>
 </li>
 <li>
 <p><code>product.additionalProductPackages</code></p>
-<p>PRODUCT_PACKAGES to add to build</p>
+<p><code>PRODUCT_PACKAGES</code> to add under <code>product</code> partition.</p>
 <p>Default: <code>[]</code></p>
 <p>Type: list of strings</p>
 </li>
 <li>
 <p><code>productName</code></p>
-<p>Product name for choosecombo/lunch (defaults to aosp_${device})</p>
+<p>Product name for choosecombo/lunch</p>
+<p>Default: <code>&quot;${productNamePrefix}${device}&quot;</code></p>
+<p>Example: <code>&quot;aosp_crosshatch&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
@@ -893,32 +892,37 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 </li>
 <li>
 <p><code>removedProductPackages</code></p>
-<p>PRODUCT_PACKAGES to remove from build</p>
+<p><code>PRODUCT_PACKAGES</code> to remove from build</p>
 <p>Default: <code>[]</code></p>
 <p>Type: list of strings</p>
 </li>
 <li>
 <p><code>resourceTypeOverrides</code></p>
-<p>for overriding auto-detected resource type</p>
+<p>Overrides auto-detection of overlay resource type set in <code>resources</code>.</p>
 <p>Default: <code>{}</code></p>
 <p>Type: attribute set of attribute set of string matching the pattern (bool|integer|dimen|color|string|integer-array|string-array)ss</p>
 </li>
 <li>
 <p><code>resources</code></p>
-<p>package resources. The first key refers to the relative path for the package, and the second key refers to the resource name</p>
+<p>Android resource overlays for packages included in source tree.
+This is an attrset of attrsets of values.
+The first key refers to the relative path for the package source, and the second key refers to the resource name.
+e.g. <code>resources.&quot;frameworks/base/core/res&quot;.config_swipe_up_gesture_setting_available = true;</code></p>
 <p>Default: <code>{}</code></p>
 <p>Type: attribute set of attribute set of unspecifiedss</p>
 </li>
 <li>
 <p><code>retrofit</code></p>
-<p>Generate a retrofit OTA for upgrading a device without dynamic partitions</p>
+<p>Generate a retrofit OTA for upgrading a device without dynamic partitions.
+See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legacy#generating-update-packages</p>
 <p>Default: <code>false</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>signing.apex.enable</code></p>
-<p>Whether to enable APEX signing.</p>
+<p>Whether to enable signing APEX packages.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
@@ -931,11 +935,12 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 <p><code>signing.avb.enable</code></p>
 <p>Whether to enable AVB signing.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>signing.avb.mode</code></p>
-<p>This option has no description.</p>
+<p>Mode of AVB signing to use.</p>
 <p>Default: <code>&quot;vbmeta_chained&quot;</code></p>
 <p>Type: string matching the pattern (verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)</p>
 </li>
@@ -947,79 +952,80 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the apk as-is.</
 </li>
 <li>
 <p><code>source.dirs</code></p>
-<p>This option has no description.</p>
+<p>Directories to include in Android build process.
+Normally set by the output of <code>mk-repo-file.py</code>.
+However, additional source directories can be added to the build here using this option as well.</p>
 <p>Default: <code>{}</code></p>
 <p>Type: attribute set of submodules</p>
 </li>
 <li>
 <p><code>source.dirs.&lt;name&gt;.enable</code></p>
-<p>Include this directory in the android build source tree</p>
+<p>Whether to include this directory in the android build source tree.</p>
 <p>Default: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>source.dirs.&lt;name&gt;.patches</code></p>
-<p>This option has no description.</p>
+<p>Patches to apply to source directory.</p>
 <p>Default: <code>[]</code></p>
 <p>Type: list of paths</p>
 </li>
 <li>
 <p><code>source.dirs.&lt;name&gt;.postPatch</code></p>
-<p>This option has no description.</p>
+<p>Additional commands to run after patching source directory.</p>
 <p>Default: <code>&quot;&quot;</code></p>
 <p>Type: strings concatenated with &quot;\n&quot;</p>
 </li>
 <li>
 <p><code>source.dirs.&lt;name&gt;.relpath</code></p>
-<p>This option has no description.</p>
+<p>Relative path under android source tree to place this directory. Defaults to attribute name.</p>
 <p>Default: <code>&quot;‹name›&quot;</code></p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>source.dirs.&lt;name&gt;.src</code></p>
-<p>This option has no description.</p>
+<p>Source to use for this android source directory.</p>
 <p>Default: <code>&quot;empty&quot;</code></p>
 <p>Type: path</p>
 </li>
 <li>
 <p><code>source.evalTimeFetching</code></p>
-<p>Set config.source.dirs automatically using IFD with information
-from <code>source.manifest</code>. Also enables use of builtins.fetchGit instead
-of pkgs.fetchgit if not all sha256 hashes are available. (Useful for
-development)</p>
+<p>Set config.source.dirs automatically using IFD with information from <code>source.manifest</code>.
+Also enables use of <code>builtins.fetchGit</code> instead of <code>pkgs.fetchgit</code> if not all sha256 hashes are available.
+(Can be useful for development, but not recommended normally)</p>
 <p>Default: <code>false</code></p>
 <p>Type: unspecified</p>
 </li>
 <li>
 <p><code>source.excludeGroups</code></p>
-<p>project groups to exclude from source tree</p>
+<p>Project groups to exclude from source tree</p>
 <p>Default: <code>[&quot;darwin&quot;,&quot;mips&quot;]</code></p>
 <p>Type: list of strings</p>
 </li>
 <li>
 <p><code>source.includeGroups</code></p>
-<p>project groups to include in source tree (overrides excludeGroups)</p>
+<p>Project groups to include in source tree (overrides <code>excludeGroups</code>)</p>
 <p>Default: <code>[]</code></p>
 <p>Type: list of strings</p>
 </li>
 <li>
 <p><code>source.manifest.rev</code></p>
-<p>This option has no description.</p>
+<p>Revision/tag to use from repo manifest repository.</p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>source.manifest.sha256</code></p>
-<p>This option has no description.</p>
+<p>Nix sha256 hash of repo manifest repository.</p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>source.manifest.url</code></p>
-<p>This option has no description.</p>
+<p>URL to repo manifest repository. Not necessary to set if using <code>source.dirs</code> directly.</p>
 <p>Type: string</p>
 </li>
 <li>
 <p><code>system.additionalProductPackages</code></p>
-<p>PRODUCT_PACKAGES to add to build</p>
+<p><code>PRODUCT_PACKAGES</code> to add under <code>system</code> partition.</p>
 <p>Default: <code>[]</code></p>
 <p>Type: list of strings</p>
 </li>
@@ -1031,20 +1037,20 @@ development)</p>
 </li>
 <li>
 <p><code>webview</code></p>
-<p>This option has no description.</p>
+<p>Webview providers to include in Android build. Currently included options are chromium, bromite, and vanadium.</p>
 <p>Type: attribute set of submodules</p>
 </li>
 <li>
 <p><code>webview.&lt;name&gt;.apk</code></p>
-<p>This option has no description.</p>
+<p>APK file containing webview package.</p>
 <p>Type: path</p>
 </li>
 <li>
 <p><code>webview.&lt;name&gt;.availableByDefault</code></p>
-<p>If true, this provider can be automatically
-selected by the framework, if it's the first valid choice. If
-false, this provider will only be used if the user selects it
-themselves from the developer settings menu.</p>
+<p>If <code>true</code>, this provider can be automatically selected by the
+framework, if it's the first valid choice. If <code>false</code>, this
+provider will only be used if the user selects it themselves from
+the developer settings menu.</p>
 <p>Default: <code>false</code></p>
 <p>Type: boolean</p>
 </li>
@@ -1058,14 +1064,15 @@ themselves from the developer settings menu.</p>
 <p><code>webview.&lt;name&gt;.enable</code></p>
 <p>Whether to enable ‹name› webview.</p>
 <p>Default: <code>false</code></p>
+<p>Example: <code>true</code></p>
 <p>Type: boolean</p>
 </li>
 <li>
 <p><code>webview.&lt;name&gt;.isFallback</code></p>
-<p>If true, this provider will be automatically
-disabled by the framework, preventing it from being used or updated
-by app stores, unless there is no other valid provider available.
-Only one provider can be a fallback.</p>
+<p>If <code>true</code>, this provider will be automatically disabled by the
+framework, preventing it from being used or updated by app
+stores, unless there is no other valid provider available.  Only
+one provider can be a fallback.</p>
 <p>Default: <code>false</code></p>
 <p>Type: boolean</p>
 </li>
