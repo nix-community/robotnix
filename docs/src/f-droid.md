@@ -15,7 +15,6 @@ https://microg.org/fdroid/repo.  To obtain the repository index download the
 $ curl -LO https://microg.org/fdroid/repo/index.xml
 ```
 
-```
 The content of this XML file contains metadata about the repository, including
 the public key:
 ```xml
