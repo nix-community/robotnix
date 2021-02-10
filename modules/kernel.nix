@@ -42,10 +42,7 @@ in
 {
   options = {
     kernel = {
-      useCustom = mkOption {
-        default = false;
-        type = types.bool;
-      };
+      enable = mkEnableOption "building custom kernel";
 
       name = mkOption {
         internal = true;
@@ -178,7 +175,7 @@ in
     # config.build.kernel drv output in place of source.dirs.${cfg.relpath}.
     # This is because there are some additional things in the prebuilt kernel
     # output directory like kernel headers for sunfish under device/google/sunfish-kernel/sm7150
-    source = mkIf cfg.useCustom {
+    source = mkIf cfg.enable {
       dirs.${cfg.relpath}.postPatch = ''
         cp -fv ${config.build.kernel}/* .
       '';

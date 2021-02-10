@@ -3,6 +3,10 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2021-XX-XX
+## Backward incompatible changes
+- Renamed `kernel.useCustom` to `kernel.enable`.
+
 # 2021-02-02
 ## Highlights:
 - Updated vanilla flavor to RQ1A.210205.004

@@ -68,7 +68,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # audit devices using the official upstream build
 }
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) {
-  kernel.useCustom = mkDefault true;
+  kernel.enable = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
   kernel.configName = config.device;
   kernel.relpath = "device/google/${config.device}-kernel";
