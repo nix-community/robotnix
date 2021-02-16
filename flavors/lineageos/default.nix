@@ -82,6 +82,10 @@ in mkIf (config.flavor == "lineageos")
           revert = true;
         })
       ];
+
+      # LineageOS will sometimes force-push to this repo, and the older revisions are garbage collected.
+      # So we'll just build chromium webview ourselves.
+      "external/chromium-webview".enable = false;
     }
   ] ++ optionals (deviceMetadata ? "${config.device}") [
     # Device-specific source dirs
@@ -105,6 +109,11 @@ in mkIf (config.flavor == "lineageos")
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
+
+  # Enable robotnix-built chromium / webview
+  apps.chromium.enable = mkDefault true;
+  webview.chromium.availableByDefault = mkDefault true;
+  webview.chromium.enable = mkDefault true;
 
   # This is the prebuilt webview apk from LineageOS. The webview module is not
   # enabled by default, so setting this here is only for convenience if the
