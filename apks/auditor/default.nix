@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
 { callPackage, lib, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle,
   domain ? "example.org",

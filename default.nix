@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { configuration,
   pkgs ? (import ./pkgs {}),
   lib ? pkgs.stdenv.lib

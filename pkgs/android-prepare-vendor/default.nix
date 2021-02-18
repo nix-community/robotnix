@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
   simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3,
   api ? 30

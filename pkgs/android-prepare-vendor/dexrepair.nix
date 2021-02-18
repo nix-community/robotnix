@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { stdenv, fetchFromGitHub, zlib }:
 stdenv.mkDerivation {
   name = "dexrepair";

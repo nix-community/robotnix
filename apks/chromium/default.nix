@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook, buildPackages
 , python2, ninja, llvmPackages_11, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
 , dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, utillinux, kerberos, gdk-pixbuf

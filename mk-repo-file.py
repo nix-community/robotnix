@@ -1,5 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i python -p python3 nix gitRepo nix-prefetch-git -I nixpkgs=./pkgs
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
 
 from typing import Optional, Dict, List, Tuple
 from enum import Enum

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { pkgs }:
 with pkgs;
 # TODO: Hack to workaround some android-related prebuilts that need to be fixup'd

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
 # I use this to generate my own OTA directory served by nginx
 
 with (import ./pkgs {});

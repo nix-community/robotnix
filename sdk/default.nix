@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 (import ../default.nix {
   configuration = {
     productName = "sdk"; # Alternatives are sdk_arm64, sdk_x86_64, sdk_x86

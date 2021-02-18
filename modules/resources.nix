@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, pkgs, lib, robotnixlib, ... }:
 
 # https://developer.android.com/guide/topics/resources/providing-resources
