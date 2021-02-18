@@ -118,12 +118,11 @@ in mkIf (config.flavor == "lineageos")
   webview.chromium.availableByDefault = mkDefault true;
   webview.chromium.enable = mkDefault true;
 
-  # This is the prebuilt webview apk from LineageOS. The webview module is not
-  # enabled by default, so setting this here is only for convenience if the
-  # end-user wants to set webview.prebuilt.enable, potentially alongside other
-  # webview modules like webview.chromium.enable;
+  # This is the prebuilt webview apk from LineageOS. Adding this here is only
+  # for convenience if the end-user wants to set `webview.prebuilt.enable = true;`.
   webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
+  removedProductPackages = [ "webview" ];
 
   envPackages = [ pkgs.openssl.dev ]; # Needed by included kernel build for some devices (pioneer at least)
 
