@@ -13,18 +13,19 @@ with lib;
       makeTargets = [ "droid" ];
       installPhase = ''
         mkdir -p $out
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/vendor-qemu.img $out/vendor.img
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/system-qemu.img $out/system.img
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/ramdisk${optionalString (config.androidVersion >= 11) "-qemu"}.img $out/ramdisk.img
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/userdata.img $out/userdata.img
-        cp --reflink=auto -r $ANDROID_PRODUCT_OUT/data $out/
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/system/build.prop $out/build.prop
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/VerifiedBootParams.textproto $out/
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/vendor-qemu.img $out/vendor.img || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/system-qemu.img $out/system.img || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/ramdisk${optionalString (config.androidVersion >= 11) "-qemu"}.img $out/ramdisk.img || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/userdata.img $out/userdata.img || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/vbmeta.img $out/vbmeta.img || true
+        cp --reflink=auto -r $ANDROID_PRODUCT_OUT/data $out/ || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/system/build.prop $out/build.prop || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/VerifiedBootParams.textproto $out/ || true
 
         # sdk-android-x86.atree
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/kernel-ranchu* $out/
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/encryptionkey.img $out/encryptionkey.img
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/advancedFeatures.ini $out/advancedFeatures.ini
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/kernel-ranchu* $out/ || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/encryptionkey.img $out/encryptionkey.img || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/advancedFeatures.ini $out/advancedFeatures.ini || true
       '';
     };
 
