@@ -195,4 +195,16 @@ in {
 
 ]))
 
+(mkIf (config.androidVersion == 12) {
+  source.manifest.rev = mkDefault "android-s-preview-1";
+  buildDateTime = mkDefault 1613683757;
+
+  # Build fails otherwise complaining about soong visibility for some art module
+  source.dirs.libcore.src = pkgs.fetchgit {
+    url = "https://android.googlesource.com/platform/libcore";
+    rev = "dc5351ff0193f6c82478981e32561a779651821a";
+    sha256 = "1hs9rmssfg4qjsbfd26psj4n3ayd5q5bfpswc2jcly3pym1gdnn5";
+  };
+})
+
 ])
