@@ -1,4 +1,4 @@
-From 53fef77c2b4ea5065bfb941feb4c760ac79a8a3b Mon Sep 17 00:00:00 2001
+From 416af8006b0c3d43ecbc4e24d5ee563c45f86452 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:00:46 -0400
 Subject: [PATCH 1/4] Custom listen settings
@@ -8,23 +8,23 @@ Subject: [PATCH 1/4] Custom listen settings
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index 5031ed4..c83aef4 100644
+index d3c0443..ffa634d 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
 @@ -335,7 +335,7 @@ public class AttestationServer {
          executor.prestartAllCoreThreads();
  
          System.setProperty("sun.net.httpserver.nodelay", "true");
--        final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
-+        final HttpServer server = HttpServer.create(new InetSocketAddress("@listenHost@", @port@), 0);
+-        final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8080), 4096);
++        final HttpServer server = HttpServer.create(new InetSocketAddress("@listenHost@", @port@), 4096);
          server.createContext("/api/create_account", new CreateAccountHandler());
          server.createContext("/api/change_password", new ChangePasswordHandler());
          server.createContext("/api/login", new LoginHandler());
 -- 
-2.29.0
+2.30.0
 
 
-From 0fc893a4dab37dd5441a86689c14547af52c5cf4 Mon Sep 17 00:00:00 2001
+From 5679e4a7cc960948b41a847f3dc6352829da2323 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:09 -0400
 Subject: [PATCH 2/4] Custom domain
@@ -53,7 +53,7 @@ index 61814d4..78e3b37 100644
  
                                  Transport.send(message);
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index c83aef4..e17c4ed 100644
+index ffa634d..06bd249 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
 @@ -892,7 +892,7 @@ public class AttestationServer {
@@ -66,15 +66,15 @@ index c83aef4..e17c4ed 100644
                      BaseEncoding.base64().encode(account.subscribeKey) + " " +
                      account.verifyInterval;
 diff --git a/static/about.html b/static/about.html
-index 8749f9d..6054ae0 100644
+index 0826444..74a1dff 100644
 --- a/static/about.html
 +++ b/static/about.html
-@@ -12,18 +12,18 @@
+@@ -12,19 +12,19 @@
          <meta property="og:title" content="Auditor overview"/>
          <meta property="og:description" content="Overview of the Auditor Android app and associated service."/>
          <meta property="og:type" content="website"/>
--        <meta property="og:image" content="https://attestation.app/ic_launcher-web.png"/>
-+        <meta property="og:image" content="https://@domain@/ic_launcher-web.png"/>
+-        <meta property="og:image" content="https://attestation.app/opengraph.png"/>
++        <meta property="og:image" content="https://@domain@/opengraph.png"/>
          <meta property="og:image:width" content="512"/>
          <meta property="og:image:height" content="512"/>
          <meta property="og:image:alt" content="Auditor logo"/>
@@ -85,14 +85,15 @@ index 8749f9d..6054ae0 100644
          <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?14"/>
+         <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+         <link rel="stylesheet" href="/attestation.css?17"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/about"/>
 +        <link rel="canonical" href="https://@domain@/about"/>
          <link rel="license" href="/LICENSE.txt"/>
      </head>
      <body>
-@@ -58,7 +58,7 @@
+@@ -59,7 +59,7 @@
              pairing process between the device performing verification (Auditor) and the device
              being verified (Auditee) to implement a Trust On First Use (TOFU) model. The device
              performing verification can either be another Android device running the app in the
@@ -102,15 +103,15 @@ index 8749f9d..6054ae0 100644
              alerts. See <a href="/tutorial">the tutorial</a> for usage instructions. The protocol
              used for both local and remote attestation is
 diff --git a/static/contact.html b/static/contact.html
-index 05d3b5e..6e2da66 100644
+index 5470a81..353fd43 100644
 --- a/static/contact.html
 +++ b/static/contact.html
-@@ -12,18 +12,18 @@
+@@ -12,19 +12,19 @@
          <meta property="og:title" content="Auditor contact information"/>
          <meta property="og:description" content="Contact information for the Auditor Android app and associated service."/>
          <meta property="og:type" content="website"/>
--        <meta property="og:image" content="https://attestation.app/ic_launcher-web.png"/>
-+        <meta property="og:image" content="https://@domain@/ic_launcher-web.png"/>
+-        <meta property="og:image" content="https://attestation.app/opengraph.png"/>
++        <meta property="og:image" content="https://@domain@/opengraph.png"/>
          <meta property="og:image:width" content="512"/>
          <meta property="og:image:height" content="512"/>
          <meta property="og:image:alt" content="Auditor logo"/>
@@ -121,14 +122,15 @@ index 05d3b5e..6e2da66 100644
          <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?14"/>
+         <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+         <link rel="stylesheet" href="/attestation.css?17"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/contact"/>
 +        <link rel="canonical" href="https://@domain@/contact"/>
          <link rel="license" href="/LICENSE.txt"/>
      </head>
      <body>
-@@ -67,19 +67,9 @@
+@@ -68,19 +68,9 @@
              {
                  "@context": "https://schema.org",
                  "@type": "Organization",
@@ -152,15 +154,15 @@ index 05d3b5e..6e2da66 100644
          </script>
      </body>
 diff --git a/static/index.html b/static/index.html
-index 4a02bd8..2c43003 100644
+index 4763af1..8653d0d 100644
 --- a/static/index.html
 +++ b/static/index.html
-@@ -12,18 +12,18 @@
+@@ -12,19 +12,19 @@
          <meta property="og:title" content="Device integrity monitoring"/>
          <meta property="og:description" content="Hardware-based remote attestation service for monitoring the security of Android devices using the Auditor app."/>
          <meta property="og:type" content="website"/>
--        <meta property="og:image" content="https://attestation.app/ic_launcher-web.png"/>
-+        <meta property="og:image" content="https://@domain@/ic_launcher-web.png"/>
+-        <meta property="og:image" content="https://attestation.app/opengraph.png"/>
++        <meta property="og:image" content="https://@domain@/opengraph.png"/>
          <meta property="og:image:width" content="512"/>
          <meta property="og:image:height" content="512"/>
          <meta property="og:image:alt" content="Auditor logo"/>
@@ -171,12 +173,13 @@ index 4a02bd8..2c43003 100644
          <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?14"/>
+         <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+         <link rel="stylesheet" href="/attestation.css?17"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/"/>
 +        <link rel="canonical" href="https://@domain@/"/>
          <link rel="license" href="/LICENSE.txt"/>
-         <script type="module" src="/monitoring.js?13"></script>
+         <script type="module" src="/monitoring.js?14"></script>
      </head>
 diff --git a/static/robots.txt b/static/robots.txt
 index 2747cbe..acceea4 100644
@@ -187,15 +190,15 @@ index 2747cbe..acceea4 100644
 -Sitemap: https://attestation.app/sitemap.xml
 +Sitemap: https://@domain@/sitemap.xml
 diff --git a/static/tutorial.html b/static/tutorial.html
-index 894c116..86b1e4b 100644
+index 5a7f006..4eeb1ad 100644
 --- a/static/tutorial.html
 +++ b/static/tutorial.html
-@@ -12,18 +12,18 @@
+@@ -12,19 +12,19 @@
          <meta property="og:title" content="Auditor tutorial"/>
          <meta property="og:description" content="Tutorial on using the Auditor Android app and associated service."/>
          <meta property="og:type" content="website"/>
--        <meta property="og:image" content="https://attestation.app/ic_launcher-web.png"/>
-+        <meta property="og:image" content="https://@domain@/ic_launcher-web.png"/>
+-        <meta property="og:image" content="https://attestation.app/opengraph.png"/>
++        <meta property="og:image" content="https://@domain@/opengraph.png"/>
          <meta property="og:image:width" content="512"/>
          <meta property="og:image:height" content="512"/>
          <meta property="og:image:alt" content="Auditor logo"/>
@@ -206,14 +209,15 @@ index 894c116..86b1e4b 100644
          <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-         <link rel="stylesheet" href="/attestation.css?14"/>
+         <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+         <link rel="stylesheet" href="/attestation.css?17"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/tutorial"/>
 +        <link rel="canonical" href="https://@domain@/tutorial"/>
          <link rel="license" href="/LICENSE.txt"/>
      </head>
      <body>
-@@ -84,12 +84,12 @@
+@@ -85,12 +85,12 @@
                  on each Auditor for the same Auditee.</p>
                  <p>To set up regularly scheduled remote verification via the remote attestation service:</p>
                  <ol>
@@ -230,20 +234,20 @@ index 894c116..86b1e4b 100644
              </section>
  
 -- 
-2.29.0
+2.30.0
 
 
-From b82d2ee4bbf4ad44554e37dece5237920b83f9ec Mon Sep 17 00:00:00 2001
+From c919c357b87894902eacee3f656949e7eb66680d Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:18 -0400
 Subject: [PATCH 3/4] Custom fingerprints
 
 ---
- .../server/AttestationProtocol.java           | 37 ++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ .../server/AttestationProtocol.java           | 45 ++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index dd26b9d..af7f20a 100644
+index 7804539..b9e8207 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -166,7 +166,7 @@ class AttestationProtocol {
@@ -255,7 +259,7 @@ index dd26b9d..af7f20a 100644
      private static final int OS_VERSION_MINIMUM = 80000;
      private static final int OS_PATCH_LEVEL_MINIMUM = 201801;
      private static final int VENDOR_PATCH_LEVEL_MINIMUM = 201808;
-@@ -239,6 +239,7 @@ class AttestationProtocol {
+@@ -242,6 +242,7 @@ class AttestationProtocol {
  
      private static final String OS_STOCK = "Stock";
      private static final String OS_GRAPHENE = "GrapheneOS";
@@ -263,11 +267,11 @@ index dd26b9d..af7f20a 100644
  
      static class DeviceInfo {
          final String name;
-@@ -305,6 +306,25 @@ class AttestationProtocol {
-                     new DeviceInfo(DEVICE_PIXEL_4_XL, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
-             .put("9F2454A1657B1B5AD7F2336B39A2611F7A40B2E0DDFD0D6553A359605928DF29",
-                     new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
-+            // Robotnix (TODO: support multiple devices. Needs different key for each device?)
+@@ -312,6 +313,29 @@ class AttestationProtocol {
+                     new DeviceInfo(DEVICE_PIXEL_4a_5G, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
+             .put("36A99EAB7907E4FB12A70E3C41C456BCBE46C13413FBFE2436ADEE2B2B61120F",
+                     new DeviceInfo(DEVICE_PIXEL_5, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
++            // Robotnix
 +            .put("@walleye@",
 +                    new DeviceInfo(DEVICE_PIXEL_2, 2, 3, true, true, OS_ROBOTNIX))
 +            .put("@taimen@",
@@ -286,13 +290,17 @@ index dd26b9d..af7f20a 100644
 +                    new DeviceInfo(DEVICE_PIXEL_4_XL, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
 +            .put("@sunfish@",
 +                    new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@bramble@",
++                    new DeviceInfo(DEVICE_PIXEL_4a_5G, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@redfin@",
++                    new DeviceInfo(DEVICE_PIXEL_5, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
-@@ -445,6 +465,21 @@ class AttestationProtocol {
-                     new DeviceInfo(DEVICE_PIXEL_4_XL, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
-             .put("9F2454A1657B1B5AD7F2336B39A2611F7A40B2E0DDFD0D6553A359605928DF29",
-                     new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
+@@ -458,6 +482,25 @@ class AttestationProtocol {
+                     new DeviceInfo(DEVICE_PIXEL_4a_5G, 4, 41, false /* uses new API */, true, OS_GRAPHENE))
+             .put("36A99EAB7907E4FB12A70E3C41C456BCBE46C13413FBFE2436ADEE2B2B61120F",
+                     new DeviceInfo(DEVICE_PIXEL_5, 4, 41, false /* uses new API */, true, OS_GRAPHENE))
 +            // Robotnix
 +            .put("@blueline@",
 +                    new DeviceInfo(DEVICE_PIXEL_3, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
@@ -308,14 +316,18 @@ index dd26b9d..af7f20a 100644
 +                    new DeviceInfo(DEVICE_PIXEL_4_XL, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
 +            .put("@sunfish@",
 +                    new DeviceInfo(DEVICE_PIXEL_4a, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@bramble@",
++                    new DeviceInfo(DEVICE_PIXEL_4a_5G, 4, 41, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@redfin@",
++                    new DeviceInfo(DEVICE_PIXEL_5, 4, 41, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 -- 
-2.29.0
+2.30.0
 
 
-From 01f45ac83984de5c39ab196fb441c9fc11c55415 Mon Sep 17 00:00:00 2001
+From f2e5ba0550fd1e43c83d8e50af508acf4d117b75 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:50:29 -0400
 Subject: [PATCH 4/4] Custom appId
@@ -325,7 +337,7 @@ Subject: [PATCH 4/4] Custom appId
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index af7f20a..4135b05 100644
+index b9e8207..0ab8df5 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -161,7 +161,7 @@ class AttestationProtocol {
@@ -338,5 +350,5 @@ index af7f20a..4135b05 100644
      private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
              "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
 -- 
-2.29.0
+2.30.0
 
