@@ -8,4 +8,6 @@
   "bonito" "sargo" # Pixel 3a (XL)
   "coral" "flame" # Pixel 4 (XL)
   "sunfish" # Pixel 4a
+  "bramble" # Pixel 4a (5G)
+  "redfin" # Pixel 5
 ]
