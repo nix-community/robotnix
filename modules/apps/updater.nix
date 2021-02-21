@@ -30,14 +30,18 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
-      source.dirs."robotnix/apps/Updater".src = src;
+      source.dirs."robotnix/apps/Updater".src = mkIf (config.flavor != "lineageos") src;
 
       # It's currently a system package in upstream
       system.additionalProductPackages = [ "Updater" ];
 
-      resources."robotnix/apps/Updater" = {
+      resources."robotnix/apps/Updater" = mkIf (config.flavor != "lineageos") {
         inherit (cfg) url;
         channel_default = config.channel;
+      };
+
+      resources."packages/apps/Updater" = mkIf (config.flavor == "lineageos") {
+        updater_server_url = cfg.url;
       };
     }
 
