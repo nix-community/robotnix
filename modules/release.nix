@@ -4,7 +4,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkDefault mkOption types;
+  inherit (lib) mkIf mkDefault mkOption types optionalString;
 
   otaTools = config.build.otaTools;
 
@@ -134,9 +134,28 @@ in
     bootImg = pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out";
 
     # BUILDID_PLACEHOLDER below was originally config.apv.buildID, but we don't want to have to depend on setting a buildID generally.
-    otaMetadata = pkgs.writeText "${config.device}-${config.channel}" ''
-      ${config.buildNumber} ${toString config.buildDateTime} BUILDID_PLACEHOLDER ${config.channel}
-    '';
+    otaMetadata = (rec {
+      vanilla = pkgs.writeText "${config.device}-${config.channel}" ''
+        ${config.buildNumber} ${toString config.buildDateTime} BUILDID_PLACEHOLDER ${config.channel}
+      '';
+      grapheneos = vanilla;
+      lineageos = pkgs.writeText "${config.device}.json" (
+        # https://github.com/LineageOS/android_packages_apps_Updater#server-requirements
+        builtins.toJSON {
+          response = [
+            {
+              "datetime" = config.buildDateTime;
+              "filename" = ota.name;
+              "id" = config.buildNumber;
+              "romtype" = config.envVars.RELEASE_TYPE;
+              "size" = "ROM_SIZE";
+              "url" = "${config.apps.updater.url}${ota.name}";
+              "version" = config.flavorVersion;
+            }
+          ];
+        }
+      );
+    }).${config.flavor};
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
     otaDir = pkgs.linkFarm "${config.device}-otaDir" (
@@ -173,7 +192,13 @@ in
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
       echo Writing updater metadata
-      cat ${otaMetadata} > ${config.device}-${config.channel}
+      ${optionalString (config.flavor != "lineageos") ''
+        cat ${otaMetadata} > ${config.device}-${config.channel}
+      ''}
+      ${optionalString (config.flavor == "lineageos") ''
+        cat ${otaMetadata} > index.json
+        sed -i "s:ROM_SIZE:$(du -b ${ota.name}):" index.json
+      ''}
     ''; }));
   };
 }
