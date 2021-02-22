@@ -140,10 +140,11 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
   # where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
   # and Strength as defined in Authenticators.java
-  resources."frameworks/base/core/res".config_biometric_sensors =
-    optional (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) "0:2:15"
-    ++ optional (config.deviceFamily == "coral") "0:8:15";
-  resourceTypeOverrides."frameworks/base/core/res".config_biometric_sensors = "string-array";
+  resources."frameworks/base/core/res".config_biometric_sensors = {
+    value = optional (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) "0:2:15"
+            ++ optional (config.deviceFamily == "coral") "0:8:15";
+    type = "string-array";
+  };
 
   # Clock app needs battery optimization exemption. Currently not in AOSP
   source.dirs."packages/apps/DeskClock".patches = [
