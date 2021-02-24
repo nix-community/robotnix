@@ -163,20 +163,26 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#installing-for-the-first-time-and-verified-boot" id="installing-for-the-first-time-and-verified-boot">Installing for the first time and verified boot</a></h1>
-<p>It is assumed that you have successfully built your image and signed it with
-your own keys.  Make sure that you know the location of the image and the AVB
+                        <!--
+SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
+<h1><a class="header" href="#installing-for-the-first-time-and-with-verified-boot" id="installing-for-the-first-time-and-with-verified-boot">Installing for the first time and with verified boot</a></h1>
+<p>It is assumed that you have successfully built your factory image and signed it
+with your own keys, either by using the <code>factoryImg</code> Nix output or by running
+<code>releaseScript</code>.  Make sure that you know the location of the image and the AVB
 signing key.  The instructions in this document were tested on the Google Pixel
-4a (sunfish).  For other devices please refer to
+4a (sunfish).  Other Pixel phones are similar, but please refer to
 https://source.android.com/setup/build/running</p>
 <ol start="0">
 <li>
-<p>Before you can begin you have to boot the stock OS and go to “Settings /
-System / Advanced / Developer options” and enable “OEM unlocking”.  On my
-device I had to insert a SIM card and connect to the network for that, so
-it looks like you have to connect your device with Google at least once.
-This is part of Google's so called Factory Reset Protection (FRP) for
-anti-theft protection
+<p>Before you can begin you have to boot the stock OS, go to &quot;Settings / About
+phone&quot; and tap the &quot;Build number&quot; field 7 times to enable the &quot;Developer
+options&quot; menu.  Next go to “Settings / System / Advanced / Developer
+options” and enable “OEM unlocking”.  On my device I had to insert a SIM
+card and connect to the network for that, so it looks like you have to
+connect your device with Google at least once.  This is part of Google's so
+called Factory Reset Protection (FRP) for anti-theft protection
 (https://grapheneos.org/install#enabling-oem-unlocking).  However, <a href="https://www.kuketz-blog.de/grapheneos-das-android-fuer-sicherheits-und-datenschutzfreaks/#comment-52681">this
 comment</a>
 on a German IT privacy blog suggests that it is sufficient to allow access
@@ -197,27 +203,39 @@ with USB Debugging turned on and issue</p>
 </code></pre>
 </li>
 <li>
-<p>First flash your custom AVB signing key using</p>
+<p>Unlock the bootloader by running</p>
+<pre><code class="language-console">$ fastboot flashing unlock
+</code></pre>
+<p>Select the option to unlock the device and confirm.</p>
+</li>
+<li>
+<p>Flash your custom AVB signing key using</p>
 <pre><code class="language-console">$ fastboot erase avb_custom_key
 $ fastboot flash avb_custom_key avb_pkmd.bin
 $ fastboot reboot bootloader
 </code></pre>
 </li>
 <li>
-<p>To flash you image use</p>
+<p>Unzip the factory image built by robotnix. To flash the image run</p>
+<pre><code class="language-console">$ ./flash-all.sh
+</code></pre>
+<p>The factory image produced by robotnix includes, the bootloader and radio
+firmware in addition to the android image.  If you are certain the
+bootloader and radio are already up to date, you can instead build the
+standard <code>img</code> robotnix output, and flash the image with</p>
 <pre><code class="language-console">$ fastboot -w --skip-reboot update sunfish-img-2020.11.06.04.zip
-$ fastboot reboot bootloader
 </code></pre>
 <p>This will erase the <code>userdata</code> partition (<code>-w</code>) and prevent the automatic
-reboot after flashing (<code>--skip-reboot</code>). Instead it reboots back into the
-bootloader from where the user can then manually trigger the reboot using</p>
-<pre><code class="language-console">$ fastboot reboot
+reboot after flashing (<code>--skip-reboot</code>).</p>
+<p>After flashing with the <code>flash-all.sh</code> script or with <code>fastboot update</code>,
+return to the bootloader with</p>
+<pre><code class="language-console">$ fastboot reboot bootloader
 </code></pre>
 </li>
 <li>
 <p>At this point you want to relock the bootloader to enable the verified boot
 chain.</p>
-<pre><code>$ fastboot flashing lock
+<pre><code class="language-console">$ fastboot flashing lock
 </code></pre>
 <p>This step has to be confirmed on the device.</p>
 </li>
