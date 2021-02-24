@@ -32,7 +32,7 @@ in
         inherit (cfg) domain;
         inherit (config) device;
         signatureFingerprint = config.apps.prebuilt."Auditor".fingerprint;
-        avbFingerprint = config.build.fingerprints "avb";
+        avbFingerprint = config.signing.avb.fingerprint;
       };
     };
   };

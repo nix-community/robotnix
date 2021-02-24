@@ -32,8 +32,29 @@ let
     include $(BUILD_PREBUILT)
     '');
 
-  # Device-specific certificate names used by AOSP
-  deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ];
+  # Cert fingerprints from default AOSP test-keys: build/make/tools/releasetools/testdata
+  defaultDeviceCertFingerprints = {
+    "releasekey" = "A40DA80A59D170CAA950CF15C18C454D47A39B26989D8B640ECD745BA71BF5DC";
+    "platform" = "C8A2E9BCCF597C2FB6DC66BEE293FC13F2FC47EC77BC6B2B0D52C11F51192AB8";
+    "media" = "465983F7791F2ABEB43EA2CBDC7F21A8260B72BC08A55C839FC1A43BC741A81E";
+    "shared" = "28BBFE4A7B97E74681DC55C2FBB6CCB8D6C74963733F6AF6AE74D8C3A6E879FD";
+    "verity" = "8AD127ABAE8285B582EA36745F220AB8FE397FFB3B068DF19CA22D122C7B3B86";
+  };
+  deviceCertificates = attrNames defaultDeviceCertFingerprints;
+
+  _keyPath = keyStorePath: name:
+    if builtins.elem name deviceCertificates
+      then (if config.signing.enable
+        then "${keyStorePath}/${config.device}/${name}"
+        else "${config.source.dirs."build/make".src}/target/product/security/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
+      else "${keyStorePath}/${name}";
+  keyPath = name: _keyPath config.keyStorePath name;
+  sandboxKeyPath = name:
+    if config.signing.enable
+      then _keyPath "/keys" name
+      else keyPath name;
+
+  putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
 in
 {
   options = {
@@ -133,24 +154,26 @@ in
               inherit (config) apk;
               keyPath =
                 if _config.signing.enable
-                then _config.build.sandboxKeyPath config.certificate
+                then sandboxKeyPath config.certificate
                 else "${config.snakeoilKeyPath}/${config.certificate}";
             }));
 
           fingerprint = let
-              snakeoilFingerprint = pkgs.robotnix.certFingerprint "${config.snakeoilKeyPath}/${config.certificate}.x509.pem";
-            in mkDefault (
+            snakeoilFingerprint = pkgs.robotnix.certFingerprint "${config.snakeoilKeyPath}/${config.certificate}.x509.pem";
+          in mkDefault (
             if config.certificate == "PRESIGNED"
               then pkgs.robotnix.apkFingerprint config.signedApk # TODO: IFD
-              else if (!_config.signing.enable)
-                then
-                  builtins.trace ''
-                    Used IFD to get fingerprint of reproducible app certificate.
-                    Recommend setting:
-                    apps.prebuilt.${config.name}.fingerprint = mkIf (!config.signing.enable) "${snakeoilFingerprint}"
-                    ''
-                    snakeoilFingerprint
-                else _config.build.fingerprints config.certificate
+            else if _config.signing.enable
+              then pkgs.robotnix.certFingerprint (putInStore "${keyPath config.certificate}.x509.pem") # TODO: IFD
+            else # !_config.signing.enable
+              defaultDeviceCertFingerprints.${name} or (
+                builtins.trace ''
+                Used IFD to get fingerprint of reproducible app certificate.
+                Recommend setting:
+                apps.prebuilt.${config.name}.fingerprint = mkIf (!config.signing.enable) "${snakeoilFingerprint}"
+                ''
+                snakeoilFingerprint
+              )
           );
 
           snakeoilKeyPath = pkgs.runCommand "${config.certificate}-snakeoil-cert" {} ''

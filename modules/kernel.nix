@@ -107,7 +107,7 @@ in
 
     kernel.postPatch = lib.optionalString (config.signing.enable && (config.signing.avb.mode == "verity_only")) ''
       rm -f verity_*.x509
-      openssl x509 -outform der -in ${config.build.x509 "verity"} -out verity_user.der.x509
+      openssl x509 -outform der -in ${config.signing.avb.verityCert} -out verity_user.der.x509
     '';
 
     build.kernel = pkgs.stdenv.mkDerivation ({
