@@ -50,6 +50,11 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
+
+  # Don't reboot after flashing image, so the user can relock the bootloader before booting.
+  source.dirs."device/common".postPatch = ''
+    substituteInPlace generate-factory-images-common.sh --replace "fastboot -w update" "fastboot -w --skip-reboot update"
+  '';
 }
 
 (mkIf (elem config.androidVersion [ 9 10 11 ]) {
