@@ -132,7 +132,7 @@ in
     bootImg = pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out";
 
     otaMetadata = pkgs.writeText "${config.device}-${config.channel}" ''
-      ${config.buildNumber} ${toString config.buildDateTime} ${config.apv.buildID}
+      ${config.buildNumber} ${toString config.buildDateTime} ${config.apv.buildID} ${config.channel}
     '';
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
