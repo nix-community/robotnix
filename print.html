@@ -28,9 +28,7 @@
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
-        
         <link rel="stylesheet" href="css/print.css" media="print">
-        
 
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
@@ -97,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to Robotnix</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Tutorials</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ota.html"><strong aria-hidden="true">2.2.</strong> OTA Updates</a></li><li class="chapter-item expanded "><a href="f-droid.html"><strong aria-hidden="true">2.3.</strong> F-Droid Repositories</a></li><li class="chapter-item expanded "><a href="attestation.html"><strong aria-hidden="true">2.4.</strong> Remote Attestation</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Reference</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">3.1.</strong> Options</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to Robotnix</a></li><li class="chapter-item expanded "><strong aria-hidden="true">2.</strong> Tutorials</li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ota.html"><strong aria-hidden="true">2.2.</strong> OTA Updates</a></li><li class="chapter-item expanded "><a href="f-droid.html"><strong aria-hidden="true">2.3.</strong> F-Droid Repositories</a></li><li class="chapter-item expanded "><a href="attestation.html"><strong aria-hidden="true">2.4.</strong> Remote Attestation</a></li></ol></li><li class="chapter-item expanded "><strong aria-hidden="true">3.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">3.1.</strong> Options</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -132,11 +130,9 @@
                     <h1 class="menu-title">Robotnix</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
                         
                     </div>
                 </div>
@@ -213,7 +209,8 @@ with USB Debugging turned on and issue</p>
 <p>Unlock the bootloader by running</p>
 <pre><code class="language-console">$ fastboot flashing unlock
 </code></pre>
-<p>Select the option to unlock the device and confirm. This step effectively performs a factory reset, and will remove all user data from the device.</p>
+<p>Select the option to unlock the device and confirm. This step effectively
+performs a factory reset, and will remove all user data from the device.</p>
 </li>
 <li>
 <p>Flash your custom AVB signing key using</p>
@@ -376,6 +373,10 @@ closure to a remote host using <code>nix copy</code> as in</p>
 </code></pre>
 <p>Don't forget to add the store path of the <code>ota-dir</code> as a garbage collector root
 on the remote machine or it might be collected in the next sweep.</p>
+<!--
+SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
 <h1><a class="header" href="#adding-f-droid-repositories" id="adding-f-droid-repositories">Adding F-Droid repositories</a></h1>
 <p>F-Droid can manage multiple repositories to fetch apps from.  These can be set
 up manually in the app, but with robotnix it is also possible to preload
@@ -415,6 +416,10 @@ key for the corresponding Nix expression respectively.</p>
 <p>The name can really be anything, but the one that is provided here is the one
 that shows up before refreshing the F-Droid repo list for the first time, so if
 you want that to look pretty, give it a pretty name here.</p>
+<!--
+SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
 <h1><a class="header" href="#set-up-remote-attestation" id="set-up-remote-attestation">Set up remote attestation</a></h1>
 <h2><a class="header" href="#android-side" id="android-side">Android side</a></h2>
 <ol>
@@ -914,19 +919,10 @@ This must be a <em>string</em> and not a &quot;nix path&quot; to ensure that you
 <p>Type: list of strings</p>
 </li>
 <li>
-<p><code>resourceTypeOverrides</code></p>
-<p>Overrides auto-detection of overlay resource type set in <code>resources</code>.</p>
-<p>Default: <code>{}</code></p>
-<p>Type: attribute set of attribute set of string matching the pattern (bool|integer|dimen|color|string|integer-array|string-array)ss</p>
-</li>
-<li>
 <p><code>resources</code></p>
-<p>Android resource overlays for packages included in source tree.
-This is an attrset of attrsets of values.
-The first key refers to the relative path for the package source, and the second key refers to the resource name.
-e.g. <code>resources.&quot;frameworks/base/core/res&quot;.config_swipe_up_gesture_setting_available = true;</code></p>
+<p>Package resources. The first key refers to the relative path for the package, and the second key refers to the resource name</p>
 <p>Default: <code>{}</code></p>
-<p>Type: attribute set of attribute set of unspecifiedss</p>
+<p>Type: attribute set of attribute set of boolean or signed integer or string or list of string or signed integers or submoduless</p>
 </li>
 <li>
 <p><code>retrofit</code></p>
@@ -956,10 +952,20 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p>Type: boolean</p>
 </li>
 <li>
+<p><code>signing.avb.fingerprint</code></p>
+<p>SHA256 hash of avb_pkmd.bin</p>
+<p>Type: string matching the pattern [0-9A-F]{64}</p>
+</li>
+<li>
 <p><code>signing.avb.mode</code></p>
 <p>Mode of AVB signing to use.</p>
 <p>Default: <code>&quot;vbmeta_chained&quot;</code></p>
 <p>Type: string matching the pattern (verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)</p>
+</li>
+<li>
+<p><code>signing.avb.verityCert</code></p>
+<p>Verity certificate for AVB. e.g. in x509 DER format.x509.pem. Only needed if signing.avb.mode = &quot;verity_only&quot;</p>
+<p>Type: path</p>
 </li>
 <li>
 <p><code>signing.enable</code></p>
