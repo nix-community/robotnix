@@ -271,8 +271,7 @@ in
             # Fail early if the product was not selected properly
             test -n "$TARGET_PRODUCT" || exit 1
 
-            #export NINJA_ARGS="${toString ninjaArgs}"
-            export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
+            export NINJA_ARGS="-j$NIX_BUILD_CORES ${toString ninjaArgs}"
             m ${toString makeTargets} | cat
             echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 
