@@ -1,6 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i python -p python2 nix git nix-prefetch-git cipd -I nixpkgs=../../pkgs
-# TODO: Include cipd above
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
 
 from __future__ import print_function
 

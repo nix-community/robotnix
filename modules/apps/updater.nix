@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, pkgs, lib, ... }:
 
 with lib;
@@ -7,8 +10,8 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "platform_packages_apps_Updater";
-    rev = "96d1642680a3207c45ce6a7a60cadda885b87604"; # 2020-04-08
-    sha256 = "06i1szgyrf09hrjmf5aqy5mmd491ylwd0xpxp1f9l1njgpg0l6k8";
+    rev = "f4fea23153407b7448e9440c31dc0398befc00c8"; # 2021-01-04
+    sha256 = "1my5kxia201sikxr2bjk5v4icw5av9c1q5v56g03zw0mmvddyv6a";
   };
 in
 {

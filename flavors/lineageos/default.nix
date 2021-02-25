@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, pkgs, lib, ... }:
 with lib;
 let
@@ -82,6 +85,10 @@ in mkIf (config.flavor == "lineageos")
           revert = true;
         })
       ];
+
+      # LineageOS will sometimes force-push to this repo, and the older revisions are garbage collected.
+      # So we'll just build chromium webview ourselves.
+      "external/chromium-webview".enable = false;
     }
   ] ++ optionals (deviceMetadata ? "${config.device}") [
     # Device-specific source dirs
@@ -106,12 +113,16 @@ in mkIf (config.flavor == "lineageos")
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
 
-  # This is the prebuilt webview apk from LineageOS. The webview module is not
-  # enabled by default, so setting this here is only for convenience if the
-  # end-user wants to set webview.prebuilt.enable, potentially alongside other
-  # webview modules like webview.chromium.enable;
+  # Enable robotnix-built chromium / webview
+  apps.chromium.enable = mkDefault true;
+  webview.chromium.availableByDefault = mkDefault true;
+  webview.chromium.enable = mkDefault true;
+
+  # This is the prebuilt webview apk from LineageOS. Adding this here is only
+  # for convenience if the end-user wants to set `webview.prebuilt.enable = true;`.
   webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
+  removedProductPackages = [ "webview" ];
 
   envPackages = [ pkgs.openssl.dev ]; # Needed by included kernel build for some devices (pioneer at least)
 

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, pkgs, lib, ... }:
 
 with lib;
@@ -232,6 +235,11 @@ in
         CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
         CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
       })
+      (mkIf (config.androidVersion >= 11) {
+        # Android 11 ninja filters env vars for more correct incrementalism.
+        # However, env vars like LD_LIBRARY_PATH must be set for nixpkgs build-userenv-fhs to work
+        ALLOW_NINJA_ENV = "true";
+      })
     ];
 
     build = rec {
@@ -279,8 +287,7 @@ in
             # Fail early if the product was not selected properly
             test -n "$TARGET_PRODUCT" || exit 1
 
-            #export NINJA_ARGS="${toString ninjaArgs}"
-            export NINJA_ARGS="-j$NIX_BUILD_CORES -l$NIX_BUILD_CORES ${toString ninjaArgs}"
+            export NINJA_ARGS="-j$NIX_BUILD_CORES ${toString ninjaArgs}"
             m ${toString makeTargets} | cat
             echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 

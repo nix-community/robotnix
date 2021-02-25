@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
+
 # robotnix - Build Android (AOSP) using Nix
 
 Robotnix enables a user to easily and reliably build Android (AOSP) images using the Nix package manager.
@@ -184,3 +189,6 @@ Your support is greatly appreciated.
 
 ## Community
 The `#robotnix` IRC channel on Freenode is available for a place to chat about the project, ask questions, and discuss robotnix development.
+
+## License information 
+This project is available as open source under the terms of MIT license. However, for accurate information, please check individual files.

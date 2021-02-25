@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, pkgs, lib, ... }:
 
 # Android-prepare-vendor is currently only useful for Pixel phones

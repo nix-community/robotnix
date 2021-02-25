@@ -42,7 +42,8 @@ https://source.android.com/setup/build/running
     ```console
     $ fastboot flashing unlock
     ```
-    Select the option to unlock the device and confirm. This step effectively performs a factory reset, and will remove all user data from the device.
+    Select the option to unlock the device and confirm. This step effectively
+    performs a factory reset, and will remove all user data from the device.
 
  4. Flash your custom AVB signing key using
     ```console

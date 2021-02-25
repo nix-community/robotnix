@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { pkgs, callPackage, lib, substituteAll, makeWrapper, fetchFromGitHub, jdk11_headless, gradleGen,
   listenHost ? "localhost",
   port ? 8080,
@@ -17,15 +20,15 @@ let
 in
 buildGradle {
   pname = "AttestationServer";
-  version = "2020-12-08";
+  version = "2021-02-17";
 
   envSpec = ./gradle-env.json;
 
   src = fetchFromGitHub {
     owner = "grapheneos";
     repo = "AttestationServer";
-    rev = "ed6eb689731c56bcd3cd92e099ea780024385a14";
-    sha256 = "0q8c4hzvcwkki9ra3jr865jg1qhrigiz6mhyf2q4ggf23r30ahf5";
+    rev = "fbcbe8c3b33a9e5cbafc1ea3f92024671b0d91a0";
+    sha256 = "07drp0rwamyswmmb8l4kipjmmvill8m51z1h2fr91l1dmg403wc3";
   };
 
   patches = [

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 let
   pkgs = import ./pkgs {};
   lib = pkgs.lib;
@@ -74,9 +77,10 @@ in
 
   sdk = import ./sdk;
 
-  grapheneos-emulator = (robotnix { device="x86"; flavor="grapheneos"; }).emulator;
-  vanilla-emulator = (robotnix { device="x86"; flavor="vanilla"; }).emulator;
-  danielfullmer-emulator = (robotnix { device="x86"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).emulator;
+  grapheneos-emulator = (robotnix { device="x86_64"; flavor="grapheneos"; }).emulator;
+  vanilla-emulator = (robotnix { device="x86_64"; flavor="vanilla"; }).emulator;
+  vanilla-12-emulator = (robotnix { device="x86_64"; flavor="vanilla"; productNamePrefix="sdk_phone_"; androidVersion=12; }).emulator;
+  danielfullmer-emulator = (robotnix { device="x86_64"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).emulator;
 
   example-apv-diff = (robotnix { device="crosshatch"; flavor="grapheneos"; }).config.build.apv.diff;
 

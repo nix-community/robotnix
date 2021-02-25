@@ -1,11 +1,17 @@
+<!--
+SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
+
 Updates are added to this file approximately monthly, or whenever significant
 changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
-# 2021-XX-XX
+# 2021-03-XX
 ## Backward incompatible changes
 - Renamed `kernel.useCustom` to `kernel.enable`.
+- The `resourceTypeOverrides` option was replaced with `resources.<package>.<name>.type`.
 
 # 2021-02-02
 ## Highlights:

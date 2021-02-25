@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { configuration,
   pkgs ? (import ./pkgs {}),
   lib ? pkgs.stdenv.lib
@@ -31,6 +34,7 @@ let
       ./flavors/vanilla
       ./modules/10
       ./modules/11
+      ./modules/12
       ./modules/9
       ./modules/apps/auditor.nix
       ./modules/apps/chromium.nix

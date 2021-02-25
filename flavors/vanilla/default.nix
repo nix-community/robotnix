@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, pkgs, lib, ... }:
 with lib;
 let
@@ -47,6 +50,11 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 
   resources."frameworks/base/core/res".config_swipe_up_gesture_setting_available = true; # enable swipe up gesture functionality as option
   resources."packages/apps/Settings".config_use_legacy_suggestion = false; # fix for cards not disappearing in settings app
+
+  # Don't reboot after flashing image, so the user can relock the bootloader before booting.
+  source.dirs."device/common".postPatch = ''
+    substituteInPlace generate-factory-images-common.sh --replace "fastboot -w update" "fastboot -w --skip-reboot update"
+  '';
 }
 
 (mkIf (elem config.androidVersion [ 9 10 11 ]) {
@@ -137,10 +145,11 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
   # where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
   # and Strength as defined in Authenticators.java
-  resources."frameworks/base/core/res".config_biometric_sensors =
-    optional (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) "0:2:15"
-    ++ optional (config.deviceFamily == "coral") "0:8:15";
-  resourceTypeOverrides."frameworks/base/core/res".config_biometric_sensors = "string-array";
+  resources."frameworks/base/core/res".config_biometric_sensors = {
+    value = optional (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) "0:2:15"
+            ++ optional (config.deviceFamily == "coral") "0:8:15";
+    type = "string-array";
+  };
 
   # Clock app needs battery optimization exemption. Currently not in AOSP
   source.dirs."packages/apps/DeskClock".patches = [
@@ -191,5 +200,17 @@ in {
 })
 
 ]))
+
+(mkIf (config.androidVersion == 12) {
+  source.manifest.rev = mkDefault "android-s-preview-1";
+  buildDateTime = mkDefault 1613683757;
+
+  # Build fails otherwise complaining about soong visibility for some art module
+  source.dirs.libcore.src = pkgs.fetchgit {
+    url = "https://android.googlesource.com/platform/libcore";
+    rev = "dc5351ff0193f6c82478981e32561a779651821a";
+    sha256 = "1hs9rmssfg4qjsbfd26psj4n3ayd5q5bfpswc2jcly3pym1gdnn5";
+  };
+})
 
 ])

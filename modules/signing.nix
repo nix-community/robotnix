@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, pkgs, lib, ... }:
 
 with lib;
@@ -17,15 +20,6 @@ let
                         (name: prebuilt: prebuilt.certificate)
                         (filterAttrs (name: prebuilt: prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
                     );
-
-  # Cert fingerprints from default AOSP test-keys: build/make/tools/releasetools/testdata
-  defaultDeviceCertFingerprints = {
-    "releasekey" = "A40DA80A59D170CAA950CF15C18C454D47A39B26989D8B640ECD745BA71BF5DC";
-    "platform" = "C8A2E9BCCF597C2FB6DC66BEE293FC13F2FC47EC77BC6B2B0D52C11F51192AB8";
-    "media" = "465983F7791F2ABEB43EA2CBDC7F21A8260B72BC08A55C839FC1A43BC741A81E";
-    "shared" = "28BBFE4A7B97E74681DC55C2FBB6CCB8D6C74963733F6AF6AE74D8C3A6E879FD";
-    "verity" = "8AD127ABAE8285B582EA36745F220AB8FE397FFB3B068DF19CA22D122C7B3B86";
-  };
 in
 {
   options = {
@@ -50,6 +44,17 @@ in
           type = types.strMatching "(verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)";
           default  = "vbmeta_chained";
           description = "Mode of AVB signing to use.";
+        };
+
+        fingerprint = mkOption {
+          type = types.strMatching "[0-9A-F]{64}";
+          apply = toUpper;
+          description = "SHA256 hash of avb_pkmd.bin";
+        };
+
+        verityCert = mkOption {
+          type = types.path;
+          description = "Verity certificate for AVB. e.g. in x509 DER format.x509.pem. Only needed if signing.avb.mode = \"verity_only\"";
         };
       };
 
@@ -76,26 +81,10 @@ in
 
   config = {
     keyStorePath = mkIf (!config.signing.enable) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
-
-    build._keyPath = keyStorePath: name:
-      let deviceCertificates = [ "releasekey" "platform" "media" "shared" "verity" ]; # Cert names used by AOSP
-      in if builtins.elem name deviceCertificates
-        then (if config.signing.enable
-          then "${keyStorePath}/${config.device}/${name}"
-          else "${config.source.dirs."build/make".src}/target/product/security/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
-        else "${keyStorePath}/${name}";
-    build.keyPath = name: config.build._keyPath config.keyStorePath name;
-    build.sandboxKeyPath = name: (if config.signing.enable
-      then config.build._keyPath "/keys" name
-      else config.build.keyPath name);
-
-    build.x509 = name: putInStore "${config.build.keyPath name}.x509.pem";
-    build.fingerprints = name:
-      if (name == "avb")
-        then pkgs.robotnix.sha256Fingerprint (putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin")
-        else if (!config.signing.enable && elem name (attrNames defaultDeviceCertFingerprints))
-          then defaultDeviceCertFingerprints.${name}
-          else pkgs.robotnix.certFingerprint (config.build.x509 name); # IFD
+    signing.avb.fingerprint = mkIf config.signing.enable (mkOptionDefault
+      (pkgs.robotnix.sha256Fingerprint (putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin"))
+      );
+    signing.avb.verityCert = mkIf config.signing.enable (mkOptionDefault (putInStore "${config.keyStorePath}/${config.device}/verity.x509.pem"));
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
     signing.apex.packageNames = map (s: "com.android.${s}") (

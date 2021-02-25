@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, pkgs, apks, lib, ... }:
 
 with lib;
@@ -29,7 +32,7 @@ in
         inherit (cfg) domain;
         inherit (config) device;
         signatureFingerprint = config.apps.prebuilt."Auditor".fingerprint;
-        avbFingerprint = config.build.fingerprints "avb";
+        avbFingerprint = config.signing.avb.fingerprint;
       };
     };
   };
