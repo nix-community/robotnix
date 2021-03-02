@@ -184,10 +184,11 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
       "drivers/input/touchscreen/fts_touch" = "private/msm-google-modules/touch/fts";
       # TODO: What is the fts_touch_s5 repo for sunfish?
     } // optionalAttrs (elem kernelName [ "redfin" ]) {
+      "techpack/audio" = "private/msm-google/techpack/audio";
+      "techpack/camera" = "private/msm-google/techpack/camera";
       "techpack/dataipa" = "private/msm-google/techpack/dataipa";
       "techpack/display" = "private/msm-google/techpack/display";
       "techpack/video" = "private/msm-google/techpack/video";
-      "techpack/audio" = "private/msm-google/techpack/audio";
       "drivers/input/touchscreen/sec_touch" = "private/msm-google-modules/touch/sec";
       "arch/arm64/boot/dts/vendor" = "private/msm-google/arch/arm64/boot/dts/vendor";
       "arch/arm64/boot/dts/vendor/qcom/camera" = "private/msm-google/arch/arm64/boot/dts/vendor/qcom/camera";
