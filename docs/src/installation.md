@@ -9,17 +9,18 @@ It is assumed that you have successfully built your factory image and signed it
 with your own keys, either by using the `factoryImg` Nix output or by running
 `releaseScript`.  Make sure that you know the location of the image and the AVB
 signing key.  The instructions in this document were tested on the Google Pixel
-4a (sunfish).  Other Pixel phones are similar, but please refer to
-https://source.android.com/setup/build/running
+4a (sunfish).  Other Pixel phones are similar, but please refer to [this
+upstream documentation](https://source.android.com/setup/build/running).
 
  0. Before you can begin you have to boot the stock OS, go to "Settings / About
     phone" and tap the "Build number" field 7 times to enable the "Developer
     options" menu.  Next go to “Settings / System / Advanced / Developer
     options” and enable “OEM unlocking”.  On my device I had to insert a SIM
     card and connect to the network for that, so it looks like you have to
-    connect your device with Google at least once.  This is part of Google's so
-    called Factory Reset Protection (FRP) for anti-theft protection
-    (https://grapheneos.org/install#enabling-oem-unlocking).  However, [this
+    connect your device with Google [at least
+    once](https://grapheneos.org/install#enabling-oem-unlocking).  This is part
+    of Google's so called Factory Reset Protection (FRP) for anti-theft
+    protection .  However, [this
     comment](https://www.kuketz-blog.de/grapheneos-das-android-fuer-sicherheits-und-datenschutzfreaks/#comment-52681)
     on a German IT privacy blog suggests that it is sufficient to allow access
     to the captive portal such that the phone thinks it is online.

@@ -13,9 +13,9 @@ To add an F-Droid repository you need at least the URL and a public key.
 Obtaining the URL is in general very easy but it's not obvious where to obtain
 the public key.
 
-We'll take the microG repository as an example.  The repository is located at
-https://microg.org/fdroid/repo.  To obtain the repository index download the
-`index.xml` file from the repository root:
+We'll take the microG repository as an example.  The repository is located
+[here]( https://microg.org/fdroid/repo).  To obtain the repository index
+download the `index.xml` file from the repository root:
 ```console
 $ curl -LO https://microg.org/fdroid/repo/index.xml
 ```

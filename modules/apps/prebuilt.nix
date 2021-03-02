@@ -123,7 +123,7 @@ in
             type = types.listOf types.str;
             description = ''
               Privileged permissions to apply to this application.
-              See https://developer.android.com/reference/android/Manifest.permission and note permissions which say
+              Refer to this [link](https://developer.android.com/reference/android/Manifest.permission) and note permissions which say
               "not for use by third-party applications".
             '';
             example = ''[ "INSTALL_PACKAGES" ]'';
