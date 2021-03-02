@@ -137,9 +137,9 @@ in
       makeFlags = [
         "O=out"
         "ARCH=arm64"
-        "CONFIG_COMPAT_VDSO=n"
+        #"CONFIG_COMPAT_VDSO=n"
         "CROSS_COMPILE=aarch64-linux-android-"
-        #"CROSS_COMPILE_ARM32=arm-linux-androideabi-"
+        "CROSS_COMPILE_ARM32=arm-linux-androideabi-"
       ] ++ lib.optionals (cfg.compiler == "clang") [
         "CC=clang"
         "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
