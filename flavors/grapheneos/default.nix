@@ -4,9 +4,9 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2021.02.26.16";
+  grapheneOSRelease = "${config.apv.buildID}.2021.03.02.10";
 
-  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" ];
+  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -14,12 +14,12 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # a significant change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1614377537;
+  buildDateTime = mkDefault 1614707533;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault "RQ1A.210205.004";
+  apv.buildID = mkDefault "RQ2A.210305.006";
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -46,6 +46,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/bonito".enable = false;
   source.dirs."kernel/google/coral".enable = false;
   source.dirs."kernel/google/sunfish".enable = false;
+  source.dirs."kernel/google/redbull".enable = false;
 
   # Enable Vanadium (GraphaneOS's chromium fork).
   apps.vanadium.enable = mkDefault true;
@@ -73,7 +74,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) {
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
-  kernel.configName = config.device;
+  kernel.configName = mkForce config.device;
   kernel.relpath = "device/google/${config.device}-kernel";
 })
 {

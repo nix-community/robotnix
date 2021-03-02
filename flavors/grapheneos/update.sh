@@ -18,6 +18,7 @@ args=(
     --project-fetch-submodules "kernel/google/crosshatch"
     --project-fetch-submodules "kernel/google/coral"
     --project-fetch-submodules "kernel/google/sunfish"
+    --project-fetch-submodules "kernel/google/redbull"
     "$@"
     ../*/repo-*.json
 )
