@@ -16,14 +16,18 @@ let
       (name:
         let
           option = options.${name};
+          exampleText =
+            if option.example ? _type && (option.example._type == "literalExample")
+            then option.example.text
+            else builtins.toJSON option.example;
           body = ''
             ${option.description}
 
-          '' + optionalString (option ? default) ''
-            Default: `${builtins.toJSON option.default}`
+          '' + optionalString (option ? defaultText || option ? default) ''
+            Default: `${option.defaultText or (generators.toPretty {} option.default)}`
 
           '' + optionalString (option ? example) ''
-            Example: `${builtins.toJSON option.example}`
+            Example: `${exampleText}`
 
           '' + ''
             Type: ${option.type}
