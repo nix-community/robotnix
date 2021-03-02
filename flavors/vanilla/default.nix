@@ -159,18 +159,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     })
   ];
 }
-(mkIf (elem config.deviceFamily phoneDeviceFamilies && (!(elem config.deviceFamily != "redfin"))) (let
-  kernelTag = {
-    "taimen" = "android-11.0.0_r0.34";
-    "muskie" = "android-11.0.0_r0.34";
-    "crosshatch" = "android-11.0.0_r0.52";
-    "bonito" = "android-11.0.0_r0.53";
-    "coral" = "android-11.0.0_r0.54";
-    "sunfish" = "android-11.0.0_r0.55";
-  }.${config.deviceFamily};
-  kernelMetadata = (lib.importJSON ./kernel-metadata.json).${kernelTag};
-  kernelHashes = (lib.importJSON ./kernel-hashes.json).${kernelTag};
-in {
+(mkIf (elem config.deviceFamily phoneDeviceFamilies) {
   kernel.useCustom = mkDefault true;
   kernel.configName = mkMerge [
     (mkIf (elem config.deviceFamily [ "taimen" "muskie" ]) "wahoo")
@@ -181,18 +170,41 @@ in {
   # that works for kernels too. Probably not worth the effort for the payoff
   # though.
   kernel.src = let
+    kernelName = if elem config.deviceFamily [ "taimen" "muskie"] then "wahoo" else config.deviceFamily;
+    kernelMetadata = (lib.importJSON ./kernel-metadata.json).${kernelName};
+    kernelRepos = lib.importJSON (./. + "/repo-${kernelMetadata.branch}.json");
+    kernelDirs = {
+      "" = "private/msm-google";
+    } // optionalAttrs (elem kernelName [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ]) {
+      "techpack/audio" = "private/msm-google/techpack/audio";
+      "drivers/staging/qca-wifi-host-cmn" = "private/msm-google-modules/wlan/qca-wifi-host-cmn";
+      "drivers/staging/qcacld-3.0" = "private/msm-google-modules/wlan/qcacld-3.0";
+      "drivers/staging/fw-api" = "private/msm-google-modules/wlan/fw-api";
+    } // optionalAttrs (elem kernelName [ "coral" "sunfish" "redfin" ]) {
+      "drivers/input/touchscreen/fts_touch" = "private/msm-google-modules/touch/fts";
+      # TODO: What is the fts_touch_s5 repo for sunfish?
+    } // optionalAttrs (elem kernelName [ "redfin" ]) {
+      "techpack/dataipa" = "private/msm-google/techpack/dataipa";
+      "techpack/display" = "private/msm-google/techpack/display";
+      "techpack/video" = "private/msm-google/techpack/video";
+      "techpack/audio" = "private/msm-google/techpack/audio";
+      "drivers/input/touchscreen/sec_touch" = "private/msm-google-modules/touch/sec";
+      "arch/arm64/boot/dts/vendor" = "private/msm-google/arch/arm64/boot/dts/vendor";
+      "arch/arm64/boot/dts/vendor/qcom/camera" = "private/msm-google/arch/arm64/boot/dts/vendor/qcom/camera";
+      "arch/arm64/boot/dts/vendor/qcom/display" = "private/msm-google/arch/arm64/boot/dts/vendor/qcom/display";
+    };
     fetchedRepo = repo: pkgs.fetchgit {
-      inherit (kernelHashes."https://android.googlesource.com/${repo}") url rev sha256;
+      inherit (kernelRepos.${repo}) url rev sha256;
     };
   in pkgs.runCommand "kernel-src" {}
-    (concatStringsSep "\n" (lib.mapAttrsToList (repo: relpath: ''
+    (concatStringsSep "\n" (lib.mapAttrsToList (relpath: repo: ''
       ${lib.optionalString (relpath != "") "mkdir -p $out/$(dirname ${relpath})"}
       cp -r ${fetchedRepo repo} $out/${relpath}
       chmod u+w -R $out/${relpath}
-    '') kernelMetadata));
+    '') kernelDirs));
 
   kernel.buildProductFilenames = [ "**/*.ko" ]; # Copy kernel modules if they exist
-}))
+})
 (mkIf (elem config.device [ "taimen" "walleye" ]) {
   warnings = [ "taimen and walleye are no longer receiving monthly vendor security updates from Google. Support is left just for testing" ];
   source.manifest.rev = "android-11.0.0_r25"; # More recent sources don't even include device/google/muskie

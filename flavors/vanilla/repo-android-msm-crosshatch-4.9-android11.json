@@ -1,0 +1,75 @@
+{
+  "build": {
+    "groups": [],
+    "revisionExpr": "master",
+    "url": "https://android.googlesource.com/kernel/build"
+  },
+  "prebuilts-master/clang/host/linux-x86": {
+    "groups": [
+      "partner"
+    ],
+    "revisionExpr": "f71cc7fa68ac644595257d6fdebc2e543cb7041c",
+    "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86"
+  },
+  "prebuilts-master/misc": {
+    "groups": [],
+    "revisionExpr": "android11-release",
+    "url": "https://android.googlesource.com/platform/prebuilts/misc"
+  },
+  "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9": {
+    "groups": [],
+    "revisionExpr": "android11-release",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"
+  },
+  "prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9": {
+    "groups": [],
+    "revisionExpr": "android11-release",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9"
+  },
+  "private/msm-google": {
+    "groups": [],
+    "linkfiles": [
+      {
+        "dest": "build.config",
+        "src": "build.config.bluecross_no-cfi"
+      }
+    ],
+    "rev": "51154e658ef515db1495bd6edcf9f4a8e227f971",
+    "revisionExpr": "android-11.0.0_r0.58",
+    "sha256": "1igh13g2b6f6097fndxf41ghfzrfpbd5yv0jc1yi7pww7hnrwwg4",
+    "tree": "2990baa1be28bcbb6bb118f091f0f2a8655ee608",
+    "url": "https://android.googlesource.com/kernel/msm"
+  },
+  "private/msm-google-modules/wlan/fw-api": {
+    "groups": [],
+    "rev": "1803c292b35831a2033b1d96495823a3cf91eb24",
+    "revisionExpr": "android-11.0.0_r0.58",
+    "sha256": "08693q8r6xdhn9j1hr94v3vd6qz4ds8vhacjfgw3kgc3pw8gchzn",
+    "tree": "df5a7d58f629427e823a773ecd03a1a949ba7cf4",
+    "url": "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api"
+  },
+  "private/msm-google-modules/wlan/qca-wifi-host-cmn": {
+    "groups": [],
+    "rev": "99f2a52710adf5d9c0f7af8da6b1b355f11be0f8",
+    "revisionExpr": "android-11.0.0_r0.58",
+    "sha256": "1mcram567rskc2qkzckzps08w6zf9y0gjky6cby606ymqjbg9jkd",
+    "tree": "7c9366523ff1adf7f35be71826d9c21a27fb7016",
+    "url": "https://android.googlesource.com/kernel/msm-modules/qca-wfi-host-cmn"
+  },
+  "private/msm-google-modules/wlan/qcacld-3.0": {
+    "groups": [],
+    "rev": "a495965815c3d9d3e96a1a413dec2666685cc44c",
+    "revisionExpr": "android-11.0.0_r0.58",
+    "sha256": "08zsrlfgxd6nb5ik5j3wjya2am84l2w9f14cf80c42kr4b44awxa",
+    "tree": "32997689714c0a08736e1fe2a4a3d6be9a9e06e6",
+    "url": "https://android.googlesource.com/kernel/msm-modules/qcacld"
+  },
+  "private/msm-google/techpack/audio": {
+    "groups": [],
+    "rev": "b03da688cf4b517dd147771f7d42e220054f55c0",
+    "revisionExpr": "android-11.0.0_r0.58",
+    "sha256": "0aq3xchr1jni3g2l6f5fxa9xb3pf9ikig00c05rm6lq54cgx8n5p",
+    "tree": "3808b86a39242c0e3aa36123e14aa3a9376d4ac2",
+    "url": "https://android.googlesource.com/kernel/msm-extra"
+  }
+}
