@@ -74,7 +74,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) {
   kernel.useCustom = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
-  kernel.configName = mkForce config.device;
+  kernel.configName = config.device;
   kernel.relpath = "device/google/${config.device}-kernel";
 })
 {

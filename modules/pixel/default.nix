@@ -48,8 +48,7 @@ mkMerge [
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
 
-    kernel.name = mkIf (config.deviceFamily == "taimen" || config.deviceFamily == "muskie") (mkDefault "wahoo");
-    kernel.configName = mkDefault config.deviceFamily;
+    kernel.configName = mkOptionDefault config.deviceFamily;
     apv.img = mkIf config.apv.enable (mkDefault (fetchItem imgList));
     apv.ota = mkIf config.apv.enable (mkDefault (fetchItem otaList));
 
@@ -81,6 +80,7 @@ mkMerge [
       "arch/arm64/boot/Image.lz4-dtb"
       "arch/arm64/boot/dtbo.img"
     ];
+    kernel.name = mkDefault "wahoo";
   })
   (mkIf (config.deviceFamily == "crosshatch") {
     signing.avb.mode = "vbmeta_chained";
@@ -129,7 +129,7 @@ mkMerge [
       "arch/arm64/boot/dts/google/qcom-base/sm8150.dtb"
       "arch/arm64/boot/dts/google/qcom-base/sm8150-v2.dtb"
     ];
-    kernel.configName = "floral"; # coral + flame
+    kernel.configName = mkDefault "floral"; # coral + flame
     kernel.linker = "lld";
   })
   (mkIf (config.deviceFamily == "sunfish") {
