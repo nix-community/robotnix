@@ -51,6 +51,7 @@ def ls_remote(url, rev):
 def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                    override_project_revs: Dict[str, str], force_refresh: bool,
                    mirrors: Dict[str, str], project_fetch_submodules: List[str],
+                   override_tag: Optional[str],
                    include_prefix: List[str]):
     if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
@@ -73,6 +74,9 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
             # exactly the project name
             if p['url'].endswith(project):
                 p['rev'] = rev
+
+        if override_tag is not None:
+            p['revisionExpr'] = override_tag
 
         if 'rev' not in p:
             if re.match("[0-9a-f]{40}", p['revisionExpr']):
@@ -132,6 +136,7 @@ def main():
                         choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
     parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
+    parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
     parser.add_argument('--project-fetch-submodules', action="append", default=[], help="fetch submodules for the specified project path")
     parser.add_argument('--include-prefix', action="append", default=[], help="only include paths if they start with the specified prefix")
     parser.add_argument('url', help="manifest URL")
@@ -171,7 +176,8 @@ def main():
                    override_project_revs, force_refresh=args.force,
                    mirrors=mirrors,
                    project_fetch_submodules=args.project_fetch_submodules,
-                   include_prefix=args.include_prefix
+                   override_tag=args.override_tag,
+                   include_prefix=args.include_prefix,
                    )
 
 if __name__ == "__main__":
