@@ -8,7 +8,7 @@ let
 
   phoneDeviceFamilies =
     (optional (config.androidVersion <= 10) "marlin")
-    ++ [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" ];
+    ++ [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" "redfin" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
   # Replaces references to SystemUIGoogle with SystemUI in device source tree
@@ -159,7 +159,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     })
   ];
 }
-(mkIf (elem config.deviceFamily phoneDeviceFamilies) (let
+(mkIf (elem config.deviceFamily phoneDeviceFamilies && (!(elem config.deviceFamily != "redfin"))) (let
   kernelTag = {
     "taimen" = "android-11.0.0_r0.34";
     "muskie" = "android-11.0.0_r0.34";
