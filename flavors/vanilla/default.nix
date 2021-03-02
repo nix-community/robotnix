@@ -135,10 +135,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1612285669;
+  buildDateTime = mkDefault 1614675367;
 
-  source.manifest.rev = mkDefault "android-11.0.0_r29";
-  apv.buildID = mkDefault "RQ1A.210205.004";
+  source.manifest.rev = mkDefault "android-11.0.0_r32";
+  apv.buildID = mkDefault "RQ2A.210305.006";
 
   # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
   # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
