@@ -173,34 +173,40 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
     kernelName = if elem config.deviceFamily [ "taimen" "muskie"] then "wahoo" else config.deviceFamily;
     kernelMetadata = (lib.importJSON ./kernel-metadata.json).${kernelName};
     kernelRepos = lib.importJSON (./. + "/repo-${kernelMetadata.branch}.json");
-    kernelDirs = {
-      "" = "private/msm-google";
-    } // optionalAttrs (elem kernelName [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ]) {
-      "techpack/audio" = "private/msm-google/techpack/audio";
-      "drivers/staging/qca-wifi-host-cmn" = "private/msm-google-modules/wlan/qca-wifi-host-cmn";
-      "drivers/staging/qcacld-3.0" = "private/msm-google-modules/wlan/qcacld-3.0";
-      "drivers/staging/fw-api" = "private/msm-google-modules/wlan/fw-api";
-    } // optionalAttrs (elem kernelName [ "coral" "sunfish" "redfin" ]) {
-      "drivers/input/touchscreen/fts_touch" = "private/msm-google-modules/touch/fts";
-      # TODO: What is the fts_touch_s5 repo for sunfish?
-    } // optionalAttrs (elem kernelName [ "redfin" ]) {
-      "techpack/audio" = "private/msm-google/techpack/audio";
-      "techpack/camera" = "private/msm-google/techpack/camera";
-      "techpack/dataipa" = "private/msm-google/techpack/dataipa";
-      "techpack/display" = "private/msm-google/techpack/display";
-      "techpack/video" = "private/msm-google/techpack/video";
-      "drivers/input/touchscreen/sec_touch" = "private/msm-google-modules/touch/sec";
-      "arch/arm64/boot/dts/vendor" = "private/msm-google/arch/arm64/boot/dts/vendor";
-      "arch/arm64/boot/dts/vendor/qcom/camera" = "private/msm-google/arch/arm64/boot/dts/vendor/qcom/camera";
-      "arch/arm64/boot/dts/vendor/qcom/display" = "private/msm-google/arch/arm64/boot/dts/vendor/qcom/display";
-    };
-    fetchedRepo = repo: pkgs.fetchgit {
+    fetchRepo = repo: pkgs.fetchgit {
       inherit (kernelRepos.${repo}) url rev sha256;
+    };
+    kernelDirs = {
+      "" = fetchRepo "private/msm-google";
+    } // optionalAttrs (elem kernelName [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ]) {
+      "techpack/audio" = fetchRepo "private/msm-google/techpack/audio";
+      "drivers/staging/qca-wifi-host-cmn" = fetchRepo "private/msm-google-modules/wlan/qca-wifi-host-cmn";
+      "drivers/staging/qcacld-3.0" = fetchRepo "private/msm-google-modules/wlan/qcacld-3.0";
+      "drivers/staging/fw-api" = fetchRepo "private/msm-google-modules/wlan/fw-api";
+    } // optionalAttrs (elem kernelName [ "coral" "redfin" ]) {
+      "drivers/input/touchscreen/fts_touch" = fetchRepo "private/msm-google-modules/touch/fts";
+    } // optionalAttrs (elem kernelName [ "sunfish" ]) {
+      # TODO: For some reason, for sunfish, this is under fts_touch_s5
+      "drivers/input/touchscreen/fts_touch" = pkgs.fetchgit {
+        url = "https://android.googlesource.com/kernel/msm-modules/fts_touch_s5/";
+        rev = "android-11.0.0_r0.64";
+        sha256 = "18mgqf2dn3xchn6fzr2gc0nfbch9gaa1ciaf6rnp00pl235l2wz2";
+      };
+    } // optionalAttrs (elem kernelName [ "redfin" ]) {
+      "techpack/audio" = fetchRepo "private/msm-google/techpack/audio";
+      "techpack/camera" = fetchRepo "private/msm-google/techpack/camera";
+      "techpack/dataipa" = fetchRepo "private/msm-google/techpack/dataipa";
+      "techpack/display" = fetchRepo "private/msm-google/techpack/display";
+      "techpack/video" = fetchRepo "private/msm-google/techpack/video";
+      "drivers/input/touchscreen/sec_touch" = fetchRepo "private/msm-google-modules/touch/sec";
+      "arch/arm64/boot/dts/vendor" = fetchRepo "private/msm-google/arch/arm64/boot/dts/vendor";
+      "arch/arm64/boot/dts/vendor/qcom/camera" = fetchRepo "private/msm-google/arch/arm64/boot/dts/vendor/qcom/camera";
+      "arch/arm64/boot/dts/vendor/qcom/display" = fetchRepo "private/msm-google/arch/arm64/boot/dts/vendor/qcom/display";
     };
   in pkgs.runCommand "kernel-src" {}
     (concatStringsSep "\n" (lib.mapAttrsToList (relpath: repo: ''
       ${lib.optionalString (relpath != "") "mkdir -p $out/$(dirname ${relpath})"}
-      cp -r ${fetchedRepo repo} $out/${relpath}
+      cp -r ${repo} $out/${relpath}
       chmod u+w -R $out/${relpath}
     '') kernelDirs));
 
