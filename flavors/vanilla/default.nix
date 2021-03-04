@@ -135,7 +135,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1614675367;
+  buildDateTime = mkDefault 1614822360;
 
   source.manifest.rev = mkDefault "android-11.0.0_r32";
   apv.buildID = mkDefault "RQ2A.210305.006";

@@ -14,7 +14,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # a significant change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1614707533;
+  buildDateTime = mkDefault 1614822360;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
