@@ -11,8 +11,11 @@ let
   optionsMd =
     let
       options = robotnixOptionsDoc.optionsNix;
-    in
-    concatStrings (map
+    in ''
+      # Robotnix configuration options
+
+    ''
+    + concatStrings (map
       (name:
         let
           option = options.${name};
@@ -20,23 +23,31 @@ let
             if option.example ? _type && (option.example._type == "literalExample")
             then option.example.text
             else builtins.toJSON option.example;
+          declarationToLink = declaration: let
+            trimmedDeclaration = concatStringsSep "/" (drop 4 (splitString "/" declaration));
+          in
+            if hasPrefix "/nix/store/" declaration
+            then "[${trimmedDeclaration}](https://github.com/danielfullmer/robotnix/blob/master/${trimmedDeclaration})"
+            else declaration;
           body = ''
             ${option.description}
 
           '' + optionalString (option ? defaultText || option ? default) ''
-            Default: `${option.defaultText or (generators.toPretty {} option.default)}`
+            *Default*: `${option.defaultText or (generators.toPretty {} option.default)}`
 
           '' + optionalString (option ? example) ''
-            Example: `${exampleText}`
+            *Example*: `${exampleText}`
 
           '' + ''
-            Type: ${option.type}
+            *Type*: ${option.type}
+
+            *Declared by*:
+            ${concatMapStringsSep ", " (declaration: declarationToLink declaration) option.declarations}
           '';
         in
         ''
-            - `${name}`
-
-          ${concatMapStrings (line: "    ${line}\n") (splitString "\n" body)}
+          ### `${name}`
+          ${body}
         ''
       )
       (attrNames options));
