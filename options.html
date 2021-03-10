@@ -159,616 +159,615 @@
 
                 <div id="content" class="content">
                     <main>
-                        <ul>
-<li>
-<p><code>androidVersion</code></p>
+                        <h1><a class="header" href="#robotnix-configuration-options" id="robotnix-configuration-options">Robotnix configuration options</a></h1>
+<h3><a class="header" href="#androidversion" id="androidversion"><code>androidVersion</code></a></h3>
 <p>Used to select which Android version to use</p>
-<p>Default: <code>11</code></p>
-<p>Type: signed integer</p>
-</li>
-<li>
-<p><code>apps.auditor.domain</code></p>
+<p><em>Default</em>: <code>11</code></p>
+<p><em>Type</em>: signed integer</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#appsauditordomain" id="appsauditordomain"><code>apps.auditor.domain</code></a></h3>
 <p>Domain running the AttestationServer (over HTTPS) for remote verification</p>
-<p>Example: <code>&quot;attestation.example.com&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apps.auditor.enable</code></p>
+<p><em>Example</em>: <code>&quot;attestation.example.com&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/auditor.nix">modules/apps/auditor.nix</a></p>
+<h3><a class="header" href="#appsauditorenable" id="appsauditorenable"><code>apps.auditor.enable</code></a></h3>
 <p>Whether to enable Auditor.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.bromite.enable</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/auditor.nix">modules/apps/auditor.nix</a></p>
+<h3><a class="header" href="#appsbromiteenable" id="appsbromiteenable"><code>apps.bromite.enable</code></a></h3>
 <p>Whether to enable bromite browser.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.chromium.enable</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/chromium.nix">modules/apps/chromium.nix</a></p>
+<h3><a class="header" href="#appschromiumenable" id="appschromiumenable"><code>apps.chromium.enable</code></a></h3>
 <p>Whether to enable chromium browser.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.fdroid.additionalRepos</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/chromium.nix">modules/apps/chromium.nix</a></p>
+<h3><a class="header" href="#appsfdroidadditionalrepos" id="appsfdroidadditionalrepos"><code>apps.fdroid.additionalRepos</code></a></h3>
 <p>Additional F-Droid repositories to include in the default build.
 Note that changes to this setting will only take effect on a freshly
 installed device--or if the F-Droid storage is cleared.</p>
-<p>Default: <code>{}</code></p>
-<p>Type: attribute set of submodules</p>
-</li>
-<li>
-<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.description</code></p>
+<p><em>Default</em>: <code>{  }</code></p>
+<p><em>Type</em>: attribute set of submodules</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3><a class="header" href="#appsfdroidadditionalreposnamedescription" id="appsfdroidadditionalreposnamedescription"><code>apps.fdroid.additionalRepos.&lt;name&gt;.description</code></a></h3>
 <p>Longer textual description of this repository</p>
-<p>Default: <code>&quot;Empty description&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.enable</code></p>
+<p><em>Default</em>: <code>&quot;Empty description&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3><a class="header" href="#appsfdroidadditionalreposnameenable" id="appsfdroidadditionalreposnameenable"><code>apps.fdroid.additionalRepos.&lt;name&gt;.enable</code></a></h3>
 <p>Whether to enable this repository by default in F-Droid.</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.name</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3><a class="header" href="#appsfdroidadditionalreposnamename" id="appsfdroidadditionalreposnamename"><code>apps.fdroid.additionalRepos.&lt;name&gt;.name</code></a></h3>
 <p>Display name to use for this repository</p>
-<p>Default: <code>&quot;‹name›&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.pubkey</code></p>
+<p><em>Default</em>: <code>&quot;‹name›&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3><a class="header" href="#appsfdroidadditionalreposnamepubkey" id="appsfdroidadditionalreposnamepubkey"><code>apps.fdroid.additionalRepos.&lt;name&gt;.pubkey</code></a></h3>
 <p>Public key associated with this repository. Can be found in <code>/index.xml</code> under the repo URL.</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.pushRequests</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3><a class="header" href="#appsfdroidadditionalreposnamepushrequests" id="appsfdroidadditionalreposnamepushrequests"><code>apps.fdroid.additionalRepos.&lt;name&gt;.pushRequests</code></a></h3>
 <p>Allow this repository to specify apps which should be automatically installed/uninstalled</p>
-<p>Default: <code>&quot;ignore&quot;</code></p>
-<p>Type: string matching the pattern (ignore|prompt|always)</p>
-</li>
-<li>
-<p><code>apps.fdroid.additionalRepos.&lt;name&gt;.url</code></p>
+<p><em>Default</em>: <code>&quot;ignore&quot;</code></p>
+<p><em>Type</em>: string matching the pattern (ignore|prompt|always)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3><a class="header" href="#appsfdroidadditionalreposnameurl" id="appsfdroidadditionalreposnameurl"><code>apps.fdroid.additionalRepos.&lt;name&gt;.url</code></a></h3>
 <p>URL for F-Droid repository</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apps.fdroid.enable</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3><a class="header" href="#appsfdroidenable" id="appsfdroidenable"><code>apps.fdroid.enable</code></a></h3>
 <p>Whether to enable F-Droid.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.prebuilt</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3><a class="header" href="#appsprebuilt" id="appsprebuilt"><code>apps.prebuilt</code></a></h3>
 <p>Prebuilt APKs to include in the robotnix build</p>
-<p>Default: <code>{}</code></p>
-<p>Type: attribute set of submodules</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.allowInPowerSave</code></p>
+<p><em>Default</em>: <code>{  }</code></p>
+<p><em>Type</em>: attribute set of submodules</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnameallowinpowersave" id="appsprebuiltnameallowinpowersave"><code>apps.prebuilt.&lt;name&gt;.allowInPowerSave</code></a></h3>
 <p>Whether to allow this application to operate in &quot;power save&quot; mode.
 Disables battery optimization for this app.</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.apk</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnameapk" id="appsprebuiltnameapk"><code>apps.prebuilt.&lt;name&gt;.apk</code></a></h3>
 <p>APK file to include in build</p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.certificate</code></p>
+<p><em>Type</em>: path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnamecertificate" id="appsprebuiltnamecertificate"><code>apps.prebuilt.&lt;name&gt;.certificate</code></a></h3>
 <p>Name of certificate to sign APK with.  Defaults to the name of the prebuilt app.
 If it is a device-specific certificate, the cert/key should be under <code>${keyStorePath}/${device}/${certificate}.{x509.pem,pk8}</code>.
 Otherwise, it should be <code>${keyStorePath}/${certificate}.{x509.pem,pk8}</code>.
 Finally, the special string &quot;PRESIGNED&quot; will just use the APK as-is.</p>
-<p>Default: <code>&quot;‹name›&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.defaultPermissions</code></p>
+<p><em>Default</em>: <code>&quot;‹name›&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnamedefaultpermissions" id="appsprebuiltnamedefaultpermissions"><code>apps.prebuilt.&lt;name&gt;.defaultPermissions</code></a></h3>
 <p>Permissions to be enabled by default without user prompting.</p>
-<p>Default: <code>[]</code></p>
-<p>Example: <code>&quot;[ \&quot;INSTALL_PACKAGES\&quot; ]&quot;</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.name</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Example</em>: <code>[&quot;INSTALL_PACKAGES&quot;]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnamename" id="appsprebuiltnamename"><code>apps.prebuilt.&lt;name&gt;.name</code></a></h3>
 <p>Name of application. (No spaces)</p>
-<p>Default: <code>&quot;‹name›&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.packageName</code></p>
+<p><em>Default</em>: <code>&quot;‹name›&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnamepackagename" id="appsprebuiltnamepackagename"><code>apps.prebuilt.&lt;name&gt;.packageName</code></a></h3>
 <p>APK's Java-style package name (applicationId). This setting only necessary to be set if also using <code>privappPermissions</code>.</p>
-<p>Example: <code>&quot;com.android.test&quot;</code></p>
-<p>Type: string matching the pattern [a-zA-Z0-9_.]*</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.partition</code></p>
+<p><em>Example</em>: <code>&quot;com.android.test&quot;</code></p>
+<p><em>Type</em>: string matching the pattern [a-zA-Z0-9_.]*</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnamepartition" id="appsprebuiltnamepartition"><code>apps.prebuilt.&lt;name&gt;.partition</code></a></h3>
 <p>Partition on which to place this app</p>
-<p>Type: string matching the pattern (vendor|system|product)</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.privappPermissions</code></p>
+<p><em>Type</em>: string matching the pattern (vendor|system|product)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnameprivapppermissions" id="appsprebuiltnameprivapppermissions"><code>apps.prebuilt.&lt;name&gt;.privappPermissions</code></a></h3>
 <p>Privileged permissions to apply to this application.
-See https://developer.android.com/reference/android/Manifest.permission and note permissions which say
+Refer to this <a href="https://developer.android.com/reference/android/Manifest.permission">link</a> and note permissions which say
 &quot;not for use by third-party applications&quot;.</p>
-<p>Default: <code>[]</code></p>
-<p>Example: <code>&quot;[ \&quot;INSTALL_PACKAGES\&quot; ]&quot;</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>apps.prebuilt.&lt;name&gt;.privileged</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Example</em>: <code>[&quot;INSTALL_PACKAGES&quot;]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsprebuiltnameprivileged" id="appsprebuiltnameprivileged"><code>apps.prebuilt.&lt;name&gt;.privileged</code></a></h3>
 <p>Whether this APK should be included as a privileged application.</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.seedvault.enable</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3><a class="header" href="#appsseedvaultenable" id="appsseedvaultenable"><code>apps.seedvault.enable</code></a></h3>
 <p>Whether to enable Seedvault (backup).</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.updater.enable</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/seedvault.nix">modules/apps/seedvault.nix</a></p>
+<h3><a class="header" href="#appsupdaterenable" id="appsupdaterenable"><code>apps.updater.enable</code></a></h3>
 <p>Whether to enable OTA Updater.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apps.updater.url</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/updater.nix">modules/apps/updater.nix</a></p>
+<h3><a class="header" href="#appsupdaterurl" id="appsupdaterurl"><code>apps.updater.url</code></a></h3>
 <p>URL for OTA updates</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apps.vanadium.enable</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/updater.nix">modules/apps/updater.nix</a></p>
+<h3><a class="header" href="#appsvanadiumenable" id="appsvanadiumenable"><code>apps.vanadium.enable</code></a></h3>
 <p>Whether to enable vanadium browser.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apv.buildID</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/chromium.nix">modules/apps/chromium.nix</a></p>
+<h3><a class="header" href="#apvbuildid" id="apvbuildid"><code>apv.buildID</code></a></h3>
 <p>Build ID associated with the upstream img/ota (used to select images)</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>apv.enable</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv.nix">modules/apv.nix</a></p>
+<h3><a class="header" href="#apvenable" id="apvenable"><code>apv.enable</code></a></h3>
 <p>Whether to enable android-prepare-vendor.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>apv.img</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv.nix">modules/apv.nix</a></p>
+<h3><a class="header" href="#apvimg" id="apvimg"><code>apv.img</code></a></h3>
 <p>A factory image <code>.zip</code> from upstream whose vendor contents should be extracted and included in the build</p>
-<p>Default: <code>null</code></p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>apv.ota</code></p>
+<p><em>Default</em>: <code>null</code></p>
+<p><em>Type</em>: path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv.nix">modules/apv.nix</a></p>
+<h3><a class="header" href="#apvota" id="apvota"><code>apv.ota</code></a></h3>
 <p>An <code>OTA</code> from upstream whose vendor contents should be extracted and included in the build. (Android &gt;=10 builds require this in addition to <code>apv.img</code>)</p>
-<p>Default: <code>null</code></p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>arch</code></p>
+<p><em>Default</em>: <code>null</code></p>
+<p><em>Type</em>: path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv.nix">modules/apv.nix</a></p>
+<h3><a class="header" href="#arch" id="arch"><code>arch</code></a></h3>
 <p>Architecture of phone, usually set automatically by device</p>
-<p>Default: <code>&quot;arm64&quot;</code></p>
-<p>Type: string matching the pattern (arm64|arm|x86_64|x86)</p>
-</li>
-<li>
-<p><code>buildDateTime</code></p>
+<p><em>Default</em>: <code>&quot;arm64&quot;</code></p>
+<p><em>Type</em>: string matching the pattern (arm64|arm|x86_64|x86)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#builddatetime" id="builddatetime"><code>buildDateTime</code></a></h3>
 <p>Seconds since the epoch that this build is taking place.
 Needs to be monotonically increasing for each build to enable the updater to work.
 e.g. output of <code>date +%s</code></p>
-<p>Default: <code>1</code></p>
-<p>Example: <code>1565645583</code></p>
-<p>Type: signed integer</p>
-</li>
-<li>
-<p><code>buildNumber</code></p>
+<p><em>Default</em>: <code>1</code></p>
+<p><em>Example</em>: <code>1565645583</code></p>
+<p><em>Type</em>: signed integer</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#buildnumber" id="buildnumber"><code>buildNumber</code></a></h3>
 <p>Set this to something meaningful to identify the build.
 Defaults to <code>YYYY.MM.DD.HH</code> based on <code>buildDateTime</code>.
 Needs to be unique for each build to enable the updater to work</p>
-<p>Example: <code>&quot;2019.08.12.1&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>buildType</code></p>
+<p><em>Example</em>: <code>&quot;2019.08.12.1&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#buildtype" id="buildtype"><code>buildType</code></a></h3>
 <p>one of &quot;release&quot;, &quot;debug&quot;</p>
-<p>Default: <code>&quot;release&quot;</code></p>
-<p>Type: string matching the pattern (release|debug)</p>
-</li>
-<li>
-<p><code>ccache.enable</code></p>
+<p><em>Default</em>: <code>&quot;release&quot;</code></p>
+<p><em>Type</em>: string matching the pattern (release|debug)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#ccacheenable" id="ccacheenable"><code>ccache.enable</code></a></h3>
 <p>Whether to enable ccache.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>channel</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#channel" id="channel"><code>channel</code></a></h3>
 <p>Default channel to use for updates (can be modified in app)</p>
-<p>Default: <code>&quot;stable&quot;</code></p>
-<p>Type: string matching the pattern (stable|beta)</p>
-</li>
-<li>
-<p><code>device</code></p>
+<p><em>Default</em>: <code>&quot;stable&quot;</code></p>
+<p><em>Type</em>: string matching the pattern (stable|beta)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/release.nix">modules/release.nix</a></p>
+<h3><a class="header" href="#device" id="device"><code>device</code></a></h3>
 <p>Code name of device build target</p>
-<p>Default: <code>null</code></p>
-<p>Example: <code>&quot;marlin&quot;</code></p>
-<p>Type: null or string</p>
-</li>
-<li>
-<p><code>deviceDisplayName</code></p>
+<p><em>Default</em>: <code>null</code></p>
+<p><em>Example</em>: <code>&quot;marlin&quot;</code></p>
+<p><em>Type</em>: null or string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#devicedisplayname" id="devicedisplayname"><code>deviceDisplayName</code></a></h3>
 <p>Display name of device build target</p>
-<p>Default: <code>null</code></p>
-<p>Example: <code>&quot;Pixel XL&quot;</code></p>
-<p>Type: null or string</p>
-</li>
-<li>
-<p><code>etc</code></p>
+<p><em>Default</em>: <code>null</code></p>
+<p><em>Example</em>: <code>&quot;Pixel XL&quot;</code></p>
+<p><em>Type</em>: null or string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#etc" id="etc"><code>etc</code></a></h3>
 <p>Set of files to be included under <code>/etc</code></p>
-<p>Default: <code>{}</code></p>
-<p>Type: attribute set of submodules</p>
-</li>
-<li>
-<p><code>etc.&lt;name&gt;.partition</code></p>
+<p><em>Default</em>: <code>{  }</code></p>
+<p><em>Type</em>: attribute set of submodules</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/etc.nix">modules/etc.nix</a></p>
+<h3><a class="header" href="#etcnamepartition" id="etcnamepartition"><code>etc.&lt;name&gt;.partition</code></a></h3>
 <p>Partition on which to place this etc file</p>
-<p>Type: string matching the pattern (vendor|system|product)</p>
-</li>
-<li>
-<p><code>etc.&lt;name&gt;.source</code></p>
+<p><em>Type</em>: string matching the pattern (vendor|system|product)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/etc.nix">modules/etc.nix</a></p>
+<h3><a class="header" href="#etcnamesource" id="etcnamesource"><code>etc.&lt;name&gt;.source</code></a></h3>
 <p>Path of the source file</p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>etc.&lt;name&gt;.target</code></p>
+<p><em>Type</em>: path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/etc.nix">modules/etc.nix</a></p>
+<h3><a class="header" href="#etcnametarget" id="etcnametarget"><code>etc.&lt;name&gt;.target</code></a></h3>
 <p>Name of symlink (relative to <code>/etc</code>). Defaults to the attribute name.</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>etc.&lt;name&gt;.text</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/etc.nix">modules/etc.nix</a></p>
+<h3><a class="header" href="#etcnametext" id="etcnametext"><code>etc.&lt;name&gt;.text</code></a></h3>
 <p>Text of the file</p>
-<p>Default: <code>null</code></p>
-<p>Type: null or string</p>
-</li>
-<li>
-<p><code>flavor</code></p>
+<p><em>Default</em>: <code>null</code></p>
+<p><em>Type</em>: null or string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/etc.nix">modules/etc.nix</a></p>
+<h3><a class="header" href="#flavor" id="flavor"><code>flavor</code></a></h3>
 <p>Set to one of robotnix's supported flavors.
 Current options are <code>vanilla</code>, <code>grapheneos</code>, and <code>lineageos</code>.</p>
-<p>Default: <code>null</code></p>
-<p>Example: <code>&quot;vanilla&quot;</code></p>
-<p>Type: null or string</p>
-</li>
-<li>
-<p><code>google.base.enable</code></p>
+<p><em>Default</em>: <code>null</code></p>
+<p><em>Example</em>: <code>&quot;vanilla&quot;</code></p>
+<p><em>Type</em>: null or string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#googlebaseenable" id="googlebaseenable"><code>google.base.enable</code></a></h3>
 <p>Whether to enable Base Google OEM files (experimental).</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>google.dialer.enable</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/google.nix">modules/google.nix</a></p>
+<h3><a class="header" href="#googledialerenable" id="googledialerenable"><code>google.dialer.enable</code></a></h3>
 <p>Whether to enable Google Dialer (experimental).</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>google.fi.enable</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/google.nix">modules/google.nix</a></p>
+<h3><a class="header" href="#googlefienable" id="googlefienable"><code>google.fi.enable</code></a></h3>
 <p>Whether to enable Google Fi (experimental).</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>hosts</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/google.nix">modules/google.nix</a></p>
+<h3><a class="header" href="#hosts" id="hosts"><code>hosts</code></a></h3>
 <p>Custom hosts file</p>
-<p>Default: <code>null</code></p>
-<p>Type: null or path</p>
-</li>
-<li>
-<p><code>incremental</code></p>
+<p><em>Default</em>: <code>null</code></p>
+<p><em>Type</em>: null or path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/hosts.nix">modules/hosts.nix</a></p>
+<h3><a class="header" href="#incremental" id="incremental"><code>incremental</code></a></h3>
 <p>Whether to include an incremental build in <code>otaDir</code> output</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>kernel.buildProductFilenames</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/release.nix">modules/release.nix</a></p>
+<h3><a class="header" href="#kernelbuildproductfilenames" id="kernelbuildproductfilenames"><code>kernel.buildProductFilenames</code></a></h3>
 <p>List of build products in kernel <code>out/</code> to copy into path specified by <code>kernel.relpath</code>.</p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>kernel.clangVersion</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#kernelclangversion" id="kernelclangversion"><code>kernel.clangVersion</code></a></h3>
 <p>Version of prebuilt clang to use for kernel.
 See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md&quot;</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>kernel.compiler</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#kernelcompiler" id="kernelcompiler"><code>kernel.compiler</code></a></h3>
 <p>Compilter to use for building kernel</p>
-<p>Default: <code>&quot;clang&quot;</code></p>
-<p>Type: string matching the pattern (gcc|clang)</p>
-</li>
-<li>
-<p><code>kernel.enable</code></p>
+<p><em>Default</em>: <code>&quot;clang&quot;</code></p>
+<p><em>Type</em>: string matching the pattern (gcc|clang)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#kernelenable" id="kernelenable"><code>kernel.enable</code></a></h3>
 <p>Whether to enable building custom kernel.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>kernel.linker</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#kernellinker" id="kernellinker"><code>kernel.linker</code></a></h3>
 <p>Linker to use for building kernel</p>
-<p>Default: <code>&quot;gold&quot;</code></p>
-<p>Type: string matching the pattern (gold|lld)</p>
-</li>
-<li>
-<p><code>kernel.patches</code></p>
+<p><em>Default</em>: <code>&quot;gold&quot;</code></p>
+<p><em>Type</em>: string matching the pattern (gold|lld)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#kernelpatches" id="kernelpatches"><code>kernel.patches</code></a></h3>
 <p>List of patches to apply to kernel source</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of paths</p>
-</li>
-<li>
-<p><code>kernel.postPatch</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Type</em>: list of paths</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#kernelpostpatch" id="kernelpostpatch"><code>kernel.postPatch</code></a></h3>
 <p>Commands to run after patching kernel source</p>
-<p>Default: <code>&quot;&quot;</code></p>
-<p>Type: strings concatenated with &quot;\n&quot;</p>
-</li>
-<li>
-<p><code>kernel.relpath</code></p>
+<p><em>Default</em>: <code>&quot;&quot;</code></p>
+<p><em>Type</em>: strings concatenated with &quot;\n&quot;</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#kernelrelpath" id="kernelrelpath"><code>kernel.relpath</code></a></h3>
 <p>Relative path in source tree to place kernel build artifacts</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>kernel.src</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#kernelsrc" id="kernelsrc"><code>kernel.src</code></a></h3>
 <p>Path to kernel source</p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>keyStorePath</code></p>
+<p><em>Type</em>: path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
+<h3><a class="header" href="#keystorepath" id="keystorepath"><code>keyStorePath</code></a></h3>
 <p>String containing absolute path to generated keys for signing.
 This must be a <em>string</em> and not a &quot;nix path&quot; to ensure that your secret keys are not imported into the public <code>/nix/store</code>.</p>
-<p>Example: <code>&quot;/var/secrets/android-keys&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>microg.enable</code></p>
+<p><em>Example</em>: <code>&quot;/var/secrets/android-keys&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#microgenable" id="microgenable"><code>microg.enable</code></a></h3>
 <p>Whether to enable MicroG.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>nixpkgs.overlays</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/microg.nix">modules/microg.nix</a></p>
+<h3><a class="header" href="#nixpkgsoverlays" id="nixpkgsoverlays"><code>nixpkgs.overlays</code></a></h3>
 <p>Nixpkgs overlays to override the default packages used while building robotnix.</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of unspecifieds</p>
-</li>
-<li>
-<p><code>product.additionalProductPackages</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Type</em>: list of unspecifieds</p>
+<p><em>Declared by</em>:</p>
+<h3><a class="header" href="#productadditionalproductpackages" id="productadditionalproductpackages"><code>product.additionalProductPackages</code></a></h3>
 <p><code>PRODUCT_PACKAGES</code> to add under <code>product</code> partition.</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>productName</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#productname" id="productname"><code>productName</code></a></h3>
 <p>Product name for choosecombo/lunch</p>
-<p>Default: <code>&quot;${productNamePrefix}${device}&quot;</code></p>
-<p>Example: <code>&quot;aosp_crosshatch&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>productNamePrefix</code></p>
+<p><em>Default</em>: <code>&quot;${productNamePrefix}${device}&quot;</code></p>
+<p><em>Example</em>: <code>&quot;aosp_crosshatch&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#productnameprefix" id="productnameprefix"><code>productNamePrefix</code></a></h3>
 <p>Prefix for product name used with choosecombo/lunch</p>
-<p>Default: <code>&quot;aosp_&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>removedProductPackages</code></p>
+<p><em>Default</em>: <code>&quot;aosp_&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#removedproductpackages" id="removedproductpackages"><code>removedProductPackages</code></a></h3>
 <p><code>PRODUCT_PACKAGES</code> to remove from build</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>resources</code></p>
-<p>Package resources. The first key refers to the relative path for the package, and the second key refers to the resource name</p>
-<p>Default: <code>{}</code></p>
-<p>Type: attribute set of attribute set of boolean or signed integer or string or list of string or signed integers or submoduless</p>
-</li>
-<li>
-<p><code>retrofit</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#resources" id="resources"><code>resources</code></a></h3>
+<p>Additional package resources to include. The first key refers to the relative path for the package, and the second key refers to the resource name</p>
+<p><em>Default</em>: <code>{  }</code></p>
+<p><em>Example</em>: <code>{ &quot;frameworks/base/core/res&quot;.config_enableAutoPowerModes = true; }</code></p>
+<p><em>Type</em>: attribute set of attribute set of boolean or signed integer or string or list of string or signed integers or submoduless</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/resources.nix">modules/resources.nix</a></p>
+<h3><a class="header" href="#retrofit" id="retrofit"><code>retrofit</code></a></h3>
 <p>Generate a retrofit OTA for upgrading a device without dynamic partitions.
 See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legacy#generating-update-packages</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>signing.apex.enable</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/release.nix">modules/release.nix</a></p>
+<h3><a class="header" href="#signingapexenable" id="signingapexenable"><code>signing.apex.enable</code></a></h3>
 <p>Whether to enable signing APEX packages.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>signing.apex.packageNames</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#signingapexpackagenames" id="signingapexpackagenames"><code>signing.apex.packageNames</code></a></h3>
 <p>APEX packages which need to be signed</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>signing.avb.enable</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#signingavbenable" id="signingavbenable"><code>signing.avb.enable</code></a></h3>
 <p>Whether to enable AVB signing.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>signing.avb.fingerprint</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#signingavbfingerprint" id="signingavbfingerprint"><code>signing.avb.fingerprint</code></a></h3>
 <p>SHA256 hash of avb_pkmd.bin</p>
-<p>Type: string matching the pattern [0-9A-F]{64}</p>
-</li>
-<li>
-<p><code>signing.avb.mode</code></p>
+<p><em>Type</em>: string matching the pattern [0-9A-F]{64}</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#signingavbmode" id="signingavbmode"><code>signing.avb.mode</code></a></h3>
 <p>Mode of AVB signing to use.</p>
-<p>Default: <code>&quot;vbmeta_chained&quot;</code></p>
-<p>Type: string matching the pattern (verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)</p>
-</li>
-<li>
-<p><code>signing.avb.verityCert</code></p>
+<p><em>Default</em>: <code>&quot;vbmeta_chained&quot;</code></p>
+<p><em>Type</em>: string matching the pattern (verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#signingavbveritycert" id="signingavbveritycert"><code>signing.avb.verityCert</code></a></h3>
 <p>Verity certificate for AVB. e.g. in x509 DER format.x509.pem. Only needed if signing.avb.mode = &quot;verity_only&quot;</p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>signing.enable</code></p>
+<p><em>Type</em>: path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#signingenable" id="signingenable"><code>signing.enable</code></a></h3>
 <p>Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>source.dirs</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#sourcedirs" id="sourcedirs"><code>source.dirs</code></a></h3>
 <p>Directories to include in Android build process.
 Normally set by the output of <code>mk-repo-file.py</code>.
 However, additional source directories can be added to the build here using this option as well.</p>
-<p>Default: <code>{}</code></p>
-<p>Type: attribute set of submodules</p>
-</li>
-<li>
-<p><code>source.dirs.&lt;name&gt;.enable</code></p>
+<p><em>Default</em>: <code>{  }</code></p>
+<p><em>Type</em>: attribute set of submodules</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourcedirsnameenable" id="sourcedirsnameenable"><code>source.dirs.&lt;name&gt;.enable</code></a></h3>
 <p>Whether to include this directory in the android build source tree.</p>
-<p>Default: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>source.dirs.&lt;name&gt;.patches</code></p>
+<p><em>Default</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourcedirsnamepatches" id="sourcedirsnamepatches"><code>source.dirs.&lt;name&gt;.patches</code></a></h3>
 <p>Patches to apply to source directory.</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of paths</p>
-</li>
-<li>
-<p><code>source.dirs.&lt;name&gt;.postPatch</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Type</em>: list of paths</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourcedirsnamepostpatch" id="sourcedirsnamepostpatch"><code>source.dirs.&lt;name&gt;.postPatch</code></a></h3>
 <p>Additional commands to run after patching source directory.</p>
-<p>Default: <code>&quot;&quot;</code></p>
-<p>Type: strings concatenated with &quot;\n&quot;</p>
-</li>
-<li>
-<p><code>source.dirs.&lt;name&gt;.relpath</code></p>
+<p><em>Default</em>: <code>&quot;&quot;</code></p>
+<p><em>Type</em>: strings concatenated with &quot;\n&quot;</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourcedirsnamerelpath" id="sourcedirsnamerelpath"><code>source.dirs.&lt;name&gt;.relpath</code></a></h3>
 <p>Relative path under android source tree to place this directory. Defaults to attribute name.</p>
-<p>Default: <code>&quot;‹name›&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>source.dirs.&lt;name&gt;.src</code></p>
+<p><em>Default</em>: <code>&quot;‹name›&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourcedirsnamesrc" id="sourcedirsnamesrc"><code>source.dirs.&lt;name&gt;.src</code></a></h3>
 <p>Source to use for this android source directory.</p>
-<p>Default: <code>&quot;empty&quot;</code></p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>source.evalTimeFetching</code></p>
+<p><em>Default</em>: <code>&lt;δ:empty&gt;</code></p>
+<p><em>Type</em>: path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourceevaltimefetching" id="sourceevaltimefetching"><code>source.evalTimeFetching</code></a></h3>
 <p>Set config.source.dirs automatically using IFD with information from <code>source.manifest</code>.
 Also enables use of <code>builtins.fetchGit</code> instead of <code>pkgs.fetchgit</code> if not all sha256 hashes are available.
 (Can be useful for development, but not recommended normally)</p>
-<p>Default: <code>false</code></p>
-<p>Type: unspecified</p>
-</li>
-<li>
-<p><code>source.excludeGroups</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: unspecified</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourceexcludegroups" id="sourceexcludegroups"><code>source.excludeGroups</code></a></h3>
 <p>Project groups to exclude from source tree</p>
-<p>Default: <code>[&quot;darwin&quot;,&quot;mips&quot;]</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>source.includeGroups</code></p>
+<p><em>Default</em>: <code>[ &quot;darwin&quot; &quot;mips&quot; ]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourceincludegroups" id="sourceincludegroups"><code>source.includeGroups</code></a></h3>
 <p>Project groups to include in source tree (overrides <code>excludeGroups</code>)</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>source.manifest.rev</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourcemanifestrev" id="sourcemanifestrev"><code>source.manifest.rev</code></a></h3>
 <p>Revision/tag to use from repo manifest repository.</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>source.manifest.sha256</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourcemanifestsha256" id="sourcemanifestsha256"><code>source.manifest.sha256</code></a></h3>
 <p>Nix sha256 hash of repo manifest repository.</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>source.manifest.url</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#sourcemanifesturl" id="sourcemanifesturl"><code>source.manifest.url</code></a></h3>
 <p>URL to repo manifest repository. Not necessary to set if using <code>source.dirs</code> directly.</p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>system.additionalProductPackages</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3><a class="header" href="#systemadditionalproductpackages" id="systemadditionalproductpackages"><code>system.additionalProductPackages</code></a></h3>
 <p><code>PRODUCT_PACKAGES</code> to add under <code>system</code> partition.</p>
-<p>Default: <code>[]</code></p>
-<p>Type: list of strings</p>
-</li>
-<li>
-<p><code>variant</code></p>
+<p><em>Default</em>: <code>[  ]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#variant" id="variant"><code>variant</code></a></h3>
 <p>&quot;user&quot; has limited access and is suited for production.
 &quot;userdebug&quot; is like user but with root access and debug capability.
 &quot;eng&quot; is the development configuration with additional debugging tools.</p>
-<p>Default: <code>&quot;user&quot;</code></p>
-<p>Type: string matching the pattern (user|userdebug|eng)</p>
-</li>
-<li>
-<p><code>webview</code></p>
+<p><em>Default</em>: <code>&quot;user&quot;</code></p>
+<p><em>Type</em>: string matching the pattern (user|userdebug|eng)</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3><a class="header" href="#webview" id="webview"><code>webview</code></a></h3>
 <p>Webview providers to include in Android build. Currently included options are chromium, bromite, and vanadium.</p>
-<p>Type: attribute set of submodules</p>
-</li>
-<li>
-<p><code>webview.&lt;name&gt;.apk</code></p>
+<p><em>Type</em>: attribute set of submodules</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/webview.nix">modules/webview.nix</a></p>
+<h3><a class="header" href="#webviewnameapk" id="webviewnameapk"><code>webview.&lt;name&gt;.apk</code></a></h3>
 <p>APK file containing webview package.</p>
-<p>Type: path</p>
-</li>
-<li>
-<p><code>webview.&lt;name&gt;.availableByDefault</code></p>
+<p><em>Type</em>: path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/webview.nix">modules/webview.nix</a></p>
+<h3><a class="header" href="#webviewnameavailablebydefault" id="webviewnameavailablebydefault"><code>webview.&lt;name&gt;.availableByDefault</code></a></h3>
 <p>If <code>true</code>, this provider can be automatically selected by the
 framework, if it's the first valid choice. If <code>false</code>, this
 provider will only be used if the user selects it themselves from
 the developer settings menu.</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>webview.&lt;name&gt;.description</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/webview.nix">modules/webview.nix</a></p>
+<h3><a class="header" href="#webviewnamedescription" id="webviewnamedescription"><code>webview.&lt;name&gt;.description</code></a></h3>
 <p>The name shown to the user in the developer settings menu.</p>
-<p>Default: <code>&quot;Android System WebView&quot;</code></p>
-<p>Type: string</p>
-</li>
-<li>
-<p><code>webview.&lt;name&gt;.enable</code></p>
+<p><em>Default</em>: <code>&quot;Android System WebView&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/webview.nix">modules/webview.nix</a></p>
+<h3><a class="header" href="#webviewnameenable" id="webviewnameenable"><code>webview.&lt;name&gt;.enable</code></a></h3>
 <p>Whether to enable ‹name› webview.</p>
-<p>Default: <code>false</code></p>
-<p>Example: <code>true</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>webview.&lt;name&gt;.isFallback</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Example</em>: <code>true</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/webview.nix">modules/webview.nix</a></p>
+<h3><a class="header" href="#webviewnameisfallback" id="webviewnameisfallback"><code>webview.&lt;name&gt;.isFallback</code></a></h3>
 <p>If <code>true</code>, this provider will be automatically disabled by the
 framework, preventing it from being used or updated by app
 stores, unless there is no other valid provider available.  Only
 one provider can be a fallback.</p>
-<p>Default: <code>false</code></p>
-<p>Type: boolean</p>
-</li>
-<li>
-<p><code>webview.&lt;name&gt;.packageName</code></p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/webview.nix">modules/webview.nix</a></p>
+<h3><a class="header" href="#webviewnamepackagename" id="webviewnamepackagename"><code>webview.&lt;name&gt;.packageName</code></a></h3>
 <p>The Android package name of the APK.</p>
-<p>Default: <code>&quot;com.android.webview&quot;</code></p>
-<p>Type: string</p>
-</li>
-</ul>
+<p><em>Default</em>: <code>&quot;com.android.webview&quot;</code></p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/webview.nix">modules/webview.nix</a></p>
 
                     </main>
 
