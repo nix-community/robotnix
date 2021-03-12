@@ -145,9 +145,11 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
   # where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
   # and Strength as defined in Authenticators.java
+  # TODO: This ought to show up in the vendor (not system or product) resource overlay
   resources."frameworks/base/core/res".config_biometric_sensors = {
-    value = optional (elem config.deviceFamily [ "taimen" "muskie" "crosshatch" "bonito" ]) "0:2:15"
-            ++ optional (config.deviceFamily == "coral") "0:8:15";
+    value = optional (elem config.deviceFamily phoneDeviceFamilies) (
+              if (config.deviceFamily == "coral") then "0:8:15"
+              else "0:2:15");
     type = "string-array";
   };
 
