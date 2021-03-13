@@ -12,7 +12,7 @@ in
     apps.seedvault.enable = mkEnableOption "Seedvault (backup)";
   };
 
-  config = mkMerge [
+  config = mkIf cfg.enable (mkMerge [
   {
     # In order to switch to using this if it's not set on the first boot, run these:
     # $ bmgr list transports
@@ -22,7 +22,7 @@ in
     resources."frameworks/base/packages/SettingsProvider".def_backup_enabled = true;
     resources."frameworks/base/packages/SettingsProvider".def_backup_transport = "com.stevesoltys.seedvault.transport.ConfigurableBackupTransport";
   }
-  (mkIf (cfg.enable && config.androidVersion >= 11) {
+  (mkIf (config.androidVersion >= 11) {
     # For android 11, just use the source tree from upstream, and have soong build it
     source.dirs."robotnix/seedvault".src = pkgs.fetchFromGitHub {
       owner = "stevesoltys";
@@ -33,7 +33,7 @@ in
 
     product.additionalProductPackages = [ "Seedvault" ];
   })
-  (mkIf (cfg.enable && config.androidVersion == 10) {
+  (mkIf (config.androidVersion == 10) {
     # For android 10, use the version built natively in nix using gradle2nix.
     apps.prebuilt.Seedvault = {
       apk = apks.seedvault_10;
@@ -51,5 +51,5 @@ in
       </config>
     '';
   })
-  ];
+  ]);
 }
