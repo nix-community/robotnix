@@ -1,17 +1,17 @@
-From 416af8006b0c3d43ecbc4e24d5ee563c45f86452 Mon Sep 17 00:00:00 2001
+From 6adfb9ce9ff64504b9e70c6f5dc9298d710278ed Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:00:46 -0400
-Subject: [PATCH 1/4] Custom listen settings
+Subject: [PATCH 1/5] Custom listen settings
 
 ---
  src/main/java/app/attestation/server/AttestationServer.java | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index d3c0443..ffa634d 100644
+index c3d9b9a..fd7dcda 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -335,7 +335,7 @@ public class AttestationServer {
+@@ -365,7 +365,7 @@ public class AttestationServer {
          executor.prestartAllCoreThreads();
  
          System.setProperty("sun.net.httpserver.nodelay", "true");
@@ -21,13 +21,13 @@ index d3c0443..ffa634d 100644
          server.createContext("/api/change_password", new ChangePasswordHandler());
          server.createContext("/api/login", new LoginHandler());
 -- 
-2.30.0
+2.30.1
 
 
-From 5679e4a7cc960948b41a847f3dc6352829da2323 Mon Sep 17 00:00:00 2001
+From eb2775a0a5099ef23ed171ea4a75f7f79e94b4a0 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:09 -0400
-Subject: [PATCH 2/4] Custom domain
+Subject: [PATCH 2/5] Custom domain
 
 ---
  .../attestation/server/AlertDispatcher.java   |  2 +-
@@ -40,10 +40,10 @@ Subject: [PATCH 2/4] Custom domain
  7 files changed, 26 insertions(+), 36 deletions(-)
 
 diff --git a/src/main/java/app/attestation/server/AlertDispatcher.java b/src/main/java/app/attestation/server/AlertDispatcher.java
-index 61814d4..78e3b37 100644
+index 79f7675..12990db 100644
 --- a/src/main/java/app/attestation/server/AlertDispatcher.java
 +++ b/src/main/java/app/attestation/server/AlertDispatcher.java
-@@ -157,7 +157,7 @@ class AlertDispatcher implements Runnable {
+@@ -161,7 +161,7 @@ class AlertDispatcher implements Runnable {
                                          alertDelay / 60 / 60 + " hours");
                                  message.setText("This is an alert for the account '" + username + "'.\n\n" +
                                          "The following devices have failed to provide valid attestations before the expiry time:\n\n" +
@@ -53,10 +53,10 @@ index 61814d4..78e3b37 100644
  
                                  Transport.send(message);
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index ffa634d..06bd249 100644
+index fd7dcda..a8abeaa 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -892,7 +892,7 @@ public class AttestationServer {
+@@ -923,7 +923,7 @@ public class AttestationServer {
              exchange.getResponseHeaders().set("Content-Type", "image/png");
              exchange.sendResponseHeaders(200, 0);
              try (final OutputStream output = exchange.getResponseBody()) {
@@ -66,7 +66,7 @@ index ffa634d..06bd249 100644
                      BaseEncoding.base64().encode(account.subscribeKey) + " " +
                      account.verifyInterval;
 diff --git a/static/about.html b/static/about.html
-index 0826444..74a1dff 100644
+index 61e1220..79f2fe5 100644
 --- a/static/about.html
 +++ b/static/about.html
 @@ -12,19 +12,19 @@
@@ -93,7 +93,7 @@ index 0826444..74a1dff 100644
          <link rel="license" href="/LICENSE.txt"/>
      </head>
      <body>
-@@ -59,7 +59,7 @@
+@@ -60,7 +60,7 @@
              pairing process between the device performing verification (Auditor) and the device
              being verified (Auditee) to implement a Trust On First Use (TOFU) model. The device
              performing verification can either be another Android device running the app in the
@@ -154,7 +154,7 @@ index 5470a81..353fd43 100644
          </script>
      </body>
 diff --git a/static/index.html b/static/index.html
-index 4763af1..8653d0d 100644
+index 2842352..9600e55 100644
 --- a/static/index.html
 +++ b/static/index.html
 @@ -12,19 +12,19 @@
@@ -174,12 +174,12 @@ index 4763af1..8653d0d 100644
          <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
          <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
          <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-         <link rel="stylesheet" href="/attestation.css?17"/>
+         <link rel="stylesheet" href="/attestation.css?18"/>
          <link rel="manifest" href="/manifest.webmanifest"/>
 -        <link rel="canonical" href="https://attestation.app/"/>
 +        <link rel="canonical" href="https://@domain@/"/>
          <link rel="license" href="/LICENSE.txt"/>
-         <script type="module" src="/monitoring.js?14"></script>
+         <script type="module" src="/monitoring.js?28"></script>
      </head>
 diff --git a/static/robots.txt b/static/robots.txt
 index 2747cbe..acceea4 100644
@@ -190,7 +190,7 @@ index 2747cbe..acceea4 100644
 -Sitemap: https://attestation.app/sitemap.xml
 +Sitemap: https://@domain@/sitemap.xml
 diff --git a/static/tutorial.html b/static/tutorial.html
-index 5a7f006..4eeb1ad 100644
+index 3388aa0..7fd6898 100644
 --- a/static/tutorial.html
 +++ b/static/tutorial.html
 @@ -12,19 +12,19 @@
@@ -217,9 +217,9 @@ index 5a7f006..4eeb1ad 100644
          <link rel="license" href="/LICENSE.txt"/>
      </head>
      <body>
-@@ -85,12 +85,12 @@
-                 on each Auditor for the same Auditee.</p>
+@@ -91,12 +91,12 @@
                  <p>To set up regularly scheduled remote verification via the remote attestation service:</p>
+ 
                  <ol>
 -                    <li>create an account on https://attestation.app/ from a separate device</li>
 +                    <li>create an account on https://@domain@/ from a separate device</li>
@@ -234,20 +234,20 @@ index 5a7f006..4eeb1ad 100644
              </section>
  
 -- 
-2.30.0
+2.30.1
 
 
-From c919c357b87894902eacee3f656949e7eb66680d Mon Sep 17 00:00:00 2001
+From c2885addfdbc40ae9832ee06c86d71072465bb31 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 17:01:18 -0400
-Subject: [PATCH 3/4] Custom fingerprints
+Subject: [PATCH 3/5] Custom fingerprints
 
 ---
  .../server/AttestationProtocol.java           | 45 ++++++++++++++++++-
  1 file changed, 44 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index 7804539..b9e8207 100644
+index ae4ae96..e0f595f 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -166,7 +166,7 @@ class AttestationProtocol {
@@ -324,20 +324,20 @@ index 7804539..b9e8207 100644
      static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 -- 
-2.30.0
+2.30.1
 
 
-From f2e5ba0550fd1e43c83d8e50af508acf4d117b75 Mon Sep 17 00:00:00 2001
+From 40a74c96755573c52fce110fd70cc97c88ddad60 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:50:29 -0400
-Subject: [PATCH 4/4] Custom appId
+Subject: [PATCH 4/5] Custom appId
 
 ---
  src/main/java/app/attestation/server/AttestationProtocol.java | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index b9e8207..0ab8df5 100644
+index e0f595f..4551239 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -161,7 +161,7 @@ class AttestationProtocol {
@@ -346,9 +346,39 @@ index b9e8207..0ab8df5 100644
  
 -    private static final String ATTESTATION_APP_PACKAGE_NAME = "app.attestation.auditor";
 +    private static final String ATTESTATION_APP_PACKAGE_NAME = "@applicationId@";
-     private static final int ATTESTATION_APP_MINIMUM_VERSION = 5;
+     private static final int ATTESTATION_APP_MINIMUM_VERSION = 22;
      private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
              "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
 -- 
-2.30.0
+2.30.1
+
+
+From 97c707b963b0e7bf2e515d8dca21d4d7a9e77da5 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sat, 20 Mar 2021 13:43:47 -0700
+Subject: [PATCH 5/5] Workaround checking for fresh database
+
+Robotnix NixOS module for attestation-server pre-creates the
+Configuration table before starting attestation-server. So, checking for
+the table existing here does not imply that we aren't starting with an
+otherwise fresh database.
+---
+ src/main/java/app/attestation/server/AttestationServer.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
+index a8abeaa..d638997 100644
+--- a/src/main/java/app/attestation/server/AttestationServer.java
++++ b/src/main/java/app/attestation/server/AttestationServer.java
+@@ -215,7 +215,7 @@ public class AttestationServer {
+         try {
+             open(attestationConn, false);
+ 
+-            final SQLiteStatement selectCreated = attestationConn.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='Configuration'");
++            final SQLiteStatement selectCreated = attestationConn.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='Accounts'");
+             if (!selectCreated.step()) {
+                 attestationConn.exec("PRAGMA user_version = 4");
+             }
+-- 
+2.30.1
 
