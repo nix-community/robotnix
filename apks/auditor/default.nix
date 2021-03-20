@@ -17,7 +17,7 @@ let
 in
 buildGradle rec {
   name = "Auditor-${version}.apk";
-  version = "25"; # Latest as of 2021-02-14
+  version = "26"; # Latest as of 2021-02-14
 
   envSpec = ./gradle-env.json;
 
@@ -25,7 +25,7 @@ buildGradle rec {
     owner = "grapheneos";
     repo = "Auditor";
     rev = version;
-    sha256 = "0nqj31j34hsqml2h0sik4ra7jv59qhmxw6jmwhdflii10j16pm6g";
+    sha256 = "0gk23h6vy6q1glm7b1y85w4r781pk7jsbax5larmal1a0bnf5lan";
   };
 
   patches = [
@@ -46,7 +46,7 @@ buildGradle rec {
   #           - Provides attribute 'artifactType' with value 'android-base-module-metadata' but the consumer didn't ask for it
   #           - Provides attribute 'com.android.build.api.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
   postPatch = ''
-    substituteInPlace build.gradle --replace "com.android.tools.build:gradle:4.1.2" "com.android.tools.build:gradle:4.0.1"
+    substituteInPlace build.gradle --replace "com.android.tools.build:gradle:4.1.3" "com.android.tools.build:gradle:4.0.1"
   '';
 
   gradleFlags = [ "assembleRelease" ];
