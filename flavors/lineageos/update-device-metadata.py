@@ -43,9 +43,11 @@ def fetch_metadata():
         if vendor == 'lg':
             vendor = 'lge'
 
-        # Workaround google shamu source tree inconsistency
+        # Workaround google device names source tree inconsistency
         if data['model'] == 'shamu':
             vendor = 'moto'
+        if data['model'] == 'flox':
+            vendor = 'asus'
 
         metadata[data['model']].update({
             'vendor': vendor,
