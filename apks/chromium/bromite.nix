@@ -20,6 +20,7 @@ in (chromium.override {
   enableRebranding = true;
   customGnFlags = { # From bromite/build/GN_ARGS
     blink_symbol_level=1;
+    chrome_pgo_phase=0;
     dcheck_always_on=false;
     debuggable_apks=false;
     dfmify_dev_ui=false;
@@ -38,21 +39,24 @@ in (chromium.override {
     enable_platform_dolby_vision=true;
     enable_platform_hevc=true;
     enable_remoting=false;
-    enable_reporting=true; # Otherwise, fails with undefined symbol: content::CrossOriginEmbedderPolicyReporter::CrossOriginEmbedderPolicyReporter
+    enable_reporting=true;
     enable_vr=false;
+    exclude_unwind_tables=false;
+    ffmpeg_branding="Chrome";
     fieldtrial_testing_like_official_build=true;
     icu_use_data_file=true;
     is_component_build=false;
     is_debug=false;
     is_official_build=true;
+    proprietary_codecs=true;
     rtc_build_examples=false;
     safe_browsing_mode=0;
     symbol_level=1;
     use_debug_fission=true;
     use_errorprone_java_compiler=false;
+    use_gnome_keyring=false;
     use_official_google_api_keys=false;
-    use_openh264=true;
-    chrome_pgo_phase=0;
+    use_rtti=false;
     use_sysroot=false;
     webview_includes_weblayer=false;
 
