@@ -100,8 +100,8 @@ in
 
   # To allow eval-time fetching of config resources from this repo.
   # Hack: Only known to work with fetchFromGitHub
-  passthru.evalTimeSrc = if lib.isStorePath src then src else builtins.fetchTarball {
-    url = src.urls;
+  passthru.evalTimeSrc = builtins.fetchTarball {
+    url = lib.head src.urls;
     sha256 = src.outputHash;
   };
 })
