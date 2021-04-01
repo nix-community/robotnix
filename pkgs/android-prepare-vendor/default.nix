@@ -34,28 +34,26 @@ let
     '';
   };
 
-  owner = "AOSPAlliance";
-  repo = "android-prepare-vendor";
-  version =
-    if api >= 30
-    then "2021-01-25"
-    else "2020-08-26";
-  rev =
-    if api >= 30
-    then "4e3aea63bd5b16b409cce34538b218b186654f5e" # Android11 branch
-    else "a9602ca6ef16ff10641d668dcb203f89f402d40d"; # Android10 branch
-  sha256 =
-    if api >= 30
-    then "0k7npw8ba5633is6hrc1bkpp1wsm2pbnkpfp8dpambmpdym46gwq"
-    else "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
+  version = if api >= 30 then "2021-01-25" else "2020-08-26";
+  src = if api >= 30
+    then fetchFromGitHub {
+      # Android11 branch
+      owner = "AOSPAlliance";
+      repo = "android-prepare-vendor";
+      rev = "4e3aea63bd5b16b409cce34538b218b186654f5e";
+      sha256 = "0k7npw8ba5633is6hrc1bkpp1wsm2pbnkpfp8dpambmpdym46gwq";
+    } else fetchFromGitHub {
+      # Android10 branch
+      owner = "AOSPAlliance";
+      repo = "android-prepare-vendor";
+      rev = "a9602ca6ef16ff10641d668dcb203f89f402d40d";
+      sha256 = "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
+    };
+
 in
 (stdenv.mkDerivation {
   pname = "android-prepare-vendor";
-  inherit version;
-
-  src = fetchFromGitHub {
-    inherit owner repo rev sha256;
-  };
+  inherit src version;
 
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = [
@@ -101,8 +99,9 @@ in
   '';
 
   # To allow eval-time fetching of config resources from this repo.
-  passthru.evalTimeSrc = builtins.fetchTarball {
-    url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
-    inherit sha256;
+  # Hack: Only known to work with fetchFromGitHub
+  passthru.evalTimeSrc = if lib.isStorePath src then src else builtins.fetchTarball {
+    url = src.urls;
+    sha256 = src.outputHash;
   };
 })
