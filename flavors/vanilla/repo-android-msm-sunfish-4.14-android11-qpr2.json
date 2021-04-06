@@ -5,9 +5,7 @@
     "url": "https://android.googlesource.com/kernel/build"
   },
   "prebuilts-master/clang/host/linux-x86": {
-    "groups": [
-      "partner"
-    ],
+    "groups": [],
     "revisionExpr": "f71cc7fa68ac644595257d6fdebc2e543cb7041c",
     "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86"
   },
@@ -31,61 +29,74 @@
     "linkfiles": [
       {
         "dest": "build.config",
-        "src": "build.config.no-cfi"
+        "src": "build.config.sunfish_no-cfi"
+      },
+      {
+        "dest": "build_floral.sh",
+        "src": "build_floral.sh"
+      },
+      {
+        "dest": "build_sunfish.sh",
+        "src": "build_sunfish.sh"
       }
     ],
-    "rev": "6146922b0a5d802397d4bcaff8d12ed0705a9421",
-    "revisionExpr": "android-11.0.0_r0.62",
-    "sha256": "035jpjv7pcyim8lbdn44mazn0c3cp5yfy582sw89ai8yfrmk1g2h",
-    "tree": "06c6f9df9fb4729c407a9a4cd1a47ff77c368a00",
+    "rev": "35f35f6b9c768ef939e6bae174083b8277114f36",
+    "revisionExpr": "android-11.0.0_r0.75",
+    "sha256": "0jpda8v97wwafsmfplngar86r19zp11vr6d8j6jzx1v2rrw4vw7a",
+    "tree": "0e60ed76a6147193f91115f8bdc770ca93b1223d",
     "url": "https://android.googlesource.com/kernel/msm"
   },
   "private/msm-google-modules/data-kernel": {
     "groups": [],
-    "rev": "63763a1e33d07df9acc2c90deb9595bcf886ac1d",
-    "revisionExpr": "android-11.0.0_r0.62",
-    "sha256": "0vj0svmzky3aic849pna0as0smx00pynsi9v7ah0n1dk78hrycp4",
-    "tree": "7f72d67f816778f99338f53082b548873d996973",
+    "rev": "561fae62aee54333552dad3483183d1a2b8e2c68",
+    "revisionExpr": "android-11.0.0_r0.75",
+    "sha256": "1g7cplgmw7rp9imlr4rfji14w848wxzzdv3y7l82fn4fgclv98d1",
+    "tree": "2c9fa6e2a00ef18c6d67e0e9c14cb467375422c0",
     "url": "https://android.googlesource.com/kernel/msm-modules/data-kernel"
   },
-  "private/msm-google-modules/touch/fts": {
+  "private/msm-google-modules/touch/fts/floral": {
     "groups": [],
-    "rev": "d806a0c336a06552bd2d2af6c716c2fcdb7d0551",
-    "revisionExpr": "android-11.0.0_r0.62",
-    "sha256": "05qhzpmvqwfrzpaiy3v63k0d5qsqxwd4qzx8031i75j7yxjfjlv2",
-    "tree": "a1cf44d0b2ac45489ec8bda8f83880fb30588b6d",
+    "rev": "5c93d42400db19ef96404cb951bf28e22c56a2de",
+    "revisionExpr": "android-11.0.0_r0.75",
+    "sha256": "18mgqf2dn3xchn6fzr2gc0nfbch9gaa1ciaf6rnp00pl235l2wz2",
+    "tree": "6573b7da26bb9528a6af68c54e50e2ee28df9ac8",
     "url": "https://android.googlesource.com/kernel/msm-modules/fts_touch"
+  },
+  "private/msm-google-modules/touch/fts/sunfish": {
+    "groups": [],
+    "revisionExpr": "android-msm-sunfish-4.14-android11-qpr2",
+    "url": "https://android.googlesource.com/kernel/msm-modules/fts_touch_s5"
   },
   "private/msm-google-modules/wlan/fw-api": {
     "groups": [],
-    "rev": "2ffcbc76bcfcae1095437f2597fc82985001ed4e",
-    "revisionExpr": "android-11.0.0_r0.62",
+    "rev": "bb945f6191090b5845e471c6af6869259e59dd27",
+    "revisionExpr": "android-11.0.0_r0.75",
     "sha256": "1zxcpgzbnv9d2pw949v6w45fbipjw371h1vaf7wpqb7imyskrv4s",
     "tree": "78280994b164ffbccf66226ced54560e96d107f2",
     "url": "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api"
   },
   "private/msm-google-modules/wlan/qca-wifi-host-cmn": {
     "groups": [],
-    "rev": "0b1143cbdbf57fee94bdd908ba29b951a555b31b",
-    "revisionExpr": "android-11.0.0_r0.62",
-    "sha256": "1ab2p75ajnh6b7dv2433ryymhfpd60g3khwl6av1sw71g9z878g4",
-    "tree": "69e4283be3f031fc95f4756a36461527805d33c2",
+    "rev": "31420b50b6dcadc8643efd5a7170830ba2926d91",
+    "revisionExpr": "android-11.0.0_r0.75",
+    "sha256": "161nvlpz58khz00bmbc384nnxndglwxi9r0cwy66rkynjkqxb308",
+    "tree": "5e378a42bc382505a7657e112d1bcdb797cd31b4",
     "url": "https://android.googlesource.com/kernel/msm-modules/qca-wfi-host-cmn"
   },
   "private/msm-google-modules/wlan/qcacld-3.0": {
     "groups": [],
-    "rev": "e893b5faeae5b522e06bd4f86f31163efbdafedd",
-    "revisionExpr": "android-11.0.0_r0.62",
-    "sha256": "19gic64ybp9ymskicv1vjqrg30xyz8bxq6g06bd3zrrfqf5fvpj5",
-    "tree": "6aff575b847c23e61577896b9e02fd8dcea855b7",
+    "rev": "739bafaaea2a34978f24b3009bd8bb420314d53d",
+    "revisionExpr": "android-11.0.0_r0.75",
+    "sha256": "0ywjrr3kh1s002xvcdxbm70bm6mqzdgyjlqp0iy1d302xr6iwf7l",
+    "tree": "1d832a45e84bcb3a389efa9b5c6292ce7784b8c3",
     "url": "https://android.googlesource.com/kernel/msm-modules/qcacld"
   },
   "private/msm-google/techpack/audio": {
     "groups": [],
-    "rev": "90f032f89494e6e512a64b8cb8d2cba6f3f3641a",
-    "revisionExpr": "android-11.0.0_r0.62",
-    "sha256": "0fpvmva22y739fkvnm3b48bii3fx5yzjgbrvw16cgz2rn8cicdyj",
-    "tree": "a300d1b86912a91808d966a794b4badf5e669703",
+    "rev": "ec522991cb0a136d2f031f7f0a730fa748710a7a",
+    "revisionExpr": "android-11.0.0_r0.75",
+    "sha256": "0bp2z6pa99ai4cp5j4d7lrj6gjsbw8kjzjg62s83s9krv7lhw92y",
+    "tree": "c6ee0c51180804eae05bc12fb2bf12100757b8b3",
     "url": "https://android.googlesource.com/kernel/msm-extra"
   }
 }

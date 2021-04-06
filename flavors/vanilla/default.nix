@@ -135,10 +135,10 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ### Android 11 stuff ###
 (mkIf (config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1614822360;
+  buildDateTime = mkDefault 1617657301;
 
-  source.manifest.rev = mkDefault "android-11.0.0_r32";
-  apv.buildID = mkDefault "RQ2A.210305.006";
+  source.manifest.rev = mkDefault "android-11.0.0_r34";
+  apv.buildID = mkDefault "RQ2A.210405.005";
 
   # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
   # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
@@ -185,16 +185,13 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
       "drivers/staging/qca-wifi-host-cmn" = fetchRepo "private/msm-google-modules/wlan/qca-wifi-host-cmn";
       "drivers/staging/qcacld-3.0" = fetchRepo "private/msm-google-modules/wlan/qcacld-3.0";
       "drivers/staging/fw-api" = fetchRepo "private/msm-google-modules/wlan/fw-api";
-    } // optionalAttrs (elem kernelName [ "coral" "redfin" ]) {
-      "drivers/input/touchscreen/fts_touch" = fetchRepo "private/msm-google-modules/touch/fts";
-    } // optionalAttrs (elem kernelName [ "sunfish" ]) {
-      # TODO: For some reason, for sunfish, this is under fts_touch_s5
-      "drivers/input/touchscreen/fts_touch" = pkgs.fetchgit {
-        url = "https://android.googlesource.com/kernel/msm-modules/fts_touch_s5/";
-        rev = "android-11.0.0_r0.64";
-        sha256 = "18mgqf2dn3xchn6fzr2gc0nfbch9gaa1ciaf6rnp00pl235l2wz2";
-      };
+    } // optionalAttrs (elem kernelName [ "coral" "sunfish" ]) {
+      # Sunfish previously used a fts_touch_s5 repo, but it's tag moved back to
+      # to regular fts_touch repo, however, the kernel manifest was not updated.
+      "drivers/input/touchscreen/fts_touch" = fetchRepo "private/msm-google-modules/touch/fts/floral";
     } // optionalAttrs (elem kernelName [ "redfin" ]) {
+      "drivers/input/touchscreen/fts_touch" = fetchRepo "private/msm-google-modules/touch/fts";
+
       "techpack/audio" = fetchRepo "private/msm-google/techpack/audio";
       "techpack/camera" = fetchRepo "private/msm-google/techpack/camera";
       "techpack/dataipa" = fetchRepo "private/msm-google/techpack/dataipa";
