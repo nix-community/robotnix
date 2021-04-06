@@ -18,7 +18,9 @@ let
       }
     else
       pkgs.fetchgit { # Build-time source fetching. This should be preferred, but is slightly less convenient when developing.
-        inherit (p) url rev sha256 fetchSubmodules;
+        inherit (p) url sha256 fetchSubmodules;
+        # Use revisionExpr if it is a tag so we use the tag in the name of the nix derivation instead of the revision
+        rev = if hasPrefix "refs/tags/" p.revisionExpr then p.revisionExpr else p.rev;
         deepClone = false;
       };
 

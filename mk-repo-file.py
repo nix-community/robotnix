@@ -117,8 +117,12 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
             if found_treehash:
                 continue
 
-            # Fetch information
-            git_info = checkout_git(p_url, p['rev'], fetch_submodules)
+            # Fetch information. Use revisionExpr if it is a tag so we use the
+            # tag in the name of the nix derivation instead of the revision
+            if p['revisionExpr'].startswith('refs/tags/'):
+                git_info = checkout_git(p_url, p['revisionExpr'], fetch_submodules)
+            else:
+                git_info = checkout_git(p_url, p['rev'], fetch_submodules)
             p['sha256'] = git_info['sha256']
 
             # Add to cache
