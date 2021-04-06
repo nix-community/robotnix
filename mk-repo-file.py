@@ -51,8 +51,8 @@ def ls_remote(url, rev):
 def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                    override_project_revs: Dict[str, str], force_refresh: bool,
                    mirrors: Dict[str, str], project_fetch_submodules: List[str],
-                   override_tag: Optional[str],
-                   include_prefix: List[str]):
+                   override_tag: Optional[str], include_prefix: List[str],
+                   exclude_path: List[str]):
     if os.path.exists(filename) and not force_refresh:
         data = json.load(open(filename))
     else:
@@ -66,6 +66,9 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
 
     for relpath, p in data.items():
         if len(include_prefix) > 0 and (not any(relpath.startswith(p) for p in include_prefix)):
+            continue
+
+        if relpath in exclude_path:
             continue
 
         for project, rev in override_project_revs.items():
@@ -139,6 +142,7 @@ def main():
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
     parser.add_argument('--project-fetch-submodules', action="append", default=[], help="fetch submodules for the specified project path")
     parser.add_argument('--include-prefix', action="append", default=[], help="only include paths if they start with the specified prefix")
+    parser.add_argument('--exclude-path', action="append", default=[], help="paths to exclude from fetching")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
@@ -178,6 +182,7 @@ def main():
                    project_fetch_submodules=args.project_fetch_submodules,
                    override_tag=args.override_tag,
                    include_prefix=args.include_prefix,
+                   exclude_path=args.exclude_path,
                    )
 
 if __name__ == "__main__":
