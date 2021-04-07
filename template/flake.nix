@@ -26,7 +26,7 @@
 
     # This provides a convenient output which allows you to build the image by
     # simply running "nix build" on this flake.
-    # Build other outputs with (for example): "nix build .#robontixConfiguration.dailydriver.ota"
+    # Build other outputs with (for example): "nix build .#robotnixConfigurations.dailydriver.ota"
     defaultPackage.x86_64-linux = self.robotnixConfigurations."dailydriver".img;
   };
 }
