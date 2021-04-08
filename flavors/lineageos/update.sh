@@ -18,15 +18,17 @@ else
     mirror_args=()
 fi
 
+branch="lineage-18.1"
+
 args=(
     --ref-type branch
     "https://github.com/LineageOS/android"
-    "lineage-17.1"
-    ../*/repo-*.json
+    "$branch"
+    "$branch/repo.json"
 )
 
 export TMPDIR=/tmp
 
 ./update-device-metadata.py
 ../../mk-repo-file.py "${mirror_args[@]}" "${args[@]}"
-./update-device-dirs.py "${mirror_args[@]}"
+./update-device-dirs.py --branch "$branch" "${mirror_args[@]}"

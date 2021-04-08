@@ -17,14 +17,13 @@ import urllib.request
 
 LINEAGE_REPO_BASE = "https://github.com/LineageOS"
 VENDOR_REPO_BASE = "https://github.com/TheMuppets"
-BRANCH = "lineage-17.1"
 MIRRORS = {}
 
 def save(filename, data):
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
 
-def newest_rev(url):
-    remote_info = subprocess.check_output([ "git", "ls-remote", url, 'refs/heads/' + BRANCH ]).decode()
+def newest_rev(url, branch):
+    remote_info = subprocess.check_output([ "git", "ls-remote", url, 'refs/heads/' + branch ]).decode()
     remote_rev = remote_info.split('\t')[0]
     return remote_rev
 
@@ -33,17 +32,17 @@ def checkout_git(url, rev):
     json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
     return json.loads(json_text)
 
-def fetch_relpath(dirs, relpath, url):
+def fetch_relpath(dirs, relpath, url, branch):
     orig_url = url
     for mirror_url, mirror_path in MIRRORS.items():
         if url.startswith(mirror_url):
             url = url.replace(mirror_url, mirror_path)
 
     current_rev = dirs.get(relpath, {}).get('rev', None)
-    if ((current_rev != newest_rev(url))
+    if ((current_rev != newest_rev(url, branch))
             or ('path' not in dirs[relpath])
             or (not os.path.exists(dirs[relpath]['path']))):
-        dirs[relpath] = checkout_git(url, 'refs/heads/' + BRANCH)
+        dirs[relpath] = checkout_git(url, 'refs/heads/' + branch)
         dirs[relpath]['url'] = orig_url
     else:
         print(relpath + ' is up to date.')
@@ -52,7 +51,7 @@ def fetch_relpath(dirs, relpath, url):
 
 
 # Fetch device source trees for devices in metadata and save their information into filename
-def fetch_device_dirs(metadata, filename):
+def fetch_device_dirs(metadata, filename, branch):
     if os.path.exists(filename):
         dirs = json.load(open(filename))
     else:
@@ -67,7 +66,7 @@ def fetch_device_dirs(metadata, filename):
     dir_dependencies = {} # key -> [ values ]. 
     while len(dirs_to_fetch) > 0:
         relpath, url = dirs_to_fetch.pop()
-        dir_info = fetch_relpath(dirs, relpath, url)
+        dir_info = fetch_relpath(dirs, relpath, url, branch)
 
         # Also grab any dirs that this one depends on
         lineage_dependencies_filename = os.path.join(dir_info['path'], 'lineage.dependencies')
@@ -122,6 +121,7 @@ def fetch_vendor_dirs(metadata, filename):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--branch', help="lineageos version")
     parser.add_argument('--mirror', default=[], action='append', help="a repo mirror to use for a given url, specified by <url>=<path>")
     parser.add_argument('product', nargs='*',
                         help='product to fetch directory metadata for, specified by <vendor>_<device> (example: google_crosshatch) '
@@ -133,15 +133,15 @@ def main():
         MIRRORS[url] = path
 
     if len(args.product) == 0:
-        metadata = json.load(open('device-metadata.json'))
+        metadata = json.load(open(os.path.join(args.branch, 'device-metadata.json')))
     else:
         metadata = {}
         for product in args.product:
             vendor, device = product.split('_', 1)
             metadata[device] = { 'vendor': vendor }
 
-    device_dirs, dir_dependencies = fetch_device_dirs(metadata, 'device-dirs.json')
-    vendor_dirs = fetch_vendor_dirs(metadata, 'vendor-dirs.json')
+    device_dirs, dir_dependencies = fetch_device_dirs(metadata, os.path.join(args.branch, 'device-dirs.json'), args.branch)
+    vendor_dirs = fetch_vendor_dirs(metadata, os.path.join(args.branch, 'vendor-dirs.json'))
 
 if __name__ == '__main__':
     main()

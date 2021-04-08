@@ -10,11 +10,11 @@ let
     mkIf mkMerge mkDefault mkForce
     importJSON toLower;
 
-  LineageOSRelease = "lineage-17.1";
-  repoDirs = importJSON (./. + "/repo-${LineageOSRelease}.json");
+  LineageOSRelease = "lineage-${{ "10" = "17.1"; "11" = "18.1"; }.${toString config.androidVersion}}";
+  repoDirs = lib.importJSON (./. + "/${LineageOSRelease}/repo.json");
   deviceMetadata = importJSON ./device-metadata.json;
-  _deviceDirs = importJSON ./device-dirs.json;
-  vendorDirs = importJSON ./vendor-dirs.json;
+  _deviceDirs = importJSON (./. + "/${LineageOSRelease}/device-dirs.json");
+  vendorDirs = importJSON (./. + "/${LineageOSRelease}/vendor-dirs.json");
 
   # TODO: Condition on soc name?
   dtbReproducibilityFix = ''
@@ -58,11 +58,11 @@ let
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
 in mkIf (config.flavor == "lineageos")
 {
-  androidVersion = mkDefault 10;
+  androidVersion = mkDefault 11;
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
-  buildDateTime = mkDefault 1616627550;
+  buildDateTime = mkDefault 1617809461;
 
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
