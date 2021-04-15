@@ -49,7 +49,7 @@ in
         fingerprint = mkOption {
           type = types.strMatching "[0-9A-F]{64}";
           apply = toUpper;
-          description = "SHA256 hash of avb_pkmd.bin";
+          description = "SHA256 hash of `avb_pkmd.bin`. Should be set automatically based on file under `keyStorePath` if `signing.enable = true`";
         };
 
         verityCert = mkOption {

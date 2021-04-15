@@ -84,7 +84,7 @@ in
           };
 
           fingerprint = mkOption {
-            description = "SHA256 fingerprint from certificate used to sign apk";
+            description = "SHA256 fingerprint from certificate used to sign apk. Should be set automatically based on `keyStorePath` if `signing.enable = true`";
             type = types.strMatching "[0-9A-F]{64}"; # TODO: Type check fingerprints elsewhere
             apply = toUpper;
             internal = true;
