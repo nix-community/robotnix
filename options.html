@@ -615,7 +615,7 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3><a class="header" href="#signingavbfingerprint" id="signingavbfingerprint"><code>signing.avb.fingerprint</code></a></h3>
-<p>SHA256 hash of avb_pkmd.bin</p>
+<p>SHA256 hash of <code>avb_pkmd.bin</code>. Should be set automatically based on file under <code>keyStorePath</code> if <code>signing.enable = true</code></p>
 <p><em>Type</em>: string matching the pattern [0-9A-F]{64}</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
