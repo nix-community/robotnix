@@ -39,6 +39,9 @@ let
       mkdir -p $out/bin
       cp linux-x86/dtc/* $out/bin
       cp linux-x86/libufdt/* $out/bin
+
+      # Needed by redfin
+      cp ${config.source.dirs."system/libufdt".src}/utils/src/mkdtboimg.py $out/bin
     '';
   };
 in
@@ -137,15 +140,19 @@ in
         perl bc nettools openssl rsync gmp libmpc mpfr lz4 which
         prebuiltGCC prebuiltGCCarm32 prebuiltMisc
         nukeReferences
-      ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ];  # TODO: Generalize to other arches
+      ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ]  # TODO: Generalize to other arches
+      ++ lib.optionals (config.deviceFamily == "redfin") [
+        # HACK: Additional dependencies needed by redfin.
+        python bison flex cpio
+      ];
 
       enableParallelBuilding = true;
       makeFlags = [
         "O=out"
         "ARCH=arm64"
-        "CONFIG_COMPAT_VDSO=n"
+        #"CONFIG_COMPAT_VDSO=n"
         "CROSS_COMPILE=aarch64-linux-android-"
-        #"CROSS_COMPILE_ARM32=arm-linux-androideabi-"
+        "CROSS_COMPILE_ARM32=arm-linux-androideabi-"
       ] ++ lib.optionals (cfg.compiler == "clang") [
         "CC=clang"
         "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
@@ -177,7 +184,7 @@ in
 
       dontFixup = true;
       dontStrip = true;
-    } // optionalAttrs (elem config.deviceFamily [ "coral" "sunfish" ]) {
+    } // optionalAttrs (elem config.deviceFamily [ "coral" "sunfish" "redfin" ]) {
       # HACK: Needed for coral (pixel 4) (Don't turn this on for other devices)
       DTC_EXT = "${prebuiltMisc}/bin/dtc";
       DTC_OVERLAY_TEST_EXT = "${prebuiltMisc}/bin/ufdt_apply_overlay";

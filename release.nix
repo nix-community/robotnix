@@ -20,6 +20,8 @@ let
     { device="coral";      flavor="vanilla"; }
     { device="flame";      flavor="vanilla"; }
     { device="sunfish";    flavor="vanilla"; }
+    { device="bramble";    flavor="vanilla"; }
+    { device="redfin";     flavor="vanilla"; }
 
     { device="x86_64";     flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
@@ -30,6 +32,8 @@ let
     { device="coral";      flavor="grapheneos"; }
     { device="flame";      flavor="grapheneos"; }
     { device="sunfish";    flavor="grapheneos"; }
+    { device="bramble";    flavor="grapheneos"; }
+    { device="redfin";     flavor="grapheneos"; }
 
     { device="marlin";     flavor="lineageos"; }
     { device="pioneer";    flavor="lineageos"; }

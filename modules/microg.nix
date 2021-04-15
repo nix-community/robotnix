@@ -7,9 +7,9 @@ with lib;
 
 let
   version = {
-    part1 = "0.2.17";
+    part1 = "0.2.18";
     part2 = "204714";
-    part3 = "034";
+    part3 = "036";
   };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
@@ -32,7 +32,10 @@ in
         sha256 = "15c2i64dz4i0i5xv2cz51k08phlkhhg620b06n25bp2x88226m06";
       }) ];
 
-    resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = mkIf (config.androidVersion == 9) "gps,network";
+    resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = mkIf (config.androidVersion == 9) (mkDefault "gps,network");
+
+    # Using cloud messaging, so enabling: https://source.android.com/devices/tech/power/platform_mgmt#integrate-doze
+    resources."frameworks/base/core/res".config_enableAutoPowerModes = mkDefault true;
 
     # TODO: Preferably build this stuff ourself.
     # Used https://github.com/lineageos4microg/android_prebuilts_prebuiltapks as source for Android.mk options
@@ -40,7 +43,7 @@ in
       GmsCore = { 
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "0lfypc2v1dcgddy8alidnbbda066xlxm6wnj8x449623sdf2crqy";
+          sha256 = "14xi61imgdzr9lbj1yvg3r3bbvdgwmfsh6d615vxq0sm61fmfy7h";
         });
         packageName = "com.google.android.gms";
         privileged = true;

@@ -4,10 +4,9 @@
   inputs.robotnix.url = "github:danielfullmer/robotnix";
 
   outputs = { self, robotnix }: {
-    # Build the .img with "nix build"
-    # Build other outputs with (for example): "nix build .#robontixConfiguration.dailydriver.ota"
-    defaultPackage.x86_64-linux = self.robotnixConfigurations."dailydriver".img;
-
+    # "dailydriver" is an arbitrary user-chosen name for this particular
+    # configuration.  Change it to something meaningful for you, perhaps just
+    # the device name if you only have one of this kind of device.
     robotnixConfigurations."dailydriver" = robotnix.lib.robotnixSystem ({ config, pkgs, ... }: {
       # These two are required options
       device = "crosshatch";
@@ -24,5 +23,10 @@
       # Build with ccache
       # ccache.enable = true;
     });
+
+    # This provides a convenient output which allows you to build the image by
+    # simply running "nix build" on this flake.
+    # Build other outputs with (for example): "nix build .#robotnixConfigurations.dailydriver.ota"
+    defaultPackage.x86_64-linux = self.robotnixConfigurations."dailydriver".img;
   };
 }

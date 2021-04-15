@@ -16,7 +16,11 @@ import sys
 
 BASEDIR = "/mnt/cache/chromium"
 
-SKIP_DEPS = [ "src/tools/luci-go" ]
+SKIP_DEPS = [
+    "src/tools/luci-go",
+    "src/tools/resultdb", # CIPD package depends on ${{platform}}, which we don't yet handle well
+    "src/third_party/freetype-testing/src", # Current revision has broken .gitmodules
+]
 
 def hash_path(path):
     sha256 = subprocess.check_output(["nix", "hash-path", "--base32", "--type", "sha256", path]).strip()

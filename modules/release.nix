@@ -133,8 +133,9 @@ in
     # Pull this out of target files, because (at least) verity key gets put into boot ramdisk
     bootImg = pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out";
 
+    # BUILDID_PLACEHOLDER below was originally config.apv.buildID, but we don't want to have to depend on setting a buildID generally.
     otaMetadata = pkgs.writeText "${config.device}-${config.channel}" ''
-      ${config.buildNumber} ${toString config.buildDateTime} ${config.apv.buildID} ${config.channel}
+      ${config.buildNumber} ${toString config.buildDateTime} BUILDID_PLACEHOLDER ${config.channel}
     '';
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output

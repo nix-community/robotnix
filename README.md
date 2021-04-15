@@ -47,7 +47,7 @@ Slides for the talk are also available [here](https://cfp.nixcon.org/media/robot
 
 ## Requirements
 The AOSP project recommends at least 250GB free disk space as well as 16GB RAM. (Certain device kernels which use LTO+CFI may require even more memory)
-A typical build requires approximately 40GB free disk space to check out the android source, ~14GB for chromium source, plus ~100GB additional free space for intermediate build products.
+A typical build requires approximately 45GB free disk space to check out the android source, ~14GB for chromium, plus ~100GB of additional free space for intermediate build products.
 By default, Nix uses `/tmp` to store these intermediate build products, so ensure your `/tmp` is not mounted using `tmpfs`, since the intermediate builds products are very large and will easily use all of your RAM (even if you have 32GB)!
 A user can use the `--cores` option for `nix-build` to set the number of cores to use, which can also be useful to decrease parallelism in case memory usage of certain build steps is too large.
 

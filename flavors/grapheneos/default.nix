@@ -4,9 +4,9 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  grapheneOSRelease = "${config.apv.buildID}.2021.02.23.15";
+  grapheneOSRelease = "${config.apv.buildID}.2021.04.05.20";
 
-  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" ];
+  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -14,12 +14,12 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # a significant change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1614281223;
+  buildDateTime = mkDefault 1617688656;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault "RQ1A.210205.004";
+  apv.buildID = mkDefault "RQ2A.210405.005";
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -46,6 +46,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/bonito".enable = false;
   source.dirs."kernel/google/coral".enable = false;
   source.dirs."kernel/google/sunfish".enable = false;
+  source.dirs."kernel/google/redbull".enable = false;
 
   # Enable Vanadium (GraphaneOS's chromium fork).
   apps.vanadium.enable = mkDefault true;
@@ -58,7 +59,20 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "webview" "Seedvault" ];
   source.dirs."external/vanadium".enable = false;
   source.dirs."external/seedvault".enable = false;
-  source.dirs."vendor/android-prepare-vendor".enable = false; # Use our own pinned version
+
+  # Override included android-prepare-vendor, with the exact version from
+  # GrapheneOS. Unfortunately, Doing it this way means we don't cache apv
+  # output across vanilla/grapheneos, even if they are otherwise identical.
+  source.dirs."vendor/android-prepare-vendor".enable = false;
+  nixpkgs.overlays = [ (self: super: {
+    android-prepare-vendor = super.android-prepare-vendor.overrideAttrs (_: {
+      src = config.source.dirs."vendor/android-prepare-vendor".src;
+      passthru.evalTimeSrc = builtins.fetchTarball {
+        url = "https://github.com/GrapheneOS/android-prepare-vendor/archive/${config.source.dirs."vendor/android-prepare-vendor".rev}.tar.gz";
+        inherit (config.source.dirs."vendor/android-prepare-vendor") sha256;
+      };
+    });
+  }) ];
 
   # GrapheneOS just disables apex updating wholesale
   signing.apex.enable = false;

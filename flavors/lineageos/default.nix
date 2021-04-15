@@ -4,6 +4,8 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
+  LineageOSRelease = "lineage-17.1";
+  repoDirs = lib.importJSON (./. + "/repo-${LineageOSRelease}.json");
   deviceMetadata = importJSON ./device-metadata.json;
   _deviceDirs = importJSON ./device-dirs.json;
   vendorDirs = importJSON ./vendor-dirs.json;
@@ -45,15 +47,13 @@ let
   # TODO: Move this filtering into vanilla/graphene
   filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "postPatch"]) dir;
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
-
-  LineageOSRelease = "lineage-17.1";
 in mkIf (config.flavor == "lineageos")
 {
   androidVersion = mkDefault 10;
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
-  buildDateTime = mkDefault 1609221930;
+  buildDateTime = mkDefault 1616627550;
 
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
@@ -66,7 +66,7 @@ in mkIf (config.flavor == "lineageos")
     "${config.device} is not a supported device for LineageOS";
 
   source.dirs = mkMerge ([
-    (lib.importJSON (./. + "/repo-${LineageOSRelease}.json"))
+    repoDirs
 
     {
       "vendor/lineage".patches = [
@@ -96,7 +96,8 @@ in mkIf (config.flavor == "lineageos")
       vendor = toLower deviceMetadata.${config.device}.vendor;
       relpathWithDependencies = relpath: [ relpath ] ++ (flatten (map (p: relpathWithDependencies p) deviceDirs.${relpath}.deps));
       relpaths = relpathWithDependencies "device/${vendor}/${config.device}";
-    in filterDirsAttrs (getAttrs relpaths deviceDirs))
+      filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
+    in filterDirsAttrs (getAttrs filteredRelpaths deviceDirs))
 
     # Vendor-specific source dirs
     (let

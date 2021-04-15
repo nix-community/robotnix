@@ -1,0 +1,21 @@
+###
+### A domain for the OTA Updater
+###
+
+typeattribute updater_app coredomain;
+app_domain(updater_app)
+
+# Access the network.
+net_domain(updater_app)
+
+# Allow to find services that expose both @SystemAPI and normal APIs.
+allow updater_app app_api_service:service_manager find;
+allow updater_app system_api_service:service_manager find;
+
+# Allow OTA Updater to communicate with update_engine for A/B update.
+binder_call(updater_app, update_engine)
+allow updater_app update_engine_service:service_manager find;
+
+# Write to /data/ota_package for OTA packages.
+allow updater_app ota_package_file:dir rw_dir_perms;
+allow updater_app ota_package_file:file create_file_perms;

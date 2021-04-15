@@ -33,7 +33,7 @@ in
     fdroid.enable = true;
 
     # See the NixOS module under nixos/ subdir
-    auditor.enable = true;
+    auditor.enable = config.signing.enable; # requires signing
     auditor.domain = "attestation.${myDomain}";
   };
 

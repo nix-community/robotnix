@@ -1,0 +1,46 @@
+{
+  "build": {
+    "groups": [],
+    "revisionExpr": "master",
+    "url": "https://android.googlesource.com/kernel/build"
+  },
+  "kernel/tests": {
+    "groups": [],
+    "revisionExpr": "master",
+    "url": "https://android.googlesource.com/kernel/tests"
+  },
+  "prebuilts-master/clang/host/linux-x86": {
+    "groups": [],
+    "revisionExpr": "4b1f275e6b3826c86f791ae8c4d5ec3563c2fc11",
+    "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86"
+  },
+  "prebuilts-master/misc": {
+    "groups": [],
+    "revisionExpr": "master",
+    "url": "https://android.googlesource.com/platform/prebuilts/misc"
+  },
+  "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9": {
+    "groups": [],
+    "revisionExpr": "0b1bb8dd7e3ad5ee9898535e91a673b46386de09",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"
+  },
+  "prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9": {
+    "groups": [],
+    "revisionExpr": "65e6e70ed1ba42c3d1e9b608cac7977196f32af4",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9"
+  },
+  "private/msm-google": {
+    "groups": [],
+    "linkfiles": [
+      {
+        "dest": "build.config",
+        "src": "build.config"
+      }
+    ],
+    "rev": "48d18f3c955d55c1424a3d683ac921e3833cdbf0",
+    "revisionExpr": "android-11.0.0_r0.34",
+    "sha256": "03yirs388qd2n808v5jv3j2x0gv04x1q2m27fhvzg0gb1c7d5ird",
+    "tree": "068ba53f07241ebbc0bebe2d44ae807248f91916",
+    "url": "https://android.googlesource.com/kernel/msm"
+  }
+}

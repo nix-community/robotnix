@@ -8,16 +8,34 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
-# 2021-03-XX
+# 2021-04-XX
+## Highlights:
+
 ## Backward incompatible changes
 - Renamed `kernel.useCustom` to `kernel.enable`.
+
+# 2021-03-02
+## Highlights:
+- Added support for Pixel 5 (redfin) and Pixel 4a (5g) (bramble) [PR #79](https://github.com/danielfullmer/robotnix/pull/79)
+- Added support for building as a nix flake [PR #85](https://github.com/danielfullmer/robotnix/pull/85) (with help from @hmenke)
+  For reference, I've also migrated my [personal config](https://github.com/danielfullmer/robotnix-personal) to flakes.
+- LineageOS now uses robotnix-built webview by default since upstream force-pushes to the prebuilt webview repository, breaking reproducibility.
+- Added Android 12 preview, tested working for `x86_64` in emulator
+- Added SPDX license headers to various files (thanks @lnceballosz)
+- Updated vanilla flavor to RQ2A.210305.006
+- Updated GrapheneOS flavor to 2021.03.02.10
+- Updated Chromium / Vanadium to 88.0.4324.181, and updated Bromite to 88.0.4324.207
+- Updated Auditor / AttestationServer to latest versions to support redfin/bramble
+- Updated Seedvault backup app to 2021-01-19
+
+## Backward incompatible changes
 - The `resourceTypeOverrides` option was replaced with `resources.<package>.<name>.type`.
 
 # 2021-02-02
 ## Highlights:
 - Updated vanilla flavor to RQ1A.210205.004
 - Updated GrapheneOS flavor to 2021.02.02.09
-- Chromium / Bromite / Vanadium  updated to 88.0.4324.141
+- Chromium / Bromite / Vanadium updated to 88.0.4324.141
 - F-Droid updated to 1.11
 - MicroG updated to 2.0.17.204714 (thanks @petabyteboy)
 - Added basic test for attestation server
