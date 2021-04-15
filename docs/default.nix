@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { pkgs ? import ../pkgs { } }:
 
 with pkgs.lib;
@@ -12,7 +15,9 @@ let
     let
       options = robotnixOptionsDoc.optionsNix;
     in ''
-      # Robotnix configuration options
+      # Robotnix Configuration Options
+      *Some robotnix flavors or modules may change the option defaults shown below.*
+      *Refer to the flavor or module source for details*
 
     ''
     + concatStrings (map

@@ -75,9 +75,9 @@ in
       default = "user";
       type = types.strMatching "(user|userdebug|eng)";
       description = ''
-        "user" has limited access and is suited for production.
-        "userdebug" is like user but with root access and debug capability.
-        "eng" is the development configuration with additional debugging tools.
+        `user` has limited access and is suited for production.
+        `userdebug` is like user but with root access and debug capability.
+        `eng` is the development configuration with additional debugging tools.
       '';
     };
 

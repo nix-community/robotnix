@@ -1,9 +1,14 @@
 <!--
-SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
 
-# Installing for the first time and with verified boot
+# Installing for the first time with (optional) verified boot
+
+> The following instructions are specific to Pixel phones using either the
+> Vanilla or GrapheneOS flavors.  For LineageOS, please refer to upstream
+> device-specific documentation on how to install LineageOS builds on your
+> device.
 
 It is assumed that you have successfully built your factory image and signed it
 with your own keys, either by using the `factoryImg` Nix output or by running
@@ -46,7 +51,8 @@ upstream documentation](https://source.android.com/setup/build/running).
     Select the option to unlock the device and confirm. This step effectively
     performs a factory reset, and will remove all user data from the device.
 
- 4. Flash your custom AVB signing key using
+ 4. *(Strongly recommended, but technically optional)*
+    Flash your custom AVB signing key using
     ```console
     $ fastboot erase avb_custom_key
     $ fastboot flash avb_custom_key avb_pkmd.bin
@@ -73,8 +79,9 @@ upstream documentation](https://source.android.com/setup/build/running).
     $ fastboot reboot bootloader
     ```
 
- 6. At this point you want to relock the bootloader to enable the verified boot
-    chain.
+ 6. *(Strongly recommended, but technically optional)*
+    At this point you want to relock the bootloader to enable enforcement of
+    the verified boot chain.
     ```console
     $ fastboot flashing lock
     ```
@@ -95,3 +102,52 @@ upstream documentation](https://source.android.com/setup/build/running).
     https://source.android.com/security/verifiedboot/boot-flow.  In fact, the
     ID on the last line are the first eight characters of the fingerprint of
     your AVB key.
+
+
+## Updating by sideloading OTA files
+Preferably, you can update your Vanilla/GrapheneOS flavor device using true "over-the-air" mechanism provided by the `apps.updater` module with a server hosting the OTA files, as shown [here](modules/ota.md).
+If this is not available, it is still possible to update by sideloading the OTA file.
+
+> It is recommended to update using the OTA file instead of using `fastboot update` with a new `img`.
+> OTA files can also contain updates to the modem / bootloader that are not included in the `img` output.
+> `fastboot update` also cannot be used with a re-locked bootloader without wiping userdata.
+
+
+To install OTA updates you have to put the device in sideload-mode.
+
+ 1. First reboot into the bootloader. You can either do that physically by
+    turning off your phone and then holding both the POWER and the VOLUME DOWN
+    button to turn it back on, or your can connect the phone to your computer
+    with USB Debugging turned on and issue
+    ```console
+    $ adb reboot recovery
+    ```
+    If you used the physical method, at the bootloader prompt use the VOLUME
+    keys to select “Recovery Mode” and confirm with the POWER button.
+
+ 3. Now the recovery mode should have started and you should see a dead robot
+    with a read exclamation mark on top. If you see “No command” on the screen,
+    press and hold POWER. While holding POWER, press VOLUME UP and release
+    both.
+
+ 4. At the recovery menu use the VOLUME keys to select “Apply update from ADB”
+    and use POWER to confirm.
+
+ 5. Connect your phone to your computer and run
+    ```console
+    $ adb devices
+    List of devices attached
+    09071JEC217048  sideload
+    ```
+    The output should show that the device is in sideload mode.
+
+ 6. Now you can proceed to sideload the new update.
+    ```console
+    $ adb sideload sunfish-ota_update-2021.02.06.16.zip
+    ```
+    The sideload might terminate at 94% with “adb: failed to read command:
+    Success”.  This is not an error even though it is not obvious, see also
+    [here](https://np.reddit.com/r/LineageOS/comments/dt2et4/adb_failed_to_read_command_success/f6u352m).
+
+ 7. Once finished and the device doesn't automatically reboot just select
+    reboot from the menu and confirm.

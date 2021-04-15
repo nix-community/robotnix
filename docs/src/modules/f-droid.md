@@ -3,7 +3,18 @@ SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
 
-# Adding F-Droid repositories
+# F-Droid
+
+The following configuration will enable the [F-Droid app](https://www.f-droid.org/) and the [F-Droid privileged extension](https://gitlab.com/fdroid/privileged-extension).
+```nix
+{
+    apps.fdroid.enable = true;
+}
+```
+The F-Droid privileged extension enables F-Droid to install and delete apps without needing "Unknown Sources" to be enabled (e.g. just like Google Play does).
+It also enables F-Droid to install updates in the background without the user having to click "install".
+
+## Adding F-Droid repositories
 
 F-Droid can manage multiple repositories to fetch apps from.  These can be set
 up manually in the app, but with robotnix it is also possible to preload
@@ -49,3 +60,6 @@ key for the corresponding Nix expression respectively.
 The name can really be anything, but the one that is provided here is the one
 that shows up before refreshing the F-Droid repo list for the first time, so if
 you want that to look pretty, give it a pretty name here.
+
+The `apps.fdroid.additionalRepos` variable is only used to prepopulate the internal database of F-Droid repositories upon the first run of the application.
+Changes to this variable will not have any effect on phones that have already started the F-Droid application.
