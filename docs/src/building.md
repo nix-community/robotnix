@@ -49,6 +49,9 @@ The second option involves creating a "release script" which does the final buil
 $ nix-build --arg configuration ./crosshatch.nix -A releaseScript -o release
 $ ./release ./keys
 ```
+This has the additional benefit that the build can take place on a remote machine, and the `releaseScript` could be copied using `nix-copy-closure` to a local machine which containing the keys.
+You might need to manually set certain required options like `signing.avb.fingerprint` or `apps.prebuilt.<name>.fingerprint` if you build on a remote machine that does not have access to `keyStorePath`.
+
 ## Binary Cache
 Robotnix now has an optional binary cache provided by [Cachix](https://cachix.org/) on [robotnix.cachix.org](https://robotnix.cachix.org/).
 Using the robotnix binary cache will allow the user to avoid building some parts that can be shared between users.

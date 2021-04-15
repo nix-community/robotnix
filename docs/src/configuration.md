@@ -34,6 +34,8 @@ The following is an example robotnix configuration that could be saved to (for e
   # Signing should be enabled for builds used in production.
   signing.enable = true;
   # When signing is enabled, keyStorePath should refer to a path containing keys created by `genereteKeysScript`
+  # This is used to automatically obtain key fingerprints / metadata from the generated public keys.
+  # Alternatively, it may be possible to manually set the required options like `signing.avb.fingerprint` or `apps.prebuilt.<name>.fingerprint` to avoid including this path.
   keyStorePath = "/var/secrets/android-keys";
 
   # Additional modules can be enabled and included in the build. See individual module documentation
