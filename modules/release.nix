@@ -145,8 +145,9 @@ in
     );
 
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
-    # Maybe just remove this script? It's definitely complicated--and often untested
-    releaseScript = pkgs.writeScript "release.sh" (''
+    releaseScript =
+      (if (!config.signing.enable) then warn "releaseScript should be used only if signing.enable = true; Otherwise, the build might be using incorrect keys / certificate metadata" else id)
+      pkgs.writeScript "release.sh" (''
       #!${pkgs.runtimeShell}
       set -euo pipefail
 
@@ -156,12 +157,8 @@ in
         PREV_BUILDNUMBER=""
       fi
       '' + (wrapScript { keysDir="$1"; commands=''
-      if [[ "$KEYSDIR" ]]; then
-        echo Signing target files
-        ${signedTargetFilesScript { targetFiles=unsignedTargetFiles; out=signedTargetFiles.name; }}
-      else
-        echo No KEYSDIR specified. Skipping signing target files.
-      fi
+      echo Signing target files
+      ${signedTargetFilesScript { targetFiles=unsignedTargetFiles; out=signedTargetFiles.name; }}
       echo Building OTA zip
       ${otaScript { targetFiles=signedTargetFiles.name; out=ota.name; }}
       if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
