@@ -1,6 +1,9 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+# This is an example configuration that I personally use for my device.
+# Please read the manual instead of simply copying this file for your own use.
+
 { config, pkgs, lib, ... }:
 
 with pkgs;
