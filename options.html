@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to Robotnix</a></li><li class="chapter-item expanded "><strong aria-hidden="true">2.</strong> Tutorials</li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ota.html"><strong aria-hidden="true">2.2.</strong> OTA Updates</a></li><li class="chapter-item expanded "><a href="f-droid.html"><strong aria-hidden="true">2.3.</strong> F-Droid Repositories</a></li><li class="chapter-item expanded "><a href="attestation.html"><strong aria-hidden="true">2.4.</strong> Remote Attestation</a></li></ol></li><li class="chapter-item expanded "><strong aria-hidden="true">3.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html" class="active"><strong aria-hidden="true">3.1.</strong> Options</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Summary</li><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to robotnix</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modules/flavors.html"><strong aria-hidden="true">2.1.</strong> Flavors</a></li><li class="chapter-item expanded "><a href="modules/f-droid.html"><strong aria-hidden="true">2.2.</strong> F-Droid</a></li><li class="chapter-item expanded "><a href="modules/seedvault.html"><strong aria-hidden="true">2.3.</strong> Seedvault Backup</a></li><li class="chapter-item expanded "><a href="modules/microg.html"><strong aria-hidden="true">2.4.</strong> MicroG</a></li><li class="chapter-item expanded "><a href="modules/ota.html"><strong aria-hidden="true">2.5.</strong> Over-the-Air (OTA) Updater</a></li><li class="chapter-item expanded "><a href="modules/browsers.html"><strong aria-hidden="true">2.6.</strong> Browsers / Webview</a></li><li class="chapter-item expanded "><a href="modules/attestation.html"><strong aria-hidden="true">2.7.</strong> Remote Attestation</a></li><li class="chapter-item expanded "><a href="modules/prebuilt.html"><strong aria-hidden="true">2.8.</strong> Prebuilt Apps</a></li><li class="chapter-item expanded "><a href="modules/source.html"><strong aria-hidden="true">2.9.</strong> Source Directories</a></li><li class="chapter-item expanded "><a href="modules/other.html"><strong aria-hidden="true">2.10.</strong> Other Modules</a></li></ol></li><li class="chapter-item expanded "><a href="building.html"><strong aria-hidden="true">3.</strong> Building</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">4.</strong> Installation / Updating</a></li><li class="chapter-item expanded "><a href="development.html"><strong aria-hidden="true">5.</strong> Development</a></li><li class="chapter-item expanded "><strong aria-hidden="true">6.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html" class="active"><strong aria-hidden="true">6.1.</strong> Options</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,7 +159,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#robotnix-configuration-options" id="robotnix-configuration-options">Robotnix configuration options</a></h1>
+                        <h1><a class="header" href="#robotnix-configuration-options" id="robotnix-configuration-options">Robotnix Configuration Options</a></h1>
+<p><em>Some robotnix flavors or modules may change the option defaults shown below.</em>
+<em>Refer to the flavor or module source for details</em></p>
 <h3><a class="header" href="#androidversion" id="androidversion"><code>androidVersion</code></a></h3>
 <p>Used to select which Android version to use</p>
 <p><em>Default</em>: <code>11</code></p>
@@ -714,15 +716,16 @@ Also enables use of <code>builtins.fetchGit</code> instead of <code>pkgs.fetchgi
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3><a class="header" href="#variant" id="variant"><code>variant</code></a></h3>
-<p>&quot;user&quot; has limited access and is suited for production.
-&quot;userdebug&quot; is like user but with root access and debug capability.
-&quot;eng&quot; is the development configuration with additional debugging tools.</p>
+<p><code>user</code> has limited access and is suited for production.
+<code>userdebug</code> is like user but with root access and debug capability.
+<code>eng</code> is the development configuration with additional debugging tools.</p>
 <p><em>Default</em>: <code>&quot;user&quot;</code></p>
 <p><em>Type</em>: string matching the pattern (user|userdebug|eng)</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3><a class="header" href="#webview" id="webview"><code>webview</code></a></h3>
-<p>Webview providers to include in Android build. Currently included options are chromium, bromite, and vanadium.</p>
+<p>Webview providers to include in Android build. Pre-specified options are <code>chromium</code>, <code>bromite</code>, and <code>vanadium</code>.</p>
+<p><em>Example</em>: <code>{ bromite.enable = true; }</code></p>
 <p><em>Type</em>: attribute set of submodules</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/webview.nix">modules/webview.nix</a></p>
@@ -774,7 +777,7 @@ one provider can be a fallback.</p>
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="attestation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="development.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
@@ -788,7 +791,7 @@ one provider can be a fallback.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="attestation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="development.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 

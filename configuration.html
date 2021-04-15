@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>OTA Updates - Robotnix</title>
+        <title>Configuration - Robotnix</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to Robotnix</a></li><li class="chapter-item expanded "><strong aria-hidden="true">2.</strong> Tutorials</li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ota.html" class="active"><strong aria-hidden="true">2.2.</strong> OTA Updates</a></li><li class="chapter-item expanded "><a href="f-droid.html"><strong aria-hidden="true">2.3.</strong> F-Droid Repositories</a></li><li class="chapter-item expanded "><a href="attestation.html"><strong aria-hidden="true">2.4.</strong> Remote Attestation</a></li></ol></li><li class="chapter-item expanded "><strong aria-hidden="true">3.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">3.1.</strong> Options</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Summary</li><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to robotnix</a></li><li class="chapter-item expanded "><a href="configuration.html" class="active"><strong aria-hidden="true">2.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modules/flavors.html"><strong aria-hidden="true">2.1.</strong> Flavors</a></li><li class="chapter-item expanded "><a href="modules/f-droid.html"><strong aria-hidden="true">2.2.</strong> F-Droid</a></li><li class="chapter-item expanded "><a href="modules/seedvault.html"><strong aria-hidden="true">2.3.</strong> Seedvault Backup</a></li><li class="chapter-item expanded "><a href="modules/microg.html"><strong aria-hidden="true">2.4.</strong> MicroG</a></li><li class="chapter-item expanded "><a href="modules/ota.html"><strong aria-hidden="true">2.5.</strong> Over-the-Air (OTA) Updater</a></li><li class="chapter-item expanded "><a href="modules/browsers.html"><strong aria-hidden="true">2.6.</strong> Browsers / Webview</a></li><li class="chapter-item expanded "><a href="modules/attestation.html"><strong aria-hidden="true">2.7.</strong> Remote Attestation</a></li><li class="chapter-item expanded "><a href="modules/prebuilt.html"><strong aria-hidden="true">2.8.</strong> Prebuilt Apps</a></li><li class="chapter-item expanded "><a href="modules/source.html"><strong aria-hidden="true">2.9.</strong> Source Directories</a></li><li class="chapter-item expanded "><a href="modules/other.html"><strong aria-hidden="true">2.10.</strong> Other Modules</a></li></ol></li><li class="chapter-item expanded "><a href="building.html"><strong aria-hidden="true">3.</strong> Building</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">4.</strong> Installation / Updating</a></li><li class="chapter-item expanded "><a href="development.html"><strong aria-hidden="true">5.</strong> Development</a></li><li class="chapter-item expanded "><strong aria-hidden="true">6.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">6.1.</strong> Options</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,133 +159,74 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#building-ota-updates" id="building-ota-updates">Building OTA updates</a></h1>
-<p>Robotnix includes a convenient target which will build a directory containing
-OTA files ready to be sideloaded or served over the web.  To generate the OTA
-directory, build the <code>otaDir</code> attribute (here for sunfish):</p>
-<pre><code class="language-console">$ nix-build --arg configuration ./sunfish.nix -A otaDir -o ota-dir
+                        <!--
+SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
+<h1><a class="header" href="#configuration" id="configuration">Configuration</a></h1>
+<p>Similarly to <a href="https://nixos.org/">NixOS</a>, robotnix configurations are &quot;Nix expressions&quot; specified using the &quot;<a href="https://nixos.org/manual/nix/stable/#ch-expression-language">Nix language</a>.&quot;
+Most end-user uses of robotnix should not require learning the Nix language, besides the very basics of syntax.</p>
+<h2><a class="header" href="#inline-configuration" id="inline-configuration">Inline Configuration</a></h2>
+<p>Robotnix can be built using configuration specified on the command line using <code>--arg configuration ...</code> as an argument to <code>nix-build</code>.
+For example, if the current directory contains a checked out copy of robotnix, the following will produce a vanilla image for the crosshatch device (Pixel 3 XL):</p>
+<pre><code class="language-shell">$ nix-build --arg configuration '{ device=&quot;crosshatch&quot;; flavor=&quot;vanilla&quot;; }' -A img
 </code></pre>
-<p>The directory structure will look similar to this (arrows indicate symbolic
-links) with possibly different timestamps and hashes of course:</p>
-<pre><code class="language-console">$ tree -l ota-dir
-├── sunfish-ota_update-2021.02.06.16.zip -&gt; /nix/store/wwr49all6x868f0mdl11369ybfwyir0f-sunfish-ota_update-2021.02.06.16.zip
-├── sunfish-stable -&gt; /nix/store/c1rp46m9spncanacglqs5mxk6znfs44s-sunfish-stable
-└── sunfish-target_files-2021.02.06.16.zip -&gt; /nix/store/8ys21rzjqhi2055d7bd4iwa15fv1m446-sunfish-signed_target_files-2021.02.06.16.zip
+<p>By default, <code>nix-build</code> uses the <code>default.nix</code> in the current directory as the Nix entry point.
+If robotnix is checked out in another directory, such as <code>$HOME/src/robotnix</code>, the above command could instead be</p>
+<pre><code class="language-shell">$ nix-build $HOME/src/robotnix --arg configuration '{ device=&quot;crosshatch&quot;; flavor=&quot;vanilla&quot;; }' -A img
 </code></pre>
-<p>The file <code>sunfish-ota_update-2021.02.06.16.zip</code> can be sideloaded with adb as
-described in the next section.</p>
-<h1><a class="header" href="#installing-ota-updates-with-adb" id="installing-ota-updates-with-adb">Installing OTA updates with adb</a></h1>
-<p>To install OTA updates you have to put the device in sideload-mode.</p>
-<ol>
-<li>
-<p>First reboot into the bootloader. You can either do that physically by
-turning off your phone and then holding both the POWER and the VOLUME DOWN
-button to turn it back on, or your can connect the phone to your computer
-with USB Debugging turned on and issue</p>
-<pre><code class="language-console">$ adb reboot recovery
-</code></pre>
-<p>If you used the physical method, at the bootloader prompt use the VOLUME
-keys to select “Recovery Mode” and confirm with the POWER button.</p>
-</li>
-<li>
-<p>Now the recovery mode should have started and you should see a dead robot
-with a read exclamation mark on top. If you see “No command” on the screen,
-press and hold POWER. While holding POWER, press VOLUME UP and release
-both.</p>
-</li>
-<li>
-<p>At the recovery menu use the VOLUME keys to select “Apply update from ADB”
-and use POWER to confirm.</p>
-</li>
-<li>
-<p>Connect your phone to your computer and run</p>
-<pre><code class="language-console">$ adb devices
-List of devices attached
-09071JEC217048  sideload
-</code></pre>
-<p>The output should show that the device is in sideload mode.</p>
-</li>
-<li>
-<p>Now you can proceed to sideload the new update.</p>
-<pre><code class="language-console">$ adb sideload sunfish-ota_update-2021.02.06.16.zip
-</code></pre>
-<p>The sideload might terminate at 94% with “adb: failed to read command:
-Success”.  This is not an error even though it is not obvious, see also
-<a href="https://np.reddit.com/r/LineageOS/comments/dt2et4/adb_failed_to_read_command_success/f6u352m">here</a>.</p>
-</li>
-<li>
-<p>Once finished and the device doesn't automatically reboot just select
-reboot from the menu and confirm.</p>
-</li>
-</ol>
-<h1><a class="header" href="#actually-serving-ota-updates-over-the-air" id="actually-serving-ota-updates-over-the-air">Actually serving OTA updates over the air</a></h1>
-<blockquote>
-<p><em>Note:</em> These instructions were only tested with the GrapheneOS flavor.  This
-method does not work for the LineageOS flavor because it uses its own updater.</p>
-</blockquote>
-<p>Essentially this boils down to just serving the <code>otaDir</code> build output on the
-web, e.g. with nginx.  To receive OTA updates on the device, enable the updater
-and point it to the domain and possibly subdirectory that you will be serving
-OTA updates from:</p>
-<pre><code class="language-nix"># device configuration
-{
-  apps = {
-    updater.enable = true;
-    updater.url = &quot;https://example.com/android/&quot;;
-  };
+<h2><a class="header" href="#configuration-files" id="configuration-files">Configuration Files</a></h2>
+<p>A configuration file should be created for anything more complicated than the very simple configurations that could be conveniently specified on the command line.
+The following is an example robotnix configuration that could be saved to (for example) <code>crosshatch.nix</code>.</p>
+<pre><code class="language-nix">{
+  # Most uses of robotnix should at least set the device and flavor options.
+  device = &quot;crosshatch&quot;;
+  flavor = &quot;vanilla&quot;;
+
+  # variant = &quot;user&quot;; # Other options are userdebug, or eng. Builds used in production should use &quot;user&quot;
+
+  # Signing should be enabled for builds used in production.
+  signing.enable = true;
+  # When signing is enabled, keyStorePath should refer to a path containing keys created by `genereteKeysScript`
+  keyStorePath = &quot;/var/secrets/android-keys&quot;;
+
+  # Additional modules can be enabled and included in the build. See individual module documentation
+  apps.fdroid.enable = true;
+  microg.enable = true;
 }
 </code></pre>
-<p>On the server, it is as easy as serving a directory at the required
-endpoint:</p>
-<pre><code class="language-nix"># NixOS server configuration
-{
-  services.nginx.enable = true;
-  systemd.services.nginx.serviceConfig.ReadOnlyPaths = [ &quot;/var/www&quot; ];
-  services.nginx.virtualHosts.&quot;example.com&quot; = {
-    forceSSL = true;
-    enableACME = true;
-    locations.&quot;/android/&quot; = {
-      root = &quot;/var/www&quot;;
-      tryFiles = &quot;$uri $uri/ =404&quot;;
-    };
-  };
-}
+<p>The <code>--arg configuration ...</code> option for <code>nix-build</code> can also refer to a <code>.nix</code> file containing the robotnix configuration.
+If the above configuration was saved to <code>crosshatch.nix</code> in the local directory, an image could be built using the following command:</p>
+<pre><code class="language-shell">$ nix-build --arg configuration ./crosshatch.nix -A img
 </code></pre>
-<p>The directory simply contains symlinks to the store paths that were contained in
-the <code>otaDir</code> output that was built earlier.  I choose to just copy the result
-symlink to <code>/var/www/android</code>.</p>
-<pre><code class="language-console">$ cp --no-dereference ota-dir /var/www/android
-$ tree -l /var/www
-/var/www
-└── android -&gt; /nix/store/dbjcl9lwn6xif9c0fy8d2wwpn9zi4hw4-sunfish-otaDir                   
-    ├── sunfish-ota_update-2021.02.06.16.zip -&gt; /nix/store/wwr49all6x868f0mdl11369ybfwyir0f-sunfish-ota_update-2021.02.06.16.zip
-    ├── sunfish-stable -&gt; /nix/store/c1rp46m9spncanacglqs5mxk6znfs44s-sunfish-stable                             
-    └── sunfish-target_files-2021.02.06.16.zip -&gt; /nix/store/8ys21rzjqhi2055d7bd4iwa15fv1m446-sunfish-signed_target_files-2021.02.06.16.zip
+<p>See my own configuration under <code>example.nix</code> for inspiration.
+Robotnix module options are described in this documentation <a href="modules.html">here</a>.
+Reference documentation of the available options is <a href="options.html">here</a>.</p>
+<h2><a class="header" href="#flakes-experimental" id="flakes-experimental">Flakes (experimental)</a></h2>
+<p>Nix flakes are an upcoming feature of Nix that provides an alternative configuration structure for use with the new <code>nix</code> command.
+It can provide the benefit of explicitly pinning your robotnix configuration against a particular revision of the robotnix repository.
+The feature remains experimental for the time-being, and is not currently the recommended way to use robotnix for new users.</p>
+<p>Robotnix provides an example nix flake template, which can be used to prepopulate the current directory with the command <code>nix flake init -t github:danielfullmer/robotnix</code>.</p>
+<p>Example usage:</p>
+<pre><code class="language-shell">$ mkdir flake-test
+$ cd flake-test
+$ nix flake init -t github:danielfullmer/robotnix
+$ # Edit flake.nix in current directory
+$ nix build .#robotnixConfigurations.dailydriver.img
 </code></pre>
-<p>Of course, this doesn't have to be located at <code>/var/www</code> and it's totally
-possible to integrate updating of the OTA directory into your other robotnix
-build automation.  In this case it is as easy as updating the <code>/var/www/android</code>
-symlink with the new build output.</p>
-<p>Here it was assumed that robotnix was built on the same machine that you will
-serve the OTA from.  If that is not the case you can conveniently copy the
-closure to a remote host using <code>nix copy</code> as in</p>
-<pre><code class="language-console">$ nix copy --to ssh://user@example.com ./ota-dir
-</code></pre>
-<p>Don't forget to add the store path of the <code>ota-dir</code> as a garbage collector root
-on the remote machine or it might be collected in the next sweep.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="installation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="welcome.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="f-droid.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="modules/flavors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -297,13 +238,13 @@ on the remote machine or it might be collected in the next sweep.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="installation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="welcome.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="f-droid.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="modules/flavors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

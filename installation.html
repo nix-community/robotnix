@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Installation - Robotnix</title>
+        <title>Installation / Updating - Robotnix</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to Robotnix</a></li><li class="chapter-item expanded "><strong aria-hidden="true">2.</strong> Tutorials</li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html" class="active"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ota.html"><strong aria-hidden="true">2.2.</strong> OTA Updates</a></li><li class="chapter-item expanded "><a href="f-droid.html"><strong aria-hidden="true">2.3.</strong> F-Droid Repositories</a></li><li class="chapter-item expanded "><a href="attestation.html"><strong aria-hidden="true">2.4.</strong> Remote Attestation</a></li></ol></li><li class="chapter-item expanded "><strong aria-hidden="true">3.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">3.1.</strong> Options</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Summary</li><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to robotnix</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modules/flavors.html"><strong aria-hidden="true">2.1.</strong> Flavors</a></li><li class="chapter-item expanded "><a href="modules/f-droid.html"><strong aria-hidden="true">2.2.</strong> F-Droid</a></li><li class="chapter-item expanded "><a href="modules/seedvault.html"><strong aria-hidden="true">2.3.</strong> Seedvault Backup</a></li><li class="chapter-item expanded "><a href="modules/microg.html"><strong aria-hidden="true">2.4.</strong> MicroG</a></li><li class="chapter-item expanded "><a href="modules/ota.html"><strong aria-hidden="true">2.5.</strong> Over-the-Air (OTA) Updater</a></li><li class="chapter-item expanded "><a href="modules/browsers.html"><strong aria-hidden="true">2.6.</strong> Browsers / Webview</a></li><li class="chapter-item expanded "><a href="modules/attestation.html"><strong aria-hidden="true">2.7.</strong> Remote Attestation</a></li><li class="chapter-item expanded "><a href="modules/prebuilt.html"><strong aria-hidden="true">2.8.</strong> Prebuilt Apps</a></li><li class="chapter-item expanded "><a href="modules/source.html"><strong aria-hidden="true">2.9.</strong> Source Directories</a></li><li class="chapter-item expanded "><a href="modules/other.html"><strong aria-hidden="true">2.10.</strong> Other Modules</a></li></ol></li><li class="chapter-item expanded "><a href="building.html"><strong aria-hidden="true">3.</strong> Building</a></li><li class="chapter-item expanded "><a href="installation.html" class="active"><strong aria-hidden="true">4.</strong> Installation / Updating</a></li><li class="chapter-item expanded "><a href="development.html"><strong aria-hidden="true">5.</strong> Development</a></li><li class="chapter-item expanded "><strong aria-hidden="true">6.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">6.1.</strong> Options</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -160,10 +160,16 @@
                 <div id="content" class="content">
                     <main>
                         <!--
-SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
-<h1><a class="header" href="#installing-for-the-first-time-and-with-verified-boot" id="installing-for-the-first-time-and-with-verified-boot">Installing for the first time and with verified boot</a></h1>
+<h1><a class="header" href="#installing-for-the-first-time-with-optional-verified-boot" id="installing-for-the-first-time-with-optional-verified-boot">Installing for the first time with (optional) verified boot</a></h1>
+<blockquote>
+<p>The following instructions are specific to Pixel phones using either the
+Vanilla or GrapheneOS flavors.  For LineageOS, please refer to upstream
+device-specific documentation on how to install LineageOS builds on your
+device.</p>
+</blockquote>
 <p>It is assumed that you have successfully built your factory image and signed it
 with your own keys, either by using the <code>factoryImg</code> Nix output or by running
 <code>releaseScript</code>.  Make sure that you know the location of the image and the AVB
@@ -207,7 +213,8 @@ with USB Debugging turned on and issue</p>
 performs a factory reset, and will remove all user data from the device.</p>
 </li>
 <li>
-<p>Flash your custom AVB signing key using</p>
+<p><em>(Strongly recommended, but technically optional)</em>
+Flash your custom AVB signing key using</p>
 <pre><code class="language-console">$ fastboot erase avb_custom_key
 $ fastboot flash avb_custom_key avb_pkmd.bin
 $ fastboot reboot bootloader
@@ -231,8 +238,9 @@ return to the bootloader with</p>
 </code></pre>
 </li>
 <li>
-<p>At this point you want to relock the bootloader to enable the verified boot
-chain.</p>
+<p><em>(Strongly recommended, but technically optional)</em>
+At this point you want to relock the bootloader to enable enforcement of
+the verified boot chain.</p>
 <pre><code class="language-console">$ fastboot flashing lock
 </code></pre>
 <p>This step has to be confirmed on the device.</p>
@@ -253,19 +261,70 @@ ID on the last line are the first eight characters of the fingerprint of
 your AVB key.</p>
 </li>
 </ol>
+<h2><a class="header" href="#updating-by-sideloading-ota-files" id="updating-by-sideloading-ota-files">Updating by sideloading OTA files</a></h2>
+<p>Preferably, you can update your Vanilla/GrapheneOS flavor device using true &quot;over-the-air&quot; mechanism provided by the <code>apps.updater</code> module with a server hosting the OTA files, as shown <a href="modules/ota.html">here</a>.
+If this is not available, it is still possible to update by sideloading the OTA file.</p>
+<blockquote>
+<p>It is recommended to update using the OTA file instead of using <code>fastboot update</code> with a new <code>img</code>.
+OTA files can also contain updates to the modem / bootloader that are not included in the <code>img</code> output.
+<code>fastboot update</code> also cannot be used with a re-locked bootloader without wiping userdata.</p>
+</blockquote>
+<p>To install OTA updates you have to put the device in sideload-mode.</p>
+<ol>
+<li>
+<p>First reboot into the bootloader. You can either do that physically by
+turning off your phone and then holding both the POWER and the VOLUME DOWN
+button to turn it back on, or your can connect the phone to your computer
+with USB Debugging turned on and issue</p>
+<pre><code class="language-console">$ adb reboot recovery
+</code></pre>
+<p>If you used the physical method, at the bootloader prompt use the VOLUME
+keys to select “Recovery Mode” and confirm with the POWER button.</p>
+</li>
+<li>
+<p>Now the recovery mode should have started and you should see a dead robot
+with a read exclamation mark on top. If you see “No command” on the screen,
+press and hold POWER. While holding POWER, press VOLUME UP and release
+both.</p>
+</li>
+<li>
+<p>At the recovery menu use the VOLUME keys to select “Apply update from ADB”
+and use POWER to confirm.</p>
+</li>
+<li>
+<p>Connect your phone to your computer and run</p>
+<pre><code class="language-console">$ adb devices
+List of devices attached
+09071JEC217048  sideload
+</code></pre>
+<p>The output should show that the device is in sideload mode.</p>
+</li>
+<li>
+<p>Now you can proceed to sideload the new update.</p>
+<pre><code class="language-console">$ adb sideload sunfish-ota_update-2021.02.06.16.zip
+</code></pre>
+<p>The sideload might terminate at 94% with “adb: failed to read command:
+Success”.  This is not an error even though it is not obvious, see also
+<a href="https://np.reddit.com/r/LineageOS/comments/dt2et4/adb_failed_to_read_command_success/f6u352m">here</a>.</p>
+</li>
+<li>
+<p>Once finished and the device doesn't automatically reboot just select
+reboot from the menu and confirm.</p>
+</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="welcome.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="building.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="ota.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="development.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -277,13 +336,13 @@ your AVB key.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="welcome.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="building.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="ota.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="development.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

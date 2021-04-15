@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Welcome to Robotnix - Robotnix</title>
+        <title>Source Directories - Robotnix</title>
         
         
 
@@ -18,26 +18,26 @@
         <meta name="theme-color" content="#ffffff" />
 
         
-        <link rel="icon" href="favicon.svg">
+        <link rel="icon" href="../favicon.svg">
         
         
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="../favicon.png">
         
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
         
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -47,7 +47,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to Robotnix</a></li><li class="chapter-item expanded "><strong aria-hidden="true">2.</strong> Tutorials</li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ota.html"><strong aria-hidden="true">2.2.</strong> OTA Updates</a></li><li class="chapter-item expanded "><a href="f-droid.html"><strong aria-hidden="true">2.3.</strong> F-Droid Repositories</a></li><li class="chapter-item expanded "><a href="attestation.html"><strong aria-hidden="true">2.4.</strong> Remote Attestation</a></li></ol></li><li class="chapter-item expanded "><strong aria-hidden="true">3.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">3.1.</strong> Options</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Summary</li><li class="chapter-item expanded "><a href="../welcome.html"><strong aria-hidden="true">1.</strong> Welcome to robotnix</a></li><li class="chapter-item expanded "><a href="../configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../modules/flavors.html"><strong aria-hidden="true">2.1.</strong> Flavors</a></li><li class="chapter-item expanded "><a href="../modules/f-droid.html"><strong aria-hidden="true">2.2.</strong> F-Droid</a></li><li class="chapter-item expanded "><a href="../modules/seedvault.html"><strong aria-hidden="true">2.3.</strong> Seedvault Backup</a></li><li class="chapter-item expanded "><a href="../modules/microg.html"><strong aria-hidden="true">2.4.</strong> MicroG</a></li><li class="chapter-item expanded "><a href="../modules/ota.html"><strong aria-hidden="true">2.5.</strong> Over-the-Air (OTA) Updater</a></li><li class="chapter-item expanded "><a href="../modules/browsers.html"><strong aria-hidden="true">2.6.</strong> Browsers / Webview</a></li><li class="chapter-item expanded "><a href="../modules/attestation.html"><strong aria-hidden="true">2.7.</strong> Remote Attestation</a></li><li class="chapter-item expanded "><a href="../modules/prebuilt.html"><strong aria-hidden="true">2.8.</strong> Prebuilt Apps</a></li><li class="chapter-item expanded "><a href="../modules/source.html" class="active"><strong aria-hidden="true">2.9.</strong> Source Directories</a></li><li class="chapter-item expanded "><a href="../modules/other.html"><strong aria-hidden="true">2.10.</strong> Other Modules</a></li></ol></li><li class="chapter-item expanded "><a href="../building.html"><strong aria-hidden="true">3.</strong> Building</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">4.</strong> Installation / Updating</a></li><li class="chapter-item expanded "><a href="../development.html"><strong aria-hidden="true">5.</strong> Development</a></li><li class="chapter-item expanded "><strong aria-hidden="true">6.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="../options.html"><strong aria-hidden="true">6.1.</strong> Options</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -128,7 +128,7 @@
                     <h1 class="menu-title">Robotnix</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
@@ -159,20 +159,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#robotnix---build-android-aosp-using-nix" id="robotnix---build-android-aosp-using-nix">robotnix - Build Android (AOSP) using Nix</a></h1>
-<p>Robotnix is a build system for Android (AOSP) images on top of the Nix package
-manager.  Instead of having to follow complicated instructions to install
-several build tools and fetch source code from multiple sources, robotnix
-encapsulates all this complexity in a simple Nix expression.</p>
+                        <h1><a class="header" href="#source-directories" id="source-directories">Source Directories</a></h1>
+<p>The AOSP source code is spread across a large number of git repositories.
+The directories included in the robotnix build may be specified using the <code>source.dirs.*</code> options.</p>
+<p>For example, the following configuration will include a new repository checked out under <code>foo/bar</code> by setting the <code>source.dir.&lt;name&gt;.src</code> option.</p>
+<pre><code class="language-nix">{
+  source.dirs.&quot;foo/bar&quot;.src = pkgs.fetchGit {
+    url = &quot;https://example.com/repo/foobar.git&quot;;
+    rev = &quot;f506faf86b8f01f9c09aae877e00ad0a2b4bc511&quot;;
+    sha256 = &quot;0000000000000000000000000000000000000000000000000000000000000000&quot;;
+  };
+}
+</code></pre>
+<p>While the above uses <code>pkgs.fetchGit</code>, the <code>src</code> option could refer to any Nix derivation producing a directory.</p>
+<p>Additionaly, robotnix provides a convenient mechanism for patching existing source directories:</p>
+<pre><code class="language-nix">{
+  # source.dirs.&lt;name&gt;.patches can refer to a list of patches to apply
+  source.dirs.&quot;frameworks/base&quot;.patches = [ ./example.patch ];
+
+  # source.dirs.&lt;name&gt;.postPatch can refer to a snippet of shell script to modify the source tree
+  source.dirs.&quot;frameworks/base&quot;.postPatch = ''
+    sed -i 's/hello/there' example.txt
+  '';
+}
+</code></pre>
+<p>Each flavor in robotnix conditionally sets the default <code>source.dirs</code> to include the Android source directories required for the build.</p>
+<p>Robotnix supports two alternative approaches for fetching source files:</p>
+<ul>
+<li>Build-time source fetching with <code>pkgs.fetchgit</code>. This is the default.
+An end user wanting to fetch sources not already included in <code>robotnix</code> would
+need to create a repo json file using <code>mk-repo-file.py</code> and set
+<code>source.dirs = lib.importJSON ./example.json;</code></li>
+<li>Evaluation-time source fetching with <code>builtins.fetchGit</code>.
+This is more convenient for development when changing branches, as it allows
+use of a shared user git cache.  The end user will need to set
+<code>source.manifest.{url,rev,sha256}</code> and enable <code>source.evalTimeFetching</code>.
+However, with <code>builtins.fetchGit</code>, the <code>drv</code>s themselves depend on the
+source, and <code>nix-copy-closure</code> of even just the <code>.drv</code> files would require
+downloading the source as well. This option is not as well tested as the
+build-time source fetching option.</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="../modules/prebuilt.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
-                            <a rel="next" href="installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../modules/other.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -184,9 +223,13 @@ encapsulates all this complexity in a simple Nix expression.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a rel="prev" href="../modules/prebuilt.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
                 
-                    <a rel="next" href="installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../modules/other.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
@@ -209,14 +252,14 @@ encapsulates all this complexity in a simple Nix expression.</p>
         
 
         
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         

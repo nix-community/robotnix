@@ -3,10 +3,8 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
+        <title>Building - Robotnix</title>
         
-        
-        <base href="/">
         
 
 
@@ -95,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Summary</li><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to robotnix</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modules/flavors.html"><strong aria-hidden="true">2.1.</strong> Flavors</a></li><li class="chapter-item expanded "><a href="modules/f-droid.html"><strong aria-hidden="true">2.2.</strong> F-Droid</a></li><li class="chapter-item expanded "><a href="modules/seedvault.html"><strong aria-hidden="true">2.3.</strong> Seedvault Backup</a></li><li class="chapter-item expanded "><a href="modules/microg.html"><strong aria-hidden="true">2.4.</strong> MicroG</a></li><li class="chapter-item expanded "><a href="modules/ota.html"><strong aria-hidden="true">2.5.</strong> Over-the-Air (OTA) Updater</a></li><li class="chapter-item expanded "><a href="modules/browsers.html"><strong aria-hidden="true">2.6.</strong> Browsers / Webview</a></li><li class="chapter-item expanded "><a href="modules/attestation.html"><strong aria-hidden="true">2.7.</strong> Remote Attestation</a></li><li class="chapter-item expanded "><a href="modules/prebuilt.html"><strong aria-hidden="true">2.8.</strong> Prebuilt Apps</a></li><li class="chapter-item expanded "><a href="modules/source.html"><strong aria-hidden="true">2.9.</strong> Source Directories</a></li><li class="chapter-item expanded "><a href="modules/other.html"><strong aria-hidden="true">2.10.</strong> Other Modules</a></li></ol></li><li class="chapter-item expanded "><a href="building.html"><strong aria-hidden="true">3.</strong> Building</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">4.</strong> Installation / Updating</a></li><li class="chapter-item expanded "><a href="development.html"><strong aria-hidden="true">5.</strong> Development</a></li><li class="chapter-item expanded "><strong aria-hidden="true">6.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">6.1.</strong> Options</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Summary</li><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome to robotnix</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modules/flavors.html"><strong aria-hidden="true">2.1.</strong> Flavors</a></li><li class="chapter-item expanded "><a href="modules/f-droid.html"><strong aria-hidden="true">2.2.</strong> F-Droid</a></li><li class="chapter-item expanded "><a href="modules/seedvault.html"><strong aria-hidden="true">2.3.</strong> Seedvault Backup</a></li><li class="chapter-item expanded "><a href="modules/microg.html"><strong aria-hidden="true">2.4.</strong> MicroG</a></li><li class="chapter-item expanded "><a href="modules/ota.html"><strong aria-hidden="true">2.5.</strong> Over-the-Air (OTA) Updater</a></li><li class="chapter-item expanded "><a href="modules/browsers.html"><strong aria-hidden="true">2.6.</strong> Browsers / Webview</a></li><li class="chapter-item expanded "><a href="modules/attestation.html"><strong aria-hidden="true">2.7.</strong> Remote Attestation</a></li><li class="chapter-item expanded "><a href="modules/prebuilt.html"><strong aria-hidden="true">2.8.</strong> Prebuilt Apps</a></li><li class="chapter-item expanded "><a href="modules/source.html"><strong aria-hidden="true">2.9.</strong> Source Directories</a></li><li class="chapter-item expanded "><a href="modules/other.html"><strong aria-hidden="true">2.10.</strong> Other Modules</a></li></ol></li><li class="chapter-item expanded "><a href="building.html" class="active"><strong aria-hidden="true">3.</strong> Building</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">4.</strong> Installation / Updating</a></li><li class="chapter-item expanded "><a href="development.html"><strong aria-hidden="true">5.</strong> Development</a></li><li class="chapter-item expanded "><strong aria-hidden="true">6.</strong> Reference</li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">6.1.</strong> Options</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -161,15 +159,75 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#document-not-found-404" id="document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <!--
+SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
+SPDX-License-Identifier: MIT
+-->
+<h1><a class="header" href="#building" id="building">Building</a></h1>
+<h2><a class="header" href="#build-outputs" id="build-outputs">Build outputs</a></h2>
+<p>Robotnix provides a number of Nix outputs that can be built with a given configuration.
+The specific output is selected using the <code>-A</code> option of <code>nix-build</code>.
+For example, the following will build an <code>img</code> zip associated with the configuration in <code>config.nix</code>.</p>
+<pre><code class="language-shell">$ nix-build --arg configuration ./config.nix -A img
+</code></pre>
+<p>Some of the outputs provided by robotnix are the following:</p>
+<ul>
+<li><code>img</code> - Image zip, which can be flashed to a device using <code>fastboot update</code>.</li>
+<li><code>factoryImg</code> - Factory image, a zip which contains the contents of <code>img</code> as well as a radio / bootloader if available.</li>
+<li><code>ota</code> - Over-the-air zip, which can be flashed to a device in recovery mode using <code>adb sideload</code>.</li>
+<li><code>releaseScript</code> - Script which produces the <code>img</code>, <code>ota</code>, and <code>factoryImg</code> products outside of Nix.</li>
+<li><code>generateKeysScript</code> - Script to generate required device / application keys for a given configuration.</li>
+</ul>
+<h2><a class="header" href="#building-and-signing-releases" id="building-and-signing-releases">Building and Signing Releases</a></h2>
+<p>After creating a configuration file, you need to generate keys for your device (if you are using signed builds, with <code>signing.enable = true;</code>):</p>
+<pre><code class="language-console">$ nix-build --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
+$ ./generate-keys ./keys
+</code></pre>
+<p>This will create a <code>keys</code> directory containing the app and device keys needed for the build.
+The output of this script should be placed in the location specified by <code>keyStorePath</code> in the robotnix configuration.</p>
+<p>Sometimes changing your configuration will require that you generate additional new keys (e.g. for additional applications).
+Rebuilding and rerunning the generate keys script will produce the new keys (without overwriting your existing keys).</p>
+<p>Next, build and sign your release.
+There are two ways to do this.
+The first option is to build the final products entirely inside Nix.</p>
+<pre><code class="language-console">$ nix-build ./default.nix --arg configuration ./crosshatch.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
+</code></pre>
+<p>This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
+To use <code>extra-sandbox-paths</code>, the user must be a <code>trusted-user</code> in <code>nix.conf</code>.
+Additionally, the nix builder will also need read access to these keys.
+This can be set using <code>chgrp -R nixbld ./keys</code> and <code>chmod -R g+r ./keys</code>.</p>
+<p>The second option involves creating a &quot;release script&quot; which does the final build steps of signing target files and creating <code>img</code>/<code>ota</code> files outside of Nix:</p>
+<pre><code class="language-console">$ nix-build --arg configuration ./crosshatch.nix -A releaseScript -o release
+$ ./release ./keys
+</code></pre>
+<h2><a class="header" href="#binary-cache" id="binary-cache">Binary Cache</a></h2>
+<p>Robotnix now has an optional binary cache provided by <a href="https://cachix.org/">Cachix</a> on <a href="https://robotnix.cachix.org/">robotnix.cachix.org</a>.
+Using the robotnix binary cache will allow the user to avoid building some parts that can be shared between users.
+Currently, only the device kernels and browser builds are published through the binary cache.
+This is because these derivation outputs are most likely to be shared between users, and those outputs also can take a very long time to build.
+The build products previously discussed should be uploaded for at least every robotnix release tag.
+To use, install <code>cachix</code>, run <code>cachix use robotnix</code>, and then build robotnix like normal.</p>
+<h2><a class="header" href="#flakes" id="flakes">Flakes</a></h2>
+<p>If the robotnix configuration is specified in a flake, the robotnix outputs can be produced by running (for example):</p>
+<pre><code class="language-shell">$ nix build .#robotnixConfigurations.dailydriver.img
+</code></pre>
+<p>This is assuming the <code>flake.nix</code> is in the current directory, the desired configuration is named <code>dailydriver</code>, and will produce the <code>img</code> output.
+Other robotnix outputs are available using a similar command.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="modules/other.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
+                        
+                            <a rel="next" href="installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -179,7 +237,15 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a rel="prev" href="modules/other.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
+                
+                    <a rel="next" href="installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                 
             </nav>
 
