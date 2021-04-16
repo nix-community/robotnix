@@ -19,7 +19,7 @@ BASEDIR = "/mnt/cache/chromium"
 SKIP_DEPS = [
     "src/tools/luci-go",
     "src/tools/resultdb", # CIPD package depends on ${{platform}}, which we don't yet handle well
-    "src/third_party/freetype-testing/src", # Current revision has broken .gitmodules
+    "src/testing/rts", # CIPD package depends on ${{platform}}, which we don't yet handle well
 ]
 
 def hash_path(path):
