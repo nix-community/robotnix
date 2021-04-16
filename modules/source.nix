@@ -45,16 +45,18 @@ let
       enable = mkOption {
         default = true;
         type = types.bool;
-        description = "Include this directory in the android build source tree";
+        description = "Whether to include this directory in the android build source tree.";
       };
 
       relpath = mkOption {
         default = name;
         type = types.str;
+        description = "Relative path under android source tree to place this directory. Defaults to attribute name.";
       };
 
       src = mkOption {
         type = types.path;
+        description = "Source to use for this android source directory.";
         default = pkgs.runCommand "empty" {} "mkdir -p $out";
         apply = src: # Maybe replace with with pkgs.applyPatches? Need patchFlags though...
           if (config.patches != [] || config.postPatch != "")
@@ -71,11 +73,13 @@ let
       patches = mkOption {
         default = [];
         type = types.listOf types.path;
+        description = "Patches to apply to source directory.";
       };
 
       postPatch = mkOption {
         default = "";
         type = types.lines;
+        description = "Additional commands to run after patching source directory.";
       };
 
       unpackScript = mkOption {
@@ -171,42 +175,49 @@ in
       manifest = {
         url = mkOption {
           type = types.str;
+          description = "URL to repo manifest repository. Not necessary to set if using `source.dirs` directly.";
         };
 
         rev = mkOption {
           type = types.str;
+          description = "Revision/tag to use from repo manifest repository.";
         };
 
         sha256 = mkOption {
           type = types.str;
+          description = "Nix sha256 hash of repo manifest repository.";
         };
       };
 
       evalTimeFetching = mkOption {
         default = false;
         description = ''
-          Set config.source.dirs automatically using IFD with information
-          from `source.manifest`. Also enables use of builtins.fetchGit instead
-          of pkgs.fetchgit if not all sha256 hashes are available. (Useful for
-          development)
+          Set config.source.dirs automatically using IFD with information from `source.manifest`.
+          Also enables use of `builtins.fetchGit` instead of `pkgs.fetchgit` if not all sha256 hashes are available.
+          (Can be useful for development, but not recommended normally)
         '';
       };
 
       dirs = mkOption {
         default = {};
         type = types.attrsOf dirModule;
+        description = ''
+          Directories to include in Android build process.
+          Normally set by the output of `mk-repo-file.py`.
+          However, additional source directories can be added to the build here using this option as well.
+        '';
       };
 
       excludeGroups = mkOption {
         default = [ "darwin" "mips" ];
         type = types.listOf types.str;
-        description = "project groups to exclude from source tree";
+        description = "Project groups to exclude from source tree";
       };
 
       includeGroups = mkOption {
         default = [];
         type = types.listOf types.str;
-        description = "project groups to include in source tree (overrides excludeGroups)";
+        description = "Project groups to include in source tree (overrides `excludeGroups`)";
       };
 
       unpackScript = mkOption {

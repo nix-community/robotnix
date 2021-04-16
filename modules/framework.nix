@@ -25,16 +25,20 @@ in
   options = {
     framework = mkOption {
       default = {};
+      internal = true; # TODO: Expose to user after cleaning up
+
       type = let
         _config = config;
       in types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
           target = mkOption {
             type = types.str;
+            internal = true;
           };
 
           source = mkOption {
             type = types.path;
+            internal = true;
           };
 
           moduleName = mkOption {
@@ -44,6 +48,7 @@ in
 
           partition = mkOption {
             type = types.strMatching "(vendor|system|product)";
+            internal = true;
           };
         };
 

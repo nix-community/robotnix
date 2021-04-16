@@ -3,7 +3,7 @@
 
 { config, pkgs, lib, ... }:
 
-# Robotnix module for android-prepare-vendor (apv)
+# Android-prepare-vendor is currently only useful for Pixel phones
 
 with lib;
 let
@@ -73,29 +73,30 @@ in
     img = mkOption {
       default = null;
       type = types.path;
-      description = "A factory image .zip from upstream whose vendor contents should be extracted and included in the build";
+      description = "A factory image `.zip` from upstream whose vendor contents should be extracted and included in the build";
     };
 
     ota = mkOption {
       default = null;
       type = types.path;
-      description = "An ota from upstream whose vendor contents should be extracted and included in the build (Android 10 builds need an OTA as well)";
+      description = "An `OTA` from upstream whose vendor contents should be extracted and included in the build. (Android >=10 builds require this in addition to `apv.img`)";
     };
 
     systemBytecode = mkOption {
       type = types.listOf types.str;
       default = [];
+      internal = true;
     };
 
     systemOther = mkOption {
       type = types.listOf types.str;
       default = [];
+      internal = true;
     };
 
     buildID = mkOption {
       type = types.str;
       description = "Build ID associated with the upstream img/ota (used to select images)";
-      internal = true;
     };
   };
 

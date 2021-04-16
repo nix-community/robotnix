@@ -32,9 +32,9 @@ in
   # TODO: Add other google stuff. Ensure that either google play services or microg is enabled if these are.
   options = {
     google = {
-      base.enable = mkEnableOption "Base Google OEM files";
-      dialer.enable = mkEnableOption "Google Dialer";
-      fi.enable = mkEnableOption "Google Fi";
+      base.enable = mkEnableOption "Base Google OEM files (experimental)";
+      dialer.enable = mkEnableOption "Google Dialer (experimental)";
+      fi.enable = mkEnableOption "Google Fi (experimental)";
     };
   };
 

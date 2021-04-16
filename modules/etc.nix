@@ -25,21 +25,27 @@ in
   options = {
     etc = mkOption {
       default = {};
+      description = "Set of files to be included under `/etc`";
+
       type = let
         _config = config;
       in types.attrsOf (types.submodule ({ name, config, ... }: {
+        # robotnix etc.* options correspond to the etc.* options from NixOS
         options = {
           target = mkOption {
             type = types.str;
+            description = "Name of symlink (relative to `/etc`). Defaults to the attribute name.";
           };
 
           text = mkOption {
             default = null;
             type = types.nullOr types.str;
+            description = "Text of the file";
           };
 
           source = mkOption {
             type = types.path;
+            description = "Path of the source file";
           };
 
           moduleName = mkOption {
@@ -49,6 +55,7 @@ in
 
           partition = mkOption {
             type = types.strMatching "(vendor|system|product)";
+            description = "Partition on which to place this etc file";
           };
         };
 

@@ -33,7 +33,8 @@ in
     resources = mkOption {
       default = {};
       type = with types; attrsOf (attrsOf (either resourceTypeGeneric resourceTypeModule));
-      description = "Package resources. The first key refers to the relative path for the package, and the second key refers to the resource name";
+      description = "Additional package resources to include. The first key refers to the relative path for the package, and the second key refers to the resource name";
+      example = literalExample "{ \"frameworks/base/core/res\".config_enableAutoPowerModes = true; }";
     };
   };
 

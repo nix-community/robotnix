@@ -126,7 +126,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 
   # TODO: Currently, only build kernel for marlin since it needs verity key in build.
   # Could also build for other devices, like is done for Android 11
-  kernel.useCustom = mkDefault config.signing.enable;
+  kernel.enable = mkDefault config.signing.enable;
 })
 
 ]))
@@ -162,7 +162,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   ];
 }
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) {
-  kernel.useCustom = mkDefault true;
+  kernel.enable = mkDefault true;
   kernel.configName = mkMerge [
     (mkIf (elem config.deviceFamily [ "taimen" "muskie" ]) "wahoo")
     (mkIf (config.deviceFamily == "crosshatch") "b1c1")

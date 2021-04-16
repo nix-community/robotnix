@@ -7,6 +7,9 @@ with lib;
 {
   options = {
     webview = mkOption {
+      description = "Webview providers to include in Android build. Pre-specified options are `chromium`, `bromite`, and `vanadium`.";
+      example = literalExample "{ bromite.enable = true; }";
+
       type = types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
           enable = mkEnableOption "${name} webview";
@@ -27,10 +30,10 @@ with lib;
             type = types.bool;
             default = false;
             description = ''
-              If true, this provider can be automatically
-              selected by the framework, if it's the first valid choice. If
-              false, this provider will only be used if the user selects it
-              themselves from the developer settings menu.
+              If `true`, this provider can be automatically selected by the
+              framework, if it's the first valid choice. If `false`, this
+              provider will only be used if the user selects it themselves from
+              the developer settings menu.
             '';
           };
 
@@ -38,15 +41,16 @@ with lib;
             type = types.bool;
             default = false;
             description = ''
-              If true, this provider will be automatically
-              disabled by the framework, preventing it from being used or updated
-              by app stores, unless there is no other valid provider available.
-              Only one provider can be a fallback.
+              If `true`, this provider will be automatically disabled by the
+              framework, preventing it from being used or updated by app
+              stores, unless there is no other valid provider available.  Only
+              one provider can be a fallback.
             '';
           };
 
           apk = mkOption {
             type = types.path;
+            description = "APK file containing webview package.";
           };
         };
       }));

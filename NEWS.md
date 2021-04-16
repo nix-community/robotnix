@@ -8,6 +8,12 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2021-04-XX
+## Highlights:
+
+## Backward incompatible changes
+- Renamed `kernel.useCustom` to `kernel.enable`.
+
 # 2021-03-02
 ## Highlights:
 - Added support for Pixel 5 (redfin) and Pixel 4a (5g) (bramble) [PR #79](https://github.com/danielfullmer/robotnix/pull/79)

@@ -17,7 +17,7 @@ in
 {
   options = {
     apps.updater = {
-      enable = mkEnableOption "updater";
+      enable = mkEnableOption "OTA Updater";
 
       url = mkOption {
         type = types.str;

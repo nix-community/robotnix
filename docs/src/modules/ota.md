@@ -1,8 +1,24 @@
-# Building OTA updates
+# Over-the-Air (OTA) Updater
 
-Robotnix includes a convenient target which will build a directory containing
-OTA files ready to be sideloaded or served over the web.  To generate the OTA
-directory, build the `otaDir` attribute (here for sunfish):
+The following robotnix configuration enables the [OTA updater app](https://github.com/GrapheneOS/platform_packages_apps_Updater).
+```nix
+{
+    apps.updater.enable = true;
+    apps.updater.url = "...";
+}
+```
+The `apps.updater.url` setting needs to point to a URL hosting the OTA files described below.
+
+Additionally, the `buildDateTime` option is set by default by the flavor, and is updated when those flavors have new releases.
+If you make new changes to your build that you want to be pushed by the OTA updater, you should set `buildDateTime` yourself, using `date "+%s"` to get the current time.
+
+## Building OTA updates
+
+The OTA file and metadata can be generated as part of the `releaseScript`
+output.  If you are signing builds inside Nix using the sandbox exception,
+robotnix additionally includes a convenient target which will build a directory
+containing OTA files ready to be sideloaded or served over the web.  To
+generate the OTA directory, build the `otaDir` attribute (here for sunfish):
 ```console
 $ nix-build --arg configuration ./sunfish.nix -A otaDir -o ota-dir
 ```
@@ -17,58 +33,18 @@ $ tree -l ota-dir
 The file `sunfish-ota_update-2021.02.06.16.zip` can be sideloaded with adb as
 described in the next section.
 
-# Installing OTA updates with adb
+## Actually serving OTA updates over the air
 
-To install OTA updates you have to put the device in sideload-mode.
-
- 1. First reboot into the bootloader. You can either do that physically by
-    turning off your phone and then holding both the POWER and the VOLUME DOWN
-    button to turn it back on, or your can connect the phone to your computer
-    with USB Debugging turned on and issue
-    ```console
-    $ adb reboot recovery
-    ```
-    If you used the physical method, at the bootloader prompt use the VOLUME
-    keys to select “Recovery Mode” and confirm with the POWER button.
-
- 3. Now the recovery mode should have started and you should see a dead robot
-    with a read exclamation mark on top. If you see “No command” on the screen,
-    press and hold POWER. While holding POWER, press VOLUME UP and release
-    both.
-
- 4. At the recovery menu use the VOLUME keys to select “Apply update from ADB”
-    and use POWER to confirm.
-
- 5. Connect your phone to your computer and run
-    ```console
-    $ adb devices
-    List of devices attached
-    09071JEC217048  sideload
-    ```
-    The output should show that the device is in sideload mode.
-
- 6. Now you can proceed to sideload the new update.
-    ```console
-    $ adb sideload sunfish-ota_update-2021.02.06.16.zip
-    ```
-    The sideload might terminate at 94% with “adb: failed to read command:
-    Success”.  This is not an error even though it is not obvious, see also
-    [here](https://np.reddit.com/r/LineageOS/comments/dt2et4/adb_failed_to_read_command_success/f6u352m).
-
- 7. Once finished and the device doesn't automatically reboot just select
-    reboot from the menu and confirm.
-
-# Actually serving OTA updates over the air
-
-> *Note:* These instructions were only tested with the GrapheneOS flavor.  This
-> method does not work for the LineageOS flavor because it uses its own updater.
+> *Note:* These instructions have only been tested with the Vanilla and
+> GrapheneOS flavors.  This method likely will not with the LineageOS flavor
+> because it uses its own updater.
 
 Essentially this boils down to just serving the `otaDir` build output on the
 web, e.g. with nginx.  To receive OTA updates on the device, enable the updater
 and point it to the domain and possibly subdirectory that you will be serving
 OTA updates from:
 ```nix
-# device configuration
+# Device configuration
 {
   apps = {
     updater.enable = true;
@@ -76,7 +52,7 @@ OTA updates from:
   };
 }
 ```
-On the server, it is as easy as serving a directory at the required
+On a NixOS server, it is as easy as serving a directory at the required
 endpoint:
 ```nix
 # NixOS server configuration
@@ -110,7 +86,7 @@ possible to integrate updating of the OTA directory into your other robotnix
 build automation.  In this case it is as easy as updating the `/var/www/android`
 symlink with the new build output.
 
-Here it was assumed that Robotnix was built on the same machine that you will
+Here it was assumed that robotnix was built on the same machine that you will
 serve the OTA from.  If that is not the case you can conveniently copy the
 closure to a remote host using `nix copy` as in
 ``` console

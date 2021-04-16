@@ -27,5 +27,9 @@
     nixosModules.attestation-server = import ./nixos/attestation-server/module.nix;
 
     checks.x86_64-linux = {};
+
+    packages.x86_64-linux = {
+      manual = (import ./docs { pkgs = nixpkgs.legacyPackages.x86_64-linux; }).manual;
+    };
   };
 }

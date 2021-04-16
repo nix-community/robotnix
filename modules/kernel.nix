@@ -48,10 +48,7 @@ in
 {
   options = {
     kernel = {
-      useCustom = mkOption {
-        default = false;
-        type = types.bool;
-      };
+      enable = mkEnableOption "building custom kernel";
 
       name = mkOption {
         internal = true;
@@ -61,20 +58,24 @@ in
       configName = mkOption {
         internal = true;
         type = types.str;
+        description = ''Name of kernel configuration to build. Make builds ''${kernel.configName}_defconfig"'';
       };
 
       src = mkOption {
         type = types.path;
+        description = "Path to kernel source";
       };
 
       patches = mkOption {
         default = [];
         type = types.listOf types.path;
+        description = "List of patches to apply to kernel source";
       };
 
       postPatch = mkOption {
         default = "";
         type = types.lines;
+        description = "Commands to run after patching kernel source";
       };
 
       relpath = mkOption {
@@ -85,21 +86,26 @@ in
       compiler = mkOption {
         default = "clang";
         type = types.strMatching "(gcc|clang)";
+        description = "Compilter to use for building kernel";
       };
 
       clangVersion = mkOption {
         type = types.str;
-        description = "Version of prebuilt clang to use for kernel. See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md";
+        description = ''
+          Version of prebuilt clang to use for kernel.
+          See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/master/README.md"
+        '';
       };
 
       linker = mkOption {
         default = "gold";
         type = types.strMatching "(gold|lld)";
+        description = "Linker to use for building kernel";
       };
 
       buildProductFilenames = mkOption {
         type = types.listOf types.str;
-        description = "list of build products in kernel out/ to copy into relpath";
+        description = "List of build products in kernel `out/` to copy into path specified by `kernel.relpath`.";
       };
     };
   };
@@ -188,7 +194,7 @@ in
     # config.build.kernel drv output in place of source.dirs.${cfg.relpath}.
     # This is because there are some additional things in the prebuilt kernel
     # output directory like kernel headers for sunfish under device/google/sunfish-kernel/sm7150
-    source = mkIf cfg.useCustom {
+    source = mkIf cfg.enable {
       dirs.${cfg.relpath}.postPatch = ''
         cp -fv ${config.build.kernel}/* .
       '';

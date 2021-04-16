@@ -78,14 +78,13 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   signing.apex.enable = false;
 
   # Don't include updater by default since it would download updates signed with grapheneos's keys.
-  # TODO: Encourage user to set apps.updater.enable
   source.dirs."packages/apps/Updater".enable = false;
 
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 }
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) {
-  kernel.useCustom = mkDefault true;
+  kernel.enable = mkDefault true;
   kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
   kernel.configName = config.device;
   kernel.relpath = "device/google/${config.device}-kernel";

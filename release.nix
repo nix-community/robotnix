@@ -103,7 +103,7 @@ in
 
     kernels = lib.recurseIntoAttrs
       (lib.mapAttrs (name: c: c.config.build.kernel)
-        (lib.filterAttrs (name: c: c.config.kernel.useCustom) builtConfigs));
+        (lib.filterAttrs (name: c: c.config.kernel.enable) builtConfigs));
 
     tests = lib.recurseIntoAttrs {
       attestation-server = tests.attestation-server.test;
