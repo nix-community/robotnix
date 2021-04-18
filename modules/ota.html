@@ -222,7 +222,10 @@ endpoint:</p>
 </code></pre>
 <p>The directory simply contains symlinks to the store paths that were contained in
 the <code>otaDir</code> output that was built earlier.  I choose to just copy the result
-symlink to <code>/var/www/android</code>.</p>
+symlink to <code>/var/www/android</code>.  It is recommended to use a symlink or <code>mv</code>
+operation to expose the <code>otaDir</code> to the web server, since (if you are
+copying/uploading slowly) the OTA updater app on your phone might start
+updating before the copy/upload is complete.</p>
 <pre><code class="language-console">$ cp --no-dereference ota-dir /var/www/android
 $ tree -l /var/www
 /var/www
