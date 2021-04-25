@@ -89,3 +89,9 @@ There are, however, a few places where user-specific public keys are included in
 This unfortunately decreases the possibility of sharing build products between users.
 The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
 Fixes for this are still under investigation.
+
+## Additional Notes
+Robotnix bind mounts the source directories from `/nix/store`.
+These files/directories have their "user write" (`u-w`) permission removed.
+Sometimes, Android Makefiles which copy files from the source directories may assume the files have the write permission enabled, which can then break later steps.
+To work around these issues, it is usually sufficient to add a `chmod` command or add `--no-preserve=owner,mode` to the `cp` command in the Makefile.
