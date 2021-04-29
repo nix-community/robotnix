@@ -5,8 +5,9 @@
 
 # https://developer.android.com/guide/topics/resources/providing-resources
 # https://developer.android.com/guide/topics/resources/more-resources.html
-with lib;
 let
+  inherit (lib) mkOption mkOptionDefault types;
+
   # TODO:
   # "oneOf [ (listOf int) (listOf str) ]" doesn't work. Fails with str looking for int
   # Using "listOf (either str int)" instead
@@ -24,7 +25,7 @@ let
     };
 
     config = {
-      type = mkOptionDefault (resourceTypeName config.value);
+      type = mkOptionDefault (robotnixlib.resourceTypeName config.value);
     };
   });
 in
@@ -34,7 +35,7 @@ in
       default = {};
       type = with types; attrsOf (attrsOf (either resourceTypeGeneric resourceTypeModule));
       description = "Additional package resources to include. The first key refers to the relative path for the package, and the second key refers to the resource name";
-      example = literalExample "{ \"frameworks/base/core/res\".config_enableAutoPowerModes = true; }";
+      example = lib.literalExample "{ \"frameworks/base/core/res\".config_enableAutoPowerModes = true; }";
     };
   };
 
@@ -44,8 +45,8 @@ in
 
     source.dirs."robotnix/overlay".src = (pkgs.symlinkJoin {
       name = "robotnix-overlay";
-      paths = mapAttrsToList (relativePath: packageResources: (pkgs.writeTextFile {
-        name = "${replaceStrings ["/"] ["="] relativePath}-resources";
+      paths = lib.mapAttrsToList (relativePath: packageResources: (pkgs.writeTextFile {
+        name = "${lib.replaceStrings ["/"] ["="] relativePath}-resources";
         text = robotnixlib.configXML packageResources;
         destination = "/${relativePath}/res/values/default.xml"; # I think it's ok that the name doesn't match the original--since they all get merged anyway
       })) config.resources;

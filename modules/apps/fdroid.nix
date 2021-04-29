@@ -3,8 +3,9 @@
 
 { config, pkgs, apks, lib, robotnixlib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkOption mkEnableOption types;
+
   cfg = config.apps.fdroid;
   privext = pkgs.fetchFromGitLab {
     owner = "fdroid";
@@ -84,7 +85,7 @@ in
       patches = [
         (pkgs.substituteAll {
           src = ./fdroid-privext.patch;
-          fingerprint = toLower config.apps.prebuilt."F-Droid".fingerprint;
+          fingerprint = lib.toLower config.apps.prebuilt."F-Droid".fingerprint;
         })
       ];
     };
@@ -96,7 +97,7 @@ in
         partition = "system"; # TODO: Make this work in /product partition
         text = robotnixlib.configXML {
           # Their XML schema is just a list of strings. Each 7 entries represents one repo.
-          additional_repos = flatten (mapAttrsToList (_: repo: with repo; (map (v: toString v) [
+          additional_repos = lib.flatten (lib.mapAttrsToList (_: repo: with repo; (map (v: toString v) [
             name
             url
             description

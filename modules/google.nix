@@ -3,8 +3,10 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib)
+    mkIf mkEnableOption mkMerge;
+
   cfg = config.google;
 
   # TODO: Use repairedImg from android-prepare-vendor
@@ -12,7 +14,7 @@ let
 
   # Android 10 separates product specific apps/config, but its still under system in marlin
   productPath = if (config.androidVersion >= 10)
-    then "${unpackedImg}/${optionalString (config.deviceFamily == "marlin") "system/system/"}product"
+    then "${unpackedImg}/${lib.optionalString (config.deviceFamily == "marlin") "system/system/"}product"
     else systemPath;
   systemExtPath = if (config.androidVersion >= 11)
     then "${unpackedImg}/system_ext"
@@ -47,15 +49,15 @@ in
         "sysconfig/google-hiddenapi-package-whitelist.xml".source = "${productPath}/etc/sysconfig/google-hiddenapi-package-whitelist.xml";
         "sysconfig/google.xml".source = "${productPath}/etc/sysconfig/google.xml";
         "sysconfig/nexus.xml".source = "${productPath}/etc/sysconfig/nexus.xml";
-      } // (optionalAttrs (config.androidVersion == 10) {
+      } // (lib.optionalAttrs (config.androidVersion == 10) {
         "permissions/privapp-permissions-google-ps.xml".source = "${productPath}/etc/permissions/privapp-permissions-google-ps.xml";
-      }) // (optionalAttrs (config.androidVersion >= 10) {
+      }) // (lib.optionalAttrs (config.androidVersion >= 10) {
         "permissions/privapp-permissions-google-p.xml".source = "${productPath}/etc/permissions/privapp-permissions-google-p.xml";
-      }) // (optionalAttrs (config.androidVersion >= 11) {
+      }) // (lib.optionalAttrs (config.androidVersion >= 11) {
         "permissions/privapp-permissions-google-se.xml".source = "${systemExtPath}/etc/permissions/privapp-permissions-google-se.xml";
-      }) // (optionalAttrs (config.deviceFamily == "marlin") { # TODO: Do this for other devices
+      }) // (lib.optionalAttrs (config.deviceFamily == "marlin") { # TODO: Do this for other devices
         "sysconfig/pixel_2016_exclusive.xml".source = "${systemPath}/etc/sysconfig/pixel_2016_exclusive.xml";
-      }) // (optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Do this for other devices
+      }) // (lib.optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Do this for other devices
         "permissions/android.hardware.telephony.euicc.xml".source = "${productPath}/etc/permissions/android.hardware.telephony.euicc.xml";
         "sysconfig/pixel_2018_exclusive.xml".source = "${productPath}/etc/sysconfig/pixel_2018_exclusive.xml";
         "sysconfig/pixel_experience_2017.xml".source = "${productPath}/etc/sysconfig/pixel_experience_2017.xml";
@@ -120,7 +122,7 @@ in
           certificate = "PRESIGNED";
           privileged = true;
         };
-      } // (optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Generalize to other devices with esim
+      } // (lib.optionalAttrs (config.deviceFamily == "crosshatch") { # TODO: Generalize to other devices with esim
         EuiccGoogle = {
           apk = pkgs.robotnix.verifyApk {
             apk = "${productPath}/priv-app/EuiccGoogle/EuiccGoogle.apk";
@@ -129,7 +131,7 @@ in
           certificate = "PRESIGNED";
           privileged = true;
         };
-      }) // (optionalAttrs ((config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
+      }) // (lib.optionalAttrs ((config.deviceFamily == "crosshatch") && (config.androidVersion >= 10)) {
         EuiccSupportPixel = {
           apk = pkgs.robotnix.verifyApk {
             apk = "${productPath}/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk";
@@ -140,7 +142,7 @@ in
         };
       });
       # Protobufs used in CarrierSettings (TODO find a better way to manage this)
-      etc = listToAttrs (map (n: nameValuePair "CarrierSettings/${n}.pb" { source = "${productPath}/etc/CarrierSettings/${n}.pb"; }) [
+      etc = lib.listToAttrs (map (n: lib.nameValuePair "CarrierSettings/${n}.pb" { source = "${productPath}/etc/CarrierSettings/${n}.pb"; }) [
         "airtel_in" "att5g_us" "att_us" "bell_ca" "bluegrass_us" "boost_us"
         "bouygues_fr" "btb_gb" "btc_gb" "carrier_list" "cellcom_us" "cht_tw"
         "cricket5g_us" "cricket_us" "cspire_us" "default" "docomo_jp" "ee_gb"

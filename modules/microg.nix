@@ -3,9 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
-
 let
+  inherit (lib) mkIf mkDefault mkEnableOption;
+
   version = {
     part1 = "0.2.18";
     part2 = "204714";

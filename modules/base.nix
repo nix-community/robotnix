@@ -3,8 +3,10 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib)
+    mkIf mkMerge mkOption mkOptionDefault mkEnableOption mkDefault types;
+
   fakeuser = pkgs.callPackage ./fakeuser {};
 
   # Taken from https://github.com/edolstra/flake-compat/
@@ -188,7 +190,7 @@ in
   };
 
   config = mkMerge [
-  (mkIf (elem config.device ["arm64" "arm" "x86" "x86_64"]) {
+  (mkIf (lib.elem config.device ["arm64" "arm" "x86" "x86_64"]) {
     # If this is a generic build for an arch, just set the arch as well
     arch = mkDefault config.device;
     deviceFamily = mkDefault "generic";
@@ -198,13 +200,13 @@ in
 
     productName = mkIf (config.device != null) (mkOptionDefault "${config.productNamePrefix}${config.device}");
 
-    system.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.system.additionalProductPackages;
-    product.extraConfig = concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.product.additionalProductPackages;
+    system.extraConfig = lib.concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.system.additionalProductPackages;
+    product.extraConfig = lib.concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.product.additionalProductPackages;
 
     # TODO: The " \\" in the below sed is a bit flaky, and would require the line to end in " \\"
     # come up with something more robust.
     source.dirs."build/make".postPatch = ''
-      ${concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' target/product/*.mk") config.removedProductPackages}
+      ${lib.concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' target/product/*.mk") config.removedProductPackages}
     '' + (if (config.androidVersion >= 10) then ''
       echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/handheld_system.mk
       echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/handheld_product.mk
@@ -349,7 +351,7 @@ in
           # Android 11 uses JDK 9, but jre9 is not in nixpkgs anymore
           jre = if (config.androidVersion >= 11) then pkgs.jdk11_headless else pkgs.jre8_headless;
         in ''
-          ${optionalString (config.androidVersion >= 11) "cp bin/debugfs_static bin/debugfs"}
+          ${lib.optionalString (config.androidVersion >= 11) "cp bin/debugfs_static bin/debugfs"}
 
           for file in bin/{boot_signer,verity_signer}; do
             substituteInPlace $file --replace "java " "${lib.getBin jre}/bin/java "
@@ -454,7 +456,7 @@ in
         ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeScript "debug-enter-env2.sh" ''
         export rootDir=$PWD
         source ${config.build.unpackScript}
-        ${concatStringsSep "\n" (mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}
+        ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}
 
         # Become the original user--not fake root. Enter an FHS user namespace
         ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${config.build.env}/bin/robotnix-build

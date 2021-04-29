@@ -3,8 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkOption mkOptionDefault mkMerge mkEnableOption types;
+
   cfg = config.kernel;
   prebuiltGCC = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc";
@@ -168,14 +169,14 @@ in
         buildFlagsArray+=("KBUILD_BUILD_VERSION=1")
 
         make O=out ARCH=arm64 ${cfg.configName}_defconfig
-      '' + optionalString (cfg.compiler == "clang") ''
+      '' + lib.optionalString (cfg.compiler == "clang") ''
         export LD_LIBRARY_PATH="${prebuiltClang}/lib:$LD_LIBRARY_PATH"
       ''; # So it can load LLVMgold.so
 
       installPhase = ''
         mkdir -p $out
         shopt -s globstar nullglob
-      '' + (concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames)
+      '' + (lib.concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames)
       + ''
 
         # This is also done in nixpkgs for wireless modules
@@ -184,7 +185,7 @@ in
 
       dontFixup = true;
       dontStrip = true;
-    } // optionalAttrs (elem config.deviceFamily [ "coral" "sunfish" "redfin" ]) {
+    } // lib.optionalAttrs (lib.elem config.deviceFamily [ "coral" "sunfish" "redfin" ]) {
       # HACK: Needed for coral (pixel 4) (Don't turn this on for other devices)
       DTC_EXT = "${prebuiltMisc}/bin/dtc";
       DTC_OVERLAY_TEST_EXT = "${prebuiltMisc}/bin/ufdt_apply_overlay";

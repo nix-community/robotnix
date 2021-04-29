@@ -3,12 +3,14 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
+let
+  inherit (lib) mkIf mkOption mkEnableOption types;
+in
 {
   options = {
     webview = mkOption {
       description = "Webview providers to include in Android build. Pre-specified options are `chromium`, `bromite`, and `vanadium`.";
-      example = literalExample "{ bromite.enable = true; }";
+      example = lib.literalExample "{ bromite.enable = true; }";
 
       type = types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
@@ -57,17 +59,17 @@ with lib;
     };
   };
 
-  config = mkIf (any (m: m.enable) (attrValues config.webview)) {
+  config = mkIf (lib.any (m: m.enable) (lib.attrValues config.webview)) {
     assertions = [
-      { assertion = any (m: m.enable && m.availableByDefault) (attrValues config.webview);
+      { assertion = lib.any (m: m.enable && m.availableByDefault) (lib.attrValues config.webview);
         message = "Webview module is enabled, but no webview has availableByDefault = true";
       }
-      { assertion = length (filter (m: m.enable && m.isFallback) (attrValues config.webview)) <= 1;
+      { assertion = lib.length (lib.filter (m: m.enable && m.isFallback) (lib.attrValues config.webview)) <= 1;
         message = "Multiple webview modules have isFallback = true";
       }
     ];
 
-    apps.prebuilt = lib.mapAttrs' (name: m: nameValuePair "${name}webview" {
+    apps.prebuilt = lib.mapAttrs' (name: m: lib.nameValuePair "${name}webview" {
       inherit (m) apk;
 
       # Don't generate a cert if it's the prebuilt version from upstream
@@ -81,7 +83,7 @@ with lib;
           libwebviewchromium_plat_support
         LOCAL_MODULE_TARGET_ARCH := ${config.arch}
       '';
-    }) (filterAttrs (name: m: m.enable) config.webview);
+    }) (lib.filterAttrs (name: m: m.enable) config.webview);
 
     product.extraConfig = "PRODUCT_PACKAGE_OVERLAYS += robotnix/webview-overlay";
 
@@ -93,8 +95,8 @@ with lib;
       '' +
       (lib.concatMapStringsSep "\n"
         (m: lib.optionalString m.enable
-          "<webviewprovider description=\"${m.description}\" packageName=\"${m.packageName}\" availableByDefault=\"${boolToString m.availableByDefault}\" isFallback=\"${boolToString m.isFallback}\"></webviewprovider>")
-        (attrValues config.webview)
+          "<webviewprovider description=\"${m.description}\" packageName=\"${m.packageName}\" availableByDefault=\"${lib.boolToString m.availableByDefault}\" isFallback=\"${lib.boolToString m.isFallback}\"></webviewprovider>")
+        (lib.attrValues config.webview)
       ) +
       ''
         </webviewproviders>

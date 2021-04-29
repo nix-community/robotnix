@@ -6,9 +6,6 @@
 
 { config, pkgs, lib, ... }:
 
-with pkgs;
-with lib;
-
 let
   myDomain = "daniel.fullmer.me";
 in
@@ -41,7 +38,7 @@ in
   };
 
   # Custom hosts file
-  hosts = fetchurl { # 2019-08-14
+  hosts = pkgs.fetchurl { # 2019-08-14
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/449a0d7f613e6518ede4f3333e94f8071d3f1cd3/hosts";
     sha256 = "1mcn77l2m45qms7ynww2hzx0d6mja03bzj4di0s9j7spycp4540i";
   };

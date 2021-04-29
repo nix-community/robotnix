@@ -3,8 +3,8 @@
 
 { config, pkgs, apks, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkMerge mkEnableOption;
   # aapt2 from android build-tools doesn't work here:
   # error: failed to deserialize resources.pb: duplicate configuration in resource table.
   # The version from chromium works, however:  https://bugs.chromium.org/p/chromium/issues/detail?id=1106115
@@ -34,7 +34,7 @@ in
     apps.vanadium.enable = mkEnableOption "vanadium browser";
   };
 
-  config = (mkMerge (flatten (map
+  config = (mkMerge (lib.flatten (map
     ({ name, displayName, buildSeparately ? false, chromeModernIsBundled ? true }: let
       # There is a lot of shared code between chrome app and chrome webview. So we
       # default to building them in a single derivation. This is not optimal if
@@ -50,9 +50,9 @@ in
       _browser = buildTargets: apks.${name}.override ({ customGnFlags ? {}, ... }: {
         inherit packageName webviewPackageName trichromeLibraryPackageName displayName buildTargets;
         targetCPU = { arm64 = "arm64"; arm = "arm"; x86_64 = "x64"; x86 = "x86";}.${config.arch};
-        customGnFlags = customGnFlags // optionalAttrs isTriChrome {
+        customGnFlags = customGnFlags // lib.optionalAttrs isTriChrome {
           # Lots of indirection here. If not careful, it might cause infinite recursion.
-          trichrome_certdigest = toLower config.apps.prebuilt."${name}TrichromeLibrary".fingerprint;
+          trichrome_certdigest = lib.toLower config.apps.prebuilt."${name}TrichromeLibrary".fingerprint;
         };
       });
       chromiumTargets =
@@ -68,12 +68,12 @@ in
         then pkgs.symlinkJoin {
           inherit name;
           paths =
-            optional config.apps.${name}.enable (_browser chromiumTargets)
-            ++ optional config.webview.${name}.enable (_browser webviewTargets);
+            lib.optional config.apps.${name}.enable (_browser chromiumTargets)
+            ++ lib.optional config.webview.${name}.enable (_browser webviewTargets);
         }
-        else _browser (unique (
-          optionals config.apps.${name}.enable chromiumTargets
-          ++ optionals config.webview.${name}.enable webviewTargets
+        else _browser (lib.unique (
+          lib.optionals config.apps.${name}.enable chromiumTargets
+          ++ lib.optionals config.webview.${name}.enable webviewTargets
         ));
 
     in [

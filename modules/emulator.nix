@@ -3,7 +3,6 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 {
   config.build = {
     # TODO: Maybe include these in the standard build.android drv?
@@ -15,7 +14,7 @@ with lib;
         mkdir -p $out
         cp --reflink=auto $ANDROID_PRODUCT_OUT/vendor-qemu.img $out/vendor.img || true
         cp --reflink=auto $ANDROID_PRODUCT_OUT/system-qemu.img $out/system.img || true
-        cp --reflink=auto $ANDROID_PRODUCT_OUT/ramdisk${optionalString (config.androidVersion >= 11) "-qemu"}.img $out/ramdisk.img || true
+        cp --reflink=auto $ANDROID_PRODUCT_OUT/ramdisk${lib.optionalString (config.androidVersion >= 11) "-qemu"}.img $out/ramdisk.img || true
         cp --reflink=auto $ANDROID_PRODUCT_OUT/userdata.img $out/userdata.img || true
         cp --reflink=auto $ANDROID_PRODUCT_OUT/vbmeta.img $out/vbmeta.img || true
         cp --reflink=auto -r $ANDROID_PRODUCT_OUT/data $out/ || true

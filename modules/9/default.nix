@@ -2,8 +2,9 @@
 # SPDX-License-Identifier: MIT
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkDefault;
+
   flex = pkgs.callPackage ./flex-2.5.39.nix {};
 in
 mkIf (config.androidVersion == 9) {

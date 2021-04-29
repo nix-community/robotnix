@@ -3,9 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
-
 let
+  inherit (lib) mkIf mkOption mkMerge mkEnableOption types;
+
   cfg = config.services.attestation-server;
   supportedDevices = import ../../apks/auditor/supported-devices.nix;
   attestation-server = pkgs.callPackage ./default.nix {};
@@ -114,14 +114,14 @@ in
           # In SQLite readfile reads a file as a BLOB which is not very useful.
           # However, we can use TRIM to convert it to a string and we have to
           # truncate the trailing newline (\n = char(10)) anyway.
-          values = concatStringsSep ", " [
+          values = lib.concatStringsSep ", " [
             "('emailUsername', '${username}')"
             "('emailPassword', TRIM(readfile('%S/attestation/emailPassword'), char(10)))"
             "('emailHost', '${host}')"
             "('emailPort', '${toString port}')"
             "('emailLocal', '${if local then "1" else "0"}')"
           ];
-        in optionals (passwordFile != null) [
+        in lib.optionals (passwordFile != null) [
           # Note the leading + on the first command. The passwordFile could be
           # anywhere in the file system, so it has to be copied as root and
           # permissions fixed to be accessible by the service.
@@ -149,14 +149,14 @@ in
 
     services.nginx = mkIf cfg.nginx.enable {
       enable = true;
-      virtualHosts."${config.services.attestation-server.domain}" = recursiveUpdate {
+      virtualHosts."${config.services.attestation-server.domain}" = lib.recursiveUpdate {
         locations."/".root = cfg.package.static;
         locations."/api/".proxyPass = "http://${cfg.listenHost}:${toString cfg.port}/api/";
         locations."/challenge".proxyPass = "http://${cfg.listenHost}:${toString cfg.port}/challenge";
         locations."/verify".proxyPass = "http://${cfg.listenHost}:${toString cfg.port}/verify";
         forceSSL = true;
         enableACME = cfg.nginx.enableACME;
-      } (optionalAttrs cfg.disableAccountCreation {
+      } (lib.optionalAttrs cfg.disableAccountCreation {
         locations."/api/create_account".return = "403";
       });
     };

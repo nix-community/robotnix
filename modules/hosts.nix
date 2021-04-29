@@ -3,7 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
+let
+  inherit (lib) mkIf mkOption types;
+in
 {
   options = {
     hosts = mkOption {

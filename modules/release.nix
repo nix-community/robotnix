@@ -3,8 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkDefault mkOption types;
+
   otaTools = config.build.otaTools;
 
   wrapScript = { commands, keysDir ? "" }: ''
@@ -35,7 +36,7 @@ let
 
   runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
     commands = script (args // {out="$out";});
-    keysDir = optionalString config.signing.enable "/keys";
+    keysDir = lib.optionalString config.signing.enable "/keys";
   });
 
   signedTargetFilesScript = { targetFiles, out }: ''
@@ -49,7 +50,7 @@ let
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
     ${otaTools}/releasetools/ota_from_target_files.py  \
       ${toString config.otaArgs} \
-      ${optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
+      ${lib.optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
       ${targetFiles} ${out}
   '';
   imgScript = { targetFiles, out }: ''${otaTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
@@ -60,16 +61,16 @@ let
       export DEVICE=${config.device}
       export PRODUCT=${config.device}
       export BUILD=${config.buildNumber}
-      export VERSION=${toLower config.buildNumber}
+      export VERSION=${lib.toLower config.buildNumber}
 
       get_radio_image() {
-        ${getBin pkgs.unzip}/bin/unzip -p ${targetFiles} OTA/android-info.txt  \
+        ${lib.getBin pkgs.unzip}/bin/unzip -p ${targetFiles} OTA/android-info.txt  \
           |  grep -Po "require version-$1=\K.+" | tr '[:upper:]' '[:lower:]'
       }
       export BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
       export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
 
-      export PATH=${getBin pkgs.zip}/bin:${getBin pkgs.unzip}/bin:$PATH
+      export PATH=${lib.getBin pkgs.zip}/bin:${lib.getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
       mv *-factory-*.zip ${out}
   '';
@@ -112,12 +113,12 @@ in
   config = {
     prevBuildNumber = let
         metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.channel}");
-      in mkDefault (head (splitString " " metadata));
+      in mkDefault (lib.head (lib.splitString " " metadata));
     prevTargetFiles = mkDefault (config.prevBuildDir + "/${config.device}-target_files-${config.prevBuildNumber}.zip");
 
     otaArgs =
       [ "--block" ]
-      ++ optional config.retrofit "--retrofit_dynamic_partitions";
+      ++ lib.optional config.retrofit "--retrofit_dynamic_partitions";
   };
 
   config.build = rec {
@@ -140,13 +141,13 @@ in
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
     otaDir = pkgs.linkFarm "${config.device}-otaDir" (
-      (map (p: {name=p.name; path=p;}) ([ ota otaMetadata ] ++ (optional config.incremental incrementalOta)))
+      (map (p: {name=p.name; path=p;}) ([ ota otaMetadata ] ++ (lib.optional config.incremental incrementalOta)))
       ++ [{ name="${config.device}-target_files-${config.buildNumber}.zip"; path=targetFiles; }]
     );
 
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
     releaseScript =
-      (if (!config.signing.enable) then warn "releaseScript should be used only if signing.enable = true; Otherwise, the build might be using incorrect keys / certificate metadata" else id)
+      (if (!config.signing.enable) then lib.warn "releaseScript should be used only if signing.enable = true; Otherwise, the build might be using incorrect keys / certificate metadata" else lib.id)
       pkgs.writeScript "release.sh" (''
       #!${pkgs.runtimeShell}
       set -euo pipefail

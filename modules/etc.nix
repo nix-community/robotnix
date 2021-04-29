@@ -3,23 +3,24 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkOption mkOptionDefault mkDefault mkMerge mkEnableOption types;
+
   androidmk = pkgs.writeText "Android.mk" (''
     LOCAL_PATH := $(call my-dir)
 
-  '' + (concatMapStringsSep "\n" (f: ''
+  '' + (lib.concatMapStringsSep "\n" (f: ''
     include $(CLEAR_VARS)
 
     LOCAL_MODULE := ${f.moduleName}
     LOCAL_MODULE_TAGS := optional
     LOCAL_MODULE_CLASS := ETC
-    LOCAL_MODULE_PATH := $(TARGET_OUT${optionalString (f.partition == "product") "_PRODUCT"})/etc/${dirOf f.target}
+    LOCAL_MODULE_PATH := $(TARGET_OUT${lib.optionalString (f.partition == "product") "_PRODUCT"})/etc/${dirOf f.target}
     LOCAL_MODULE_STEM := ${baseNameOf f.target}
     LOCAL_SRC_FILES := ${f.moduleName}
 
     include $(BUILD_PREBUILT)
-  '') (attrValues config.etc)));
+  '') (lib.attrValues config.etc)));
 in
 {
   options = {
@@ -64,7 +65,7 @@ in
           source = mkIf (config.text != null) (
             let name' = "etc-" + baseNameOf name;
             in mkDefault (pkgs.writeText name' config.text));
-          moduleName = mkDefault (replaceStrings [ "/" ] [ "_" ] name);
+          moduleName = mkDefault (lib.replaceStrings [ "/" ] [ "_" ] name);
           partition = mkDefault (if (_config.androidVersion >= 10) then "product" else "system");
         };
       }));
@@ -75,9 +76,9 @@ in
     source.dirs."robotnix/etcfiles".src = (pkgs.runCommand "robotnix-etcfiles" {} (''
       mkdir -p $out
       cp ${androidmk} $out/Android.mk
-    '' + (concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (attrValues config.etc))));
+    '' + (lib.concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (lib.attrValues config.etc))));
 
-    system.additionalProductPackages = map (f: f.moduleName) (filter (f: f.partition == "system") (attrValues config.etc));
-    product.additionalProductPackages = map (f: f.moduleName) (filter (f: f.partition == "product") (attrValues config.etc));
+    system.additionalProductPackages = map (f: f.moduleName) (lib.filter (f: f.partition == "system") (lib.attrValues config.etc));
+    product.additionalProductPackages = map (f: f.moduleName) (lib.filter (f: f.partition == "product") (lib.attrValues config.etc));
   };
 }

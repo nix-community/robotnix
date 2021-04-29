@@ -5,8 +5,9 @@
 
 # Android-prepare-vendor is currently only useful for Pixel phones
 
-with lib;
 let
+  inherit (lib) mkIf mkOption mkEnableOption types;
+
   cfg = config.apv;
 
   apiStr = builtins.toString config.apiLevel;
@@ -16,15 +17,15 @@ let
   apvConfig = builtins.fromJSON (builtins.readFile configFile);
 
   # TODO: There's probably a better way to do this
-  mergedConfig = recursiveUpdate apvConfig {
+  mergedConfig = lib.recursiveUpdate apvConfig {
     "api-${apiStr}".naked = let
       _config = apvConfig."api-${apiStr}".naked;
     in _config // {
       system-bytecode = _config.system-bytecode ++ cfg.systemBytecode;
       system-other = _config.system-other ++ cfg.systemOther;
-    } // optionalAttrs (_config ? product-other) {
+    } // lib.optionalAttrs (_config ? product-other) {
       # We don't use the apns-conf.xml generator currently
-      product-other = filter (n: n != "product/etc/apns-conf.xml") _config.product-other;
+      product-other = lib.filter (n: n != "product/etc/apns-conf.xml") _config.product-other;
     };
   };
   mergedConfigFile = builtins.toFile "config.json" (builtins.toJSON mergedConfig);
@@ -114,7 +115,7 @@ in
 
       repairedSystem = let
         bytecodeList = pkgs.writeText "bytecode_list.txt"
-          (concatStringsSep "\n" (with apvConfig."api-${apiStr}".naked; system-bytecode ++ product-bytecode));
+          (lib.concatStringsSep "\n" (with apvConfig."api-${apiStr}".naked; system-bytecode ++ product-bytecode));
       in
         pkgs.runCommand "repaired-system-${config.device}-${cfg.buildID}" {} ''
           mkdir -p $out
@@ -164,7 +165,7 @@ in
           --api ${apiStr} \
           --conf-file ${mergedConfigFile} \
           --conf-type naked \
-          ${optionalString (config.flavor != "grapheneos") "--allow-preopt"}
+          ${lib.optionalString (config.flavor != "grapheneos") "--allow-preopt"}
       '');
 
       # For debugging differences between upstream vendor files and ours

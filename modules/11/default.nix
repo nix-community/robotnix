@@ -3,8 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkDefault;
+
   # Some mostly-unique data used as input for filesystem UUIDs, hash_seeds, and AVB salt.
   # TODO: Maybe include all source hashes except from build/make to avoid infinite recursion?
   hash = builtins.hashString "sha256" "${config.buildNumber} ${builtins.toString config.buildDateTime}";
@@ -15,7 +16,7 @@ mkIf (config.androidVersion == 11) {
   source.dirs."build/make" = {
     patches = [
       ./build_make/0001-Readonly-source-fix.patch
-    ] ++ (optional (!(elem config.flavor [ "grapheneos" "lineageos" ]))
+    ] ++ (lib.optional (!(lib.elem config.flavor [ "grapheneos" "lineageos" ]))
       (pkgs.substituteAll {
         src = ./build_make/0002-Partition-size-fix.patch;
         inherit (pkgs) coreutils;

@@ -3,11 +3,12 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkDefault mkOption types;
+
   projectSource = p:
     let
-      ref = if strings.hasInfix "refs/heads" p.revisionExpr then last (splitString "/" p.revisionExpr) else p.revisionExpr;
+      ref = if lib.strings.hasInfix "refs/heads" p.revisionExpr then lib.last (lib.splitString "/" p.revisionExpr) else p.revisionExpr;
       name = builtins.replaceStrings ["/"] ["="] p.relpath;
     in
     if config.source.evalTimeFetching
@@ -20,7 +21,7 @@ let
       pkgs.fetchgit { # Build-time source fetching. This should be preferred, but is slightly less convenient when developing.
         inherit (p) url sha256 fetchSubmodules;
         # Use revisionExpr if it is a tag so we use the tag in the name of the nix derivation instead of the revision
-        rev = if (p.revisionExpr != null && hasPrefix "refs/tags/" p.revisionExpr) then p.revisionExpr else p.rev;
+        rev = if (p.revisionExpr != null && lib.hasPrefix "refs/tags/" p.revisionExpr) then p.revisionExpr else p.rev;
         deepClone = false;
       };
 
@@ -63,7 +64,7 @@ let
           then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" {} ''
             cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${src} $out/
             chmod u+w -R $out
-            ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
+            ${lib.concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
             cd $out
             ${config.postPatch}
           '')
@@ -145,23 +146,23 @@ let
 
     config = {
       enable = mkDefault (
-        (any (g: elem g config.groups) _config.source.includeGroups)
-        || (!(any (g: elem g config.groups) _config.source.excludeGroups))
+        (lib.any (g: lib.elem g config.groups) _config.source.includeGroups)
+        || (!(lib.any (g: lib.elem g config.groups) _config.source.excludeGroups))
       );
 
       src =
         mkIf ((config.url != null) && (config.rev != null) && (config.sha256 != null))
         (mkDefault (projectSource config));
 
-      unpackScript = (optionalString config.enable ''
+      unpackScript = (lib.optionalString config.enable ''
         mkdir -p ${config.relpath}
         ${pkgs.utillinux}/bin/mount --bind ${config.src} ${config.relpath}
       '')
-      + (concatMapStringsSep "\n" (c: ''
+      + (lib.concatMapStringsSep "\n" (c: ''
         mkdir -p $(dirname ${c.dest})
         cp --reflink=auto -f ${config.relpath}/${c.src} ${c.dest}
       '') config.copyfiles)
-      + (concatMapStringsSep "\n" (c: ''
+      + (lib.concatMapStringsSep "\n" (c: ''
         mkdir -p $(dirname ${c.dest})
         ln -sf --relative ${config.relpath}/${c.src} ${c.dest}
       '') config.linkfiles);
@@ -234,7 +235,7 @@ in
       inherit (config.source.manifest) rev sha256;
     });
 
-    unpackScript = concatMapStringsSep "\n" (d: d.unpackScript) (attrValues config.source.dirs);
+    unpackScript = lib.concatMapStringsSep "\n" (d: d.unpackScript) (lib.attrValues config.source.dirs);
   };
 
   config.build = {
@@ -244,24 +245,24 @@ in
     debugUnpackScript = pkgs.writeShellScript "debug-unpack.sh" (''
       rm -rf robotnix
       '' +
-      (concatStringsSep "" (map (d: optionalString (d.enable && (hasPrefix "robotnix/" d.relpath)) ''
+      (lib.concatStringsSep "" (map (d: lib.optionalString (d.enable && (lib.hasPrefix "robotnix/" d.relpath)) ''
         mkdir -p $(dirname ${d.relpath})
         echo "${d.src} -> ${d.relpath}"
         cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.src} ${d.relpath}/
-      '') (attrValues config.source.dirs))) + ''
+      '') (lib.attrValues config.source.dirs))) + ''
       chmod -R u+w robotnix/
     '');
 
     # Patch files in other sources besides robotnix/*
     debugPatchScript = pkgs.writeShellScript "debug-patch.sh"
-      (concatStringsSep "\n" (map (d: ''
-        ${concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
-        ${optionalString (d.postPatch != "") ''
+      (lib.concatStringsSep "\n" (map (d: ''
+        ${lib.concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
+        ${lib.optionalString (d.postPatch != "") ''
         pushd ${d.relpath} >/dev/null
         ${d.postPatch}
         popd >/dev/null
         ''}
       '')
-      (filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (attrValues config.source.dirs))));
+      (lib.filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (lib.attrValues config.source.dirs))));
   };
 }

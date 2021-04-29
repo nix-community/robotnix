@@ -3,7 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
+let
+  inherit (lib) mkIf mkMerge;
+in
 {
   # It's convenient to have this all in one file, instead of separately in 9/default.nix, 10/default.nix, etc
   # Check build/soong/ui/build/paths/config.go for a list of things that are needed

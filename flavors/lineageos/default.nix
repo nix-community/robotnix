@@ -2,10 +2,16 @@
 # SPDX-License-Identifier: MIT
 
 { config, pkgs, lib, ... }:
-with lib;
 let
+  inherit (lib)
+    optional optionals optionalString optionalAttrs
+    elem mapAttrs mapAttrs' nameValuePair filterAttrs
+    attrNames getAttrs flatten remove
+    mkIf mkMerge mkDefault mkForce
+    importJSON toLower;
+
   LineageOSRelease = "lineage-17.1";
-  repoDirs = lib.importJSON (./. + "/repo-${LineageOSRelease}.json");
+  repoDirs = importJSON (./. + "/repo-${LineageOSRelease}.json");
   deviceMetadata = importJSON ./device-metadata.json;
   _deviceDirs = importJSON ./device-dirs.json;
   vendorDirs = importJSON ./vendor-dirs.json;

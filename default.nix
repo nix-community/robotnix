@@ -6,9 +6,10 @@
   lib ? pkgs.stdenv.lib
 }:
 
-with lib;
 let
-  eval = (evalModules {
+  inherit (lib) mkOption types;
+
+  eval = (lib.evalModules {
     modules = [
       ({ config, ... }: {
         options.nixpkgs.overlays = mkOption {

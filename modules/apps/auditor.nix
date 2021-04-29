@@ -3,8 +3,9 @@
 
 { config, pkgs, apks, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkOption mkEnableOption types;
+
   cfg = config.apps.auditor;
   supportedDevices = import ../../apks/auditor/supported-devices.nix;
 in

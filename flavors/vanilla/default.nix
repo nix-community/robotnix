@@ -2,10 +2,12 @@
 # SPDX-License-Identifier: MIT
 
 { config, pkgs, lib, ... }:
-with lib;
 let
-  # https://source.android.com/setup/start/build-numbers
+  inherit (lib)
+    optional optionalString optionalAttrs elem
+    mkIf mkMerge mkDefault;
 
+  # https://source.android.com/setup/start/build-numbers
   phoneDeviceFamilies =
     (optional (config.androidVersion <= 10) "marlin")
     ++ [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" "redfin" ];
@@ -203,7 +205,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
       "arch/arm64/boot/dts/vendor/qcom/display" = fetchRepo "private/msm-google/arch/arm64/boot/dts/vendor/qcom/display";
     };
   in pkgs.runCommand "kernel-src" {}
-    (concatStringsSep "\n" (lib.mapAttrsToList (relpath: repo: ''
+    (lib.concatStringsSep "\n" (lib.mapAttrsToList (relpath: repo: ''
       ${lib.optionalString (relpath != "") "mkdir -p $out/$(dirname ${relpath})"}
       cp -r ${repo} $out/${relpath}
       chmod u+w -R $out/${relpath}

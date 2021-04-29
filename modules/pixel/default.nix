@@ -3,18 +3,19 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkMerge mkDefault mkOptionDefault;
+
   imgList = lib.importJSON ./pixel-imgs.json;
   otaList = lib.importJSON ./pixel-otas.json;
   fetchItem = json: let
     matchingItem = lib.findSingle
-      (v: (v.device == config.device) && (hasInfix "(${config.apv.buildID}," v.version)) # Look for left paren + upstream buildNumber + ","
+      (v: (v.device == config.device) && (lib.hasInfix "(${config.apv.buildID}," v.version)) # Look for left paren + upstream buildNumber + ","
       (throw "no items found for vendor img/ota")
       (throw "multiple items found for vendor img/ota")
       json;
   in
-    pkgs.fetchurl (filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);
+    pkgs.fetchurl (lib.filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);
 
   deviceMap = {
     marlin = { family = "marlin"; name = "Pixel XL"; };
@@ -35,15 +36,15 @@ let
   # Make a uuid based on some string data
   uuidgen = str: let
     hash = builtins.hashString "sha256" str;
-    s = i: len: substring i len hash;
-  in toLower "${s 0 8}-${s 8 4}-${s 12 4}-${s 16 4}-${s 20 12}";
+    s = i: len: lib.substring i len hash;
+  in lib.toLower "${s 0 8}-${s 8 4}-${s 12 4}-${s 16 4}-${s 20 12}";
 
   # UUID for persist.img
   uuid = uuidgen "persist-${config.buildNumber}-${builtins.toString config.buildDateTime}";
   hashSeed = uuidgen "persist-hash-${config.buildNumber}-${builtins.toString config.buildDateTime}";
 in
 mkMerge [
-  (mkIf ((config.flavor != "lineageos") && (config.device != null) && (hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
+  (mkIf ((config.flavor != "lineageos") && (config.device != null) && (lib.hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault (deviceMap.${config.device}.family or config.device);
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
@@ -53,7 +54,7 @@ mkMerge [
     apv.ota = mkIf config.apv.enable (mkDefault (fetchItem otaList));
 
     # Exclude all devices by default
-    source.excludeGroups = mkDefault (attrNames deviceMap);
+    source.excludeGroups = mkDefault (lib.attrNames deviceMap);
     # But include names related to our device
     source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.name config.kernel.configName ];
 
@@ -74,7 +75,7 @@ mkMerge [
       });
     })];
   })
-  (mkIf (elem config.deviceFamily [ "taimen" "muskie" ]) {
+  (mkIf (lib.elem config.deviceFamily [ "taimen" "muskie" ]) {
     signing.avb.mode = "vbmeta_simple";
     kernel.buildProductFilenames = [
       "arch/arm64/boot/Image.lz4-dtb"

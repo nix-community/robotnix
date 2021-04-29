@@ -3,8 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkOption mkEnableOption mkIf mkMerge types;
+
   cfg = config.apps.updater;
 
   src = pkgs.fetchFromGitHub {
@@ -22,7 +23,7 @@ in
       url = mkOption {
         type = types.str;
         description = "URL for OTA updates";
-        apply = x: if hasSuffix "/" x then x else x + "/";
+        apply = x: if lib.hasSuffix "/" x then x else x + "/";
       };
     };
   };

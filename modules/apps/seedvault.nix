@@ -3,8 +3,9 @@
 
 { config, pkgs, apks, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkMerge mkEnableOption;
+
   cfg = config.apps.seedvault;
 in
 {

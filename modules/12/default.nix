@@ -3,8 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
-
+let
+  inherit (lib) mkIf;
+in
 mkIf (config.androidVersion == 12) {
   apiLevel = 31;
 

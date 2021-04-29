@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: MIT
 
 { config, pkgs, lib, ... }:
-with lib;
 let
+  inherit (lib)
+    optional optionalString optionalAttrs elem
+    mkIf mkMerge mkDefault mkForce;
+
   grapheneOSRelease = "${config.apv.buildID}.2021.04.22.20";
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ];

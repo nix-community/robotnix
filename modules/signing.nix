@@ -3,22 +3,23 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkIf mkOption mkEnableOption mkDefault mkOptionDefault types;
+
   cfg = config.signing;
 
   # TODO: Find a better way to do this?
-  putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
+  putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 
-  keysToGenerate = unique (
+  keysToGenerate = lib.unique (
                     map (key: "${config.device}/${key}") [ "releasekey" "platform" "shared" "media" ]
-                    ++ (optional (config.signing.avb.mode == "verity_only") "${config.device}/verity")
-                    ++ (optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
-                    ++ (optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
-                    ++ (optional config.signing.apex.enable config.signing.apex.packageNames)
-                    ++ (mapAttrsToList
+                    ++ (lib.optional (config.signing.avb.mode == "verity_only") "${config.device}/verity")
+                    ++ (lib.optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
+                    ++ (lib.optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
+                    ++ (lib.optional config.signing.apex.enable config.signing.apex.packageNames)
+                    ++ (lib.mapAttrsToList
                         (name: prebuilt: prebuilt.certificate)
-                        (filterAttrs (name: prebuilt: prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
+                        (lib.filterAttrs (name: prebuilt: prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
                     );
 in
 {
@@ -48,7 +49,7 @@ in
 
         fingerprint = mkOption {
           type = types.strMatching "[0-9A-F]{64}";
-          apply = toUpper;
+          apply = lib.toUpper;
           description = "SHA256 hash of `avb_pkmd.bin`. Should be set automatically based on file under `keyStorePath` if `signing.enable = true`";
         };
 
@@ -88,11 +89,11 @@ in
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
     signing.apex.packageNames = map (s: "com.android.${s}") (
-      optionals (config.androidVersion == 10) [ "runtime.release" ]
-      ++ optionals (config.androidVersion >= 10) [
+      lib.optionals (config.androidVersion == 10) [ "runtime.release" ]
+      ++ lib.optionals (config.androidVersion >= 10) [
         "conscrypt" "media" "media.swcodec" "resolv" "tzdata"
       ]
-      ++ optionals (config.androidVersion >= 11) [
+      ++ lib.optionals (config.androidVersion >= 11) [
         "adbd" "art.release" "cellbroadcast" "extservices" "i18n"
         "ipsec" "mediaprovider" "neuralnetworks" "os.statsd" "runtime"
         "permission" "sdkext" "telephony" "tethering" "wifi"
@@ -120,7 +121,7 @@ in
           "--avb_vbmeta_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_system_algorithm SHA256_RSA2048"
         ];
       }.${cfg.avb.mode}
-      ++ optionals ((config.androidVersion >= 10) && (cfg.avb.mode != "verity_only")) [
+      ++ lib.optionals ((config.androidVersion >= 10) && (cfg.avb.mode != "verity_only")) [
         "--avb_system_other_key $KEYSDIR/${config.device}/avb.pem"
         "--avb_system_other_algorithm SHA256_RSA2048"
       ];
@@ -132,21 +133,21 @@ in
         "build/make/target/product/security/shared" = "${config.device}/shared";
         "build/make/target/product/security/platform" = "${config.device}/platform";
       }
-      // optionalAttrs (config.androidVersion >= 10) {
+      // lib.optionalAttrs (config.androidVersion >= 10) {
         "build/make/target/product/security/networkstack" = "${config.device}/networkstack";
       }
-      // optionalAttrs (config.androidVersion >= 11) {
+      // lib.optionalAttrs (config.androidVersion >= 11) {
         "frameworks/base/packages/OsuLogin/certs/com.android.hotspot2.osulogin" = "com.android.hotspot2.osulogin";
         "frameworks/opt/net/wifi/service/resources-certs/com.android.wifi.resources" = "com.android.wifi.resources";
       }
       # App-specific keys
-      // mapAttrs'
-        (name: prebuilt: nameValuePair "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}" prebuilt.certificate)
+      // lib.mapAttrs'
+        (name: prebuilt: lib.nameValuePair "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}" prebuilt.certificate)
         config.apps.prebuilt;
     in
-      mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") keyMappings
-      ++ optionals cfg.avb.enable avbFlags
-      ++ optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames);
+      lib.mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") keyMappings
+      ++ lib.optionals cfg.avb.enable avbFlags
+      ++ lib.optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames);
 
     otaArgs =
       if config.signing.enable
@@ -159,7 +160,7 @@ in
         mkdir -p $out/bin
 
         cp ${config.source.dirs."development".src}/tools/make_key $out/bin/make_key
-        substituteInPlace $out/bin/make_key --replace openssl ${getBin pkgs.openssl}/bin/openssl
+        substituteInPlace $out/bin/make_key --replace openssl ${lib.getBin pkgs.openssl}/bin/openssl
 
         cc -o $out/bin/generate_verity_key \
           ${config.source.dirs."system/extras".src}/verity/generate_verity_key.c \
@@ -186,7 +187,7 @@ in
       mkdir -p "$1"
       cd "$1"
 
-      export PATH=${getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
+      export PATH=${lib.getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
       KEYS=( ${toString keysToGenerate} )
       APEX_KEYS=( ${lib.optionalString config.signing.apex.enable (toString config.signing.apex.packageNames)} )
@@ -213,13 +214,13 @@ in
         fi
       done
 
-      ${optionalString (config.signing.avb.mode == "verity_only") ''
+      ${lib.optionalString (config.signing.avb.mode == "verity_only") ''
       if [[ ! -e "${config.device}/verity_key.pub" ]]; then
           generate_verity_key -convert ${config.device}/verity.x509.pem ${config.device}/verity_key
       fi
       ''}
 
-      ${optionalString (config.signing.avb.mode != "verity_only") ''
+      ${lib.optionalString (config.signing.avb.mode != "verity_only") ''
       if [[ ! -e "${config.device}/avb.pem" ]]; then
         # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
         echo "Generating Device AVB key"
@@ -263,14 +264,14 @@ in
         fi
       done
 
-      ${optionalString (config.signing.avb.mode == "verity_only") ''
+      ${lib.optionalString (config.signing.avb.mode == "verity_only") ''
       if [[ ! -e "${config.device}/verity_key.pub" ]]; then
         echo "Missing verity_key.pub"
         RETVAL=1
       fi
       ''}
 
-      ${optionalString (config.signing.avb.mode != "verity_only") ''
+      ${lib.optionalString (config.signing.avb.mode != "verity_only") ''
       if [[ ! -e "${config.device}/avb.pem" ]]; then
         echo "Missing Device AVB key"
         RETVAL=1

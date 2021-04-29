@@ -3,8 +3,9 @@
 
 { config, pkgs, lib, ... }:
 
-with lib;
 let
+  inherit (lib) mkOption mkDefault types;
+
   cfg = config.apps.prebuilt;
   androidmk = prebuilt: pkgs.writeText "Android.mk" (''
     LOCAL_PATH := $(call my-dir)
@@ -18,15 +19,15 @@ let
     LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
     LOCAL_MODULE_TAGS := optional
 
-    LOCAL_PRIVILEGED_MODULE := ${boolToString prebuilt.privileged}
+    LOCAL_PRIVILEGED_MODULE := ${lib.boolToString prebuilt.privileged}
     LOCAL_CERTIFICATE := ${
       if (prebuilt.certificate == "PRESIGNED") then "PRESIGNED"
       else if builtins.elem prebuilt.certificate deviceCertificates
         then (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
       else "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}"
     }
-    ${optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
-    ${optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
+    ${lib.optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
+    ${lib.optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
     ${prebuilt.extraConfig}
 
     include $(BUILD_PREBUILT)
@@ -40,13 +41,13 @@ let
     "shared" = "28BBFE4A7B97E74681DC55C2FBB6CCB8D6C74963733F6AF6AE74D8C3A6E879FD";
     "verity" = "8AD127ABAE8285B582EA36745F220AB8FE397FFB3B068DF19CA22D122C7B3B86";
   };
-  deviceCertificates = attrNames defaultDeviceCertFingerprints;
+  deviceCertificates = lib.attrNames defaultDeviceCertFingerprints;
 
   _keyPath = keyStorePath: name:
     if builtins.elem name deviceCertificates
       then (if config.signing.enable
         then "${keyStorePath}/${config.device}/${name}"
-        else "${config.source.dirs."build/make".src}/target/product/security/${replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
+        else "${config.source.dirs."build/make".src}/target/product/security/${lib.replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
       else "${keyStorePath}/${name}";
   keyPath = name: _keyPath config.keyStorePath name;
   sandboxKeyPath = name:
@@ -54,7 +55,7 @@ let
       then _keyPath "/keys" name
       else keyPath name;
 
-  putInStore = path: if (hasPrefix builtins.storeDir path) then path else (/. + path);
+  putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 in
 {
   options = {
@@ -86,7 +87,7 @@ in
           fingerprint = mkOption {
             description = "SHA256 fingerprint from certificate used to sign apk. Should be set automatically based on `keyStorePath` if `signing.enable = true`";
             type = types.strMatching "[0-9A-F]{64}"; # TODO: Type check fingerprints elsewhere
-            apply = toUpper;
+            apply = lib.toUpper;
             internal = true;
           };
 
@@ -97,7 +98,7 @@ in
           };
 
           certificate = mkOption {
-            default = toLower name;
+            default = lib.toLower name;
             type = types.str;
             description = ''
               Name of certificate to sign APK with.  Defaults to the name of the prebuilt app.
@@ -212,7 +213,7 @@ in
   };
 
   config = {
-    source.dirs = listToAttrs (map (prebuilt: {
+    source.dirs = lib.listToAttrs (map (prebuilt: {
       name = "robotnix/prebuilt/${prebuilt.name}";
       value = {
         src = pkgs.runCommand "prebuilt_${prebuilt.name}" {} (''
@@ -238,22 +239,22 @@ in
           if [[ "$TARGET_SDK_VERSION" -lt "${builtins.toString config.apiLevel}" ]]; then
             echo "WARNING: APK was compiled against an older SDK API level ($TARGET_SDK_VERSION) than used in OS (${builtins.toString config.apiLevel})"
           fi
-        '' + optionalString ((prebuilt.certificate != "PRESIGNED") && !(builtins.elem prebuilt.certificate deviceCertificates)) ''
+        '' + lib.optionalString ((prebuilt.certificate != "PRESIGNED") && !(builtins.elem prebuilt.certificate deviceCertificates)) ''
           cp ${prebuilt.snakeoilKeyPath}/${prebuilt.certificate}.{pk8,x509.pem} $out/
         '');
       };
-    }) (attrValues cfg));
+    }) (lib.attrValues cfg));
 
     # TODO: Make just a single file with each of these configuration types instead of one for each app?
     etc = let
       confToAttrs = f:
-        (listToAttrs (map (prebuilt: {
+        (lib.listToAttrs (map (prebuilt: {
           name = (f prebuilt).path;
           value = {
             text = (f prebuilt).text;
             inherit (prebuilt) partition;
           };
-        }) (filter (prebuilt: (f prebuilt).filter) (attrValues cfg))));
+        }) (lib.filter (prebuilt: (f prebuilt).filter) (lib.attrValues cfg))));
     in
       confToAttrs (prebuilt: {
         path = "permissions/privapp-permissions-${prebuilt.packageName}.xml";
@@ -262,7 +263,7 @@ in
           <?xml version="1.0" encoding="utf-8"?>
           <permissions>
             <privapp-permissions package="${prebuilt.packageName}">
-              ${concatMapStrings (p: "<permission name=\"android.permission.${p}\"/>") prebuilt.privappPermissions}
+              ${lib.concatMapStrings (p: "<permission name=\"android.permission.${p}\"/>") prebuilt.privappPermissions}
             </privapp-permissions>
           </permissions>
         '';
@@ -275,7 +276,7 @@ in
           <?xml version="1.0" encoding="utf-8"?>
           <exceptions>
             <exception package="${prebuilt.packageName}">
-              ${concatMapStrings (p: "<permission name=\"android.permission.${p}\" fixed=\"false\"/>") prebuilt.defaultPermissions}
+              ${lib.concatMapStrings (p: "<permission name=\"android.permission.${p}\" fixed=\"false\"/>") prebuilt.defaultPermissions}
             </exception>
           </exceptions>
         '';
@@ -291,12 +292,12 @@ in
         '';
       });
 
-    system.additionalProductPackages = map (p: "Robotnix${p.name}") (filter (p: p.partition == "system") (attrValues cfg));
-    product.additionalProductPackages = map (p: "Robotnix${p.name}") (filter (p: p.partition == "product") (attrValues cfg));
+    system.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "system") (lib.attrValues cfg));
+    product.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "product") (lib.attrValues cfg));
 
     # Convenience derivation to get all prebuilt apks -- for use in custom fdroid repo?
     build.prebuiltApks = pkgs.linkFarm "${config.device}-prebuilt-apks"
       (map (p: { name="${p.name}.apk"; path=p.signedApk; })
-      (filter (p: p.name != "CustomWebview") (attrValues cfg)));
+      (lib.filter (p: p.name != "CustomWebview") (lib.attrValues cfg)));
   };
 }

@@ -4,22 +4,23 @@
 { config, pkgs, lib, ... }:
 
 # TODO: Unify with "etc" and/or "apps.prebuilt" options
-with lib;
 let
+  inherit (lib) mkOption mkDefault types;
+
   androidmk = pkgs.writeText "Android.mk" (''
     LOCAL_PATH := $(call my-dir)
 
-  '' + (concatMapStringsSep "\n" (f: ''
+  '' + (lib.concatMapStringsSep "\n" (f: ''
     include $(CLEAR_VARS)
 
     LOCAL_MODULE := ${f.moduleName}
     LOCAL_MODULE_TAGS := optional
-    LOCAL_MODULE_PATH := $(TARGET_OUT${optionalString (f.partition == "product") "_PRODUCT"})/framework/${dirOf f.target}
+    LOCAL_MODULE_PATH := $(TARGET_OUT${lib.optionalString (f.partition == "product") "_PRODUCT"})/framework/${dirOf f.target}
     LOCAL_MODULE_CLASS := JAVA_LIBRARIES
     LOCAL_SRC_FILES := ${f.moduleName}
 
     include $(BUILD_PREBUILT)
-  '') (attrValues config.framework)));
+  '') (lib.attrValues config.framework)));
 in
 {
   options = {
@@ -54,7 +55,7 @@ in
 
         config = {
           target = mkDefault name;
-          moduleName = mkDefault (replaceStrings [ "/" ] [ "_" ] name);
+          moduleName = mkDefault (lib.replaceStrings [ "/" ] [ "_" ] name);
           partition = mkDefault (if (_config.androidVersion >= 10) then "product" else "system");
         };
       }));
@@ -65,9 +66,9 @@ in
     source.dirs."robotnix/framework".src = (pkgs.runCommand "robotnix-framework" {} (''
       mkdir -p $out
       cp ${androidmk} $out/Android.mk
-    '' + (concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (attrValues config.framework))));
+    '' + (lib.concatMapStringsSep "\n" (f: "cp ${f.source} $out/${f.moduleName}") (lib.attrValues config.framework))));
 
-    system.additionalProductPackages = map (f: f.moduleName) (filter (f: f.partition == "system") (attrValues config.framework));
-    product.additionalProductPackages = map (f: f.moduleName) (filter (f: f.partition == "product") (attrValues config.framework));
+    system.additionalProductPackages = map (f: f.moduleName) (lib.filter (f: f.partition == "system") (lib.attrValues config.framework));
+    product.additionalProductPackages = map (f: f.moduleName) (lib.filter (f: f.partition == "product") (lib.attrValues config.framework));
   };
 }
