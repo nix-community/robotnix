@@ -137,13 +137,38 @@ in
         SuccessExitStatus = [ 143 ];
 
         DynamicUser = true;
-        ProtectSystem = "strict";
-        ProtectHome = true;
-
-        NoNewPrivileges = true;
-        PrivateDevices = true;
         StateDirectory = "attestation";
         WorkingDirectory = "%S/attestation";
+
+        # See attestation.service in upstream repository
+        CapabilityBoundingSet = "";
+        IPAddressDeny = "any";
+        IPAddressAllow = "localhost";
+        LockPersonality = true;
+        NoNewPrivileges = true;
+        PrivateDevices = true;
+        PrivateIPC = true;
+        PrivateTmp = true;
+        PrivateUsers = true;
+        ProcSubset = "pid";
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectProc = "invisible";
+        ProtectSystem = "strict";
+        RestrictAddressFamilies = "AF_INET AF_INET6";
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "~@privileged @resources"
+        ];
       };
     };
 
