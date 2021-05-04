@@ -22,7 +22,9 @@ let
       _config = apvConfig."api-${apiStr}".naked;
     in _config // {
       system-bytecode = _config.system-bytecode ++ cfg.systemBytecode;
-      system-other = _config.system-other ++ cfg.systemOther;
+      # We don't use the apns-conf.xml generator currently
+      # system/product workaround needed for taimen
+      system-other = (lib.filter (n: n != "system/product/etc/apns-conf.xml") _config.system-other) ++ cfg.systemOther;
     } // lib.optionalAttrs (_config ? product-other) {
       # We don't use the apns-conf.xml generator currently
       product-other = lib.filter (n: n != "product/etc/apns-conf.xml") _config.product-other;
