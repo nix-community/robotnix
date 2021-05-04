@@ -7,7 +7,7 @@ let
     optional optionalString optionalAttrs elem
     mkIf mkMerge mkDefault mkForce;
 
-  grapheneOSRelease = "${config.apv.buildID}.2021.04.22.20";
+  grapheneOSRelease = "${config.apv.buildID}.2021.05.04.01";
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
@@ -17,12 +17,16 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # This a default datetime for robotnix that I update manually whenever
   # a significant change is made to anything the build depends on. It does not
   # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1619231693;
+  buildDateTime = mkDefault 1620112036;
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault "RQ2A.210405.005";
+  apv.buildID = mkDefault (
+    if lib.elem config.deviceFamily [ "crosshatch" "bonito" "coral" "sunfish" ]
+    then "RQ2A.210505.002"
+    else "RQ2A.210505.003"
+  );
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
