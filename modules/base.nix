@@ -107,7 +107,7 @@ in
       description = ''
         Set this to something meaningful to identify the build.
         Defaults to `YYYY.MM.DD.HH` based on `buildDateTime`.
-        Needs to be unique for each build to enable the updater to work
+        Should be unique for each build used for disambiguation.
       '';
       example = "2019.08.12.1";
     };
@@ -117,7 +117,7 @@ in
       type = types.int;
       description = ''
         Seconds since the epoch that this build is taking place.
-        Needs to be monotonically increasing for each build to enable the updater to work.
+        Needs to be monotonically increasing for each build if you use the over-the-air (OTA) update mechanism.
         e.g. output of `date +%s`
         '';
       example = 1565645583;
