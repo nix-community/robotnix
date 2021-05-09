@@ -30,8 +30,6 @@ let
     fi
 
     ${commands}
-
-    if [[ "$KEYSDIR" ]]; then rm -rf "$KEYSDIR"; fi
   '';
 
   runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
