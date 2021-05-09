@@ -71,11 +71,12 @@ let
     else lib.showWarnings eval.config.warnings eval.config;
 
 in {
-  inherit (eval) pkgs config options;
+  inherit (eval) pkgs options;
+  inherit config;
 
   # Things that are nice to have at the top-level, since they might get moved
   # in the future:
-  inherit (eval.config.build)
+  inherit (config.build)
     targetFiles unsignedTargetFiles signedTargetFiles
     ota incrementalOta img factoryImg bootImg otaDir
     releaseScript generateKeysScript verifyKeysScript
