@@ -184,7 +184,10 @@ For example, the following will build an <code>img</code> zip associated with th
 $ ./generate-keys ./keys
 </code></pre>
 <p>This will create a <code>keys</code> directory containing the app and device keys needed for the build.
-The output of this script should be placed in the location specified by <code>keyStorePath</code> in the robotnix configuration.</p>
+The output of this script should be placed in the location specified by <code>signing.keyStorePath</code> in the robotnix configuration.
+If you intend to build the <code>img</code>/<code>factoryImg</code>/<code>ota</code> Nix outputs instead of using the <code>releaseScript</code>, do not apply a passphrase to your keys here.
+(You can still encrypt them at rest on your own through other means.)
+This is because we cannot prompt you for your passphrase during the Nix build, but we can outside of Nix using <code>generateKeysScript</code>.</p>
 <p>Sometimes changing your configuration will require that you generate additional new keys (e.g. for additional applications).
 Rebuilding and rerunning the generate keys script will produce the new keys (without overwriting your existing keys).</p>
 <p>Next, build and sign your release.
@@ -192,8 +195,9 @@ There are two ways to do this.
 The first option is to build the final products entirely inside Nix.</p>
 <pre><code class="language-console">$ nix-build ./default.nix --arg configuration ./crosshatch.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
 </code></pre>
-<p>This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
+<p>If the Nix sandbox is enabled (it normally is), this will require a sandbox exception so the secret keys are available to the build scripts.
 To use <code>extra-sandbox-paths</code>, the user must be a <code>trusted-user</code> in <code>nix.conf</code>.
+If the Nix sandbox is not enabled, we can instead set <code>signing.buildTimeKeysStorePath</code> in addition to <code>signing.keyStorePath</code> to a string of the absolute path to the generated keys.
 Additionally, the nix builder will also need read access to these keys.
 This can be set using <code>chgrp -R nixbld ./keys</code> and <code>chmod -R g+r ./keys</code>.</p>
 <p>The second option involves creating a &quot;release script&quot; which does the final build steps of signing target files and creating <code>img</code>/<code>ota</code> files outside of Nix:</p>
@@ -201,7 +205,7 @@ This can be set using <code>chgrp -R nixbld ./keys</code> and <code>chmod -R g+r
 $ ./release ./keys
 </code></pre>
 <p>This has the additional benefit that the build can take place on a remote machine, and the <code>releaseScript</code> could be copied using <code>nix-copy-closure</code> to a local machine which containing the keys.
-You might need to manually set certain required options like <code>signing.avb.fingerprint</code> or <code>apps.prebuilt.&lt;name&gt;.fingerprint</code> if you build on a remote machine that does not have access to <code>keyStorePath</code>.</p>
+You might need to manually set certain required options like <code>signing.avb.fingerprint</code> or <code>apps.prebuilt.&lt;name&gt;.fingerprint</code> if you build on a remote machine that does not have access to the <code>signing.keyStorePath</code>.</p>
 <h2><a class="header" href="#binary-cache" id="binary-cache">Binary Cache</a></h2>
 <p>Robotnix now has an optional binary cache provided by <a href="https://cachix.org/">Cachix</a> on <a href="https://robotnix.cachix.org/">robotnix.cachix.org</a>.
 Using the robotnix binary cache will allow the user to avoid building some parts that can be shared between users.

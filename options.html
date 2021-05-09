@@ -536,13 +536,6 @@ See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/m
 <p><em>Type</em>: path</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
-<h3><a class="header" href="#keystorepath" id="keystorepath"><code>keyStorePath</code></a></h3>
-<p>String containing absolute path to generated keys for signing.
-This must be a <em>string</em> and not a &quot;nix path&quot; to ensure that your secret keys are not imported into the public <code>/nix/store</code>.</p>
-<p><em>Example</em>: <code>&quot;/var/secrets/android-keys&quot;</code></p>
-<p><em>Type</em>: string</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3><a class="header" href="#microgenable" id="microgenable"><code>microg.enable</code></a></h3>
 <p>Whether to enable MicroG.</p>
 <p><em>Default</em>: <code>false</code></p>
@@ -630,10 +623,22 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p><em>Type</em>: path</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#signingbuildtimekeystorepath" id="signingbuildtimekeystorepath"><code>signing.buildTimeKeyStorePath</code></a></h3>
+<p>Path to generated keys for signing to use at build-time, as opposed to keyStorePath, which is used at evaluation-time.</p>
+<p><em>Type</em>: string or path</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3><a class="header" href="#signingenable" id="signingenable"><code>signing.enable</code></a></h3>
 <p>Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.</p>
 <p><em>Default</em>: <code>false</code></p>
 <p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3><a class="header" href="#signingkeystorepath" id="signingkeystorepath"><code>signing.keyStorePath</code></a></h3>
+<p>String containing absolute path to generated keys for signing.
+This must be a <em>string</em> and not a &quot;nix path&quot; to ensure that your secret keys are not imported into the public <code>/nix/store</code>.</p>
+<p><em>Example</em>: <code>&quot;/var/secrets/android-keys&quot;</code></p>
+<p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3><a class="header" href="#sourcedirs" id="sourcedirs"><code>source.dirs</code></a></h3>
