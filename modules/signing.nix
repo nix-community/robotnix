@@ -77,11 +77,24 @@ in
         '';
         example = "/var/secrets/android-keys";
       };
+
+      buildTimeKeyStorePath = mkOption {
+        type = with types; either str path;
+        description = ''
+          Path to generated keys for signing to use at build-time, as opposed to keyStorePath, which is used at evaluation-time.
+        '';
+      };
     };
   };
 
-  config = {
-    signing.keyStorePath = mkIf (!config.signing.enable) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
+  config = let
+    testKeysStorePath = config.source.dirs."build/make".src + /target/product/security;
+  in {
+    signing.keyStorePath = mkIf (!config.signing.enable) (mkDefault testKeysStorePath);
+    signing.buildTimeKeyStorePath = mkMerge [
+      (mkIf config.signing.enable (mkDefault "/keys"))
+      (mkIf (!config.signing.enable) (mkDefault testKeysStorePath))
+    ];
     signing.avb.fingerprint = mkIf config.signing.enable (mkOptionDefault
       (pkgs.robotnix.sha256Fingerprint (putInStore "${config.signing.keyStorePath}/${config.device}/avb_pkmd.bin"))
       );

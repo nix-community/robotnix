@@ -42,8 +42,9 @@ The first option is to build the final products entirely inside Nix.
 ```console
 $ nix-build ./default.nix --arg configuration ./crosshatch.nix -A img --option extra-sandbox-paths /keys=$(pwd)/keys
 ```
-This, however, will require a nix sandbox exception so the secret keys are available to the build scripts.
+If the Nix sandbox is enabled (it normally is), this will require a sandbox exception so the secret keys are available to the build scripts.
 To use `extra-sandbox-paths`, the user must be a `trusted-user` in `nix.conf`.
+If the Nix sandbox is not enabled, we can instead set `signing.buildTimeKeysStorePath` in addition to `signing.keyStorePath` to a string of the absolute path to the generated keys.
 Additionally, the nix builder will also need read access to these keys.
 This can be set using `chgrp -R nixbld ./keys` and `chmod -R g+r ./keys`.
 

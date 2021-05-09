@@ -8,7 +8,7 @@ let
 
   otaTools = config.build.otaTools;
 
-  wrapScript = { commands, keysDir ? "" }: ''
+  wrapScript = { commands, keysDir }: ''
     export PATH=${otaTools}/bin:$PATH
     export EXT2FS_NO_MTAB_OK=yes
 
@@ -26,6 +26,7 @@ let
       NEW_KEYSDIR=$(mktemp -d /dev/shm/robotnix_keys.XXXXXXXXXX)
       trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
       cp -r "$KEYSDIR"/* "$NEW_KEYSDIR"
+      chmod u+w -R "$NEW_KEYSDIR"
       KEYSDIR=$NEW_KEYSDIR
     fi
 
@@ -34,7 +35,7 @@ let
 
   runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
     commands = script (args // {out="$out";});
-    keysDir = lib.optionalString config.signing.enable "/keys";
+    keysDir = config.signing.buildTimeKeyStorePath;
   });
 
   signedTargetFilesScript = { targetFiles, out }: ''

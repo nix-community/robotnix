@@ -47,13 +47,10 @@ let
     if builtins.elem name deviceCertificates
       then (if config.signing.enable
         then "${keyStorePath}/${config.device}/${name}"
-        else "${config.source.dirs."build/make".src}/target/product/security/${lib.replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
+        else "${keyStorePath}/${lib.replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
       else "${keyStorePath}/${name}";
-  keyPath = name: _keyPath config.signing.keyStorePath name;
-  sandboxKeyPath = name:
-    if config.signing.enable
-      then _keyPath "/keys" name
-      else keyPath name;
+  evalTimeKeyPath = name: _keyPath config.signing.keyStorePath name;
+  buildTimeKeyPath = name: _keyPath config.signing.buildTimeKeyStorePath name;
 
   putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 in
@@ -167,7 +164,7 @@ in
               inherit (config) apk;
               keyPath =
                 if _config.signing.enable
-                then sandboxKeyPath config.certificate
+                then buildTimeKeyPath config.certificate
                 else "${config.snakeoilKeyPath}/${config.certificate}";
             }));
 
@@ -177,7 +174,7 @@ in
             if config.certificate == "PRESIGNED"
               then pkgs.robotnix.apkFingerprint config.signedApk # TODO: IFD
             else if _config.signing.enable
-              then pkgs.robotnix.certFingerprint (putInStore "${keyPath config.certificate}.x509.pem") # TODO: IFD
+              then pkgs.robotnix.certFingerprint (putInStore "${evalTimeKeyPath config.certificate}.x509.pem") # TODO: IFD
             else # !_config.signing.enable
               defaultDeviceCertFingerprints.${name} or (
                 builtins.trace ''
