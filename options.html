@@ -368,7 +368,7 @@ Refer to this <a href="https://developer.android.com/reference/android/Manifest.
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3><a class="header" href="#builddatetime" id="builddatetime"><code>buildDateTime</code></a></h3>
 <p>Seconds since the epoch that this build is taking place.
-Needs to be monotonically increasing for each build to enable the updater to work.
+Needs to be monotonically increasing for each build if you use the over-the-air (OTA) update mechanism.
 e.g. output of <code>date +%s</code></p>
 <p><em>Default</em>: <code>1</code></p>
 <p><em>Example</em>: <code>1565645583</code></p>
@@ -378,7 +378,7 @@ e.g. output of <code>date +%s</code></p>
 <h3><a class="header" href="#buildnumber" id="buildnumber"><code>buildNumber</code></a></h3>
 <p>Set this to something meaningful to identify the build.
 Defaults to <code>YYYY.MM.DD.HH</code> based on <code>buildDateTime</code>.
-Needs to be unique for each build to enable the updater to work</p>
+Should be unique for each build used for disambiguation.</p>
 <p><em>Example</em>: <code>&quot;2019.08.12.1&quot;</code></p>
 <p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
