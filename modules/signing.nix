@@ -4,7 +4,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkOption mkEnableOption mkDefault mkOptionDefault types;
+  inherit (lib) mkIf mkMerge mkOption mkEnableOption mkDefault mkOptionDefault mkRenamedOptionModule types;
 
   cfg = config.signing;
 
@@ -68,24 +68,24 @@ in
           description = "APEX packages which need to be signed";
         };
       };
-    };
 
-    keyStorePath = mkOption {
-      type = types.str;
-      description = ''
-        String containing absolute path to generated keys for signing.
-        This must be a _string_ and not a "nix path" to ensure that your secret keys are not imported into the public `/nix/store`.
-      '';
-      example = "/var/secrets/android-keys";
+      keyStorePath = mkOption {
+        type = types.str;
+        description = ''
+          String containing absolute path to generated keys for signing.
+          This must be a _string_ and not a "nix path" to ensure that your secret keys are not imported into the public `/nix/store`.
+        '';
+        example = "/var/secrets/android-keys";
+      };
     };
   };
 
   config = {
-    keyStorePath = mkIf (!config.signing.enable) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
+    signing.keyStorePath = mkIf (!config.signing.enable) (mkDefault (config.source.dirs."build/make".src + /target/product/security));
     signing.avb.fingerprint = mkIf config.signing.enable (mkOptionDefault
-      (pkgs.robotnix.sha256Fingerprint (putInStore "${config.keyStorePath}/${config.device}/avb_pkmd.bin"))
+      (pkgs.robotnix.sha256Fingerprint (putInStore "${config.signing.keyStorePath}/${config.device}/avb_pkmd.bin"))
       );
-    signing.avb.verityCert = mkIf config.signing.enable (mkOptionDefault (putInStore "${config.keyStorePath}/${config.device}/verity.x509.pem"));
+    signing.avb.verityCert = mkIf config.signing.enable (mkOptionDefault (putInStore "${config.signing.keyStorePath}/${config.device}/verity.x509.pem"));
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
     signing.apex.packageNames = map (s: "com.android.${s}") (
@@ -289,4 +289,8 @@ in
       exit $RETVAL
     '';
   };
+
+  imports = [
+    (mkRenamedOptionModule [ "keyStorePath" ] [ "signing" "keyStorePath" ])
+  ];
 }

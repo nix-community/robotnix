@@ -49,7 +49,7 @@ let
         then "${keyStorePath}/${config.device}/${name}"
         else "${config.source.dirs."build/make".src}/target/product/security/${lib.replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
       else "${keyStorePath}/${name}";
-  keyPath = name: _keyPath config.keyStorePath name;
+  keyPath = name: _keyPath config.signing.keyStorePath name;
   sandboxKeyPath = name:
     if config.signing.enable
       then _keyPath "/keys" name

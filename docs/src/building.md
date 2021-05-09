@@ -28,7 +28,7 @@ $ nix-build --arg configuration ./crosshatch.nix -A generateKeysScript -o genera
 $ ./generate-keys ./keys
 ```
 This will create a `keys` directory containing the app and device keys needed for the build.
-The output of this script should be placed in the location specified by `keyStorePath` in the robotnix configuration.
+The output of this script should be placed in the location specified by `signing.keyStorePath` in the robotnix configuration.
 
 Sometimes changing your configuration will require that you generate additional new keys (e.g. for additional applications).
 Rebuilding and rerunning the generate keys script will produce the new keys (without overwriting your existing keys).
@@ -50,7 +50,7 @@ $ nix-build --arg configuration ./crosshatch.nix -A releaseScript -o release
 $ ./release ./keys
 ```
 This has the additional benefit that the build can take place on a remote machine, and the `releaseScript` could be copied using `nix-copy-closure` to a local machine which containing the keys.
-You might need to manually set certain required options like `signing.avb.fingerprint` or `apps.prebuilt.<name>.fingerprint` if you build on a remote machine that does not have access to `keyStorePath`.
+You might need to manually set certain required options like `signing.avb.fingerprint` or `apps.prebuilt.<name>.fingerprint` if you build on a remote machine that does not have access to the `signing.keyStorePath`.
 
 ## Binary Cache
 Robotnix now has an optional binary cache provided by [Cachix](https://cachix.org/) on [robotnix.cachix.org](https://robotnix.cachix.org/).
