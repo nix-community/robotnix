@@ -29,6 +29,9 @@ $ ./generate-keys ./keys
 ```
 This will create a `keys` directory containing the app and device keys needed for the build.
 The output of this script should be placed in the location specified by `signing.keyStorePath` in the robotnix configuration.
+If you intend to build the `img`/`factoryImg`/`ota` Nix outputs instead of using the `releaseScript`, do not apply a passphrase to your keys here.
+(You can still encrypt them at rest on your own through other means.)
+This is because we cannot prompt you for your passphrase during the Nix build, but we can outside of Nix using `generateKeysScript`.
 
 Sometimes changing your configuration will require that you generate additional new keys (e.g. for additional applications).
 Rebuilding and rerunning the generate keys script will produce the new keys (without overwriting your existing keys).
