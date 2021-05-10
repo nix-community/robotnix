@@ -16,7 +16,7 @@ import tempfile
 REPO_FLAGS = [
     "--quiet",
     "--repo-url=https://github.com/danielfullmer/tools_repo",
-    "--repo-branch=2d74a332a378c18c4464dae2d62dd46b86f8358e",
+    "--repo-rev=9ecb9713ee5adba95120acbc0bfef1c77b02637f",
     "--no-repo-verify",
     "--depth=1",
 ]

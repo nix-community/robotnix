@@ -20,7 +20,7 @@ with stdenvNoCC.lib;
 let
   extraRepoInitFlags = [
     (optionalString (repoRepoURL != "") "--repo-url=${repoRepoURL}")
-    (optionalString (repoRepoRev != "") "--repo-branch=${repoRepoRev}")
+    (optionalString (repoRepoRev != "") "--repo-rev=${repoRepoRev}")
     (optionalString (referenceDir != "") "--reference=${referenceDir}")
     (optionalString (extraFlags != "") "${extraFlags}")
   ];
