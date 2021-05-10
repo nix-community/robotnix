@@ -8,7 +8,6 @@ self: super: {
   diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {
     patches = attrs.patches ++ [
       ./diffoscope/0001-comparators-android-Support-sparse-android-images.patch
-      ./diffoscope/0002-HACK-prefix-tool-names.patch
     ];
     pythonPath = attrs.pythonPath ++ [ super.simg2img super.zip ];
     doCheck = false;
