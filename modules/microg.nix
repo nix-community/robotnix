@@ -7,9 +7,9 @@ let
   inherit (lib) mkIf mkDefault mkEnableOption;
 
   version = {
-    part1 = "0.2.18";
-    part2 = "204714";
-    part3 = "036";
+    part1 = "0.2.19";
+    part2 = "211515";
+    part3 = "038";
   };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
@@ -43,7 +43,7 @@ in
       GmsCore = { 
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "14xi61imgdzr9lbj1yvg3r3bbvdgwmfsh6d615vxq0sm61fmfy7h";
+          sha256 = "1pcm7shjmgjh7z57nbh3knhbiw6nzsm8q5awyg436lrraf7d2ias";
         });
         packageName = "com.google.android.gms";
         privileged = true;
