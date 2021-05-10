@@ -60,12 +60,11 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   webview.vanadium.enable = mkDefault true;
   webview.vanadium.availableByDefault = mkDefault true;
 
-  apps.seedvault.enable = mkDefault true;
+  apps.seedvault.includedInFlavor = mkDefault true;
 
   # Remove upstream prebuilt versions from build. We build from source ourselves.
-  removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "webview" "Seedvault" ];
+  removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "webview" ];
   source.dirs."external/vanadium".enable = false;
-  source.dirs."external/seedvault".enable = false;
 
   # Override included android-prepare-vendor, with the exact version from
   # GrapheneOS. Unfortunately, Doing it this way means we don't cache apv

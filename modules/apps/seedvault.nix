@@ -4,16 +4,24 @@
 { config, pkgs, apks, lib, ... }:
 
 let
-  inherit (lib) mkIf mkMerge mkEnableOption;
+  inherit (lib) mkIf mkMerge mkOption mkEnableOption types;
 
   cfg = config.apps.seedvault;
 in
 {
   options = {
-    apps.seedvault.enable = mkEnableOption "Seedvault (backup)";
+    apps.seedvault = {
+      enable = mkEnableOption "Seedvault (backup)";
+
+      includedInFlavor = mkOption {
+        default = false;
+        type = types.bool;
+        internal = true;
+      };
+    };
   };
 
-  config = mkIf cfg.enable (mkMerge [
+  config = mkIf (cfg.enable && (!cfg.includedInFlavor)) (mkMerge [
   {
     # In order to switch to using this if it's not set on the first boot, run these:
     # $ bmgr list transports
