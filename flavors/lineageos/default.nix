@@ -46,7 +46,10 @@ let
     "kernel/yandex/sdm660"
     "kernel/zuk/msm8996"
   ];
-  deviceDirs = mapAttrs' (n: v: nameValuePair n (v // (optionalAttrs (elem n kernelsNeedFix) { postPatch = dtbReproducibilityFix; }))) _deviceDirs;
+  deviceDirs =
+    if config.useReproducibilityFixes
+    then mapAttrs' (n: v: nameValuePair n (v // (optionalAttrs (elem n kernelsNeedFix) { postPatch = dtbReproducibilityFix; }))) _deviceDirs
+    else _deviceDirs;
 
   supportedDevices = attrNames (filterAttrs (n: v: v.branch == LineageOSRelease) deviceMetadata);
 

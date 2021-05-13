@@ -4,24 +4,36 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkDefault;
+  inherit (lib) mkIf mkDefault mkMerge;
 
   # Some mostly-unique data used as input for filesystem UUIDs, hash_seeds, and AVB salt.
   # TODO: Maybe include all source hashes except from build/make to avoid infinite recursion?
   hash = builtins.hashString "sha256" "${config.buildNumber} ${builtins.toString config.buildDateTime}";
 in
-mkIf (config.androidVersion == 11) {
+mkIf (config.androidVersion == 11) (mkMerge [
+{
   apiLevel = 30;
 
+  source.dirs."build/make".patches = [
+    ./build_make/0001-Readonly-source-fix.patch
+  ] ++ (lib.optional (!(lib.elem config.flavor [ "grapheneos" "lineageos" ]))
+    (pkgs.substituteAll {
+      src = ./build_make/0002-Partition-size-fix.patch;
+      inherit (pkgs) coreutils;
+    })
+  );
+
+  # This one script needs python2. Used by sdk builds
+  source.dirs."development".postPatch = ''
+    substituteInPlace build/tools/mk_sources_zip.py \
+      --replace "#!/usr/bin/python" "#!${pkgs.python2.interpreter}"
+  '';
+
+  kernel.clangVersion = mkDefault "r370808";
+}
+(mkIf config.useReproducibilityFixes {
   source.dirs."build/make" = {
     patches = [
-      ./build_make/0001-Readonly-source-fix.patch
-    ] ++ (lib.optional (!(lib.elem config.flavor [ "grapheneos" "lineageos" ]))
-      (pkgs.substituteAll {
-        src = ./build_make/0002-Partition-size-fix.patch;
-        inherit (pkgs) coreutils;
-      })
-    ) ++ [
       (pkgs.substituteAll {
         src = ./build_make/0003-Set-uuid-and-hash_seed-for-userdata-and-cache.patch;
         inherit hash;
@@ -58,12 +70,5 @@ mkIf (config.androidVersion == 11) {
   ];
 
   source.dirs."system/extras".patches = [ ./system_extras/0001-mkf2fsuserimg.sh-add-UUID-option.patch ];
-
-  # This one script needs python2. Used by sdk builds
-  source.dirs."development".postPatch = ''
-    substituteInPlace build/tools/mk_sources_zip.py \
-      --replace "#!/usr/bin/python" "#!${pkgs.python2.interpreter}"
-  '';
-
-  kernel.clangVersion = mkDefault "r370808";
-}
+})
+])

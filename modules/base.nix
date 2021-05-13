@@ -181,6 +181,12 @@ in
       default = {};
     };
 
+    useReproducibilityFixes = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Apply additional fixes for reproducibility";
+    };
+
     # Random attrset to throw build products into
     build = mkOption {
       internal = true;
