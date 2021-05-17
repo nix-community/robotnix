@@ -7,17 +7,22 @@ let
     optional optionalString optionalAttrs elem
     mkIf mkMerge mkDefault mkForce;
 
-  grapheneOSRelease = "${config.apv.buildID}.2021.05.04.01";
+  upstreamParams = import ./upstream-params.nix;
+  grapheneOSRelease = "${config.apv.buildID}.${upstreamParams.buildNumber}";
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
-  # This a default datetime for robotnix that I update manually whenever
-  # a significant change is made to anything the build depends on. It does not
-  # match the datetime used in the GrapheneOS build above.
-  buildDateTime = mkDefault 1620112036;
+  buildNumber = mkDefault upstreamParams.buildNumber;
+  buildDateTime = mkDefault upstreamParams.buildDateTime;
+
+  # Match upstream user/hostname
+  envVars = {
+    BUILD_USERNAME = "grapheneos";
+    BUILD_HOSTNAME = "grapheneos";
+  };
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
