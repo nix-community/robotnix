@@ -178,14 +178,18 @@ in stdenvNoCC.mkDerivation rec {
   patchFlags = [ "-p1" "-d src" ];
 
   # TODO: Much of the nixos-specific stuff could probably be made conditional
-  postPatch = ''
+  postPatch = lib.optionalString (lib.versionAtLeast version "91") ''
+    ( cd src
+      # Required for patchShebangs (unsupported)
+      chmod -x third_party/webgpu-cts/src/tools/deno
+    )
+  '' + ''
     ( cd src
 
       # `patchShebangs --build .` would fail (see https://github.com/NixOS/nixpkgs/issues/99539)
       for f in $(find . -type f -executable ! -regex '.+\.make$'); do
         patchShebangs --build "$f"
       done
-
 
       mkdir -p buildtools/linux64
       ln -s --force ${llvmPackages_11.clang.cc}/bin/clang-format buildtools/linux64/clang-format || true
