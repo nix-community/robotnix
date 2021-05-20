@@ -11,6 +11,7 @@
       "nativeVersion": "0.22-milestone-8"
     },
     "dependencies": {
+      "settings": [],
       "plugin": [],
       "buildscript": [
         {
@@ -805,6 +806,7 @@
           "path": "com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api",
           "urls": [
             "https://dl.google.com/dl/android/maven2/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.jar",
+            "https://repo.maven.apache.org/maven2/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.jar",
             "https://jcenter.bintray.com/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.jar"
           ],
           "sha256": "4de4a3d05e1c534c2db9e4588bf34082bb2bd232d8abb9727c430290ce225740"
@@ -821,6 +823,7 @@
           "path": "com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api",
           "urls": [
             "https://dl.google.com/dl/android/maven2/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.pom",
+            "https://repo.maven.apache.org/maven2/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.pom",
             "https://jcenter.bintray.com/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.pom"
           ],
           "sha256": "7c62f3856e8abca1d79257925f26c12668693f5d95904056bbac88605cfd8575"
@@ -986,6 +989,7 @@
           "name": "auto-parent-6.pom",
           "path": "com/google/auto/auto-parent/6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/auto/auto-parent/6/auto-parent-6.pom",
             "https://jcenter.bintray.com/com/google/auto/auto-parent/6/auto-parent-6.pom"
           ],
           "sha256": "05f740c6648165db00cf618dd56c200c4725e358e6d54f5853e0bec15734ea0a"
@@ -1001,6 +1005,7 @@
           "name": "auto-value-annotations-1.6.2.jar",
           "path": "com/google/auto/value/auto-value-annotations/1.6.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.jar",
             "https://jcenter.bintray.com/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.jar"
           ],
           "sha256": "b48b04ddba40e8ac33bf036f06fc43995fc5084bd94bdaace807ce27d3bea3fb"
@@ -1016,6 +1021,7 @@
           "name": "auto-value-annotations-1.6.2.pom",
           "path": "com/google/auto/value/auto-value-annotations/1.6.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.pom",
             "https://jcenter.bintray.com/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.pom"
           ],
           "sha256": "1c76cd462fc96e7aa96dc70ce82f0d54063d6df16db35c9c7d9cc0d1a99d3fff"
@@ -1031,6 +1037,7 @@
           "name": "auto-value-parent-1.6.2.pom",
           "path": "com/google/auto/value/auto-value-parent/1.6.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/auto/value/auto-value-parent/1.6.2/auto-value-parent-1.6.2.pom",
             "https://jcenter.bintray.com/com/google/auto/value/auto-value-parent/1.6.2/auto-value-parent-1.6.2.pom"
           ],
           "sha256": "27b640c82179f5cff62009c0b72033d9bc60f60e9902a66802274b7fe37fc81c"
@@ -1046,6 +1053,7 @@
           "name": "jsr305-3.0.2.jar",
           "path": "com/google/code/findbugs/jsr305/3.0.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar",
             "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar"
           ],
           "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
@@ -1061,6 +1069,7 @@
           "name": "jsr305-3.0.2.pom",
           "path": "com/google/code/findbugs/jsr305/3.0.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom",
             "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom"
           ],
           "sha256": "19889dbdf1b254b2601a5ee645b8147a974644882297684c798afe5d63d78dfe"
@@ -1076,6 +1085,7 @@
           "name": "gson-2.8.5.jar",
           "path": "com/google/code/gson/gson/2.8.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar",
             "https://jcenter.bintray.com/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar"
           ],
           "sha256": "233a0149fc365c9f6edbd683cfe266b19bdc773be98eabdaf6b3c924b48e7d81"
@@ -1091,6 +1101,7 @@
           "name": "gson-2.8.5.pom",
           "path": "com/google/code/gson/gson/2.8.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.5/gson-2.8.5.pom",
             "https://jcenter.bintray.com/com/google/code/gson/gson/2.8.5/gson-2.8.5.pom"
           ],
           "sha256": "b8308557a7fccc92d9fe7c8cd0599258b361285d2ecde7689eda98843255a092"
@@ -1106,6 +1117,7 @@
           "name": "gson-parent-2.8.5.pom",
           "path": "com/google/code/gson/gson-parent/2.8.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/gson/gson-parent/2.8.5/gson-parent-2.8.5.pom",
             "https://jcenter.bintray.com/com/google/code/gson/gson-parent/2.8.5/gson-parent-2.8.5.pom"
           ],
           "sha256": "8f1fec72b91a71ea39ec39f5f778c4d1124b6b097c6d55b3a50b554a52237b27"
@@ -1121,6 +1133,7 @@
           "name": "tink-1.3.0-rc2.jar",
           "path": "com/google/crypto/tink/tink/1.3.0-rc2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/crypto/tink/tink/1.3.0-rc2/tink-1.3.0-rc2.jar",
             "https://jcenter.bintray.com/com/google/crypto/tink/tink/1.3.0-rc2/tink-1.3.0-rc2.jar"
           ],
           "sha256": "3aa576b5671d0e26d83d7fdb7186810b5672f00bf8e72184260bcc7c2d7dc07a"
@@ -1136,6 +1149,7 @@
           "name": "tink-1.3.0-rc2.pom",
           "path": "com/google/crypto/tink/tink/1.3.0-rc2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/crypto/tink/tink/1.3.0-rc2/tink-1.3.0-rc2.pom",
             "https://jcenter.bintray.com/com/google/crypto/tink/tink/1.3.0-rc2/tink-1.3.0-rc2.pom"
           ],
           "sha256": "5b9a11c11183d011de9a9a5490962d78a4d4bfe7579b0c5be4afb18a222e3f41"
@@ -1151,6 +1165,7 @@
           "name": "error_prone_annotations-2.3.2.jar",
           "path": "com/google/errorprone/error_prone_annotations/2.3.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.jar",
             "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.jar"
           ],
           "sha256": "357cd6cfb067c969226c442451502aee13800a24e950fdfde77bcdb4565a668d"
@@ -1166,6 +1181,7 @@
           "name": "error_prone_annotations-2.3.2.pom",
           "path": "com/google/errorprone/error_prone_annotations/2.3.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.pom",
             "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.pom"
           ],
           "sha256": "8d175561619289a527573cfbdcf872eb5c1216cf9ab692a0ef3dba6d793f63b4"
@@ -1181,6 +1197,7 @@
           "name": "error_prone_parent-2.3.2.pom",
           "path": "com/google/errorprone/error_prone_parent/2.3.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.3.2/error_prone_parent-2.3.2.pom",
             "https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.3.2/error_prone_parent-2.3.2.pom"
           ],
           "sha256": "8d3b5b9fa211979e9c425e989825c07743d2eb4dc8c20ec61de0f5b3dc1a6333"
@@ -1196,6 +1213,7 @@
           "name": "failureaccess-1.0.1.jar",
           "path": "com/google/guava/failureaccess/1.0.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar",
             "https://jcenter.bintray.com/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar"
           ],
           "sha256": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
@@ -1211,6 +1229,7 @@
           "name": "failureaccess-1.0.1.pom",
           "path": "com/google/guava/failureaccess/1.0.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom",
             "https://jcenter.bintray.com/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom"
           ],
           "sha256": "e96042ce78fecba0da2be964522947c87b40a291b5fd3cd672a434924103c4b9"
@@ -1226,6 +1245,7 @@
           "name": "guava-28.1-jre.jar",
           "path": "com/google/guava/guava/28.1-jre",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre.jar",
             "https://jcenter.bintray.com/com/google/guava/guava/28.1-jre/guava-28.1-jre.jar"
           ],
           "sha256": "30beb8b8527bd07c6e747e77f1a92122c2f29d57ce347461a4a55eb26e382da4"
@@ -1241,6 +1261,7 @@
           "name": "guava-28.1-jre.pom",
           "path": "com/google/guava/guava/28.1-jre",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre.pom",
             "https://jcenter.bintray.com/com/google/guava/guava/28.1-jre/guava-28.1-jre.pom"
           ],
           "sha256": "74af0e8dd935894ce9bcb8e2842dd0001581b84cb6a7751c3ef9314011399ba4"
@@ -1256,6 +1277,7 @@
           "name": "guava-parent-26.0-android.pom",
           "path": "com/google/guava/guava-parent/26.0-android",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom",
             "https://jcenter.bintray.com/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom"
           ],
           "sha256": "f8698ab46ca996ce889c1afc8ca4f25eb8ac6b034dc898d4583742360016cc04"
@@ -1271,6 +1293,7 @@
           "name": "guava-parent-28.1-jre.pom",
           "path": "com/google/guava/guava-parent/28.1-jre",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/28.1-jre/guava-parent-28.1-jre.pom",
             "https://jcenter.bintray.com/com/google/guava/guava-parent/28.1-jre/guava-parent-28.1-jre.pom"
           ],
           "sha256": "f31a5846bd9e14a4c374da1b9b146a5715ecdca925e071e1d2bf4da2daaded90"
@@ -1286,6 +1309,7 @@
           "name": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
           "path": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
             "https://jcenter.bintray.com/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"
           ],
           "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
@@ -1301,6 +1325,7 @@
           "name": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom",
           "path": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom",
             "https://jcenter.bintray.com/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom"
           ],
           "sha256": "18d4b1db26153d4e55079ce1f76bb1fe05cdb862ef9954a88cbcc4ff38b8679b"
@@ -1316,6 +1341,7 @@
           "name": "j2objc-annotations-1.3.jar",
           "path": "com/google/j2objc/j2objc-annotations/1.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar",
             "https://jcenter.bintray.com/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar"
           ],
           "sha256": "21af30c92267bd6122c0e0b4d20cccb6641a37eaf956c6540ec471d584e64a7b"
@@ -1331,6 +1357,7 @@
           "name": "j2objc-annotations-1.3.pom",
           "path": "com/google/j2objc/j2objc-annotations/1.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom",
             "https://jcenter.bintray.com/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom"
           ],
           "sha256": "5faca824ba115bee458730337dfdb2fcea46ba2fd774d4304edbf30fa6a3f055"
@@ -1346,6 +1373,7 @@
           "name": "jimfs-1.1.jar",
           "path": "com/google/jimfs/jimfs/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar",
             "https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar"
           ],
           "sha256": "c4828e28d7c0a930af9387510b3bada7daa5c04d7c25a75c7b8b081f1c257ddd"
@@ -1361,6 +1389,7 @@
           "name": "jimfs-1.1.pom",
           "path": "com/google/jimfs/jimfs/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/jimfs/jimfs/1.1/jimfs-1.1.pom",
             "https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.pom"
           ],
           "sha256": "efa86e5cd922f17b472fdfcae57234d8d4ac3e148b6250737dfce454af7a7a44"
@@ -1376,6 +1405,7 @@
           "name": "jimfs-parent-1.1.pom",
           "path": "com/google/jimfs/jimfs-parent/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/jimfs/jimfs-parent/1.1/jimfs-parent-1.1.pom",
             "https://jcenter.bintray.com/com/google/jimfs/jimfs-parent/1.1/jimfs-parent-1.1.pom"
           ],
           "sha256": "c71555751e57e0ef912870e8ac9625ae782502a6a5b9c19ccf83b2a97d8b26bd"
@@ -1391,6 +1421,7 @@
           "name": "protobuf-java-3.10.0.jar",
           "path": "com/google/protobuf/protobuf-java/3.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.jar",
             "https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.jar"
           ],
           "sha256": "161d7d61a8cb3970891c299578702fd079646e032329d6c2cabf998d191437c9"
@@ -1406,6 +1437,7 @@
           "name": "protobuf-java-3.10.0.pom",
           "path": "com/google/protobuf/protobuf-java/3.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.pom",
             "https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.pom"
           ],
           "sha256": "b404c1b093ec9dea888e02c8dfe8662759586b94efa4f97061cdfc1bbfa15af0"
@@ -1421,6 +1453,7 @@
           "name": "protobuf-java-util-3.10.0.jar",
           "path": "com/google/protobuf/protobuf-java-util/3.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-java-util/3.10.0/protobuf-java-util-3.10.0.jar",
             "https://jcenter.bintray.com/com/google/protobuf/protobuf-java-util/3.10.0/protobuf-java-util-3.10.0.jar"
           ],
           "sha256": "619b0b0dc344cb141e493cbedc5687c8fb7c985e609a1b035e621bfab2f89021"
@@ -1436,6 +1469,7 @@
           "name": "protobuf-java-util-3.10.0.pom",
           "path": "com/google/protobuf/protobuf-java-util/3.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-java-util/3.10.0/protobuf-java-util-3.10.0.pom",
             "https://jcenter.bintray.com/com/google/protobuf/protobuf-java-util/3.10.0/protobuf-java-util-3.10.0.pom"
           ],
           "sha256": "146660182d07798ced06fa8e8ae3b9faa90aa48cf3c6adfc67db9371188ba502"
@@ -1451,6 +1485,7 @@
           "name": "protobuf-parent-3.10.0.pom",
           "path": "com/google/protobuf/protobuf-parent/3.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-parent/3.10.0/protobuf-parent-3.10.0.pom",
             "https://jcenter.bintray.com/com/google/protobuf/protobuf-parent/3.10.0/protobuf-parent-3.10.0.pom"
           ],
           "sha256": "6dd84a508125fffdefbd583fae12bf166aa902511b570ca54fa9efa45f6dfe80"
@@ -1466,6 +1501,7 @@
           "name": "json-simple-1.1.jar",
           "path": "com/googlecode/json-simple/json-simple/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar",
             "https://jcenter.bintray.com/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar"
           ],
           "sha256": "2d9484f4c649f708f47f9a479465fc729770ee65617dca3011836602264f6439"
@@ -1481,6 +1517,7 @@
           "name": "json-simple-1.1.pom",
           "path": "com/googlecode/json-simple/json-simple/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.pom",
             "https://jcenter.bintray.com/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.pom"
           ],
           "sha256": "47a89be0fa0fedd476db5fd2c83487654d2a119c391f83a142be876667cf7dab"
@@ -1496,6 +1533,7 @@
           "name": "juniversalchardet-1.0.3.jar",
           "path": "com/googlecode/juniversalchardet/juniversalchardet/1.0.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar",
             "https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar"
           ],
           "sha256": "757bfe906193b8b651e79dc26cd67d6b55d0770a2cdfb0381591504f779d4a76"
@@ -1511,6 +1549,7 @@
           "name": "juniversalchardet-1.0.3.pom",
           "path": "com/googlecode/juniversalchardet/juniversalchardet/1.0.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.pom",
             "https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.pom"
           ],
           "sha256": "7846399b35c7cd642a9b3a000c3e2d62d04eb37a4547b6933cc8b18bcc2f086b"
@@ -1526,6 +1565,7 @@
           "name": "javapoet-1.10.0.jar",
           "path": "com/squareup/javapoet/1.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/squareup/javapoet/1.10.0/javapoet-1.10.0.jar",
             "https://jcenter.bintray.com/com/squareup/javapoet/1.10.0/javapoet-1.10.0.jar"
           ],
           "sha256": "20ef4b82e43ff7c652281a21313cf3b941092467add3fa73509c26f6969efdab"
@@ -1541,6 +1581,7 @@
           "name": "javapoet-1.10.0.pom",
           "path": "com/squareup/javapoet/1.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/squareup/javapoet/1.10.0/javapoet-1.10.0.pom",
             "https://jcenter.bintray.com/com/squareup/javapoet/1.10.0/javapoet-1.10.0.pom"
           ],
           "sha256": "1690340a222279f2cbadf373e88826fa20f7f3cc3ec0252f36818fed32701ab1"
@@ -1556,6 +1597,7 @@
           "name": "javawriter-2.5.0.jar",
           "path": "com/squareup/javawriter/2.5.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/squareup/javawriter/2.5.0/javawriter-2.5.0.jar",
             "https://jcenter.bintray.com/com/squareup/javawriter/2.5.0/javawriter-2.5.0.jar"
           ],
           "sha256": "fcfb09fb0ea0aa97d3cfe7ea792398081348e468f126b3603cb3803f240197f0"
@@ -1571,6 +1613,7 @@
           "name": "javawriter-2.5.0.pom",
           "path": "com/squareup/javawriter/2.5.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom",
             "https://jcenter.bintray.com/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom"
           ],
           "sha256": "e1abd7f1116cf5e0c59947693e2189208ec94296b2a3394c959e3511d399a7b0"
@@ -1586,6 +1629,7 @@
           "name": "all-1.2.0.pom",
           "path": "com/sun/activation/all/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/all/1.2.0/all-1.2.0.pom",
             "https://jcenter.bintray.com/com/sun/activation/all/1.2.0/all-1.2.0.pom"
           ],
           "sha256": "1d8518e3ac7532a104e4f7be77def37c982e530723c6bdb3d67708cce2b0c2c4"
@@ -1601,6 +1645,7 @@
           "name": "javax.activation-1.2.0.jar",
           "path": "com/sun/activation/javax.activation/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/javax.activation/1.2.0/javax.activation-1.2.0.jar",
             "https://jcenter.bintray.com/com/sun/activation/javax.activation/1.2.0/javax.activation-1.2.0.jar"
           ],
           "sha256": "993302b16cd7056f21e779cc577d175a810bb4900ef73cd8fbf2b50f928ba9ce"
@@ -1616,6 +1661,7 @@
           "name": "javax.activation-1.2.0.pom",
           "path": "com/sun/activation/javax.activation/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/javax.activation/1.2.0/javax.activation-1.2.0.pom",
             "https://jcenter.bintray.com/com/sun/activation/javax.activation/1.2.0/javax.activation-1.2.0.pom"
           ],
           "sha256": "f879b6e945854c6900b0dbee1c8384d7ab3de7e157fd7ac84937405c416d2a5e"
@@ -1631,6 +1677,7 @@
           "name": "istack-commons-3.0.7.pom",
           "path": "com/sun/istack/istack-commons/3.0.7",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/istack/istack-commons/3.0.7/istack-commons-3.0.7.pom",
             "https://jcenter.bintray.com/com/sun/istack/istack-commons/3.0.7/istack-commons-3.0.7.pom"
           ],
           "sha256": "6f83d3c85fdca9ef24010cb2f652aab1a508bff6331c087b60d0301782b78c6f"
@@ -1646,6 +1693,7 @@
           "name": "istack-commons-runtime-3.0.7.jar",
           "path": "com/sun/istack/istack-commons-runtime/3.0.7",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.jar",
             "https://jcenter.bintray.com/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.jar"
           ],
           "sha256": "6443e10ba2e259fb821d9b6becf10db5316285fc30c53cec9d7b19a3877e7fdf"
@@ -1661,6 +1709,7 @@
           "name": "istack-commons-runtime-3.0.7.pom",
           "path": "com/sun/istack/istack-commons-runtime/3.0.7",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.pom",
             "https://jcenter.bintray.com/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.pom"
           ],
           "sha256": "6d704e450a816a45bce806ba22c22fe83d8e8dcf7a71517603de630a1726809f"
@@ -1676,6 +1725,7 @@
           "name": "jaxb-bom-ext-2.3.1.pom",
           "path": "com/sun/xml/bind/jaxb-bom-ext/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/bind/jaxb-bom-ext/2.3.1/jaxb-bom-ext-2.3.1.pom",
             "https://jcenter.bintray.com/com/sun/xml/bind/jaxb-bom-ext/2.3.1/jaxb-bom-ext-2.3.1.pom"
           ],
           "sha256": "c2204f54b43593808c9af6502865ee71679823156dabdef341e71d35662c7aa0"
@@ -1691,6 +1741,7 @@
           "name": "jaxb-parent-2.3.1.pom",
           "path": "com/sun/xml/bind/mvn/jaxb-parent/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/bind/mvn/jaxb-parent/2.3.1/jaxb-parent-2.3.1.pom",
             "https://jcenter.bintray.com/com/sun/xml/bind/mvn/jaxb-parent/2.3.1/jaxb-parent-2.3.1.pom"
           ],
           "sha256": "f699ef37ec7966e284742dfca83075221179041a9a49aef7991280192604462d"
@@ -1706,6 +1757,7 @@
           "name": "jaxb-runtime-parent-2.3.1.pom",
           "path": "com/sun/xml/bind/mvn/jaxb-runtime-parent/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/bind/mvn/jaxb-runtime-parent/2.3.1/jaxb-runtime-parent-2.3.1.pom",
             "https://jcenter.bintray.com/com/sun/xml/bind/mvn/jaxb-runtime-parent/2.3.1/jaxb-runtime-parent-2.3.1.pom"
           ],
           "sha256": "b56383eb4d43498b145d379e2a93d5fcdcd8ff9291f89b58b82cb91658dbf14c"
@@ -1721,6 +1773,7 @@
           "name": "jaxb-txw-parent-2.3.1.pom",
           "path": "com/sun/xml/bind/mvn/jaxb-txw-parent/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/bind/mvn/jaxb-txw-parent/2.3.1/jaxb-txw-parent-2.3.1.pom",
             "https://jcenter.bintray.com/com/sun/xml/bind/mvn/jaxb-txw-parent/2.3.1/jaxb-txw-parent-2.3.1.pom"
           ],
           "sha256": "7a8473e935504841c606686d84e9c017a739ac2c144fde687aa003a7dd44de7f"
@@ -1736,6 +1789,7 @@
           "name": "FastInfoset-1.2.15.jar",
           "path": "com/sun/xml/fastinfoset/FastInfoset/1.2.15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.jar",
             "https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.jar"
           ],
           "sha256": "785861db11ca1bd0d1956682b974ad73eb19cd3e01a4b3fa82d62eca97210aec"
@@ -1751,6 +1805,7 @@
           "name": "FastInfoset-1.2.15.pom",
           "path": "com/sun/xml/fastinfoset/FastInfoset/1.2.15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.pom",
             "https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.pom"
           ],
           "sha256": "bbc796ab84a6778a751c2eff1136078abd2b4d35b5047062804f3582ef3c42c8"
@@ -1766,6 +1821,7 @@
           "name": "fastinfoset-project-1.2.15.pom",
           "path": "com/sun/xml/fastinfoset/fastinfoset-project/1.2.15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/fastinfoset/fastinfoset-project/1.2.15/fastinfoset-project-1.2.15.pom",
             "https://jcenter.bintray.com/com/sun/xml/fastinfoset/fastinfoset-project/1.2.15/fastinfoset-project-1.2.15.pom"
           ],
           "sha256": "cfb8cdad4c0dd05ed8cacbe146bf1718764403947b9de8348e1bfd42f62ea73e"
@@ -1781,6 +1837,7 @@
           "name": "commons-codec-1.10.jar",
           "path": "commons-codec/commons-codec/1.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.10/commons-codec-1.10.jar",
             "https://jcenter.bintray.com/commons-codec/commons-codec/1.10/commons-codec-1.10.jar"
           ],
           "sha256": "4241dfa94e711d435f29a4604a3e2de5c4aa3c165e23bd066be6fc1fc4309569"
@@ -1796,6 +1853,7 @@
           "name": "commons-codec-1.10.pom",
           "path": "commons-codec/commons-codec/1.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.10/commons-codec-1.10.pom",
             "https://jcenter.bintray.com/commons-codec/commons-codec/1.10/commons-codec-1.10.pom"
           ],
           "sha256": "bdb8db7012d112a6e3ea8fdb7c510b300d99eff0819d27dddba9c43397ea4cfb"
@@ -1811,6 +1869,7 @@
           "name": "commons-io-2.4.jar",
           "path": "commons-io/commons-io/2.4",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar",
             "https://jcenter.bintray.com/commons-io/commons-io/2.4/commons-io-2.4.jar"
           ],
           "sha256": "cc6a41dc3eaacc9e440a6bd0d2890b20d36b4ee408fe2d67122f328bb6e01581"
@@ -1826,6 +1885,7 @@
           "name": "commons-io-2.4.pom",
           "path": "commons-io/commons-io/2.4",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.pom",
             "https://jcenter.bintray.com/commons-io/commons-io/2.4/commons-io-2.4.pom"
           ],
           "sha256": "b2b5dd46cf998fa626eb6f8a1c114f6167c8d392694164e62533e5898e9b31f2"
@@ -1841,6 +1901,7 @@
           "name": "commons-logging-1.2.jar",
           "path": "commons-logging/commons-logging/1.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.jar",
             "https://jcenter.bintray.com/commons-logging/commons-logging/1.2/commons-logging-1.2.jar"
           ],
           "sha256": "daddea1ea0be0f56978ab3006b8ac92834afeefbd9b7e4e6316fca57df0fa636"
@@ -1856,6 +1917,7 @@
           "name": "commons-logging-1.2.pom",
           "path": "commons-logging/commons-logging/1.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.pom",
             "https://jcenter.bintray.com/commons-logging/commons-logging/1.2/commons-logging-1.2.pom"
           ],
           "sha256": "c91ab5aa570d86f6fd07cc158ec6bc2c50080402972ee9179fe24100739fbb20"
@@ -1871,6 +1933,7 @@
           "name": "fastutil-7.2.0.jar",
           "path": "it/unimi/dsi/fastutil/7.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar",
             "https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar"
           ],
           "sha256": "74fa208043740642f7e6eb09faba15965218ad2f50ce3020efb100136e4b591c"
@@ -1886,6 +1949,7 @@
           "name": "fastutil-7.2.0.pom",
           "path": "it/unimi/dsi/fastutil/7.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom",
             "https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom"
           ],
           "sha256": "953b116521a73575eee990e3f2c36a892fb088bb2d9a3027c82193cb7a013ef7"
@@ -1901,6 +1965,7 @@
           "name": "javax.activation-api-1.2.0.jar",
           "path": "javax/activation/javax.activation-api/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar",
             "https://jcenter.bintray.com/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar"
           ],
           "sha256": "43fdef0b5b6ceb31b0424b208b930c74ab58fac2ceeb7b3f6fd3aeb8b5ca4393"
@@ -1916,6 +1981,7 @@
           "name": "javax.activation-api-1.2.0.pom",
           "path": "javax/activation/javax.activation-api/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.pom",
             "https://jcenter.bintray.com/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.pom"
           ],
           "sha256": "da2926f3c8be898643cc10acdec6de0b0351a57fb2735770fa0177b06ade71b9"
@@ -1931,6 +1997,7 @@
           "name": "javax.inject-1.jar",
           "path": "javax/inject/javax.inject/1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.jar",
             "https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.jar"
           ],
           "sha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
@@ -1946,6 +2013,7 @@
           "name": "javax.inject-1.pom",
           "path": "javax/inject/javax.inject/1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.pom",
             "https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.pom"
           ],
           "sha256": "943e12b100627804638fa285805a0ab788a680266531e650921ebfe4621a8bfa"
@@ -1961,6 +2029,7 @@
           "name": "jaxb-api-2.3.1.jar",
           "path": "javax/xml/bind/jaxb-api/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar",
             "https://jcenter.bintray.com/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar"
           ],
           "sha256": "88b955a0df57880a26a74708bc34f74dcaf8ebf4e78843a28b50eae945732b06"
@@ -1976,6 +2045,7 @@
           "name": "jaxb-api-2.3.1.pom",
           "path": "javax/xml/bind/jaxb-api/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.pom",
             "https://jcenter.bintray.com/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.pom"
           ],
           "sha256": "12b20cf922773445c3445c2883cbf671fa982111e9bf9f875020f9313b3814b1"
@@ -1991,6 +2061,7 @@
           "name": "jaxb-api-parent-2.3.1.pom",
           "path": "javax/xml/bind/jaxb-api-parent/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/xml/bind/jaxb-api-parent/2.3.1/jaxb-api-parent-2.3.1.pom",
             "https://jcenter.bintray.com/javax/xml/bind/jaxb-api-parent/2.3.1/jaxb-api-parent-2.3.1.pom"
           ],
           "sha256": "cd1beaa4560dc4dfdb826b9d809e464db22526dfb54264bae78a6ff7efb08e1f"
@@ -2006,6 +2077,7 @@
           "name": "jvnet-parent-1.pom",
           "path": "net/java/jvnet-parent/1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jvnet-parent/1/jvnet-parent-1.pom",
             "https://jcenter.bintray.com/net/java/jvnet-parent/1/jvnet-parent-1.pom"
           ],
           "sha256": "281440811268e65d9e266b3cc898297e214e04f09740d0386ceeb4a8923d63bf"
@@ -2021,6 +2093,7 @@
           "name": "jvnet-parent-5.pom",
           "path": "net/java/jvnet-parent/5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom",
             "https://jcenter.bintray.com/net/java/jvnet-parent/5/jvnet-parent-5.pom"
           ],
           "sha256": "1af699f8d9ddab67f9a0d202fbd7915eb0362a5a6dfd5ffc54cafa3465c9cb0a"
@@ -2036,6 +2109,7 @@
           "name": "jopt-simple-4.9.jar",
           "path": "net/sf/jopt-simple/jopt-simple/4.9",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.jar",
             "https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.jar"
           ],
           "sha256": "26c5856e954b5f864db76f13b86919b59c6eecf9fd930b96baa8884626baf2f5"
@@ -2051,6 +2125,7 @@
           "name": "jopt-simple-4.9.pom",
           "path": "net/sf/jopt-simple/jopt-simple/4.9",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.pom",
             "https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.pom"
           ],
           "sha256": "7af7e2d8b24b4798f04c2b7da24c9fbd1b7557b4e017c2054481565916079092"
@@ -2066,6 +2141,7 @@
           "name": "kxml2-2.3.0.jar",
           "path": "net/sf/kxml/kxml2/2.3.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.jar",
             "https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.jar"
           ],
           "sha256": "f264dd9f79a1fde10ce5ecc53221eff24be4c9331c830b7d52f2f08a7b633de2"
@@ -2081,6 +2157,7 @@
           "name": "kxml2-2.3.0.pom",
           "path": "net/sf/kxml/kxml2/2.3.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom",
             "https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom"
           ],
           "sha256": "31ce606f4e9518936299bb0d27c978fa61e185fd1de7c9874fe959a53e34a685"
@@ -2096,6 +2173,7 @@
           "name": "proguard-base-6.0.3.jar",
           "path": "net/sf/proguard/proguard-base/6.0.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.jar",
             "https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.jar"
           ],
           "sha256": "75bc89695fa66e75374ecda439b802406f0ab1d826dd386eed0a23b1f0a9d264"
@@ -2111,6 +2189,7 @@
           "name": "proguard-base-6.0.3.pom",
           "path": "net/sf/proguard/proguard-base/6.0.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.pom",
             "https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.pom"
           ],
           "sha256": "2a823d79f2675582a988d539466d1b175e939782efbe0f6e61f06cb165ed4907"
@@ -2126,6 +2205,7 @@
           "name": "proguard-gradle-6.0.3.jar",
           "path": "net/sf/proguard/proguard-gradle/6.0.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/proguard/proguard-gradle/6.0.3/proguard-gradle-6.0.3.jar",
             "https://jcenter.bintray.com/net/sf/proguard/proguard-gradle/6.0.3/proguard-gradle-6.0.3.jar"
           ],
           "sha256": "cc12b1168e521491dd0e687cfebec11a4af874b22af70e10cf2a05b47ca00c8f"
@@ -2141,6 +2221,7 @@
           "name": "proguard-gradle-6.0.3.pom",
           "path": "net/sf/proguard/proguard-gradle/6.0.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/proguard/proguard-gradle/6.0.3/proguard-gradle-6.0.3.pom",
             "https://jcenter.bintray.com/net/sf/proguard/proguard-gradle/6.0.3/proguard-gradle-6.0.3.pom"
           ],
           "sha256": "5a5c7317d68ce80d1d40c9d8bd4e38814d42d1b16c265146e333634833a35a57"
@@ -2156,6 +2237,7 @@
           "name": "proguard-parent-6.0.3.pom",
           "path": "net/sf/proguard/proguard-parent/6.0.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/proguard/proguard-parent/6.0.3/proguard-parent-6.0.3.pom",
             "https://jcenter.bintray.com/net/sf/proguard/proguard-parent/6.0.3/proguard-parent-6.0.3.pom"
           ],
           "sha256": "d87266bfd2312c3b036c4ac709310afa35c448ceb18027c3b87a33d03c6de0a0"
@@ -2171,6 +2253,7 @@
           "name": "antlr4-4.5.3.jar",
           "path": "org/antlr/antlr4/4.5.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/antlr/antlr4/4.5.3/antlr4-4.5.3.jar",
             "https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.jar"
           ],
           "sha256": "a32de739cfdf515774e696f91aa9697d2e7731e5cb5045ca8a4b657f8b1b4fb4"
@@ -2186,6 +2269,7 @@
           "name": "antlr4-4.5.3.pom",
           "path": "org/antlr/antlr4/4.5.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/antlr/antlr4/4.5.3/antlr4-4.5.3.pom",
             "https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.pom"
           ],
           "sha256": "8a4e4b32eedaa72976a757e12cf1dfe742725db0b7311bf176dd937ba4236384"
@@ -2201,6 +2285,7 @@
           "name": "antlr4-master-4.5.3.pom",
           "path": "org/antlr/antlr4-master/4.5.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/antlr/antlr4-master/4.5.3/antlr4-master-4.5.3.pom",
             "https://jcenter.bintray.com/org/antlr/antlr4-master/4.5.3/antlr4-master-4.5.3.pom"
           ],
           "sha256": "401877d5e70ad599e9b6cff18434ea0332f637b51f8ec68352646c836f9bb2a4"
@@ -2216,6 +2301,7 @@
           "name": "apache-9.pom",
           "path": "org/apache/apache/9",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/9/apache-9.pom",
             "https://jcenter.bintray.com/org/apache/apache/9/apache-9.pom"
           ],
           "sha256": "4946e60a547c8eda69f3bc23c5b6f0dadcf8469ea49b1d1da7de34aecfcf18dd"
@@ -2231,6 +2317,7 @@
           "name": "apache-13.pom",
           "path": "org/apache/apache/13",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/13/apache-13.pom",
             "https://jcenter.bintray.com/org/apache/apache/13/apache-13.pom"
           ],
           "sha256": "ff513db0361fd41237bef4784968bc15aae478d4ec0a9496f811072ccaf3841d"
@@ -2246,6 +2333,7 @@
           "name": "apache-15.pom",
           "path": "org/apache/apache/15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/15/apache-15.pom",
             "https://jcenter.bintray.com/org/apache/apache/15/apache-15.pom"
           ],
           "sha256": "36c2f2f979ac67b450c0cb480e4e9baf6b40f3a681f22ba9692287d1139ad494"
@@ -2261,6 +2349,7 @@
           "name": "apache-16.pom",
           "path": "org/apache/apache/16",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/16/apache-16.pom",
             "https://jcenter.bintray.com/org/apache/apache/16/apache-16.pom"
           ],
           "sha256": "9f85ff2fd7d6cb3097aa47fb419ee7f0ebe869109f98aba9f4eca3f49e74a40e"
@@ -2276,6 +2365,7 @@
           "name": "apache-18.pom",
           "path": "org/apache/apache/18",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/18/apache-18.pom",
             "https://jcenter.bintray.com/org/apache/apache/18/apache-18.pom"
           ],
           "sha256": "7831307285fd475bbc36b20ae38e7882f11c3153b1d5930f852d44eda8f33c17"
@@ -2291,6 +2381,7 @@
           "name": "commons-compress-1.12.jar",
           "path": "org/apache/commons/commons-compress/1.12",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar",
             "https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar"
           ],
           "sha256": "2c1542faf343185b7cab9c3d55c8ae5471d6d095d3887a4adefdbdf2984dc0b6"
@@ -2306,6 +2397,7 @@
           "name": "commons-compress-1.12.pom",
           "path": "org/apache/commons/commons-compress/1.12",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-compress/1.12/commons-compress-1.12.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.pom"
           ],
           "sha256": "b787d574c851505e76212968b9ae1641ea79804aef7f5a2cee2a01cd4055213a"
@@ -2321,6 +2413,7 @@
           "name": "commons-parent-25.pom",
           "path": "org/apache/commons/commons-parent/25",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/25/commons-parent-25.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-parent/25/commons-parent-25.pom"
           ],
           "sha256": "467ae650442e876867379094e7518dfdd67d22c5352ebd39808c84259e9790ba"
@@ -2336,6 +2429,7 @@
           "name": "commons-parent-34.pom",
           "path": "org/apache/commons/commons-parent/34",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/34/commons-parent-34.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-parent/34/commons-parent-34.pom"
           ],
           "sha256": "3a2e69d06d641d1f3b293126dc9e2e4ea6563bf8c36c87e0ab6fa4292d04b79c"
@@ -2351,6 +2445,7 @@
           "name": "commons-parent-35.pom",
           "path": "org/apache/commons/commons-parent/35",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/35/commons-parent-35.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-parent/35/commons-parent-35.pom"
           ],
           "sha256": "7098a1ab8336ecd4c9dc21cbbcac869f82c66f64b8ac4f7988d41b4fcb44e49a"
@@ -2366,6 +2461,7 @@
           "name": "commons-parent-39.pom",
           "path": "org/apache/commons/commons-parent/39",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/39/commons-parent-39.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-parent/39/commons-parent-39.pom"
           ],
           "sha256": "87cd27e1a02a5c3eb6d85059ce98696bb1b44c2b8b650f0567c86df60fa61da7"
@@ -2381,6 +2477,7 @@
           "name": "httpclient-4.5.6.jar",
           "path": "org/apache/httpcomponents/httpclient/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.jar",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.jar"
           ],
           "sha256": "c03f813195e7a80e3608d0ddd8da80b21696a4c92a6a2298865bf149071551c7"
@@ -2396,6 +2493,7 @@
           "name": "httpclient-4.5.6.pom",
           "path": "org/apache/httpcomponents/httpclient/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.pom"
           ],
           "sha256": "7efc1241e73e7fbb268bfd33242d11ebd3ca07061d7d85f2962dc32a0f0b8855"
@@ -2411,6 +2509,7 @@
           "name": "httpcomponents-client-4.5.6.pom",
           "path": "org/apache/httpcomponents/httpcomponents-client/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-client/4.5.6/httpcomponents-client-4.5.6.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-client/4.5.6/httpcomponents-client-4.5.6.pom"
           ],
           "sha256": "b042b41f2391edb00d35f7f4e509aed2123648c1d246ce58d0f7b905c9fe1f73"
@@ -2426,6 +2525,7 @@
           "name": "httpcomponents-core-4.4.10.pom",
           "path": "org/apache/httpcomponents/httpcomponents-core/4.4.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-core/4.4.10/httpcomponents-core-4.4.10.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-core/4.4.10/httpcomponents-core-4.4.10.pom"
           ],
           "sha256": "61e9427d4be326c307a7f16ba828d1cb3b14713c9b04fc8ba992a58f376c3136"
@@ -2441,6 +2541,7 @@
           "name": "httpcomponents-parent-10.pom",
           "path": "org/apache/httpcomponents/httpcomponents-parent/10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-parent/10/httpcomponents-parent-10.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-parent/10/httpcomponents-parent-10.pom"
           ],
           "sha256": "caaf967d94afb21753f36082c6086206bd1f48825ff596932cceba72b65d39fa"
@@ -2456,6 +2557,7 @@
           "name": "httpcore-4.4.10.jar",
           "path": "org/apache/httpcomponents/httpcore/4.4.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.10/httpcore-4.4.10.jar",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.10/httpcore-4.4.10.jar"
           ],
           "sha256": "78ba1096561957db1b55200a159b648876430342d15d461277e62360da19f6fd"
@@ -2471,6 +2573,7 @@
           "name": "httpcore-4.4.10.pom",
           "path": "org/apache/httpcomponents/httpcore/4.4.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.10/httpcore-4.4.10.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.10/httpcore-4.4.10.pom"
           ],
           "sha256": "c5c12066df2b3b88a89a2c8602b81ea9a61627e976e5129eea1899ebbaea392b"
@@ -2486,6 +2589,7 @@
           "name": "httpmime-4.5.6.jar",
           "path": "org/apache/httpcomponents/httpmime/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpmime/4.5.6/httpmime-4.5.6.jar",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpmime/4.5.6/httpmime-4.5.6.jar"
           ],
           "sha256": "0b2b1102c18d3c7e05a77214b9b7501a6f6056174ae5604e0e256776eda7553e"
@@ -2501,6 +2605,7 @@
           "name": "httpmime-4.5.6.pom",
           "path": "org/apache/httpcomponents/httpmime/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpmime/4.5.6/httpmime-4.5.6.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpmime/4.5.6/httpmime-4.5.6.pom"
           ],
           "sha256": "dfbfd6ffe2a784ca9817c46365aa7f8a578320b805bde39d6f55a0b09d8aa8ca"
@@ -2516,6 +2621,7 @@
           "name": "bcpkix-jdk15on-1.56.jar",
           "path": "org/bouncycastle/bcpkix-jdk15on/1.56",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar",
             "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar"
           ],
           "sha256": "7043dee4e9e7175e93e0b36f45b1ec1ecb893c5f755667e8b916eb8dd201c6ca"
@@ -2531,6 +2637,7 @@
           "name": "bcpkix-jdk15on-1.56.pom",
           "path": "org/bouncycastle/bcpkix-jdk15on/1.56",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom",
             "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom"
           ],
           "sha256": "321668fc474a73140eb9cc73c779f1ebb9f60948aade3beddee082ecefcf0259"
@@ -2546,6 +2653,7 @@
           "name": "bcprov-jdk15on-1.56.jar",
           "path": "org/bouncycastle/bcprov-jdk15on/1.56",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar",
             "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar"
           ],
           "sha256": "963e1ee14f808ffb99897d848ddcdb28fa91ddda867eb18d303e82728f878349"
@@ -2561,6 +2669,7 @@
           "name": "bcprov-jdk15on-1.56.pom",
           "path": "org/bouncycastle/bcprov-jdk15on/1.56",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom",
             "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom"
           ],
           "sha256": "8fdc3336e7b01873193ba9c48b87de7d788dc0954d1eb45c322492627a4b5c6e"
@@ -2576,6 +2685,7 @@
           "name": "checker-qual-2.8.1.jar",
           "path": "org/checkerframework/checker-qual/2.8.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.jar",
             "https://jcenter.bintray.com/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.jar"
           ],
           "sha256": "9103499008bcecd4e948da29b17864abb64304e15706444ae209d17ebe0575df"
@@ -2591,6 +2701,7 @@
           "name": "checker-qual-2.8.1.pom",
           "path": "org/checkerframework/checker-qual/2.8.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.pom",
             "https://jcenter.bintray.com/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.pom"
           ],
           "sha256": "f23376b58ed795f2ff47426ac76b996d49e3918442e5d8713e3925f889a77799"
@@ -2606,6 +2717,7 @@
           "name": "animal-sniffer-annotations-1.18.jar",
           "path": "org/codehaus/mojo/animal-sniffer-annotations/1.18",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.jar",
             "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.jar"
           ],
           "sha256": "47f05852b48ee9baefef80fa3d8cea60efa4753c0013121dd7fe5eef2e5c729d"
@@ -2621,6 +2733,7 @@
           "name": "animal-sniffer-annotations-1.18.pom",
           "path": "org/codehaus/mojo/animal-sniffer-annotations/1.18",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.pom",
             "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.pom"
           ],
           "sha256": "adf522f4839c35f5329ea97c407aebebfa8807b644852dc4d5cd7c97b7a6d2e0"
@@ -2636,6 +2749,7 @@
           "name": "animal-sniffer-parent-1.18.pom",
           "path": "org/codehaus/mojo/animal-sniffer-parent/1.18",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-parent/1.18/animal-sniffer-parent-1.18.pom",
             "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-parent/1.18/animal-sniffer-parent-1.18.pom"
           ],
           "sha256": "4e9df546a47cf6304a1317c46870100a8726fbea11b0dd18322f957e4070973c"
@@ -2651,6 +2765,7 @@
           "name": "mojo-parent-50.pom",
           "path": "org/codehaus/mojo/mojo-parent/50",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/mojo-parent/50/mojo-parent-50.pom",
             "https://jcenter.bintray.com/org/codehaus/mojo/mojo-parent/50/mojo-parent-50.pom"
           ],
           "sha256": "f819cad1b15b6a7791c8b601e96bde33765e4681395807db4537d2f0dedd493b"
@@ -2666,6 +2781,7 @@
           "name": "jaxb-bom-2.3.1.pom",
           "path": "org/glassfish/jaxb/jaxb-bom/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/jaxb-bom/2.3.1/jaxb-bom-2.3.1.pom",
             "https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-bom/2.3.1/jaxb-bom-2.3.1.pom"
           ],
           "sha256": "6cc1266cf306557b4f2d09cbd8cd6e75b5ef0c5773ca4ef763d4f730df947b64"
@@ -2681,6 +2797,7 @@
           "name": "jaxb-runtime-2.3.1.jar",
           "path": "org/glassfish/jaxb/jaxb-runtime/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.jar",
             "https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.jar"
           ],
           "sha256": "45fecfa5c8217ce1f3652ab95179790ec8cc0dec0384bca51cbeb94a293d9f2f"
@@ -2696,6 +2813,7 @@
           "name": "jaxb-runtime-2.3.1.pom",
           "path": "org/glassfish/jaxb/jaxb-runtime/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.pom",
             "https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.pom"
           ],
           "sha256": "f8101b86157fbfc01949ffdc7c59ea71ca23b7ece25f6a79061fe01cb750ff00"
@@ -2711,6 +2829,7 @@
           "name": "txw2-2.3.1.jar",
           "path": "org/glassfish/jaxb/txw2/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.jar",
             "https://jcenter.bintray.com/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.jar"
           ],
           "sha256": "34975dde1c6920f1a39791142235689bc3cd357e24d05edd8ff93b885bd68d60"
@@ -2726,6 +2845,7 @@
           "name": "txw2-2.3.1.pom",
           "path": "org/glassfish/jaxb/txw2/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.pom",
             "https://jcenter.bintray.com/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.pom"
           ],
           "sha256": "4714d46cacf702ab2cd478d6048c5d9cc57abdb55f4c07b6b7aa72799e02d36c"
@@ -2741,6 +2861,7 @@
           "name": "jdom2-2.0.6.jar",
           "path": "org/jdom/jdom2/2.0.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar",
             "https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar"
           ],
           "sha256": "1345f11ba606d15603d6740551a8c21947c0215640770ec67271fe78bea97cf5"
@@ -2756,6 +2877,7 @@
           "name": "jdom2-2.0.6.pom",
           "path": "org/jdom/jdom2/2.0.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom",
             "https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom"
           ],
           "sha256": "47b23a79fe336b741b82434c6e049d68165256e405e75c10921fd72fa8a65d8d"
@@ -2771,6 +2893,7 @@
           "name": "annotations-13.0.jar",
           "path": "org/jetbrains/annotations/13.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/annotations/13.0/annotations-13.0.jar",
             "https://jcenter.bintray.com/org/jetbrains/annotations/13.0/annotations-13.0.jar"
           ],
           "sha256": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
@@ -2786,6 +2909,7 @@
           "name": "annotations-13.0.pom",
           "path": "org/jetbrains/annotations/13.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/annotations/13.0/annotations-13.0.pom",
             "https://jcenter.bintray.com/org/jetbrains/annotations/13.0/annotations-13.0.pom"
           ],
           "sha256": "965aeb2bedff369819bdde1bf7a0b3b89b8247dd69c88b86375d76163bb8c397"
@@ -2801,6 +2925,7 @@
           "name": "kotlin-reflect-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-reflect/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-reflect/1.3.72/kotlin-reflect-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.3.72/kotlin-reflect-1.3.72.jar"
           ],
           "sha256": "a188d9367de1c4ee9479db630985c0597b20709c83161b1430d24edb27e38c40"
@@ -2816,6 +2941,7 @@
           "name": "kotlin-reflect-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-reflect/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-reflect/1.3.72/kotlin-reflect-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.3.72/kotlin-reflect-1.3.72.pom"
           ],
           "sha256": "61653ccfae8caa4203e267b479821bd90faab3fef744a7ab0fdd9f61150f970c"
@@ -2831,6 +2957,7 @@
           "name": "kotlin-stdlib-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.3.72/kotlin-stdlib-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.72/kotlin-stdlib-1.3.72.jar"
           ],
           "sha256": "3856a7349ebacd6d1be6802b2fed9c4dc2c5a564ea92b6b945ac988243d4b16b"
@@ -2846,6 +2973,7 @@
           "name": "kotlin-stdlib-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.3.72/kotlin-stdlib-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.72/kotlin-stdlib-1.3.72.pom"
           ],
           "sha256": "4f0d574a969ea93c45628a163e1ed3ffabb4584278d72c647ec124f8c8109481"
@@ -2861,6 +2989,7 @@
           "name": "kotlin-stdlib-common-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72/kotlin-stdlib-common-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72/kotlin-stdlib-common-1.3.72.jar"
           ],
           "sha256": "5e7d1552863e480c1628b1cc39ce230ef829f5b7230106215a05acda5172203a"
@@ -2876,6 +3005,7 @@
           "name": "kotlin-stdlib-common-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72/kotlin-stdlib-common-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72/kotlin-stdlib-common-1.3.72.pom"
           ],
           "sha256": "24781edf5b0934804930dcafc8911b9e710d146239a82699889132e7b37be9dc"
@@ -2891,6 +3021,7 @@
           "name": "kotlin-stdlib-jdk7-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72/kotlin-stdlib-jdk7-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72/kotlin-stdlib-jdk7-1.3.72.jar"
           ],
           "sha256": "40566c0c08d414b9413ba556ff7f8a0b04b98b9f0f424d122dd2088510efccc4"
@@ -2906,6 +3037,7 @@
           "name": "kotlin-stdlib-jdk7-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72/kotlin-stdlib-jdk7-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72/kotlin-stdlib-jdk7-1.3.72.pom"
           ],
           "sha256": "9d5a13d9abc33445e1366d258af0a77e42f01945acef7c0917b9d539854e2fce"
@@ -2921,6 +3053,7 @@
           "name": "kotlin-stdlib-jdk8-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72/kotlin-stdlib-jdk8-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72/kotlin-stdlib-jdk8-1.3.72.jar"
           ],
           "sha256": "133da70cfc07b56094282eac5c59bccd59f167ee2ead22e5282876d8bc10bf95"
@@ -2936,6 +3069,7 @@
           "name": "kotlin-stdlib-jdk8-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72/kotlin-stdlib-jdk8-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72/kotlin-stdlib-jdk8-1.3.72.pom"
           ],
           "sha256": "a6d50f0321bdb52838c99136930c8dcc78c3074a592d526862ec01be91fa622b"
@@ -2951,6 +3085,7 @@
           "name": "trove4j-20160824.jar",
           "path": "org/jetbrains/trove4j/trove4j/20160824",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.jar",
             "https://jcenter.bintray.com/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.jar"
           ],
           "sha256": "1917871c8deb468307a584680c87a44572f5a8b0b98c6d397fc0f5f86596dbe7"
@@ -2966,9 +3101,10 @@
           "name": "trove4j-20160824.pom",
           "path": "org/jetbrains/trove4j/trove4j/20160824",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.pom",
             "https://jcenter.bintray.com/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.pom"
           ],
-          "sha256": "5c415a9d8585200de4be1947e15291cc79f599b06249375f5c9ea22d4b2d090f"
+          "sha256": "c94b0b73790c70c709bcd445a01247908888211e38cc59e946ff6fe900785ae9"
         },
         {
           "id": {
@@ -2981,6 +3117,7 @@
           "name": "json-20180813.jar",
           "path": "org/json/json/20180813",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/json/json/20180813/json-20180813.jar",
             "https://jcenter.bintray.com/org/json/json/20180813/json-20180813.jar"
           ],
           "sha256": "518080049ba83181914419d11a25d9bc9833a2d729b6a6e7469fa52851356da8"
@@ -2996,6 +3133,7 @@
           "name": "json-20180813.pom",
           "path": "org/json/json/20180813",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/json/json/20180813/json-20180813.pom",
             "https://jcenter.bintray.com/org/json/json/20180813/json-20180813.pom"
           ],
           "sha256": "c7e660c50bf4ecda0fc81ab62b489db9171e207fa784ddcb48c6c85bb40b49f5"
@@ -3011,6 +3149,7 @@
           "name": "stax-ex-1.8.jar",
           "path": "org/jvnet/staxex/stax-ex/1.8",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.jar",
             "https://jcenter.bintray.com/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.jar"
           ],
           "sha256": "95b05d9590af4154c6513b9c5dc1fb2e55b539972ba0a9ef28e9a0c01d83ad77"
@@ -3026,6 +3165,7 @@
           "name": "stax-ex-1.8.pom",
           "path": "org/jvnet/staxex/stax-ex/1.8",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.pom",
             "https://jcenter.bintray.com/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.pom"
           ],
           "sha256": "0a84c20cf71f6a3d21fe226b0d588332fc7ae3e90cb583c60a483317eb9f3644"
@@ -3041,6 +3181,7 @@
           "name": "ow2-1.5.pom",
           "path": "org/ow2/ow2/1.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/ow2/1.5/ow2-1.5.pom",
             "https://jcenter.bintray.com/org/ow2/ow2/1.5/ow2-1.5.pom"
           ],
           "sha256": "0f8a1b116e760b8fe6389c51b84e4b07a70fc11082d4f936e453b583dd50b43b"
@@ -3056,6 +3197,7 @@
           "name": "asm-7.0.jar",
           "path": "org/ow2/asm/asm/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm/7.0/asm-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm/7.0/asm-7.0.jar"
           ],
           "sha256": "b88ef66468b3c978ad0c97fd6e90979e56155b4ac69089ba7a44e9aa7ffe9acf"
@@ -3071,6 +3213,7 @@
           "name": "asm-7.0.pom",
           "path": "org/ow2/asm/asm/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm/7.0/asm-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm/7.0/asm-7.0.pom"
           ],
           "sha256": "83f65b1083d5ce4f8ba7f9545cfe9ff17824589c9a7cc82c3a4695801e4f5f68"
@@ -3086,6 +3229,7 @@
           "name": "asm-analysis-7.0.jar",
           "path": "org/ow2/asm/asm-analysis/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.jar"
           ],
           "sha256": "e981f8f650c4d900bb033650b18e122fa6b161eadd5f88978d08751f72ee8474"
@@ -3101,6 +3245,7 @@
           "name": "asm-analysis-7.0.pom",
           "path": "org/ow2/asm/asm-analysis/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.pom"
           ],
           "sha256": "c6b54477e9d5bae1e7addff2e24cbf92aaff2ff08fd6bc0596c3933c3fadc2cb"
@@ -3116,6 +3261,7 @@
           "name": "asm-commons-7.0.jar",
           "path": "org/ow2/asm/asm-commons/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.jar"
           ],
           "sha256": "fed348ef05958e3e846a3ac074a12af5f7936ef3d21ce44a62c4fa08a771927d"
@@ -3131,6 +3277,7 @@
           "name": "asm-commons-7.0.pom",
           "path": "org/ow2/asm/asm-commons/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.pom"
           ],
           "sha256": "f4c697886cdb4a5b2472054a0b5e34371e9b48e620be40c3ed48e1f4b6d51eb4"
@@ -3146,6 +3293,7 @@
           "name": "asm-tree-7.0.jar",
           "path": "org/ow2/asm/asm-tree/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.jar"
           ],
           "sha256": "cfd7a0874f9de36a999c127feeadfbfe6e04d4a71ee954d7af3d853f0be48a6c"
@@ -3161,6 +3309,7 @@
           "name": "asm-tree-7.0.pom",
           "path": "org/ow2/asm/asm-tree/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.pom"
           ],
           "sha256": "d39e7dd12f4ff535a0839d1949c39c7644355a4470220c94b76a5c168c57a068"
@@ -3176,6 +3325,7 @@
           "name": "asm-util-7.0.jar",
           "path": "org/ow2/asm/asm-util/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-util/7.0/asm-util-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm-util/7.0/asm-util-7.0.jar"
           ],
           "sha256": "75fbbca440ef463f41c2b0ab1a80abe67e910ac486da60a7863cbcb5bae7e145"
@@ -3191,6 +3341,7 @@
           "name": "asm-util-7.0.pom",
           "path": "org/ow2/asm/asm-util/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-util/7.0/asm-util-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm-util/7.0/asm-util-7.0.pom"
           ],
           "sha256": "e07bce4bb55d5a06f4c10d912fc9dee8a9b9c04ec549bbb8db4f20db34706f75"
@@ -3206,6 +3357,7 @@
           "name": "oss-parent-7.pom",
           "path": "org/sonatype/oss/oss-parent/7",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom",
             "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/7/oss-parent-7.pom"
           ],
           "sha256": "b51f8867c92b6a722499557fc3a1fdea77bdf9ef574722fe90ce436a29559454"
@@ -3221,6 +3373,7 @@
           "name": "oss-parent-9.pom",
           "path": "org/sonatype/oss/oss-parent/9",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom",
             "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/9/oss-parent-9.pom"
           ],
           "sha256": "fb40265f982548212ff82e362e59732b2187ec6f0d80182885c14ef1f982827a"
@@ -3231,61 +3384,91 @@
           "id": {
             "group": "androidx.activity",
             "name": "activity",
-            "version": "1.1.0",
+            "version": "1.2.3",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "activity-1.1.0.aar",
-          "path": "androidx/activity/activity/1.1.0",
+          "name": "activity-1.2.3.aar",
+          "path": "androidx/activity/activity/1.2.3",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.1.0/activity-1.1.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.2.3/activity-1.2.3.aar"
           ],
-          "sha256": "4f2b35916768032f7d0c20e250e28b29037ed4ce9ebf3da4fcd51bcb0c6067ef"
+          "sha256": "1dce0705c334a6b2ef03382418dc7586f4e57ee23817267b403ea8cfc36c824e"
         },
         {
           "id": {
             "group": "androidx.activity",
             "name": "activity",
-            "version": "1.1.0",
+            "version": "1.2.3",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "activity-1.2.3.module",
+          "path": "androidx/activity/activity/1.2.3",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.2.3/activity-1.2.3.module"
+          ],
+          "sha256": "e9e2dd9d99adaf343369187cf6a3f0380ff9d2544944cdfc47310efbceb1b351"
+        },
+        {
+          "id": {
+            "group": "androidx.activity",
+            "name": "activity",
+            "version": "1.2.3",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "activity-1.1.0.pom",
-          "path": "androidx/activity/activity/1.1.0",
+          "name": "activity-1.2.3.pom",
+          "path": "androidx/activity/activity/1.2.3",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.1.0/activity-1.1.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.2.3/activity-1.2.3.pom"
           ],
-          "sha256": "3690001fc5a57ad176cacf7a13f56219bffb73b93c7978dbac1e1e5db082d6c0"
+          "sha256": "bcaddc925d51d5566c45a4a6cf3bf05c7144a634871308d0e73d3e2703ad74e0"
         },
         {
           "id": {
             "group": "androidx.annotation",
             "name": "annotation",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "annotation-1.1.0.jar",
-          "path": "androidx/annotation/annotation/1.1.0",
+          "name": "annotation-1.2.0.jar",
+          "path": "androidx/annotation/annotation/1.2.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.1.0/annotation-1.1.0.jar"
+            "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.2.0/annotation-1.2.0.jar"
           ],
-          "sha256": "d38d63edb30f1467818d50aaf05f8a692dea8b31392a049bfa991b159ad5b692"
+          "sha256": "9029262bddce116e6d02be499e4afdba21f24c239087b76b3b57d7e98b490a36"
         },
         {
           "id": {
             "group": "androidx.annotation",
             "name": "annotation",
-            "version": "1.1.0",
+            "version": "1.2.0",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "annotation-1.2.0.module",
+          "path": "androidx/annotation/annotation/1.2.0",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.2.0/annotation-1.2.0.module"
+          ],
+          "sha256": "2efcab81ef91b211bacd206eaacd995a51f633a2e96b57a8fc00144c5f9c56b3"
+        },
+        {
+          "id": {
+            "group": "androidx.annotation",
+            "name": "annotation",
+            "version": "1.2.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "annotation-1.1.0.pom",
-          "path": "androidx/annotation/annotation/1.1.0",
+          "name": "annotation-1.2.0.pom",
+          "path": "androidx/annotation/annotation/1.2.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.1.0/annotation-1.1.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.2.0/annotation-1.2.0.pom"
           ],
-          "sha256": "2e9372ba7780ef44952adbf86b66e1f08682c1e5277c926185f6564a13799efe"
+          "sha256": "62fb6dca2777efe08e7077d6b872d69110619df7fc21c99a6f54066499cc0383"
         },
         {
           "id": {
@@ -3321,91 +3504,91 @@
           "id": {
             "group": "androidx.appcompat",
             "name": "appcompat",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "appcompat-1.2.0.aar",
-          "path": "androidx/appcompat/appcompat/1.2.0",
+          "name": "appcompat-1.3.0.aar",
+          "path": "androidx/appcompat/appcompat/1.3.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat/1.2.0/appcompat-1.2.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat/1.3.0/appcompat-1.3.0.aar"
           ],
-          "sha256": "3d2131a55a61a777322e2126e0018011efa6339e53b44153eb651b16020cca70"
+          "sha256": "1a2b6c4c63fe0df594648c07bea664f22905fed27c66dc34612fd0c4d2bd877e"
         },
         {
           "id": {
             "group": "androidx.appcompat",
             "name": "appcompat",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "type": "module",
             "extension": "module"
           },
-          "name": "appcompat-1.2.0.module",
-          "path": "androidx/appcompat/appcompat/1.2.0",
+          "name": "appcompat-1.3.0.module",
+          "path": "androidx/appcompat/appcompat/1.3.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat/1.2.0/appcompat-1.2.0.module"
+            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat/1.3.0/appcompat-1.3.0.module"
           ],
-          "sha256": "2670902fc6c26047c42e0f60ee34656fa071841db370de958198413b5ab58fc3"
+          "sha256": "7ea2180142d870358ad4eb3449baf236792be7adaa70f4d273981fdea0a500d4"
         },
         {
           "id": {
             "group": "androidx.appcompat",
             "name": "appcompat",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "appcompat-1.2.0.pom",
-          "path": "androidx/appcompat/appcompat/1.2.0",
+          "name": "appcompat-1.3.0.pom",
+          "path": "androidx/appcompat/appcompat/1.3.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat/1.2.0/appcompat-1.2.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat/1.3.0/appcompat-1.3.0.pom"
           ],
-          "sha256": "8eb3cbe823b609853b481646e3d2c1aa39dbde53dd269712fd844ffdef2ebb42"
+          "sha256": "f2c660e62d83e2162b3f57d73cbb39b33905a49d8ca003c5518d7281ee325fc5"
         },
         {
           "id": {
             "group": "androidx.appcompat",
             "name": "appcompat-resources",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "appcompat-resources-1.2.0.aar",
-          "path": "androidx/appcompat/appcompat-resources/1.2.0",
+          "name": "appcompat-resources-1.3.0.aar",
+          "path": "androidx/appcompat/appcompat-resources/1.3.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.2.0/appcompat-resources-1.2.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.3.0/appcompat-resources-1.3.0.aar"
           ],
-          "sha256": "c470297c03ff3de1c3d15dacf0be0cae63abc10b52f021dd07ae28daa3100fe5"
+          "sha256": "b2e199c9139b127533ddea6b4a8eb76f3dd69557bb852cab2d208367b6808d06"
         },
         {
           "id": {
             "group": "androidx.appcompat",
             "name": "appcompat-resources",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "type": "module",
             "extension": "module"
           },
-          "name": "appcompat-resources-1.2.0.module",
-          "path": "androidx/appcompat/appcompat-resources/1.2.0",
+          "name": "appcompat-resources-1.3.0.module",
+          "path": "androidx/appcompat/appcompat-resources/1.3.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.2.0/appcompat-resources-1.2.0.module"
+            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.3.0/appcompat-resources-1.3.0.module"
           ],
-          "sha256": "75d9865bc6b0f779043b4f6523a944bd2ccb7526f5c1f5ef24624ac78dec3bd3"
+          "sha256": "9a83d2e277195782b0ea28da51a5fc34f20aa849c5904d6ec6dcfc3002233630"
         },
         {
           "id": {
             "group": "androidx.appcompat",
             "name": "appcompat-resources",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "appcompat-resources-1.2.0.pom",
-          "path": "androidx/appcompat/appcompat-resources/1.2.0",
+          "name": "appcompat-resources-1.3.0.pom",
+          "path": "androidx/appcompat/appcompat-resources/1.3.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.2.0/appcompat-resources-1.2.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.3.0/appcompat-resources-1.3.0.pom"
           ],
-          "sha256": "149dd8cec3664bef8ffde86c396ba1e2ab156ea68793d29800d008bacbc9c0f8"
+          "sha256": "630987fe9d1d8189ba55398b236c8f96b1e743ffc71015906caa8b9a6a523b5b"
         },
         {
           "id": {
@@ -3696,31 +3879,46 @@
           "id": {
             "group": "androidx.core",
             "name": "core",
-            "version": "1.3.2",
+            "version": "1.5.0",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "core-1.3.2.aar",
-          "path": "androidx/core/core/1.3.2",
+          "name": "core-1.5.0.aar",
+          "path": "androidx/core/core/1.5.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/core/core/1.3.2/core-1.3.2.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/core/core/1.5.0/core-1.5.0.aar"
           ],
-          "sha256": "94de196cd67950cff6ef3e1ac59015f8eaaf61840bdc238f2cf54ddef8dd0be9"
+          "sha256": "2b279712795689069cfb63e48b3ab63c32a5649bdda44c482eb8f81ca1a72161"
         },
         {
           "id": {
             "group": "androidx.core",
             "name": "core",
-            "version": "1.3.2",
+            "version": "1.5.0",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "core-1.5.0.module",
+          "path": "androidx/core/core/1.5.0",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/core/core/1.5.0/core-1.5.0.module"
+          ],
+          "sha256": "e3877fa529fe29177f34a26e0790ed35544848b0c7503bfed30b2539f1686d65"
+        },
+        {
+          "id": {
+            "group": "androidx.core",
+            "name": "core",
+            "version": "1.5.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "core-1.3.2.pom",
-          "path": "androidx/core/core/1.3.2",
+          "name": "core-1.5.0.pom",
+          "path": "androidx/core/core/1.5.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/core/core/1.3.2/core-1.3.2.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/core/core/1.5.0/core-1.5.0.pom"
           ],
-          "sha256": "afb5ea494dd083ed404cd51f580d218e37362f8ae326e893bee521290ed34920"
+          "sha256": "d9a34e338867b3db75aaace09dd45ac2d9a426e7b372296dd0e753e83790cc9f"
         },
         {
           "id": {
@@ -3876,31 +4074,46 @@
           "id": {
             "group": "androidx.fragment",
             "name": "fragment",
-            "version": "1.2.5",
+            "version": "1.3.4",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "fragment-1.2.5.aar",
-          "path": "androidx/fragment/fragment/1.2.5",
+          "name": "fragment-1.3.4.aar",
+          "path": "androidx/fragment/fragment/1.3.4",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/fragment/fragment/1.2.5/fragment-1.2.5.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/fragment/fragment/1.3.4/fragment-1.3.4.aar"
           ],
-          "sha256": "d19e82d142def6c4e136da70bf92f194c0ecc61d14ab4e84567b2ced0920fa93"
+          "sha256": "c023c0ab666456885284d8e88519a743bc863c2b2effb92741fc789cbdb10db4"
         },
         {
           "id": {
             "group": "androidx.fragment",
             "name": "fragment",
-            "version": "1.2.5",
+            "version": "1.3.4",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "fragment-1.3.4.module",
+          "path": "androidx/fragment/fragment/1.3.4",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/fragment/fragment/1.3.4/fragment-1.3.4.module"
+          ],
+          "sha256": "6612132cce5bf1c58b23d76cc7cbda72ae9070230dc77cb2ca8d2c5a30a3dec5"
+        },
+        {
+          "id": {
+            "group": "androidx.fragment",
+            "name": "fragment",
+            "version": "1.3.4",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "fragment-1.2.5.pom",
-          "path": "androidx/fragment/fragment/1.2.5",
+          "name": "fragment-1.3.4.pom",
+          "path": "androidx/fragment/fragment/1.3.4",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/fragment/fragment/1.2.5/fragment-1.2.5.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/fragment/fragment/1.3.4/fragment-1.3.4.pom"
           ],
-          "sha256": "df0aca46b62bb47cc662cbcee63372db6d2a2859478ee38b594fba3433fe30a5"
+          "sha256": "b87370fcc322e70e67bf6c1ee14273e010d042d92cd811dd3082e32a55e0edd8"
         },
         {
           "id": {
@@ -4026,31 +4239,46 @@
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-common",
-            "version": "2.2.0",
+            "version": "2.3.1",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "lifecycle-common-2.2.0.jar",
-          "path": "androidx/lifecycle/lifecycle-common/2.2.0",
+          "name": "lifecycle-common-2.3.1.jar",
+          "path": "androidx/lifecycle/lifecycle-common/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.2.0/lifecycle-common-2.2.0.jar"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.3.1/lifecycle-common-2.3.1.jar"
           ],
-          "sha256": "63898dabf7cfe5ec5d7ed8b8c2564c1427be876e1496ead95c2703cf59d3734b"
+          "sha256": "15848fb56db32f4c7cdc72b324003183d52a4884d6bf09be708ac7f587d139b5"
         },
         {
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-common",
-            "version": "2.2.0",
+            "version": "2.3.1",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "lifecycle-common-2.3.1.module",
+          "path": "androidx/lifecycle/lifecycle-common/2.3.1",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.3.1/lifecycle-common-2.3.1.module"
+          ],
+          "sha256": "5fb7c8514d8c56cada5e29ef89dc0289e71942ab4cb0b2e6dca137b9dcb8fdd4"
+        },
+        {
+          "id": {
+            "group": "androidx.lifecycle",
+            "name": "lifecycle-common",
+            "version": "2.3.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "lifecycle-common-2.2.0.pom",
-          "path": "androidx/lifecycle/lifecycle-common/2.2.0",
+          "name": "lifecycle-common-2.3.1.pom",
+          "path": "androidx/lifecycle/lifecycle-common/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.2.0/lifecycle-common-2.2.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.3.1/lifecycle-common-2.3.1.pom"
           ],
-          "sha256": "cc30a8a2a97d3767bd169b747c078727308096dd3ab7917d80b2f1f42d118bd6"
+          "sha256": "8cd23d889a14095c6ce16840d29b1a6388fa5e115144c1309d4d6d469c1bc351"
         },
         {
           "id": {
@@ -4086,121 +4314,181 @@
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-livedata-core",
-            "version": "2.2.0",
+            "version": "2.3.1",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "lifecycle-livedata-core-2.2.0.aar",
-          "path": "androidx/lifecycle/lifecycle-livedata-core/2.2.0",
+          "name": "lifecycle-livedata-core-2.3.1.aar",
+          "path": "androidx/lifecycle/lifecycle-livedata-core/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-livedata-core/2.2.0/lifecycle-livedata-core-2.2.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-livedata-core/2.3.1/lifecycle-livedata-core-2.3.1.aar"
           ],
-          "sha256": "556c1f3af90aa9d7d0d330565adbf6da71b2429148bac91e07c485f4f9abf614"
+          "sha256": "e55d38c372460f0a03997ddc950c67227511340fd74f8634d99d29653cd81ab1"
         },
         {
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-livedata-core",
-            "version": "2.2.0",
+            "version": "2.3.1",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "lifecycle-livedata-core-2.3.1.module",
+          "path": "androidx/lifecycle/lifecycle-livedata-core/2.3.1",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-livedata-core/2.3.1/lifecycle-livedata-core-2.3.1.module"
+          ],
+          "sha256": "b1e095d550d39a7d6c815761d6dbe3fd64eb31a39dc28146e78bbf2c01ba8f41"
+        },
+        {
+          "id": {
+            "group": "androidx.lifecycle",
+            "name": "lifecycle-livedata-core",
+            "version": "2.3.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "lifecycle-livedata-core-2.2.0.pom",
-          "path": "androidx/lifecycle/lifecycle-livedata-core/2.2.0",
+          "name": "lifecycle-livedata-core-2.3.1.pom",
+          "path": "androidx/lifecycle/lifecycle-livedata-core/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-livedata-core/2.2.0/lifecycle-livedata-core-2.2.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-livedata-core/2.3.1/lifecycle-livedata-core-2.3.1.pom"
           ],
-          "sha256": "aa51621be3817d1f5d21336b0c0525fe96ae899cec656c13d8ea18a51ea32c2f"
+          "sha256": "fb996222e3de47f1bdeb8b36590b8c11898a4f72f9138da187365d3103a143fb"
         },
         {
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-runtime",
-            "version": "2.2.0",
+            "version": "2.3.1",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "lifecycle-runtime-2.2.0.aar",
-          "path": "androidx/lifecycle/lifecycle-runtime/2.2.0",
+          "name": "lifecycle-runtime-2.3.1.aar",
+          "path": "androidx/lifecycle/lifecycle-runtime/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.2.0/lifecycle-runtime-2.2.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.3.1/lifecycle-runtime-2.3.1.aar"
           ],
-          "sha256": "2f866c07a1f33a8c9bb69a9545d4f20b4f0628cd0a155432386d7cb081e1e0bc"
+          "sha256": "dd294f4a689c71ff877fd41f3b67a3a62f7760d44ce420e6130f1fc3569d8f00"
         },
         {
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-runtime",
-            "version": "2.2.0",
+            "version": "2.3.1",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "lifecycle-runtime-2.3.1.module",
+          "path": "androidx/lifecycle/lifecycle-runtime/2.3.1",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.3.1/lifecycle-runtime-2.3.1.module"
+          ],
+          "sha256": "2a7b90e5049b674b36bccfd68677b3a0b3178b3f7c2ef7ddf618d3895598c4ce"
+        },
+        {
+          "id": {
+            "group": "androidx.lifecycle",
+            "name": "lifecycle-runtime",
+            "version": "2.3.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "lifecycle-runtime-2.2.0.pom",
-          "path": "androidx/lifecycle/lifecycle-runtime/2.2.0",
+          "name": "lifecycle-runtime-2.3.1.pom",
+          "path": "androidx/lifecycle/lifecycle-runtime/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.2.0/lifecycle-runtime-2.2.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.3.1/lifecycle-runtime-2.3.1.pom"
           ],
-          "sha256": "7f154066fed1c9162870f728b208352831b3d1f8f23f5d388958a50ca4e9f441"
+          "sha256": "b4442a84fc397edb2e908a1fdf713c6ae7d3a87641a09ee13d10ec8ee10b331f"
         },
         {
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-viewmodel",
-            "version": "2.2.0",
+            "version": "2.3.1",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "lifecycle-viewmodel-2.2.0.aar",
-          "path": "androidx/lifecycle/lifecycle-viewmodel/2.2.0",
+          "name": "lifecycle-viewmodel-2.3.1.aar",
+          "path": "androidx/lifecycle/lifecycle-viewmodel/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel/2.2.0/lifecycle-viewmodel-2.2.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel/2.3.1/lifecycle-viewmodel-2.3.1.aar"
           ],
-          "sha256": "967efab24d6c49dd414a8c0ac4a1cd09b018f0b8bb43b739ad360c4158ebde27"
+          "sha256": "b6db4c274a12ff85a4747e1e6669c7e98aefa2571ace9d1f1a6fa6be417ce838"
         },
         {
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-viewmodel",
-            "version": "2.2.0",
+            "version": "2.3.1",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "lifecycle-viewmodel-2.3.1.module",
+          "path": "androidx/lifecycle/lifecycle-viewmodel/2.3.1",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel/2.3.1/lifecycle-viewmodel-2.3.1.module"
+          ],
+          "sha256": "a531853dfe316c90b7466d24be94dbe60a60ef54a52c904c86381986202e51f4"
+        },
+        {
+          "id": {
+            "group": "androidx.lifecycle",
+            "name": "lifecycle-viewmodel",
+            "version": "2.3.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "lifecycle-viewmodel-2.2.0.pom",
-          "path": "androidx/lifecycle/lifecycle-viewmodel/2.2.0",
+          "name": "lifecycle-viewmodel-2.3.1.pom",
+          "path": "androidx/lifecycle/lifecycle-viewmodel/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel/2.2.0/lifecycle-viewmodel-2.2.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel/2.3.1/lifecycle-viewmodel-2.3.1.pom"
           ],
-          "sha256": "aaa3afaa49ff47e2bc9b2389f939d3e8137616c4616684e2dfb53ba8366aa11d"
+          "sha256": "23f45ead0b9a038382d9c3aaf9cb51f50bebccb638ab83df9d842a3bf08c411a"
         },
         {
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-viewmodel-savedstate",
-            "version": "2.2.0",
+            "version": "2.3.1",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "lifecycle-viewmodel-savedstate-2.2.0.aar",
-          "path": "androidx/lifecycle/lifecycle-viewmodel-savedstate/2.2.0",
+          "name": "lifecycle-viewmodel-savedstate-2.3.1.aar",
+          "path": "androidx/lifecycle/lifecycle-viewmodel-savedstate/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-savedstate/2.2.0/lifecycle-viewmodel-savedstate-2.2.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-savedstate/2.3.1/lifecycle-viewmodel-savedstate-2.3.1.aar"
           ],
-          "sha256": "3ce866fb822b20fe2f188f974992869a0a6233fe40acbefcff090d6def5e7f33"
+          "sha256": "97137a8af6a31776a14e4866ab808c7c0a791b484bdbc788bbd83e66407564c0"
         },
         {
           "id": {
             "group": "androidx.lifecycle",
             "name": "lifecycle-viewmodel-savedstate",
-            "version": "2.2.0",
+            "version": "2.3.1",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "lifecycle-viewmodel-savedstate-2.3.1.module",
+          "path": "androidx/lifecycle/lifecycle-viewmodel-savedstate/2.3.1",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-savedstate/2.3.1/lifecycle-viewmodel-savedstate-2.3.1.module"
+          ],
+          "sha256": "8083710b758ac096891e91f51d91ee56a445b265d7becf230355377327c0418b"
+        },
+        {
+          "id": {
+            "group": "androidx.lifecycle",
+            "name": "lifecycle-viewmodel-savedstate",
+            "version": "2.3.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "lifecycle-viewmodel-savedstate-2.2.0.pom",
-          "path": "androidx/lifecycle/lifecycle-viewmodel-savedstate/2.2.0",
+          "name": "lifecycle-viewmodel-savedstate-2.3.1.pom",
+          "path": "androidx/lifecycle/lifecycle-viewmodel-savedstate/2.3.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-savedstate/2.2.0/lifecycle-viewmodel-savedstate-2.2.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-savedstate/2.3.1/lifecycle-viewmodel-savedstate-2.3.1.pom"
           ],
-          "sha256": "9f31254e547b214257067611f18fc8a3c08f8df9eba634f6e21badc848596db1"
+          "sha256": "215e40ee84fdafb29ef258977b196bae8fa5a6c7a3a3411427c787b271e4f45c"
         },
         {
           "id": {
@@ -4386,31 +4674,46 @@
           "id": {
             "group": "androidx.savedstate",
             "name": "savedstate",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "savedstate-1.0.0.aar",
-          "path": "androidx/savedstate/savedstate/1.0.0",
+          "name": "savedstate-1.1.0.aar",
+          "path": "androidx/savedstate/savedstate/1.1.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate/1.0.0/savedstate-1.0.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate/1.1.0/savedstate-1.1.0.aar"
           ],
-          "sha256": "2510a5619c37579c9ce1a04574faaf323cd0ffe2fc4e20fa8f8f01e5bb402e83"
+          "sha256": "d60bbe44c2c08083a17c5dc678a6d6b4d0a2d664858016ab5c049cbea90a63b7"
         },
         {
           "id": {
             "group": "androidx.savedstate",
             "name": "savedstate",
-            "version": "1.0.0",
+            "version": "1.1.0",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "savedstate-1.1.0.module",
+          "path": "androidx/savedstate/savedstate/1.1.0",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate/1.1.0/savedstate-1.1.0.module"
+          ],
+          "sha256": "6eea2bc150828c8fcba777e93037038e2ee3ec441c43d6acecf2c5cd9ddc5374"
+        },
+        {
+          "id": {
+            "group": "androidx.savedstate",
+            "name": "savedstate",
+            "version": "1.1.0",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "savedstate-1.0.0.pom",
-          "path": "androidx/savedstate/savedstate/1.0.0",
+          "name": "savedstate-1.1.0.pom",
+          "path": "androidx/savedstate/savedstate/1.1.0",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate/1.0.0/savedstate-1.0.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate/1.1.0/savedstate-1.1.0.pom"
           ],
-          "sha256": "844d7d22fcea798c78bf5559229daf88ec9cad8136f5eea0a29aa76b3f8fde7c"
+          "sha256": "49784b75cb499bb9f8137d823a872f0c6da5ca6dba7c9acf2de3a683cb7db6dc"
         },
         {
           "id": {
@@ -4471,6 +4774,51 @@
             "https://dl.google.com/dl/android/maven2/androidx/swiperefreshlayout/swiperefreshlayout/1.0.0/swiperefreshlayout-1.0.0.pom"
           ],
           "sha256": "8fe4b5db332af33cde899ba571ee866ad977be38114d3ab600edaca454ea8299"
+        },
+        {
+          "id": {
+            "group": "androidx.tracing",
+            "name": "tracing",
+            "version": "1.0.0",
+            "type": "aar",
+            "extension": "aar"
+          },
+          "name": "tracing-1.0.0.aar",
+          "path": "androidx/tracing/tracing/1.0.0",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.0.0/tracing-1.0.0.aar"
+          ],
+          "sha256": "07b8b6139665b884a162eccf97891ca50f7f56831233bf25168ae04f7b568612"
+        },
+        {
+          "id": {
+            "group": "androidx.tracing",
+            "name": "tracing",
+            "version": "1.0.0",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "tracing-1.0.0.module",
+          "path": "androidx/tracing/tracing/1.0.0",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.0.0/tracing-1.0.0.module"
+          ],
+          "sha256": "fc8b21ebe5fa3a7c96ee098bcdcd00f077ebce73f243fa858e2b0671615f75d8"
+        },
+        {
+          "id": {
+            "group": "androidx.tracing",
+            "name": "tracing",
+            "version": "1.0.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "tracing-1.0.0.pom",
+          "path": "androidx/tracing/tracing/1.0.0",
+          "urls": [
+            "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.0.0/tracing-1.0.0.pom"
+          ],
+          "sha256": "cd0299a90d4720d78f1cfb5ff7505f4dbc1a70d05fe23fd9f4d4b77ea59ca05e"
         },
         {
           "id": {
@@ -4566,31 +4914,31 @@
           "id": {
             "group": "androidx.versionedparcelable",
             "name": "versionedparcelable",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "type": "aar",
             "extension": "aar"
           },
-          "name": "versionedparcelable-1.1.0.aar",
-          "path": "androidx/versionedparcelable/versionedparcelable/1.1.0",
+          "name": "versionedparcelable-1.1.1.aar",
+          "path": "androidx/versionedparcelable/versionedparcelable/1.1.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.0/versionedparcelable-1.1.0.aar"
+            "https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.1/versionedparcelable-1.1.1.aar"
           ],
-          "sha256": "9a1d77140ac222b7866b5054ee7d159bc1800987ed2d46dd6afdd145abb710c1"
+          "sha256": "57e8d93260d18d5b9007c9eed3c64ad159de90c8609ebfc74a347cbd514535a4"
         },
         {
           "id": {
             "group": "androidx.versionedparcelable",
             "name": "versionedparcelable",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "versionedparcelable-1.1.0.pom",
-          "path": "androidx/versionedparcelable/versionedparcelable/1.1.0",
+          "name": "versionedparcelable-1.1.1.pom",
+          "path": "androidx/versionedparcelable/versionedparcelable/1.1.1",
           "urls": [
-            "https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.0/versionedparcelable-1.1.0.pom"
+            "https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.1/versionedparcelable-1.1.1.pom"
           ],
-          "sha256": "c729c7be0cc06323bda829d460666e79dbd43b799a21089a44bd3b293dc253b5"
+          "sha256": "5f51e65873ca612de3838fa90d2ee95b8d040efd31b9c390a19bf94d615cdb2f"
         },
         {
           "id": {
@@ -5609,6 +5957,7 @@
           "name": "jsr305-3.0.2.jar",
           "path": "com/google/code/findbugs/jsr305/3.0.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar",
             "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar"
           ],
           "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
@@ -5624,6 +5973,7 @@
           "name": "jsr305-3.0.2.pom",
           "path": "com/google/code/findbugs/jsr305/3.0.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom",
             "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom"
           ],
           "sha256": "19889dbdf1b254b2601a5ee645b8147a974644882297684c798afe5d63d78dfe"
@@ -5639,6 +5989,7 @@
           "name": "gson-2.8.5.jar",
           "path": "com/google/code/gson/gson/2.8.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar",
             "https://jcenter.bintray.com/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar"
           ],
           "sha256": "233a0149fc365c9f6edbd683cfe266b19bdc773be98eabdaf6b3c924b48e7d81"
@@ -5654,6 +6005,7 @@
           "name": "gson-2.8.5.pom",
           "path": "com/google/code/gson/gson/2.8.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.5/gson-2.8.5.pom",
             "https://jcenter.bintray.com/com/google/code/gson/gson/2.8.5/gson-2.8.5.pom"
           ],
           "sha256": "b8308557a7fccc92d9fe7c8cd0599258b361285d2ecde7689eda98843255a092"
@@ -5669,6 +6021,7 @@
           "name": "gson-parent-2.8.5.pom",
           "path": "com/google/code/gson/gson-parent/2.8.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/code/gson/gson-parent/2.8.5/gson-parent-2.8.5.pom",
             "https://jcenter.bintray.com/com/google/code/gson/gson-parent/2.8.5/gson-parent-2.8.5.pom"
           ],
           "sha256": "8f1fec72b91a71ea39ec39f5f778c4d1124b6b097c6d55b3a50b554a52237b27"
@@ -5684,6 +6037,7 @@
           "name": "error_prone_annotations-2.3.2.jar",
           "path": "com/google/errorprone/error_prone_annotations/2.3.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.jar",
             "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.jar"
           ],
           "sha256": "357cd6cfb067c969226c442451502aee13800a24e950fdfde77bcdb4565a668d"
@@ -5699,6 +6053,7 @@
           "name": "error_prone_annotations-2.3.2.pom",
           "path": "com/google/errorprone/error_prone_annotations/2.3.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.pom",
             "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.pom"
           ],
           "sha256": "8d175561619289a527573cfbdcf872eb5c1216cf9ab692a0ef3dba6d793f63b4"
@@ -5707,31 +6062,33 @@
           "id": {
             "group": "com.google.errorprone",
             "name": "error_prone_annotations",
-            "version": "2.3.4",
+            "version": "2.5.1",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "error_prone_annotations-2.3.4.jar",
-          "path": "com/google/errorprone/error_prone_annotations/2.3.4",
+          "name": "error_prone_annotations-2.5.1.jar",
+          "path": "com/google/errorprone/error_prone_annotations/2.5.1",
           "urls": [
-            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.4/error_prone_annotations-2.3.4.jar"
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.5.1/error_prone_annotations-2.5.1.jar",
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.5.1/error_prone_annotations-2.5.1.jar"
           ],
-          "sha256": "baf7d6ea97ce606c53e11b6854ba5f2ce7ef5c24dddf0afa18d1260bd25b002c"
+          "sha256": "ff80626baaf12a09342befd4e84cba9d50662f5fcd7f7a9b3490a6b7cf87e66c"
         },
         {
           "id": {
             "group": "com.google.errorprone",
             "name": "error_prone_annotations",
-            "version": "2.3.4",
+            "version": "2.5.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "error_prone_annotations-2.3.4.pom",
-          "path": "com/google/errorprone/error_prone_annotations/2.3.4",
+          "name": "error_prone_annotations-2.5.1.pom",
+          "path": "com/google/errorprone/error_prone_annotations/2.5.1",
           "urls": [
-            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.4/error_prone_annotations-2.3.4.pom"
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.5.1/error_prone_annotations-2.5.1.pom",
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.5.1/error_prone_annotations-2.5.1.pom"
           ],
-          "sha256": "1326738a4b4f7ccacf607b866a11fb85193ef60f6a59461187ce7265f9be5bed"
+          "sha256": "983ad7fe0fa6f6f91e2d20477f5089eccc3f4d8ec6c51d6eb45583970e279d3c"
         },
         {
           "id": {
@@ -5744,6 +6101,7 @@
           "name": "error_prone_parent-2.3.2.pom",
           "path": "com/google/errorprone/error_prone_parent/2.3.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.3.2/error_prone_parent-2.3.2.pom",
             "https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.3.2/error_prone_parent-2.3.2.pom"
           ],
           "sha256": "8d3b5b9fa211979e9c425e989825c07743d2eb4dc8c20ec61de0f5b3dc1a6333"
@@ -5752,16 +6110,17 @@
           "id": {
             "group": "com.google.errorprone",
             "name": "error_prone_parent",
-            "version": "2.3.4",
+            "version": "2.5.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "error_prone_parent-2.3.4.pom",
-          "path": "com/google/errorprone/error_prone_parent/2.3.4",
+          "name": "error_prone_parent-2.5.1.pom",
+          "path": "com/google/errorprone/error_prone_parent/2.5.1",
           "urls": [
-            "https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.3.4/error_prone_parent-2.3.4.pom"
+            "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.5.1/error_prone_parent-2.5.1.pom",
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.5.1/error_prone_parent-2.5.1.pom"
           ],
-          "sha256": "40495b437a60d2398f0fdfc054b89d9c394a82347a274a0721c2e950a4302186"
+          "sha256": "a17a7677482a3a51a45f5e08140072acd332ccb12f23899b0052d80a729c2e52"
         },
         {
           "id": {
@@ -5774,6 +6133,7 @@
           "name": "failureaccess-1.0.1.jar",
           "path": "com/google/guava/failureaccess/1.0.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar",
             "https://jcenter.bintray.com/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar"
           ],
           "sha256": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
@@ -5789,6 +6149,7 @@
           "name": "failureaccess-1.0.1.pom",
           "path": "com/google/guava/failureaccess/1.0.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom",
             "https://jcenter.bintray.com/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom"
           ],
           "sha256": "e96042ce78fecba0da2be964522947c87b40a291b5fd3cd672a434924103c4b9"
@@ -5804,6 +6165,7 @@
           "name": "guava-28.1-jre.jar",
           "path": "com/google/guava/guava/28.1-jre",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre.jar",
             "https://jcenter.bintray.com/com/google/guava/guava/28.1-jre/guava-28.1-jre.jar"
           ],
           "sha256": "30beb8b8527bd07c6e747e77f1a92122c2f29d57ce347461a4a55eb26e382da4"
@@ -5819,6 +6181,7 @@
           "name": "guava-28.1-jre.pom",
           "path": "com/google/guava/guava/28.1-jre",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre.pom",
             "https://jcenter.bintray.com/com/google/guava/guava/28.1-jre/guava-28.1-jre.pom"
           ],
           "sha256": "74af0e8dd935894ce9bcb8e2842dd0001581b84cb6a7751c3ef9314011399ba4"
@@ -5827,31 +6190,33 @@
           "id": {
             "group": "com.google.guava",
             "name": "guava",
-            "version": "30.1-android",
+            "version": "30.1.1-android",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "guava-30.1-android.jar",
-          "path": "com/google/guava/guava/30.1-android",
+          "name": "guava-30.1.1-android.jar",
+          "path": "com/google/guava/guava/30.1.1-android",
           "urls": [
-            "https://jcenter.bintray.com/com/google/guava/guava/30.1-android/guava-30.1-android.jar"
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava/30.1.1-android/guava-30.1.1-android.jar",
+            "https://jcenter.bintray.com/com/google/guava/guava/30.1.1-android/guava-30.1.1-android.jar"
           ],
-          "sha256": "ea0b5a62b707482eee5cf305c8f35ef91cf4ceaff504f011a5c49c41355f5781"
+          "sha256": "355f79352f8c252f2bdaa06c687c4836a38016caccfc4c28d16ae77ecfdffa2f"
         },
         {
           "id": {
             "group": "com.google.guava",
             "name": "guava",
-            "version": "30.1-android",
+            "version": "30.1.1-android",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "guava-30.1-android.pom",
-          "path": "com/google/guava/guava/30.1-android",
+          "name": "guava-30.1.1-android.pom",
+          "path": "com/google/guava/guava/30.1.1-android",
           "urls": [
-            "https://jcenter.bintray.com/com/google/guava/guava/30.1-android/guava-30.1-android.pom"
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava/30.1.1-android/guava-30.1.1-android.pom",
+            "https://jcenter.bintray.com/com/google/guava/guava/30.1.1-android/guava-30.1.1-android.pom"
           ],
-          "sha256": "47cc477e2fbe7075260fc01c53b0f8eab4a8ec0367421c9a2cfd9c17d55f6ea4"
+          "sha256": "b218de6e345a7983fefce49a04baf19f6ace359cad1c84973190cd6c4da05846"
         },
         {
           "id": {
@@ -5864,6 +6229,7 @@
           "name": "guava-parent-26.0-android.pom",
           "path": "com/google/guava/guava-parent/26.0-android",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom",
             "https://jcenter.bintray.com/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom"
           ],
           "sha256": "f8698ab46ca996ce889c1afc8ca4f25eb8ac6b034dc898d4583742360016cc04"
@@ -5879,6 +6245,7 @@
           "name": "guava-parent-28.1-jre.pom",
           "path": "com/google/guava/guava-parent/28.1-jre",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/28.1-jre/guava-parent-28.1-jre.pom",
             "https://jcenter.bintray.com/com/google/guava/guava-parent/28.1-jre/guava-parent-28.1-jre.pom"
           ],
           "sha256": "f31a5846bd9e14a4c374da1b9b146a5715ecdca925e071e1d2bf4da2daaded90"
@@ -5887,16 +6254,17 @@
           "id": {
             "group": "com.google.guava",
             "name": "guava-parent",
-            "version": "30.1-android",
+            "version": "30.1.1-android",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "guava-parent-30.1-android.pom",
-          "path": "com/google/guava/guava-parent/30.1-android",
+          "name": "guava-parent-30.1.1-android.pom",
+          "path": "com/google/guava/guava-parent/30.1.1-android",
           "urls": [
-            "https://jcenter.bintray.com/com/google/guava/guava-parent/30.1-android/guava-parent-30.1-android.pom"
+            "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/30.1.1-android/guava-parent-30.1.1-android.pom",
+            "https://jcenter.bintray.com/com/google/guava/guava-parent/30.1.1-android/guava-parent-30.1.1-android.pom"
           ],
-          "sha256": "e99bc62d55a56407c4dddc1785220914a535fbd91f9cdc68b5cc871d5670ae8f"
+          "sha256": "d8e6b0f0fa4bf6be21734dc530f74d8696e9d0ac3ad27fbc7928ba3d8f64d761"
         },
         {
           "id": {
@@ -5909,6 +6277,7 @@
           "name": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
           "path": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
             "https://jcenter.bintray.com/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"
           ],
           "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
@@ -5924,6 +6293,7 @@
           "name": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom",
           "path": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom",
             "https://jcenter.bintray.com/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom"
           ],
           "sha256": "18d4b1db26153d4e55079ce1f76bb1fe05cdb862ef9954a88cbcc4ff38b8679b"
@@ -5939,6 +6309,7 @@
           "name": "j2objc-annotations-1.3.jar",
           "path": "com/google/j2objc/j2objc-annotations/1.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar",
             "https://jcenter.bintray.com/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar"
           ],
           "sha256": "21af30c92267bd6122c0e0b4d20cccb6641a37eaf956c6540ec471d584e64a7b"
@@ -5954,6 +6325,7 @@
           "name": "j2objc-annotations-1.3.pom",
           "path": "com/google/j2objc/j2objc-annotations/1.3",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom",
             "https://jcenter.bintray.com/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom"
           ],
           "sha256": "5faca824ba115bee458730337dfdb2fcea46ba2fd774d4304edbf30fa6a3f055"
@@ -5969,6 +6341,7 @@
           "name": "jimfs-1.1.jar",
           "path": "com/google/jimfs/jimfs/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar",
             "https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar"
           ],
           "sha256": "c4828e28d7c0a930af9387510b3bada7daa5c04d7c25a75c7b8b081f1c257ddd"
@@ -5984,6 +6357,7 @@
           "name": "jimfs-1.1.pom",
           "path": "com/google/jimfs/jimfs/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/jimfs/jimfs/1.1/jimfs-1.1.pom",
             "https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.pom"
           ],
           "sha256": "efa86e5cd922f17b472fdfcae57234d8d4ac3e148b6250737dfce454af7a7a44"
@@ -5999,6 +6373,7 @@
           "name": "jimfs-parent-1.1.pom",
           "path": "com/google/jimfs/jimfs-parent/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/jimfs/jimfs-parent/1.1/jimfs-parent-1.1.pom",
             "https://jcenter.bintray.com/com/google/jimfs/jimfs-parent/1.1/jimfs-parent-1.1.pom"
           ],
           "sha256": "c71555751e57e0ef912870e8ac9625ae782502a6a5b9c19ccf83b2a97d8b26bd"
@@ -6014,6 +6389,7 @@
           "name": "protobuf-java-3.10.0.jar",
           "path": "com/google/protobuf/protobuf-java/3.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.jar",
             "https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.jar"
           ],
           "sha256": "161d7d61a8cb3970891c299578702fd079646e032329d6c2cabf998d191437c9"
@@ -6029,6 +6405,7 @@
           "name": "protobuf-java-3.10.0.pom",
           "path": "com/google/protobuf/protobuf-java/3.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.pom",
             "https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.pom"
           ],
           "sha256": "b404c1b093ec9dea888e02c8dfe8662759586b94efa4f97061cdfc1bbfa15af0"
@@ -6044,6 +6421,7 @@
           "name": "protobuf-parent-3.10.0.pom",
           "path": "com/google/protobuf/protobuf-parent/3.10.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-parent/3.10.0/protobuf-parent-3.10.0.pom",
             "https://jcenter.bintray.com/com/google/protobuf/protobuf-parent/3.10.0/protobuf-parent-3.10.0.pom"
           ],
           "sha256": "6dd84a508125fffdefbd583fae12bf166aa902511b570ca54fa9efa45f6dfe80"
@@ -6059,6 +6437,7 @@
           "name": "core-3.4.1.jar",
           "path": "com/google/zxing/core/3.4.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/zxing/core/3.4.1/core-3.4.1.jar",
             "https://jcenter.bintray.com/com/google/zxing/core/3.4.1/core-3.4.1.jar"
           ],
           "sha256": "acfa30338c26267b6cab665509c2251bb96e8350bfcad89d59b949ba77011f8d"
@@ -6074,6 +6453,7 @@
           "name": "core-3.4.1.pom",
           "path": "com/google/zxing/core/3.4.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/zxing/core/3.4.1/core-3.4.1.pom",
             "https://jcenter.bintray.com/com/google/zxing/core/3.4.1/core-3.4.1.pom"
           ],
           "sha256": "b1a0faee424a3c775534c81fa16f5a5d5aa65ca40e6ad857f6961b333ea39fd3"
@@ -6089,6 +6469,7 @@
           "name": "zxing-parent-3.4.1.pom",
           "path": "com/google/zxing/zxing-parent/3.4.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/google/zxing/zxing-parent/3.4.1/zxing-parent-3.4.1.pom",
             "https://jcenter.bintray.com/com/google/zxing/zxing-parent/3.4.1/zxing-parent-3.4.1.pom"
           ],
           "sha256": "20281fe11b8e4bd4c17deec561444d1575bd532fecb73ecf6b89efdad7cd8938"
@@ -6104,6 +6485,7 @@
           "name": "json-simple-1.1.jar",
           "path": "com/googlecode/json-simple/json-simple/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar",
             "https://jcenter.bintray.com/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar"
           ],
           "sha256": "2d9484f4c649f708f47f9a479465fc729770ee65617dca3011836602264f6439"
@@ -6119,6 +6501,7 @@
           "name": "json-simple-1.1.pom",
           "path": "com/googlecode/json-simple/json-simple/1.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.pom",
             "https://jcenter.bintray.com/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.pom"
           ],
           "sha256": "47a89be0fa0fedd476db5fd2c83487654d2a119c391f83a142be876667cf7dab"
@@ -6134,6 +6517,7 @@
           "name": "javawriter-2.5.0.jar",
           "path": "com/squareup/javawriter/2.5.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/squareup/javawriter/2.5.0/javawriter-2.5.0.jar",
             "https://jcenter.bintray.com/com/squareup/javawriter/2.5.0/javawriter-2.5.0.jar"
           ],
           "sha256": "fcfb09fb0ea0aa97d3cfe7ea792398081348e468f126b3603cb3803f240197f0"
@@ -6149,6 +6533,7 @@
           "name": "javawriter-2.5.0.pom",
           "path": "com/squareup/javawriter/2.5.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom",
             "https://jcenter.bintray.com/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom"
           ],
           "sha256": "e1abd7f1116cf5e0c59947693e2189208ec94296b2a3394c959e3511d399a7b0"
@@ -6164,6 +6549,7 @@
           "name": "all-1.2.0.pom",
           "path": "com/sun/activation/all/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/all/1.2.0/all-1.2.0.pom",
             "https://jcenter.bintray.com/com/sun/activation/all/1.2.0/all-1.2.0.pom"
           ],
           "sha256": "1d8518e3ac7532a104e4f7be77def37c982e530723c6bdb3d67708cce2b0c2c4"
@@ -6179,6 +6565,7 @@
           "name": "javax.activation-1.2.0.jar",
           "path": "com/sun/activation/javax.activation/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/javax.activation/1.2.0/javax.activation-1.2.0.jar",
             "https://jcenter.bintray.com/com/sun/activation/javax.activation/1.2.0/javax.activation-1.2.0.jar"
           ],
           "sha256": "993302b16cd7056f21e779cc577d175a810bb4900ef73cd8fbf2b50f928ba9ce"
@@ -6194,6 +6581,7 @@
           "name": "javax.activation-1.2.0.pom",
           "path": "com/sun/activation/javax.activation/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/activation/javax.activation/1.2.0/javax.activation-1.2.0.pom",
             "https://jcenter.bintray.com/com/sun/activation/javax.activation/1.2.0/javax.activation-1.2.0.pom"
           ],
           "sha256": "f879b6e945854c6900b0dbee1c8384d7ab3de7e157fd7ac84937405c416d2a5e"
@@ -6209,6 +6597,7 @@
           "name": "istack-commons-3.0.7.pom",
           "path": "com/sun/istack/istack-commons/3.0.7",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/istack/istack-commons/3.0.7/istack-commons-3.0.7.pom",
             "https://jcenter.bintray.com/com/sun/istack/istack-commons/3.0.7/istack-commons-3.0.7.pom"
           ],
           "sha256": "6f83d3c85fdca9ef24010cb2f652aab1a508bff6331c087b60d0301782b78c6f"
@@ -6224,6 +6613,7 @@
           "name": "istack-commons-runtime-3.0.7.jar",
           "path": "com/sun/istack/istack-commons-runtime/3.0.7",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.jar",
             "https://jcenter.bintray.com/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.jar"
           ],
           "sha256": "6443e10ba2e259fb821d9b6becf10db5316285fc30c53cec9d7b19a3877e7fdf"
@@ -6239,6 +6629,7 @@
           "name": "istack-commons-runtime-3.0.7.pom",
           "path": "com/sun/istack/istack-commons-runtime/3.0.7",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.pom",
             "https://jcenter.bintray.com/com/sun/istack/istack-commons-runtime/3.0.7/istack-commons-runtime-3.0.7.pom"
           ],
           "sha256": "6d704e450a816a45bce806ba22c22fe83d8e8dcf7a71517603de630a1726809f"
@@ -6254,6 +6645,7 @@
           "name": "jaxb-bom-ext-2.3.1.pom",
           "path": "com/sun/xml/bind/jaxb-bom-ext/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/bind/jaxb-bom-ext/2.3.1/jaxb-bom-ext-2.3.1.pom",
             "https://jcenter.bintray.com/com/sun/xml/bind/jaxb-bom-ext/2.3.1/jaxb-bom-ext-2.3.1.pom"
           ],
           "sha256": "c2204f54b43593808c9af6502865ee71679823156dabdef341e71d35662c7aa0"
@@ -6269,6 +6661,7 @@
           "name": "jaxb-parent-2.3.1.pom",
           "path": "com/sun/xml/bind/mvn/jaxb-parent/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/bind/mvn/jaxb-parent/2.3.1/jaxb-parent-2.3.1.pom",
             "https://jcenter.bintray.com/com/sun/xml/bind/mvn/jaxb-parent/2.3.1/jaxb-parent-2.3.1.pom"
           ],
           "sha256": "f699ef37ec7966e284742dfca83075221179041a9a49aef7991280192604462d"
@@ -6284,6 +6677,7 @@
           "name": "jaxb-runtime-parent-2.3.1.pom",
           "path": "com/sun/xml/bind/mvn/jaxb-runtime-parent/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/bind/mvn/jaxb-runtime-parent/2.3.1/jaxb-runtime-parent-2.3.1.pom",
             "https://jcenter.bintray.com/com/sun/xml/bind/mvn/jaxb-runtime-parent/2.3.1/jaxb-runtime-parent-2.3.1.pom"
           ],
           "sha256": "b56383eb4d43498b145d379e2a93d5fcdcd8ff9291f89b58b82cb91658dbf14c"
@@ -6299,6 +6693,7 @@
           "name": "jaxb-txw-parent-2.3.1.pom",
           "path": "com/sun/xml/bind/mvn/jaxb-txw-parent/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/bind/mvn/jaxb-txw-parent/2.3.1/jaxb-txw-parent-2.3.1.pom",
             "https://jcenter.bintray.com/com/sun/xml/bind/mvn/jaxb-txw-parent/2.3.1/jaxb-txw-parent-2.3.1.pom"
           ],
           "sha256": "7a8473e935504841c606686d84e9c017a739ac2c144fde687aa003a7dd44de7f"
@@ -6314,6 +6709,7 @@
           "name": "FastInfoset-1.2.15.jar",
           "path": "com/sun/xml/fastinfoset/FastInfoset/1.2.15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.jar",
             "https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.jar"
           ],
           "sha256": "785861db11ca1bd0d1956682b974ad73eb19cd3e01a4b3fa82d62eca97210aec"
@@ -6329,6 +6725,7 @@
           "name": "FastInfoset-1.2.15.pom",
           "path": "com/sun/xml/fastinfoset/FastInfoset/1.2.15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.pom",
             "https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15.pom"
           ],
           "sha256": "bbc796ab84a6778a751c2eff1136078abd2b4d35b5047062804f3582ef3c42c8"
@@ -6344,6 +6741,7 @@
           "name": "fastinfoset-project-1.2.15.pom",
           "path": "com/sun/xml/fastinfoset/fastinfoset-project/1.2.15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/com/sun/xml/fastinfoset/fastinfoset-project/1.2.15/fastinfoset-project-1.2.15.pom",
             "https://jcenter.bintray.com/com/sun/xml/fastinfoset/fastinfoset-project/1.2.15/fastinfoset-project-1.2.15.pom"
           ],
           "sha256": "cfb8cdad4c0dd05ed8cacbe146bf1718764403947b9de8348e1bfd42f62ea73e"
@@ -6359,6 +6757,7 @@
           "name": "commons-codec-1.10.jar",
           "path": "commons-codec/commons-codec/1.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.10/commons-codec-1.10.jar",
             "https://jcenter.bintray.com/commons-codec/commons-codec/1.10/commons-codec-1.10.jar"
           ],
           "sha256": "4241dfa94e711d435f29a4604a3e2de5c4aa3c165e23bd066be6fc1fc4309569"
@@ -6374,6 +6773,7 @@
           "name": "commons-codec-1.10.pom",
           "path": "commons-codec/commons-codec/1.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.10/commons-codec-1.10.pom",
             "https://jcenter.bintray.com/commons-codec/commons-codec/1.10/commons-codec-1.10.pom"
           ],
           "sha256": "bdb8db7012d112a6e3ea8fdb7c510b300d99eff0819d27dddba9c43397ea4cfb"
@@ -6389,6 +6789,7 @@
           "name": "commons-logging-1.2.jar",
           "path": "commons-logging/commons-logging/1.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.jar",
             "https://jcenter.bintray.com/commons-logging/commons-logging/1.2/commons-logging-1.2.jar"
           ],
           "sha256": "daddea1ea0be0f56978ab3006b8ac92834afeefbd9b7e4e6316fca57df0fa636"
@@ -6404,6 +6805,7 @@
           "name": "commons-logging-1.2.pom",
           "path": "commons-logging/commons-logging/1.2",
           "urls": [
+            "https://repo.maven.apache.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.pom",
             "https://jcenter.bintray.com/commons-logging/commons-logging/1.2/commons-logging-1.2.pom"
           ],
           "sha256": "c91ab5aa570d86f6fd07cc158ec6bc2c50080402972ee9179fe24100739fbb20"
@@ -6419,6 +6821,7 @@
           "name": "fastutil-7.2.0.jar",
           "path": "it/unimi/dsi/fastutil/7.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar",
             "https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar"
           ],
           "sha256": "74fa208043740642f7e6eb09faba15965218ad2f50ce3020efb100136e4b591c"
@@ -6434,6 +6837,7 @@
           "name": "fastutil-7.2.0.pom",
           "path": "it/unimi/dsi/fastutil/7.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom",
             "https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom"
           ],
           "sha256": "953b116521a73575eee990e3f2c36a892fb088bb2d9a3027c82193cb7a013ef7"
@@ -6449,6 +6853,7 @@
           "name": "javax.activation-api-1.2.0.jar",
           "path": "javax/activation/javax.activation-api/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar",
             "https://jcenter.bintray.com/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar"
           ],
           "sha256": "43fdef0b5b6ceb31b0424b208b930c74ab58fac2ceeb7b3f6fd3aeb8b5ca4393"
@@ -6464,6 +6869,7 @@
           "name": "javax.activation-api-1.2.0.pom",
           "path": "javax/activation/javax.activation-api/1.2.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.pom",
             "https://jcenter.bintray.com/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.pom"
           ],
           "sha256": "da2926f3c8be898643cc10acdec6de0b0351a57fb2735770fa0177b06ade71b9"
@@ -6479,6 +6885,7 @@
           "name": "javax.inject-1.jar",
           "path": "javax/inject/javax.inject/1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.jar",
             "https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.jar"
           ],
           "sha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
@@ -6494,6 +6901,7 @@
           "name": "javax.inject-1.pom",
           "path": "javax/inject/javax.inject/1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.pom",
             "https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.pom"
           ],
           "sha256": "943e12b100627804638fa285805a0ab788a680266531e650921ebfe4621a8bfa"
@@ -6509,6 +6917,7 @@
           "name": "jaxb-api-2.3.1.jar",
           "path": "javax/xml/bind/jaxb-api/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar",
             "https://jcenter.bintray.com/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar"
           ],
           "sha256": "88b955a0df57880a26a74708bc34f74dcaf8ebf4e78843a28b50eae945732b06"
@@ -6524,6 +6933,7 @@
           "name": "jaxb-api-2.3.1.pom",
           "path": "javax/xml/bind/jaxb-api/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.pom",
             "https://jcenter.bintray.com/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.pom"
           ],
           "sha256": "12b20cf922773445c3445c2883cbf671fa982111e9bf9f875020f9313b3814b1"
@@ -6539,6 +6949,7 @@
           "name": "jaxb-api-parent-2.3.1.pom",
           "path": "javax/xml/bind/jaxb-api-parent/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/javax/xml/bind/jaxb-api-parent/2.3.1/jaxb-api-parent-2.3.1.pom",
             "https://jcenter.bintray.com/javax/xml/bind/jaxb-api-parent/2.3.1/jaxb-api-parent-2.3.1.pom"
           ],
           "sha256": "cd1beaa4560dc4dfdb826b9d809e464db22526dfb54264bae78a6ff7efb08e1f"
@@ -6614,6 +7025,7 @@
           "name": "jvnet-parent-1.pom",
           "path": "net/java/jvnet-parent/1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jvnet-parent/1/jvnet-parent-1.pom",
             "https://jcenter.bintray.com/net/java/jvnet-parent/1/jvnet-parent-1.pom"
           ],
           "sha256": "281440811268e65d9e266b3cc898297e214e04f09740d0386ceeb4a8923d63bf"
@@ -6629,6 +7041,7 @@
           "name": "jvnet-parent-5.pom",
           "path": "net/java/jvnet-parent/5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom",
             "https://jcenter.bintray.com/net/java/jvnet-parent/5/jvnet-parent-5.pom"
           ],
           "sha256": "1af699f8d9ddab67f9a0d202fbd7915eb0362a5a6dfd5ffc54cafa3465c9cb0a"
@@ -6644,6 +7057,7 @@
           "name": "jopt-simple-4.9.jar",
           "path": "net/sf/jopt-simple/jopt-simple/4.9",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.jar",
             "https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.jar"
           ],
           "sha256": "26c5856e954b5f864db76f13b86919b59c6eecf9fd930b96baa8884626baf2f5"
@@ -6659,6 +7073,7 @@
           "name": "jopt-simple-4.9.pom",
           "path": "net/sf/jopt-simple/jopt-simple/4.9",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.pom",
             "https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.pom"
           ],
           "sha256": "7af7e2d8b24b4798f04c2b7da24c9fbd1b7557b4e017c2054481565916079092"
@@ -6674,6 +7089,7 @@
           "name": "kxml2-2.3.0.jar",
           "path": "net/sf/kxml/kxml2/2.3.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.jar",
             "https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.jar"
           ],
           "sha256": "f264dd9f79a1fde10ce5ecc53221eff24be4c9331c830b7d52f2f08a7b633de2"
@@ -6689,6 +7105,7 @@
           "name": "kxml2-2.3.0.pom",
           "path": "net/sf/kxml/kxml2/2.3.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom",
             "https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom"
           ],
           "sha256": "31ce606f4e9518936299bb0d27c978fa61e185fd1de7c9874fe959a53e34a685"
@@ -6704,6 +7121,7 @@
           "name": "apache-13.pom",
           "path": "org/apache/apache/13",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/13/apache-13.pom",
             "https://jcenter.bintray.com/org/apache/apache/13/apache-13.pom"
           ],
           "sha256": "ff513db0361fd41237bef4784968bc15aae478d4ec0a9496f811072ccaf3841d"
@@ -6719,6 +7137,7 @@
           "name": "apache-15.pom",
           "path": "org/apache/apache/15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/15/apache-15.pom",
             "https://jcenter.bintray.com/org/apache/apache/15/apache-15.pom"
           ],
           "sha256": "36c2f2f979ac67b450c0cb480e4e9baf6b40f3a681f22ba9692287d1139ad494"
@@ -6734,6 +7153,7 @@
           "name": "apache-16.pom",
           "path": "org/apache/apache/16",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/16/apache-16.pom",
             "https://jcenter.bintray.com/org/apache/apache/16/apache-16.pom"
           ],
           "sha256": "9f85ff2fd7d6cb3097aa47fb419ee7f0ebe869109f98aba9f4eca3f49e74a40e"
@@ -6749,6 +7169,7 @@
           "name": "apache-18.pom",
           "path": "org/apache/apache/18",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/apache/18/apache-18.pom",
             "https://jcenter.bintray.com/org/apache/apache/18/apache-18.pom"
           ],
           "sha256": "7831307285fd475bbc36b20ae38e7882f11c3153b1d5930f852d44eda8f33c17"
@@ -6764,6 +7185,7 @@
           "name": "commons-compress-1.12.jar",
           "path": "org/apache/commons/commons-compress/1.12",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar",
             "https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar"
           ],
           "sha256": "2c1542faf343185b7cab9c3d55c8ae5471d6d095d3887a4adefdbdf2984dc0b6"
@@ -6779,6 +7201,7 @@
           "name": "commons-compress-1.12.pom",
           "path": "org/apache/commons/commons-compress/1.12",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-compress/1.12/commons-compress-1.12.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.pom"
           ],
           "sha256": "b787d574c851505e76212968b9ae1641ea79804aef7f5a2cee2a01cd4055213a"
@@ -6794,6 +7217,7 @@
           "name": "commons-parent-34.pom",
           "path": "org/apache/commons/commons-parent/34",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/34/commons-parent-34.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-parent/34/commons-parent-34.pom"
           ],
           "sha256": "3a2e69d06d641d1f3b293126dc9e2e4ea6563bf8c36c87e0ab6fa4292d04b79c"
@@ -6809,6 +7233,7 @@
           "name": "commons-parent-35.pom",
           "path": "org/apache/commons/commons-parent/35",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/35/commons-parent-35.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-parent/35/commons-parent-35.pom"
           ],
           "sha256": "7098a1ab8336ecd4c9dc21cbbcac869f82c66f64b8ac4f7988d41b4fcb44e49a"
@@ -6824,6 +7249,7 @@
           "name": "commons-parent-39.pom",
           "path": "org/apache/commons/commons-parent/39",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/39/commons-parent-39.pom",
             "https://jcenter.bintray.com/org/apache/commons/commons-parent/39/commons-parent-39.pom"
           ],
           "sha256": "87cd27e1a02a5c3eb6d85059ce98696bb1b44c2b8b650f0567c86df60fa61da7"
@@ -6839,6 +7265,7 @@
           "name": "httpclient-4.5.6.jar",
           "path": "org/apache/httpcomponents/httpclient/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.jar",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.jar"
           ],
           "sha256": "c03f813195e7a80e3608d0ddd8da80b21696a4c92a6a2298865bf149071551c7"
@@ -6854,6 +7281,7 @@
           "name": "httpclient-4.5.6.pom",
           "path": "org/apache/httpcomponents/httpclient/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.pom"
           ],
           "sha256": "7efc1241e73e7fbb268bfd33242d11ebd3ca07061d7d85f2962dc32a0f0b8855"
@@ -6869,6 +7297,7 @@
           "name": "httpcomponents-client-4.5.6.pom",
           "path": "org/apache/httpcomponents/httpcomponents-client/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-client/4.5.6/httpcomponents-client-4.5.6.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-client/4.5.6/httpcomponents-client-4.5.6.pom"
           ],
           "sha256": "b042b41f2391edb00d35f7f4e509aed2123648c1d246ce58d0f7b905c9fe1f73"
@@ -6884,6 +7313,7 @@
           "name": "httpcomponents-core-4.4.10.pom",
           "path": "org/apache/httpcomponents/httpcomponents-core/4.4.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-core/4.4.10/httpcomponents-core-4.4.10.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-core/4.4.10/httpcomponents-core-4.4.10.pom"
           ],
           "sha256": "61e9427d4be326c307a7f16ba828d1cb3b14713c9b04fc8ba992a58f376c3136"
@@ -6899,6 +7329,7 @@
           "name": "httpcomponents-parent-10.pom",
           "path": "org/apache/httpcomponents/httpcomponents-parent/10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcomponents-parent/10/httpcomponents-parent-10.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-parent/10/httpcomponents-parent-10.pom"
           ],
           "sha256": "caaf967d94afb21753f36082c6086206bd1f48825ff596932cceba72b65d39fa"
@@ -6914,6 +7345,7 @@
           "name": "httpcore-4.4.10.jar",
           "path": "org/apache/httpcomponents/httpcore/4.4.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.10/httpcore-4.4.10.jar",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.10/httpcore-4.4.10.jar"
           ],
           "sha256": "78ba1096561957db1b55200a159b648876430342d15d461277e62360da19f6fd"
@@ -6929,6 +7361,7 @@
           "name": "httpcore-4.4.10.pom",
           "path": "org/apache/httpcomponents/httpcore/4.4.10",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.10/httpcore-4.4.10.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.10/httpcore-4.4.10.pom"
           ],
           "sha256": "c5c12066df2b3b88a89a2c8602b81ea9a61627e976e5129eea1899ebbaea392b"
@@ -6944,6 +7377,7 @@
           "name": "httpmime-4.5.6.jar",
           "path": "org/apache/httpcomponents/httpmime/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpmime/4.5.6/httpmime-4.5.6.jar",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpmime/4.5.6/httpmime-4.5.6.jar"
           ],
           "sha256": "0b2b1102c18d3c7e05a77214b9b7501a6f6056174ae5604e0e256776eda7553e"
@@ -6959,6 +7393,7 @@
           "name": "httpmime-4.5.6.pom",
           "path": "org/apache/httpcomponents/httpmime/4.5.6",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpmime/4.5.6/httpmime-4.5.6.pom",
             "https://jcenter.bintray.com/org/apache/httpcomponents/httpmime/4.5.6/httpmime-4.5.6.pom"
           ],
           "sha256": "dfbfd6ffe2a784ca9817c46365aa7f8a578320b805bde39d6f55a0b09d8aa8ca"
@@ -6974,6 +7409,7 @@
           "name": "bcpkix-jdk15on-1.56.jar",
           "path": "org/bouncycastle/bcpkix-jdk15on/1.56",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar",
             "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar"
           ],
           "sha256": "7043dee4e9e7175e93e0b36f45b1ec1ecb893c5f755667e8b916eb8dd201c6ca"
@@ -6989,6 +7425,7 @@
           "name": "bcpkix-jdk15on-1.56.pom",
           "path": "org/bouncycastle/bcpkix-jdk15on/1.56",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom",
             "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom"
           ],
           "sha256": "321668fc474a73140eb9cc73c779f1ebb9f60948aade3beddee082ecefcf0259"
@@ -6997,31 +7434,33 @@
           "id": {
             "group": "org.bouncycastle",
             "name": "bcpkix-jdk15to18",
-            "version": "1.67",
+            "version": "1.68",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "bcpkix-jdk15to18-1.67.jar",
-          "path": "org/bouncycastle/bcpkix-jdk15to18/1.67",
+          "name": "bcpkix-jdk15to18-1.68.jar",
+          "path": "org/bouncycastle/bcpkix-jdk15to18/1.68",
           "urls": [
-            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15to18/1.67/bcpkix-jdk15to18-1.67.jar"
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15to18/1.68/bcpkix-jdk15to18-1.68.jar",
+            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15to18/1.68/bcpkix-jdk15to18-1.68.jar"
           ],
-          "sha256": "7e0aad98c99af1a09a12d27f3d8188081c16a17b7511942489e2e10724dfac15"
+          "sha256": "5f8f2f8fb99f8aa898ae442b694e6ebfc70ea66b91ac97da03811a4facd7c060"
         },
         {
           "id": {
             "group": "org.bouncycastle",
             "name": "bcpkix-jdk15to18",
-            "version": "1.67",
+            "version": "1.68",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "bcpkix-jdk15to18-1.67.pom",
-          "path": "org/bouncycastle/bcpkix-jdk15to18/1.67",
+          "name": "bcpkix-jdk15to18-1.68.pom",
+          "path": "org/bouncycastle/bcpkix-jdk15to18/1.68",
           "urls": [
-            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15to18/1.67/bcpkix-jdk15to18-1.67.pom"
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk15to18/1.68/bcpkix-jdk15to18-1.68.pom",
+            "https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15to18/1.68/bcpkix-jdk15to18-1.68.pom"
           ],
-          "sha256": "ee0c24f34a19cbd36435d6a6387a34eacbcca27b0843fae50fc2a65abbd7a2a7"
+          "sha256": "cf2e50dbc0aa668a37f7044ce48b79fbd44404317a5ad73199792e21df485144"
         },
         {
           "id": {
@@ -7034,6 +7473,7 @@
           "name": "bcprov-jdk15on-1.56.jar",
           "path": "org/bouncycastle/bcprov-jdk15on/1.56",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar",
             "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar"
           ],
           "sha256": "963e1ee14f808ffb99897d848ddcdb28fa91ddda867eb18d303e82728f878349"
@@ -7049,6 +7489,7 @@
           "name": "bcprov-jdk15on-1.56.pom",
           "path": "org/bouncycastle/bcprov-jdk15on/1.56",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom",
             "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom"
           ],
           "sha256": "8fdc3336e7b01873193ba9c48b87de7d788dc0954d1eb45c322492627a4b5c6e"
@@ -7057,31 +7498,33 @@
           "id": {
             "group": "org.bouncycastle",
             "name": "bcprov-jdk15to18",
-            "version": "1.67",
+            "version": "1.68",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "bcprov-jdk15to18-1.67.jar",
-          "path": "org/bouncycastle/bcprov-jdk15to18/1.67",
+          "name": "bcprov-jdk15to18-1.68.jar",
+          "path": "org/bouncycastle/bcprov-jdk15to18/1.68",
           "urls": [
-            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15to18/1.67/bcprov-jdk15to18-1.67.jar"
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15to18/1.68/bcprov-jdk15to18-1.68.jar",
+            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15to18/1.68/bcprov-jdk15to18-1.68.jar"
           ],
-          "sha256": "e5c9601da92a77154d32575330b00eb8f5546d21b3a6eb5c1250eb170460187b"
+          "sha256": "f147f23d7ea0f3648e44095211c4e63ce8c0719f2a68f681570575fca45b539c"
         },
         {
           "id": {
             "group": "org.bouncycastle",
             "name": "bcprov-jdk15to18",
-            "version": "1.67",
+            "version": "1.68",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "bcprov-jdk15to18-1.67.pom",
-          "path": "org/bouncycastle/bcprov-jdk15to18/1.67",
+          "name": "bcprov-jdk15to18-1.68.pom",
+          "path": "org/bouncycastle/bcprov-jdk15to18/1.68",
           "urls": [
-            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15to18/1.67/bcprov-jdk15to18-1.67.pom"
+            "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15to18/1.68/bcprov-jdk15to18-1.68.pom",
+            "https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15to18/1.68/bcprov-jdk15to18-1.68.pom"
           ],
-          "sha256": "83ce3529f5e261848173cca002204cc018e0e065bc511732bf31d6d8fb786295"
+          "sha256": "6f796374784eb3affa1edba79b2ac7caae3c993ee7124aa48203229c33cd775f"
         },
         {
           "id": {
@@ -7094,6 +7537,7 @@
           "name": "checker-compat-qual-2.5.5.jar",
           "path": "org/checkerframework/checker-compat-qual/2.5.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.jar",
             "https://jcenter.bintray.com/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.jar"
           ],
           "sha256": "11d134b245e9cacc474514d2d66b5b8618f8039a1465cdc55bbc0b34e0008b7a"
@@ -7109,6 +7553,7 @@
           "name": "checker-compat-qual-2.5.5.pom",
           "path": "org/checkerframework/checker-compat-qual/2.5.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.pom",
             "https://jcenter.bintray.com/org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.pom"
           ],
           "sha256": "42f21ebd9183be049ee5afc822b345403a5da764037875734a039b0d6e0353be"
@@ -7124,6 +7569,7 @@
           "name": "checker-qual-2.8.1.jar",
           "path": "org/checkerframework/checker-qual/2.8.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.jar",
             "https://jcenter.bintray.com/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.jar"
           ],
           "sha256": "9103499008bcecd4e948da29b17864abb64304e15706444ae209d17ebe0575df"
@@ -7139,6 +7585,7 @@
           "name": "checker-qual-2.8.1.pom",
           "path": "org/checkerframework/checker-qual/2.8.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.pom",
             "https://jcenter.bintray.com/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.pom"
           ],
           "sha256": "f23376b58ed795f2ff47426ac76b996d49e3918442e5d8713e3925f889a77799"
@@ -7154,6 +7601,7 @@
           "name": "groovy-all-2.4.15.jar",
           "path": "org/codehaus/groovy/groovy-all/2.4.15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/groovy/groovy-all/2.4.15/groovy-all-2.4.15.jar",
             "https://jcenter.bintray.com/org/codehaus/groovy/groovy-all/2.4.15/groovy-all-2.4.15.jar"
           ],
           "sha256": "51d6c4e71782e85674239189499854359d380fb75e1a703756e3aaa5b98a5af0"
@@ -7169,6 +7617,7 @@
           "name": "groovy-all-2.4.15.pom",
           "path": "org/codehaus/groovy/groovy-all/2.4.15",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/groovy/groovy-all/2.4.15/groovy-all-2.4.15.pom",
             "https://jcenter.bintray.com/org/codehaus/groovy/groovy-all/2.4.15/groovy-all-2.4.15.pom"
           ],
           "sha256": "fc0d535d7bdb7ca90562321c2e8e2a35c377f113c6dd0b2062282e1f4676367a"
@@ -7184,6 +7633,7 @@
           "name": "animal-sniffer-annotations-1.18.jar",
           "path": "org/codehaus/mojo/animal-sniffer-annotations/1.18",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.jar",
             "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.jar"
           ],
           "sha256": "47f05852b48ee9baefef80fa3d8cea60efa4753c0013121dd7fe5eef2e5c729d"
@@ -7199,6 +7649,7 @@
           "name": "animal-sniffer-annotations-1.18.pom",
           "path": "org/codehaus/mojo/animal-sniffer-annotations/1.18",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.pom",
             "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.pom"
           ],
           "sha256": "adf522f4839c35f5329ea97c407aebebfa8807b644852dc4d5cd7c97b7a6d2e0"
@@ -7214,6 +7665,7 @@
           "name": "animal-sniffer-parent-1.18.pom",
           "path": "org/codehaus/mojo/animal-sniffer-parent/1.18",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-parent/1.18/animal-sniffer-parent-1.18.pom",
             "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-parent/1.18/animal-sniffer-parent-1.18.pom"
           ],
           "sha256": "4e9df546a47cf6304a1317c46870100a8726fbea11b0dd18322f957e4070973c"
@@ -7229,6 +7681,7 @@
           "name": "mojo-parent-50.pom",
           "path": "org/codehaus/mojo/mojo-parent/50",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/codehaus/mojo/mojo-parent/50/mojo-parent-50.pom",
             "https://jcenter.bintray.com/org/codehaus/mojo/mojo-parent/50/mojo-parent-50.pom"
           ],
           "sha256": "f819cad1b15b6a7791c8b601e96bde33765e4681395807db4537d2f0dedd493b"
@@ -7244,6 +7697,7 @@
           "name": "jaxb-bom-2.3.1.pom",
           "path": "org/glassfish/jaxb/jaxb-bom/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/jaxb-bom/2.3.1/jaxb-bom-2.3.1.pom",
             "https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-bom/2.3.1/jaxb-bom-2.3.1.pom"
           ],
           "sha256": "6cc1266cf306557b4f2d09cbd8cd6e75b5ef0c5773ca4ef763d4f730df947b64"
@@ -7259,6 +7713,7 @@
           "name": "jaxb-runtime-2.3.1.jar",
           "path": "org/glassfish/jaxb/jaxb-runtime/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.jar",
             "https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.jar"
           ],
           "sha256": "45fecfa5c8217ce1f3652ab95179790ec8cc0dec0384bca51cbeb94a293d9f2f"
@@ -7274,6 +7729,7 @@
           "name": "jaxb-runtime-2.3.1.pom",
           "path": "org/glassfish/jaxb/jaxb-runtime/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.pom",
             "https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.3.1/jaxb-runtime-2.3.1.pom"
           ],
           "sha256": "f8101b86157fbfc01949ffdc7c59ea71ca23b7ece25f6a79061fe01cb750ff00"
@@ -7289,6 +7745,7 @@
           "name": "txw2-2.3.1.jar",
           "path": "org/glassfish/jaxb/txw2/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.jar",
             "https://jcenter.bintray.com/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.jar"
           ],
           "sha256": "34975dde1c6920f1a39791142235689bc3cd357e24d05edd8ff93b885bd68d60"
@@ -7304,6 +7761,7 @@
           "name": "txw2-2.3.1.pom",
           "path": "org/glassfish/jaxb/txw2/2.3.1",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.pom",
             "https://jcenter.bintray.com/org/glassfish/jaxb/txw2/2.3.1/txw2-2.3.1.pom"
           ],
           "sha256": "4714d46cacf702ab2cd478d6048c5d9cc57abdb55f4c07b6b7aa72799e02d36c"
@@ -7319,6 +7777,7 @@
           "name": "annotations-13.0.jar",
           "path": "org/jetbrains/annotations/13.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/annotations/13.0/annotations-13.0.jar",
             "https://jcenter.bintray.com/org/jetbrains/annotations/13.0/annotations-13.0.jar"
           ],
           "sha256": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
@@ -7334,6 +7793,7 @@
           "name": "annotations-13.0.pom",
           "path": "org/jetbrains/annotations/13.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/annotations/13.0/annotations-13.0.pom",
             "https://jcenter.bintray.com/org/jetbrains/annotations/13.0/annotations-13.0.pom"
           ],
           "sha256": "965aeb2bedff369819bdde1bf7a0b3b89b8247dd69c88b86375d76163bb8c397"
@@ -7349,6 +7809,7 @@
           "name": "kotlin-reflect-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-reflect/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-reflect/1.3.72/kotlin-reflect-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.3.72/kotlin-reflect-1.3.72.jar"
           ],
           "sha256": "a188d9367de1c4ee9479db630985c0597b20709c83161b1430d24edb27e38c40"
@@ -7364,6 +7825,7 @@
           "name": "kotlin-reflect-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-reflect/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-reflect/1.3.72/kotlin-reflect-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.3.72/kotlin-reflect-1.3.72.pom"
           ],
           "sha256": "61653ccfae8caa4203e267b479821bd90faab3fef744a7ab0fdd9f61150f970c"
@@ -7379,6 +7841,7 @@
           "name": "kotlin-stdlib-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.3.72/kotlin-stdlib-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.72/kotlin-stdlib-1.3.72.jar"
           ],
           "sha256": "3856a7349ebacd6d1be6802b2fed9c4dc2c5a564ea92b6b945ac988243d4b16b"
@@ -7394,6 +7857,7 @@
           "name": "kotlin-stdlib-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.3.72/kotlin-stdlib-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.72/kotlin-stdlib-1.3.72.pom"
           ],
           "sha256": "4f0d574a969ea93c45628a163e1ed3ffabb4584278d72c647ec124f8c8109481"
@@ -7409,6 +7873,7 @@
           "name": "kotlin-stdlib-common-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72/kotlin-stdlib-common-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72/kotlin-stdlib-common-1.3.72.jar"
           ],
           "sha256": "5e7d1552863e480c1628b1cc39ce230ef829f5b7230106215a05acda5172203a"
@@ -7424,6 +7889,7 @@
           "name": "kotlin-stdlib-common-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72/kotlin-stdlib-common-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.72/kotlin-stdlib-common-1.3.72.pom"
           ],
           "sha256": "24781edf5b0934804930dcafc8911b9e710d146239a82699889132e7b37be9dc"
@@ -7439,6 +7905,7 @@
           "name": "kotlin-stdlib-jdk7-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72/kotlin-stdlib-jdk7-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72/kotlin-stdlib-jdk7-1.3.72.jar"
           ],
           "sha256": "40566c0c08d414b9413ba556ff7f8a0b04b98b9f0f424d122dd2088510efccc4"
@@ -7454,6 +7921,7 @@
           "name": "kotlin-stdlib-jdk7-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72/kotlin-stdlib-jdk7-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.72/kotlin-stdlib-jdk7-1.3.72.pom"
           ],
           "sha256": "9d5a13d9abc33445e1366d258af0a77e42f01945acef7c0917b9d539854e2fce"
@@ -7469,6 +7937,7 @@
           "name": "kotlin-stdlib-jdk8-1.3.72.jar",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72/kotlin-stdlib-jdk8-1.3.72.jar",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72/kotlin-stdlib-jdk8-1.3.72.jar"
           ],
           "sha256": "133da70cfc07b56094282eac5c59bccd59f167ee2ead22e5282876d8bc10bf95"
@@ -7484,6 +7953,7 @@
           "name": "kotlin-stdlib-jdk8-1.3.72.pom",
           "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72/kotlin-stdlib-jdk8-1.3.72.pom",
             "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.72/kotlin-stdlib-jdk8-1.3.72.pom"
           ],
           "sha256": "a6d50f0321bdb52838c99136930c8dcc78c3074a592d526862ec01be91fa622b"
@@ -7499,6 +7969,7 @@
           "name": "trove4j-20160824.jar",
           "path": "org/jetbrains/trove4j/trove4j/20160824",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.jar",
             "https://jcenter.bintray.com/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.jar"
           ],
           "sha256": "1917871c8deb468307a584680c87a44572f5a8b0b98c6d397fc0f5f86596dbe7"
@@ -7514,9 +7985,10 @@
           "name": "trove4j-20160824.pom",
           "path": "org/jetbrains/trove4j/trove4j/20160824",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.pom",
             "https://jcenter.bintray.com/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.pom"
           ],
-          "sha256": "5c415a9d8585200de4be1947e15291cc79f599b06249375f5c9ea22d4b2d090f"
+          "sha256": "c94b0b73790c70c709bcd445a01247908888211e38cc59e946ff6fe900785ae9"
         },
         {
           "id": {
@@ -7529,6 +8001,7 @@
           "name": "stax-ex-1.8.jar",
           "path": "org/jvnet/staxex/stax-ex/1.8",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.jar",
             "https://jcenter.bintray.com/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.jar"
           ],
           "sha256": "95b05d9590af4154c6513b9c5dc1fb2e55b539972ba0a9ef28e9a0c01d83ad77"
@@ -7544,6 +8017,7 @@
           "name": "stax-ex-1.8.pom",
           "path": "org/jvnet/staxex/stax-ex/1.8",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.pom",
             "https://jcenter.bintray.com/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8.pom"
           ],
           "sha256": "0a84c20cf71f6a3d21fe226b0d588332fc7ae3e90cb583c60a483317eb9f3644"
@@ -7559,6 +8033,7 @@
           "name": "ow2-1.5.pom",
           "path": "org/ow2/ow2/1.5",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/ow2/1.5/ow2-1.5.pom",
             "https://jcenter.bintray.com/org/ow2/ow2/1.5/ow2-1.5.pom"
           ],
           "sha256": "0f8a1b116e760b8fe6389c51b84e4b07a70fc11082d4f936e453b583dd50b43b"
@@ -7574,6 +8049,7 @@
           "name": "asm-7.0.jar",
           "path": "org/ow2/asm/asm/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm/7.0/asm-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm/7.0/asm-7.0.jar"
           ],
           "sha256": "b88ef66468b3c978ad0c97fd6e90979e56155b4ac69089ba7a44e9aa7ffe9acf"
@@ -7589,6 +8065,7 @@
           "name": "asm-7.0.pom",
           "path": "org/ow2/asm/asm/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm/7.0/asm-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm/7.0/asm-7.0.pom"
           ],
           "sha256": "83f65b1083d5ce4f8ba7f9545cfe9ff17824589c9a7cc82c3a4695801e4f5f68"
@@ -7604,6 +8081,7 @@
           "name": "asm-analysis-7.0.jar",
           "path": "org/ow2/asm/asm-analysis/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.jar"
           ],
           "sha256": "e981f8f650c4d900bb033650b18e122fa6b161eadd5f88978d08751f72ee8474"
@@ -7619,6 +8097,7 @@
           "name": "asm-analysis-7.0.pom",
           "path": "org/ow2/asm/asm-analysis/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.pom"
           ],
           "sha256": "c6b54477e9d5bae1e7addff2e24cbf92aaff2ff08fd6bc0596c3933c3fadc2cb"
@@ -7634,6 +8113,7 @@
           "name": "asm-commons-7.0.jar",
           "path": "org/ow2/asm/asm-commons/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.jar"
           ],
           "sha256": "fed348ef05958e3e846a3ac074a12af5f7936ef3d21ce44a62c4fa08a771927d"
@@ -7649,6 +8129,7 @@
           "name": "asm-commons-7.0.pom",
           "path": "org/ow2/asm/asm-commons/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.pom"
           ],
           "sha256": "f4c697886cdb4a5b2472054a0b5e34371e9b48e620be40c3ed48e1f4b6d51eb4"
@@ -7664,6 +8145,7 @@
           "name": "asm-tree-7.0.jar",
           "path": "org/ow2/asm/asm-tree/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.jar"
           ],
           "sha256": "cfd7a0874f9de36a999c127feeadfbfe6e04d4a71ee954d7af3d853f0be48a6c"
@@ -7679,6 +8161,7 @@
           "name": "asm-tree-7.0.pom",
           "path": "org/ow2/asm/asm-tree/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.pom"
           ],
           "sha256": "d39e7dd12f4ff535a0839d1949c39c7644355a4470220c94b76a5c168c57a068"
@@ -7694,6 +8177,7 @@
           "name": "asm-util-7.0.jar",
           "path": "org/ow2/asm/asm-util/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-util/7.0/asm-util-7.0.jar",
             "https://jcenter.bintray.com/org/ow2/asm/asm-util/7.0/asm-util-7.0.jar"
           ],
           "sha256": "75fbbca440ef463f41c2b0ab1a80abe67e910ac486da60a7863cbcb5bae7e145"
@@ -7709,6 +8193,7 @@
           "name": "asm-util-7.0.pom",
           "path": "org/ow2/asm/asm-util/7.0",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-util/7.0/asm-util-7.0.pom",
             "https://jcenter.bintray.com/org/ow2/asm/asm-util/7.0/asm-util-7.0.pom"
           ],
           "sha256": "e07bce4bb55d5a06f4c10d912fc9dee8a9b9c04ec549bbb8db4f20db34706f75"
@@ -7724,6 +8209,7 @@
           "name": "oss-parent-7.pom",
           "path": "org/sonatype/oss/oss-parent/7",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom",
             "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/7/oss-parent-7.pom"
           ],
           "sha256": "b51f8867c92b6a722499557fc3a1fdea77bdf9ef574722fe90ce436a29559454"
@@ -7739,6 +8225,7 @@
           "name": "oss-parent-9.pom",
           "path": "org/sonatype/oss/oss-parent/9",
           "urls": [
+            "https://repo.maven.apache.org/maven2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom",
             "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/9/oss-parent-9.pom"
           ],
           "sha256": "fb40265f982548212ff82e362e59732b2187ec6f0d80182885c14ef1f982827a"

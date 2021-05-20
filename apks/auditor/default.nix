@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
-{ callPackage, lib, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle,
+{ callPackage, lib, stdenv, pkgs, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle,
   domain ? "example.org",
   applicationName ? "Robotnix Auditor",
   applicationId ? "org.robotnix.auditor",
@@ -11,21 +11,21 @@
   avbFingerprint ? ""
 }:
 let
-  androidsdk = androidPkgs.sdk (p: with p; [ cmdline-tools-latest platforms-android-30 build-tools-30-0-2 ]);
+  androidsdk = androidPkgs.sdk (p: with p; [ cmdline-tools-latest platform-tools platforms-android-30 build-tools-30-0-3 ]);
   buildGradle = callPackage ./gradle-env.nix {};
   supportedDevices = import ./supported-devices.nix;
 in
 buildGradle rec {
   name = "Auditor-${version}.apk";
-  version = "26"; # Latest as of 2021-02-14
+  version = "27"; # Latest as of 2021-05-19
 
   envSpec = ./gradle-env.json;
 
   src = fetchFromGitHub {
     owner = "grapheneos";
     repo = "Auditor";
-    rev = version;
-    sha256 = "0gk23h6vy6q1glm7b1y85w4r781pk7jsbax5larmal1a0bnf5lan";
+    rev = "e5dd999fe2bf402dd72f352b5583932e5f5d5705"; # Needs the appcompat 1.3.0 fix in a slightly newer commit
+    sha256 = "1dv9yb661yl4390bawfqg0msddpyw35609y0mlxfq1psc4lssi86";
   };
 
   patches = [
@@ -40,14 +40,16 @@ buildGradle rec {
 
   # gradle2nix not working with the more recent version of com.android.tools.build:gradle for an unknown reason
   #
-  # Caused by: org.gradle.internal.component.AmbiguousVariantSelectionException: The consumer was configured to find an API of a component, as well as attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug'. However we cannot choose between the following variants of project :app:
+  # Error message: org.gradle.internal.component.AmbiguousVariantSelectionException: The consumer was configured to find an API of a component, as well as attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug'. However we cannot choose between the following variants of project :app:
   #   - Configuration ':app:debugApiElements' variant android-base-module-metadata declares an API of a component, as well as attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
   #       - Unmatched attributes:
   #           - Provides attribute 'artifactType' with value 'android-base-module-metadata' but the consumer didn't ask for it
   #           - Provides attribute 'com.android.build.api.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
   postPatch = ''
-    substituteInPlace build.gradle --replace "com.android.tools.build:gradle:4.1.3" "com.android.tools.build:gradle:4.0.1"
+    substituteInPlace build.gradle --replace "com.android.tools.build:gradle:4.2.1" "com.android.tools.build:gradle:4.0.1"
   '';
+
+  # TODO: 2021-05-19. Now encountering another issue with gradle2nix, worked with gradle 6.7 but fails with 7.0.1
 
   gradleFlags = [ "assembleRelease" ];
 
@@ -57,4 +59,28 @@ buildGradle rec {
   installPhase = ''
     cp app/build/outputs/apk/release/app-release-unsigned.apk $out
   '';
+
+  fetchers = let
+    patchJar = jar: stdenv.mkDerivation {
+      name = "patched.jar";
+      src = jar;
+
+      phases = "unpackPhase buildPhase installPhase";
+
+      nativeBuildInputs = with pkgs; [ unzip zip autoPatchelfHook ];
+
+      unpackPhase = "unzip $src";
+      buildPhase = "autoPatchelf .";
+      installPhase = "zip -r $out *";
+    };
+
+    fetchurl' = args:
+      if (lib.hasSuffix "-linux.jar" (lib.head args.urls))
+      then patchJar (pkgs.fetchurl args)
+      else pkgs.fetchurl args;
+  in
+  {
+    http = fetchurl';
+    https = fetchurl';
+  };
 }
