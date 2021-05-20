@@ -19,8 +19,8 @@ Future improvements may allow the Auditor app and attestation service to work wi
  1. You can enable the Auditor app in the configuration:
     ```nix
     {
-      keyStorePath = "/dev/shm/android-keys";
       signing.enable = true;
+      signing.keyStorePath = "/dev/shm/android-keys";
 
       apps = {
         auditor.enable = true;

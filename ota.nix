@@ -5,7 +5,7 @@
 with (import ./pkgs {});
 let
   common = {
-    keyStorePath = "/var/secrets/android-keys";
+    signing.keyStorePath = "/var/secrets/android-keys";
     signing.enable = true;
   };
 in symlinkJoin {
