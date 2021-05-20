@@ -32,7 +32,7 @@ The user should understand that enabling certain robotnix modules may have secur
 Some modules, such as the MicroG and the F-Droid privileged extension, have been explicitly rejected by upstream GrapheneOS.
 If the user wishes to enable these modules, they should understand and be willing to accept the usability/security tradeoffs.
 
-GrapheneOS releases are tagged in robotnix, but the date suffix might not match the upstream GrapheneOS release to allow for tagged releases containing independent robotnix fixes.
+GrapheneOS releases are tagged in robotnix, but before 2021.05.16.04, the date suffix (YY.MM.DD.HH) did not match the one used in the upstream release.
 Only the latest GrapheneOS release is included with robotnix, even if that release is only a "beta" release upstream.
 If you would prefer to stick to only stable releases, wait until the release is marked "stable" upstream.
 
