@@ -22,7 +22,7 @@ let
         echo 'Missing KEYSDIR directory, did you use "--option extra-sandbox-paths /keys=..." ?'
         exit 1
       fi
-      ${config.build.verifyKeysScript} "$KEYSDIR" || exit 1
+      ${lib.optionalString config.signing.enable "${config.build.verifyKeysScript} \"$KEYSDIR\" || exit 1"}
       NEW_KEYSDIR=$(mktemp -d /dev/shm/robotnix_keys.XXXXXXXXXX)
       trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
       cp -r "$KEYSDIR"/* "$NEW_KEYSDIR"
