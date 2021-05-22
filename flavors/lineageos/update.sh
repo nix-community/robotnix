@@ -2,10 +2,6 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-# Note: To ensure this script grabs the latest revisions associated with the
-# lineageos branch, use the --force option (passed through to mk-repo-file).
-# Otherwise, it will just use the cached revisions in the .repo file
-
 set -eu
 
 if [[ "$USER" = "danielrf" ]]; then
