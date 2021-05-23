@@ -10,9 +10,16 @@ let
     mkIf mkMerge mkDefault mkForce
     importJSON toLower;
 
-  LineageOSRelease = "lineage-${{ "10" = "17.1"; "11" = "18.1"; }.${toString config.androidVersion}}";
+  androidVersionToLineageBranch = {
+    "10" = "lineage-17.1";
+    "11" = "lineage-18.1";
+  };
+  lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
+
+  deviceMetadata = lib.importJSON ./device-metadata.json;
+  defaultBranch = deviceMetadata.${config.device}.branch;
+  LineageOSRelease = androidVersionToLineageBranch.${builtins.toString config.androidVersion};
   repoDirs = lib.importJSON (./. + "/${LineageOSRelease}/repo.json");
-  deviceMetadata = importJSON ./device-metadata.json;
   _deviceDirs = importJSON (./. + "/${LineageOSRelease}/device-dirs.json");
   vendorDirs = importJSON (./. + "/${LineageOSRelease}/vendor-dirs.json");
 
@@ -51,14 +58,14 @@ let
     then mapAttrs' (n: v: nameValuePair n (v // (optionalAttrs (elem n kernelsNeedFix) { postPatch = dtbReproducibilityFix; }))) _deviceDirs
     else _deviceDirs;
 
-  supportedDevices = attrNames (filterAttrs (n: v: v.branch == LineageOSRelease) deviceMetadata);
+  supportedDevices = attrNames deviceMetadata;
 
   # TODO: Move this filtering into vanilla/graphene
   filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "postPatch"]) dir;
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
 in mkIf (config.flavor == "lineageos")
 {
-  androidVersion = mkDefault 11;
+  androidVersion = mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch});
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
