@@ -61,7 +61,8 @@ I have recently upgraded to a 3970x Threadripper with 32-cores.
 This can build chromium+android in about an hour.
 
 ## Community
-The `#robotnix` IRC channel on Freenode is available for a place to chat about the project, ask questions, and discuss robotnix development.
+The `#robotnix:nixos.org` channel on Matrix is available for a place to chat about the project, ask questions, and discuss robotnix development.
+You can easily join the channel using the Element web client via [this link](https://app.element.io/#/room/#robotnix:nixos.org).
 
 ## Donating to robotnix
 If you find robotnix helpful, please consider donating to the project.
