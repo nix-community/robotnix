@@ -49,11 +49,11 @@ def ls_remote(url, rev):
     return remote_rev
 
 def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
-                   override_project_revs: Dict[str, str], force_refresh: bool,
+                   override_project_revs: Dict[str, str], resume: bool,
                    mirrors: Dict[str, str], project_fetch_submodules: List[str],
                    override_tag: Optional[str], include_prefix: List[str],
                    exclude_path: List[str]):
-    if os.path.exists(filename) and not force_refresh:
+    if resume and os.path.exists(filename):
         data = json.load(open(filename))
     else:
         print("Fetching information for %s %s" % (url, ref))
@@ -138,10 +138,11 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--out', default=None, help="path to output file, defaults to repo-{rev}.json")
     parser.add_argument('--mirror', action="append", help="a repo mirror to use for a given url, specified by <url>=<path>")
     parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",
                         choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
-    parser.add_argument('--force', help="force a re-download. Useful with --ref-type branch", action='store_true')
+    parser.add_argument('--resume', help="resume a previous download", action='store_true')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
     parser.add_argument('--project-fetch-submodules', action="append", default=[], help="fetch submodules for the specified project path")
@@ -178,10 +179,13 @@ def main():
                     treeHashes[p['tree'], p.get('fetchSubmodules', False)] = p['sha256']
                     revTrees[p['rev']] = p['tree']
 
-    filename = f'repo-{args.ref}.json'
+    if args.out is not None:
+        filename = args.out
+    else:
+        filename = f'repo-{args.ref}.json'
 
     make_repo_file(args.url, args.ref, filename, ref_type,
-                   override_project_revs, force_refresh=args.force,
+                   override_project_revs, resume=args.resume,
                    mirrors=mirrors,
                    project_fetch_submodules=args.project_fetch_submodules,
                    override_tag=args.override_tag,

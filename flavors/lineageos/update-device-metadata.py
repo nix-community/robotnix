@@ -4,9 +4,8 @@
 # SPDX-License-Identifier: MIT
 
 import json
+import os
 import urllib.request
-
-BRANCH = "lineage-17.1"
 
 def save(filename, data):
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
@@ -23,11 +22,10 @@ def fetch_metadata():
             continue
 
         device, variant, branch, updatePeriod = line.split()
-        if branch == BRANCH:
-            metadata[device] = {
-                'variant': variant,
-                'branch': branch,
-            }
+        metadata[device] = {
+            'variant': variant,
+            'branch': branch,
+        }
 
     ###
 
