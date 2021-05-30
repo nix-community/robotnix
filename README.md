@@ -32,7 +32,6 @@ Some optional modules include:
  - Browser / Webview: [Chromium](https://www.chromium.org/Home), [Bromite](https://www.bromite.org/), [Vanadium](https://github.com/GrapheneOS/Vanadium)
  - [Seamless OTA updates](https://github.com/GrapheneOS/platform_packages_apps_Updater)
  - [MicroG](https://microg.org/)
- - Certain Google apps (currently just stuff for Google Fi)
  - Easily setting various framework configuration settings such as those found [here](https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/values/config.xml)
  - Custom built kernels
  - Custom `/etc/hosts` file

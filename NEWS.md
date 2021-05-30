@@ -10,11 +10,12 @@ listing of changes. See the git commit log for additional details.
 
 # 2021-06-xx
 
-# Highlights:
-- Fixed building outside Nix sandbox (e.g. in Docker) by introducing `signing.buildTimeKeyStorePath` option.
+## Highlights:
+- Fixed building outside Nix sandbox by introducing `signing.buildTimeKeyStorePath` option.
 
 ## Backwards incompatible changes
 - Renamed `keyStorePath` to `signing.keyStorePath`.
+- Removed flaky `google.*` module options.  Moved to `robotnixModules.google` flake output under [danielfullmer/robotnix-personal](https://github.com/danielfullmer/robotnix-personal).
 
 # 2021-05-04
 ## Highlights:

@@ -43,8 +43,6 @@ in
   };
   microg.enable = true;
 
-  google.fi.enable = true;
-
   apps.fdroid.additionalRepos = {
     playmaker = {
       enable = true;

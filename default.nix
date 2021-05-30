@@ -50,7 +50,6 @@ let
       ./modules/envpackages.nix
       ./modules/etc.nix
       ./modules/framework.nix
-      ./modules/google.nix
       ./modules/hosts.nix
       ./modules/kernel.nix
       ./modules/microg.nix
