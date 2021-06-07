@@ -289,6 +289,12 @@ in
             ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID robotnix-build
             set -e -o pipefail
 
+            ${lib.optionalString (config.androidVersion >= 6 && config.androidVersion <= 8) ''
+            # Needed for the jack compilation server
+            # https://source.android.com/setup/build/jack
+            mkdir -p $HOME
+            export USER=foo
+            ''}
             source build/envsetup.sh
             choosecombo ${config.buildType} ${config.productName} ${config.variant}
 
