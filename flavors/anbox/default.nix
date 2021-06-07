@@ -25,6 +25,17 @@ in mkIf (config.flavor == "anbox")
 
   source.dirs = mkMerge ([
     repoDirs
+    {
+      "build" = {
+        # Pre-seed mount points required for bind mounts
+        postPatch = ''
+          mkdir -p $out/blueprint
+          mkdir -p $out/kati
+          mkdir -p $out/soong
+          mkdir -p $out/make
+        '';
+      };
+    }
   ]);
 
   source.manifest.url = mkDefault "https://github.com/pmanbox/platform_manifests.git";
