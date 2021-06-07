@@ -216,9 +216,11 @@ in
     '' + (if (config.androidVersion >= 10) then ''
       echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/handheld_system.mk
       echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/handheld_product.mk
-    '' else ''
+    '' else if (config.androidVersion >= 8) /* FIXME Unclear if android 8 has these... */ then ''
       echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/core.mk
       echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/core.mk
+    '' else ''
+      # no-op as it's not present in android 7 and under?
     '');
 
     source.dirs."robotnix/config".src = let
