@@ -30,6 +30,7 @@ let
         };
       })
       configuration
+      ./flavors/anbox
       ./flavors/grapheneos
       ./flavors/lineageos
       ./flavors/vanilla
