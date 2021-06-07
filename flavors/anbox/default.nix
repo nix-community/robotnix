@@ -27,6 +27,7 @@ in mkIf (config.flavor == "anbox")
     repoDirs
     {
       "build" = {
+        patches = [ ./webview-hack.patch ];
         # Pre-seed mount points required for bind mounts
         postPatch = ''
           mkdir -p $out/blueprint
