@@ -15,9 +15,9 @@ else
 fi
 
 args=(
-	"https://github.com/anbox/platform_manifests"
+	"https://github.com/pmanbox/platform_manifests"
     --ref-type branch
-    "anbox" # static branch name
+    "pmanbox" # static branch name
     ../*/repo-*.json
 )
 
