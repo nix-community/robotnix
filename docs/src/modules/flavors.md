@@ -42,11 +42,15 @@ Alternatively, feel free to ask about your issue on the `#robotnix` IRC channel 
 ## LineageOS
 LineageOS is a free and open-source operating system for various devices, based on the Android mobile platform.
 LineageOS support may be enabled by setting `flavor = "lineageos";`.
-At the time of writing, this includes support for ~150 devices.
+At the time of writing, this includes support for ~160 devices.
+
+Robotnix includes support for both LineageOS 17.1 as well as LineaegOS 18.1.
+By default, robotnix will select the latest supported version for the device specified in the configuration.
+This can be overridden by setting `androidVersion` to either 10 or 11, for LineageOS 17.1 and 18.1, respectively.
 
 Since LineageOS does not produce tagged releases like vanilla AOSP or GrapheneOS,
 we periodically take snapshots of the upstream repositories and include metadata in robotnix which pins the source repositories to particular revisions.
-This metadata can be found under `flavors/lineageos/*.json`.
+This metadata can be found under `flavors/lineageos/*/*.json`.
 
 LineageOS support in robotnix should be considered "experimental," as it does yet have the same level of support provided for `vanilla` and `grapheneos` flavors.
 LineageOS source metadata may be updated irregularly in robotnix, and certain modules (such as the updater) are not guaranteed to work.
@@ -54,6 +58,6 @@ Moreover, LineageOS does not appear to provide the same level of security as eve
 LineageOS support is still valuable to include as it extends support to a much wider variety of devices, and provides the base that many other Android ROMs use to customize.
 Contributions and fixes from LineageOS users are especially welcome!
 
-For devices with "boot-as-recovery", the typical LineageOS flashing process involves first producing a `boot.img` and `ota`, flashing `boot.img` with fastboot, and then flashing the `ota` in recovery mode.
+For devices with "boot-as-recovery", the typical LineageOS flashing process involves first producing a `boot.img` and `ota`, flashing `boot.img` with fastboot, and then sideloading the `ota` in recovery mode.
 The `boot.img` and `ota` targets can be built using `nix-build ... -A bootImg` or `nix-build ... -A ota`, respectively.
 Check the upstream documentation for your particular device before following the above instructions.
