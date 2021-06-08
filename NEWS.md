@@ -8,12 +8,16 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
-# 2021-06-xx
-
+# 2021-06-07
 ## Highlights:
+- Updated LineageOS flavor from 17.1 to 18.1 (up-to-date as of 2021-05-22) [PR #96](https://github.com/danielfullmer/robotnix/pull/96) (thanks @hmenke).
+- Updated vanilla flavor to RQ3A.210605
+- Updated Auditor / AttestationServer to 27 / 2021-05-19
+- Updated Chromium to 91.0.4472.88
+- Updated MicroG to 0.2.19.211515
 - Fixed building outside Nix sandbox by introducing `signing.buildTimeKeyStorePath` option.
 
-## Backwards incompatible changes
+## Backward-incompatible changes
 - Renamed `keyStorePath` to `signing.keyStorePath`.
 - Removed flaky `google.*` module options.  Moved to `robotnixModules.google` flake output under [danielfullmer/robotnix-personal](https://github.com/danielfullmer/robotnix-personal).
 
@@ -36,7 +40,7 @@ There are no intentional backward incompatible changes since the last release.
 - Updated Auditor / AttestationServer to 26 /  2021-03-19.
 - Updated Seedvault to 11-1.1
 
-## Backward incompatible changes
+## Backward-incompatible changes
 - Renamed `kernel.useCustom` to `kernel.enable`.
 
 # 2021-03-02
@@ -53,7 +57,7 @@ There are no intentional backward incompatible changes since the last release.
 - Updated Auditor / AttestationServer to latest versions to support redfin/bramble
 - Updated Seedvault backup app to 2021-01-19
 
-## Backward incompatible changes
+## Backward-incompatible changes
 - The `resourceTypeOverrides` option was replaced with `resources.<package>.<name>.type`.
 
 # 2021-02-02
