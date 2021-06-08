@@ -34,14 +34,14 @@ let
     '';
   };
 
-  version = if api >= 30 then "2021-03-23" else "2020-08-26";
+  version = if api >= 30 then "2021-05-06" else "2020-08-26";
   src = if api >= 30
     then fetchFromGitHub {
       # Android11 branch
       owner = "AOSPAlliance";
       repo = "android-prepare-vendor";
-      rev = "ef8d7134e5e77f8d9efb4e21942eb04db957ff76";
-      sha256 = "19g2bm0sc7xp60mbql9q8zf1780ahq8ga10130b1y2bq5rq3ylgb";
+      rev = "59d2a75bffc23cccbf50c6ba08512a4c750f8f43";
+      sha256 = "18qwa7zihl74x7zg1qrc19m58si12vz01h114qf2hqlc7zxs51x6";
     } else fetchFromGitHub {
       # Android10 branch
       owner = "AOSPAlliance";
