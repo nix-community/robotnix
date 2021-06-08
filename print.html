@@ -270,16 +270,19 @@ Alternatively, feel free to ask about your issue on the <code>#robotnix</code> I
 <h2><a class="header" href="#lineageos" id="lineageos">LineageOS</a></h2>
 <p>LineageOS is a free and open-source operating system for various devices, based on the Android mobile platform.
 LineageOS support may be enabled by setting <code>flavor = &quot;lineageos&quot;;</code>.
-At the time of writing, this includes support for ~150 devices.</p>
+At the time of writing, this includes support for ~160 devices.</p>
+<p>Robotnix includes support for both LineageOS 17.1 as well as LineaegOS 18.1.
+By default, robotnix will select the latest supported version for the device specified in the configuration.
+This can be overridden by setting <code>androidVersion</code> to either 10 or 11, for LineageOS 17.1 and 18.1, respectively.</p>
 <p>Since LineageOS does not produce tagged releases like vanilla AOSP or GrapheneOS,
 we periodically take snapshots of the upstream repositories and include metadata in robotnix which pins the source repositories to particular revisions.
-This metadata can be found under <code>flavors/lineageos/*.json</code>.</p>
+This metadata can be found under <code>flavors/lineageos/*/*.json</code>.</p>
 <p>LineageOS support in robotnix should be considered &quot;experimental,&quot; as it does yet have the same level of support provided for <code>vanilla</code> and <code>grapheneos</code> flavors.
 LineageOS source metadata may be updated irregularly in robotnix, and certain modules (such as the updater) are not guaranteed to work.
 Moreover, LineageOS does not appear to provide the same level of security as even the vanilla flavor, with dm-verity/AVB, <code>userdebug</code> as the default variant, and vendor files with unclear origin.
 LineageOS support is still valuable to include as it extends support to a much wider variety of devices, and provides the base that many other Android ROMs use to customize.
 Contributions and fixes from LineageOS users are especially welcome!</p>
-<p>For devices with &quot;boot-as-recovery&quot;, the typical LineageOS flashing process involves first producing a <code>boot.img</code> and <code>ota</code>, flashing <code>boot.img</code> with fastboot, and then flashing the <code>ota</code> in recovery mode.
+<p>For devices with &quot;boot-as-recovery&quot;, the typical LineageOS flashing process involves first producing a <code>boot.img</code> and <code>ota</code>, flashing <code>boot.img</code> with fastboot, and then sideloading the <code>ota</code> in recovery mode.
 The <code>boot.img</code> and <code>ota</code> targets can be built using <code>nix-build ... -A bootImg</code> or <code>nix-build ... -A ota</code>, respectively.
 Check the upstream documentation for your particular device before following the above instructions.</p>
 <!--
