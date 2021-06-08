@@ -25,6 +25,27 @@ let
         deepClone = false;
       };
 
+
+  # A tree (attrset containing attrsets) which matches the source directories relpath filesystem structure.
+  # e.g.
+  # {
+  #   "build" = {
+  #     "make" = {};
+  #     "soong" = {};
+  #     ...
+  #    }
+  #    ...
+  #  };
+  dirsTree = let
+    listToTreeBranch = xs:
+      if builtins.length xs == 0 then {}
+      else { "${builtins.head xs}" = listToTreeBranch (builtins.tail xs); };
+    combineTreeBranches = branches:
+      lib.foldr lib.recursiveUpdate {} branches;
+    enabledDirs = lib.filterAttrs (name: dir: dir.enable) config.source.dirs;
+  in
+    combineTreeBranches (lib.mapAttrsToList (name: dir: listToTreeBranch (lib.splitString "/" dir.relpath)) enabledDirs);
+
   fileModule = types.submodule ({ config, ... }: {
     options = {
       src = mkOption {
@@ -153,6 +174,13 @@ let
       src =
         mkIf ((config.url != null) && (config.rev != null) && (config.sha256 != null))
         (mkDefault (projectSource config));
+
+      postPatch = let
+        # Check if we need to make mountpoints in this directory for other repos to be mounted inside it.
+        relpathSplit = lib.splitString "/" config.relpath;
+        mountPoints = lib.attrNames (lib.attrByPath relpathSplit {} dirsTree);
+      in mkIf (mountPoints != [])
+        ((lib.concatMapStringsSep "\n" (mountPoint: "mkdir ${mountPoint}") mountPoints) + "\n");
 
       unpackScript = (lib.optionalString config.enable ''
         mkdir -p ${config.relpath}
