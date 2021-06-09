@@ -8,10 +8,11 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
-# 2021-06-07
+# 2021-06-09
 ## Highlights:
 - Updated LineageOS flavor from 17.1 to 18.1 (up-to-date as of 2021-05-22) [PR #96](https://github.com/danielfullmer/robotnix/pull/96) (thanks @hmenke).
 - Updated vanilla flavor to RQ3A.210605
+- Updated GrapheneOS flavor to 2021.06.08.06
 - Updated Auditor / AttestationServer to 27 / 2021-05-19
 - Updated Chromium to 91.0.4472.88
 - Updated MicroG to 0.2.19.211515
