@@ -20,8 +20,8 @@ lib.runTests {
           }).config.source.dirs);
     expected = {
       "a" = ''
-        mkdir b
-        mkdir c
+        mkdir -p b
+        mkdir -p c
       '';
       "a/b" = "";
       "a/c" = "";

@@ -180,7 +180,7 @@ let
         relpathSplit = lib.splitString "/" config.relpath;
         mountPoints = lib.attrNames (lib.attrByPath relpathSplit {} dirsTree);
       in mkIf (mountPoints != [])
-        ((lib.concatMapStringsSep "\n" (mountPoint: "mkdir ${mountPoint}") mountPoints) + "\n");
+        ((lib.concatMapStringsSep "\n" (mountPoint: "mkdir -p ${mountPoint}") mountPoints) + "\n");
 
       unpackScript = (lib.optionalString config.enable ''
         mkdir -p ${config.relpath}
