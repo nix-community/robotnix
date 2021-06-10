@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+# TODO: remove all the redfin exceptions
+
 { config, pkgs, lib, ... }:
 
 let
@@ -30,6 +32,22 @@ let
     installPhase = ''
       cp -r . $out
       cp ${pkgs.libedit}/lib/libedit.so.0 $out/lib64/libedit.so.2 # ABI is the same--but distros have inconsistent numbering
+    '';
+  };
+  prebuiltGas = let
+    # Not always included in the platform repo manifest
+    backupSrc = pkgs.fetchgit {
+      url = "https://android.googlesource.com/platform/prebuilts/gas/linux-x86";
+      rev = "592150fc8ae9f48f2e73f390961f32ca6f5f6a9f";
+      sha256 = "1js9z9h89dbbzwv1pflm0026wrf5lsh3p95g86lwvagjis5xzii5";
+    };
+  in pkgs.stdenv.mkDerivation {
+    name = "prebuilt-gas";
+    src = config.source.dirs."prebuilts/gas/linux-x86".src or backupSrc;
+    buildInputs = with pkgs; [ autoPatchelfHook ]; # Include cc.lib for libstdc++.so.6
+    installPhase = ''
+      mkdir -p $out
+      cp -r . $out/bin
     '';
   };
   prebuiltMisc = pkgs.stdenv.mkDerivation {
@@ -139,12 +157,17 @@ in
 
       nativeBuildInputs = with pkgs; [
         perl bc nettools openssl rsync gmp libmpc mpfr lz4 which
-        prebuiltGCC prebuiltGCCarm32 prebuiltMisc
+        prebuiltMisc
         nukeReferences
-      ] ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang pkgsCross.aarch64-multiplatform.buildPackages.binutils ]  # TODO: Generalize to other arches
+      ]
+      ++ lib.optionals (cfg.compiler == "clang") [
+        prebuiltClang
+      ]  # TODO: Generalize to other arches
+      ++ lib.optionals (config.deviceFamily != "redfin") [ prebuiltGCC prebuiltGCCarm32 ]
       ++ lib.optionals (config.deviceFamily == "redfin") [
         # HACK: Additional dependencies needed by redfin.
         python bison flex cpio
+        prebuiltGas
       ];
 
       enableParallelBuilding = true;
@@ -152,15 +175,29 @@ in
         "O=out"
         "ARCH=arm64"
         #"CONFIG_COMPAT_VDSO=n"
-        "CROSS_COMPILE=aarch64-linux-android-"
-        "CROSS_COMPILE_ARM32=arm-linux-androideabi-"
-      ] ++ lib.optionals (cfg.compiler == "clang") [
-        "CC=clang"
-        "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
-      ] ++ lib.optional (cfg.linker == "lld") [
-        # Otherwise fails with  aarch64-linux-android-ld.gold: error: arch/arm64/lib/lib.a: member at 4210 is not an ELF object
-        "LD=ld.lld"
-      ];
+      ] ++ (
+        if (config.deviceFamily == "redfin")
+        then [
+          "LLVM=1"
+          # Redfin kernel builds still need "gas" (GNU assembler), everything else is LLVM
+          "CROSS_COMPILE=aarch64-linux-gnu-"
+          "CROSS_COMPILE_ARM32=arm-linux-gnueabi-"
+          # TODO: Remove HOSTCC / HOSTCXX. Currently, removing it makes it fail:
+          # ../scripts/basic/fixdep.c:97:10: fatal error: 'sys/types.h' file not found
+          "HOSTCC=gcc"
+          "HOSTCXX=g++"
+        ]
+        else ([
+          "CROSS_COMPILE=aarch64-linux-android-"
+          "CROSS_COMPILE_ARM32=arm-linux-androideabi-"
+        ] ++ lib.optionals (cfg.compiler == "clang") [
+          "CC=clang"
+          "CLANG_TRIPLE=aarch64-unknown-linux-gnu-" # This should match the prefix being produced by pkgsCross.aarch64-multiplatform.buildPackages.binutils. TODO: Generalize to other arches
+        ] ++ lib.optional (cfg.linker == "lld") [
+          # Otherwise fails with  aarch64-linux-android-ld.gold: error: arch/arm64/lib/lib.a: member at 4210 is not an ELF object
+          "LD=ld.lld"
+        ])
+      );
 
       preBuild = ''
         # (from nixpkgs) Note: we can get rid of this once http://permalink.gmane.org/gmane.linux.kbuild.devel/13800 is merged.
