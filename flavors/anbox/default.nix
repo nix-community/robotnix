@@ -26,16 +26,7 @@ in mkIf (config.flavor == "anbox")
   source.dirs = mkMerge ([
     repoDirs
     {
-      "build" = {
-        patches = [ ./webview-hack.patch ];
-        # Pre-seed mount points required for bind mounts
-        postPatch = ''
-          mkdir -p $out/blueprint
-          mkdir -p $out/kati
-          mkdir -p $out/soong
-          mkdir -p $out/make
-        '';
-      };
+      "build".patches = [ ./webview-hack.patch ];
     }
   ]);
 
