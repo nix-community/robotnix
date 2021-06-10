@@ -1,0 +1,4399 @@
+{
+  "abi/cpp": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "0fa6d7233e94cfc88152edd0c4ad90115585cda6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "171a6lmgfq8rrm7z8lrgskrh2if941mjrmg0w3wx17w087pyla1y",
+    "url": "https://android.googlesource.com/platform/abi/cpp"
+  },
+  "art": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "5a48248e0cd125975040d91fd3b7db8b2dcc3f14",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "103xzl102igvksja0s6qp3s21pfna67c7m9fmk19pxgj6rc8xlm8",
+    "url": "https://github.com/pmanbox/platform_art"
+  },
+  "bionic": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "c711a3439364bc9e9495bb61e0d161f3151c9648",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "08czhmxx1ig3j5yy8lf704z98dlimi5qdh88s3whz2zykgzvim0i",
+    "url": "https://github.com/pmanbox/platform_bionic"
+  },
+  "bootable/recovery": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "8d4bcc8f9a051fa158241c469ebccf53845cd8ab",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1kimpbnncfg1n3g2vyc4b2c6lp6jvjckbrq5vp6myp6n0m9by51v",
+    "url": "https://android.googlesource.com/platform/bootable/recovery"
+  },
+  "build": {
+    "copyfiles": [
+      {
+        "dest": "Makefile",
+        "src": "core/root.mk"
+      }
+    ],
+    "groups": [
+      "pdk",
+      "tradefed"
+    ],
+    "rev": "d613c0a5f21e7e89e8b3bb2f35f217241f866631",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1vph2kldkcwg4sk85yk5h8nisp73g453gjn905akcikhwzqrbdgf",
+    "url": "https://android.googlesource.com/platform/build"
+  },
+  "build/blueprint": {
+    "groups": [
+      "pdk",
+      "tradefed"
+    ],
+    "rev": "927b34a60a9d04ce900c5f5c77f22761341d5336",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "11ny8bx1kis9ybhbgfg329sjxhnwzcg7rs6dsq34hifiw59idj3f",
+    "url": "https://android.googlesource.com/platform/build/blueprint"
+  },
+  "build/kati": {
+    "groups": [
+      "pdk",
+      "tradefed"
+    ],
+    "rev": "530dbf13af0b6609cf652c7e2934c02e8163b282",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1a7nly42hpdshvz0lb9i8rpwv7wgrw4pkgi40bmsrrvqx756mj2f",
+    "url": "https://android.googlesource.com/platform/build/kati"
+  },
+  "build/soong": {
+    "groups": [
+      "pdk",
+      "tradefed"
+    ],
+    "linkfiles": [
+      {
+        "dest": "Android.bp",
+        "src": "root.bp"
+      },
+      {
+        "dest": "bootstrap.bash",
+        "src": "bootstrap.bash"
+      }
+    ],
+    "rev": "25bf3b4ec57fadf90e94d1bddff2f252952e311c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0r6z4b7smwciar4wf7c71z6hx2h9x07x541hh6ajcq8bfy55cw76",
+    "url": "https://android.googlesource.com/platform/build/soong"
+  },
+  "compatibility/cdd": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "1315e61e0f256eee71b73d6d0f3481b873a91566",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0ddqwvj26wjjg32f0hpqr2719vkjbb9qibjahspi1x7wa4lbsa1q",
+    "url": "https://android.googlesource.com/platform/compatibility/cdd"
+  },
+  "cts": {
+    "groups": [
+      "cts",
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "89e210106a349fdcf5ef3cfcf605288e63fe1dc0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1p8s8bhfv95p0y1qm4qa4dxl64c82q0wg780hms74zwd9pfdxf0g",
+    "url": "https://android.googlesource.com/platform/cts"
+  },
+  "dalvik": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "8928d2f63cea6a451b4e2224265ee1a83781f9f2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0m4mc7kg3pw73xjmhsygvd9551d9p7svw7p6vcjs2hczqm1z303d",
+    "url": "https://android.googlesource.com/platform/dalvik"
+  },
+  "developers/build": {
+    "groups": [],
+    "rev": "e8267e0148ad776d37832dd5d1a0210c4030ba50",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qf60s9nbxfc5vk03w5mnay55h7xhzs35sd5fphk9r86w6hqmgl8",
+    "url": "https://android.googlesource.com/platform/developers/build"
+  },
+  "developers/demos": {
+    "groups": [],
+    "rev": "14b8d02865566e5239e9761d0df697c3dfe01143",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1y1hhapw5zq805h55chak8h63v09yx2mqji92q1fnnh7l9nlmigj",
+    "url": "https://android.googlesource.com/platform/developers/demos"
+  },
+  "developers/samples/android": {
+    "groups": [],
+    "rev": "8c56cfbf3665212752212d261772b2b4f6894d0c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1b16r7cvivna04cxi8cc0ivd2wrs7g1900rk9gg5p070icykckpw",
+    "url": "https://android.googlesource.com/platform/developers/samples/android"
+  },
+  "development": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "673550564cfd56d341e829e7bc8f1139d49889e9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0s92961yycg8wsga40i7fvbfmf1a5i6j2gk64j2jiy7s0hfd4rc3",
+    "url": "https://android.googlesource.com/platform/development"
+  },
+  "device/common": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "53b55ab863c95d021d23e984af6a2669c15d553f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1n5h0gay9fdavhbwv65c7zp7grjf2h42n5z6sc3nn4ybmqrcg3wm",
+    "url": "https://android.googlesource.com/device/common"
+  },
+  "device/generic/common": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "fd625eced14bd42ab408977b96e40439026c86ee",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1rjffkvh3acvl1507hzfxipz2hwnf5dizfvigjqj3v0vm6vlxawg",
+    "url": "https://android.googlesource.com/device/generic/common"
+  },
+  "device/google/accessory/arduino": {
+    "groups": [
+      "device"
+    ],
+    "rev": "e2575815bbb5c0953da7c19e4b0d1c8b66671805",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0ks0bi4f881mra7cbw0s02a9clbcximd1zigx3v709f3l83mc6gz",
+    "url": "https://android.googlesource.com/device/google/accessory/arduino"
+  },
+  "device/google/accessory/demokit": {
+    "groups": [
+      "device"
+    ],
+    "rev": "ffc63cc812637700b63b2f32e131d40fcbd04193",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "11kpk82xsml94wn9qj01n142sifybq5x8fhmvkanzbqbdsz6h29p",
+    "url": "https://android.googlesource.com/device/google/accessory/demokit"
+  },
+  "device/google/atv": {
+    "groups": [
+      "broadcom_pdk",
+      "device",
+      "fugu",
+      "generic_fs"
+    ],
+    "rev": "108e22cfdec7e9f3057872c9abd6de6bb2a4805f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0s2nbv3674y7hy0hlvnhqlrhszgnfqwwry4wvazwgr912jb9v2h9",
+    "url": "https://android.googlesource.com/device/google/atv"
+  },
+  "device/google/contexthub": {
+    "groups": [
+      "device"
+    ],
+    "rev": "63bc2097df8ad2d27fa2a353fb5aa979e2be0740",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "14v3v1mzsm9h8fqv1s80nhp84jk60nfs8y1lj3qr6s63a9a921yq",
+    "url": "https://android.googlesource.com/device/google/contexthub"
+  },
+  "device/sample": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "b693fab6c2b851d39c7f1fcc245314eaa45af60e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1by3mn59mk6hv6cp0v6mm19kiixl6r465f2wia7p2yz53h3n40hg",
+    "url": "https://android.googlesource.com/device/sample"
+  },
+  "docs/source.android.com": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "a4f9944525bbfc02ce1adf42f48d522806a39af9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1nn1p3i0gazmwrfylzaw3zd146m99k03c4g3ns1vdvz2xi5jalgk",
+    "url": "https://android.googlesource.com/platform/docs/source.android.com"
+  },
+  "external/ImageMagick": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "2035f3ab8adbad87cd5a11f50a874971e830f31f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0nd2yxz0q3yr6l7gvnn9yq0rkprrji0jpz276vzj2pfpcr21d8dw",
+    "url": "https://android.googlesource.com/platform/external/ImageMagick"
+  },
+  "external/aac": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "63c91aa6521e64f3a86013430bddfde10b922866",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "098kpql7wip3j0g11h7b3lvwm3a5n3gs088lpw1vxzf1lj9bj1pr",
+    "url": "https://android.googlesource.com/platform/external/aac"
+  },
+  "external/android-clat": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "21f1042a7f021265dc2d64384a6f6395db717c45",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "15zd4x4r631r7qqqy8k2hz84zka3sjm8wbra98n0iq0dxx26zjsx",
+    "url": "https://android.googlesource.com/platform/external/android-clat"
+  },
+  "external/android-mock": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "c7d49587fc63fe2eb58d22a28935f0cae518dac8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "177jakib973m9qppf43x89m5yi3q3nn2x990lq2jdnlysgsj8qyg",
+    "url": "https://android.googlesource.com/platform/external/android-mock"
+  },
+  "external/androidplot": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "be8b1cef780ee3d58e2bae8b52391bde78e5495b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0x86qf8m70911aykis361ajxw1wch7cyya6b5pi49v7rp7fqq3g5",
+    "url": "https://android.googlesource.com/platform/external/androidplot"
+  },
+  "external/ant-glob": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "e819888a2629d5a9a792a0cdbf7e31da76db8592",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "12i23sbd29ln4qq5igwcwizqlr2mdmr5m9zgffcq3z45mvls9mg8",
+    "url": "https://android.googlesource.com/platform/external/ant-glob"
+  },
+  "external/antlr": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "f1e02efa413bae90641117a3439b4fce818fbea2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0d791l67lzgm51kg4df8g3lyhjb6snp8jcks9n19b9gwx2vi589h",
+    "url": "https://android.googlesource.com/platform/external/antlr"
+  },
+  "external/apache-commons-math": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "d465b2d422c99aeb07d2737c20cc21f68d36d224",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0q75wp2kz3li8r449avihwbiic9yql5y1czn3clx71a2p5hd5jr1",
+    "url": "https://android.googlesource.com/platform/external/apache-commons-math"
+  },
+  "external/apache-harmony": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "97e6496654efdadbb19dba5661a422e5a74c79b9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0c45n9jyjq8z1nnd34qsswiq29hmbd4zm54yw56a3y0gzl4if3n9",
+    "url": "https://android.googlesource.com/platform/external/apache-harmony"
+  },
+  "external/apache-http": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "dad0cef9b53ecad6f6a228acb23a301cf61b8b5e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "04d5i1pm0m4100hlhgzzfral9x6fgm73h7mfaplayq8lz67cpv1a",
+    "url": "https://android.googlesource.com/platform/external/apache-http"
+  },
+  "external/apache-xml": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "11b8231a7a2d1759d9ab7bfeae2cbed8fc1b2b7f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02krsqygnji5k5ynijyn1g2mdbhrffaf361qx6grpl1sn4i6pm0l",
+    "url": "https://android.googlesource.com/platform/external/apache-xml"
+  },
+  "external/archive-patcher": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "74e63445d1eeba2064228c1b31db07b49f86f225",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1c3hws7m29gdak81wkb5yl7mdkf77hgqr7hna8k9dsn3i0qmprxw",
+    "url": "https://android.googlesource.com/platform/external/archive-patcher"
+  },
+  "external/autotest": {
+    "groups": [],
+    "rev": "851369ea1131a9059d27a35da37df892ac9713ec",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1w1jr47y4n6irkhixysmb590qivmfc9mclw5bf9y18hksmxgwadr",
+    "url": "https://android.googlesource.com/platform/external/autotest"
+  },
+  "external/avahi": {
+    "groups": [],
+    "rev": "d9a3fc03beb806411e8129ccb523bfe611311dee",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0j4a4pfnbkibp9qz4arb2hqq49wj1lzxygx5hfdl7g3b10yhxdag",
+    "url": "https://android.googlesource.com/platform/external/avahi"
+  },
+  "external/bison": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "87121dd86985f537d2d8e401df3fd4bd68d47132",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1vk1ca8i40zlla1mjrxs4kqlbb6adf61p1xvp6xl3ky34fv7v1w1",
+    "url": "https://android.googlesource.com/platform/external/bison"
+  },
+  "external/blktrace": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "e28ac6dabfd50c4f5adb5f384a63c3ff1f385383",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "04clxp234l90ksdjgdjcq45dnsyrmgjlw4xvnir9zzvrkcbr2xrb",
+    "url": "https://android.googlesource.com/platform/external/blktrace"
+  },
+  "external/boringssl": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "404392a21c64e41792e5fd0a5f4fa650f9372bfb",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1xqq5sxd7ndfzis8nwhhy4md74saz6h13yyx69c6n9dnwnzwgh75",
+    "url": "https://android.googlesource.com/platform/external/boringssl"
+  },
+  "external/bouncycastle": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "c0ffe4df3c15ac1785e7f92eb80c35c75b114391",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0z2nc63qx4f3d4xblmdq50l84a9aqda6p4asy0fmyk3r14a7qp25",
+    "url": "https://android.googlesource.com/platform/external/bouncycastle"
+  },
+  "external/bsdiff": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "7d210c31d1c51dafb2e4b7a4064d11978adfceb6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13w4sf94ck1nl0yp4qrx0pnl20ha1z5w7h1bvwmpm52jxa3hks8c",
+    "url": "https://android.googlesource.com/platform/external/bsdiff"
+  },
+  "external/bzip2": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "c78361dfa289825e22886b4fafee68254c3fcf77",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1i53p6yqyf8v2ywff1jm9vi6xjkdpn4zxc01a4mqgkc554q0c3yq",
+    "url": "https://android.googlesource.com/platform/external/bzip2"
+  },
+  "external/c-ares": {
+    "groups": [],
+    "rev": "56089ab169968c4c922ecdcef7eaea9b27f42f2f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1fpfjpf84d1j4l684gfm0wnchqzkx6msyd1xa6y36a3vx2lifckf",
+    "url": "https://android.googlesource.com/platform/external/c-ares"
+  },
+  "external/caliper": {
+    "groups": [],
+    "rev": "d8cff0289a6bcf455eabf9902ccb0169b40fc18d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1is91216isac81kdbzq55jf0jpbw14x0w9bp3i89nb8bz9ppfshz",
+    "url": "https://android.googlesource.com/platform/external/caliper"
+  },
+  "external/cblas": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "f26a1f6b545417449d8b3d5eb8b1683eab05ab2a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0d4f6bymprw0r3c58lkma6y1dw3pc11q243ifdb3lxr7xyqkdy2q",
+    "url": "https://android.googlesource.com/platform/external/cblas"
+  },
+  "external/ceres-solver": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "307584f31212e5587fdb832091203185ccf43a9b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "157cy1kk9wp1z9bx6ry1xlippcm62qaw0zzbyva933y5llaj7yss",
+    "url": "https://android.googlesource.com/platform/external/ceres-solver"
+  },
+  "external/chromium-libpac": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "54344a50dae20b3474d301eef618e2023d278c53",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "12d11b98xgrlfglbknfyssjk4cxjaq8gqh7c50viz71qbkmm3r4n",
+    "url": "https://android.googlesource.com/platform/external/chromium-libpac"
+  },
+  "external/chromium-trace": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "031ef4784906e4a3d23edb62002fdd80544fcde0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0296yn0w3783xw03pc3rdyyc6brnilbs277vkkyvn3a2bp1cw6mh",
+    "url": "https://android.googlesource.com/platform/external/chromium-trace"
+  },
+  "external/chromium-webview": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "0c2267ed23f84885714ce0ba85b109585a1aac74",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0p57961fllxi2f2mdiwhaif90cllx17crybi64s6vwx3zalrkhqd",
+    "url": "https://android.googlesource.com/platform/external/chromium-webview"
+  },
+  "external/clang": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "3d9fcf7621234280421a5efe2cde0837cee6b2cb",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0wbfjg85wy19blhy32nmf9i9ix85rkjcngzg40yq8jvd9w52qzvm",
+    "url": "https://android.googlesource.com/platform/external/clang"
+  },
+  "external/cmockery": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "9af8c924d55f53847cd5a6fd4aaf92cbee39596c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "08van7f0mpxr36mc17j67srrnxy3cq8y1dfzjk2sd0kcm3fafb03",
+    "url": "https://android.googlesource.com/platform/external/cmockery"
+  },
+  "external/compiler-rt": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "6be656b9392561ee227d1e5855203975e51e01aa",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "18v083097nsdmpyn8s30z8jk04m6d4axrn03s34ljq08xs86srb0",
+    "url": "https://android.googlesource.com/platform/external/compiler-rt"
+  },
+  "external/conscrypt": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "fb1e8bee2b3d71db0f25ff21ac26793dbad8181d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1mfqj2swh1lwc72mgvd6bpvhzajyiw75ma22hvi90j4kcmxphkzj",
+    "url": "https://android.googlesource.com/platform/external/conscrypt"
+  },
+  "external/crcalc": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "21960a664fcf6083ff49e85d1dca53b458d937f7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1y4dr8irlhpgrsd708k51lj1hqng17c4bc23iwsjygs180fqmd24",
+    "url": "https://android.googlesource.com/platform/external/crcalc"
+  },
+  "external/cros/system_api": {
+    "groups": [],
+    "rev": "b0893709d407134bfde2e239739a5656be255486",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1hvb4i8azq60iy0vq28azmzvk9s4jf9zg4671vbpm03awwnd20pr",
+    "url": "https://android.googlesource.com/platform/external/cros/system_api"
+  },
+  "external/curl": {
+    "groups": [],
+    "rev": "9e78709adab6db017e66a995076a26a40a94aca3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1pxbgh9xr7qzm7cw8xljpn0a7w4bpv1ifg5sw05jz1jx2fhq50q6",
+    "url": "https://android.googlesource.com/platform/external/curl"
+  },
+  "external/dagger2": {
+    "groups": [],
+    "rev": "464cb79bbe6f768908c10c155de1cf5b2f120d61",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "15r4bxwb84wlicpshy65p4lh5nydw3iabg5am70xvipjiz77y5l5",
+    "url": "https://android.googlesource.com/platform/external/dagger2"
+  },
+  "external/dbus": {
+    "groups": [],
+    "rev": "cf177d120c60dd4144a35859e935ee0851fcb590",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1y4z1p6pci92qaw9p199cr3kf0x62nh486ns089h09gla08q1rm8",
+    "url": "https://android.googlesource.com/platform/external/dbus"
+  },
+  "external/dbus-binding-generator": {
+    "groups": [],
+    "rev": "a1068eabf3efdd8758deb0a77cc7cf1d2eb22930",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1prxvmi36fa6kdh13phm3whcrflla1qry1ycsz714dhmc5f783q0",
+    "url": "https://android.googlesource.com/platform/external/dbus-binding-generator"
+  },
+  "external/deqp": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "ed46c382e2193d6b6239aaf216f6110ba0fb1641",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "17lkicmphzj3r5x48n9j6wfc076wpfghvmcsdwhdygraw3w571xv",
+    "url": "https://android.googlesource.com/platform/external/deqp"
+  },
+  "external/dexmaker": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "7e465464da6649bd9746e4b4d61aad37618f3c44",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1g4vzivcyil8hswi0zkjdx8zp0rs0xdlgsbxvv6pc7ihd24kj9rh",
+    "url": "https://android.googlesource.com/platform/external/dexmaker"
+  },
+  "external/dhcpcd-6.8.2": {
+    "groups": [],
+    "rev": "3da83adee1974e9c6cc24844b7622ca1f20d1fe8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "16hm12rxmgxlsd9spzbix0c8n0ki8d9jpyy76sjv2xn37wnbfs97",
+    "url": "https://android.googlesource.com/platform/external/dhcpcd-6.8.2"
+  },
+  "external/dlmalloc": {
+    "groups": [],
+    "rev": "4806bf6b27ba2ea4df475b316e12f0989e73450e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0pyhhhs86z2d0n0glw7lv6z90m3xgxgm93mq34pj0dc8am2mli71",
+    "url": "https://android.googlesource.com/platform/external/dlmalloc"
+  },
+  "external/dng_sdk": {
+    "groups": [],
+    "rev": "119653f8426631395667bda51ec3009e81082a15",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1dwddbq4wfpmzxcvxj9x9nlxza4aai8705w1mjyzglxwjjdl4if4",
+    "url": "https://android.googlesource.com/platform/external/dng_sdk"
+  },
+  "external/dnsmasq": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "0e4d6cf9d6e8bd6b6f6cd7fd49fd8ac51f8d1689",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1z6s5d513dam0xb5cyxl7dwm0p4hz6gf92wl2s09kj9q8vdjb1db",
+    "url": "https://android.googlesource.com/platform/external/dnsmasq"
+  },
+  "external/doclava": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "286e342ca2813e9012ccda25feebe1b309b742ba",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0niy1nflqnrpfiks6zq7wjdaw9zhmwsfbcx0l1bzhnw2fq94h5g9",
+    "url": "https://android.googlesource.com/platform/external/doclava"
+  },
+  "external/donuts": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "5e97e267a4c5a5aa7cd7dc466ff6e0c5bbeb9407",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/platform/external/donuts"
+  },
+  "external/drm_gralloc": {
+    "groups": [
+      "drm_gralloc"
+    ],
+    "rev": "ad6203ede4d5ce0d670377ca3ec59d3f5765d7e6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1pkb1absnznv2mnykwy9k214adglrkj5by6h92kh9wf7ksg0jfid",
+    "url": "https://android.googlesource.com/platform/external/drm_gralloc"
+  },
+  "external/drm_hwcomposer": {
+    "groups": [
+      "drm_hwcomposer"
+    ],
+    "rev": "700f2e47be6a1f5617322b122ea9f60bfb684504",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1i58f5vjhgzy8d6s8qlx1hqngy14mdq9i16wnwan5idm0rif0li4",
+    "url": "https://android.googlesource.com/platform/external/drm_hwcomposer"
+  },
+  "external/droiddriver": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "d93fd8d2531e0bc6ae093d15b1381e87322da581",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1jqayrgg5054lbkh25746xlrvn7qr06vnj5arlgs4v3wnzmvf4ns",
+    "url": "https://android.googlesource.com/platform/external/droiddriver"
+  },
+  "external/e2fsprogs": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "7ad973f03084c4f114c9484969077a088c7f772d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1mmi3sjwmby0jrzsnpq4i7j9ph4fhffhbi4mgcm2nwg0q4bac56l",
+    "url": "https://android.googlesource.com/platform/external/e2fsprogs"
+  },
+  "external/easymock": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "6574673ee959d94298137453ad19c339c643fd0c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0kd3c3pjw7crksw4rz8s38hjsp6fffqcm6rk9dfla54dgg534n36",
+    "url": "https://android.googlesource.com/platform/external/easymock"
+  },
+  "external/eclipse-basebuilder": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "07d24171d9449f30cb67ed1102708a982ecc7ffc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0rk6x5n26ccb6majzy2bqfbhy8l7zky3mcrwiw6vyifxa6zf20z1",
+    "url": "https://android.googlesource.com/platform/external/eclipse-basebuilder"
+  },
+  "external/eclipse-windowbuilder": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "a36209d2f2a6706c0e83e6b799b45e63751c99b6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1dyij4xms40y9yga9fdnc1bjm3f7bb7hhhs5hhzgwrkaw02wh7q6",
+    "url": "https://android.googlesource.com/platform/external/eclipse-windowbuilder"
+  },
+  "external/eigen": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "93ea8ce78669fad5358811654941a28ef1edf612",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1aw7li7zfasx96k2wc4c12z5lsfiswxbnpq851ja9sn44jvk7pqc",
+    "url": "https://android.googlesource.com/platform/external/eigen"
+  },
+  "external/elfutils": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "f906d5666737e761b5ec1de0616122ca3629f20d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1b1rs0n567184p478cz5mc4n89ra78vrs4gwl8r00xpn6wvjd7ys",
+    "url": "https://android.googlesource.com/platform/external/elfutils"
+  },
+  "external/embunit": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "79aca86710bf6ee4e76bbf53288235093823cd1b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ws0vasfpwpxw6ddvmac2pcib2bsvfkfi4wjncjnf81bvrzx1nbz",
+    "url": "https://android.googlesource.com/platform/external/embunit"
+  },
+  "external/emma": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "64d90edc04a4eeb0b379ca53f36ecee90140a8dc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "17bwhy4q6ns8k93i0dnlhdyaz2kql0gp95nml05ncz8bbniz141g",
+    "url": "https://android.googlesource.com/platform/external/emma"
+  },
+  "external/esd": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "d56e307d396f3d580a5431f1f987c1b441c2e6a6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1qaprri81790vf5i3zfa512ky7cyny931xdbblkzwidiq9kbhdvg",
+    "url": "https://android.googlesource.com/platform/external/esd"
+  },
+  "external/expat": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "41d73e593f6df4728636c40a81b4ac3d4aef8089",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1aqvvcl2avivinznwjridnjw8zdlkmyljk66n7amz3hx827xlyp6",
+    "url": "https://android.googlesource.com/platform/external/expat"
+  },
+  "external/eyes-free": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "779ea717ee26b7423de1b1e34a75f59ba1a1d15c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1y11hh8n3k5cvbir9xgg0vr8vq57ri3x92q4vmkkd9dffp9wsbn4",
+    "url": "https://android.googlesource.com/platform/external/eyes-free"
+  },
+  "external/f2fs-tools": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "caf2e12429ae168c1fd159e91c1e4957408b7d02",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02hx380hbvwg7ycnmp38xg5xgbn68dnxwrwcsfyjx8711rkzvbpw",
+    "url": "https://android.googlesource.com/platform/external/f2fs-tools"
+  },
+  "external/fdlibm": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "55174ac9022f833b89a4a0cefc644efc4010b5d4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "14kgm7iqmchdl7h2ddmil26ff4h5r9gnra9yxkaynbydappxa7ds",
+    "url": "https://android.googlesource.com/platform/external/fdlibm"
+  },
+  "external/fec": {
+    "groups": [],
+    "rev": "a724ba32c1cca8f48fd2cbf8aa9562bfbe64fc40",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "05cfspqygvdvcfbbnaqjpinilfppxp0g74c6py1m38hsl05rki8n",
+    "url": "https://android.googlesource.com/platform/external/fec"
+  },
+  "external/fio": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "805d09c9f208678a92eb3ed6d3360c33feab4058",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1snfn3hy8hjl2haxg4mmqv10k71v22cl8f8ywil18x0cfwixzm55",
+    "url": "https://android.googlesource.com/platform/external/fio"
+  },
+  "external/flac": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "471b8230142b25143120ef2b4b39d1b3554eefd9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "18v30b5lwynnhjgiic8lh612kbb7grdyzk2ygr7vyd9kglp2ndmg",
+    "url": "https://android.googlesource.com/platform/external/flac"
+  },
+  "external/fonttools": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "5b3cfc405e389803f9a7c4687044ce063e950416",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1p4b6jbgg9vwnlps81ln7i5mdsrls1kkls11ljn1xwmiyvghjys6",
+    "url": "https://android.googlesource.com/platform/external/fonttools"
+  },
+  "external/freetype": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a6b6ad9b78448fa9d454d93e16b4f1ed64e85992",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1p3h0n1iwl0d804kk9yvplrbc87q9115w4mjqs7h37cvzi6hcaxb",
+    "url": "https://android.googlesource.com/platform/external/freetype"
+  },
+  "external/fsck_msdos": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "bee63d3686b3f849e825e3dae3fec23af57e014b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0llil0f0j3s12qa2dqxsaw20n1nissighklmy695pi23ayqpg6xd",
+    "url": "https://android.googlesource.com/platform/external/fsck_msdos"
+  },
+  "external/gemmlowp": {
+    "groups": [],
+    "rev": "dd044cbfee2695b5265332d816ad03b900b43531",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0x537wwdgi902kcxdbxsv1y30mf03b4iq9sy18c1qycd6bjnmzcr",
+    "url": "https://android.googlesource.com/platform/external/gemmlowp"
+  },
+  "external/giflib": {
+    "groups": [
+      "pdk",
+      "qcom_msm8x26"
+    ],
+    "rev": "729e9aabc816f2a9bed1e571ee0f37f11f66d53d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1jd1qqlmn30aisdg25z6wvnhhlhfkjy47qax3mk4w3fdkrlz2dh5",
+    "url": "https://android.googlesource.com/platform/external/giflib"
+  },
+  "external/glide": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "e0b37b2cb49e0fafdc14eb631f192418249b51d0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0l0l3953c5clhmw7hn78442hln406bqn741iixwrnpbgmxf7mgv9",
+    "url": "https://android.googlesource.com/platform/external/glide"
+  },
+  "external/gmock": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "85b37fa0e6a46349b4b6920ce12ad5236a46dd95",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "086rd0dkgwb0xkwrmm4i3hfirvxvdsbx3i8ix7fxh0n3avlfdq3m",
+    "url": "https://android.googlesource.com/platform/external/gmock"
+  },
+  "external/google-benchmark": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "b5084a7e5fc64c7fefb3c96969290be71268f815",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0m2rhd14kbymbqx3idppg9yz9cd3iw3r2hp1yx807cpry9wrac6r",
+    "url": "https://android.googlesource.com/platform/external/google-benchmark"
+  },
+  "external/google-breakpad": {
+    "groups": [
+      "dragon"
+    ],
+    "rev": "856e20527809e39da19de2b3a1c714eeafa614ae",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0rxj7gz21ln3rh44vz7ay9shnjdr5221am3lnc93pn2912ibqvfj",
+    "url": "https://android.googlesource.com/platform/external/google-breakpad"
+  },
+  "external/google-fonts/carrois-gothic-sc": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "cb6f6c934e830174ad04e6b0d8df9029843f5dc0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "14sax01r0a707ks62z12z3qfphvb9x1il8ads94h9pd5ganfr5mx",
+    "url": "https://android.googlesource.com/platform/external/google-fonts/carrois-gothic-sc"
+  },
+  "external/google-fonts/coming-soon": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "699d38b8f583f2b9afa9235c08126ec753300a0a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "184zxyd6cnlzvmvzrwrvbgzmyxf6aqb5f607g38swd2lm1r5scs8",
+    "url": "https://android.googlesource.com/platform/external/google-fonts/coming-soon"
+  },
+  "external/google-fonts/cutive-mono": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "fc3dcb1a5312879eb0ce746bedd228a17d5607b4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1z0b8zi1vifd7pfirkavbx4pjjzwk1jf3abx0ag9p5w0j557ydn3",
+    "url": "https://android.googlesource.com/platform/external/google-fonts/cutive-mono"
+  },
+  "external/google-fonts/dancing-script": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "028882fa814ef1afd0d7b2da6e4390402f511dbc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "04jyhzlkn379hywzxcmiwch7ffdnjzmlskw7zkslgmws758pfb9a",
+    "url": "https://android.googlesource.com/platform/external/google-fonts/dancing-script"
+  },
+  "external/google-tv-pairing-protocol": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "08a67f980699e9b3485cc8ac4776f4bcf416c078",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1lsvyl219jzgsd3pchbzzda4830ympmxakkgdv1dgf6css33r2gs",
+    "url": "https://android.googlesource.com/platform/external/google-tv-pairing-protocol"
+  },
+  "external/gptfdisk": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "efe9fcfd852553467c881702275232ed59f8510f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1416wgl5bhw6m817hx7s1093pgw84qx6mg1gx44d8kwbvpwb1k0p",
+    "url": "https://android.googlesource.com/platform/external/gptfdisk"
+  },
+  "external/gtest": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "3e77fba7d80e0acd18170ed17dea191342207440",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0ymiaspcwg7i33a9icrv73wwpb2c4d82a4smjr951892a5jq1pxx",
+    "url": "https://android.googlesource.com/platform/external/gtest"
+  },
+  "external/guava": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "c9003de272d3521258c6c33e6a9b165e6fed7b58",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1bb389iiq8jlwcpff0sfgvqp6yazvbhmsgi57wv79nic4hpabmqh",
+    "url": "https://android.googlesource.com/platform/external/guava"
+  },
+  "external/guice": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a1088aef7fc0272f61a9c77a9a3cf85ec668c5ca",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1bwd9kry8vncpw9dk3ggdnkshsccdbvz4v33mirzadin8bin5wka",
+    "url": "https://android.googlesource.com/platform/external/guice"
+  },
+  "external/hamcrest": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "a4b729030598f7902cfab78a5ddf6e5f9d26b59b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1yklfsfliaaxh3zd7r35psizpbwrzxhb3pxy4w0sg18crazhfly9",
+    "url": "https://android.googlesource.com/platform/external/hamcrest"
+  },
+  "external/harfbuzz_ng": {
+    "groups": [
+      "pdk",
+      "qcom_msm8x26"
+    ],
+    "rev": "486a6a86819c32be557a523254c667ad2b3c3203",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1z53cagirkhqc4xyijj65xz2lj3w86gxp8bvccqfkpl0adxklcvr",
+    "url": "https://android.googlesource.com/platform/external/harfbuzz_ng"
+  },
+  "external/hyphenation-patterns": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "558560322a4be1daa10a2c2ce0922967a6fe8ad3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1c23s5ya2yjvgffssprhqna3s1acrkjk2l2vdbjj88iv1x0cmhai",
+    "url": "https://android.googlesource.com/platform/external/hyphenation-patterns"
+  },
+  "external/icu": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a00a0f7a993c586787a898a7384b973af9d682a6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1kgf7gjm88f2an23aslprdsn0p0yfrm1q2vkpv76bi2v3rz1gl2j",
+    "url": "https://android.googlesource.com/platform/external/icu"
+  },
+  "external/ims": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "442a670e3b608ca3451a080454ecb39f0e05aca7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "184sx8zs2a02bs9wfhckpzqbsmav86b23p6fidvbxaxxgbcmxcwg",
+    "url": "https://android.googlesource.com/platform/external/ims"
+  },
+  "external/iproute2": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a74c3ecb1bb801f17c1045223c9741c812d40ef6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0dv5zil0g63bzy7224g4f9l27rh0aa64cx8kisa9ih3mba8l52c8",
+    "url": "https://android.googlesource.com/platform/external/iproute2"
+  },
+  "external/ipsec-tools": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "78b83f3ff1b68a4215dc1ece354d01a1505bf45c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "095sg73lm85h8w3vjkvvds6s8zrarh0sf8pfhdg3k6akn35yw2vg",
+    "url": "https://android.googlesource.com/platform/external/ipsec-tools"
+  },
+  "external/iptables": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "e58fe30833c32bdc0d00708ab53d0fcdd3de4834",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1rnjxdiw5lxfb285is5flvfnj44gxpbckwwd6c2sjxfq12g21n2r",
+    "url": "https://android.googlesource.com/platform/external/iptables"
+  },
+  "external/iputils": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "0d85defdda500d9279e50ea7a3b148c077595435",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1figydgj4lwzln51848nfwakh563vl2lj795hr5afv5rfx02xqj8",
+    "url": "https://android.googlesource.com/platform/external/iputils"
+  },
+  "external/iw": {
+    "groups": [],
+    "rev": "45d925a6213bd54bfea899b7035fab9796626ec5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "058bzbsx7rk6dgr1g5637ng37azh006bb4nvrxl08p07hvyjs7bd",
+    "url": "https://android.googlesource.com/platform/external/iw"
+  },
+  "external/jacoco": {
+    "groups": [],
+    "rev": "54bc383478d60240b75b1361753f3819db010ac6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0mm154xgkg761hs36156wdrfjwxpy2qb2xwswl7xicipciil9pw9",
+    "url": "https://android.googlesource.com/platform/external/jacoco"
+  },
+  "external/jarjar": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "4037932e1c0e371b7c7ef78c66bf52566b6288cd",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1adj53sl46bxa8zs83ddc7lpn6h90pn13vrr1zh5cv64vx9g2z3p",
+    "url": "https://android.googlesource.com/platform/external/jarjar"
+  },
+  "external/javasqlite": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "35d284bf9c66e88222555ca1b3be972bba99f4bc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02l15y3plvl7pr872wppcqkfk5nwcx674ww8k5qy9swmbbk1winc",
+    "url": "https://android.googlesource.com/platform/external/javasqlite"
+  },
+  "external/javassist": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "b6d7da68a5ff99ffb49b156dbc1452b01936dae8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1xkic1k08jxizvp66kg205bi26i63c0g3k6n7lcab56vlg8g5wgr",
+    "url": "https://android.googlesource.com/platform/external/javassist"
+  },
+  "external/jcommander": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "5635e624745d31e751f5c7d2b36ccafe7c49385e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1fsazr297vmb5xvz45vr4d1fkyhjjbl72k0jqd44gsyz43n25m28",
+    "url": "https://android.googlesource.com/platform/external/jcommander"
+  },
+  "external/jdiff": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "2b16eadde4fed1d5e835c89c920658888628f48c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1d681cgzi87s95nw431wp1dy747xwkxa164chsrxz651kpbfk6hy",
+    "url": "https://android.googlesource.com/platform/external/jdiff"
+  },
+  "external/jemalloc": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "54e5840dc2c3d1c1cc1405c6f0ef63514f358c9f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13md50ycld3r726x82jx5472pxx0jrr0lq7zacin3rx7s099nkax",
+    "url": "https://android.googlesource.com/platform/external/jemalloc"
+  },
+  "external/jetty": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "04cd6f2aeab94e91ce30bf107026038e16b5ded9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13jpvvvlz44mms5wqfb1kj5lgj8vhxbx9lam2knkx59swgh630xa",
+    "url": "https://android.googlesource.com/platform/external/jetty"
+  },
+  "external/jmdns": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "44187be38e7c279c5455338ce24e9f0094ff5a7a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0283gb8rprfarhnni9q2xbf6ii1zli0qf7fyzp26346nx2frps0r",
+    "url": "https://android.googlesource.com/platform/external/jmdns"
+  },
+  "external/jmonkeyengine": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a7138a063bf34c2f410dc60e3dc760813147ec5b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "03i2py9dzcpk7aa8g44sswwgxb25crq3w1fzhsh3gp5mc83gqwbp",
+    "url": "https://android.googlesource.com/platform/external/jmonkeyengine"
+  },
+  "external/jsilver": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "439551f7819b52672dec27809a5c1969ed079c9c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02ipxy12gpy11fz63nvlgm3fxklwf9bi85wn3v0qrw707vj2r3pm",
+    "url": "https://android.googlesource.com/platform/external/jsilver"
+  },
+  "external/jsmn": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "197266f19861391ba3699b1434271a2b03cdeaad",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0rpbz0wm3xn0b6vvrsmi6avglci474g285iq8rw6fdjz1vxwbxsz",
+    "url": "https://android.googlesource.com/platform/external/jsmn"
+  },
+  "external/jsoncpp": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "9007b3c10c65d4b19d2bae961bc21ce8229cff85",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0vb1517558pb4zjg9dml9x7icr9f4jw69w4ykhd6rfs6xzcpq4q4",
+    "url": "https://android.googlesource.com/platform/external/jsoncpp"
+  },
+  "external/jsr305": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "472f41ff1ff20a82f7ff992961c295f5e88bc089",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0pmf29danl47zcmrvxwyrldb0p4aphwfr452xpm4r7c2qylw0zxy",
+    "url": "https://android.googlesource.com/platform/external/jsr305"
+  },
+  "external/jsr330": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "e1ec7d351d7b21eec89de65ceabb20731e01d07b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0ja2z762s46xf8kf5id6vyvbqfnk5fmbnr0g9inw90s5rpz18p0y",
+    "url": "https://android.googlesource.com/platform/external/jsr330"
+  },
+  "external/junit": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "4e665672c1e7c7002d7f00c9b9bc16859622a019",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "097bkhba6r95dbfyr0rplgrncsl6wbc0xy7bxb048xzy8n3am1np",
+    "url": "https://android.googlesource.com/platform/external/junit"
+  },
+  "external/kernel-headers": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "e257c2ba61ce1e7b7ed320a05ac8022acf39d114",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0r118kdiyca3mq12gcv5y3spfnynppl0qcdhriycyv3rnqh8c788",
+    "url": "https://android.googlesource.com/platform/external/kernel-headers"
+  },
+  "external/ksoap2": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "f5928c21ba48d8c00550c8a653f7d290db0e9fd8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "17j5fiqz5v309c1cli2n4wiwwc0qkwjqwf8sqrixx3xsms32d7q7",
+    "url": "https://android.googlesource.com/platform/external/ksoap2"
+  },
+  "external/libavc": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a09a736a4c61c4f613837a635997d97b877afac5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1m8n2n8gkxdqkpnyl9iq32r6p08wjchca7vzrrzl1rgy13y19gpw",
+    "url": "https://android.googlesource.com/platform/external/libavc"
+  },
+  "external/libbrillo": {
+    "groups": [],
+    "rev": "aa8cf6c9d51cb8041912dddeb181b4ec9940f5d6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1rv06scvkkydvwy166l8in0gi1vry4bplj01g8bsy840h066s3id",
+    "url": "https://android.googlesource.com/platform/external/libbrillo"
+  },
+  "external/libcap": {
+    "groups": [],
+    "rev": "c527e6b5c6099fe5eaf45ce153ef193d5a4be276",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "19lbhkd7cm62vzy5pfdljclcc2ifglw6wzk423sjznkwvmx7s526",
+    "url": "https://android.googlesource.com/platform/external/libcap"
+  },
+  "external/libcap-ng": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "711daf9ab214510519e628ee27d67bf88bf39425",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1zg3f7gb6wa4fkmjgg70xkg9z950b4kcdv9gqvvcwm50dabxpaa9",
+    "url": "https://android.googlesource.com/platform/external/libcap-ng"
+  },
+  "external/libchrome": {
+    "groups": [],
+    "rev": "43e0b5ca2ef15721dd8d88d32209767600f21100",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1h4jax54bvr83g115wc5iqz17hgwif56iilis10cl1pfvdvaq3kb",
+    "url": "https://android.googlesource.com/platform/external/libchrome"
+  },
+  "external/libcxx": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "718ff383cae3f21093ee630d04e5ee3416ed5a2b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0dclxi9f10vw5cfh3vlb0kbn5gr1ds1b86jrd47iw2h8vyqpazf0",
+    "url": "https://android.googlesource.com/platform/external/libcxx"
+  },
+  "external/libcxxabi": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "6ade7c3193c241cab5af066647b7cae57546dfef",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ir0zq0nwgskrz54nafdhgvkjr3bj1cxp44gaw5v5mfr1di04054",
+    "url": "https://android.googlesource.com/platform/external/libcxxabi"
+  },
+  "external/libdaemon": {
+    "groups": [],
+    "rev": "e66ff93ff8a4d32204b24ac0bff662bbc0e76b14",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "00sm99b8qj594k481mf1qmpkcv1cg4hxq1q5jqhq1krf7w62mvvv",
+    "url": "https://android.googlesource.com/platform/external/libdaemon"
+  },
+  "external/libdivsufsort": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "ea6541e4c52665748716e3e364e9fc4c2164dda6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1vzms4pl92jpqipzy39l7ra9y844fnickk0kiqisk5ccfci5x2i9",
+    "url": "https://android.googlesource.com/platform/external/libdivsufsort"
+  },
+  "external/libdrm": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a922769f7eb630abb7ef7477a14079af15a93706",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1viq02pn1fh78njjbns6nlmm82v0v6j19sk9ng5dsnszbgn7kwi9",
+    "url": "https://android.googlesource.com/platform/external/libdrm"
+  },
+  "external/libedit": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "e3f5c3ca02a066505d1839ce64e2ff974d88c3d1",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1yzl5k9j38acxk3800bgrqldimhca851alnqlmpn0w3va37n4fdw",
+    "url": "https://android.googlesource.com/platform/external/libedit"
+  },
+  "external/libevent": {
+    "groups": [],
+    "rev": "0247fe188d9e4bd91c922684005013113ef377f9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qw2yh8rx08kgzkpk2ig6yh3czp8f7aiizi1s3qqcz7yp5zvskvi",
+    "url": "https://android.googlesource.com/platform/external/libevent"
+  },
+  "external/libexif": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "2896c5cce07b4a69bd07bd08afb2ed00eea1bc3d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0smj6rfa6kyqdq0mnbqqz6jg8bwip02jsls5s51v19wdwkp2h4rq",
+    "url": "https://android.googlesource.com/platform/external/libexif"
+  },
+  "external/libgsm": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "f69ff2689e8ae034fd26470ed9691f52ffc7d286",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "15h4x3vabg0bd4a2aq15xnqy6pr46c13kmd34cp6z31ga4qi06gl",
+    "url": "https://android.googlesource.com/platform/external/libgsm"
+  },
+  "external/libhevc": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "f937a61f0296e4c7bc921ac1cc2a4a83532297ff",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1cm3d0yc3h6b2vz4admhr1wizx6lskss5w9hm6s4bw66xa8czg97",
+    "url": "https://android.googlesource.com/platform/external/libhevc"
+  },
+  "external/libjpeg-turbo": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "343a1683406a70bc8d4a1767807a5c3f725a2280",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1snllj5xbm4l8n3dq3qablap52ji9k0gak0cg9a72bwzgklawnr2",
+    "url": "https://android.googlesource.com/platform/external/libjpeg-turbo"
+  },
+  "external/liblzf": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "8de42f68bd9b52f1f8041f8b81459e4c16a56665",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0n0jfwyk8g3f1rmfvc2754v4l00wvzaip8py3i6bhyg2yv7ccj05",
+    "url": "https://android.googlesource.com/platform/external/liblzf"
+  },
+  "external/libmicrohttpd": {
+    "groups": [],
+    "rev": "ff984aa0813356dc045e3acd77004a913008c3dd",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "03wbhgyzkzb7wrkc2l9qnmbciisc125z0m3s33qv43z6mncmi5mk",
+    "url": "https://android.googlesource.com/platform/external/libmicrohttpd"
+  },
+  "external/libmpeg2": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "eae3a0c619a922deeaab5be1668a4d5c40e4750e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1j1zkc1dp7qjns10d3hsxxywcbkkd5cyg4wlq34g6yqf75rz6pck",
+    "url": "https://android.googlesource.com/platform/external/libmpeg2"
+  },
+  "external/libmtp": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "0931423b89fff58c9cc349de0bcd428c6dc7addc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0agwpqg1wcx95jbxrahkay90g6yl91qc1yd9lqc1jkpm2bpsh4ff",
+    "url": "https://android.googlesource.com/platform/external/libmtp"
+  },
+  "external/libnfc-nci": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "4c64b924544ab0e46b181a545857cade45837640",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0gyqcl6ali3vw97zzjgjjkl6yw7bg55jrrgvg6gjwgkxyrcsbzbv",
+    "url": "https://android.googlesource.com/platform/external/libnfc-nci"
+  },
+  "external/libnfc-nxp": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "72578cabc9c2f925bc47e8df5e9213dc0ba0087e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ga8kbm620zkipimkvwh5inf5h72wfrhxzjq3inbi8vjirrn5nkz",
+    "url": "https://android.googlesource.com/platform/external/libnfc-nxp"
+  },
+  "external/libnl": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "477020b0174d541a3411778924478996d14a1a16",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0ifzjjxfiq3rkf5f5b670pdlb0ilwdj8rnchc4hyq59h7065wmvg",
+    "url": "https://android.googlesource.com/platform/external/libnl"
+  },
+  "external/libogg": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "0c0f5ef4ef810ea8afa5864a27339273b3ddad51",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0jvafwb6b5kfha7kzjqfyvw7gyi2m06393d0wdcmfakg3587yi27",
+    "url": "https://android.googlesource.com/platform/external/libogg"
+  },
+  "external/libopus": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "27a129e0796a6b85de0dcf324a1160adcea84771",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0dq90yy57h8lbldqz4905j2lmxk7pkszs1zzll3qq87myfcy706r",
+    "url": "https://android.googlesource.com/platform/external/libopus"
+  },
+  "external/libpcap": {
+    "groups": [
+      "pdk",
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "0aec3528b191a78150d0096cb6db52470db7a853",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "19dnfydlwsyqv8zc5216j7wsk02mgmb0akvy0fafwqaqfc1w1dar",
+    "url": "https://android.googlesource.com/platform/external/libpcap"
+  },
+  "external/libphonenumber": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "7b9880f4e84b2f0b1d5e9e32d2c176127aaa4c84",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "10i6vbpl43mxjrkczb18b458bka4arg39i7a2nc5jq2x1vlamcx4",
+    "url": "https://android.googlesource.com/platform/external/libphonenumber"
+  },
+  "external/libpng": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "d9095b385bdff83710df37239cd91e24e279774b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0biaricis2w7x7al1wfzybssnn179819zfmmqcwak2xaym8y0cra",
+    "url": "https://android.googlesource.com/platform/external/libpng"
+  },
+  "external/libselinux": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "d5510de4340291241ff5940df9f93d3a2e15c5df",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13m2q32gzdcs5d0zj1nwasjy1j8vsxsgbjg7m5sa9lfcjaj7nkm7",
+    "url": "https://android.googlesource.com/platform/external/libselinux"
+  },
+  "external/libunwind": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "562552d07875c465b612d360c454ea1b95760d38",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0x22zxn4fax2xkv30ch6asc2w5lf5dsvnnmxkxm63bl0ra4k1m3v",
+    "url": "https://android.googlesource.com/platform/external/libunwind"
+  },
+  "external/libunwind_llvm": {
+    "groups": [],
+    "rev": "72bc8107f4978aa40b4ab403d237dde0f3f706fa",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0gjlnrpbcnfi49md2jkkk8ak7azmqn23zgzj9bmi7bc6gnxy2rnv",
+    "url": "https://android.googlesource.com/platform/external/libunwind_llvm"
+  },
+  "external/libusb": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "58082a9835df215c199edc665788c60cbe29aa3b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0kl25b3sw99g37s1a1s7k69mpcjhq8yc53khwa4lrf5zdyxqy74l",
+    "url": "https://android.googlesource.com/platform/external/libusb"
+  },
+  "external/libusb-compat": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "3c261394cd4f220ccc2f427ffb8df9c399159abc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "07sga4gp82g82xx5gh18iq9s9y7ck5gr31xvnnvybfrgs3zm2nnk",
+    "url": "https://android.googlesource.com/platform/external/libusb-compat"
+  },
+  "external/libutf": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "b70341979cb4bbf3ba2bc4895045edfdd259c165",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "18mjd05499izs8ghp9sni4k23fqc2likjqavzdm4qxc3wh1m2zc6",
+    "url": "https://android.googlesource.com/platform/external/libutf"
+  },
+  "external/libvncserver": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "a5cb328e541f8e173fdc3e4d36a3b56bdea5080f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "12hyxaqg184nkqvzas3dxq979hb2y8naijvv9xssjikxcrkld0s0",
+    "url": "https://android.googlesource.com/platform/external/libvncserver"
+  },
+  "external/libvpx": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "f746be8dd4bd396218f9dbc80e679af9430cf4dc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0jkdhjlrxsrmwc81fwnwypsjwr535zwjjy53s4mb8vdkarz7lyql",
+    "url": "https://android.googlesource.com/platform/external/libvpx"
+  },
+  "external/libvterm": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "38ecbb828d8909af26ca3c0695e80842cdac9210",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "11va54qinbqgyaw9k1ql55a1nmhn1l346mmncxpm5isyzbl1ly3v",
+    "url": "https://android.googlesource.com/platform/external/libvterm"
+  },
+  "external/libweave": {
+    "groups": [],
+    "rev": "04736e5774d2214043eec32e9b9abe525f2ccf9b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0vja8jph9ymagrk0875aclzgxfcclll9y4snhg1kb3mrsp0mccvg",
+    "url": "https://android.googlesource.com/platform/external/libweave"
+  },
+  "external/libxml2": {
+    "groups": [
+      "libxml2",
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "5aef18256366c4685bd0b179c900ecf29fa1dabe",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0x91fblrv5gz22hcbawd56wlp8vmcz99qqixqbi5bkz07jgjjffg",
+    "url": "https://android.googlesource.com/platform/external/libxml2"
+  },
+  "external/libyuv": {
+    "groups": [
+      "libyuv",
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "70395b3048e57b84841c7bce082ee6e02d80ed9f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "06xmz6frvba9nhfv4z2mcyj96i17dmz1f7rr1p669ja9ihrlw9km",
+    "url": "https://android.googlesource.com/platform/external/libyuv"
+  },
+  "external/littlemock": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "c1039e4554f910ba9533509983203396b2aa791c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "08ndrm4xgwzhp1h2vhka46p9zsczgass2as3pw1yjzwif9n1dyza",
+    "url": "https://android.googlesource.com/platform/external/littlemock"
+  },
+  "external/lld": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "6b7471228da69fa49fceefb48a977d416660d74b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/platform/external/lld"
+  },
+  "external/lldb": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "620d3b7dd7709a7589aed03fa2d524b69af976b4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1lbj7h9d8mlwdw43lpx8ywk13bqsvic865kdfmdf848a8a29dsp1",
+    "url": "https://android.googlesource.com/platform/external/lldb"
+  },
+  "external/llvm": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "70cf2bd93c1c6081609868d8ca6bd41a0e30a94b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1f84c76djiim5p3fih8f28s9gffb5iakm6rm9skashxcl7nz2dac",
+    "url": "https://android.googlesource.com/platform/external/llvm"
+  },
+  "external/ltrace": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "011b7928d401a9b7b602156baefd3d1f5ec5777d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1jxz0jj36ar81fyp9l20swzgws5k4hnf36b4hn06224025sfcnkw",
+    "url": "https://android.googlesource.com/platform/external/ltrace"
+  },
+  "external/lz4": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "16f12a13e74cebe4defb4c9461678bb259c69acf",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1q6v3aj2m29bd1wxam48i2kmf07hgimz830px47knxss5cl4b22i",
+    "url": "https://android.googlesource.com/platform/external/lz4"
+  },
+  "external/lzma": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "ea59f0c6b43e932bc589aa5a9be02a9d6f3f06df",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0ryxf5g7r8wg7p8x9j4rsmma15sx41pwvhl47pap102qcnwn4rix",
+    "url": "https://android.googlesource.com/platform/external/lzma"
+  },
+  "external/marisa-trie": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "3fafb42033ea250e88e4d0731791a8994c172982",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1k0ldzd24fbbmxkma2grjngdpd63k0qpvvnj1jqqx3h0yqxyb81m",
+    "url": "https://android.googlesource.com/platform/external/marisa-trie"
+  },
+  "external/markdown": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "9a702a1e098059420cf71af404fbd8b82b8b267f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qrm608pjnl6h7s88lm1zhr518dxahc3nc2lpy6py0j8jr3pnxgk",
+    "url": "https://android.googlesource.com/platform/external/markdown"
+  },
+  "external/mdnsresponder": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "33f65c809ac2f2817e1dc9e4733f99774c8a3eb6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1q495v4qy9idx2sjnm8ax4vzvw857w1niwab3dmg37v7njjf0i1q",
+    "url": "https://android.googlesource.com/platform/external/mdnsresponder"
+  },
+  "external/mesa3d": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "b3f5304d14319c1761268e84b5abea33fc888cb1",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "14kf79gns64yzlifk6c1zw161cky2xfy9jyrgp1k4fdq4w0vrzak",
+    "url": "https://android.googlesource.com/platform/external/mesa3d"
+  },
+  "external/messageformat": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "c3dd4fac31efb074a3ab4f358b70a5615f6d695b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0jvy2rrcx83p8ph71q7mw1qziin0sngf90kyx32fawgx8hb67wdh",
+    "url": "https://android.googlesource.com/platform/external/messageformat"
+  },
+  "external/minijail": {
+    "groups": [],
+    "rev": "a88b2906626a8fb7af3a2e6c0b7be3a5e167d57e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1a05kafydianm72g87jwyy7226zbb28dyn5yccfdz6hxy847q0sv",
+    "url": "https://android.googlesource.com/platform/external/minijail"
+  },
+  "external/mksh": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "c4d569cb0bb4667d83ad70652346875ac54bb59d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1n7pk63bnk7704fr0sgkvd9kldy58qx2nhjhcxzw6453fyksj2mc",
+    "url": "https://android.googlesource.com/platform/external/mksh"
+  },
+  "external/mmc-utils": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "53342cd2e8309678680318e6f1132b640a540015",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1j6xcslcck8fy8gmzqljdxw9hf568zmffhvq326f4f17q3hwbdrm",
+    "url": "https://android.googlesource.com/platform/external/mmc-utils"
+  },
+  "external/mockftpserver": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "e68e626a3c1aac873d63f3f2ee843a749f462e65",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1b3yv12k827xbw8974isghmh7vymhpkzqdy24r94zfcg40114m3d",
+    "url": "https://android.googlesource.com/platform/external/mockftpserver"
+  },
+  "external/mockito": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "f4594d1f0625ec50038dde44e608b9fdafbea4a9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "07z0b7scr0z2kxcqfx4ivw9xpxf3iar3x7r5rkvp0rwh8p8f76m7",
+    "url": "https://android.googlesource.com/platform/external/mockito"
+  },
+  "external/mockwebserver": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "6f3f1523529b89ef0ac8f7c50cd102a799bf37e3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0a4pz3hw1yzlr1x56yl67gvswalq42bhv5w8pwz3775kh5phjp3f",
+    "url": "https://android.googlesource.com/platform/external/mockwebserver"
+  },
+  "external/modp_b64": {
+    "groups": [],
+    "rev": "a161dd85ae4e97821bda0a6f980b1cef69dec985",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "10chj23cwffb94jghq577889lhz6qnciqqmfnfgq1b1s2vcchfq5",
+    "url": "https://android.googlesource.com/platform/external/modp_b64"
+  },
+  "external/mp4parser": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "fea519dbb4b6941d4736a7011a61e70057ab3812",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0g04g0szwbdxznpqy5fmprq01s1inihba7068lib6wnscizfn0mi",
+    "url": "https://android.googlesource.com/platform/external/mp4parser"
+  },
+  "external/mtpd": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "bd1d6ad5999d965b7324b7e13b29d928681e5007",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1kfbdxm1bq20n50qsjqakin9ga1xpzp2xaz0n4g9868j7gw8g3dk",
+    "url": "https://android.googlesource.com/platform/external/mtpd"
+  },
+  "external/nanohttpd": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "dda8de5ed67792396fc5ba515f197165e8d98c4d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "15k8jq7679b3s0bsmcsfirnax90bvz4x7k3632k3dwkhhjcyam9k",
+    "url": "https://android.googlesource.com/platform/external/nanohttpd"
+  },
+  "external/nanopb-c": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "6fbfdcfc749453e6b32818a55ae3667348eac028",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0p7w9f6j37skb337ap7kgzpmcspnmqaf22apbvfqcjdf53qacljv",
+    "url": "https://android.googlesource.com/platform/external/nanopb-c"
+  },
+  "external/naver-fonts": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "3300b8a3f46621a37f8d8e1de624f73e1fb29cbc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qmw7hww52c8y1xb4sjn8fi1sish6sifajmdxrscf0dsa56dyb4z",
+    "url": "https://android.googlesource.com/platform/external/naver-fonts"
+  },
+  "external/netcat": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "fb360efae82b43606b7d29b43c28d7962584fec2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0c5i231zfldx4wcbi2xibs35kqdmvk1vpzhlbjdv45msai60k6kv",
+    "url": "https://android.googlesource.com/platform/external/netcat"
+  },
+  "external/netperf": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "f4e283c1ef22387cde9147aa9704b5d693966e04",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0r7g2khzsyr2y1732amw59z98djjam5iwqv8pjgx970rwgn78rnn",
+    "url": "https://android.googlesource.com/platform/external/netperf"
+  },
+  "external/neven": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "a3f440ccc05c89f31639a45e3bdfdf2b94d6569b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13msnkfm88jzhizjxjrfnblimqd1g8rkk7kh8r9lmln3rb9qrdpj",
+    "url": "https://android.googlesource.com/platform/external/neven"
+  },
+  "external/nfacct": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "2425068ca4a36ad846a1546cd2f81f4599053379",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ik1n8s5p53c2w18xs23vd9inrpqzxj2y91v16pn0xahs25ff3lf",
+    "url": "https://android.googlesource.com/platform/external/nfacct"
+  },
+  "external/nist-pkits": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "cc5d2a2ead480216006ee753350e5baabc3153c1",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0aa7pfjw4vbrpk08w756qcblx6wrj2ng77qyg3jr559b8xgygv2p",
+    "url": "https://android.googlesource.com/platform/external/nist-pkits"
+  },
+  "external/nist-sip": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "ff6efc0b247779a4959a694583508f0044f110b6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "135nfv06vs0jn7iznxgc8d5xlffag7p9184gc7fjw9zglganj753",
+    "url": "https://android.googlesource.com/platform/external/nist-sip"
+  },
+  "external/noto-fonts": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "5f95ceade27e675ed2b08da19b7fd12c8ff56e92",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1pcs8z9jal26qaz6ba5mz4xkrnqdba87jqmwibkf0qq874s86p6c",
+    "url": "https://android.googlesource.com/platform/external/noto-fonts"
+  },
+  "external/oauth": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "6d5d7ef67189b145ce776e4ee49cb1d1f8917e1f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ax3w61cahq7igpz4v9a18xqfmq5zf3m4719f03hcf251z4cpdpb",
+    "url": "https://android.googlesource.com/platform/external/oauth"
+  },
+  "external/objenesis": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "49f060a51b6e29ca430b88b6cda07f2594085815",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1jbcp0iv44g9b7l8knalzp9rvrx19qxwkqw7y5bxsnfksll467xd",
+    "url": "https://android.googlesource.com/platform/external/objenesis"
+  },
+  "external/okhttp": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "13ef5e1227d117254e36e391ad2b5f11bdda9e76",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "08yk06x4ksqjh06qh78az96gpzlgnfn8zp39nd8f1b0kjqnnipk4",
+    "url": "https://android.googlesource.com/platform/external/okhttp"
+  },
+  "external/openfst": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "4f725788dc932f75d240d4e645b229030bbade70",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1vph9j5da867kjnwd9vfzqdmrb8kw8hf3dd2lf28lvgisn9m5gi1",
+    "url": "https://android.googlesource.com/platform/external/openfst"
+  },
+  "external/openssh": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "46d5475ca7e4bea45407e66761638ddaddad745d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1bsi3k32gvyn9qb23v99yw3w38h57ygkp237g5irwzg1vym2qr1h",
+    "url": "https://android.googlesource.com/platform/external/openssh"
+  },
+  "external/owasp/sanitizer": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "27e5e47dfa9e020ab817b43b92fad6972211ef8d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0hpxwrss6c8l0akbw0q915qskdfdbdi6p9malcq4jgm7wdmyyf0p",
+    "url": "https://android.googlesource.com/platform/external/owasp/sanitizer"
+  },
+  "external/parameter-framework": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "a82f1015a347d102360ba3fdb8ef6c64cd39d1e2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0h5mw44llkc0zg8hwq2f1rnixxi76pg8f1x6z2z3qsrhdzlf6h5g",
+    "url": "https://android.googlesource.com/platform/external/parameter-framework"
+  },
+  "external/pcre": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "d161d490faec8150a11de85b2de52baa6b09996b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0cc3li7li86l3946kv1wf8i2qqsnnxpc60r167wacwkxlxq4z0zf",
+    "url": "https://android.googlesource.com/platform/external/pcre"
+  },
+  "external/pdfium": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "83fc7b72a0d7c0ffb9bb2aa29ddeb61495dc27db",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0fmry4kcw88dri140cvb1qd07y419hds5gjz6s187qna8bf2zvab",
+    "url": "https://android.googlesource.com/platform/external/pdfium"
+  },
+  "external/piex": {
+    "groups": [],
+    "rev": "5086dd51d5f89d10e3428ceb095e15d628ada12b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0whw0gmnz0iqvypb3nnlrh68q9gj79kzap7kf3276wf69kadaf26",
+    "url": "https://android.googlesource.com/platform/external/piex"
+  },
+  "external/ppp": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "75317ab145fbfc0d1043eed1988d622ce74df2a3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "01famriiidlzxvcv2psqrkfvm4bnbjczpkkkih9w0rx8ijir9afp",
+    "url": "https://android.googlesource.com/platform/external/ppp"
+  },
+  "external/proguard": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "9f73b220f53cf420e0e43fe1938116ff3ca5021c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0x8gshgyhgjgchyfabhbhljq5q06jd5d04rzxwyii8nlgf8sv600",
+    "url": "https://android.googlesource.com/platform/external/proguard"
+  },
+  "external/protobuf": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "aebb60ff23f857e33c49c97e8967b2beba2e9a78",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "08wdwcsbqhknbw0pjrzwh1vhgwhfkxr85y6jnf0dxy80l585q171",
+    "url": "https://android.googlesource.com/platform/external/protobuf"
+  },
+  "external/regex-re2": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "0669a827efe4aaeb3a9fcece2c21540a50077003",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0nym5cvxgjpirzrk5g94i58cfyadrn525ikhv2ivlx88nsv3qq8p",
+    "url": "https://android.googlesource.com/platform/external/regex-re2"
+  },
+  "external/replicaisland": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "b2765540b4bb82d2663a57435b19f6faa04d77a1",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1b1mcfc8pgsps4pvm1vypssnga3s5l0cap2n8lckjjkj8d5zvksk",
+    "url": "https://android.googlesource.com/platform/external/replicaisland"
+  },
+  "external/rmi4utils": {
+    "groups": [],
+    "rev": "54fc851efb748adbe8b4c4c4019377ef99e2040c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "08yck9wrd1krigqdipqn1n0mcwk08slydl7mlpc5a7y3b8x9s15q",
+    "url": "https://android.googlesource.com/platform/external/rmi4utils"
+  },
+  "external/robolectric": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "61f91155f65fe8919e44807c1c63cbf678323d6a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02f5ycy4p035hncpzc8xbnkwn58lwkwqff2ba8xdadhhb8lss8zz",
+    "url": "https://android.googlesource.com/platform/external/robolectric"
+  },
+  "external/roboto-fonts": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "4e868c1a83c779bb086e87bc7046db8d1b9af94a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0s0wyn4c6i44m6fwyvirxgxvj341db92z6mn9w8gj7zknqznnsnv",
+    "url": "https://android.googlesource.com/platform/external/roboto-fonts"
+  },
+  "external/rootdev": {
+    "groups": [],
+    "rev": "eacbeb2d5ff6a76cacbc7bfadbe35635dd34d6bb",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "04dm7xknl44xvihlbp60yzinljkqsyqjvbryyi4yy62w7i37jj3h",
+    "url": "https://android.googlesource.com/platform/external/rootdev"
+  },
+  "external/safe-iop": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "8346fe424f36d0c1e2c41e7f021c9c6111a00b27",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1nyyrs463advjhlq8xx1lm37m4g5afv7gy0csxrj7biwwl0v13qw",
+    "url": "https://android.googlesource.com/platform/external/safe-iop"
+  },
+  "external/scrypt": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "d8f6715f8189dad0c83e423890997a68af958088",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "148yrlv7xy0m62qzry9plq52nnwjsw8dx3zijshli6avcc0q3shr",
+    "url": "https://android.googlesource.com/platform/external/scrypt"
+  },
+  "external/selinux": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "05442550710b15afdbe539d58ddab5aa0bfdaab2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "107vavzq99hpxaq1dbg75ndc3bhp16236s87r5aayxhhq8w1bad9",
+    "url": "https://android.googlesource.com/platform/external/selinux"
+  },
+  "external/sfntly": {
+    "groups": [
+      "pdk",
+      "qcom_msm8x26"
+    ],
+    "rev": "2934a95176a1b70886e35795ecee2b1ae6f8523f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ddxm2swi841rki655s9jjnyl4paqvq166nga0937krc9avpyxiq",
+    "url": "https://android.googlesource.com/platform/external/sfntly"
+  },
+  "external/shflags": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "01c567046e99f77fb6f68ce54e531c3d86ee655f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "000xnyz0ywwbgdngwf55b985pjccn4pz5iybyzz8k8rph2ba8hy0",
+    "url": "https://android.googlesource.com/platform/external/shflags"
+  },
+  "external/skia": {
+    "groups": [
+      "pdk",
+      "qcom_msm8x26"
+    ],
+    "rev": "7a63a5a2a50f7c47297af94e761559a17cfbd6f4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1i4w0q1y2fzsb9wjba2dzini8djs2chqs8008adnjkdf995xphaf",
+    "url": "https://android.googlesource.com/platform/external/skia"
+  },
+  "external/sl4a": {
+    "groups": [],
+    "rev": "b37db3983beddba153b981aa7d02ccd6a085fa2d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0cqkr8r11pnr8qv6cwv7d9wdjlrz2axk13m8s7f1653r4wav0qd4",
+    "url": "https://android.googlesource.com/platform/external/sl4a"
+  },
+  "external/slf4j": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "20eab46d609eac48f47a1655425bb8981cb8681b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0kyjhbc5nns881n0gwjnlx8xlcjb9xyg2sn6xph4362l9yfcrwa5",
+    "url": "https://android.googlesource.com/platform/external/slf4j"
+  },
+  "external/smali": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "c54e235a93a3a270bd6a49bee851fe09d76f1142",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "000y69hhasagmslpsgva3i4yijb4z2hyp31nzk7xqs4lg5i7agwd",
+    "url": "https://android.googlesource.com/platform/external/smali"
+  },
+  "external/snakeyaml": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "ddabce3b1e90a852cdfbcbe5b9564752035d294f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qiawzakig9f7n18cqj05cc59p2bdmz138k8c1wlc4icd0kx3fjq",
+    "url": "https://android.googlesource.com/platform/external/snakeyaml"
+  },
+  "external/sonic": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "817f876e7d55923e308e1a098e1d6e6ce0e8fe4e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "15zfvrg83qvybdgd4dpm6v60l2fqmk7xfqv0rd58fadrndri9w81",
+    "url": "https://android.googlesource.com/platform/external/sonic"
+  },
+  "external/sonivox": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "5c46c17c3ca4f173b60c200b77b4a07319d5cbc4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "154zk84zcqy86xs8w2vigc3s176lxhb4arksbsjslfazhin9xy4v",
+    "url": "https://android.googlesource.com/platform/external/sonivox"
+  },
+  "external/speex": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "d20a0c3c9b99c76b7b4bfc0f10e0589fbe0185b7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1lmavzflhrhi2w7m1i4rb0v4qksdlq0imvy48n8b7wih8yzg0c5z",
+    "url": "https://android.googlesource.com/platform/external/speex"
+  },
+  "external/sqlite": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "137de7e680498941d1ada37aed4b70c5b2baf2e4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "04wb1cj3v6alkkmnk43wax3a1zs83chbpa58gyw68wzr66l8wk3b",
+    "url": "https://android.googlesource.com/platform/external/sqlite"
+  },
+  "external/squashfs-tools": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "7044af9395cfad265b08d49a94c54e84bfb6e14e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "07f9bhsv1xcn390cqcf67cq4wm59a0hrqb1jdzapj16cnc08rpkm",
+    "url": "https://android.googlesource.com/platform/external/squashfs-tools"
+  },
+  "external/srtp": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "62a37d047689c457c683c5e2e17cd2ece533bcbf",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1nbrfsyza9505n0nar2bz6m43xycfcrrkm7fk4zgmbfi6l54ig1m",
+    "url": "https://android.googlesource.com/platform/external/srtp"
+  },
+  "external/strace": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "6f880df64daf519bf0c065a876cfb12dddcaf92f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "113vykgn5jzcv53qnlm4jnwkv6n866xr4a0nkly8l31sc7vrdp78",
+    "url": "https://android.googlesource.com/platform/external/strace"
+  },
+  "external/svox": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "5bd115999f8a706aa87db45046cc2b30b0095281",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1mgd1cyjaxx3qw6xfp76yva4rvjnn8y1adx6sl3999czylq3wcsd",
+    "url": "https://android.googlesource.com/platform/external/svox"
+  },
+  "external/tagsoup": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "4307585a74acf5048e82e1acfa1505bb18e077a3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1yam7bg2dbhb0js2d6lx6xvb5gwfqsq5a3yqv17a8kdff5nmz1nv",
+    "url": "https://android.googlesource.com/platform/external/tagsoup"
+  },
+  "external/tcpdump": {
+    "groups": [
+      "pdk",
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "5b8e69121bed176df7829dae4134dc02ca210157",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1dfcrvp9zpch0dlq76mmc824qq9a2j66ylnl4k8ilmgk500vb9f2",
+    "url": "https://android.googlesource.com/platform/external/tcpdump"
+  },
+  "external/testng": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "74f95bfca5075514e00298888228755179a833f0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "00zma03v9g953675v4qbnrxyf68k3fqjyqag17812mdd87cibch6",
+    "url": "https://android.googlesource.com/platform/external/testng"
+  },
+  "external/timezonepicker-support": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "d6abf49e3260f6c9b2c82613131f0ac73c1f26e1",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1v0mashdkfx71skpid8w9d0cnlrnz850yb3n00zcwiwizrxhn40m",
+    "url": "https://android.googlesource.com/platform/external/timezonepicker-support"
+  },
+  "external/tinyalsa": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a55e349400ff0b6cb8ab147c5efcd3f3222cb2d8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0r7cx0cs7pzsp7k2maj1fqfigf48janqsvy4vgq0748l2lhkabsx",
+    "url": "https://android.googlesource.com/platform/external/tinyalsa"
+  },
+  "external/tinycompress": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "c38f2e50271e0c3f9633e770ecbf030ec2901d6a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1shw7xfgfgcfxr7awzygcymmqscxlvs7yhss9nw5ng8k6bb33blh",
+    "url": "https://android.googlesource.com/platform/external/tinycompress"
+  },
+  "external/tinyxml": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "7feecc86d64a5a5ff3f5e1fad4722b326781a4e8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1g3f599wsxm5bh29691sjj78yk92l9fs9nda8y7m2jmwsply6ag1",
+    "url": "https://android.googlesource.com/platform/external/tinyxml"
+  },
+  "external/tinyxml2": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "b60dc6fd1115ea87dfdb5f5ab5d5e6bace7735c0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1bycbq16f3j0fimparvp146i8ab3cc21ls2ha47vpxaj1bgsgvan",
+    "url": "https://android.googlesource.com/platform/external/tinyxml2"
+  },
+  "external/tlsdate": {
+    "groups": [],
+    "rev": "91cbf5dc2c60c55fc1c92915a6ef70ff080188cc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "05crr833f5d1lcxa940vans81af6hxbsbdzr15jdk3hcnjghp9yf",
+    "url": "https://android.googlesource.com/platform/external/tlsdate"
+  },
+  "external/toybox": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "d45133b996d48a5d1c3ac3afbb7f65e3b3c96388",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0392lvc1f6dhic7h5y767c3r0x7j15ffn1yqprq7p0w79rp8y3ga",
+    "url": "https://android.googlesource.com/platform/external/toybox"
+  },
+  "external/tpm2": {
+    "groups": [],
+    "rev": "b4f2727d67f1174591c56de02bb963cc2d26b8bf",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0i3dc9z3l4g0296zj6ksf6bhihaiq827rn1hsgr7nc5ai02hgxq3",
+    "url": "https://android.googlesource.com/platform/external/tpm2"
+  },
+  "external/tremolo": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "fa9f00d6808386ed4fcc9198a52546852e7bc8c3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02myjmy6y66r013mxg6kjxnaymr965z52lr31wsin9kg6s7fb1hk",
+    "url": "https://android.googlesource.com/platform/external/tremolo"
+  },
+  "external/unicode": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "11fefd9135354c84fd52fb0b8a6bae95dd9fd2b3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0fx5aapab0jcjf945556lkj6b33h3jva9fzjlx8cv4pzjrkr7m4d",
+    "url": "https://android.googlesource.com/platform/external/unicode"
+  },
+  "external/universal-tween-engine": {
+    "groups": [],
+    "rev": "a0d995fc067ebd5a2903ee891e1b1a183ab91798",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02pkrqv8bp6h3fin1wqni23ads2j7qlcbhfh861f90f1gb23v0xg",
+    "url": "https://android.googlesource.com/platform/external/universal-tween-engine"
+  },
+  "external/v8": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "e32b59e1da8d9f1014ceedea0fef0fe768e43683",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0wp6zshidqqnrgfq5sf54qrrnkna6xlgx5yqak4dx1jkzf86wdsf",
+    "url": "https://android.googlesource.com/platform/external/v8"
+  },
+  "external/valgrind": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "2b128b35960314e8e31f9595e0c247069f109756",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ld7byf2bx0wnhg19y5vkl8j6hy9086g9zlny8sxmx4fdva71c3v",
+    "url": "https://android.googlesource.com/platform/external/valgrind"
+  },
+  "external/vboot_reference": {
+    "groups": [
+      "vboot"
+    ],
+    "rev": "bddbf33e1d7c48f18262887263e28b35c617845a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "05a5z7rd92sgpyg2f3rxhl6qr6idxpar9is5vn63ckshfyhqaa2k",
+    "url": "https://android.googlesource.com/platform/external/vboot_reference"
+  },
+  "external/vixl": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "bc7ce84bb4f349de9e44a0d2f8869e3acea5b29b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0f3ld6v4qibiwddjgmc23rspf5m3wghraa5qwdwvlkhnrldp3zyy",
+    "url": "https://android.googlesource.com/platform/external/vixl"
+  },
+  "external/vogar": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "fcb2f6ea6321f7b7c2996ad5a0da5c3b5d45b9e4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1r6pxbdxcc7vnbnc9xq62lg4mqrp516vi1apwlbc0ribard1xqjp",
+    "url": "https://android.googlesource.com/platform/external/vogar"
+  },
+  "external/vulkan-validation-layers": {
+    "groups": [],
+    "rev": "05c7de4665816e34217d186340069cdf0319d9ed",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0f52vj5raqzj3y4c10i5mdvdz6jblmp42p667922rkwj75lhx740",
+    "url": "https://android.googlesource.com/platform/external/vulkan-validation-layers"
+  },
+  "external/webp": {
+    "groups": [
+      "pdk",
+      "qcom_msm8x26"
+    ],
+    "rev": "d1dc6a53821e1763915ee0f150ff5d341d70a7d5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1wdgls1nh7j18l00dgn2gnb2p8drgqjj0wkh709vs961zkaxkazl",
+    "url": "https://android.googlesource.com/platform/external/webp"
+  },
+  "external/webrtc": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "41796114065599ca1c615282d42f0f05adba92ba",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qp08ywc05yg8f4vaz3pm7wnw0zs211sq74fz1r8ga77sd510r4m",
+    "url": "https://android.googlesource.com/platform/external/webrtc"
+  },
+  "external/wpa_supplicant_8": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "9e24117d0fa1dadd8338fbfda14fb91e94929ebb",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "18aj7f8gviz1f9zaa3a9fz46jrmrxfmvnds817icv6nzpvaw0f97",
+    "url": "https://android.googlesource.com/platform/external/wpa_supplicant_8"
+  },
+  "external/xmlrpcpp": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "88a6baf3c2da006400898dc1bba0b5d2131e4b87",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1wjlf14iyrd8qqls2gndgcf2ypwp3scd5f7jk2a7bhmgq1i5lz03",
+    "url": "https://android.googlesource.com/platform/external/xmlrpcpp"
+  },
+  "external/xmlwriter": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "47855f9a34a4dd15972155712ce8f81070695cdc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02cflqm01xhdc53w17dkxfb1mv4a5xz7v5765dcypgvwzhllwac7",
+    "url": "https://android.googlesource.com/platform/external/xmlwriter"
+  },
+  "external/xmp_toolkit": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "21832cecddce40f03dd047d48a8b299c6ef81ba9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0ib0xhaihyzs7k3zl2mdqm1jybi44pziiwmlfq7yak1hlia7zzwp",
+    "url": "https://android.googlesource.com/platform/external/xmp_toolkit"
+  },
+  "external/zlib": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "7550447a35cc107b12c216b6708ed78f01ae14d0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "14pmflj3f592k7fghv54rqigni3ifc9qbjw76hzykgzbfl8hvfj6",
+    "url": "https://android.googlesource.com/platform/external/zlib"
+  },
+  "external/zopfli": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "8e99534cd80cababd0ca89ceb157dfdc1c1755bf",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "014v9w732ll7dhmnlhn5r0gznm9g3ld048k6lzk66p50ym9f9lhb",
+    "url": "https://android.googlesource.com/platform/external/zopfli"
+  },
+  "external/zxing": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "5c9aa4a6e4e0a02105ea28baa38504b9cf0f38c4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1r7ps21c49mkykc5w5gh5piczm5l7bilj8jgvv7lwxvn5zlfyrzw",
+    "url": "https://android.googlesource.com/platform/external/zxing"
+  },
+  "frameworks/av": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "9da48c55df7e5099cc1b64939ffcceaa2b1fe7cf",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "0sf1afi0v9lgsndhgfnv5s6zx0kg09arv81kk63sqgb2zrc2j14f",
+    "url": "https://github.com/pmanbox/platform_frameworks_av"
+  },
+  "frameworks/base": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "610689eada02de30210bb4bcbda0a21d72a745e2",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "0kcscqbjrcd435amyljm4pnmvvxr5nkrga1zaamnf1yb9b2qf32z",
+    "url": "https://github.com/pmanbox/platform_frameworks_base"
+  },
+  "frameworks/compile/libbcc": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "2832f6c2bbc2ce538c983aedcdf803609cdb76b9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0v5q09gj8pl2wv44rw0wa3s0mcpgm8js8781jkzy93h6zjcz361q",
+    "url": "https://android.googlesource.com/platform/frameworks/compile/libbcc"
+  },
+  "frameworks/compile/mclinker": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "4f6e2f9b37b17b73935789cfee6f78e06033f07d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1l02av8i7ndqxk2j3v3ia12bc14j6kgb12zdsfd567gmvjycsnvp",
+    "url": "https://android.googlesource.com/platform/frameworks/compile/mclinker"
+  },
+  "frameworks/compile/slang": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "8ba76d1bd2fe1aa1229cdb935d5b10c30d2e0e3a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qlv2gs7xaqj4igpp84a9l5yd7pnf8r9lzdj1s8g619zgh1q97p9",
+    "url": "https://android.googlesource.com/platform/frameworks/compile/slang"
+  },
+  "frameworks/data-binding": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "ed0dca283f1365f63cb81e9bdb32754b00d05d29",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02giavysbafpcsryzwhbiwd18inh8cfha8iqk2kas5imqp1jj25h",
+    "url": "https://android.googlesource.com/platform/frameworks/data-binding"
+  },
+  "frameworks/ex": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "9964db6ba36ac7b9d47c20e7ccaf8e110f768636",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "076b5jb301glgzyjk3x11b7d09jwcv0i00c74wb0a4v7lx8dffji",
+    "url": "https://android.googlesource.com/platform/frameworks/ex"
+  },
+  "frameworks/minikin": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "9b98da30fe5b8a574d1de70093dfe50af164eb87",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1m01wkc4qc576r4jjq37bsdjfcyi2gck943qpcrji7pi64klmr42",
+    "url": "https://android.googlesource.com/platform/frameworks/minikin"
+  },
+  "frameworks/ml": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "65c199a6c7fb466462e6d969f8e62610d12a2b46",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1cllf0hq53wja6ici9vsrrilqrrwafl22nghq2caj7vq3ndq0gqq",
+    "url": "https://android.googlesource.com/platform/frameworks/ml"
+  },
+  "frameworks/multidex": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "7ff1c44d2a335acbb15cc6a47aca630d4abbd649",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0pijlmhf3d27y72d1q5mmg7iqh94va8wmj01psj1h9q5c33q9402",
+    "url": "https://android.googlesource.com/platform/frameworks/multidex"
+  },
+  "frameworks/native": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "c4e261becf2026076fb2ab4a217bff33ec005af2",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "1mihk4bjg80j0fwm1fip703r7qw9s0nrbpvddmm8i5rnww8yjb7m",
+    "url": "https://github.com/pmanbox/platform_frameworks_native"
+  },
+  "frameworks/opt/bitmap": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "168b05adec3f18c63a5ea9be740c0dff7197bfc5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "14g3y6qvh65r5f7nwirfm2v2ri0wk17p4xfnnvz7mshnq1rryriy",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/bitmap"
+  },
+  "frameworks/opt/bluetooth": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "936710cb26b4a5b2c281b918e0bb4eb9fd3d5bf7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0vc3m81rk5bhz9jzvd3fsckf6ms6zzckx6xgq0j1qhad7ljcg6dj",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/bluetooth"
+  },
+  "frameworks/opt/calendar": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "e39d8fc4a1717c1ece012f93167bcedb99f1736b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1jbkjcwgzwy1frmfd4qmdis093xrnmg44djvc2dil3pgjixqrfsm",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/calendar"
+  },
+  "frameworks/opt/chips": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "38d86ab37e3eca32b48f4e28f2c183696e5aabb8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "015aws494dgr35fhq7688x5fxdlxpmzz6n132i2limc4bbc46mw0",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/chips"
+  },
+  "frameworks/opt/colorpicker": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "6e86c07e16325ff1a871a8b1e25e8b5f6fe36b0d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1di8ahadz76dcfx26v3zx0wjqr2766sfgpy2xqbavpnqsaf17a85",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/colorpicker"
+  },
+  "frameworks/opt/datetimepicker": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "6da70f4132bf034178690768a5be809214dc5df5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1cicxp1w3iw4xqvnszsiwpll1y19il033g44djsh2czpfx8cxwrs",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/datetimepicker"
+  },
+  "frameworks/opt/emoji": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "95dfcd2d1065fc366c26e4e2ef749ca3dbef77f6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/emoji"
+  },
+  "frameworks/opt/inputconnectioncommon": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "926d1052315536972db462478d1b4a60823b8e83",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/inputconnectioncommon"
+  },
+  "frameworks/opt/inputmethodcommon": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "61c050e0f93231160d04a494e661d39dcfdb4731",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0fyh1ds15vz6k8x3z9hcmznga1rmcq2qxnq099svj0r8yljvlxm3",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/inputmethodcommon"
+  },
+  "frameworks/opt/net/ethernet": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "ec41f9958389e2a7c7eb12d822b4d58b1fa38846",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0grbzq6056rbw54laba2r864v5liqnrhas6pml7fv9v8p1hnz8cl",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/net/ethernet"
+  },
+  "frameworks/opt/net/ims": {
+    "groups": [
+      "frameworks_ims",
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "029e63d8e4136c84484d63e016aabcb2ee475bb2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "06s72lnb79wkw7b08ly8m7r1996mkfqd3p1yij3kdr21pf0jn95c",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/net/ims"
+  },
+  "frameworks/opt/net/voip": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "a9a2151593772830d9945e7c57d9a9750a15f324",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1nzgf2yrk67m46v6lp3254z3ilx9cli1gh2glxafnfc34zmcgd3b",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/net/voip"
+  },
+  "frameworks/opt/net/wifi": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "db22f4b2307acc89126afa3c97268ffbf026104e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "01bpah44w6lj6mri7pcldl0xlkg5497f63r4s8p5wk3y9cfxk3qf",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/net/wifi"
+  },
+  "frameworks/opt/photoviewer": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "6191284caacc771b7a4da76233fd4279092f83c2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0b146qlrpam3qhw51znf75d3s60v2ajb0kybbkmlz139iq5sgalf",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/photoviewer"
+  },
+  "frameworks/opt/setupwizard": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "737e85e4516323ed692c1cb32c83cc26416d887d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0fg8rl3q8vc2rphvf9772gyw11lid6iksam0h76lk33hx21mcf5y",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/setupwizard"
+  },
+  "frameworks/opt/telephony": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "446e94339557785bc37f4e8058a9f3e3dd04b002",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0vyb08swy77wg1iq1zpd6d4bhcc8kn1agg5a51bvknn13lrxw8bl",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/telephony"
+  },
+  "frameworks/opt/timezonepicker": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "adaca80500ca54c4ef9ab106e249d05e64ce4774",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0s8my5v2appccwncc344qp55raq0d1aznyna16cjv2zz54cxrcmg",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/timezonepicker"
+  },
+  "frameworks/opt/vcard": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "7d3fac5f8b7803410d523f60642442366ce25879",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "03hjb717ld523haqz4i216d3yf3n8kcryqzb57jwf2swbpg3j247",
+    "url": "https://android.googlesource.com/platform/frameworks/opt/vcard"
+  },
+  "frameworks/rs": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "82cc7b27f070a47a584348502f5ea35c6a5ff006",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "05fvxvg138q2scsnwnpm25s7d0zpzbcjf5gmzk44q4jvid36hg3g",
+    "url": "https://android.googlesource.com/platform/frameworks/rs"
+  },
+  "frameworks/support": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "4ac7922ca5275b9be0cf478331df5c0d49f0272d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0g1aandhq9q2pl7gcrv8z12nrh9xc32wi815h13m0zw1xbhzq7b4",
+    "url": "https://android.googlesource.com/platform/frameworks/support"
+  },
+  "frameworks/volley": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "8545c8ba5c660a7ddcb838ed127a2338932de024",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "168nskbhhvh020rrxg8pbc6ri1wz5gxgnrlvmpj8i7b68mnp57wq",
+    "url": "https://android.googlesource.com/platform/frameworks/volley"
+  },
+  "frameworks/webview": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "f85965af3492209ed53fe5dd306f9201ea4726e7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1myp1wrdbbba8y552dhg3llq6xlxwr58lia63av4lwacb7rckl15",
+    "url": "https://android.googlesource.com/platform/frameworks/webview"
+  },
+  "frameworks/wilhelm": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "6176100f7a061aa679dddda42d493e7239ff1527",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0hsck2kpchxzqdw0k1pk6yf84ly2jpmqvg993vyp2ywkib4smvi9",
+    "url": "https://android.googlesource.com/platform/frameworks/wilhelm"
+  },
+  "hardware/akm": {
+    "groups": [],
+    "rev": "7aa1872f7403ff9aac0b7fc0bb9f7d1f52ee7d74",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1p4b6zsfpnr03mdrsb2rj4f3j24gszzjdbda5b1qa0lpwkjcb659",
+    "url": "https://android.googlesource.com/platform/hardware/akm"
+  },
+  "hardware/broadcom/libbt": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "cbf72b4bdbce60f1b5ac82effa0b8dc499372f75",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1jf8bnznw8zwbr7y37npd82wyjpran8yqav9c1awrbkr8qfnzqpy",
+    "url": "https://android.googlesource.com/platform/hardware/broadcom/libbt"
+  },
+  "hardware/broadcom/wlan": {
+    "groups": [
+      "broadcom_wlan",
+      "pdk"
+    ],
+    "rev": "287dfae658db76713898068971a16eddc9cae221",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0a6mkqddldwrqgng6hygx0r44msp3grd40jcvdsckv4qqqgpnsd8",
+    "url": "https://android.googlesource.com/platform/hardware/broadcom/wlan"
+  },
+  "hardware/bsp/intel": {
+    "groups": [],
+    "rev": "d33930bda6ac6331336b46d8463a34fdb060ac97",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13kbilji8mzxb67bhrl2lf7wlv9fv2fad1w1irl9kchkc7zi6fr2",
+    "url": "https://android.googlesource.com/platform/hardware/bsp/intel"
+  },
+  "hardware/google/apf": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a0e8d3bc1f91ec46b7ba3448d5dda22362edd019",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0bijm9lbqpkxwgz15zy5iv6spacbjsrmxvqa6ji56ij70h5m1p7k",
+    "url": "https://android.googlesource.com/platform/hardware/google/apf"
+  },
+  "hardware/intel/audio_media": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "2bfa5ca1609a5354a2bf71da268fe16bc50a4bd6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13ai9vpvqbzmc4hxakvqc7ibz6x8522njrknng11ydy4n2z9pz9q",
+    "url": "https://android.googlesource.com/platform/hardware/intel/audio_media"
+  },
+  "hardware/intel/bootstub": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "d26cd87a6edd9abe2a85785fd04438a4d4bf427f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1zxv2cfvki560xymchlmcf1c82z10542dybjy60z9igw5bf7vjzs",
+    "url": "https://android.googlesource.com/platform/hardware/intel/bootstub"
+  },
+  "hardware/intel/common/bd_prov": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "43db128e3b96ad339c10f5da0d24c2452c2e41a9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/platform/hardware/intel/common/bd_prov"
+  },
+  "hardware/intel/common/libmix": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "f0a5037f4ad2f4f279a9d270cae33329c6cff393",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qmj2fmls4lbvnzs15nyabmahlk0fyx81qq5kxd6vwyjqak0lqc8",
+    "url": "https://android.googlesource.com/platform/hardware/intel/common/libmix"
+  },
+  "hardware/intel/common/libstagefrighthw": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "7ddcf7ab1ab6a03411124d711d8edbd017a96a81",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0s35n5drlr7ca2krql820h7p07jnyiy0sc5yjpxxlpqn9d4l0r7l",
+    "url": "https://android.googlesource.com/platform/hardware/intel/common/libstagefrighthw"
+  },
+  "hardware/intel/common/libva": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "3b2b87a327858c76a3d9803a1340b9439a8f88fb",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1hng5h0bs32wmz7vzamlzaprxdy7kzip3cdhy00wvlpj6np6qjhy",
+    "url": "https://android.googlesource.com/platform/hardware/intel/common/libva"
+  },
+  "hardware/intel/common/libwsbm": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "67df726a1d8886e514a63565d02cbd36d1da85ed",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1qbllgf90v2m0s634aphdrvdhdgfs2ymjgx2iy6jnvwm6z4mj6vx",
+    "url": "https://android.googlesource.com/platform/hardware/intel/common/libwsbm"
+  },
+  "hardware/intel/common/omx-components": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "a02f51258085bf0afb989c2f1222c90c01473188",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1dm6x500is1klfd9mikah1b433zi2b8763m542rnixf8mia5vm87",
+    "url": "https://android.googlesource.com/platform/hardware/intel/common/omx-components"
+  },
+  "hardware/intel/common/utils": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "4e0a2cc42f823ad88355fe55fa577c8cfbb8b277",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1x959d3wzh082zmdd06jvpk523gfp7i5npa684zkxjxh15sjcm4r",
+    "url": "https://android.googlesource.com/platform/hardware/intel/common/utils"
+  },
+  "hardware/intel/common/wrs_omxil_core": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "1de8fe4b258de0d7805a1a5e4e71ef976451ac2c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sgpfq0q3m15sqcxpbashzhk603v9m7gv5rwfhcgq7m7m7z52q5m",
+    "url": "https://android.googlesource.com/platform/hardware/intel/common/wrs_omxil_core"
+  },
+  "hardware/intel/img/hwcomposer": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "331d6c8d547a1518689dd6290df1586e13ed9823",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13yw9bgz4h8sm1hrd405rix9fc0z9pggfrf0vlv48hsfq0kk4h9s",
+    "url": "https://android.googlesource.com/platform/hardware/intel/img/hwcomposer"
+  },
+  "hardware/intel/img/psb_headers": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "25f2cf36c13b685c04c34efc01f4db44689f0b2e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0hmyxj36c1v20r8zjzw1a9b2cafycr6gibbbmmkbkvxq6nds337w",
+    "url": "https://android.googlesource.com/platform/hardware/intel/img/psb_headers"
+  },
+  "hardware/intel/img/psb_video": {
+    "groups": [
+      "intel"
+    ],
+    "rev": "9c960897f5137a0335fbe7fdc5e92d74be458693",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13x68fh9gy3aaa7q2yw625p5nf7klyjc0745i6s0094b17cz7q42",
+    "url": "https://android.googlesource.com/platform/hardware/intel/img/psb_video"
+  },
+  "hardware/intel/sensors": {
+    "groups": [
+      "intel_sensors"
+    ],
+    "rev": "b504183fea00e8c199e5608ee2ecf4a661acc418",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/platform/hardware/intel/sensors"
+  },
+  "hardware/invensense": {
+    "groups": [
+      "invensense"
+    ],
+    "rev": "6489863d20187652e583b4f0544351d976f1954a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0vsfc9a7lkkqkslz5szg02p8zzvnzxkddjsq8sy8gfb7yvp8www8",
+    "url": "https://android.googlesource.com/platform/hardware/invensense"
+  },
+  "hardware/libhardware": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "e9662490a95797cf05c8375dafaccd0e816e1151",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "1sahp9yi0a4xglav5i20qnpg180mn40yx4z14mphl1dj8ps8bv8v",
+    "url": "https://github.com/pmanbox/platform_hardware_libhardware"
+  },
+  "hardware/libhardware_legacy": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "1baff108f9fcbce8d5ebebbc9b852351c083cf2a",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "1y4m49yzq8iy0khk9yh7zghn9d4qszdzz2s2rshp1rnvymyqs7n6",
+    "url": "https://github.com/pmanbox/platform_hardware_libhardware_legacy"
+  },
+  "hardware/marvell/bt": {
+    "groups": [
+      "marvell_bt"
+    ],
+    "rev": "b60b73a5308c1aebf160e1851a59043afaa344be",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0dq97qsg2q8p09k6p0av25airpr1an8iiiindqbi6xs40z8javng",
+    "url": "https://android.googlesource.com/platform/hardware/marvell/bt"
+  },
+  "hardware/qcom/audio": {
+    "groups": [
+      "qcom",
+      "qcom_audio"
+    ],
+    "rev": "dfc03a66b369e3a6ab5d1de7a0518c010467e813",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02hinf3g4kn5kksibwsz2v5gb1303nbvkq65nmq4gm392ai0qv95",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/audio"
+  },
+  "hardware/qcom/bootctrl": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "63bde6ba03ea7cf6d66c7670c2324162a50546e2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1j1mfv8hzvmi3a6frn84bgzk9cm8arkj6isniasnk0id8dr4fdkx",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/bootctrl"
+  },
+  "hardware/qcom/bt": {
+    "groups": [
+      "qcom"
+    ],
+    "rev": "2f74212e69e13271ea5c3fcac190737602975dea",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "114zfh4f4sjyg28n6ncdwjsm96i4dq5jbhwfycr30p7wg7rvy5p8",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/bt"
+  },
+  "hardware/qcom/camera": {
+    "groups": [
+      "qcom"
+    ],
+    "rev": "cfb5eac44aff4b99da8a83c64623309342b5ddac",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0h6dhqklwn5qzp284d1pw1byfkih3j0md6mrafbyjcg4svvp2v7r",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/camera"
+  },
+  "hardware/qcom/display": {
+    "groups": [
+      "pdk",
+      "qcom",
+      "qcom_display"
+    ],
+    "rev": "8e585a3364e01d71799abf5ed531597035d39cbd",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "12m4alhzfa55qxi7b6hysrzmagdv5h7ly0hm9axg965kscq7sxsz",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/display"
+  },
+  "hardware/qcom/gps": {
+    "groups": [
+      "qcom",
+      "qcom_gps"
+    ],
+    "rev": "372865da67a33ad06f2cd2126bb6cc7999d8e46b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "100hv6cv059qym9x48rmnp4qhyfbgdpfkb2vif5bnd8m0g5axfhg",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/gps"
+  },
+  "hardware/qcom/keymaster": {
+    "groups": [
+      "qcom",
+      "qcom_keymaster"
+    ],
+    "rev": "49340138aff9bf27aebc4f863f6156f92d54695a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1bn1wq6yc0racjdgw0ciamdd2z675ndlbsj2ihrcwlr3pm25gfjq",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/keymaster"
+  },
+  "hardware/qcom/media": {
+    "groups": [
+      "qcom"
+    ],
+    "rev": "16740f0767af31c891f0de5c7ebff7a0ddfe59a3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "14i3cx54wy5l87z56l8vh2qhi546ymbm55q9n3501058lwk146n9",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/media"
+  },
+  "hardware/qcom/msm8960": {
+    "groups": [
+      "qcom_msm8960"
+    ],
+    "rev": "1b37778113b3b2da2d577f0014d9eeb732b58e58",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "03vf9jl7rl0aji76q7b85z63cwkcp2pgq2g54md0hw5mjd05n56v",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/msm8960"
+  },
+  "hardware/qcom/msm8994": {
+    "groups": [
+      "qcom_msm8994"
+    ],
+    "rev": "67950e775fb0467722af0dfe156e34cb5b7544f1",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0av6qr5hw0apahxs1qa2wsx2h6z9appbzdrjghidkgfz6myg2qg2",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/msm8994"
+  },
+  "hardware/qcom/msm8996": {
+    "groups": [
+      "qcom_msm8996"
+    ],
+    "rev": "84ed4015d8cb5d3b6f8d5cd720487585fc9d6506",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1374lxnfwgrq33wxamiyqf1gdllb8vx32gnsw9abvy8a8s95fg92",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/msm8996"
+  },
+  "hardware/qcom/msm8x26": {
+    "groups": [
+      "qcom_msm8x26"
+    ],
+    "rev": "6f188d0ad201897667a5e48eaafe5c8681812d6b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0gi8ag7giip2n4c70b9m3nbw0pddfnn129zsgzwi5zkzzf75f55g",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/msm8x26"
+  },
+  "hardware/qcom/msm8x27": {
+    "groups": [
+      "qcom_msm8x27"
+    ],
+    "rev": "1fd2fcd1f860e4e8570a3e2393b3e9de8d4bd4cc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0zlfw2klqbi4zj3903mk268mz3s0s5rqmh3p25dgmwa3cjgi7s03",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/msm8x27"
+  },
+  "hardware/qcom/msm8x84": {
+    "groups": [
+      "qcom_msm8x84"
+    ],
+    "rev": "91ff60431e6aabf447b707dead0cf7249b01ec5c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1d4nzhid21v2l2q160m7wr5g9qkhcwb667i4g5d53jhvdzxradhc",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/msm8x84"
+  },
+  "hardware/qcom/power": {
+    "groups": [
+      "qcom"
+    ],
+    "rev": "3ec250d95445a314dd602105d2c3af27eb615274",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0l15q4h0c4wa9v49881s79rmcyydx1rdmzdhwam7gy972afq6cjv",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/power"
+  },
+  "hardware/qcom/wlan": {
+    "groups": [
+      "qcom_wlan"
+    ],
+    "rev": "abf7b61f7f0e2674d220a26402dab31a85f9a053",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1iyl6z5ay2848jahwvij65p06nsqxi8m9ixf0liqafqzh48g59pa",
+    "url": "https://android.googlesource.com/platform/hardware/qcom/wlan"
+  },
+  "hardware/ril": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "65e33a3a7ab6a223a7d6509e1d5a4fc093acbac8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "135rpvl4rjrdm947prhcxyfssvb216qimp79137dgsfaqq3k27vl",
+    "url": "https://android.googlesource.com/platform/hardware/ril"
+  },
+  "hardware/ti/omap3": {
+    "groups": [
+      "omap3"
+    ],
+    "rev": "2aecad5a673a1393c3fbcd44a0b196f2e931dd2a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0p2a6h0xhs7lsdvvvq0m5y9mzd223rmwhlbv1x25pvh3nh4vy139",
+    "url": "https://android.googlesource.com/platform/hardware/ti/omap3"
+  },
+  "hardware/ti/omap4-aah": {
+    "groups": [
+      "omap4-aah"
+    ],
+    "rev": "70c73b269d2a1fb033d0507a93e0f8bbeab45542",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qmn32i1vgzm102nmbc2za9gc5rmf3akzx5av9drbna0s03c047h",
+    "url": "https://android.googlesource.com/platform/hardware/ti/omap4-aah"
+  },
+  "hardware/ti/omap4xxx": {
+    "groups": [
+      "omap4"
+    ],
+    "rev": "fc6e9211b0811420e23d0947123d968128839b22",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0rkark1y0i9v0sy3ia8cy54jlj57dp8291x38fzfdlsxcnyjxgm0",
+    "url": "https://android.googlesource.com/platform/hardware/ti/omap4xxx"
+  },
+  "libcore": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "67b57c03c82a66362a40bb2a9a88e06c6615e425",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0fid2fz0hvdb17c1k475awh5v8c8wlqf4pjbn8aj4bb4is70aqzx",
+    "url": "https://android.googlesource.com/platform/libcore"
+  },
+  "libnativehelper": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "9df4d2a0978c26495df90b683dafd659546c3b0c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1yg2zppymmjyf0jw7fh3syaszi0vlj7fxlr8l1g0sa0pbn3n52z3",
+    "url": "https://android.googlesource.com/platform/libnativehelper"
+  },
+  "ndk": {
+    "groups": [
+      "generic_fs"
+    ],
+    "rev": "dc4a6d33aa936bc892a8f7a49dc86a350b7447c0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1i6c3rqxynx0jzgcjw1si05075872pgcxs638mr12bv4fihq18sx",
+    "url": "https://android.googlesource.com/platform/ndk"
+  },
+  "packages/apps/BasicSmsReceiver": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "e37f76363a8ec2ae68bb04b224fce84ceab0cbd4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1w7abnk9zcnl6cffg9h8f3v6zgdiyg6s9sh3p7d0b53rvv77sgmi",
+    "url": "https://android.googlesource.com/platform/packages/apps/BasicSmsReceiver"
+  },
+  "packages/apps/Bluetooth": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "c5290b6518568b17a750ccd250454eb2a719c82a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1zgb5miqfkh9p07xdrgacq7nmvq7b7j8r9vvnykpnkgj6zsja1bj",
+    "url": "https://android.googlesource.com/platform/packages/apps/Bluetooth"
+  },
+  "packages/apps/Browser2": {
+    "groups": [],
+    "rev": "e9963344daca15835872374efa78d0c1e6b9d149",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "03611zj2lar0i75pz945vkz1412bxxjjwvlr74l4hhxd6cd64v6l",
+    "url": "https://android.googlesource.com/platform/packages/apps/Browser2"
+  },
+  "packages/apps/Calculator": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "a1959db2ba8ef971baf7cd043a7e227a83bfa703",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0q0xxzbdvyaj0vknmwfzb6vaq9lbdadz6gr19nj77acprs0gcnk1",
+    "url": "https://android.googlesource.com/platform/packages/apps/Calculator"
+  },
+  "packages/apps/Calendar": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "c3fc5f3b8ade68dee87034fa8f1d80923d4f156c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ml4x55g85dskb59m74bx68pa88rw9a4ysygiqj93ah1ajdc1k33",
+    "url": "https://android.googlesource.com/platform/packages/apps/Calendar"
+  },
+  "packages/apps/Camera2": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "334dcefb8cde3b18309a970d1a57146c30d12bb9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0q5s12qn2q0vamka73lkw3j26ygvh6vmirfq7kkkna7g2v0crmam",
+    "url": "https://android.googlesource.com/platform/packages/apps/Camera2"
+  },
+  "packages/apps/CarrierConfig": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "04dd9cce43cba4b5ff54242873f9d6962cc3770d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0vz8j8ax4lib0ik2zl5waasmvwvkhaargks2da63r36z0gpv8wx0",
+    "url": "https://android.googlesource.com/platform/packages/apps/CarrierConfig"
+  },
+  "packages/apps/CellBroadcastReceiver": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "01868b24f0c86036200f1df8e28b2efaa55a23b5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ngypnr2ii4f5sfc96m6fhcicm81xjbsijwdh78mpd9svqjzgrns",
+    "url": "https://android.googlesource.com/platform/packages/apps/CellBroadcastReceiver"
+  },
+  "packages/apps/CertInstaller": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "26ab7140438eb0dc416a69c752ef54297c05b314",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1mvwn7zdz6p5jdkqkvbahx74s4nnpb9qh52qa7wf9zccfhc7n7xw",
+    "url": "https://android.googlesource.com/platform/packages/apps/CertInstaller"
+  },
+  "packages/apps/Contacts": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "6249e61b834adc8e89f9e41f1d7b9395c9f8fac4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0vcqq2l049cq0qm13gzlqj2z0af7844zd79xy3c5393r1ipp2m3k",
+    "url": "https://android.googlesource.com/platform/packages/apps/Contacts"
+  },
+  "packages/apps/ContactsCommon": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "0bd7340090ac593da70362352a4e172c111935c8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1mxbzin3vk723cv1a3h8qlfwx77hrb72rmlqw2g2l6l33hbsmav4",
+    "url": "https://android.googlesource.com/platform/packages/apps/ContactsCommon"
+  },
+  "packages/apps/DeskClock": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "99e470766b330d15715baf9b52d06d2b8ddaa0ab",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "122nplx7mks01j7n2l42xnyw4kma3lsmvsx9rx9kglgkfnvp0fa0",
+    "url": "https://android.googlesource.com/platform/packages/apps/DeskClock"
+  },
+  "packages/apps/DevCamera": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "898a6afb826efaee9d25a4319337a83373884c8f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1zmcvjl7k5vf66cgn7kkvrg06l05b7crz4sbsjsz87i5af2zs851",
+    "url": "https://android.googlesource.com/platform/packages/apps/DevCamera"
+  },
+  "packages/apps/Dialer": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "663beb856dadeb47403f9c13c652105523b1614b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1jf19pa63q87di0a6js0iawcrkiw8m50bgmlfjx9g9bq45wb12ls",
+    "url": "https://android.googlesource.com/platform/packages/apps/Dialer"
+  },
+  "packages/apps/Email": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "e352cf42431e7aeb543efffc84496a23e188d152",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0xj50hplq0bj6jfm0wk27mws6867cmjkm8aaiq8cw7lz2rwf5dpc",
+    "url": "https://android.googlesource.com/platform/packages/apps/Email"
+  },
+  "packages/apps/EmergencyInfo": {
+    "groups": [],
+    "rev": "888259fa3ce4f3623c738b0f2ccb12cbd4f3d89e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0jbinp6m38az5vkmxmqr8fr27lsrc01bm54lzs5flgvw0zqm859p",
+    "url": "https://android.googlesource.com/platform/packages/apps/EmergencyInfo"
+  },
+  "packages/apps/ExactCalculator": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "b981a4270aac6f41fb983f379cbf8ebcc62618f3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "12zjph6l1sn113ydfl4a887byrda25d3ksf94dk1hvqpm0647ik7",
+    "url": "https://android.googlesource.com/platform/packages/apps/ExactCalculator"
+  },
+  "packages/apps/Gallery": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "ab56e3e23a5053bbeeb0bb22816afbcdf3ff8d72",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0n1cxxxyigmj1f1p698gx02g76k34kqj9w1mp9wx2ljrdjbnglqn",
+    "url": "https://android.googlesource.com/platform/packages/apps/Gallery"
+  },
+  "packages/apps/Gallery2": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "31d1a40d2269cd81c2c81ccf27a3749169acaa82",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "01vhsrl0yqish6hc1hmsm0lgg9ax1fv7rzk3mrgikmzc7yb85y72",
+    "url": "https://android.googlesource.com/platform/packages/apps/Gallery2"
+  },
+  "packages/apps/HTMLViewer": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "ae846c27d4f6224748bfbbfe4a032fdab0a7660c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1bch63ikcpj2b98bq4sfd3w6bmqmbli1hd09kxb179jf3d1pg5xr",
+    "url": "https://android.googlesource.com/platform/packages/apps/HTMLViewer"
+  },
+  "packages/apps/KeyChain": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "4cd3c0890886ef84c165d3b8098e9c6757722e07",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "09ryzx07r0qzzryiylsvfq4mdpdyanvbay4m42k6mk798ly16z4x",
+    "url": "https://android.googlesource.com/platform/packages/apps/KeyChain"
+  },
+  "packages/apps/Launcher2": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "6259d9d5f30b9b895ff90aa372803b231c5eb9f7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0wlhwisbymhsqsn4nf04n7q94inbkny4v3l6m41jb30v6i1b525j",
+    "url": "https://android.googlesource.com/platform/packages/apps/Launcher2"
+  },
+  "packages/apps/Launcher3": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "d86f29ba69b4cbf25f8ceeafb235dc580fd0aa25",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1bb9b9jaj3dxqygy2a3l702nfna1jazab7siccdcrirli4hhmzil",
+    "url": "https://android.googlesource.com/platform/packages/apps/Launcher3"
+  },
+  "packages/apps/LegacyCamera": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "1e2da992d108c5dbe0cec3868b37c846729b51c3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0hm5grf4sbmv0q1zn1zdigc819s3vnncm8vlzb593cwb2d1haybr",
+    "url": "https://android.googlesource.com/platform/packages/apps/LegacyCamera"
+  },
+  "packages/apps/ManagedProvisioning": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "0bda3b7c8d954614a122bae9dc80e54990231dd7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1bmfa2z3rysm3an8417niwsfd3k9zndwyg0b7ykv2g9qsy40wiq4",
+    "url": "https://android.googlesource.com/platform/packages/apps/ManagedProvisioning"
+  },
+  "packages/apps/Messaging": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "4c094108a4c8c6ad66ea15493f9633bbb1b89422",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0mx8fyq8cpx67kwclny7jgx2acddhgm41ggikrwq7zrmbi9b7q1d",
+    "url": "https://android.googlesource.com/platform/packages/apps/Messaging"
+  },
+  "packages/apps/Music": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "c98720fbe3804e19fd1813273d83e04843ea5b3c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0iv6k48v4pm1lsfd99i8ac0vxpimd8bb44mrbg2fwnf31yck5a33",
+    "url": "https://android.googlesource.com/platform/packages/apps/Music"
+  },
+  "packages/apps/MusicFX": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "69b020e1352e0ed49e0d767eb4a00fa4b3d0f4b3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1nc9zbk9fm6n5sprz6n9misiqp87v7plgaz99mzmd661mzzc2nr1",
+    "url": "https://android.googlesource.com/platform/packages/apps/MusicFX"
+  },
+  "packages/apps/Nfc": {
+    "groups": [
+      "apps_nfc",
+      "pdk-fs"
+    ],
+    "rev": "b48f707974997748f35b10258fba51327b674489",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "09j8bl64m7g9a3qjcfw09bdyxqwys9synjfzf60n5d0s5mmpyi8i",
+    "url": "https://android.googlesource.com/platform/packages/apps/Nfc"
+  },
+  "packages/apps/OneTimeInitializer": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "4aa14c9c8067e46003195d164f750fe718075ffd",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1qd8vbpbf0x6wrshpb3xwlzx042p76d7kqq68qb1nnd5q7c8mzgf",
+    "url": "https://android.googlesource.com/platform/packages/apps/OneTimeInitializer"
+  },
+  "packages/apps/PackageInstaller": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "23f56f09e21c60cf76edd2c08b548dc549a8bea7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0cfflzrgcz0x1bggwxpnrslgmg6hc9b8r7gvwrzdjfklpv8pvma8",
+    "url": "https://android.googlesource.com/platform/packages/apps/PackageInstaller"
+  },
+  "packages/apps/Phone": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "c30f823150bf2b78aada9673b877f85c2114c8bb",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/platform/packages/apps/Phone"
+  },
+  "packages/apps/PhoneCommon": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "daea16306fcb62238291063e99e11294b3701ce4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0lgqvp9gbxrnvdjkzxrqgcvd2hjkc2460wfmw7fvn8prn5j0npnf",
+    "url": "https://android.googlesource.com/platform/packages/apps/PhoneCommon"
+  },
+  "packages/apps/Protips": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "b5e9551786b0e42d70f1251c14b58cf28644664c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0np87dv3ndh1sy59igf3hjmp90plgk9074djm9rkpcs1jwdlaylh",
+    "url": "https://android.googlesource.com/platform/packages/apps/Protips"
+  },
+  "packages/apps/Provision": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "fa2e8b9b3277b7b1d691db77f6b3eaf77dbd0158",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "15rx5vmi4qy2jlj99s0bkwy6r2g6vgzpl5q7x7a3cg17zfcvr22k",
+    "url": "https://android.googlesource.com/platform/packages/apps/Provision"
+  },
+  "packages/apps/QuickSearchBox": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "b586a0873b44ec3bcc732a390f04d856003cb0a0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "007xwr2rmilnwpw4mdn1vvyk4ihkibnhkpd2l6zx1as74cbknn0i",
+    "url": "https://android.googlesource.com/platform/packages/apps/QuickSearchBox"
+  },
+  "packages/apps/SafetyRegulatoryInfo": {
+    "groups": [],
+    "rev": "94d1ec2389658440efba639c2eccc619be86465d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0406prah5q30i43b1ci7h3bya8gbigmn3gh0vgg37198sjh84c9z",
+    "url": "https://android.googlesource.com/platform/packages/apps/SafetyRegulatoryInfo"
+  },
+  "packages/apps/Settings": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "5b46630ee0e45760562bc2828142f7aefb31e3f9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1p6yb7kps7yp7k6l50a8viphw6py4i05wy3zyjqw3l1yl0idmi42",
+    "url": "https://android.googlesource.com/platform/packages/apps/Settings"
+  },
+  "packages/apps/SoundRecorder": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "bd71e3628b792cac2b205d40b3688d8f56092926",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qkv90qffrf01v4bwnvc00mzrq46n9cp1lpxbznj09zrzfbl3frv",
+    "url": "https://android.googlesource.com/platform/packages/apps/SoundRecorder"
+  },
+  "packages/apps/SpareParts": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "26d464375954fa7d8fcaed6ce362521b85a50849",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1qb9piv16yaxqrz2yx70glkrcckcdb30yxpkj4va04raf72b4576",
+    "url": "https://android.googlesource.com/platform/packages/apps/SpareParts"
+  },
+  "packages/apps/SpeechRecorder": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "555128bf6009b4305787cbf188f741979c4758d1",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0vzknz99ga3rf6hlx8kig4yrfq778fyfjc8r3dlxh91q180a6yih",
+    "url": "https://android.googlesource.com/platform/packages/apps/SpeechRecorder"
+  },
+  "packages/apps/Stk": {
+    "groups": [
+      "apps_stk",
+      "pdk-fs"
+    ],
+    "rev": "489a2ebbd293742b7c778cda95a650fdfdfa7e17",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1mn11g75xp8lyswyhv8skagxpifiaqgs698cm7qwkwz9p5cp66ay",
+    "url": "https://android.googlesource.com/platform/packages/apps/Stk"
+  },
+  "packages/apps/StorageManager": {
+    "groups": [],
+    "rev": "105fe1c7beb22f00652f9efb8aaf871556470eb6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0cjda1i64ms5xi7hl4ikvnjibl9r4s9aqmf70s9592n9ayrg2zzs",
+    "url": "https://android.googlesource.com/platform/packages/apps/StorageManager"
+  },
+  "packages/apps/TV": {
+    "groups": [],
+    "rev": "3539d089cf4849bc4807bd62ea22ee53cdf63564",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "11s9kfhzq4532xlc6yxk1d0vcahcrgnpk7902qa7yvxy5xqzyziw",
+    "url": "https://android.googlesource.com/platform/packages/apps/TV"
+  },
+  "packages/apps/Tag": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "b3c26fed67d7ee98ebf852700523a9bd8a8d17fd",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ghg34y3a9rgljr2i78la4v9jixxh14c41z7pd1fgzmgh04lraxy",
+    "url": "https://android.googlesource.com/platform/packages/apps/Tag"
+  },
+  "packages/apps/Terminal": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "317bd4902ab64ff0f618e9df9efa8829b7799934",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "122dbvyvrfx9ywz8bbw9svf2vlkims7nnbjj0xqi53cj8nwvrmv9",
+    "url": "https://android.googlesource.com/platform/packages/apps/Terminal"
+  },
+  "packages/apps/Test/connectivity": {
+    "groups": [],
+    "rev": "ea4b120771dcadb726b16ae45df01767aff92d4a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1wxaic0xv1j5cpqn3w7kignxnfq4qz15xacaf5s0zzrp3x99aln7",
+    "url": "https://android.googlesource.com/platform/packages/apps/Test/connectivity"
+  },
+  "packages/apps/TvSettings": {
+    "groups": [
+      "generic_fs"
+    ],
+    "rev": "d41803f67a1a85f794bb63aff9fd33feeb66a876",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1zhcwq6sg5ywj7654dhg1j0hhffdx08pbsgsm93zhrjcyww0hs0l",
+    "url": "https://android.googlesource.com/platform/packages/apps/TvSettings"
+  },
+  "packages/apps/UnifiedEmail": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "b36690f799378f3552cb5583eeb3dc7ef8d9c17b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1nv58cb3a35jdwnxv9lq5dfdjq16iprbyw5116lq15z5qq34a2n9",
+    "url": "https://android.googlesource.com/platform/packages/apps/UnifiedEmail"
+  },
+  "packages/apps/WallpaperPicker": {
+    "groups": [],
+    "rev": "7b9b7d7fd1fe39311a66508abbf93a53194f7835",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1fxys9wpb3vdgnbrq5xwlykhjqd8pmvg4bczwv1gxpflbsd0vrjg",
+    "url": "https://android.googlesource.com/platform/packages/apps/WallpaperPicker"
+  },
+  "packages/experimental": {
+    "groups": [],
+    "rev": "26d19469c95d7da1acc725bf27add0bdec0bf130",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1w6y5syzd61bazhy3rijb756hw6p27mfbk8d43r7z5gmnhsnwjn2",
+    "url": "https://android.googlesource.com/platform/packages/experimental"
+  },
+  "packages/inputmethods/LatinIME": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "f6c8b51b81594a79d4f1daa96ea2e60d73237485",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0miglbf3jbhv6545yzpmy3p35df106z6qfll11xl5j4yv4djijlj",
+    "url": "https://android.googlesource.com/platform/packages/inputmethods/LatinIME"
+  },
+  "packages/inputmethods/OpenWnn": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "7d35706a7b3e972534d73547ac04da515caf5960",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1h6g0zmbakzb5cypc00yyflcn98rsydpnfz6x5jsxdg5v25wfrg3",
+    "url": "https://android.googlesource.com/platform/packages/inputmethods/OpenWnn"
+  },
+  "packages/providers/ApplicationsProvider": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "c41a433076156b6e13342d115e2d73ddfa6f64de",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "01d98528vmh4ahxbz8krcavzjw46xcykz69rhrqnay454ddc0acn",
+    "url": "https://android.googlesource.com/platform/packages/providers/ApplicationsProvider"
+  },
+  "packages/providers/BlockedNumberProvider": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "90c6a540916e3d2d6d765b379e492e8dbbe36ad3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0l6xiavs6ib3zbbjgbacdk6zavd7q6j036n63bgq7f35b3hgdsls",
+    "url": "https://android.googlesource.com/platform/packages/providers/BlockedNumberProvider"
+  },
+  "packages/providers/BookmarkProvider": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "9c18cd06131e5160210dde45d4a7c4e8ae88c7e9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0z99rdb5hf2ix5js4y1qh5ayaq2528ih0cm55xwq5sl15n5pls3w",
+    "url": "https://android.googlesource.com/platform/packages/providers/BookmarkProvider"
+  },
+  "packages/providers/CalendarProvider": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "add1fd1c457b3d53d3c9afefaee169037afefe15",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0kga7gfrxi98r603favwkjspfx0rjjxm1an5y7hpmjmpvig39lqn",
+    "url": "https://android.googlesource.com/platform/packages/providers/CalendarProvider"
+  },
+  "packages/providers/CallLogProvider": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "3bab5d7f8754655c6aed9758380c619dc8d93c1f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1s7bcrq2ciphlarkj9kghc7aqcdg69vagx1yx4iy516npcns47zr",
+    "url": "https://android.googlesource.com/platform/packages/providers/CallLogProvider"
+  },
+  "packages/providers/ContactsProvider": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "3a6100cbaf29c1103d92e9178e6c9a847884ac4d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1yr7hnjfmgqrilf5dh82vh4j8g4pkdxrc9wgp7y8c4arv3bi3scb",
+    "url": "https://android.googlesource.com/platform/packages/providers/ContactsProvider"
+  },
+  "packages/providers/DownloadProvider": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "bbd04c623dc19586704568c8754f72ad8c085fc8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13hyq0jnz1hry5kg0mw664d740k1fmq7vld1ilc219mrh9mcksma",
+    "url": "https://android.googlesource.com/platform/packages/providers/DownloadProvider"
+  },
+  "packages/providers/MediaProvider": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "46c3f91780e3d835d57baac8f2838c2fd2945f9f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13n5zrlpjccxyq9ld48gal103vmanh4wplij0km0czyk0niv4hd9",
+    "url": "https://android.googlesource.com/platform/packages/providers/MediaProvider"
+  },
+  "packages/providers/PartnerBookmarksProvider": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "9d444f50929ac841a84d8119344f11bada3f104f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1y36nnllzgpc9a83a1n37wmmipbc2zn79sj9g889faqvgrvwqb15",
+    "url": "https://android.googlesource.com/platform/packages/providers/PartnerBookmarksProvider"
+  },
+  "packages/providers/TelephonyProvider": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "d7603d7c89dc266526d483d70331f3b7b57c952c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1brrx9v45527ilsnfxbmjn1axmxsddj5i05g1cff6zkcjdbbv3c2",
+    "url": "https://android.googlesource.com/platform/packages/providers/TelephonyProvider"
+  },
+  "packages/providers/TvProvider": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "8ee1e8b42b8da1e94756fdb90450cbdf7b320967",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1fnz1al74s2fpmn9yxv0ls69fiq1hmkfi0qpcz5cw8dr6w09fn4a",
+    "url": "https://android.googlesource.com/platform/packages/providers/TvProvider"
+  },
+  "packages/providers/UserDictionaryProvider": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "b8d686fc0af6c8c4826f47556786439c29099159",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0w9jvrf6jj9bpyi6f7i2f6hyl1sx9ryvnc0jppnfbnhf3dxkn76p",
+    "url": "https://android.googlesource.com/platform/packages/providers/UserDictionaryProvider"
+  },
+  "packages/screensavers/Basic": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "62d7a40ad1c147d4ed22752086e3efa66c3ad86e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0pn5ahbjvcamj7w67r3ym6nqzpzrsmz6c9snrqpk57pqlsxrkr32",
+    "url": "https://android.googlesource.com/platform/packages/screensavers/Basic"
+  },
+  "packages/screensavers/PhotoTable": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "9072c4afe94cca8686e1f6c406c803bdded6a5c9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "170959vc8kkf7lrxk8a0r1wmfdh05nn79hyq9nbvlavjqpz5ihw2",
+    "url": "https://android.googlesource.com/platform/packages/screensavers/PhotoTable"
+  },
+  "packages/screensavers/WebView": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "ee1c165c13bf2b0f8cbfdff677770c3b516cc7a4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1b8l9r7f3f8fslbcp9f8kcyvgshrm0mmhdlv26j0bfvmzmv4b98m",
+    "url": "https://android.googlesource.com/platform/packages/screensavers/WebView"
+  },
+  "packages/services/Car": {
+    "groups": [
+      "adp8064",
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "8433c87c8ccc232eab6f47396ca8ff3b5983bf33",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "11rl3413lpkzafj0jfl681bb1nah93axrdwfr5i5brxylliy5g1b",
+    "url": "https://android.googlesource.com/platform/packages/services/Car"
+  },
+  "packages/services/Mms": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "17c701729074150b5c0497b3d732b18c9a049ba5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1glz8y25ijcx2f8cr6i2314dfadrmnf8xwmpwlh01yddsjw7q71f",
+    "url": "https://android.googlesource.com/platform/packages/services/Mms"
+  },
+  "packages/services/Telecomm": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "3808717cb261c023632e5891e888f5dd27d321cf",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1fp8bdgqy9k55axcb9ky794isbma2jkrg3dxi85r9v5g28lzqv90",
+    "url": "https://android.googlesource.com/platform/packages/services/Telecomm"
+  },
+  "packages/services/Telephony": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "5a8d0588e7b86ab12f61d5f733e223e5be0330be",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1ljzc6mhqr753k0qlcaf3yzr10ix3jwww8iwd8g5vqn34902yvy4",
+    "url": "https://android.googlesource.com/platform/packages/services/Telephony"
+  },
+  "packages/wallpapers/LivePicker": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "c7706387b02da560de21fddbdbc568694f18affe",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "09x0cngrcka38amapnxndn50j44kvrwx84pl6q1slqaxwjny7qcl",
+    "url": "https://android.googlesource.com/platform/packages/wallpapers/LivePicker"
+  },
+  "pdk": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "75a0e88f67420d1d899668a3818bde405a77bf6a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0chsbarqxlaz5s6kgfgjcb6awkxnkfk1pvs9z5zyj9sm3790bdk0",
+    "url": "https://android.googlesource.com/platform/pdk"
+  },
+  "platform_testing": {
+    "groups": [],
+    "rev": "5187227dcf84c9b8a14fcd59bce65fd12b5e4b87",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1q3i6d6svaf92cyklhb69fbavischy9qb83chn3iwmlkl8lshj3j",
+    "url": "https://android.googlesource.com/platform/platform_testing"
+  },
+  "prebuilts/android-emulator": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "074f710084af4db46b5c437b80616ca8f1bc2147",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "17mjlzfbyxsbyaawz1mn8c0sgc5gr184dq13l534j497nak9lcdr",
+    "url": "https://android.googlesource.com/platform/prebuilts/android-emulator"
+  },
+  "prebuilts/clang/host/linux-x86": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "e4e4b4789ec96bcc8a30893cc6731715d592e53d",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0jmriwlippz3rbhyiilnp4j80hqhfqr4638m2n932z5a5j5s6wvl",
+    "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86"
+  },
+  "prebuilts/clang/linux-x86/host/3.6": {
+    "groups": [
+      "linux",
+      "pdk"
+    ],
+    "rev": "c70a1ad9bb294e4e3a01149b64a6a43a5c54e82a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1gwwjrhskdckpkmjn33hvp5wxiw6y977d3c8q28ylrfi9jnc7wcy",
+    "url": "https://android.googlesource.com/platform/prebuilts/clang/linux-x86/host/3.6"
+  },
+  "prebuilts/deqp": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "34dccf5f1d75b32f5b337745be84cc0b9096faa5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qya1c3xvzm6nqgy4fh0gjz0v3in92ixhj78n1cc6lybj9lxj9x2",
+    "url": "https://android.googlesource.com/platform/prebuilts/deqp"
+  },
+  "prebuilts/devtools": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "3cde00767abd81871004cedbe3be1ba9b241db0a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1sfvvs7w0n97kn9rsrdcwd4yzjvsiaq8qajy7ba64y8xx2qdbqya",
+    "url": "https://android.googlesource.com/platform/prebuilts/devtools"
+  },
+  "prebuilts/eclipse": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "61b4150ec55368c43393c78208c806b3052a8adc",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1hap20ndffrx5pn1mj2ca8sbbr7lxxkk7b1sr6c9hjb1zr9rfwlr",
+    "url": "https://android.googlesource.com/platform/prebuilts/eclipse"
+  },
+  "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9": {
+    "groups": [
+      "arm",
+      "linux",
+      "pdk"
+    ],
+    "rev": "5a1049942c834a76549730de32ee165c40cea92f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1wllmk0fmkxp8v7qx437i0ri2w32l9q38gwiyp2zr5w7v99c1n2s",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"
+  },
+  "prebuilts/gcc/linux-x86/arm/arm-eabi-4.8": {
+    "groups": [
+      "arm",
+      "linux",
+      "pdk"
+    ],
+    "rev": "b7d6cdbb4ec69aab668d11e3a65d51b162ab358f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0scyngv2ddhis21wamx87jrbrwp1xs8wpx56xkq9jhnydix6ifqp",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8"
+  },
+  "prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9": {
+    "groups": [
+      "arm",
+      "linux",
+      "pdk"
+    ],
+    "rev": "6cea4cd93a2e866d83bd0a35528c3d2194741e26",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1hhd8yrv4bphhz3mz5q1vllkrqja90icp3ngl9bj36cxszvh783q",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9"
+  },
+  "prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.11-4.8": {
+    "groups": [
+      "linux",
+      "pdk"
+    ],
+    "rev": "561df5bc9662dcdf2771483cb977263b13e14f52",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0v7100bqd6g5j9lq36i056yafxrch1yf4sa06r74kdhhzy91dy16",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.11-4.8"
+  },
+  "prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8": {
+    "groups": [
+      "linux",
+      "pdk"
+    ],
+    "rev": "670c126e7c7fd4f89c857792c66045e03b1b88b3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1d4qip9nhyc7s71qgccxprqwaz6gvvrz5w060c0vn6rr85vbn9h9",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8"
+  },
+  "prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8": {
+    "groups": [
+      "pdk-fs"
+    ],
+    "rev": "ef239eedcaafa76bebd040a1a6834eb2bcaf4eb0",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1a3lf322yqffpd224hv06vn86620y7s16v48sqajy9pdy8w9sggf",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8"
+  },
+  "prebuilts/gcc/linux-x86/mips/mips64el-linux-android-4.9": {
+    "groups": [
+      "linux",
+      "mips",
+      "pdk"
+    ],
+    "rev": "0d28380e1767d4f1908b6a049afc2891895fd418",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "02qsmxgkxqb76r4ic3wzc25lk3lh64c5j35192w7wqzndxips15i",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/mips/mips64el-linux-android-4.9"
+  },
+  "prebuilts/gcc/linux-x86/x86/x86_64-linux-android-4.9": {
+    "groups": [
+      "linux",
+      "pdk",
+      "x86"
+    ],
+    "rev": "f540e4c1ed8713852e36fbf32d08b48756e389e2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0ywabrdggd135qdj5d2chjj5i3v1aixx5znf70m3d31iys0rnx32",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/x86/x86_64-linux-android-4.9"
+  },
+  "prebuilts/gdb/linux-x86": {
+    "groups": [
+      "linux"
+    ],
+    "rev": "6761fb3311671f5c8a1340328464af76cd5a721f",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0i5kmiii51ir78bfkp7n2696bdaiynpvcxs46s72c8bgfd8121ca",
+    "url": "https://android.googlesource.com/platform/prebuilts/gdb/linux-x86"
+  },
+  "prebuilts/go/linux-x86": {
+    "groups": [
+      "linux",
+      "tradefed"
+    ],
+    "rev": "73ae8b7425c5715007130f4f08c5e421b40824b4",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1lsfib2g0yfaxx575kc8h2q8whkvf03rn4sgk3d4yn359cba3jnn",
+    "url": "https://android.googlesource.com/platform/prebuilts/go/linux-x86"
+  },
+  "prebuilts/gradle-plugin": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "80e86fe7511cf5052a4de530cf8ca662d152b690",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "15jn09d5phlcysfkd2qaqfhvy4hc1v8w005hj3dyi67mwz523hp9",
+    "url": "https://android.googlesource.com/platform/prebuilts/gradle-plugin"
+  },
+  "prebuilts/libs/libedit": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "7f9518f2e0d43e6adf7030b29dd8ee6936db9402",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0mi8jbgnbjl7rgmii0a0nswcyq4sl4nrnshi45rcp4dmnxw34fnk",
+    "url": "https://android.googlesource.com/platform/prebuilts/libs/libedit"
+  },
+  "prebuilts/maven_repo/android": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "8403c69c606be6be555272a8e5657e8b65a5343b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0w8r1mic0xs1cqgdb4jnm0fhkv95b8qis4iyqj6ir7vyf24q4nkk",
+    "url": "https://android.googlesource.com/platform/prebuilts/maven_repo/android"
+  },
+  "prebuilts/misc": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "18000ca8049f84ba07566551ff04c83a59d30617",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "08v0mcfnns0b3v6dpqr6jcd725icj0csw0wzwklxbicv5gakm3d3",
+    "url": "https://android.googlesource.com/platform/prebuilts/misc"
+  },
+  "prebuilts/ndk": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "f3970a03bc1c8c0892648504a486665153b83cda",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1p0lx8qg4s4v2cvvfb2y7afn9grmxrglmkcrgw8f3skvv2ajlx13",
+    "url": "https://android.googlesource.com/platform/prebuilts/ndk"
+  },
+  "prebuilts/ninja/linux-x86": {
+    "groups": [
+      "linux",
+      "pdk",
+      "tradefed"
+    ],
+    "rev": "b496ebc115c7f56ee602d4d75297208896db2437",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0fpxnf9xni2ad7yab7k625bqy971y9nk7ii9v0syapszx4cgvzd4",
+    "url": "https://android.googlesource.com/platform/prebuilts/ninja/linux-x86"
+  },
+  "prebuilts/python/linux-x86/2.7.5": {
+    "groups": [
+      "linux",
+      "pdk",
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "12e4bcaf044e548c751fe94c1abf76222071209e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "113g8zamfz7irraxlhbk56cx3vpd4jdl86v966icc2kymgyhm9ng",
+    "url": "https://android.googlesource.com/platform/prebuilts/python/linux-x86/2.7.5"
+  },
+  "prebuilts/qemu-kernel": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "d9b6233ba9da283a5860b6caf0fd51c32474aed8",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "027r1ag6w0kvp74x2yvlvpisr4l136r6zq9pv5hzxqdq59vynr5m",
+    "url": "https://android.googlesource.com/platform/prebuilts/qemu-kernel"
+  },
+  "prebuilts/sdk": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "22e07c0de80ca9d50e77ff0ef86e17defe979dc7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0kqi8f5288nqvf2yx605fyrskk3ll585aizssz0688vbm9dz6zhs",
+    "url": "https://android.googlesource.com/platform/prebuilts/sdk"
+  },
+  "prebuilts/tools": {
+    "groups": [
+      "pdk",
+      "tools"
+    ],
+    "rev": "1b611728eb67fb1c1bc41231ba18f0833e804809",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "05c2vzlrsvgzd2bwp1dxjx59xb0dv506pxg7z9lhj7b6k3ffw1sl",
+    "url": "https://android.googlesource.com/platform/prebuilts/tools"
+  },
+  "sdk": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "42baef424c4bc18b298e7cb2c7f925805116072a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0mgpql5fahm9b9sq7z6ddkmh08yd6wpxi1fvicmmmrwdcbny7710",
+    "url": "https://android.googlesource.com/platform/sdk"
+  },
+  "system/bt": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "8f6f60569890a947d97ea8400db9340890ee4bb6",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1yncd8kzzfv0bv6782hnznfnh3vgykg7mc469wa22w6hmk37p50a",
+    "url": "https://android.googlesource.com/platform/system/bt"
+  },
+  "system/ca-certificates": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "6980386030c87c2dbc04ccc5bc4a410b7b57b76a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0r5nhm249vxqn3vrqc8wrcp4b5kxv0fc8bnlj1mlb13w8s64hman",
+    "url": "https://android.googlesource.com/platform/system/ca-certificates"
+  },
+  "system/connectivity/apmanager": {
+    "groups": [],
+    "rev": "992307aba87eb6f05efc16c07a587969296fa12c",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1kyiamwhznx7i1bk78wdqcp45w5ci0yb0j7f8h6q2fdv8rhz0gd9",
+    "url": "https://android.googlesource.com/platform/system/connectivity/apmanager"
+  },
+  "system/connectivity/dhcp_client": {
+    "groups": [],
+    "rev": "ea76af24314e20b8c3c583d0b58b7879e30ca5a7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "066fv7x8h5gwx36hgi318g22ffrwszlfhp2caxq1zgzsfhj6ipwx",
+    "url": "https://android.googlesource.com/platform/system/connectivity/dhcp_client"
+  },
+  "system/connectivity/shill": {
+    "groups": [],
+    "rev": "b53c1f72dcf5d5e3b57e03d990f95278eddb9e56",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0rmid17mdll3yr6f55nhwlgal35ncy29xc3ix8f37fp73fv83r8m",
+    "url": "https://android.googlesource.com/platform/system/connectivity/shill"
+  },
+  "system/core": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "c353e80441d5fa802271e7238f8666de149dd525",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "0s1frj04y36mk3rfwapys58x33v820gjsi0ji3xdydnkxgw4zcqf",
+    "url": "https://github.com/pmanbox/platform_system_core"
+  },
+  "system/extras": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "2b7e5d083e92f3b0bfe916a650c91176ddaa2d2b",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "18130c23ybqcpgjc5v6f8kdbv2xn39hyiaj17dzldjb9rlwzcyy9",
+    "url": "https://android.googlesource.com/platform/system/extras"
+  },
+  "system/firewalld": {
+    "groups": [],
+    "rev": "003b901ad3ad2eaeca16d8d92ba3b4bdf4b91af3",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1d2parlbjd2ig4fr0n6rqg5ljqlvqzajgfhs3vkxi2bc7abyf95n",
+    "url": "https://android.googlesource.com/platform/system/firewalld"
+  },
+  "system/gatekeeper": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a3dff186ecbb98d4f4436573a0e4c2bca330561a",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1hc6l3wkkbcqxzylds01947a8b4sciwhng94qkyn4gq406zzrsjk",
+    "url": "https://android.googlesource.com/platform/system/gatekeeper"
+  },
+  "system/keymaster": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "2e74378f83c606f169e4958a0bbe4d72241104b2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "04aiphv9hqkysm2cff0bn1yb14xhmrj5gznkawnnlzj61dh9v5g1",
+    "url": "https://android.googlesource.com/platform/system/keymaster"
+  },
+  "system/media": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "41d8603f30308baf05a6791396b1cb70958ac78e",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0af070d1l5i1b9h095q8d5bkqr640c2khkw0dgq3ch7xnq6zasm6",
+    "url": "https://android.googlesource.com/platform/system/media"
+  },
+  "system/nativepower": {
+    "groups": [],
+    "rev": "87a1a64e115f29748f3388888c0d01ce3103a515",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0qq88vjvd0rw4frszn4v013j67ndlgnfl4g5dslssyh9ja1rffjw",
+    "url": "https://android.googlesource.com/platform/system/nativepower"
+  },
+  "system/netd": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "eeb6b480ac2ff5199e58a154f19ef947de3a6416",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "1pz10p8wdl8wb0pxwwnvrjfia7qwnw8d4cn6ajg2rkapxi865w6z",
+    "url": "https://github.com/pmanbox/platform_system_netd"
+  },
+  "system/nvram": {
+    "groups": [],
+    "rev": "f01e259511c59170d7885eb75888c1e8251300c5",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/platform/system/nvram"
+  },
+  "system/security": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "06e58d24ec2832e1b5c110d6d4affb7e0c45f9a7",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0jdp13wgz5sfkpijcxb5l5n54c550n2qqc7zxn02v00bg691pp62",
+    "url": "https://android.googlesource.com/platform/system/security"
+  },
+  "system/sepolicy": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "ab36df14efa8fe120e875c6af29bdd1f8de0e303",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "10gyna55dj7azjw2841mdyicqw8wmq9ykq9gp4yaf5ilz4riij6f",
+    "url": "https://android.googlesource.com/platform/system/sepolicy"
+  },
+  "system/tools/aidl": {
+    "groups": [
+      "pdk-cw-fs",
+      "pdk-fs"
+    ],
+    "rev": "c969776935ddd44410394c007626e39576383392",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1q59yxnk4gs5836dq6jxrc4r4zf9bc011h59bbf30skfr2m1hxmp",
+    "url": "https://android.googlesource.com/platform/system/tools/aidl"
+  },
+  "system/tpm": {
+    "groups": [],
+    "rev": "f84e709189e36173d018c06070249f1e110e74c9",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "17hba8zfxqf8848qpkr9qqd3mjs67mblibik2jw5l6pgli6pfw4k",
+    "url": "https://android.googlesource.com/platform/system/tpm"
+  },
+  "system/update_engine": {
+    "groups": [],
+    "rev": "b8cf729fb93e555602a450e1b0286dfd0dd1fbaa",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "13phshjkvdikpg1mwmpfyn2xz4g4rk8vrvwy7z5zkm72n74a5lng",
+    "url": "https://android.googlesource.com/platform/system/update_engine"
+  },
+  "system/vold": {
+    "groups": [
+      "pdk"
+    ],
+    "rev": "a03273ae59bfa03a3ab455641716f1fbe1cc70cb",
+    "revisionExpr": "anbox/rebase",
+    "sha256": "1gcsq3qgazvpnbds17n9lqimc8rj2rnlkj8ahzi7frfdh34w59n3",
+    "url": "https://github.com/pmanbox/platform_system_vold"
+  },
+  "system/weaved": {
+    "groups": [],
+    "rev": "126072ec90c356c1013fd36f1f7c4ef7f25b7eb2",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0fzn4frawnq7qlnzypxgkzrgr4s20z4ma16cxxyn9nja3mlvczjy",
+    "url": "https://android.googlesource.com/platform/system/weaved"
+  },
+  "system/webservd": {
+    "groups": [],
+    "rev": "fa6367351fb1a5c64404f4afc5e28d6c19f09cdb",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0j1a6mi32lyq2r30yda2il3kb61fl4cl9ilb2iki8al0hcsbdhxq",
+    "url": "https://android.googlesource.com/platform/system/webservd"
+  },
+  "test/vts": {
+    "groups": [
+      "pdk",
+      "vts"
+    ],
+    "rev": "1327c15f42f3d861d054030aec9948728cf65456",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1iv376x2p824wlgvpk3fbb1gxwwxa7ysrs1h20wv2m1fcg53d6ql",
+    "url": "https://android.googlesource.com/platform/test/vts"
+  },
+  "toolchain/binutils": {
+    "groups": [],
+    "rev": "7ec51696aaa8494e726a7e4c6201b41728bece83",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "0fwmc6wi5ycp2rq9sasap3xm133a252iyd84b5qf7j8dqiywjnf5",
+    "url": "https://android.googlesource.com/toolchain/binutils"
+  },
+  "tools/external/fat32lib": {
+    "groups": [
+      "tools"
+    ],
+    "rev": "4afadb9eb56845afd2bb8a705925ebba6d9d8f53",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1vm9dvh7bqw6c6iazan2ba9z0h33y219b19dxdabbxqz3zg3pvzy",
+    "url": "https://android.googlesource.com/platform/tools/external/fat32lib"
+  },
+  "tools/external/gradle": {
+    "groups": [
+      "tools"
+    ],
+    "rev": "52160245d41702c2c2b84a24802635dd05e79919",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "037650pl5x27klsn5z6jybpsi3bvam5f8na43ci1r7k3qhd58bzc",
+    "url": "https://android.googlesource.com/platform/tools/external/gradle"
+  },
+  "tools/test/connectivity": {
+    "groups": [],
+    "rev": "8cba5622b49e79e218472b0a9504d3b75ad71e64",
+    "revisionExpr": "refs/tags/android-7.1.2_r39",
+    "sha256": "1r1inc6i6cd569xas4vh12mwj3pvjhi5rf12nnmqbji1v3ih35ss",
+    "url": "https://android.googlesource.com/platform/tools/test/connectivity"
+  },
+  "vendor/anbox": {
+    "groups": [],
+    "rev": "6c4897c03eb94d60918866b87c0a268dd811325f",
+    "revisionExpr": "master",
+    "sha256": "0x8x8iq8l9nb24hlla3mpp784p40nghmfhpv4lmd48fq98s89jjf",
+    "url": "https://github.com/pmanbox/anbox"
+  }
+}

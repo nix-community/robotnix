@@ -1,0 +1,12 @@
+diff --git a/core/prebuilt_internal.mk b/core/prebuilt_internal.mk
+index ee68427541..7203b87adb 100644
+--- a/core/prebuilt_internal.mk
++++ b/core/prebuilt_internal.mk
+@@ -241,6 +241,7 @@ $(built_module): PRIVATE_EMBEDDED_JNI_LIBS := $(embedded_prebuilt_jni_libs)
+ 
+ $(built_module) : $(my_prebuilt_src_file) | $(ACP) $(ZIPALIGN) $(SIGNAPK_JAR) $(AAPT)
+ 	$(transform-prebuilt-to-target)
++	chmod u+w $@
+ 	$(uncompress-shared-libs)
+ ifdef LOCAL_DEX_PREOPT
+ ifneq ($(BUILD_PLATFORM_ZIP),)
