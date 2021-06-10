@@ -222,14 +222,18 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 ]))
 
 (mkIf (config.androidVersion == 12) {
-  source.manifest.rev = mkDefault "android-s-preview-1";
-  buildDateTime = mkDefault 1613683757;
+  source.manifest.rev = mkDefault "android-s-beta-2";
+  buildDateTime = mkDefault 1623280230;
 
-  # Build fails otherwise complaining about soong visibility for some art module
-  source.dirs.libcore.src = pkgs.fetchgit {
-    url = "https://android.googlesource.com/platform/libcore";
-    rev = "dc5351ff0193f6c82478981e32561a779651821a";
-    sha256 = "1hs9rmssfg4qjsbfd26psj4n3ayd5q5bfpswc2jcly3pym1gdnn5";
+  # Needed for:
+  # error: packages/modules/NeuralNetworks/shim_and_sl/Android.bp:96:16: unrecognized property "llndk_stubs"
+  # error: packages/modules/NeuralNetworks/shim_and_sl/Android.bp:133:1: unrecognized module type "llndk_library"
+  # error: packages/modules/NeuralNetworks/runtime/Android.bp:163:16: unrecognized property "llndk_stubs"
+  # error: packages/modules/NeuralNetworks/runtime/Android.bp:247:1: unrecognized module type "llndk_library"
+  source.dirs."packages/modules/NeuralNetworks".src = pkgs.fetchgit {
+    url = "https://android.googlesource.com/platform/packages/modules/NeuralNetworks";
+    rev = "afa1c6f6f25d88462f207159b1ad34b609725aa1";
+    sha256 = "0khj4ppdcflv260i5pr472p10x3rasnnphly62sicdi76bc8r78c";
   };
 })
 
