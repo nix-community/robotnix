@@ -8,7 +8,7 @@ let
     elem mapAttrs mapAttrs' nameValuePair filterAttrs
     attrNames getAttrs flatten remove
     mkIf mkMerge mkDefault mkForce
-    importJSON toLower;
+    importJSON toLower removePrefix;
 
   androidVersionToLineageBranch = {
     "10" = "lineage-17.1";
@@ -67,6 +67,7 @@ in mkIf (config.flavor == "lineageos")
   androidVersion = let
       defaultBranch = deviceMetadata.${config.device}.branch;
     in mkIf (deviceMetadata ? ${config.device}) (mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch}));
+  flavorVersion = removePrefix "lineage-" androidVersionToLineageBranch.${toString config.androidVersion};
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
