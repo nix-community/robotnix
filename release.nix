@@ -37,6 +37,9 @@ let
 
     { device="marlin";     flavor="lineageos"; }
     { device="pioneer";    flavor="lineageos"; }
+
+    { device="x86_64";     flavor="anbox"; }
+    { device="arm64";      flavor="anbox"; }
   ]));
 
   builtConfigs = lib.mapAttrs (name: c: robotnix c) configs;
