@@ -285,6 +285,11 @@ Contributions and fixes from LineageOS users are especially welcome!</p>
 <p>For devices with &quot;boot-as-recovery&quot;, the typical LineageOS flashing process involves first producing a <code>boot.img</code> and <code>ota</code>, flashing <code>boot.img</code> with fastboot, and then sideloading the <code>ota</code> in recovery mode.
 The <code>boot.img</code> and <code>ota</code> targets can be built using <code>nix-build ... -A bootImg</code> or <code>nix-build ... -A ota</code>, respectively.
 Check the upstream documentation for your particular device before following the above instructions.</p>
+<h2><a class="header" href="#anbox" id="anbox">Anbox</a></h2>
+<p>Anbox is a Free and open-source container-based approach at running Android on Linux systems.
+Anbox support may be enabled by setting <code>flavor = &quot;anbox&quot;;</code>.</p>
+<p>At the time of writing, support is experimental.
+Given that Anbox is based on an older Android release (7), support for Robotnix options is not guaranteed.</p>
 <!--
 SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
