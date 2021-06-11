@@ -46,7 +46,7 @@ in
     }
 
     # Add selinux policies
-    (mkIf (config.flavor != "grapheneos" && config.androidVersion >= 11) {
+    (mkIf (config.flavor == "vanilla" && config.androidVersion >= 11) {
       source.dirs."robotnix/updater-sepolicy".src = ./updater-sepolicy;
       source.dirs."build/make".postPatch = ''
         # Originally from https://github.com/RattlesnakeOS/core-config-repo/blob/0d2cb86007c3b4df98d4f99af3dedf1ccf52b6b1/hooks/aosp_build_pre.sh
