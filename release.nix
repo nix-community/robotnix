@@ -48,24 +48,24 @@ let
 
   tests = {
     attestation-server = (import ./nixos/attestation-server/test.nix { inherit pkgs; }) {};
+
+    generateKeys = let
+      inherit ((robotnix { device="crosshatch"; flavor="vanilla"; }))
+        generateKeysScript verifyKeysScript;
+    in pkgs.runCommand "test-generate-keys" { nativeBuildInputs = [ pkgs.shellcheck ]; } ''
+      mkdir -p $out
+      cd $out
+      shellcheck ${generateKeysScript}
+      shellcheck ${verifyKeysScript}
+
+      ${verifyKeysScript} $PWD && exit 1 || true # verifyKeysScript should fail if we haven't generated keys yet
+      ${generateKeysScript} $PWD
+      ${verifyKeysScript} $PWD
+    '';
   };
 in
 {
   inherit (pkgs) diffoscope;
-
-  testGenerateKeys = let
-    inherit ((robotnix { device="crosshatch"; flavor="vanilla"; }))
-      generateKeysScript verifyKeysScript;
-  in pkgs.runCommand "test-generate-keys" { nativeBuildInputs = [ pkgs.shellcheck ]; } ''
-    mkdir -p $out
-    cd $out
-    shellcheck ${generateKeysScript}
-    shellcheck ${verifyKeysScript}
-
-    ${verifyKeysScript} $PWD && exit 1 || true # verifyKeysScript should fail if we haven't generated keys yet
-    ${generateKeysScript} $PWD
-    ${verifyKeysScript} $PWD
-  '';
 
   check = lib.mapAttrs (name: c: (robotnix c).config.build.checkAndroid) configs;
 
@@ -110,6 +110,7 @@ in
 
     tests = lib.recurseIntoAttrs {
       attestation-server = tests.attestation-server.test;
+      inherit (tests) generateKeys;
     };
   };
 }
