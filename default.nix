@@ -38,7 +38,6 @@ let
       ./modules/11
       ./modules/12
       ./modules/9
-      ./modules/7
       ./modules/apps/auditor.nix
       ./modules/apps/chromium.nix
       ./modules/apps/fdroid.nix

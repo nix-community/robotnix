@@ -130,9 +130,9 @@ in
     };
 
     apiLevel = mkOption {
-      default = 30;
       type = types.int;
       internal = true;
+      readOnly = true;
     };
 
     system.additionalProductPackages = mkOption {
@@ -202,6 +202,17 @@ in
     deviceFamily = mkDefault "generic";
   })
   {
+    apiLevel = {
+      # TODO: If we start building older androids and need the distinction
+      # between 7 and 7.1, we should probably switch to a string androidVersion
+      "7" = 25; # Assuming 7.1
+      "8" = 27; # Assuming 8.1
+      "9" = 28;
+      "10" = 29;
+      "11" = 30;
+      "12" = 31;
+    }.${builtins.toString config.androidVersion} or 30;
+
     buildNumber = mkOptionDefault (formatSecondsSinceEpoch config.buildDateTime);
 
     productName = mkIf (config.device != null) (mkOptionDefault "${config.productNamePrefix}${config.device}");

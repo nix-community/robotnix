@@ -12,8 +12,6 @@ let
 in
 mkIf (config.androidVersion == 11) (mkMerge [
 {
-  apiLevel = 30;
-
   source.dirs."build/make".patches = [
     ./build_make/0001-Readonly-source-fix.patch
   ] ++ (lib.optional (!(lib.elem config.flavor [ "grapheneos" "lineageos" ]))
