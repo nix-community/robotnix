@@ -477,7 +477,30 @@ in
         ''}
       '';
 
-      env = pkgs.buildFHSUserEnv {
+      env = let
+        # Ugly workaround needed in Android >= 12
+        patchedPkgs = pkgs.extend
+          (self: super: {
+            bashInteractive = super.bashInteractive.overrideAttrs (attrs: {
+              # Removed:
+              # -DDEFAULT_PATH_VALUE="/no-such-path"
+              # -DSTANDARD_UTILS_PATH="/no-such-path"
+              # This creates a bash closer to a normal FHS distro bash.
+              # Somewhere in the android build system >= android 12, bash starts
+              # inside an environment with PATH unset, and it gets "/no-such-path"
+              # Command: env -i bash -c 'echo $PATH'
+              # On NixOS/nixpkgs it outputs:  /no-such-path
+              # On normal distros it outputs: /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.
+              NIX_CFLAGS_COMPILE = ''
+                -DSYS_BASHRC="/etc/bashrc"
+                -DSYS_BASH_LOGOUT="/etc/bash_logout"
+                -DNON_INTERACTIVE_LOGIN_SHELLS
+                -DSSH_SOURCE_BASHRC
+              '';
+            });
+          });
+        buildFHSUserEnv = if (config.androidVersion >= 12) then patchedPkgs.buildFHSUserEnv else pkgs.buildFHSUserEnv;
+      in buildFHSUserEnv {
         name = "robotnix-build";
         targetPkgs = pkgs: config.envPackages;
         multiPkgs = pkgs: with pkgs; [ zlib ];
