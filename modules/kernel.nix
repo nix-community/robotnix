@@ -102,6 +102,12 @@ in
         description = "Relative path in source tree to place kernel build artifacts";
       };
 
+      installModules = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Install .ko modules";
+      };
+
       compiler = mkOption {
         default = "clang";
         type = types.strMatching "(gcc|clang)";
@@ -138,6 +144,8 @@ in
       openssl x509 -outform der -in ${config.signing.avb.verityCert} -out verity_user.der.x509
     '';
 
+    kernel.buildProductFilenames = mkIf cfg.installModules [ "moduleout/**/*.ko" ];
+
     build.kernel = pkgs.stdenv.mkDerivation ({
       name = "kernel-${cfg.name}";
       inherit (cfg) src patches postPatch;
@@ -160,16 +168,15 @@ in
         prebuiltMisc
         nukeReferences
       ]
-      ++ lib.optionals (cfg.compiler == "clang") [
-        prebuiltClang
-      ]  # TODO: Generalize to other arches
+      ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang ]  # TODO: Generalize to other arches
       ++ lib.optionals (config.deviceFamily != "redfin") [ prebuiltGCC prebuiltGCCarm32 ]
       ++ lib.optionals (config.deviceFamily == "redfin") [
         # HACK: Additional dependencies needed by redfin.
         python bison flex cpio
         prebuiltGas
-        kmod # needed for `depmod`, used in modules_install
-      ];
+      ]
+      # needed for `depmod`, used in modules_install
+      ++ lib.optional cfg.installModules kmod;
 
       enableParallelBuilding = true;
       makeFlags = [
@@ -212,7 +219,7 @@ in
       ''; # So it can load LLVMgold.so
 
       # Strip modules
-      postBuild = ''
+      postBuild = lib.optionalString (cfg.installModules) ''
         make $makeFlags "''${makeFlagsArray[@]}" INSTALL_MOD_PATH=moduleout INSTALL_MOD_STRIP=1 modules_install
         ${lib.optionalString (config.deviceFamily == "redfin") "cp out/modules.order out/modules.load"}
       '';

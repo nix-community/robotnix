@@ -211,7 +211,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
       chmod u+w -R $out/${relpath}
     '') kernelDirs));
 
-  kernel.buildProductFilenames = [ "moduleout/**/*.ko" ]; # Copy kernel modules if they exist
+  kernel.installModules = mkIf (!(elem config.deviceFamily [ "marlin" "taimen" ])) (mkDefault true);
 })
 (mkIf (elem config.device [ "taimen" "walleye" ]) {
   warnings = [ "taimen and walleye are no longer receiving monthly vendor security updates from Google. Support is left just for testing" ];
