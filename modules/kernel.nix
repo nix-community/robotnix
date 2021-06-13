@@ -168,6 +168,7 @@ in
         # HACK: Additional dependencies needed by redfin.
         python bison flex cpio
         prebuiltGas
+        kmod # needed for `depmod`, used in modules_install
       ];
 
       enableParallelBuilding = true;
@@ -209,6 +210,12 @@ in
       '' + lib.optionalString (cfg.compiler == "clang") ''
         export LD_LIBRARY_PATH="${prebuiltClang}/lib:$LD_LIBRARY_PATH"
       ''; # So it can load LLVMgold.so
+
+      # Strip modules
+      postBuild = ''
+        make $makeFlags "''${makeFlagsArray[@]}" INSTALL_MOD_PATH=moduleout INSTALL_MOD_STRIP=1 modules_install
+        ${lib.optionalString (config.deviceFamily == "redfin") "cp out/modules.order out/modules.load"}
+      '';
 
       installPhase = ''
         mkdir -p $out
