@@ -148,9 +148,9 @@ mkMerge [
       "arch/arm64/boot/Image.lz4"
       "arch/arm64/boot/dtbo.img"
       "arch/arm64/boot/dts/google/qcom-base/lito.dtb"
+      "modules.load"
     ];
     kernel.name = mkDefault "redbull";
     kernel.configName = mkDefault "redbull"; # redfin + bramble
-    kernel.linker = "lld";
   })
 ]

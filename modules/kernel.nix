@@ -241,7 +241,14 @@ in
     # output directory like kernel headers for sunfish under device/google/sunfish-kernel/sm7150
     source = mkIf cfg.enable {
       dirs.${cfg.relpath}.postPatch = ''
-        cp -fv ${config.build.kernel}/* .
+        # Warn if we have prebuilt files that we aren't replacing
+        for filename in *; do
+          if [[ -f "$filename" && ! -f "${config.build.kernel}/$filename" ]]; then
+            echo "WARNING: Not replacing $filename"
+          fi
+        done
+
+        cp -f ${config.build.kernel}/* .
       '';
     };
   };
