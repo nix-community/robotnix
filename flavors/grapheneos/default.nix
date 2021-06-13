@@ -106,5 +106,12 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   kernel.relpath = mkMerge [
     (mkIf (config.device == "sargo") (mkForce "device/google/bonito-kernel"))
   ];
+
+  # 2021.06.09.13 Release Note:
+  # kernel (Pixel 4a (5G), Pixel 5): temporarily move to building and using
+  # dynamic kernel modules (same list as AOSP) to work around new issues with
+  # monolithic builds until we have time to resolve it to improve CFI
+  # granularity again
+  kernel.installModules = mkIf (config.deviceFamily == "redfin") (mkDefault true);
 }
 ])
