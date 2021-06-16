@@ -479,6 +479,7 @@ in
         export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
         export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
         ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeScript "debug-enter-env2.sh" ''
+        #!${pkgs.runtimeShell}
         export rootDir=$PWD
         source ${config.build.unpackScript}
         ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}
