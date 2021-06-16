@@ -272,8 +272,7 @@ in
           srcs = [];
 
           # TODO: Clean this stuff up. unshare / robotnix-build could probably be combined into a single utility.
-          builder = pkgs.writeScript "builder.sh" ''
-            #!${pkgs.runtimeShell}
+          builder = pkgs.writeShellScript "builder.sh" ''
             export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
             export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
 
@@ -431,8 +430,7 @@ in
           env = pkgs.buildFHSUserEnv {
             name = "otatools-env";
             targetPkgs = p: with p; [ openssl ]; # for bin/avbtool
-            runScript = pkgs.writeScript "run" ''
-              #!${pkgs.runtimeShell}
+            runScript = pkgs.writeShellScript "run" ''
               run="$1"
               shift
               exec -- "$run" "$@"
@@ -474,11 +472,10 @@ in
       # TODO: Better way than creating all these scripts and feeding with init-file?
 #        debugUnpackScript = config.build.debugUnpackScript;
 #        debugPatchScript = config.build.debugPatchScript;
-      debugEnterEnv = pkgs.writeScript "debug-enter-env.sh" ''
-        #!${pkgs.runtimeShell}
+      debugEnterEnv = pkgs.writeShellScript "debug-enter-env.sh" ''
         export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
         export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
-        ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeScript "debug-enter-env2.sh" ''
+        ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeShellScript "debug-enter-env2.sh" ''
         export rootDir=$PWD
         source ${config.build.unpackScript}
         ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}

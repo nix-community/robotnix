@@ -187,8 +187,7 @@ in
       '';
     # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
     # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
-    in pkgs.writeScript "generate_keys.sh" ''
-      #!${pkgs.runtimeShell}
+    in pkgs.writeShellScript "generate_keys.sh" ''
       set -euo pipefail
 
       if [[ "$#" -ne 1 ]]; then
@@ -247,8 +246,7 @@ in
 
     # Check that all needed keys are available.
     # TODO: Remove code duplicated with generate_keys.sh
-    build.verifyKeysScript = pkgs.writeScript "verify_keys.sh" ''
-      #!${pkgs.runtimeShell}
+    build.verifyKeysScript = pkgs.writeShellScript "verify_keys.sh" ''
       set -euo pipefail
 
       if [[ "$#" -ne 1 ]]; then

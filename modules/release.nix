@@ -147,8 +147,7 @@ in
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
     releaseScript =
       (if (!config.signing.enable) then lib.warn "releaseScript should be used only if signing.enable = true; Otherwise, the build might be using incorrect keys / certificate metadata" else lib.id)
-      pkgs.writeScript "release.sh" (''
-      #!${pkgs.runtimeShell}
+      pkgs.writeShellScript "release.sh" (''
       set -euo pipefail
 
       if [[ $# -ge 2 ]]; then
