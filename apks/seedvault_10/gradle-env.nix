@@ -48,7 +48,7 @@ let
     filter sort replaceStrings attrValues match fromJSON
     concatStringsSep;
 
-  inherit (stdenv.lib)
+  inherit (lib)
     versionOlder unique mapAttrs last concatMapStringsSep removeSuffix
     optionalString groupBy' readFile hasSuffix;
 

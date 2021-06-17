@@ -3,7 +3,7 @@
 
 { configuration,
   pkgs ? (import ./pkgs {}),
-  lib ? pkgs.stdenv.lib
+  lib ? pkgs.lib
 }:
 
 let

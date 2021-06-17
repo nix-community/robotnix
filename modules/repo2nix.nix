@@ -15,7 +15,7 @@ assert repoRepoRev != "" -> repoRepoURL != "";
 
 # stdenvNoCC, gitRepo, cacert, copyPathsToStore 
 with pkgs;
-with stdenvNoCC.lib;
+with pkgs.lib;
 
 let
   extraRepoInitFlags = [
