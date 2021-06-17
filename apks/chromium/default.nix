@@ -159,9 +159,7 @@ in stdenvNoCC.mkDerivation rec {
   patches =
     lib.optional enableRebranding
       (substituteAll {
-        src = if lib.versionAtLeast version "87"
-          then ./rebranding-87.patch
-          else ./rebranding.patch;
+        src = ./rebranding.patch;
         inherit displayName;
       })
     ++ lib.optional ((lib.versionAtLeast version "84") && (lib.versionOlder version "85"))
