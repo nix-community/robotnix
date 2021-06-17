@@ -1,15 +1,15 @@
-From c8f3558f1635c9932205c1e4abfefa5f228f6026 Mon Sep 17 00:00:00 2001
+From 713a05db9a3893ad3de04bcc51aed2250caf0844 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
-Date: Thu, 1 Aug 2019 17:43:56 -0400
+Date: Thu, 17 Jun 2021 14:14:20 -0700
 Subject: [PATCH 1/2] comparators/android: Support sparse android images
 
 ---
  diffoscope/comparators/__init__.py |  1 +
- diffoscope/comparators/android.py  | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ diffoscope/comparators/android.py  | 31 ++++++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
 diff --git a/diffoscope/comparators/__init__.py b/diffoscope/comparators/__init__.py
-index 2fd3edaa..997b4c5e 100644
+index 11d564a3..ee764689 100644
 --- a/diffoscope/comparators/__init__.py
 +++ b/diffoscope/comparators/__init__.py
 @@ -98,6 +98,7 @@ class ComparatorManager:
@@ -21,13 +21,14 @@ index 2fd3edaa..997b4c5e 100644
          ("gif.GifFile",),
          ("pcap.PcapFile",),
 diff --git a/diffoscope/comparators/android.py b/diffoscope/comparators/android.py
-index ab943075..d179100c 100644
+index 0aea6f60..af683b83 100644
 --- a/diffoscope/comparators/android.py
 +++ b/diffoscope/comparators/android.py
-@@ -85,3 +85,33 @@ class AndroidBootImgFile(File):
+@@ -84,3 +84,34 @@ class AndroidBootImgFile(File):
  
      def compare_details(self, other, source=None):
-         return [Difference.from_command(AbootimgInfo, self.path, other.path)]
+         return [Difference.from_operation(AbootimgInfo, self.path, other.path)]
++        return [Difference.from_operation(AbootimgInfo, self.path, other.path)]
 +
 +#####
 +
@@ -59,5 +60,5 @@ index ab943075..d179100c 100644
 +    FILE_TYPE_RE = re.compile(r'^Android sparse image\b')
 +    CONTAINER_CLASSES = [AndroidSparseImgContainer]
 -- 
-2.28.0
+2.31.1
 
