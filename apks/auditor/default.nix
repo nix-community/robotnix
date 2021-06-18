@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: MIT
 
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
-{ callPackage, lib, stdenv, pkgs, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle,
+{ callPackage, lib, stdenv, pkgs, substituteAll, fetchFromGitHub,
+  androidPkgs, jdk, gradle, gradleToNixPatchedFetchers,
   domain ? "example.org",
   applicationName ? "Robotnix Auditor",
   applicationId ? "org.robotnix.auditor",
@@ -60,27 +61,5 @@ buildGradle rec {
     cp app/build/outputs/apk/release/app-release-unsigned.apk $out
   '';
 
-  fetchers = let
-    patchJar = jar: stdenv.mkDerivation {
-      name = "patched.jar";
-      src = jar;
-
-      phases = "unpackPhase buildPhase installPhase";
-
-      nativeBuildInputs = with pkgs; [ unzip zip autoPatchelfHook ];
-
-      unpackPhase = "unzip $src";
-      buildPhase = "autoPatchelf .";
-      installPhase = "zip -r $out *";
-    };
-
-    fetchurl' = args:
-      if (lib.hasSuffix "-linux.jar" (lib.head args.urls))
-      then patchJar (pkgs.fetchurl args)
-      else pkgs.fetchurl args;
-  in
-  {
-    http = fetchurl';
-    https = fetchurl';
-  };
+  fetchers = gradleToNixPatchedFetchers;
 }

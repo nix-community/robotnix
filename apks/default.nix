@@ -3,11 +3,37 @@
 
 { pkgs ? (import ../pkgs {})}:
 
-with pkgs;
-rec {
-  auditor = callPackage ./auditor {};
+let
+  inherit (pkgs) callPackage lib stdenv;
 
-  fdroid = callPackage ./fdroid {};
+  gradleToNixPatchedFetchers = let
+    patchJar = jar: stdenv.mkDerivation {
+      name = "patched.jar";
+      src = jar;
+
+      phases = "unpackPhase buildPhase installPhase";
+
+      nativeBuildInputs = with pkgs; [ unzip zip autoPatchelfHook ];
+
+      unpackPhase = "unzip $src";
+      buildPhase = "autoPatchelf .";
+      installPhase = "zip -r $out *";
+    };
+
+    fetchurl' = args:
+      if (lib.hasSuffix "-linux.jar" (lib.head args.urls))
+      then patchJar (pkgs.fetchurl args)
+      else pkgs.fetchurl args;
+  in
+  {
+    http = fetchurl';
+    https = fetchurl';
+  };
+in
+rec {
+  auditor = callPackage ./auditor { inherit gradleToNixPatchedFetchers; };
+
+  fdroid = callPackage ./fdroid { inherit gradleToNixPatchedFetchers; };
 
   seedvault_10 = callPackage ./seedvault_10 {}; # Old version that works with Android 10
 
