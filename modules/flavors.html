@@ -163,14 +163,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#flavors" id="flavors">Flavors</a></h1>
+                        <h1 id="flavors"><a class="header" href="#flavors">Flavors</a></h1>
 <p>In normal usage, the user needs to select a robotnix &quot;flavor&quot; in their configuration file by setting the <code>flavor</code> option.
 Flavors may change the default settings of some other modules, which might not match the default setting shown on the <a href="options.html">Options</a> reference page.
 As an example, the GrapheneOS flavor enables <code>apps.vanadium.enable</code> by default.</p>
 <p>Currently, the vanilla and GrapheneOS flavors are based on Android 11, while the LineageOS flavor is based on Android 10.
 If a robotnix flavor supports multiple Android versions (either older or experimental newer versions),
 this can be overridden by setting (for example) <code>androidVersion = 10</code>.</p>
-<h2><a class="header" href="#vanilla" id="vanilla">Vanilla</a></h2>
+<h2 id="vanilla"><a class="header" href="#vanilla">Vanilla</a></h2>
 <p>The vanilla flavor is meant to represent a (mostly) unaltered version of the AOSP code published by Google.
 Vanilla AOSP support may be enabled by setting <code>flavor = &quot;vanilla&quot;;</code>.
 It does, however, include some small fixes and usability improvements.
@@ -180,7 +180,7 @@ Older Pixel phones (e.g. <code>marlin</code> / Pixel 1 XL) may be still be built
 However, these might be removed in the future as they are no longer receiving device updates from Google.</p>
 <p>Like GrapheneOS described below, the vanilla flavor retains working support for Android Verified Boot,
 and allows a user to re-lock the bootloader using the user's own generated root of trust.</p>
-<h2><a class="header" href="#grapheneos" id="grapheneos">GrapheneOS</a></h2>
+<h2 id="grapheneos"><a class="header" href="#grapheneos">GrapheneOS</a></h2>
 <p>GrapheneOS is a privacy and security focused mobile OS with Android app compatibility developed as a non-profit open source project.
 GrapheneOS support may be enabled by setting <code>flavor = &quot;grapheneos&quot;;</code>.
 Enabling the GrapheneOS flavor will also enable the Vanadium app/webview and Seedvault robotnix modules.
@@ -194,7 +194,7 @@ Only the latest GrapheneOS release is included with robotnix, even if that relea
 If you would prefer to stick to only stable releases, wait until the release is marked &quot;stable&quot; upstream.</p>
 <p>Before reporting bugs to upstream GrapheneOS, please ensure that you can reproduce your issue using the official GrapheneOS images.
 Alternatively, feel free to ask about your issue on the <code>#robotnix</code> IRC channel on Freenode.</p>
-<h2><a class="header" href="#lineageos" id="lineageos">LineageOS</a></h2>
+<h2 id="lineageos"><a class="header" href="#lineageos">LineageOS</a></h2>
 <p>LineageOS is a free and open-source operating system for various devices, based on the Android mobile platform.
 LineageOS support may be enabled by setting <code>flavor = &quot;lineageos&quot;;</code>.
 At the time of writing, this includes support for ~160 devices.</p>
@@ -212,7 +212,7 @@ Contributions and fixes from LineageOS users are especially welcome!</p>
 <p>For devices with &quot;boot-as-recovery&quot;, the typical LineageOS flashing process involves first producing a <code>boot.img</code> and <code>ota</code>, flashing <code>boot.img</code> with fastboot, and then sideloading the <code>ota</code> in recovery mode.
 The <code>boot.img</code> and <code>ota</code> targets can be built using <code>nix-build ... -A bootImg</code> or <code>nix-build ... -A ota</code>, respectively.
 Check the upstream documentation for your particular device before following the above instructions.</p>
-<h2><a class="header" href="#anbox" id="anbox">Anbox</a></h2>
+<h2 id="anbox"><a class="header" href="#anbox">Anbox</a></h2>
 <p>Anbox is a Free and open-source container-based approach at running Android on Linux systems.
 Anbox support may be enabled by setting <code>flavor = &quot;anbox&quot;;</code>.</p>
 <p>At the time of writing, support is experimental.

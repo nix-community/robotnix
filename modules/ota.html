@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#over-the-air-ota-updater" id="over-the-air-ota-updater">Over-the-Air (OTA) Updater</a></h1>
+                        <h1 id="over-the-air-ota-updater"><a class="header" href="#over-the-air-ota-updater">Over-the-Air (OTA) Updater</a></h1>
 <p>The following robotnix configuration enables the <a href="https://github.com/GrapheneOS/platform_packages_apps_Updater">OTA updater app</a>.</p>
 <pre><code class="language-nix">{
     apps.updater.enable = true;
@@ -173,7 +173,7 @@
 <p>The <code>apps.updater.url</code> setting needs to point to a URL hosting the OTA files described below.</p>
 <p>Additionally, the <code>buildDateTime</code> option is set by default by the flavor, and is updated when those flavors have new releases.
 If you make new changes to your build that you want to be pushed by the OTA updater, you should set <code>buildDateTime</code> yourself, using <code>date &quot;+%s&quot;</code> to get the current time.</p>
-<h2><a class="header" href="#building-ota-updates" id="building-ota-updates">Building OTA updates</a></h2>
+<h2 id="building-ota-updates"><a class="header" href="#building-ota-updates">Building OTA updates</a></h2>
 <p>The OTA file and metadata can be generated as part of the <code>releaseScript</code>
 output.  If you are signing builds inside Nix using the sandbox exception,
 robotnix additionally includes a convenient target which will build a directory
@@ -190,7 +190,7 @@ links) with possibly different timestamps and hashes of course:</p>
 </code></pre>
 <p>The file <code>sunfish-ota_update-2021.02.06.16.zip</code> can be sideloaded with adb as
 described in the next section.</p>
-<h2><a class="header" href="#actually-serving-ota-updates-over-the-air" id="actually-serving-ota-updates-over-the-air">Actually serving OTA updates over the air</a></h2>
+<h2 id="actually-serving-ota-updates-over-the-air"><a class="header" href="#actually-serving-ota-updates-over-the-air">Actually serving OTA updates over the air</a></h2>
 <blockquote>
 <p><em>Note:</em> These instructions have only been tested with the Vanilla and
 GrapheneOS flavors.  This method likely will not with the LineageOS flavor

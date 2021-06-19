@@ -167,8 +167,8 @@
 SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
-<h1><a class="header" href="#building" id="building">Building</a></h1>
-<h2><a class="header" href="#build-outputs" id="build-outputs">Build outputs</a></h2>
+<h1 id="building"><a class="header" href="#building">Building</a></h1>
+<h2 id="build-outputs"><a class="header" href="#build-outputs">Build outputs</a></h2>
 <p>Robotnix provides a number of Nix outputs that can be built with a given configuration.
 The specific output is selected using the <code>-A</code> option of <code>nix-build</code>.
 For example, the following will build an <code>img</code> zip associated with the configuration in <code>config.nix</code>.</p>
@@ -182,7 +182,7 @@ For example, the following will build an <code>img</code> zip associated with th
 <li><code>releaseScript</code> - Script which produces the <code>img</code>, <code>ota</code>, and <code>factoryImg</code> products outside of Nix.</li>
 <li><code>generateKeysScript</code> - Script to generate required device / application keys for a given configuration.</li>
 </ul>
-<h2><a class="header" href="#building-and-signing-releases" id="building-and-signing-releases">Building and Signing Releases</a></h2>
+<h2 id="building-and-signing-releases"><a class="header" href="#building-and-signing-releases">Building and Signing Releases</a></h2>
 <p>After creating a configuration file, you need to generate keys for your device (if you are using signed builds, with <code>signing.enable = true;</code>):</p>
 <pre><code class="language-console">$ nix-build --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
 $ ./generate-keys ./keys
@@ -210,14 +210,14 @@ $ ./release ./keys
 </code></pre>
 <p>This has the additional benefit that the build can take place on a remote machine, and the <code>releaseScript</code> could be copied using <code>nix-copy-closure</code> to a local machine which containing the keys.
 You might need to manually set certain required options like <code>signing.avb.fingerprint</code> or <code>apps.prebuilt.&lt;name&gt;.fingerprint</code> if you build on a remote machine that does not have access to the <code>signing.keyStorePath</code>.</p>
-<h2><a class="header" href="#binary-cache" id="binary-cache">Binary Cache</a></h2>
+<h2 id="binary-cache"><a class="header" href="#binary-cache">Binary Cache</a></h2>
 <p>Robotnix now has an optional binary cache provided by <a href="https://cachix.org/">Cachix</a> on <a href="https://robotnix.cachix.org/">robotnix.cachix.org</a>.
 Using the robotnix binary cache will allow the user to avoid building some parts that can be shared between users.
 Currently, only the device kernels and browser builds are published through the binary cache.
 This is because these derivation outputs are most likely to be shared between users, and those outputs also can take a very long time to build.
 The build products previously discussed should be uploaded for at least every robotnix release tag.
 To use, install <code>cachix</code>, run <code>cachix use robotnix</code>, and then build robotnix like normal.</p>
-<h2><a class="header" href="#flakes" id="flakes">Flakes</a></h2>
+<h2 id="flakes"><a class="header" href="#flakes">Flakes</a></h2>
 <p>If the robotnix configuration is specified in a flake, the robotnix outputs can be produced by running (for example):</p>
 <pre><code class="language-shell">$ nix build .#robotnixConfigurations.dailydriver.img
 </code></pre>

@@ -167,7 +167,7 @@
 SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
-<h1><a class="header" href="#development" id="development">Development</a></h1>
+<h1 id="development"><a class="header" href="#development">Development</a></h1>
 <p>Robotnix modules use the same Nix-based module system used in NixOS.
 To understand the NixOS module system, please <a href="https://nixos.org/manual/nixos/stable/index.html#sec-writing-modules">read this</a>.</p>
 <p>Robotnix does not primarily aim to significantly decrease the complexity of Android development,
@@ -175,7 +175,7 @@ but rather (once a developer has a working build) makes it easier to share that 
 <p>As such, robotnix does not replace the existing Android build system, but provides a convenient Nix-based wrapper around the build system.
 (See <a href="https://github.com/danielfullmer/blueprint2nix">blueprint2nix</a> and <a href="https://github.com/danielfullmer/soongnix">soongnix</a> for an experimental attempt at reimplementing part of the Android build system natively in Nix.)</p>
 <p>Feel free to ask robotnix development questions in <code>#robotnix</code> on Freenode.</p>
-<h2><a class="header" href="#helper-scripts" id="helper-scripts">Helper scripts</a></h2>
+<h2 id="helper-scripts"><a class="header" href="#helper-scripts">Helper scripts</a></h2>
 <p>Robotnix can produce a few helper scripts that can make Android development easier in some circumstances.</p>
 <p>Running <code>nix-build --arg configuration &lt;cfg&gt; -A &lt;output&gt;</code> for the outputs below will produce the corresponding helper script, using the provided robotnix configuration.</p>
 <ul>
@@ -187,7 +187,7 @@ but rather (once a developer has a working build) makes it easier to share that 
 <li><code>config.build.debugUnpackScript</code> produces a script which will copy the robotnix-specific source directories into <code>./robotnix/</code>.</li>
 <li><code>config.build.debugPatchScript</code> produces a script which will patch all Android source directories under the current directory in a similar way they would be patched during a normal robotnix build.</li>
 </ul>
-<h2><a class="header" href="#external-modules" id="external-modules">External modules</a></h2>
+<h2 id="external-modules"><a class="header" href="#external-modules">External modules</a></h2>
 <p>Robotnix is welcome to contributions of well-written modules that can be maintained in an ongoing fashion.
 Modules can provide support for new flavors, additional devices with an existing flavor, included system/privileged applications, and others.</p>
 <p>If the proposed module is not suitable for inclusion as an upstream robotnix module,
@@ -203,7 +203,7 @@ For instance, if the module is provided by <code>default.nix</code> in the <code
 </code></pre>
 <p>The above <code>imports</code> statement will include the provided module in the robotnix build, pinned by the provided revision and <code>sha256</code>.
 Any options or configuration set by the specified module will be included in the build.</p>
-<h2><a class="header" href="#developing-a-new-flavor" id="developing-a-new-flavor">Developing a new flavor</a></h2>
+<h2 id="developing-a-new-flavor"><a class="header" href="#developing-a-new-flavor">Developing a new flavor</a></h2>
 <p>To create a new flavor, the developer should create a robotnix module that conditions on <code>config.flavor</code>.
 The flavor configuration defaults should be set conditionally using (for example) <code>mkIf (config.flavor = &quot;...&quot;) { ... }</code>.
 Those configuration defaults should include:</p>
@@ -215,7 +215,7 @@ Those configuration defaults should include:</p>
 </ul>
 <p>Additionally, flavors should provide update scripts that can (at least) automatically produce an updated repo JSON file.
 It is recommended to take a look at the Nix expressions implementing the current flavors under <code>flavors/</code>.</p>
-<h2><a class="header" href="#emulator" id="emulator">Emulator</a></h2>
+<h2 id="emulator"><a class="header" href="#emulator">Emulator</a></h2>
 <p>Robotnix can also build a script which will start the Android emulator using an attached robotnix-built system image.
 This can be accomplished with the <code>emulator</code> Nix output
 To build and run an emulator with an attached vanilla system image, use (for example):</p>
@@ -223,7 +223,7 @@ To build and run an emulator with an attached vanilla system image, use (for exa
 $ ./result
 </code></pre>
 <p>This currently only works well when using the generic <code>x86_64</code> device.</p>
-<h2><a class="header" href="#testing--ci--reproducibility" id="testing--ci--reproducibility">Testing / CI / Reproducibility</a></h2>
+<h2 id="testing--ci--reproducibility"><a class="header" href="#testing--ci--reproducibility">Testing / CI / Reproducibility</a></h2>
 <p>All devices (Pixel 3-5(a) (XL)) have very basic checks to ensure that the android build process will at least start properly.
 See <code>release.nix</code> for the set of configurations with this minimal build testing.
 This check is run using <code>nix-build ./release.nix -A check</code>.
@@ -239,7 +239,7 @@ This eliminates the requirement for an end-user to spend hours building android.
 This unfortunately decreases the possibility of sharing build products between users.
 The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
 Fixes for this are still under investigation.</p>
-<h2><a class="header" href="#additional-notes" id="additional-notes">Additional Notes</a></h2>
+<h2 id="additional-notes"><a class="header" href="#additional-notes">Additional Notes</a></h2>
 <p>Robotnix bind mounts the source directories from <code>/nix/store</code>.
 These files/directories have their &quot;user write&quot; (<code>u-w</code>) permission removed.
 Sometimes, Android Makefiles which copy files from the source directories may assume the files have the write permission enabled, which can then break later steps.

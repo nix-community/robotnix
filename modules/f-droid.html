@@ -167,7 +167,7 @@
 SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
-<h1><a class="header" href="#f-droid" id="f-droid">F-Droid</a></h1>
+<h1 id="f-droid"><a class="header" href="#f-droid">F-Droid</a></h1>
 <p>The following configuration will enable the <a href="https://www.f-droid.org/">F-Droid app</a> and the <a href="https://gitlab.com/fdroid/privileged-extension">F-Droid privileged extension</a>.</p>
 <pre><code class="language-nix">{
     apps.fdroid.enable = true;
@@ -175,7 +175,7 @@ SPDX-License-Identifier: MIT
 </code></pre>
 <p>The F-Droid privileged extension enables F-Droid to install and delete apps without needing &quot;Unknown Sources&quot; to be enabled (e.g. just like Google Play does).
 It also enables F-Droid to install updates in the background without the user having to click &quot;install&quot;.</p>
-<h2><a class="header" href="#adding-f-droid-repositories" id="adding-f-droid-repositories">Adding F-Droid repositories</a></h2>
+<h2 id="adding-f-droid-repositories"><a class="header" href="#adding-f-droid-repositories">Adding F-Droid repositories</a></h2>
 <p>F-Droid can manage multiple repositories to fetch apps from.  These can be set
 up manually in the app, but with robotnix it is also possible to preload
 F-Droid with some repositories at build time.</p>

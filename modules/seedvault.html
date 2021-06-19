@@ -163,20 +163,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#seedvault-backup" id="seedvault-backup">Seedvault Backup</a></h1>
+                        <h1 id="seedvault-backup"><a class="header" href="#seedvault-backup">Seedvault Backup</a></h1>
 <p><a href="https://github.com/seedvault-app/seedvault">Seedvault</a> is a backup application for the Android Open Source Project.
 The following configuration will enable the Seedvault:</p>
 <pre><code class="language-nix">{
   apps.seedvault.enable = true;
 }
 </code></pre>
-<h2><a class="header" href="#backing-up" id="backing-up">Backing Up</a></h2>
+<h2 id="backing-up"><a class="header" href="#backing-up">Backing Up</a></h2>
 <p>Normally, the settings for the Seedvault backup application is available under &quot;Settings -&gt; System -&gt; Backup&quot;.
 However, if you have flashed a new ROM including Seedvault over one which did not have Seedvault initially (without wiping userdata), you may need to manually set the backup transport using <code>adb</code>.</p>
 <pre><code class="language-shell">$ adb shell bmgr enable true
 $ adb shell bmgr transport com.stevesoltys.seedvault.transport.ConfigurableBackupTransport
 </code></pre>
-<h2><a class="header" href="#restoring" id="restoring">Restoring</a></h2>
+<h2 id="restoring"><a class="header" href="#restoring">Restoring</a></h2>
 <p>The GrapheneOS and LineageOS flavors provide the option to use Seedvault upon first boot using the SetupWizard.
 The vanilla flavor currently does not use SetupWizard, so the restore activity must be manually started using:</p>
 <pre><code class="language-shell">adb shell am start-activity -a com.stevesoltys.seedvault.RESTORE_BACKUP

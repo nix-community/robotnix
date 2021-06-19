@@ -167,10 +167,10 @@
 SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
-<h1><a class="header" href="#configuration" id="configuration">Configuration</a></h1>
+<h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
 <p>Similarly to <a href="https://nixos.org/">NixOS</a>, robotnix configurations are &quot;Nix expressions&quot; specified using the &quot;<a href="https://nixos.org/manual/nix/stable/#ch-expression-language">Nix language</a>.&quot;
 Most end-user uses of robotnix should not require learning the Nix language, besides the very basics of syntax.</p>
-<h2><a class="header" href="#inline-configuration" id="inline-configuration">Inline Configuration</a></h2>
+<h2 id="inline-configuration"><a class="header" href="#inline-configuration">Inline Configuration</a></h2>
 <p>Robotnix can be built using configuration specified on the command line using <code>--arg configuration ...</code> as an argument to <code>nix-build</code>.
 For example, if the current directory contains a checked out copy of robotnix, the following will produce a vanilla image for the crosshatch device (Pixel 3 XL):</p>
 <pre><code class="language-shell">$ nix-build --arg configuration '{ device=&quot;crosshatch&quot;; flavor=&quot;vanilla&quot;; }' -A img
@@ -179,7 +179,7 @@ For example, if the current directory contains a checked out copy of robotnix, t
 If robotnix is checked out in another directory, such as <code>$HOME/src/robotnix</code>, the above command could instead be</p>
 <pre><code class="language-shell">$ nix-build $HOME/src/robotnix --arg configuration '{ device=&quot;crosshatch&quot;; flavor=&quot;vanilla&quot;; }' -A img
 </code></pre>
-<h2><a class="header" href="#configuration-files" id="configuration-files">Configuration Files</a></h2>
+<h2 id="configuration-files"><a class="header" href="#configuration-files">Configuration Files</a></h2>
 <p>A configuration file should be created for anything more complicated than the very simple configurations that could be conveniently specified on the command line.
 The following is an example robotnix configuration that could be saved to (for example) <code>crosshatch.nix</code>.</p>
 <pre><code class="language-nix">{
@@ -208,7 +208,7 @@ If the above configuration was saved to <code>crosshatch.nix</code> in the local
 <p>See my own configuration under <code>example.nix</code> for inspiration.
 Robotnix module options are described in this documentation <a href="modules.html">here</a>.
 Reference documentation of the available options is <a href="options.html">here</a>.</p>
-<h2><a class="header" href="#flakes-experimental" id="flakes-experimental">Flakes (experimental)</a></h2>
+<h2 id="flakes-experimental"><a class="header" href="#flakes-experimental">Flakes (experimental)</a></h2>
 <p>Nix flakes are an upcoming feature of Nix that provides an alternative configuration structure for use with the new <code>nix</code> command.
 It can provide the benefit of explicitly pinning your robotnix configuration against a particular revision of the robotnix repository.
 The feature remains experimental for the time-being, and is not currently the recommended way to use robotnix for new users.</p>

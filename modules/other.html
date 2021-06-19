@@ -163,8 +163,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#other-modules" id="other-modules">Other Modules</a></h1>
-<h2><a class="header" href="#resources" id="resources">Resources</a></h2>
+                        <h1 id="other-modules"><a class="header" href="#other-modules">Other Modules</a></h1>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
 <p>Android applications may have <a href="https://developer.android.com/guide/topics/resources/providing-resources">resources</a> which are additional static content such as bitmaps, user interface strings, configuration values, and others.
 Some simple resources may be set for certain packages using the <code>resources</code> option.</p>
 <p>For example, the settings available <a href="https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/values/config.xml">here</a> may be configured in robotnix by setting (for example):</p>
@@ -177,7 +177,7 @@ The resource type is automatically determined based on value set.
 Setting <code>resources.&lt;path&gt;.&lt;name&gt;.type</code> can be used to override the automatically determined type.
 Available values types are <code>bool</code>, <code>integer</code>, <code>dimen</code>, <code>color</code>, <code>string</code>, <code>integer-array</code>, and <code>string-array</code>.
 If this manual override is used, the value must be set using <code>resources.&lt;path&gt;.&lt;name&gt;.value</code>.</p>
-<h2><a class="header" href="#ccache" id="ccache">Ccache</a></h2>
+<h2 id="ccache"><a class="header" href="#ccache">Ccache</a></h2>
 <p>Set <code>ccache.enable = true</code> in configuration, and be sure to pass <code>/var/cache/ccache</code> as a sandbox exception when building.
 In NixOS, to set up the cache, also run (as root):</p>
 <pre><code class="language-shell"># mkdir -p -m0770 /var/cache/ccache
