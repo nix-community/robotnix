@@ -285,6 +285,8 @@ in
 
           inherit outputs;
 
+          requiredSystemFeatures = [ "big-parallel" ];
+
           nativeBuildInputs = [ config.build.env fakeuser ];
 
           unpackPhase = ''
@@ -292,7 +294,7 @@ in
             source ${config.build.unpackScript}
           '';
 
-          configurePhase = ":";
+          dontConfigure = true;
 
           # This was originally in the buildPhase, but building the sdk / atree would complain for unknown reasons when it was set
           # export OUT_DIR=$rootDir/out
