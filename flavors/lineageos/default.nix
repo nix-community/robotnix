@@ -17,7 +17,6 @@ let
   lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
 
   deviceMetadata = lib.importJSON ./device-metadata.json;
-  defaultBranch = deviceMetadata.${config.device}.branch;
   LineageOSRelease = androidVersionToLineageBranch.${builtins.toString config.androidVersion};
   repoDirs = lib.importJSON (./. + "/${LineageOSRelease}/repo.json");
   _deviceDirs = importJSON (./. + "/${LineageOSRelease}/device-dirs.json");
@@ -65,7 +64,9 @@ let
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
 in mkIf (config.flavor == "lineageos")
 {
-  androidVersion = mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch});
+  androidVersion = let
+      defaultBranch = deviceMetadata.${config.device}.branch;
+    in mkIf (deviceMetadata ? ${config.device}) (mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch}));
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
