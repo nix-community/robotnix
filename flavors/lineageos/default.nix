@@ -80,7 +80,7 @@ in mkIf (config.flavor == "lineageos")
       !(elem config.device supportedDevices) &&
       (config.deviceFamily != "generic")
     )
-    "${config.device} is not a supported device for LineageOS";
+    "${config.device} is not an officially-supported device for LineageOS";
 
   source.dirs = mkMerge ([
     repoDirs
