@@ -143,6 +143,8 @@ in mkIf (config.flavor == "lineageos")
   webview.prebuilt.availableByDefault = mkDefault true;
   removedProductPackages = [ "webview" ];
 
+  apps.updater.flavor = mkDefault "lineageos";
+
   # Needed by included kernel build for some devices (pioneer at least)
   envPackages = [ pkgs.openssl.dev ] ++ optionals (config.androidVersion == 11) [ pkgs.gcc.cc pkgs.glibc.dev ];
 

@@ -135,10 +135,9 @@ in
 
     # BUILDID_PLACEHOLDER below was originally config.apv.buildID, but we don't want to have to depend on setting a buildID generally.
     otaMetadata = (rec {
-      vanilla = pkgs.writeText "${config.device}-${config.channel}" ''
+      grapheneos = pkgs.writeText "${config.device}-${config.channel}" ''
         ${config.buildNumber} ${toString config.buildDateTime} BUILDID_PLACEHOLDER ${config.channel}
       '';
-      grapheneos = vanilla;
       lineageos = pkgs.writeText "${config.device}.json" (
         # https://github.com/LineageOS/android_packages_apps_Updater#server-requirements
         builtins.toJSON {
@@ -155,7 +154,7 @@ in
           ];
         }
       );
-    }).${config.flavor};
+    }).${config.apps.updater.flavor};
 
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
     otaDir = pkgs.linkFarm "${config.device}-otaDir" (
@@ -192,11 +191,11 @@ in
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
       echo Writing updater metadata
-      ${optionalString (config.flavor != "lineageos") ''
+      ${optionalString (config.apps.updater.flavor != "lineageos") ''
         cat ${otaMetadata} > ${config.device}-${config.channel}
       ''}
-      ${optionalString (config.flavor == "lineageos") ''
-        sed -e "s:\"ROM_SIZE\":$(du -b ${ota.name}|cut -f1):" ${otaMetadata} > ${config.device}.json
+      ${optionalString (config.apps.updater.flavor == "lineageos") ''
+        sed -e "s:ROM_SIZE:$(du -b ${ota.name}):" ${otaMetadata} > ${config.device}.json
       ''}
     ''; }));
   };
