@@ -117,7 +117,7 @@
     "url": "https://github.com/LineageOS/android_device_cyanogen_msm8916-common"
   },
   "device/essential/mata": {
-    "date": "2020-11-22T23:06:48-08:00",
+    "date": "2021-06-14T12:19:42-06:00",
     "deepClone": false,
     "deps": [
       "kernel/essential/msm8998",
@@ -125,9 +125,9 @@
     ],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/0k1h4qqa0hjwxw7inv3hspmdlg881i67-android_device_essential_mata",
-    "rev": "450c860872705c6829a7c62172dd7b4b36c80f48",
-    "sha256": "01697xxrjwa0a9c8lczhyh9s4hiby85anlakbb0cvnp9m9hzsa1d",
+    "path": "/nix/store/lzymr60ilbx4bh4l841hyffnx0l0f41j-android_device_essential_mata",
+    "rev": "61ce3974b446629c17af718c995a9db7d4853023",
+    "sha256": "0nrbjgf0ijj456kadrwb9gd4mhzjm06yvpym61y43msvab3sl437",
     "url": "https://github.com/LineageOS/android_device_essential_mata"
   },
   "device/fairphone/FP2": {
@@ -420,16 +420,16 @@
     "url": "https://github.com/LineageOS/android_device_leeco_msm8996-common"
   },
   "device/leeco/s2": {
-    "date": "2021-05-14T16:20:38+03:00",
+    "date": "2021-05-26T16:39:47+03:00",
     "deepClone": false,
     "deps": [
       "kernel/leeco/msm8976"
     ],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/15p58q1z19pm2viqb5jkd33hk7px6rkw-android_device_leeco_s2",
-    "rev": "c7dcc97e61dc24d47a44bcc2b599e1a2da701b4e",
-    "sha256": "0f07fl92wlhnvx4gd4ji2gm8n3bm83m1767d8szvqcgwi3ac0lxf",
+    "path": "/nix/store/khada6w7ny2fqpwlmjl66ycp1sybybmn-android_device_leeco_s2",
+    "rev": "1c12856e5c8d70e756aa48f91d1ad9066ddd9fd0",
+    "sha256": "0z4dk48avw8q2fd35abxxv26yzv5qljbk5xqr9irvba5vakd3p8y",
     "url": "https://github.com/LineageOS/android_device_leeco_s2"
   },
   "device/leeco/x2": {
@@ -1542,6 +1542,20 @@
     "sha256": "1spl546kaxnd8h677max8jlsb5596iqzwb4rx7bp8wqjbbc3fm06",
     "url": "https://github.com/LineageOS/android_device_oppo_msm8974-common"
   },
+  "device/razer/aura": {
+    "date": "2020-07-19T03:46:04+03:00",
+    "deepClone": false,
+    "deps": [
+      "kernel/xiaomi/sdm845",
+      "packages/resources/devicesettings"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/fkdv6yf4ckml9vpif2rw23hwkxhzyk4w-android_device_razer_aura",
+    "rev": "f50c8a044444ac01e32fbf2e577762cc91305742",
+    "sha256": "1ql08wk7k3l586ra01bh7zj73pih29nncrllh9ash6b2qrkqknb7",
+    "url": "https://github.com/LineageOS/android_device_razer_aura"
+  },
   "device/razer/cheryl": {
     "date": "2020-12-30T02:59:12+01:00",
     "deepClone": false,
@@ -1556,16 +1570,16 @@
     "url": "https://github.com/LineageOS/android_device_razer_cheryl"
   },
   "device/realme/RMX1801": {
-    "date": "2021-04-24T06:59:34+01:00",
+    "date": "2021-06-05T10:58:10+02:00",
     "deepClone": false,
     "deps": [
       "kernel/realme/sdm660"
     ],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/4h39rx4w9pqyp0n2ksrlnrbhmxgx25hc-android_device_realme_RMX1801",
-    "rev": "1b1b6f6e02cbce785c5ec7dc33ddffd90a12a599",
-    "sha256": "07wb17xnq7zzfqk30pdwbyrn3p9vawsiylnymnaqg9hrk1q60sd1",
+    "path": "/nix/store/s4gqyw1dgfpcr0s7vcbqgyh2j0agmxci-android_device_realme_RMX1801",
+    "rev": "f88dc770493e9d3c3d460e538608cb3540596799",
+    "sha256": "1d1fxrmsr9g9rnzyqn6ms4wn7zvjazz52vfy3zpb9xnijn3ybsxl",
     "url": "https://github.com/LineageOS/android_device_realme_RMX1801"
   },
   "device/samsung/a3xelte": {
@@ -2158,7 +2172,7 @@
     "url": "https://github.com/LineageOS/android_device_samsung_universal7580-common"
   },
   "device/samsung/universal7880-common": {
-    "date": "2021-05-03T09:01:54+02:00",
+    "date": "2021-05-22T15:16:04+02:00",
     "deepClone": false,
     "deps": [
       "hardware/samsung",
@@ -2166,9 +2180,9 @@
     ],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/9xsj21qfns8c3wzzz6pbd4sdl1hn0yzp-android_device_samsung_universal7880-common",
-    "rev": "a517a006bb9e4fffb187473b93ec9e4b0c5d4c16",
-    "sha256": "0160d91lr8zk7hpgsfhac9hdg5v72hia6hnh072hxp9v8dk356qg",
+    "path": "/nix/store/cqbqf94fsicgvg34bqqlamm2if2ygavm-android_device_samsung_universal7880-common",
+    "rev": "2e524da57e18bc82486a40f8b1e4f3e86fc45ad1",
+    "sha256": "1jhvx4pha0jiq2bk6fzlnz18lfssfm1b6i6wj6vf5786whjlyhdx",
     "url": "https://github.com/LineageOS/android_device_samsung_universal7880-common"
   },
   "device/samsung/universal9810-common": {
@@ -3139,14 +3153,14 @@
     "url": "https://github.com/LineageOS/android_kernel_cyanogen_msm8916"
   },
   "kernel/essential/msm8998": {
-    "date": "2021-04-19T06:37:19-06:00",
+    "date": "2021-06-04T15:48:48-06:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/17a6mqxyffl5ph493x5ilg4ns4habhwd-android_kernel_essential_msm8998",
-    "rev": "3a899446ee4818d52255ce03f2a769f6dff98f71",
-    "sha256": "1rnx650q0j74apdx114rnxgq86kc0l6aak4gzxjg8ypccgv3h737",
+    "path": "/nix/store/giqjcd0f7l1x4h0wkzyignqrjk61yr2l-android_kernel_essential_msm8998",
+    "rev": "9a00dd2a365cf530628a55e84789697b97b4939d",
+    "sha256": "0i7vd3qaadka43cj2lqskqxc6d59xa64lvibk2mwyjb9flxl3ain",
     "url": "https://github.com/LineageOS/android_kernel_essential_msm8998"
   },
   "kernel/fairphone/msm8974": {
@@ -3546,14 +3560,14 @@
     "url": "https://github.com/LineageOS/android_kernel_razer_msm8998"
   },
   "kernel/realme/sdm660": {
-    "date": "2020-12-30T09:07:33+05:30",
+    "date": "2021-06-21T14:39:22+00:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/l0lmx2zqbmax9jn2qmvl3xcmp0hdiim8-android_kernel_realme_sdm660",
-    "rev": "317faa7038418034459f12e7fab132638a7fa22b",
-    "sha256": "0cl0fvv3bdrfbfpfz6y10ikb8b46sn3vbq9di0dai0q2cjmf7yk6",
+    "path": "/nix/store/ixf082m9y41vdzfhfi1gsr3qsgnwcdyb-android_kernel_realme_sdm660",
+    "rev": "e496377e8f3f3fa6e65c5208fac09aa2d215a60b",
+    "sha256": "1w69a23grgdzyn4c7w2jvdxpzzq3c50np23ysplhbm14pwsywbis",
     "url": "https://github.com/LineageOS/android_kernel_realme_sdm660"
   },
   "kernel/samsung/gta4xl": {
@@ -3590,14 +3604,14 @@
     "url": "https://github.com/LineageOS/android_kernel_samsung_msm8226"
   },
   "kernel/samsung/msm8974": {
-    "date": "2021-02-05T08:20:37-07:00",
+    "date": "2021-06-06T10:33:00-06:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/dajcdpgag571xwvb5k2yf1xr0m35hlk2-android_kernel_samsung_msm8974",
-    "rev": "f6e14b93430cc1a2999f5cb0ec9c859b9e41743f",
-    "sha256": "1iycyscdd827zr0d7zhy0fxvjg0rjahz90ww5rjyyn2628739aa2",
+    "path": "/nix/store/v0s5pzfwfiy3z9767yn80kl6rbpgsby4-android_kernel_samsung_msm8974",
+    "rev": "9ee66fcd97b78f6861ed8b69ca93f542c80cd1be",
+    "sha256": "0g345a78k42wkcfc3qpvl2bhmnpwxjank5rzs2mc6f4hcpza7n7d",
     "url": "https://github.com/LineageOS/android_kernel_samsung_msm8974"
   },
   "kernel/samsung/sdm670": {
@@ -3700,14 +3714,14 @@
     "url": "https://github.com/LineageOS/android_kernel_xiaomi_msm8953"
   },
   "kernel/xiaomi/msm8996": {
-    "date": "2020-12-16T16:02:04+00:00",
+    "date": "2021-06-10T11:13:05+01:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/7c8j09jy4mqp6kf4hdppc6iicqxrizk4-android_kernel_xiaomi_msm8996",
-    "rev": "edc169a2a61c585df0374a918c67c98e55baa8d2",
-    "sha256": "1s45f4sdhc993rpjyw16a0rxzfsxvh1d3rvb2qi74s7kf3yfjg7s",
+    "path": "/nix/store/q808nbg2mwf0vnza383kwsp9fz9mx8sy-android_kernel_xiaomi_msm8996",
+    "rev": "24821698656fd30e35a0b4b02a03d448b6933143",
+    "sha256": "0b0cdvn0vpwpxvjy0x1ci2jzlb13kszjabvfrqc611hk7jd0lddm",
     "url": "https://github.com/LineageOS/android_kernel_xiaomi_msm8996"
   },
   "kernel/xiaomi/msm8998": {
@@ -3777,14 +3791,14 @@
     "url": "https://github.com/LineageOS/android_kernel_xiaomi_sm6150"
   },
   "kernel/yandex/sdm660": {
-    "date": "2020-06-17T22:25:09+03:00",
+    "date": "2021-03-19T18:10:52+09:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/2ixhj61cl48rxqqsqks003jb8ckm1mnv-android_kernel_yandex_sdm660",
-    "rev": "a054ec2ac9b403ea9ae0bd3501471726c640d749",
-    "sha256": "1gax44903vg8h3l5ckfr0rs7zvvjf4007dya2zsvh6mjrqgljzck",
+    "path": "/nix/store/qhjncj3crjrfhlzj30qwhxmddxj35frc-android_kernel_yandex_sdm660",
+    "rev": "33abb692110817b92ee32638721fed1721ab581a",
+    "sha256": "1ymkg76b875kwv2sq917sx4phjz6zxv50dkyxf910kphdb8shq32",
     "url": "https://github.com/LineageOS/android_kernel_yandex_sdm660"
   },
   "kernel/zuk/msm8996": {
@@ -3799,14 +3813,14 @@
     "url": "https://github.com/LineageOS/android_kernel_zuk_msm8996"
   },
   "packages/apps/FlipFlap": {
-    "date": "2021-04-19T15:22:35+02:00",
+    "date": "2021-05-22T16:37:19+02:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/1dpdi75angl3sjq5cjl2c4rsf860znk2-android_packages_apps_FlipFlap",
-    "rev": "4f708e3254649219946e312176fe74a5fa62f3e6",
-    "sha256": "0krhy31cx15llfvpfwmzjb3d04rx30nh8cv249jfk0yq8bpxvhc3",
+    "path": "/nix/store/ivqd017ifwl0j98pch8kzyhcq2jk817g-android_packages_apps_FlipFlap",
+    "rev": "e9191cf7cc44e0aa055abb508916cb4c7d7efe5b",
+    "sha256": "0ka6djny7607ah5ma3xc5qwm73csxvvc208zd9h4d6xwc365bwhq",
     "url": "https://github.com/LineageOS/android_packages_apps_FlipFlap"
   },
   "packages/resources/devicesettings": {
