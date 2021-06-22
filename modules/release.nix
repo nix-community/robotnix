@@ -196,8 +196,7 @@ in
         cat ${otaMetadata} > ${config.device}-${config.channel}
       ''}
       ${optionalString (config.flavor == "lineageos") ''
-        cat ${otaMetadata} > index.json
-        sed -i "s:ROM_SIZE:$(du -b ${ota.name}):" index.json
+        sed -e "s:\"ROM_SIZE\":$(du -b ${ota.name}|cut -f1):" ${otaMetadata} > ${config.device}.json
       ''}
     ''; }));
   };
