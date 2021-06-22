@@ -221,7 +221,6 @@ in
       # Strip modules
       postBuild = lib.optionalString (cfg.installModules) ''
         make $makeFlags "''${makeFlagsArray[@]}" INSTALL_MOD_PATH=moduleout INSTALL_MOD_STRIP=1 modules_install
-        ${lib.optionalString (config.deviceFamily == "redfin") "cp out/modules.order out/modules.load"}
       '';
 
       installPhase = ''
@@ -229,6 +228,7 @@ in
         shopt -s globstar nullglob
       '' + (lib.concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames)
       + ''
+        ${lib.optionalString (cfg.installModules && (config.deviceFamily == "redfin")) "\n cp out/modules.order $out/modules.load"}
 
         # This is also done in nixpkgs for wireless modules
         nuke-refs $(find $out -name "*.ko")
