@@ -158,6 +158,8 @@ in stdenvNoCC.mkDerivation rec {
     libdrm
   ];
 
+  requiredSystemFeatures = [ "big-parallel" ];
+
   patches =
     lib.optional enableRebranding
       (substituteAll {
