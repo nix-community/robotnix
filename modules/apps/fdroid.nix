@@ -59,7 +59,7 @@ in
           };
 
           pushRequests = mkOption {
-            type = types.strMatching "(ignore|prompt|always)";
+            type = types.enum [ "ignore" "prompt" "always" ];
             description = "Allow this repository to specify apps which should be automatically installed/uninstalled";
             default = "ignore";
           };

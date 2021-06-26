@@ -15,7 +15,7 @@ let
   resourceTypeModule = types.submodule ({ name, config, ... }: {
     options = {
       type = mkOption {
-        type = types.strMatching "(bool|integer|dimen|color|string|integer-array|string-array)";
+        type = types.enum [ "bool" "integer" "dimen" "color" "string" "integer-array" "string-array" ];
         description = "Set to override auto-detected resource type";
       };
 

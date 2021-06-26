@@ -69,13 +69,13 @@ in
 
     arch = mkOption {
       default = "arm64";
-      type = types.strMatching "(arm64|arm|x86_64|x86)";
+      type = types.enum [ "arm64" "arm" "x86_64" "x86" ];
       description = "Architecture of phone, usually set automatically by device";
     };
 
     variant = mkOption {
       default = "user";
-      type = types.strMatching "(user|userdebug|eng)";
+      type = types.enum [ "user" "userdebug" "eng" ];
       description = ''
         `user` has limited access and is suited for production.
         `userdebug` is like user but with root access and debug capability.
@@ -98,7 +98,7 @@ in
 
     buildType = mkOption {
       default = "release";
-      type = types.strMatching "(release|debug)";
+      type = types.enum [ "release" "debug" ];
       description = "one of \"release\", \"debug\"";
     };
 

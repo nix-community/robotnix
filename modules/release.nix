@@ -78,7 +78,7 @@ in
   options = {
     channel = mkOption {
       default = "stable";
-      type = types.strMatching "(stable|beta)";
+      type = types.enum [ "stable" "beta" ];
       description = "Default channel to use for updates (can be modified in app)";
     };
 

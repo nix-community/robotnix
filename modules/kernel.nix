@@ -110,7 +110,7 @@ in
 
       compiler = mkOption {
         default = "clang";
-        type = types.strMatching "(gcc|clang)";
+        type = types.enum [ "gcc" "clang" ];
         description = "Compilter to use for building kernel";
       };
 
@@ -124,7 +124,7 @@ in
 
       linker = mkOption {
         default = "gold";
-        type = types.strMatching "(gold|lld)";
+        type = types.enum [ "gold" "lld" ];
         description = "Linker to use for building kernel";
       };
 

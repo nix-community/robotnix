@@ -48,7 +48,7 @@ in
           };
 
           partition = mkOption {
-            type = types.strMatching "(vendor|system|product)";
+            type = types.enum [ "vendor" "system" "product" ];
             internal = true;
           };
         };

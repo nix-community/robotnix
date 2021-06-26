@@ -136,7 +136,7 @@ in
 
           partition = mkOption {
             description = "Partition on which to place this app";
-            type = types.strMatching "(vendor|system|product)";
+            type = types.enum [ "vendor" "system" "product" ];
           };
 
           allowInPowerSave = mkOption {

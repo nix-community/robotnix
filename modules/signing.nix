@@ -42,7 +42,7 @@ in
 
         # TODO: Refactor
         mode = mkOption {
-          type = types.strMatching "(verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)";
+          type = types.enum [ "verity_only" "vbmeta_simple" "vbmeta_chained" "vbmeta_chained_v2" ];
           default  = "vbmeta_chained";
           description = "Mode of AVB signing to use.";
         };
