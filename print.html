@@ -1027,7 +1027,7 @@ installed device--or if the F-Droid storage is cleared.</p>
 <h3 id="appsfdroidadditionalreposnamepushrequests"><a class="header" href="#appsfdroidadditionalreposnamepushrequests"><code>apps.fdroid.additionalRepos.&lt;name&gt;.pushRequests</code></a></h3>
 <p>Allow this repository to specify apps which should be automatically installed/uninstalled</p>
 <p><em>Default</em>: <code>&quot;ignore&quot;</code></p>
-<p><em>Type</em>: string matching the pattern (ignore|prompt|always)</p>
+<p><em>Type</em>: one of &quot;ignore&quot;, &quot;prompt&quot;, &quot;always&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
 <h3 id="appsfdroidadditionalreposnameurl"><a class="header" href="#appsfdroidadditionalreposnameurl"><code>apps.fdroid.additionalRepos.&lt;name&gt;.url</code></a></h3>
@@ -1090,7 +1090,7 @@ Finally, the special string &quot;PRESIGNED&quot; will just use the APK as-is.</
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
 <h3 id="appsprebuiltnamepartition"><a class="header" href="#appsprebuiltnamepartition"><code>apps.prebuilt.&lt;name&gt;.partition</code></a></h3>
 <p>Partition on which to place this app</p>
-<p><em>Type</em>: string matching the pattern (vendor|system|product)</p>
+<p><em>Type</em>: one of &quot;vendor&quot;, &quot;system&quot;, &quot;product&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
 <h3 id="appsprebuiltnameprivapppermissions"><a class="header" href="#appsprebuiltnameprivapppermissions"><code>apps.prebuilt.&lt;name&gt;.privappPermissions</code></a></h3>
@@ -1161,7 +1161,7 @@ Refer to this <a href="https://developer.android.com/reference/android/Manifest.
 <h3 id="arch"><a class="header" href="#arch"><code>arch</code></a></h3>
 <p>Architecture of phone, usually set automatically by device</p>
 <p><em>Default</em>: <code>&quot;arm64&quot;</code></p>
-<p><em>Type</em>: string matching the pattern (arm64|arm|x86_64|x86)</p>
+<p><em>Type</em>: one of &quot;arm64&quot;, &quot;arm&quot;, &quot;x86_64&quot;, &quot;x86&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3 id="builddatetime"><a class="header" href="#builddatetime"><code>buildDateTime</code></a></h3>
@@ -1184,7 +1184,7 @@ Should be unique for each build used for disambiguation.</p>
 <h3 id="buildtype"><a class="header" href="#buildtype"><code>buildType</code></a></h3>
 <p>one of &quot;release&quot;, &quot;debug&quot;</p>
 <p><em>Default</em>: <code>&quot;release&quot;</code></p>
-<p><em>Type</em>: string matching the pattern (release|debug)</p>
+<p><em>Type</em>: one of &quot;release&quot;, &quot;debug&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3 id="ccacheenable"><a class="header" href="#ccacheenable"><code>ccache.enable</code></a></h3>
@@ -1197,7 +1197,7 @@ Should be unique for each build used for disambiguation.</p>
 <h3 id="channel"><a class="header" href="#channel"><code>channel</code></a></h3>
 <p>Default channel to use for updates (can be modified in app)</p>
 <p><em>Default</em>: <code>&quot;stable&quot;</code></p>
-<p><em>Type</em>: string matching the pattern (stable|beta)</p>
+<p><em>Type</em>: one of &quot;stable&quot;, &quot;beta&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/release.nix">modules/release.nix</a></p>
 <h3 id="device"><a class="header" href="#device"><code>device</code></a></h3>
@@ -1222,7 +1222,7 @@ Should be unique for each build used for disambiguation.</p>
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/etc.nix">modules/etc.nix</a></p>
 <h3 id="etcnamepartition"><a class="header" href="#etcnamepartition"><code>etc.&lt;name&gt;.partition</code></a></h3>
 <p>Partition on which to place this etc file</p>
-<p><em>Type</em>: string matching the pattern (vendor|system|product)</p>
+<p><em>Type</em>: one of &quot;vendor&quot;, &quot;system&quot;, &quot;product&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/etc.nix">modules/etc.nix</a></p>
 <h3 id="etcnamesource"><a class="header" href="#etcnamesource"><code>etc.&lt;name&gt;.source</code></a></h3>
@@ -1275,7 +1275,7 @@ See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/m
 <h3 id="kernelcompiler"><a class="header" href="#kernelcompiler"><code>kernel.compiler</code></a></h3>
 <p>Compilter to use for building kernel</p>
 <p><em>Default</em>: <code>&quot;clang&quot;</code></p>
-<p><em>Type</em>: string matching the pattern (gcc|clang)</p>
+<p><em>Type</em>: one of &quot;gcc&quot;, &quot;clang&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
 <h3 id="kernelenable"><a class="header" href="#kernelenable"><code>kernel.enable</code></a></h3>
@@ -1294,7 +1294,7 @@ See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/m
 <h3 id="kernellinker"><a class="header" href="#kernellinker"><code>kernel.linker</code></a></h3>
 <p>Linker to use for building kernel</p>
 <p><em>Default</em>: <code>&quot;gold&quot;</code></p>
-<p><em>Type</em>: string matching the pattern (gold|lld)</p>
+<p><em>Type</em>: one of &quot;gold&quot;, &quot;lld&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
 <h3 id="kernelpatches"><a class="header" href="#kernelpatches"><code>kernel.patches</code></a></h3>
@@ -1398,7 +1398,7 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <h3 id="signingavbmode"><a class="header" href="#signingavbmode"><code>signing.avb.mode</code></a></h3>
 <p>Mode of AVB signing to use.</p>
 <p><em>Default</em>: <code>&quot;vbmeta_chained&quot;</code></p>
-<p><em>Type</em>: string matching the pattern (verity_only|vbmeta_simple|vbmeta_chained|vbmeta_chained_v2)</p>
+<p><em>Type</em>: one of &quot;verity_only&quot;, &quot;vbmeta_simple&quot;, &quot;vbmeta_chained&quot;, &quot;vbmeta_chained_v2&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingavbveritycert"><a class="header" href="#signingavbveritycert"><code>signing.avb.verityCert</code></a></h3>
@@ -1514,7 +1514,7 @@ Also enables use of <code>builtins.fetchGit</code> instead of <code>pkgs.fetchgi
 <code>userdebug</code> is like user but with root access and debug capability.
 <code>eng</code> is the development configuration with additional debugging tools.</p>
 <p><em>Default</em>: <code>&quot;user&quot;</code></p>
-<p><em>Type</em>: string matching the pattern (user|userdebug|eng)</p>
+<p><em>Type</em>: one of &quot;user&quot;, &quot;userdebug&quot;, &quot;eng&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3 id="webview"><a class="header" href="#webview"><code>webview</code></a></h3>
