@@ -210,6 +210,8 @@ in stdenvNoCC.mkDerivation rec {
       echo 'checkout_openxr = false'                  >> build/config/gclient_args.gni
       echo 'checkout_aemu = false'                    >> build/config/gclient_args.gni
       echo 'checkout_libaom = false'                  >> build/config/gclient_args.gni
+      # Added sometime between 91.0.4472.120 and 91.0.4472.143
+      echo 'generate_location_tags = false'           >> build/config/gclient_args.gni
     )
   '' + lib.optionalString enableRebranding ''
     ( cd src
