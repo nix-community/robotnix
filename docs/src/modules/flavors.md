@@ -4,7 +4,7 @@ In normal usage, the user needs to select a robotnix "flavor" in their configura
 Flavors may change the default settings of some other modules, which might not match the default setting shown on the [Options](options.md) reference page.
 As an example, the GrapheneOS flavor enables `apps.vanadium.enable` by default.
 
-Currently, the vanilla and GrapheneOS flavors are based on Android 11, while the LineageOS flavor is based on Android 10.
+Currently, the vanilla and GrapheneOS flavors are based on Android 11, while the LineageOS flavor uses either Android 10 or Android 11, depending on the device.
 If a robotnix flavor supports multiple Android versions (either older or experimental newer versions),
 this can be overridden by setting (for example) `androidVersion = 10`.
 
