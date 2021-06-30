@@ -24,7 +24,7 @@ Robotnix orchestrates the diverse build systems across these multiple projects u
 
 Robotnix includes a NixOS-style module system which allows users to easily customize various aspects of the their builds.
 Some optional modules include:
- - Vanilla Android 10 AOSP support (for Pixel devices)
+ - Vanilla Android 11 AOSP support (for Pixel devices)
  - [GrapheneOS](https://grapheneos.org/) support
  - Experimental [LineageOS](https://lineageos.org/) support
  - Signed builds for verified boot (dm-verity/AVB) and re-locking the bootloader with a user-specified key
