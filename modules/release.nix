@@ -156,11 +156,24 @@ in
       );
     }).${config.apps.updater.flavor};
 
+    writeOtaMetadata = path: {
+      grapheneos = ''
+        cat ${otaMetadata} > ${path}/${config.device}-${config.channel}
+      '';
+      lineageos = ''
+        sed -e "s:\"ROM_SIZE\":$(du -b ${ota} | cut -f1):" ${otaMetadata} > ${path}/${config.device}.json
+      '';
+    }.${config.apps.updater.flavor};
+
     # TODO: target-files aren't necessary to publish--but are useful to include if prevBuildDir is set to otaDir output
-    otaDir = pkgs.linkFarm "${config.device}-otaDir" (
-      (map (p: {name=p.name; path=p;}) ([ ota otaMetadata ] ++ (lib.optional config.incremental incrementalOta)))
-      ++ [{ name="${config.device}-target_files-${config.buildNumber}.zip"; path=targetFiles; }]
-    );
+    otaDir = pkgs.runCommand "${config.device}-otaDir" {} ''
+      mkdir -p $out
+      ln -s "${ota}" "$out/${ota.name}"
+      ln -s "${targetFiles}" "$out/${config.device}-target_files-${config.buildNumber}.zip"
+      ${lib.optionalString config.incremental ''ln -s ${incrementalOta} "$out/${incrementalOta.name}"''}
+
+      ${writeOtaMetadata (placeholder "out")}
+    '';
 
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
     releaseScript =
@@ -191,12 +204,7 @@ in
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
       echo Writing updater metadata
-      ${optionalString (config.apps.updater.flavor != "lineageos") ''
-        cat ${otaMetadata} > ${config.device}-${config.channel}
-      ''}
-      ${optionalString (config.apps.updater.flavor == "lineageos") ''
-        sed -e "s:ROM_SIZE:$(du -b ${ota.name}):" ${otaMetadata} > ${config.device}.json
-      ''}
+      ${writeOtaMetadata "."}
     ''; }));
   };
 }
