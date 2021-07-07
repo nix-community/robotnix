@@ -8,6 +8,18 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2021-07-07
+## Highlights:
+- Added experimental Anbox flavor (thanks @samueldr) (See initial docs [here](https://docs.robotnix.org/modules/flavors.html#anbox))
+- Updated vanilla flavor to RQ3A.210705
+- Updated GrapheneOS flavor to 2021.06.20.20
+- Updated LineageOS flavor to 2021.06.21.20 (thanks @Kranzes)
+- Updated F-Droid to 1.12.1, F-Droid privileged extension to 0.2.12
+- Updated MicroG to 0.2.21.212158
+- Updated Chromium to 91.0.4472.134, Bromite to 91.0.4472.102
+
+There are no intentional backward incompatible changes since the last release.
+
 # 2021-06-09
 ## Highlights:
 - Updated LineageOS flavor from 17.1 to 18.1 (up-to-date as of 2021-05-22) [PR #96](https://github.com/danielfullmer/robotnix/pull/96) (thanks @hmenke).
