@@ -16,7 +16,7 @@ listing of changes. See the git commit log for additional details.
 - Updated LineageOS flavor to 2021.06.21.20 (thanks @Kranzes)
 - Updated F-Droid to 1.12.1, F-Droid privileged extension to 0.2.12
 - Updated MicroG to 0.2.21.212158
-- Updated Chromium to 91.0.4472.134, Bromite to 91.0.4472.102
+- Updated Chromium / Vanadium to 91.0.4472.134, Bromite to 91.0.4472.102
 
 There are no intentional backward incompatible changes since the last release.
 
