@@ -28,6 +28,7 @@ self: super: {
   fetchgerritpatchset = super.callPackage ./fetchgerritpatchset {};
 
   fetchgit = super.callPackage ./fetchgit {};
+  nix-prefetch-git = super.callPackage ./fetchgit/nix-prefetch-git.nix {};
 
   ###
 
