@@ -27,6 +27,7 @@ self: super: {
 
   fetchgerritpatchset = super.callPackage ./fetchgerritpatchset {};
 
+  fetchgit = super.callPackage ./fetchgit {};
 
   ###
 
