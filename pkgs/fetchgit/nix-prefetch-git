@@ -109,6 +109,12 @@ init_remote(){
     clean_git init --initial-branch=master
     clean_git remote add origin "$url"
     ( [ -n "$http_proxy" ] && clean_git config http.proxy "$http_proxy" ) || true
+
+    # Set up git mirrors
+    while read -d'|' -r git_mirror; do
+        IFS='=' read remote_url local_url <<< "$git_mirror"
+        clean_git config url."$local_url".insteadOf "$remote_url"
+    done <<< "$ROBOTNIX_GIT_MIRRORS"
 }
 
 # Return the reference of an hash if it exists on the remote repository.

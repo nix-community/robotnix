@@ -139,7 +139,6 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--out', default=None, help="path to output file, defaults to repo-{rev}.json")
-    parser.add_argument('--mirror', action="append", help="a repo mirror to use for a given url, specified by <url>=<path>")
     parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",
                         choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
     parser.add_argument('--resume', help="resume a previous download", action='store_true')
@@ -153,10 +152,7 @@ def main():
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
 
-    if args.mirror:
-        mirrors = dict(mirror.split("=") for mirror in args.mirror)
-    else:
-        mirrors = {}
+    mirrors = dict(mirror.split("=") for mirror in os.environ.get('ROBOTNIX_GIT_MIRRORS', '').split('|'))
 
     ref_type = ManifestRefType[args.ref_type.upper()]
 
