@@ -888,6 +888,35 @@ but rather (once a developer has a working build) makes it easier to share that 
 <p>As such, robotnix does not replace the existing Android build system, but provides a convenient Nix-based wrapper around the build system.
 (See <a href="https://github.com/danielfullmer/blueprint2nix">blueprint2nix</a> and <a href="https://github.com/danielfullmer/soongnix">soongnix</a> for an experimental attempt at reimplementing part of the Android build system natively in Nix.)</p>
 <p>Feel free to ask robotnix development questions in <code>#robotnix</code> on Freenode.</p>
+<h2 id="git-mirrors"><a class="header" href="#git-mirrors">Git mirrors</a></h2>
+<p>Robotnix can be configured to use local git mirrors of Android source code.
+The AOSP documentation includes instructions to <a href="https://source.android.com/setup/build/downloading#using-a-local-mirror">create a local mirror of the Android source code</a>.
+Maintaining a local mirror can save bandwidth in the long-run when repeatedly updating a flavor over time which contains incremental updates.</p>
+<p>This functionality is enabled by setting the <code>ROBOTNIX_GIT_MIRRORS</code> environment variable.
+The value of <code>ROBOTNIX_GIT_MIRRORS</code> contains a number of mappings, each separated by a <code>|</code> character.
+Each mapping is of the format <code>&lt;remote_url&gt;=&lt;local_url&gt;</code>.
+For example:</p>
+<pre><code>ROBOTNIX_GIT_MIRRORS=https://android.googlesource.com=/mnt/cache/mirror|https://github.com/LineageOS=/mnt/cache/lineageos/LineageOS
+</code></pre>
+<p>Both the robotnix update scripts as well as robotnix's overridden <code>fetchgit</code> derivation use <code>ROBOTNIX_GIT_MIRRORS</code>.
+This environment variable is passed to <code>fetchgit</code> via <code>impureEnvVars</code> (search for <code>impureEnvVars</code> in the <a href="https://nixos.org/manual/nix/stable/">Nix manual</a>).
+If the Nix daemon is being used, it needs to have this <code>ROBOTNIX_GIT_MIRRORS</code> in its environment, not just in the user's environment when running <code>nix-build</code> or <code>nix build</code>.
+The following NixOS configuration can be used to easily set this environment variable for the Nix daemon:</p>
+<pre><code class="language-nix">let
+  mirrors = {
+    &quot;https://android.googlesource.com&quot; = &quot;/mnt/cache/mirror&quot;;
+    &quot;https://github.com/LineageOS&quot; = &quot;/mnt/cache/lineageos/LineageOS&quot;;
+  };
+in
+{
+  systemd.services.nix-daemon.serviceConfig.Environment = [
+    (&quot;ROBOTNIX_GIT_MIRRORS=&quot; + lib.concatStringsSep &quot;|&quot; (lib.mapAttrsToList (local: remote: &quot;${local}=${remote}&quot;) mirrors))
+  ];
+
+  # Also add local mirrors to nix sandbox exceptions
+  nix.sandboxPaths = lib.attrValues mirrors;
+}
+</code></pre>
 <h2 id="helper-scripts"><a class="header" href="#helper-scripts">Helper scripts</a></h2>
 <p>Robotnix can produce a few helper scripts that can make Android development easier in some circumstances.</p>
 <p>Running <code>nix-build --arg configuration &lt;cfg&gt; -A &lt;output&gt;</code> for the outputs below will produce the corresponding helper script, using the provided robotnix configuration.</p>
