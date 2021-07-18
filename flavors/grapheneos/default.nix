@@ -18,6 +18,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   buildNumber = mkDefault upstreamParams.buildNumber;
   buildDateTime = mkDefault upstreamParams.buildDateTime;
 
+  productNamePrefix = mkDefault "";
+
   # Match upstream user/hostname
   envVars = {
     BUILD_USERNAME = "grapheneos";
