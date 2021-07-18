@@ -2,14 +2,6 @@
 
 set -eu
 
-if [[ "$USER" = "danielrf" ]]; then
-    mirror_args=(
-        --mirror "https://android.googlesource.com=/mnt/cache/mirror"
-    )
-else
-    mirror_args=()
-fi
-
 export TMPDIR=/tmp
 
 readarray -t devices < <(jq -r 'keys[]' <kernel-metadata.json)
