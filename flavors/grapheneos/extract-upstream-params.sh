@@ -12,7 +12,7 @@ DEVICE=sunfish
 CHANNEL=beta
 
 METADATA=$(curl https://releases.grapheneos.org/${DEVICE}-${CHANNEL})
-BUILD_NUMBER=$(echo $METADATA | cut -d" " -f1)
-BUILD_DATETIME=$(echo $METADATA | cut -d" " -f2)
+BUILD_NUMBER=$(echo "$METADATA" | cut -d" " -f1)
+BUILD_DATETIME=$(echo "$METADATA" | cut -d" " -f2)
 
 echo "{ buildNumber = \"${BUILD_NUMBER}\"; buildDateTime = ${BUILD_DATETIME}; }" > upstream-params.nix
