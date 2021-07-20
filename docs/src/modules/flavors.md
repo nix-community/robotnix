@@ -44,7 +44,7 @@ LineageOS is a free and open-source operating system for various devices, based 
 LineageOS support may be enabled by setting `flavor = "lineageos";`.
 At the time of writing, this includes support for ~160 devices.
 
-Robotnix includes support for both LineageOS 17.1 as well as LineaegOS 18.1.
+Robotnix includes support for both LineageOS 17.1 as well as LineageOS 18.1.
 By default, robotnix will select the latest supported version for the device specified in the configuration.
 This can be overridden by setting `androidVersion` to either 10 or 11, for LineageOS 17.1 and 18.1, respectively.
 
