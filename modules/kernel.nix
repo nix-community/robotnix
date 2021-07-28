@@ -228,7 +228,6 @@ in
         shopt -s globstar nullglob
       '' + (lib.concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames)
       + ''
-        ${lib.optionalString (cfg.installModules && (config.deviceFamily == "redfin")) "\n cp out/modules.order $out/modules.load"}
 
         # This is also done in nixpkgs for wireless modules
         nuke-refs $(find $out -name "*.ko")
