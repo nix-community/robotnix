@@ -11,8 +11,8 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "platform_packages_apps_Updater";
-    rev = "f4fea23153407b7448e9440c31dc0398befc00c8"; # 2021-01-04
-    sha256 = "1my5kxia201sikxr2bjk5v4icw5av9c1q5v56g03zw0mmvddyv6a";
+    rev = "3040c65ac4602183c8ea6acf0d29d58f7c0b518d"; # 2021-08-02
+    sha256 = "0740lfwml6s2lmsvcrah9bgcxjbgwiv7lgcqkkqnlkf1mmfppv3h";
   };
 
   relpath = (if cfg.includedInFlavor then "packages" else "robotnix") + "/apps/Updater";
