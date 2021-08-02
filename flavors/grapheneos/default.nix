@@ -86,8 +86,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # GrapheneOS just disables apex updating wholesale
   signing.apex.enable = false;
 
-  # Don't include updater by default since it would download updates signed with grapheneos's keys.
-  source.dirs."packages/apps/Updater".enable = false;
+  # Use upstream Updater package by default
+  apps.updater.includedInFlavor = mkDefault true;
 
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
