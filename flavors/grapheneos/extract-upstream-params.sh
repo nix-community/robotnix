@@ -8,7 +8,7 @@
 
 set -euo pipefail
 
-DEVICE=crosshatch
+DEVICE=sunfish
 CHANNEL=beta
 
 METADATA=$(curl https://releases.grapheneos.org/${DEVICE}-${CHANNEL})
