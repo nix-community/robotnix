@@ -16,7 +16,11 @@ import urllib.request
 
 LINEAGE_REPO_BASE = "https://github.com/LineageOS"
 VENDOR_REPO_BASE = "https://github.com/TheMuppets"
-MIRRORS = dict(mirror.split("=") for mirror in os.environ.get('ROBOTNIX_GIT_MIRRORS', '').split('|'))
+ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
+if ROBOTNIX_GIT_MIRRORS:
+    MIRRORS = dict(mirror.split("=") for mirror in ROBOTNIX_GIT_MIRRORS).split('|'))
+else:
+    MIRRORS = {}
 REMOTE_REFS = {} # url: { ref: rev }
 
 def save(filename, data):

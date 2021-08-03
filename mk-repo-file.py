@@ -151,7 +151,11 @@ def main():
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
 
-    mirrors = dict(mirror.split("=") for mirror in os.environ.get('ROBOTNIX_GIT_MIRRORS', '').split('|'))
+    ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
+    if ROBOTNIX_GIT_MIRRORS:
+        mirrors = dict(mirror.split("=") for mirror in ROBOTNIX_GIT_MIRRORS.split('|'))
+    else:
+        mirrors = {}
 
     ref_type = ManifestRefType[args.ref_type.upper()]
 
