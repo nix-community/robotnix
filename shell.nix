@@ -3,7 +3,7 @@ pkgs.mkShell {
   name = "robotnix-scripts";
   nativeBuildInputs = with pkgs; [
     # For android updater scripts
-    python3
+    (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
     gitRepo nix-prefetch-git
     curl go-pup jq
 
@@ -12,4 +12,5 @@ pkgs.mkShell {
 
     cachix
   ];
+  PYTHONPATH=".";
 }

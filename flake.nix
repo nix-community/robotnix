@@ -27,8 +27,6 @@
     nixosModule = import ./nixos; # Contains all robotnix nixos modules
     nixosModules.attestation-server = import ./nixos/attestation-server/module.nix;
 
-    checks.x86_64-linux = {};
-
     packages.x86_64-linux = {
       manual = (import ./docs { inherit pkgs; }).manual;
     };

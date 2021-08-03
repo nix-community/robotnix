@@ -2,17 +2,21 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+from typing import Any
 import json
-import os
 import urllib.request
 
-def save(filename, data):
+
+def save(filename: str, data: str) -> None:
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
 
-def fetch_metadata():
+
+def fetch_metadata() -> Any:
     metadata = {}
 
-    lineage_build_targets_str = urllib.request.urlopen("https://github.com/LineageOS/hudson/raw/master/lineage-build-targets").read().decode()
+    lineage_build_targets_str = urllib.request.urlopen(
+            "https://github.com/LineageOS/hudson/raw/master/lineage-build-targets"
+            ).read().decode()
     for line in lineage_build_targets_str.split("\n"):
         line = line.strip()
         if line == "":
@@ -53,6 +57,7 @@ def fetch_metadata():
         })
 
     return metadata
+
 
 if __name__ == '__main__':
     metadata = fetch_metadata()

@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-from typing import Optional, Dict, List, Tuple
+from typing import Any, Optional, Dict, List, Tuple
 from enum import Enum
 
 import argparse
@@ -20,45 +20,56 @@ REPO_FLAGS = [
     "--depth=1",
 ]
 
+
 # The kind of remote a "commitish" refers to.
 # These are used for the --ref-type CLI arg.
 class ManifestRefType(Enum):
     BRANCH = "heads"
     TAG = "tags"
 
+
 revHashes: Dict[Tuple[str, bool], str] = {}  # (rev, fetch_submodules) -> sha256hash
 revTrees: Dict[str, str] = {}           # rev -> treeHash
-treeHashes: Dict[Tuple[str, bool], str] = {} # (treeHash, fetch_submodules) -> sha256hash
+treeHashes: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> sha256hash
 
-def save(filename, data):
+
+def save(filename: str, data: Any) -> None:
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
 
-def checkout_git(url, rev, fetch_submodules=False):
+
+def checkout_git(url: str, rev: str, fetch_submodules: bool = False) -> Any:
     print("Checking out %s %s" % (url, rev))
-    args = [ "nix-prefetch-git", "--url", url, "--rev", rev ]
+    args = ["nix-prefetch-git", "--url", url, "--rev", rev]
     if fetch_submodules:
         args.append("--fetch-submodules")
     json_text = subprocess.check_output(args).decode()
     return json.loads(json_text)
 
-def ls_remote(url, rev):
-    remote_info = subprocess.check_output([ "git", "ls-remote", url, rev ]).decode()
+
+def ls_remote(url: str, rev: str) -> str:
+    remote_info = subprocess.check_output(["git", "ls-remote", url, rev]).decode()
     remote_rev = remote_info.split('\t')[0]
     assert remote_rev != ""
     return remote_rev
+
 
 def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                    override_project_revs: Dict[str, str], resume: bool,
                    mirrors: Dict[str, str], project_fetch_submodules: List[str],
                    override_tag: Optional[str], include_prefix: List[str],
-                   exclude_path: List[str]):
+                   exclude_path: List[str]) -> None:
     if resume and os.path.exists(filename):
         data = json.load(open(filename))
     else:
         print("Fetching information for %s %s" % (url, ref))
         with tempfile.TemporaryDirectory() as tmpdir:
-            subprocess.check_call(['repo', 'init', f'--manifest-url={url}', f'--manifest-branch=refs/{ref_type.value}/{ref}', *REPO_FLAGS], cwd=tmpdir)
-            json_text = subprocess.check_output(['repo', 'dumpjson'] + (["--local-only"] if override_project_revs else []), cwd=tmpdir).decode()
+            subprocess.check_call([
+                'repo', 'init', f'--manifest-url={url}', f'--manifest-branch=refs/{ref_type.value}/{ref}', *REPO_FLAGS
+                ], cwd=tmpdir)
+            json_text = subprocess.check_output(
+                    ['repo', 'dumpjson']
+                    + (["--local-only"] if override_project_revs else []),
+                    cwd=tmpdir).decode()
             data = json.loads(json_text)
 
             save(filename, data)
@@ -109,7 +120,9 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
             for mirror_url, mirror_path in mirrors.items():
                 if p['url'].startswith(mirror_url):
                     p_url = p['url'].replace(mirror_url, mirror_path)
-                    p['tree'] = subprocess.check_output(['git', 'log','-1', '--pretty=%T', p['rev']], cwd=p_url+'.git').decode().strip()
+                    p['tree'] = subprocess.check_output(
+                        ['git', 'log', '-1', '--pretty=%T', p['rev']],
+                        cwd=p_url+'.git').decode().strip()
                     if (p['tree'], fetch_submodules) in treeHashes:
                         p['sha256'] = treeHashes[p['tree'], fetch_submodules]
                         found_treehash = True
@@ -135,7 +148,8 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
     # Save at the end as well!
     save(filename, data)
 
-def main():
+
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--out', default=None, help="path to output file, defaults to repo-{rev}.json")
     parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",
@@ -143,8 +157,10 @@ def main():
     parser.add_argument('--resume', help="resume a previous download", action='store_true')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
-    parser.add_argument('--project-fetch-submodules', action="append", default=[], help="fetch submodules for the specified project path")
-    parser.add_argument('--include-prefix', action="append", default=[], help="only include paths if they start with the specified prefix")
+    parser.add_argument('--project-fetch-submodules', action="append", default=[],
+                        help="fetch submodules for the specified project path")
+    parser.add_argument('--include-prefix', action="append", default=[],
+                        help="only include paths if they start with the specified prefix")
     parser.add_argument('--exclude-path', action="append", default=[], help="paths to exclude from fetching")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
@@ -153,7 +169,10 @@ def main():
 
     ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
     if ROBOTNIX_GIT_MIRRORS:
-        mirrors = dict(mirror.split("=") for mirror in ROBOTNIX_GIT_MIRRORS.split('|'))
+        mirrors: Dict[str, str] = dict(
+                (mirror.split("=")[0], mirror.split("=")[1])
+                for mirror in ROBOTNIX_GIT_MIRRORS.split('|')
+                )
     else:
         mirrors = {}
 
@@ -191,6 +210,7 @@ def main():
                    include_prefix=args.include_prefix,
                    exclude_path=args.exclude_path,
                    )
+
 
 if __name__ == "__main__":
     main()

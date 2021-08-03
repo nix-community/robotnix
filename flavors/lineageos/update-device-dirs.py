@@ -2,11 +2,11 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+from typing import Any, Dict, List, Tuple
 import argparse
 import json
 import os
 import subprocess
-import urllib.request
 
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
@@ -18,37 +18,49 @@ LINEAGE_REPO_BASE = "https://github.com/LineageOS"
 VENDOR_REPO_BASE = "https://github.com/TheMuppets"
 ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
 if ROBOTNIX_GIT_MIRRORS:
-    MIRRORS = dict(mirror.split("=") for mirror in ROBOTNIX_GIT_MIRRORS).split('|'))
+    MIRRORS: Dict[str, str] = dict(
+            (mirror.split("=")[0], mirror.split("=")[1])
+            for mirror in ROBOTNIX_GIT_MIRRORS.split('|')
+            )
 else:
     MIRRORS = {}
-REMOTE_REFS = {} # url: { ref: rev }
+REMOTE_REFS: Dict[str, Dict[str, str]] = {}  # url: { ref: rev }
 
-def save(filename, data):
+
+def save(filename: str, data: str) -> None:
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
 
-def get_mirrored_url(url):
+
+def get_mirrored_url(url: str) -> str:
     for mirror_url, mirror_path in MIRRORS.items():
         if url.startswith(mirror_url):
             url = url.replace(mirror_url, mirror_path)
     return url
 
-def ls_remote(url):
+
+def ls_remote(url: str) -> Dict[str, str]:
     if url in REMOTE_REFS:
         return REMOTE_REFS[url]
 
     orig_url = url
     url = get_mirrored_url(url)
 
-    remote_info = subprocess.check_output([ "git", "ls-remote", url ]).decode()
-    REMOTE_REFS[orig_url] = dict(reversed(line.split('\t')) for line in remote_info.split('\n') if line)
+    remote_info = subprocess.check_output(["git", "ls-remote", url]).decode()
+    REMOTE_REFS[orig_url] = {}
+    for line in remote_info.split('\n'):
+        if line:
+            ref, rev = reversed(line.split('\t'))
+            REMOTE_REFS[orig_url][ref] = rev
     return REMOTE_REFS[orig_url]
 
-def checkout_git(url, rev):
+
+def checkout_git(url: str, rev: str) -> Any:
     print("Checking out %s %s" % (url, rev))
-    json_text = subprocess.check_output([ "nix-prefetch-git", "--url", url, "--rev", rev]).decode()
+    json_text = subprocess.check_output(["nix-prefetch-git", "--url", url, "--rev", rev]).decode()
     return json.loads(json_text)
 
-def fetch_relpath(dirs, relpath, url, branch):
+
+def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> Any:
     orig_url = url
     url = get_mirrored_url(url)
 
@@ -56,7 +68,7 @@ def fetch_relpath(dirs, relpath, url, branch):
     refs = ls_remote(url)
     ref = f'refs/heads/{branch}'
     if ref not in refs:
-        raise Exception(f'{url} is missing {ref}')
+        raise ValueError(f'{url} is missing {ref}')
     newest_rev = refs[ref]
     if (current_rev != newest_rev
             or ('path' not in dirs[relpath])
@@ -70,14 +82,14 @@ def fetch_relpath(dirs, relpath, url, branch):
 
 
 # Fetch device source trees for devices in metadata and save their information into filename
-def fetch_device_dirs(metadata, filename, branch):
+def fetch_device_dirs(metadata: Any, filename: str, branch: str) -> Tuple[Any, Dict[str, List[str]]]:
     if os.path.exists(filename):
         dirs = json.load(open(filename))
     else:
         dirs = {}
 
-    dirs_to_fetch = set() # Pairs of (relpath, url)
-    dirs_fetched = set() # Just strings of relpath
+    dirs_to_fetch = set()  # Pairs of (relpath, url)
+    dirs_fetched = set()  # Just strings of relpath
     for device, data in metadata.items():
         vendor = data['vendor']
         url = f'{LINEAGE_REPO_BASE}/android_device_{vendor}_{device}'
@@ -88,12 +100,12 @@ def fetch_device_dirs(metadata, filename, branch):
         else:
             print(f'SKIP: {branch} branch does not exist for {device}')
 
-    dir_dependencies = {} # key -> [ values ]. 
+    dir_dependencies: Dict[str, List[str]] = {}  # key -> [ values ].
     while len(dirs_to_fetch) > 0:
         relpath, url = dirs_to_fetch.pop()
         try:
             dir_info = fetch_relpath(dirs, relpath, url, branch)
-        except:
+        except ValueError:
             continue
 
         # Also grab any dirs that this one depends on
@@ -105,16 +117,17 @@ def fetch_device_dirs(metadata, filename, branch):
                 if dep['target_path'] not in dirs_fetched:
                     dirs_to_fetch.add((dep['target_path'], f"{LINEAGE_REPO_BASE}/{dep['repository']}"))
 
-            dir_info['deps'] = [ dep['target_path'] for dep in lineage_dependencies ]
+            dir_info['deps'] = [dep['target_path'] for dep in lineage_dependencies]
         else:
             dir_info['deps'] = []
 
-        save(filename, dirs) # Save after every step, for resuming
+        save(filename, dirs)  # Save after every step, for resuming
         dirs_fetched.add(relpath)
 
     return dirs, dir_dependencies
 
-def fetch_vendor_dirs(metadata, filename, branch):
+
+def fetch_vendor_dirs(metadata: Any, filename: str, branch: str) -> Any:
     required_vendor = set()
     for device, data in metadata.items():
         if 'vendor' in data:
@@ -151,11 +164,13 @@ def fetch_vendor_dirs(metadata, filename, branch):
 
     return dirs
 
-def main():
+
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--branch', help="lineageos version")
     parser.add_argument('product', nargs='*',
-                        help='product to fetch directory metadata for, specified by <vendor>_<device> (example: google_crosshatch) '
+                        help='product to fetch directory metadata for, specified by <vendor>_<device> '
+                        '(example: google_crosshatch) '
                         'If no products are specified, all products in device-metadata.json will be updated')
     args = parser.parse_args()
 
@@ -165,10 +180,11 @@ def main():
         metadata = {}
         for product in args.product:
             vendor, device = product.split('_', 1)
-            metadata[device] = { 'vendor': vendor }
+            metadata[device] = {'vendor': vendor}
 
-    device_dirs, dir_dependencies = fetch_device_dirs(metadata, os.path.join(args.branch, 'device-dirs.json'), args.branch)
-    vendor_dirs = fetch_vendor_dirs(metadata, os.path.join(args.branch, 'vendor-dirs.json'), args.branch)
+    fetch_device_dirs(metadata, os.path.join(args.branch, 'device-dirs.json'), args.branch)
+    fetch_vendor_dirs(metadata, os.path.join(args.branch, 'vendor-dirs.json'), args.branch)
+
 
 if __name__ == '__main__':
     main()
