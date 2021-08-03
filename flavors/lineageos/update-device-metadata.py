@@ -5,6 +5,8 @@
 from typing import Any
 import json
 import urllib.request
+import os
+import pathlib
 
 
 def save(filename: str, data: str) -> None:
@@ -61,4 +63,5 @@ def fetch_metadata() -> Any:
 
 if __name__ == '__main__':
     metadata = fetch_metadata()
+    os.chdir(pathlib.Path(__file__).parent.resolve())
     save('device-metadata.json', metadata)

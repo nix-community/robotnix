@@ -3,7 +3,9 @@
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-set -eu
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 args=(
 	"https://github.com/pmanbox/platform_manifests"
@@ -14,4 +16,4 @@ args=(
 
 export TMPDIR=/tmp
 
-../../mk-repo-file.py "${args[@]}"
+../../scripts/mk-repo-file.py "${args[@]}"

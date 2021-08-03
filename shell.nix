@@ -13,5 +13,5 @@ pkgs.mkShell {
 
     cachix
   ];
-  PYTHONPATH=".";
+  PYTHONPATH=./scripts;
 }

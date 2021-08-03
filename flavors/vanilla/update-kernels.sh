@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 export TMPDIR=/tmp
 
@@ -18,5 +20,5 @@ for device in "${devices[@]}"; do
         ../*/repo-*.json
     )
     echo "### Fetching kernel sources for ${device} ###"
-    ../../mk-repo-file.py "${args[@]}"
+    ../../scripts/mk-repo-file.py "${args[@]}"
 done

@@ -2,6 +2,10 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
 curl --fail -s --cookie "devsite_wall_acks=nexus-image-tos" https://developers.google.com/android/images \
     | pup "div table tbody tr json{}" \
     | jq '.[].children

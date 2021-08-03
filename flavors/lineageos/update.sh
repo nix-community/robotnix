@@ -2,7 +2,9 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-set -eu
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 branch=$1
 
@@ -16,5 +18,5 @@ args=(
 export TMPDIR=/tmp
 
 ./update-device-metadata.py
-../../mk-repo-file.py --out "${branch}/repo.json" "${args[@]}"
+../../scripts/mk-repo-file.py --out "${branch}/repo.json" "${args[@]}"
 ./update-device-dirs.py --branch "$branch"

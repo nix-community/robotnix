@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Tuple
 import argparse
 import json
 import os
+import pathlib
 import subprocess
 
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
@@ -187,4 +188,5 @@ def main() -> None:
 
 
 if __name__ == '__main__':
+    os.chdir(pathlib.Path(__file__).parent.resolve())
     main()
