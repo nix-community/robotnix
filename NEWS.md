@@ -8,6 +8,18 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2021-08-03
+## Highlights:
+- Updated vanilla flavor to RQ3A.210805
+- Updated vanilla beta (Android 12) to android-s-beta-3
+- Updated GrapheneOS flavor to 2021.08.03.03
+- Updated Lineageos flavor to 2021.07.12.17
+- Added ROBOTNIX_GIT_MIRRORS environment variable (See [documentation](https://docs.robotnix.org/development.html#git-mirrors))
+- Updated Chromium / Vanadium to 92.0.4515.115, Bromite to 92.0.4515.125
+- Updated Updater to 2021-08-02
+
+There are no intentional backward incompatible changes since the last release.
+
 # 2021-07-07
 ## Highlights:
 - Added experimental Anbox flavor (thanks @samueldr) (See initial docs [here](https://docs.robotnix.org/modules/flavors.html#anbox))
