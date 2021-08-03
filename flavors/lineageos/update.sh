@@ -18,5 +18,5 @@ args=(
 export TMPDIR=/tmp
 
 ./update-device-metadata.py
-../../scripts/mk-repo-file.py --out "${branch}/repo.json" "${args[@]}"
+../../scripts/mk_repo_file.py --out "${branch}/repo.json" "${args[@]}"
 ./update-device-dirs.py --branch "$branch"

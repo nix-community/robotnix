@@ -16,4 +16,4 @@ args=(
 
 export TMPDIR=/tmp
 
-../../scripts/mk-repo-file.py "${args[@]}"
+../../scripts/mk_repo_file.py "${args[@]}"

@@ -85,7 +85,7 @@ Any options or configuration set by the specified module will be included in the
 To create a new flavor, the developer should create a robotnix module that conditions on `config.flavor`.
 The flavor configuration defaults should be set conditionally using (for example) `mkIf (config.flavor = "...") { ... }`.
 Those configuration defaults should include:
- - Setting `source.dirs` using a repo JSON file produced by `mk-repo-file.py`.
+ - Setting `source.dirs` using a repo JSON file produced by `mk_repo_file.py`.
  - Setting the default `androidVersion`.
  - Setting the default `buildDateTime` based on (for example) the time that the flavor was last updated.
  - Providing a warning if the user has not selected a valid device for this flavor.

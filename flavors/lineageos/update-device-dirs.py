@@ -12,7 +12,7 @@ import subprocess
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
 # TODO: Output a timestamp somewhere
-# TODO: Extract code shared with mk-repo-file.py into a common location
+# TODO: Extract code shared with mk_repo_file.py into a common location
 # TODO: Optionally parallelize fetching
 
 LINEAGE_REPO_BASE = "https://github.com/LineageOS"
