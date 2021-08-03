@@ -43,14 +43,14 @@ in
           inherit (cfg) url;
           channel_default = config.channel;
         };
-      }
-
-      (mkIf (!cfg.includedInFlavor) {
-        source.dirs.${relpath}.src = src;
 
         # TODO: It's currently on system partition in upstream. Shouldn't it be on product partition?
         system.additionalProductPackages = [ "Updater" ];
-      })
+
+        source.dirs = mkIf (!cfg.includedInFlavor) {
+          ${relpath}.src = src;
+        };
+      }
 
       # Add selinux policies
       (mkIf (!cfg.includedInFlavor && config.androidVersion >= 11) {

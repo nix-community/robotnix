@@ -64,6 +64,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   webview.vanadium.availableByDefault = mkDefault true;
 
   apps.seedvault.includedInFlavor = mkDefault true;
+  apps.updater.includedInFlavor = mkDefault true;
 
   # Remove upstream prebuilt versions from build. We build from source ourselves.
   removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "webview" ];
@@ -85,9 +86,6 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   # GrapheneOS just disables apex updating wholesale
   signing.apex.enable = false;
-
-  # Use upstream Updater package by default
-  apps.updater.includedInFlavor = mkDefault true;
 
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build

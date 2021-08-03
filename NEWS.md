@@ -20,6 +20,9 @@ listing of changes. See the git commit log for additional details.
 
 There are no intentional backward incompatible changes since the last release.
 
+Between commits on Aug 2-3 there was brief period where the robotnix would not correctly include the Update package for the GrapheneOS flavor.
+If you have already updated your device with a build produced during this interval, and you don't see "System updates" under "Settings", you can still update your device by sideloading, [instructions here](https://docs.robotnix.org/installation.html#updating-by-sideloading-ota-files).
+
 # 2021-07-07
 ## Highlights:
 - Added experimental Anbox flavor (thanks @samueldr) (See initial docs [here](https://docs.robotnix.org/modules/flavors.html#anbox))
