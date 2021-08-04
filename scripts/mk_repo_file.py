@@ -35,11 +35,23 @@ revTrees: Dict[str, str] = {}           # rev -> treeHash
 treeHashes: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> sha256hash
 
 
-def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
-                   override_project_revs: Dict[str, str], resume: bool,
-                   mirrors: Dict[str, str], project_fetch_submodules: List[str],
-                   override_tag: Optional[str], include_prefix: List[str],
-                   exclude_path: List[str]) -> None:
+def make_repo_file(url: str, ref: str, filename: str,
+                   ref_type: ManifestRefType = ManifestRefType.TAG,
+                   override_project_revs: Optional[Dict[str, str]] = None, resume: bool = False,
+                   mirrors: Optional[Dict[str, str]] = None, project_fetch_submodules: Optional[List[str]] = None,
+                   override_tag: Optional[str] = None, include_prefix: Optional[List[str]] = None,
+                   exclude_path: Optional[List[str]] = None) -> None:
+    if override_project_revs is None:
+        override_project_revs = {}
+    if mirrors is None:
+        mirrors = {}
+    if project_fetch_submodules is None:
+        project_fetch_submodules = []
+    if include_prefix is None:
+        include_prefix = []
+    if exclude_path is None:
+        exclude_path = []
+
     if resume and os.path.exists(filename):
         data = json.load(open(filename))
     else:
