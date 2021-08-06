@@ -13,12 +13,13 @@ def save(filename: str, data: str) -> None:
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
 
 
-def fetch_metadata() -> Any:
+def fetch_metadata(
+        lineage_build_targets_url: str = "https://github.com/LineageOS/hudson/raw/master/lineage-build-targets",
+        devices_json_url: str = "https://github.com/LineageOS/hudson/raw/master/updater/devices.json"
+        ) -> Any:
     metadata = {}
 
-    lineage_build_targets_str = urllib.request.urlopen(
-            "https://github.com/LineageOS/hudson/raw/master/lineage-build-targets"
-            ).read().decode()
+    lineage_build_targets_str = urllib.request.urlopen(lineage_build_targets_url).read().decode()
     for line in lineage_build_targets_str.split("\n"):
         line = line.strip()
         if line == "":
@@ -34,7 +35,7 @@ def fetch_metadata() -> Any:
 
     ###
 
-    devices = json.load(urllib.request.urlopen("https://github.com/LineageOS/hudson/raw/master/updater/devices.json"))
+    devices = json.load(urllib.request.urlopen(devices_json_url))
     for data in devices:
         if data['model'] not in metadata:
             continue

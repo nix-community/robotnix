@@ -2,12 +2,14 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-from typing import Any, Dict, List, Tuple
 import argparse
+import copy
 import json
 import os
 import pathlib
 import subprocess
+
+from typing import Any, Callable, Dict, Optional
 
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
@@ -15,8 +17,6 @@ import subprocess
 # TODO: Extract code shared with mk_repo_file.py into a common location
 # TODO: Optionally parallelize fetching
 
-LINEAGE_REPO_BASE = "https://github.com/LineageOS"
-VENDOR_REPO_BASE = "https://github.com/TheMuppets"
 ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
 if ROBOTNIX_GIT_MIRRORS:
     MIRRORS: Dict[str, str] = dict(
@@ -82,10 +82,15 @@ def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> 
     return dirs[relpath]
 
 
-# Fetch device source trees for devices in metadata and save their information into filename
-def fetch_device_dirs(metadata: Any, filename: str, branch: str) -> Any:
-    if os.path.exists(filename):
-        dirs = json.load(open(filename))
+# Fetch device source trees for devices in metadata
+def fetch_device_dirs(metadata: Any,
+                      url_base: str,
+                      branch: str,
+                      prev_data: Optional[Any] = None,
+                      callback: Optional[Callable[[Any], Any]] = None
+                      ) -> Any:
+    if prev_data is not None:
+        dirs = copy.deepcopy(prev_data)
     else:
         dirs = {}
 
@@ -93,7 +98,7 @@ def fetch_device_dirs(metadata: Any, filename: str, branch: str) -> Any:
     dirs_fetched = set()  # Just strings of relpath
     for device, data in metadata.items():
         vendor = data['vendor']
-        url = f'{LINEAGE_REPO_BASE}/android_device_{vendor}_{device}'
+        url = f'{url_base}/android_device_{vendor}_{device}'
 
         refs = ls_remote(url)
         if f'refs/heads/{branch}' in refs:
@@ -115,19 +120,25 @@ def fetch_device_dirs(metadata: Any, filename: str, branch: str) -> Any:
 
             for dep in lineage_dependencies:
                 if dep['target_path'] not in dirs_fetched:
-                    dirs_to_fetch.add((dep['target_path'], f"{LINEAGE_REPO_BASE}/{dep['repository']}"))
+                    dirs_to_fetch.add((dep['target_path'], f"{url_base}/{dep['repository']}"))
 
             dir_info['deps'] = [dep['target_path'] for dep in lineage_dependencies]
         else:
             dir_info['deps'] = []
 
-        save(filename, dirs)  # Save after every step, for resuming
+        if callback is not None:
+            callback(dirs)
         dirs_fetched.add(relpath)
 
     return dirs
 
 
-def fetch_vendor_dirs(metadata: Any, filename: str, branch: str) -> Any:
+def fetch_vendor_dirs(metadata: Any,
+                      url_base: str,
+                      branch: str,
+                      prev_data: Optional[Any] = None,
+                      callback: Optional[Callable[[Any], Any]] = None
+                      ) -> Any:
     required_vendor = set()
     for device, data in metadata.items():
         if 'vendor' in data:
@@ -141,8 +152,8 @@ def fetch_vendor_dirs(metadata: Any, filename: str, branch: str) -> Any:
             required_vendor.add('motorola')
             required_vendor.remove('moto')
 
-    if os.path.exists(filename):
-        dirs = json.load(open(filename))
+    if prev_data is not None:
+        dirs = copy.deepcopy(prev_data)
     else:
         dirs = {}
 
@@ -153,12 +164,13 @@ def fetch_vendor_dirs(metadata: Any, filename: str, branch: str) -> Any:
         if vendor == "xiaomi":
             url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi.git/"
         else:
-            url = f"{VENDOR_REPO_BASE}/proprietary_{relpath.replace('/', '_')}"
+            url = f"{url_base}/proprietary_{relpath.replace('/', '_')}"
 
         refs = ls_remote(url)
         if f'refs/heads/{branch}' in refs:
             fetch_relpath(dirs, relpath, url, branch)
-            save(filename, dirs)
+            if callback is not None:
+                callback(dirs)
         else:
             print(f'SKIP: {branch} branch does not exist for {url}')
 
@@ -182,8 +194,21 @@ def main() -> None:
             vendor, device = product.split('_', 1)
             metadata[device] = {'vendor': vendor}
 
-    fetch_device_dirs(metadata, os.path.join(args.branch, 'device-dirs.json'), args.branch)
-    fetch_vendor_dirs(metadata, os.path.join(args.branch, 'vendor-dirs.json'), args.branch)
+    device_dirs_fn = os.path.join(args.branch, 'device-dirs.json')
+    if os.path.exists(device_dirs_fn):
+        device_dirs = json.load(open(device_dirs_fn))
+    else:
+        device_dirs = {}
+    fetch_device_dirs(metadata, "https://github.com/LineageOS", args.branch,
+                      device_dirs, lambda dirs: save(device_dirs_fn, dirs))
+
+    vendor_dirs_fn = os.path.join(args.branch, 'vendor-dirs.json')
+    if os.path.exists(vendor_dirs_fn):
+        vendor_dirs = json.load(open(vendor_dirs_fn))
+    else:
+        vendor_dirs = {}
+    fetch_vendor_dirs(metadata, "https://github.com/TheMuppets", args.branch,
+                      vendor_dirs, lambda dirs: save(vendor_dirs_fn, dirs))
 
 
 if __name__ == '__main__':
