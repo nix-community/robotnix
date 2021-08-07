@@ -83,7 +83,7 @@ def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> 
 
 
 # Fetch device source trees for devices in metadata and save their information into filename
-def fetch_device_dirs(metadata: Any, filename: str, branch: str) -> Tuple[Any, Dict[str, List[str]]]:
+def fetch_device_dirs(metadata: Any, filename: str, branch: str) -> Any:
     if os.path.exists(filename):
         dirs = json.load(open(filename))
     else:
@@ -101,7 +101,6 @@ def fetch_device_dirs(metadata: Any, filename: str, branch: str) -> Tuple[Any, D
         else:
             print(f'SKIP: {branch} branch does not exist for {device}')
 
-    dir_dependencies: Dict[str, List[str]] = {}  # key -> [ values ].
     while len(dirs_to_fetch) > 0:
         relpath, url = dirs_to_fetch.pop()
         try:
@@ -125,7 +124,7 @@ def fetch_device_dirs(metadata: Any, filename: str, branch: str) -> Tuple[Any, D
         save(filename, dirs)  # Save after every step, for resuming
         dirs_fetched.add(relpath)
 
-    return dirs, dir_dependencies
+    return dirs
 
 
 def fetch_vendor_dirs(metadata: Any, filename: str, branch: str) -> Any:
