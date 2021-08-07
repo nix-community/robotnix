@@ -3,9 +3,10 @@
 
 from typing import Any, Dict
 
-import os
 import json
+import os
 import subprocess
+import sys
 
 
 ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
@@ -36,6 +37,23 @@ def checkout_git(url: str, rev: str, fetch_submodules: bool = False) -> Any:
         args.append("--fetch-submodules")
     json_text = subprocess.check_output(args).decode()
     return json.loads(json_text)
+
+
+def check_free_space() -> None:
+    # nix-prefetch-git will check out under $TMPDIR (if it exists), or /tmp (otherwise)
+    path = os.environ['TMPDIR'] if 'TMPDIR' in os.environ else '/tmp'
+
+    st = os.statvfs(path)
+    free_bytes = st.f_bavail * st.f_bsize
+
+    desired_gb = 10
+    if free_bytes < (desired_gb * 1024**3):
+        print(f"WARNING: You have less than {desired_gb} GiB free under {path}.\n" +
+              f"This script might fail if a checked-out repository is larger than {desired_gb} GiB.\n" +
+              "Either free space at this location or set the TMPDIR environment variable " +
+              "to a path which has enough free space.",
+              file=sys.stderr
+              )
 
 
 REMOTE_REFS: Dict[str, Dict[str, str]] = {}  # url: { ref: rev }

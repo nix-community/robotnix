@@ -12,7 +12,7 @@ import re
 import subprocess
 import tempfile
 
-from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url
+from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, check_free_space
 
 REPO_FLAGS = [
     "--quiet",
@@ -141,6 +141,8 @@ def make_repo_file(url: str, ref: str, filename: str,
 
 
 def main() -> None:
+    check_free_space()
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--out', default=None, help="path to output file, defaults to repo-{rev}.json")
     parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",

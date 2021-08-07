@@ -10,7 +10,7 @@ import pathlib
 
 from typing import Any, Callable, Dict, Optional
 
-from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url
+from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, check_free_space
 
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
@@ -136,6 +136,8 @@ def fetch_vendor_dirs(metadata: Any,
 
 
 def main() -> None:
+    check_free_space()
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--branch', help="lineageos version")
     parser.add_argument('product', nargs='*',
