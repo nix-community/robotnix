@@ -56,6 +56,7 @@ def manifest_repo(tmpdir: Any) -> Any:
 
 def test_basic(tmpdir: Any, manifest_repo: Any) -> None:
     os.chdir(tmpdir.mkdir("checkout"))
+    # TODO: Each invocation of this downloads a remote git repo to fetch the "repo" tool
     mk_repo_file.make_repo_file(manifest_repo, "release", "repo-release.json")
     content = json.load(open('repo-release.json'))
     assert 'a' in content

@@ -1,10 +1,28 @@
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-from typing import Any
+from typing import Any, Dict
 
+import os
 import json
 import subprocess
+
+
+ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
+if ROBOTNIX_GIT_MIRRORS:
+    MIRRORS: Dict[str, str] = dict(
+            (mirror.split("=")[0], mirror.split("=")[1])
+            for mirror in ROBOTNIX_GIT_MIRRORS.split('|')
+            )
+else:
+    MIRRORS = {}
+
+
+def get_mirrored_url(url: str) -> str:
+    for mirror_url, mirror_path in MIRRORS.items():
+        if url.startswith(mirror_url):
+            url = url.replace(mirror_url, mirror_path)
+    return url
 
 
 def save(filename: str, data: Any) -> None:
@@ -20,8 +38,20 @@ def checkout_git(url: str, rev: str, fetch_submodules: bool = False) -> Any:
     return json.loads(json_text)
 
 
-def ls_remote(url: str, rev: str) -> str:
-    remote_info = subprocess.check_output(["git", "ls-remote", url, rev]).decode()
-    remote_rev = remote_info.split('\t')[0]
-    assert remote_rev != ""
-    return remote_rev
+REMOTE_REFS: Dict[str, Dict[str, str]] = {}  # url: { ref: rev }
+
+
+def ls_remote(url: str) -> Dict[str, str]:
+    if url in REMOTE_REFS:
+        return REMOTE_REFS[url]
+
+    orig_url = url
+    url = get_mirrored_url(url)
+
+    remote_info = subprocess.check_output(["git", "ls-remote", url]).decode()
+    REMOTE_REFS[orig_url] = {}
+    for line in remote_info.split('\n'):
+        if line:
+            ref, rev = reversed(line.split('\t'))
+            REMOTE_REFS[orig_url][ref] = rev
+    return REMOTE_REFS[orig_url]

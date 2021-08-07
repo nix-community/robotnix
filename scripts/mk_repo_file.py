@@ -12,7 +12,7 @@ import re
 import subprocess
 import tempfile
 
-from robotnix_common import save, checkout_git, ls_remote
+from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url
 
 REPO_FLAGS = [
     "--quiet",
@@ -38,13 +38,11 @@ treeHashes: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> 
 def make_repo_file(url: str, ref: str, filename: str,
                    ref_type: ManifestRefType = ManifestRefType.TAG,
                    override_project_revs: Optional[Dict[str, str]] = None, resume: bool = False,
-                   mirrors: Optional[Dict[str, str]] = None, project_fetch_submodules: Optional[List[str]] = None,
+                   project_fetch_submodules: Optional[List[str]] = None,
                    override_tag: Optional[str] = None, include_prefix: Optional[List[str]] = None,
                    exclude_path: Optional[List[str]] = None) -> None:
     if override_project_revs is None:
         override_project_revs = {}
-    if mirrors is None:
-        mirrors = {}
     if project_fetch_submodules is None:
         project_fetch_submodules = []
     if include_prefix is None:
@@ -92,7 +90,7 @@ def make_repo_file(url: str, ref: str, filename: str,
                 p['rev'] = p['revisionExpr']
             else:
                 # Otherwise, fetch this information from the git remote
-                p['rev'] = ls_remote(p['url'], p['revisionExpr'])
+                p['rev'] = ls_remote(p['url'])[p['revisionExpr']]
 
         # TODO: Incorporate "sync-s" setting from upstream manifest if it exists
         fetch_submodules = relpath in project_fetch_submodules
@@ -109,17 +107,16 @@ def make_repo_file(url: str, ref: str, filename: str,
                     p['tree'] = revTrees[p['rev']]
                 continue
 
-            p_url = p['url']
+            p_url = get_mirrored_url(p['url'])
             found_treehash = False
-            for mirror_url, mirror_path in mirrors.items():
-                if p['url'].startswith(mirror_url):
-                    p_url = p['url'].replace(mirror_url, mirror_path)
-                    p['tree'] = subprocess.check_output(
-                        ['git', 'log', '-1', '--pretty=%T', p['rev']],
-                        cwd=p_url+'.git').decode().strip()
-                    if (p['tree'], fetch_submodules) in treeHashes:
-                        p['sha256'] = treeHashes[p['tree'], fetch_submodules]
-                        found_treehash = True
+            if p['url'] != p_url and p_url.startswith('/'):
+                # Get treehash if mirror is local
+                p['tree'] = subprocess.check_output(
+                    ['git', 'log', '-1', '--pretty=%T', p['rev']],
+                    cwd=p_url+'.git').decode().strip()
+                if (p['tree'], fetch_submodules) in treeHashes:
+                    p['sha256'] = treeHashes[p['tree'], fetch_submodules]
+                    found_treehash = True
             if found_treehash:
                 continue
 
@@ -161,15 +158,6 @@ def main() -> None:
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
 
-    ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
-    if ROBOTNIX_GIT_MIRRORS:
-        mirrors: Dict[str, str] = dict(
-                (mirror.split("=")[0], mirror.split("=")[1])
-                for mirror in ROBOTNIX_GIT_MIRRORS.split('|')
-                )
-    else:
-        mirrors = {}
-
     ref_type = ManifestRefType[args.ref_type.upper()]
 
     # Extract project revisions from repo.prop
@@ -198,7 +186,6 @@ def main() -> None:
 
     make_repo_file(args.url, args.ref, filename, ref_type,
                    override_project_revs, resume=args.resume,
-                   mirrors=mirrors,
                    project_fetch_submodules=args.project_fetch_submodules,
                    override_tag=args.override_tag,
                    include_prefix=args.include_prefix,

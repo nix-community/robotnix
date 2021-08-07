@@ -7,58 +7,16 @@ import copy
 import json
 import os
 import pathlib
-import subprocess
 
 from typing import Any, Callable, Dict, Optional
+
+from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url
 
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
 # TODO: Output a timestamp somewhere
 # TODO: Extract code shared with mk_repo_file.py into a common location
 # TODO: Optionally parallelize fetching
-
-ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
-if ROBOTNIX_GIT_MIRRORS:
-    MIRRORS: Dict[str, str] = dict(
-            (mirror.split("=")[0], mirror.split("=")[1])
-            for mirror in ROBOTNIX_GIT_MIRRORS.split('|')
-            )
-else:
-    MIRRORS = {}
-REMOTE_REFS: Dict[str, Dict[str, str]] = {}  # url: { ref: rev }
-
-
-def save(filename: str, data: str) -> None:
-    open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
-
-
-def get_mirrored_url(url: str) -> str:
-    for mirror_url, mirror_path in MIRRORS.items():
-        if url.startswith(mirror_url):
-            url = url.replace(mirror_url, mirror_path)
-    return url
-
-
-def ls_remote(url: str) -> Dict[str, str]:
-    if url in REMOTE_REFS:
-        return REMOTE_REFS[url]
-
-    orig_url = url
-    url = get_mirrored_url(url)
-
-    remote_info = subprocess.check_output(["git", "ls-remote", url]).decode()
-    REMOTE_REFS[orig_url] = {}
-    for line in remote_info.split('\n'):
-        if line:
-            ref, rev = reversed(line.split('\t'))
-            REMOTE_REFS[orig_url][ref] = rev
-    return REMOTE_REFS[orig_url]
-
-
-def checkout_git(url: str, rev: str) -> Any:
-    print("Checking out %s %s" % (url, rev))
-    json_text = subprocess.check_output(["nix-prefetch-git", "--url", url, "--rev", rev]).decode()
-    return json.loads(json_text)
 
 
 def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> Any:
