@@ -19,6 +19,8 @@ def git_create(directory: str, tag: Optional[str] = "release") -> None:
     cwd = os.getcwd()
     os.chdir(directory)
     subprocess.check_call(["git", "init", "--initial-branch=master"])
+    subprocess.check_call(["git", "config", "--local", "user.name", "testenv"])
+    subprocess.check_call(["git", "config", "--local", "user.email", "testenv@example.com"])
     subprocess.check_call(["git", "add", "."])
     subprocess.check_call(["git", "commit", "-m", "Initial Commit"])
     if tag is not None:
