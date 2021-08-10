@@ -87,6 +87,9 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # GrapheneOS just disables apex updating wholesale
   signing.apex.enable = false;
 
+  # Extra packages that should use releasekey
+  signing.signTargetFilesArgs = [ "--extra_apks OsuLogin.apk,ServiceWifiResources.apk=$KEYSDIR/${config.device}/releasekey" ];
+
   # Leave the existing auditor in the build--just in case the user wants to
   # audit devices using the official upstream build
 }
