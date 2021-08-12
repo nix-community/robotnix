@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-from typing import Optional, Dict, List, Tuple
+from typing import Optional, Dict, List, Tuple, TypedDict
 from enum import Enum
 
 import argparse
@@ -30,6 +30,18 @@ class ManifestRefType(Enum):
     TAG = "tags"
 
 
+class ProjectInfoDict(TypedDict):
+    url: str
+    rev: str
+    revisionExpr: str
+    tree: str
+    sha256: str
+    fetchSubmodules: bool
+    groups: List[str]
+    copyfiles: List[Dict[str, str]]
+    linkfiles: List[Dict[str, str]]
+
+
 revHashes: Dict[Tuple[str, bool], str] = {}  # (rev, fetch_submodules) -> sha256hash
 revTrees: Dict[str, str] = {}           # rev -> treeHash
 treeHashes: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> sha256hash
@@ -49,6 +61,8 @@ def make_repo_file(url: str, ref: str, filename: str,
         include_prefix = []
     if exclude_path is None:
         exclude_path = []
+
+    data: Dict[str, ProjectInfoDict]
 
     if resume and os.path.exists(filename):
         data = json.load(open(filename))
@@ -131,7 +145,7 @@ def make_repo_file(url: str, ref: str, filename: str,
             # Add to cache
             revHashes[p['rev'], fetch_submodules] = p['sha256']
             if 'tree' in p:
-                treeHashes[p['tree']] = p['sha256']
+                treeHashes[p['tree'], fetch_submodules] = p['sha256']
 
             # Save after every new piece of information just in case we crash
             save(filename, data)

@@ -8,18 +8,22 @@ import json
 import os
 import pathlib
 
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, List, Optional, cast
 
-from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, check_free_space
+from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, check_free_space, GitCheckoutInfoDict
 
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
 # TODO: Output a timestamp somewhere
-# TODO: Extract code shared with mk_repo_file.py into a common location
 # TODO: Optionally parallelize fetching
 
 
-def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> Any:
+# Project info is just GitCheckoutInfoDict plus deps
+class ProjectInfoDict(GitCheckoutInfoDict, total=False):
+    deps: List[str]
+
+
+def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> ProjectInfoDict:
     orig_url = url
     url = get_mirrored_url(url)
 
@@ -37,7 +41,7 @@ def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> 
     else:
         print(relpath + ' is up to date.')
 
-    return dirs[relpath]
+    return cast(ProjectInfoDict, dirs[relpath])
 
 
 # Fetch device source trees for devices in metadata
@@ -46,7 +50,9 @@ def fetch_device_dirs(metadata: Any,
                       branch: str,
                       prev_data: Optional[Any] = None,
                       callback: Optional[Callable[[Any], Any]] = None
-                      ) -> Any:
+                      ) -> Dict[str, ProjectInfoDict]:
+    dirs: Dict[str, ProjectInfoDict]
+
     if prev_data is not None:
         dirs = copy.deepcopy(prev_data)
     else:
