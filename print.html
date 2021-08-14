@@ -656,13 +656,15 @@ The resource type is automatically determined based on value set.
 Setting <code>resources.&lt;path&gt;.&lt;name&gt;.type</code> can be used to override the automatically determined type.
 Available values types are <code>bool</code>, <code>integer</code>, <code>dimen</code>, <code>color</code>, <code>string</code>, <code>integer-array</code>, and <code>string-array</code>.
 If this manual override is used, the value must be set using <code>resources.&lt;path&gt;.&lt;name&gt;.value</code>.</p>
-<h2 id="ccache"><a class="header" href="#ccache">Ccache</a></h2>
+<h2 id="ccache"><a class="header" href="#ccache">CCache</a></h2>
 <p>Set <code>ccache.enable = true</code> in configuration, and be sure to pass <code>/var/cache/ccache</code> as a sandbox exception when building.
 In NixOS, to set up the cache, also run (as root):</p>
 <pre><code class="language-shell"># mkdir -p -m0770 /var/cache/ccache
 # chown root:nixbld /var/cache/ccache
 # echo max_size = 100G &gt; /var/cache/ccache/ccache.conf
 </code></pre>
+<p>This option only applies to the Android build process. (It does not apply to chromium, kernels, etc.)
+CCache support is deprecated in upstream AOSP, and might be removed from robotnix in the future.</p>
 <!--
 SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
