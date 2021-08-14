@@ -246,7 +246,7 @@ Those configuration defaults should include:</p>
 It is recommended to take a look at the Nix expressions implementing the current flavors under <code>flavors/</code>.</p>
 <h2 id="emulator"><a class="header" href="#emulator">Emulator</a></h2>
 <p>Robotnix can also build a script which will start the Android emulator using an attached robotnix-built system image.
-This can be accomplished with the <code>emulator</code> Nix output
+This can be accomplished with the <code>emulator</code> Nix output.
 To build and run an emulator with an attached vanilla system image, use (for example):</p>
 <pre><code class="language-console">$ nix-build ./default.nix --arg configuration '{device=&quot;x86_64&quot;; flavor=&quot;vanilla&quot;;}' -A emulator
 $ ./result
