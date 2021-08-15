@@ -2,10 +2,11 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-from typing import Optional, Dict, List, Tuple, TypedDict
+from typing import Any, Callable, Optional, Dict, List, Tuple, TypedDict
 from enum import Enum
 
 import argparse
+import copy
 import json
 import os
 import re
@@ -30,7 +31,7 @@ class ManifestRefType(Enum):
     TAG = "tags"
 
 
-class ProjectInfoDict(TypedDict):
+class ProjectInfoDict(TypedDict, total=False):
     url: str
     rev: str
     revisionExpr: str
@@ -47,12 +48,15 @@ revTrees: Dict[str, str] = {}           # rev -> treeHash
 treeHashes: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> sha256hash
 
 
-def make_repo_file(url: str, ref: str, filename: str,
+def make_repo_file(url: str, ref: str,
                    ref_type: ManifestRefType = ManifestRefType.TAG,
-                   override_project_revs: Optional[Dict[str, str]] = None, resume: bool = False,
+                   prev_data: Optional[Dict[str, ProjectInfoDict]] = None,
+                   override_project_revs: Optional[Dict[str, str]] = None,
                    project_fetch_submodules: Optional[List[str]] = None,
                    override_tag: Optional[str] = None, include_prefix: Optional[List[str]] = None,
-                   exclude_path: Optional[List[str]] = None) -> None:
+                   exclude_path: Optional[List[str]] = None,
+                   callback: Optional[Callable[[Any], Any]] = None,
+                   ) -> Dict[str, ProjectInfoDict]:
     if override_project_revs is None:
         override_project_revs = {}
     if project_fetch_submodules is None:
@@ -64,9 +68,11 @@ def make_repo_file(url: str, ref: str, filename: str,
 
     data: Dict[str, ProjectInfoDict]
 
-    if resume and os.path.exists(filename):
-        data = json.load(open(filename))
+    if prev_data is not None:
+        data = copy.deepcopy(prev_data)
     else:
+        data = {}
+
         print("Fetching information for %s %s" % (url, ref))
         with tempfile.TemporaryDirectory() as tmpdir:
             subprocess.check_call([
@@ -78,7 +84,8 @@ def make_repo_file(url: str, ref: str, filename: str,
                     cwd=tmpdir).decode()
             data = json.loads(json_text)
 
-            save(filename, data)
+            if callback is not None:
+                callback(data)
 
     for relpath, p in data.items():
         if len(include_prefix) > 0 and (not any(relpath.startswith(p) for p in include_prefix)):
@@ -147,11 +154,14 @@ def make_repo_file(url: str, ref: str, filename: str,
             if 'tree' in p:
                 treeHashes[p['tree'], fetch_submodules] = p['sha256']
 
-            # Save after every new piece of information just in case we crash
-            save(filename, data)
+            if callback is not None:
+                callback(data)
 
     # Save at the end as well!
-    save(filename, data)
+    if callback is not None:
+        callback(data)
+
+    return data
 
 
 def main() -> None:
@@ -200,12 +210,18 @@ def main() -> None:
     else:
         filename = f'repo-{args.ref}.json'
 
-    make_repo_file(args.url, args.ref, filename, ref_type,
-                   override_project_revs, resume=args.resume,
+    if args.resume and os.path.exists(filename):
+        prev_data = json.load(open(filename))
+    else:
+        prev_data = None
+
+    make_repo_file(args.url, args.ref, ref_type, prev_data,
+                   override_project_revs,
                    project_fetch_submodules=args.project_fetch_submodules,
                    override_tag=args.override_tag,
                    include_prefix=args.include_prefix,
                    exclude_path=args.exclude_path,
+                   callback=lambda dirs: save(filename, dirs),
                    )
 
 

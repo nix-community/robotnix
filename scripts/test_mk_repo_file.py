@@ -8,9 +8,8 @@ import subprocess
 from unittest.mock import patch
 import pytest
 
-from typing import Any, Optional
+from typing import Any, Optional, cast
 
-from robotnix_common import save
 import mk_repo_file
 
 
@@ -59,20 +58,17 @@ def manifest_repo(tmpdir: Any) -> Any:
 def test_basic(tmpdir: Any, manifest_repo: Any) -> None:
     os.chdir(tmpdir.mkdir("checkout"))
     # TODO: Each invocation of this downloads a remote git repo to fetch the "repo" tool
-    mk_repo_file.make_repo_file(manifest_repo, "release", "repo-release.json")
-    content = json.load(open('repo-release.json'))
-    assert 'a' in content
-    assert 'rev' in content['a']
-    assert 'sha256' in content['a']
-    assert 'url' in content['a']
-    assert 'b' in content
-    assert 'sha256' in content['b']
+    data = mk_repo_file.make_repo_file(manifest_repo, "release")
+    assert 'a' in data
+    assert 'rev' in data['a']
+    assert 'sha256' in data['a']
+    assert 'url' in data['a']
+    assert 'b' in data
+    assert 'sha256' in data['b']
 
     # Removing just one sha256 and resuming
-    del content['b']['sha256']
-    save('repo-release.json', content)
+    del data['b']['sha256']
     with patch('mk_repo_file.ls_remote') as ls_remote:
         ls_remote.side_effect = Exception('Called ls-remote')
-        mk_repo_file.make_repo_file(manifest_repo, "release", "repo-release.json", resume=True)
-        content = json.load(open('repo-release.json'))
-        assert 'sha256' in content['b']
+        data = mk_repo_file.make_repo_file(manifest_repo, "release", prev_data=data)
+        assert 'sha256' in data['b']
