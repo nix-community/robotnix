@@ -121,7 +121,16 @@ def make_repo_file(url: str, ref: str,
                 p['rev'] = p['revisionExpr']
             else:
                 # Otherwise, fetch this information from the git remote
-                p['rev'] = ls_remote(p['url'])[p['revisionExpr']]
+                remote_revs = ls_remote(p['url'])
+                if p['revisionExpr'] in remote_revs:
+                    resolved_rev = p['revisionExpr']
+                elif ('refs/tags/' + p['revisionExpr']) in remote_revs:
+                    resolved_rev = 'refs/tags/' + p['revisionExpr']
+                elif ('refs/heads/' + p['revisionExpr']) in remote_revs:
+                    resolved_rev = 'refs/heads/' + p['revisionExpr']
+                else:
+                    raise Exception(f"{p['url']} is missing {p['revisionExpr']}")
+                p['rev'] = remote_revs[resolved_rev]
 
         # TODO: Incorporate "sync-s" setting from upstream manifest if it exists
         fetch_submodules = relpath in project_fetch_submodules
