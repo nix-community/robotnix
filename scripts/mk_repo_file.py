@@ -10,6 +10,7 @@ import copy
 import json
 import os
 import re
+import shutil
 import subprocess
 import tempfile
 
@@ -51,12 +52,15 @@ treeHashes: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> 
 def make_repo_file(url: str, ref: str,
                    ref_type: ManifestRefType = ManifestRefType.TAG,
                    prev_data: Optional[Dict[str, ProjectInfoDict]] = None,
+                   local_manifests: Optional[List[str]] = None,
                    override_project_revs: Optional[Dict[str, str]] = None,
                    project_fetch_submodules: Optional[List[str]] = None,
                    override_tag: Optional[str] = None, include_prefix: Optional[List[str]] = None,
                    exclude_path: Optional[List[str]] = None,
                    callback: Optional[Callable[[Any], Any]] = None,
                    ) -> Dict[str, ProjectInfoDict]:
+    if local_manifests is None:
+        local_manifests = []
     if override_project_revs is None:
         override_project_revs = {}
     if project_fetch_submodules is None:
@@ -78,6 +82,12 @@ def make_repo_file(url: str, ref: str,
             subprocess.check_call([
                 'repo', 'init', f'--manifest-url={url}', f'--manifest-branch=refs/{ref_type.value}/{ref}', *REPO_FLAGS
                 ], cwd=tmpdir)
+
+            local_manifests_dir = os.path.join(tmpdir, ".repo/local_manifests")
+            os.makedirs(local_manifests_dir, exist_ok=True)
+            for local_manifest in local_manifests:
+                shutil.copyfile(local_manifest, os.path.join(local_manifests_dir, os.path.basename(local_manifest)))
+
             json_text = subprocess.check_output(
                     ['repo', 'dumpjson']
                     + (["--local-only"] if override_project_revs else []),
@@ -172,6 +182,7 @@ def main() -> None:
     parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",
                         choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
     parser.add_argument('--resume', help="resume a previous download", action='store_true')
+    parser.add_argument('--local-manifest', help="path or URL to a .xml file to include in local_manifests", action='append')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
     parser.add_argument('--project-fetch-submodules', action="append", default=[],
@@ -216,7 +227,8 @@ def main() -> None:
         prev_data = None
 
     make_repo_file(args.url, args.ref, ref_type, prev_data,
-                   override_project_revs,
+                   local_manifests=args.local_manifest,
+                   override_project_revs=override_project_revs,
                    project_fetch_submodules=args.project_fetch_submodules,
                    override_tag=args.override_tag,
                    include_prefix=args.include_prefix,
