@@ -10,7 +10,7 @@ let
   fakeuser = pkgs.callPackage ./fakeuser {};
 
   # Taken from https://github.com/edolstra/flake-compat/
-  # Format number of seconds in the Unix epoch as %Y.%m.%d.%H
+  # Format number of seconds in the Unix epoch as %Y%m%d%H
   formatSecondsSinceEpoch = t:
     let
       rem = x: y: x - x / y * y;
@@ -33,7 +33,7 @@ let
       y' = y + (if m <= 2 then 1 else 0);
 
       pad = s: if builtins.stringLength s < 2 then "0" + s else s;
-    in "${toString y'}.${pad (toString m)}.${pad (toString d)}.${pad (toString hours)}";
+    in "${toString y'}${pad (toString m)}${pad (toString d)}${pad (toString hours)}";
 in
 {
   options = {
@@ -109,7 +109,7 @@ in
         Defaults to `YYYY.MM.DD.HH` based on `buildDateTime`.
         Should be unique for each build used for disambiguation.
       '';
-      example = "2019.08.12.1";
+      example = "201908121";
     };
 
     buildDateTime = mkOption {
