@@ -191,7 +191,8 @@ def main() -> None:
     parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",
                         choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
     parser.add_argument('--resume', help="resume a previous download", action='store_true')
-    parser.add_argument('--local-manifest', help="path or URL to a .xml file to include in local_manifests", action='append')
+    parser.add_argument('--local-manifest', help="path or URL to a .xml file to include in local_manifests",
+                        action='append')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
     parser.add_argument('--project-fetch-submodules', action="append", default=[],

@@ -1,14 +1,13 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-import json
 import os
 import subprocess
 
 from unittest.mock import patch
 import pytest
 
-from typing import Any, Optional, cast
+from typing import Any, Optional
 
 import mk_repo_file
 
