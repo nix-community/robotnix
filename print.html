@@ -631,7 +631,7 @@ For example, if <code>source.dirs.&quot;foo&quot;</code> is set, then setting <c
 <ul>
 <li>Build-time source fetching with <code>pkgs.fetchgit</code>. This is the default.
 An end user wanting to fetch sources not already included in <code>robotnix</code> would
-need to create a repo json file using <code>mk-repo-file.py</code> and set
+need to create a repo json file using <code>scripts/mk_repo_file.py</code> and set
 <code>source.dirs = lib.importJSON ./example.json;</code></li>
 <li>Evaluation-time source fetching with <code>builtins.fetchGit</code>.
 This is more convenient for development when changing branches, as it allows
@@ -952,7 +952,7 @@ Any options or configuration set by the specified module will be included in the
 The flavor configuration defaults should be set conditionally using (for example) <code>mkIf (config.flavor = &quot;...&quot;) { ... }</code>.
 Those configuration defaults should include:</p>
 <ul>
-<li>Setting <code>source.dirs</code> using a repo JSON file produced by <code>mk-repo-file.py</code>.</li>
+<li>Setting <code>source.dirs</code> using a repo JSON file produced by <code>mk_repo_file.py</code>.</li>
 <li>Setting the default <code>androidVersion</code>.</li>
 <li>Setting the default <code>buildDateTime</code> based on (for example) the time that the flavor was last updated.</li>
 <li>Providing a warning if the user has not selected a valid device for this flavor.</li>
@@ -1457,7 +1457,7 @@ This must be a <em>string</em> and not a &quot;nix path&quot; to ensure that you
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="sourcedirs"><a class="header" href="#sourcedirs"><code>source.dirs</code></a></h3>
 <p>Directories to include in Android build process.
-Normally set by the output of <code>mk-repo-file.py</code>.
+Normally set by the output of <code>mk_repo_file.py</code>.
 However, additional source directories can be added to the build here using this option as well.</p>
 <p><em>Default</em>: <code>{ }</code></p>
 <p><em>Type</em>: attribute set of submodules</p>
