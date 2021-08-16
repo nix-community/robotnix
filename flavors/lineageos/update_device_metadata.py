@@ -2,17 +2,24 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+from typing import Any
 import json
-import os
 import urllib.request
+import os
+import pathlib
 
-def save(filename, data):
+
+def save(filename: str, data: str) -> None:
     open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
 
-def fetch_metadata():
+
+def fetch_metadata(
+        lineage_build_targets_url: str = "https://github.com/LineageOS/hudson/raw/master/lineage-build-targets",
+        devices_json_url: str = "https://github.com/LineageOS/hudson/raw/master/updater/devices.json"
+        ) -> Any:
     metadata = {}
 
-    lineage_build_targets_str = urllib.request.urlopen("https://github.com/LineageOS/hudson/raw/master/lineage-build-targets").read().decode()
+    lineage_build_targets_str = urllib.request.urlopen(lineage_build_targets_url).read().decode()
     for line in lineage_build_targets_str.split("\n"):
         line = line.strip()
         if line == "":
@@ -28,7 +35,7 @@ def fetch_metadata():
 
     ###
 
-    devices = json.load(urllib.request.urlopen("https://github.com/LineageOS/hudson/raw/master/updater/devices.json"))
+    devices = json.load(urllib.request.urlopen(devices_json_url))
     for data in devices:
         if data['model'] not in metadata:
             continue
@@ -54,6 +61,8 @@ def fetch_metadata():
 
     return metadata
 
+
 if __name__ == '__main__':
     metadata = fetch_metadata()
+    os.chdir(pathlib.Path(__file__).parent.resolve())
     save('device-metadata.json', metadata)

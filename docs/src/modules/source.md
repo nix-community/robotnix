@@ -37,7 +37,7 @@ Robotnix supports two alternative approaches for fetching source files:
 
 - Build-time source fetching with `pkgs.fetchgit`. This is the default.
   An end user wanting to fetch sources not already included in `robotnix` would
-  need to create a repo json file using `mk-repo-file.py` and set
+  need to create a repo json file using `scripts/mk_repo_file.py` and set
   `source.dirs = lib.importJSON ./example.json;`
 - Evaluation-time source fetching with `builtins.fetchGit`.
   This is more convenient for development when changing branches, as it allows

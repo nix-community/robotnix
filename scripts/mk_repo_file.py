@@ -2,15 +2,19 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-from typing import Optional, Dict, List, Tuple
+from typing import Any, Callable, Optional, Dict, List, Tuple, TypedDict
 from enum import Enum
 
 import argparse
+import copy
 import json
 import os
 import re
+import shutil
 import subprocess
 import tempfile
+
+from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, check_free_space
 
 REPO_FLAGS = [
     "--quiet",
@@ -20,48 +24,78 @@ REPO_FLAGS = [
     "--depth=1",
 ]
 
+
 # The kind of remote a "commitish" refers to.
 # These are used for the --ref-type CLI arg.
 class ManifestRefType(Enum):
     BRANCH = "heads"
     TAG = "tags"
 
+
+class ProjectInfoDict(TypedDict, total=False):
+    url: str
+    rev: str
+    revisionExpr: str
+    tree: str
+    sha256: str
+    fetchSubmodules: bool
+    groups: List[str]
+    copyfiles: List[Dict[str, str]]
+    linkfiles: List[Dict[str, str]]
+
+
 revHashes: Dict[Tuple[str, bool], str] = {}  # (rev, fetch_submodules) -> sha256hash
 revTrees: Dict[str, str] = {}           # rev -> treeHash
-treeHashes: Dict[Tuple[str, bool], str] = {} # (treeHash, fetch_submodules) -> sha256hash
+treeHashes: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> sha256hash
 
-def save(filename, data):
-    open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
 
-def checkout_git(url, rev, fetch_submodules=False):
-    print("Checking out %s %s" % (url, rev))
-    args = [ "nix-prefetch-git", "--url", url, "--rev", rev ]
-    if fetch_submodules:
-        args.append("--fetch-submodules")
-    json_text = subprocess.check_output(args).decode()
-    return json.loads(json_text)
+def make_repo_file(url: str, ref: str,
+                   ref_type: ManifestRefType = ManifestRefType.TAG,
+                   prev_data: Optional[Dict[str, ProjectInfoDict]] = None,
+                   local_manifests: Optional[List[str]] = None,
+                   override_project_revs: Optional[Dict[str, str]] = None,
+                   project_fetch_submodules: Optional[List[str]] = None,
+                   override_tag: Optional[str] = None, include_prefix: Optional[List[str]] = None,
+                   exclude_path: Optional[List[str]] = None,
+                   callback: Optional[Callable[[Any], Any]] = None,
+                   ) -> Dict[str, ProjectInfoDict]:
+    if local_manifests is None:
+        local_manifests = []
+    if override_project_revs is None:
+        override_project_revs = {}
+    if project_fetch_submodules is None:
+        project_fetch_submodules = []
+    if include_prefix is None:
+        include_prefix = []
+    if exclude_path is None:
+        exclude_path = []
 
-def ls_remote(url, rev):
-    remote_info = subprocess.check_output([ "git", "ls-remote", url, rev ]).decode()
-    remote_rev = remote_info.split('\t')[0]
-    assert remote_rev != ""
-    return remote_rev
+    data: Dict[str, ProjectInfoDict]
 
-def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
-                   override_project_revs: Dict[str, str], resume: bool,
-                   mirrors: Dict[str, str], project_fetch_submodules: List[str],
-                   override_tag: Optional[str], include_prefix: List[str],
-                   exclude_path: List[str]):
-    if resume and os.path.exists(filename):
-        data = json.load(open(filename))
+    if prev_data is not None:
+        data = copy.deepcopy(prev_data)
     else:
+        data = {}
+
         print("Fetching information for %s %s" % (url, ref))
         with tempfile.TemporaryDirectory() as tmpdir:
-            subprocess.check_call(['repo', 'init', f'--manifest-url={url}', f'--manifest-branch=refs/{ref_type.value}/{ref}', *REPO_FLAGS], cwd=tmpdir)
-            json_text = subprocess.check_output(['repo', 'dumpjson'] + (["--local-only"] if override_project_revs else []), cwd=tmpdir).decode()
+            subprocess.check_call([
+                'repo', 'init', f'--manifest-url={url}', f'--manifest-branch=refs/{ref_type.value}/{ref}', *REPO_FLAGS
+                ], cwd=tmpdir)
+
+            local_manifests_dir = os.path.join(tmpdir, ".repo/local_manifests")
+            os.makedirs(local_manifests_dir, exist_ok=True)
+            for local_manifest in local_manifests:
+                shutil.copyfile(local_manifest, os.path.join(local_manifests_dir, os.path.basename(local_manifest)))
+
+            json_text = subprocess.check_output(
+                    ['repo', 'dumpjson']
+                    + (["--local-only"] if override_project_revs else []),
+                    cwd=tmpdir).decode()
             data = json.loads(json_text)
 
-            save(filename, data)
+            if callback is not None:
+                callback(data)
 
     for relpath, p in data.items():
         if len(include_prefix) > 0 and (not any(relpath.startswith(p) for p in include_prefix)):
@@ -87,7 +121,16 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                 p['rev'] = p['revisionExpr']
             else:
                 # Otherwise, fetch this information from the git remote
-                p['rev'] = ls_remote(p['url'], p['revisionExpr'])
+                remote_revs = ls_remote(p['url'])
+                if p['revisionExpr'] in remote_revs:
+                    resolved_rev = p['revisionExpr']
+                elif ('refs/tags/' + p['revisionExpr']) in remote_revs:
+                    resolved_rev = 'refs/tags/' + p['revisionExpr']
+                elif ('refs/heads/' + p['revisionExpr']) in remote_revs:
+                    resolved_rev = 'refs/heads/' + p['revisionExpr']
+                else:
+                    raise Exception(f"{p['url']} is missing {p['revisionExpr']}")
+                p['rev'] = remote_revs[resolved_rev]
 
         # TODO: Incorporate "sync-s" setting from upstream manifest if it exists
         fetch_submodules = relpath in project_fetch_submodules
@@ -104,15 +147,16 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
                     p['tree'] = revTrees[p['rev']]
                 continue
 
-            p_url = p['url']
+            p_url = get_mirrored_url(p['url'])
             found_treehash = False
-            for mirror_url, mirror_path in mirrors.items():
-                if p['url'].startswith(mirror_url):
-                    p_url = p['url'].replace(mirror_url, mirror_path)
-                    p['tree'] = subprocess.check_output(['git', 'log','-1', '--pretty=%T', p['rev']], cwd=p_url+'.git').decode().strip()
-                    if (p['tree'], fetch_submodules) in treeHashes:
-                        p['sha256'] = treeHashes[p['tree'], fetch_submodules]
-                        found_treehash = True
+            if p['url'] != p_url and p_url.startswith('/'):
+                # Get treehash if mirror is local
+                p['tree'] = subprocess.check_output(
+                    ['git', 'log', '-1', '--pretty=%T', p['rev']],
+                    cwd=p_url+'.git').decode().strip()
+                if (p['tree'], fetch_submodules) in treeHashes:
+                    p['sha256'] = treeHashes[p['tree'], fetch_submodules]
+                    found_treehash = True
             if found_treehash:
                 continue
 
@@ -127,35 +171,39 @@ def make_repo_file(url: str, ref: str, filename: str, ref_type: ManifestRefType,
             # Add to cache
             revHashes[p['rev'], fetch_submodules] = p['sha256']
             if 'tree' in p:
-                treeHashes[p['tree']] = p['sha256']
+                treeHashes[p['tree'], fetch_submodules] = p['sha256']
 
-            # Save after every new piece of information just in case we crash
-            save(filename, data)
+            if callback is not None:
+                callback(data)
 
     # Save at the end as well!
-    save(filename, data)
+    if callback is not None:
+        callback(data)
 
-def main():
+    return data
+
+
+def main() -> None:
+    check_free_space()
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--out', default=None, help="path to output file, defaults to repo-{rev}.json")
     parser.add_argument('--ref-type', help="the kind of ref that is to be fetched",
                         choices=[t.name.lower() for t in ManifestRefType], default=ManifestRefType.TAG.name.lower())
     parser.add_argument('--resume', help="resume a previous download", action='store_true')
+    parser.add_argument('--local-manifest', help="path or URL to a .xml file to include in local_manifests",
+                        action='append')
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
-    parser.add_argument('--project-fetch-submodules', action="append", default=[], help="fetch submodules for the specified project path")
-    parser.add_argument('--include-prefix', action="append", default=[], help="only include paths if they start with the specified prefix")
+    parser.add_argument('--project-fetch-submodules', action="append", default=[],
+                        help="fetch submodules for the specified project path")
+    parser.add_argument('--include-prefix', action="append", default=[],
+                        help="only include paths if they start with the specified prefix")
     parser.add_argument('--exclude-path', action="append", default=[], help="paths to exclude from fetching")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
     parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
-
-    ROBOTNIX_GIT_MIRRORS = os.environ.get('ROBOTNIX_GIT_MIRRORS', '')
-    if ROBOTNIX_GIT_MIRRORS:
-        mirrors = dict(mirror.split("=") for mirror in ROBOTNIX_GIT_MIRRORS.split('|'))
-    else:
-        mirrors = {}
 
     ref_type = ManifestRefType[args.ref_type.upper()]
 
@@ -183,14 +231,21 @@ def main():
     else:
         filename = f'repo-{args.ref}.json'
 
-    make_repo_file(args.url, args.ref, filename, ref_type,
-                   override_project_revs, resume=args.resume,
-                   mirrors=mirrors,
+    if args.resume and os.path.exists(filename):
+        prev_data = json.load(open(filename))
+    else:
+        prev_data = None
+
+    make_repo_file(args.url, args.ref, ref_type, prev_data,
+                   local_manifests=args.local_manifest,
+                   override_project_revs=override_project_revs,
                    project_fetch_submodules=args.project_fetch_submodules,
                    override_tag=args.override_tag,
                    include_prefix=args.include_prefix,
                    exclude_path=args.exclude_path,
+                   callback=lambda dirs: save(filename, dirs),
                    )
+
 
 if __name__ == "__main__":
     main()

@@ -2,7 +2,9 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-set -eu
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 args=(
     --ref-type tag
@@ -13,4 +15,4 @@ args=(
 
 export TMPDIR=/tmp
 
-../../mk-repo-file.py "${args[@]}"
+../../scripts/mk_repo_file.py "${args[@]}"
