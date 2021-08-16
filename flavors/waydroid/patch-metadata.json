@@ -1,0 +1,98 @@
+{
+  "bionic": [
+    "0001-hybris-don-t-fail-because-of-fsetxattr.patch",
+    "0002-anbox-add-vendor_extra-lib-folders-to-default-librar.patch"
+  ],
+  "build/soong": [
+    "0001-anbox-do-not-fail-on-VNDK-ABI-mismatch.patch"
+  ],
+  "external/wayland-protocols": [
+    "0001-stable-Add-xdg-shell.patch"
+  ],
+  "frameworks/av": [
+    "0001-libcameraservice-Use-listByInterface.patch",
+    "0002-media-xmlparser-Add-host-dirs-to-search-path.patch",
+    "0003-mediacodec-Use-vendor_extra-seccomp-minijail.patch",
+    "0004-media-Add-host-media_profiles-search-paths.patch",
+    "0005-drm-Fix-drm-on-older-vendors.patch",
+    "0006-codec2-Fix-media-on-older-vendors.patch",
+    "0007-SW-encode-Fix-output-buffer-size.patch",
+    "0007-apex-Add-vendor_extra-to-ld-search-paths.patch",
+    "0008-Change-max-width-and-height-supported-by-H.263-decod.patch",
+    "0009-FLACExtractor-Add-more-sample-rates-support.patch",
+    "0010-Don-t-use-YV12-color-format-for-video-decoding.patch",
+    "0011-Allow-screenrecord-usage-on-Android-x86.patch",
+    "0012-media-enable-dithering-for-RGB565-conversion.patch",
+    "0013-nuplayer-skip-bad-SAR-values.patch",
+    "0014-stagefright-Add-support-for-loading-a-custom-OMXPlug.patch",
+    "0015-stagefright-allow-multiple-custom-OMXPlugins.patch",
+    "0016-libstagefright-Extended-media-support-via-FFMPEG.patch",
+    "0017-Add-paths-and-system-libraries-for-swcodec-APEX.patch",
+    "0018-Setup-FFMPEG-audio-mpeg-L2-codec-correctly.patch"
+  ],
+  "frameworks/base": [
+    "0001-anbox-disable-SELinux-parts.patch",
+    "0002-anbox-disable-suspend-control.patch",
+    "0003-temp-anbox-neutralize-sound-pool-audio-sample-loadi.patch",
+    "0004-anbox-core-jni-start-thread-pool-for-host-hwbinder-w.patch",
+    "0005-fwb-Don-t-check-vintf-compatibility.patch",
+    "0006-Prevent-the-system-from-entering-a-sleep-state.patch",
+    "0007-core-Add-support-for-MicroG.patch",
+    "0008-AndroidManifest-add-a-permission-group-for-signature.patch",
+    "0009-Zygote-Disable-seccomp.patch"
+  ],
+  "frameworks/native": [
+    "0001-anbox-installd-run-without-SELinux.patch",
+    "0002-halium-disable-SELinux-checks-in-ServiceManager.patch",
+    "0003-halium-never-set-FLAT_BINDER_FLAG_TXN_SECURITY_CTX-f.patch",
+    "0004-Hack-EventHub-until-it-works-with-our-fake-evdev-eve.patch",
+    "0005-surfaceflinger-Provide-layer-names-and-stuffs.patch",
+    "0006-EventHub-Add-wayland-inputs-support.patch",
+    "0007-inputflinger-add-absolute-event-support-for-cursor.patch",
+    "0008-RenderEngine-support-non-RGBA_8888-format.patch",
+    "0009-libEGL-select-pixel-format-by-EGL_NATIVE_VISUAL_ID.patch"
+  ],
+  "hardware/libhardware": [
+    "0001-anbox-add-vendor_extra-lib-hw-to-HAL-search-path.patch",
+    "0002-libhardware-Don-t-check-for-ro.hardware.patch"
+  ],
+  "packages/apps/PermissionController": [
+    "0001-Utils-add-FAKE_PACKAGE_SIGNATURE-to-platform-permiss.patch"
+  ],
+  "packages/apps/Settings": [
+    "0001-Settings-Disable-double_tap_sleep_gesture-by-default.patch"
+  ],
+  "system/core": [
+    "0001-anbox-init-start-inside-LXC-container-without-SELinu.patch",
+    "0002-anbox-init-modify-mount_all-to-skip-mounts-and-trigg.patch",
+    "0003-anbox-healthd-adjust-backup-service-name-to-avoid-co.patch",
+    "0004-temp-anbox-temporary-disable-adbd.patch",
+    "0005-anbox-add-vendor_extra-path-as-a-clone-of-vendor-ent.patch",
+    "0006-libsync-Add-sw_sync-symbols-to-map.patch",
+    "0007-sdcard-Bring-back-fuse.patch",
+    "0008-sdcard-Add-full-mount-directory.patch"
+  ],
+  "system/hardware/interfaces": [
+    "0001-suspend-Set-mUseSuspendCounter-to-true.patch"
+  ],
+  "system/hwservicemanager": [
+    "0001-halium-disable-SELinux-parts.patch"
+  ],
+  "system/netd": [
+    "0001-netd-Fix-networking.patch"
+  ],
+  "system/nfc": [
+    "0001-nfc-Add-host-search-paths.patch"
+  ],
+  "system/security": [
+    "0001-keystore-Supress-SELinux-errors.patch"
+  ],
+  "system/tools/hidl": [
+    "0001-anbox-Allow-host_hwbinder-to-be-used-for-HALs.patch"
+  ],
+  "system/vold": [
+    "0001-vold-Fix-fuse-sdcard.patch",
+    "0002-vold-Drop-selinux-checks-on-prepare_subdirs.patch",
+    "0003-Revert-Remove-waitpid-on-UnMount.patch"
+  ]
+}
