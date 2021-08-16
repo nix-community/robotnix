@@ -16,7 +16,7 @@ Setting `resources.<path>.<name>.type` can be used to override the automatically
 Available values types are `bool`, `integer`, `dimen`, `color`, `string`, `integer-array`, and `string-array`.
 If this manual override is used, the value must be set using `resources.<path>.<name>.value`.
 
-## Ccache
+## CCache
 
 Set `ccache.enable = true` in configuration, and be sure to pass `/var/cache/ccache` as a sandbox exception when building.
 In NixOS, to set up the cache, also run (as root):
@@ -25,3 +25,6 @@ In NixOS, to set up the cache, also run (as root):
 # chown root:nixbld /var/cache/ccache
 # echo max_size = 100G > /var/cache/ccache/ccache.conf
 ```
+
+This option only applies to the Android build process. (It does not apply to chromium, kernels, etc.)
+CCache support is deprecated in upstream AOSP, and might be removed from robotnix in the future.
