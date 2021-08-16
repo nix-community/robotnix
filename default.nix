@@ -34,6 +34,7 @@ let
       ./flavors/grapheneos
       ./flavors/lineageos
       ./flavors/vanilla
+      ./flavors/waydroid
       ./modules/10
       ./modules/11
       ./modules/12
