@@ -55,7 +55,7 @@ upstream documentation](https://source.android.com/setup/build/running).
     Flash your custom AVB signing key using
     ```console
     $ fastboot erase avb_custom_key
-    $ fastboot flash avb_custom_key avb_pkmd.bin
+    $ fastboot flash avb_custom_key ./avb_pkmd.bin
     $ fastboot reboot bootloader
     ```
 
