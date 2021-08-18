@@ -73,15 +73,14 @@ upstream documentation](https://source.android.com/setup/build/running).
     $ fastboot reboot bootloader
     ```
 
- 6. *(Strongly recommended, but technically optional)*
-    At this point you want to relock the bootloader to enable enforcement of
+ 6. At this point you want to relock the bootloader to enable enforcement of
     the verified boot chain.
     ```console
     $ fastboot flashing lock
     ```
     This step has to be confirmed on the device.
 
- 7. After rebooting you will be greeted with an yellow exclamation mark and a
+ 7. After rebooting you will be greeted with a yellow exclamation mark and a
     message like
 
     > Your device is loading a different operating system.
