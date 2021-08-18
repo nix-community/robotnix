@@ -44,8 +44,7 @@ upstream documentation](https://source.android.com/setup/build/running).
     Select the option to unlock the device and confirm. This step effectively
     performs a factory reset, and will remove all user data from the device.
 
- 4. *(Strongly recommended, but technically optional)*
-    Flash your custom AVB signing key using
+ 4. Flash your custom AVB signing key using
     ```console
     $ fastboot erase avb_custom_key
     $ fastboot flash avb_custom_key ./avb_pkmd.bin
@@ -96,6 +95,9 @@ upstream documentation](https://source.android.com/setup/build/running).
     ID on the last line are the first eight characters of the fingerprint of
     your AVB key.
 
+ 8. Finally you can disable OEM unlocking and afterwards even the developer options again if you do not actively use them.
+
+> If you are unable to enroll a custom AVB key on your device, you could theoretically skip steps 4, 6 and 8. This is highly discouraged as it leaves your device in the [vulnerable UNLOCKED state instead of being LOCKED with a custom root of trust.](https://source.android.com/security/verifiedboot/boot-flow#communicating-verified-boot-state-to-users).
 
 ## Updating by sideloading OTA files
 Preferably, you can update your Vanilla/GrapheneOS flavor device using true "over-the-air" mechanism provided by the `apps.updater` module with a server hosting the OTA files, as shown [here](modules/ota.md).
