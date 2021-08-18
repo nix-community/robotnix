@@ -87,7 +87,7 @@ upstream documentation](https://source.android.com/setup/build/running).
     ```
     This step has to be confirmed on the device.
 
- 7. After rebooting you will be greeted with an orange exclamation mark and a
+ 7. After rebooting you will be greeted with an yellow exclamation mark and a
     message like
 
     > Your device is loading a different operating system.
