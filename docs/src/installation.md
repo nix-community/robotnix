@@ -59,7 +59,8 @@ upstream documentation](https://source.android.com/setup/build/running).
     $ fastboot reboot bootloader
     ```
 
- 5. Unzip the factory image built by robotnix. To flash the image run
+ 5. Unzip the factory image built by robotnix. Double check that you're
+    flashing to the correct device. To flash the image run
     ```console
     $ ./flash-all.sh
     ```
