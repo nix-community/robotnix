@@ -48,7 +48,7 @@ If the Nix sandbox is not enabled, we can instead set `signing.buildTimeKeysStor
 Additionally, the nix builder will also need read access to these keys.
 This can be set using `chgrp -R nixbld ./keys` and `chmod -R g+r ./keys`.
 
-The second option involves creating a "release script" which does the final build steps of signing target files and creating `img`/`ota` files outside of Nix:
+The second option involves building a "release script" with Nix, which depends on and therefore builds the unsigned image inside the Nix build sandbox. The final build steps of signing target files and creating `img`/`ota` files are then done outside the sandbox by running the release script:
 ```console
 $ nix-build --arg configuration ./crosshatch.nix -A releaseScript -o release
 $ ./release ./keys
