@@ -3,7 +3,7 @@
 
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
 { callPackage, lib, stdenv, pkgs, substituteAll, fetchFromGitHub,
-  androidPkgs, jdk, gradle, gradleToNixPatchedFetchers,
+  androidPkgs, jdk11_headless, gradle, gradleToNixPatchedFetchers,
   domain ? "example.org",
   applicationName ? "Robotnix Auditor",
   applicationId ? "org.robotnix.auditor",
@@ -18,15 +18,15 @@ let
 in
 buildGradle rec {
   name = "Auditor-${version}.apk";
-  version = "27"; # Latest as of 2021-05-19
+  version = "28"; # Latest as of 2021-05-19
 
   envSpec = ./gradle-env.json;
 
   src = fetchFromGitHub {
     owner = "grapheneos";
     repo = "Auditor";
-    rev = "e5dd999fe2bf402dd72f352b5583932e5f5d5705"; # Needs the appcompat 1.3.0 fix in a slightly newer commit
-    sha256 = "1dv9yb661yl4390bawfqg0msddpyw35609y0mlxfq1psc4lssi86";
+    rev = version;
+    sha256 = "0q65kg7szxm653m7z2pf9srycc7csf28hvaivlzp63cslb27ly6g";
   };
 
   patches = [
@@ -47,7 +47,7 @@ buildGradle rec {
   #           - Provides attribute 'artifactType' with value 'android-base-module-metadata' but the consumer didn't ask for it
   #           - Provides attribute 'com.android.build.api.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
   postPatch = ''
-    substituteInPlace build.gradle --replace "com.android.tools.build:gradle:4.2.1" "com.android.tools.build:gradle:4.0.1"
+    substituteInPlace build.gradle --replace "com.android.tools.build:gradle:7.0.1" "com.android.tools.build:gradle:4.0.1"
   '';
 
   # TODO: 2021-05-19. Now encountering another issue with gradle2nix, worked with gradle 6.7 but fails with 7.0.1
@@ -55,7 +55,7 @@ buildGradle rec {
   gradleFlags = [ "assembleRelease" ];
 
   ANDROID_HOME = "${androidsdk}/share/android-sdk";
-  nativeBuildInputs = [ jdk ];
+  nativeBuildInputs = [ jdk11_headless ];
 
   installPhase = ''
     cp app/build/outputs/apk/release/app-release-unsigned.apk $out
