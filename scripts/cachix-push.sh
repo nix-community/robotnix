@@ -6,7 +6,7 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-OUTPUTS=$(./build.sh ./release.nix -A cached --no-out-link "$@")
+mapfile -t OUTPUTS < <(./build.sh ./release.nix -A cached --no-out-link "$@")
 
 cachix push robotnix "${OUTPUTS[@]}"
 nix copy --to file:///mnt/cache/nix "${OUTPUTS[@]}"
