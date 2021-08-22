@@ -96,6 +96,9 @@ upstream documentation](https://source.android.com/setup/build/running).
     your AVB key.
 
  8. Finally you can disable OEM unlocking and afterwards even the developer options again if you do not actively use them.
+    Note that if you later lose the ability to re-enable OEM unlocking, for example by pushing a bad update that you cannot rollback,
+    and you cannot push another working update because you also lost your signing keys,
+    you might not even be able to recover your device by flashing a stock image, effectively bricking the device.
 
 > If you are unable to enroll a custom AVB key on your device, you could theoretically skip steps 4, 6 and 8. This is highly discouraged as it leaves your device in the [vulnerable UNLOCKED state instead of being LOCKED with a custom root of trust.](https://source.android.com/security/verifiedboot/boot-flow#communicating-verified-boot-state-to-users).
 
