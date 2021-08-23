@@ -8,7 +8,7 @@ let
     elem mapAttrs mapAttrs' nameValuePair filterAttrs
     attrNames getAttrs flatten remove
     mkIf mkMerge mkDefault mkForce
-    importJSON toLower;
+    importJSON toLower hasPrefix;
 
   androidVersionToLineageBranch = {
     "10" = "lineage-17.1";
@@ -52,15 +52,18 @@ let
     "kernel/yandex/sdm660"
     "kernel/zuk/msm8996"
   ];
-  deviceDirs =
-    if config.useReproducibilityFixes
-    then mapAttrs' (n: v: nameValuePair n (v // (optionalAttrs (elem n kernelsNeedFix) { postPatch = dtbReproducibilityFix; }))) _deviceDirs
-    else _deviceDirs;
+  # Patch kernels
+  patchKernelDir = n: v: v // (optionalAttrs (hasPrefix "kernel/" n) {
+    patches = config.kernel.patches;
+    postPatch = config.kernel.postPatch
+      + optionalString (config.useReproducibilityFixes && (elem n kernelsNeedFix)) ("\n" + dtbReproducibilityFix);
+  });
+  deviceDirs = mapAttrs patchKernelDir _deviceDirs;
 
   supportedDevices = attrNames deviceMetadata;
 
   # TODO: Move this filtering into vanilla/graphene
-  filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "postPatch"]) dir;
+  filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "patches" "postPatch"]) dir;
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
 in mkIf (config.flavor == "lineageos")
 {
