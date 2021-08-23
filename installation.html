@@ -185,15 +185,8 @@ upstream documentation</a>.</p>
 <p>Before you can begin you have to boot the stock OS, go to &quot;Settings / About
 phone&quot; and tap the &quot;Build number&quot; field 7 times to enable the &quot;Developer
 options&quot; menu.  Next go to “Settings / System / Advanced / Developer
-options” and enable “OEM unlocking”.  On my device I had to insert a SIM
-card and connect to the network for that, so it looks like you have to
-connect your device with Google <a href="https://grapheneos.org/install#enabling-oem-unlocking">at least
-once</a>.  This is part
-of Google's so called Factory Reset Protection (FRP) for anti-theft
-protection .  However, <a href="https://www.kuketz-blog.de/grapheneos-das-android-fuer-sicherheits-und-datenschutzfreaks/#comment-52681">this
-comment</a>
-on a German IT privacy blog suggests that it is sufficient to allow access
-to the captive portal such that the phone thinks it is online.</p>
+options” and enable “OEM unlocking”.  This option is greyed out until you connect your device to Google <a href="https://grapheneos.org/install#enabling-oem-unlocking">at least once</a>.
+This is part of Google's so called Factory Reset Protection (FRP) for anti-theft protection. You do not need to insert a SIM or log into a Google Account to make the “OEM unlocking” option available, but connecting to the internet is required.</p>
 </li>
 <li>
 <p>First reboot into the bootloader. You can either do that physically by
@@ -217,10 +210,9 @@ with USB Debugging turned on and issue</p>
 performs a factory reset, and will remove all user data from the device.</p>
 </li>
 <li>
-<p><em>(Strongly recommended, but technically optional)</em>
-Flash your custom AVB signing key using</p>
+<p>Flash your custom AVB signing key using</p>
 <pre><code class="language-console">$ fastboot erase avb_custom_key
-$ fastboot flash avb_custom_key avb_pkmd.bin
+$ fastboot flash avb_custom_key ./avb_pkmd.bin
 $ fastboot reboot bootloader
 </code></pre>
 </li>
@@ -243,15 +235,14 @@ return to the bootloader with</p>
 </code></pre>
 </li>
 <li>
-<p><em>(Strongly recommended, but technically optional)</em>
-At this point you want to relock the bootloader to enable enforcement of
+<p>At this point you want to relock the bootloader to enable enforcement of
 the verified boot chain.</p>
 <pre><code class="language-console">$ fastboot flashing lock
 </code></pre>
 <p>This step has to be confirmed on the device.</p>
 </li>
 <li>
-<p>After rebooting you will be greeted with an yellow exclamation mark and a
+<p>After rebooting you will be greeted with a yellow exclamation mark and a
 message like</p>
 <blockquote>
 <p>Your device is loading a different operating system.</p>
@@ -265,7 +256,16 @@ https://source.android.com/security/verifiedboot/boot-flow.  In fact, the
 ID on the last line are the first eight characters of the fingerprint of
 your AVB key.</p>
 </li>
+<li>
+<p>Finally you can disable OEM unlocking and afterwards even the developer options again if you do not actively use them.
+Note that if you later lose the ability to re-enable OEM unlocking, for example by pushing a bad update that you cannot rollback,
+and you cannot push another working update because you also lost your signing keys,
+you might not even be able to recover your device by flashing a stock image, effectively bricking the device.</p>
+</li>
 </ol>
+<blockquote>
+<p>If you are unable to enroll a custom AVB key on your device, you could theoretically skip steps 4, 6 and 8. This is highly discouraged as it leaves your device in the <a href="https://source.android.com/security/verifiedboot/boot-flow#communicating-verified-boot-state-to-users">vulnerable UNLOCKED state instead of being LOCKED with a custom root of trust.</a>.</p>
+</blockquote>
 <h2 id="updating-by-sideloading-ota-files"><a class="header" href="#updating-by-sideloading-ota-files">Updating by sideloading OTA files</a></h2>
 <p>Preferably, you can update your Vanilla/GrapheneOS flavor device using true &quot;over-the-air&quot; mechanism provided by the <code>apps.updater</code> module with a server hosting the OTA files, as shown <a href="modules/ota.html">here</a>.
 If this is not available, it is still possible to update by sideloading the OTA file.</p>

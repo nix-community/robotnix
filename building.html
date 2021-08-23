@@ -204,7 +204,7 @@ To use <code>extra-sandbox-paths</code>, the user must be a <code>trusted-user</
 If the Nix sandbox is not enabled, we can instead set <code>signing.buildTimeKeysStorePath</code> in addition to <code>signing.keyStorePath</code> to a string of the absolute path to the generated keys.
 Additionally, the nix builder will also need read access to these keys.
 This can be set using <code>chgrp -R nixbld ./keys</code> and <code>chmod -R g+r ./keys</code>.</p>
-<p>The second option involves creating a &quot;release script&quot; which does the final build steps of signing target files and creating <code>img</code>/<code>ota</code> files outside of Nix:</p>
+<p>The second option involves building a &quot;release script&quot; with Nix, which depends on and therefore builds the unsigned image inside the Nix build sandbox. The final build steps of signing target files and creating <code>img</code>/<code>ota</code> files are then done outside the sandbox by running the release script:</p>
 <pre><code class="language-console">$ nix-build --arg configuration ./crosshatch.nix -A releaseScript -o release
 $ ./release ./keys
 </code></pre>
