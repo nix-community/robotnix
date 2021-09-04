@@ -164,7 +164,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   ];
 }
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) {
-  kernel.enable = mkDefault true;
+  kernel.enable = mkDefault (config.deviceFamily != "redfin");  # Disable for now until we have it tested working
   kernel.configName = mkMerge [
     (mkIf (elem config.deviceFamily [ "taimen" "muskie" ]) "wahoo")
     (mkIf (config.deviceFamily == "crosshatch") "b1c1")
