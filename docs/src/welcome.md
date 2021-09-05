@@ -15,4 +15,4 @@ The documentation included here should help inform you how to [create your confi
 and [install the image onto your phone](installation.md).
 
 If you find parts of this manual confusing, please create an issue, or (even better) create a pull request on Github.
-Robotnix users and developers can also be contacted on `#robotnix` on Freenode.
+Robotnix users and developers can also be contacted on `#robotnix:nixos.org` on Matrix.

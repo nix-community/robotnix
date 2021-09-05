@@ -14,7 +14,7 @@ but rather (once a developer has a working build) makes it easier to share that 
 As such, robotnix does not replace the existing Android build system, but provides a convenient Nix-based wrapper around the build system.
 (See [blueprint2nix](https://github.com/danielfullmer/blueprint2nix) and [soongnix](https://github.com/danielfullmer/soongnix) for an experimental attempt at reimplementing part of the Android build system natively in Nix.)
 
-Feel free to ask robotnix development questions in `#robotnix` on Freenode.
+Feel free to ask robotnix development questions in `#robotnix:nixos.org` on Matrix.
 
 ## Git mirrors
 Robotnix can be configured to use local git mirrors of Android source code.
