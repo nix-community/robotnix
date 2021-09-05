@@ -175,9 +175,7 @@ The directories included in the robotnix build may be specified using the <code>
   };
 }
 </code></pre>
-<p>While the above uses <code>pkgs.fetchGit</code>, the <code>src</code> option could refer to any Nix derivation producing a directory.
-The <code>source.dirs</code> option does not currently support &quot;nested&quot; directories.
-For example, if <code>source.dirs.&quot;foo&quot;</code> is set, then setting <code>source.dirs.&quot;foo/bar&quot;.src</code> will not work properly.</p>
+<p>While the above uses <code>pkgs.fetchGit</code>, the <code>src</code> option could refer to any Nix derivation producing a directory.</p>
 <p>Additionaly, robotnix provides a convenient mechanism for patching existing source directories:</p>
 <pre><code class="language-nix">{
   # source.dirs.&lt;name&gt;.patches can refer to a list of patches to apply
@@ -185,7 +183,7 @@ For example, if <code>source.dirs.&quot;foo&quot;</code> is set, then setting <c
 
   # source.dirs.&lt;name&gt;.postPatch can refer to a snippet of shell script to modify the source tree
   source.dirs.&quot;frameworks/base&quot;.postPatch = ''
-    sed -i 's/hello/there' example.txt
+    sed -i 's/hello/there/' example.txt
   '';
 }
 </code></pre>
