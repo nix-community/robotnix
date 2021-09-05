@@ -25,7 +25,7 @@ Additionaly, robotnix provides a convenient mechanism for patching existing sour
 
   # source.dirs.<name>.postPatch can refer to a snippet of shell script to modify the source tree
   source.dirs."frameworks/base".postPatch = ''
-    sed -i 's/hello/there' example.txt
+    sed -i 's/hello/there/' example.txt
   '';
 }
 ```
