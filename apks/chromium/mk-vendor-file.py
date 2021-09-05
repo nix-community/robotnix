@@ -21,20 +21,24 @@ SKIP_DEPS = [
     "src/testing/rts", # CIPD package depends on ${{platform}}, which we don't yet handle well
 ]
 
+NO_SUBMODULES = [
+    "src/third_party/swiftshader" # Fails when trying to fetch git-hooks submodule
+]
+
 def hash_path(path):
     sha256 = subprocess.check_output(["nix", "hash-path", "--base32", "--type", "sha256", path]).strip()
     if re.match(r'[0-9a-z]{52}', sha256) == None:
         raise ValueError('bad hash %s' % sha256)
     return sha256
 
-def checkout_git(url, rev, path):
+def checkout_git(url, rev, path, fetch_submodules=True):
     subprocess.check_call([
         "nix-prefetch-git",
         "--builder",
         "--url", url,
         "--out", path,
-        "--rev", rev,
-        "--fetch-submodules"])
+        "--rev", rev]
+        + (["--fetch-submodules"] if fetch_submodules else []))
     return hash_path(path)
 
 def checkout_cipd(package, version, path):
@@ -44,11 +48,12 @@ def checkout_cipd(package, version, path):
     return hash_path(path)
 
 def nix_str_git(path, dep):
-    return '''  %(path)-90s = fetchgit { url = %(url)-128s; rev = "%(rev)s"; sha256 = "%(sha256)s"; };\n''' % {
+    return '''  %(path)-90s = fetchgit { url = %(url)-128s; rev = "%(rev)s"; sha256 = "%(sha256)s"; fetchSubmodules = %(fetchSubmodules)s; };\n''' % {
         "path": '"' + path + '"',
         "url": '"' + dep["url"] + '"',
         "rev": dep["rev"],
         "sha256": dep["sha256"],
+        "fetchSubmodules": "true" if dep["fetch_submodules"] else "false",
     }
 
 def nix_str_cipd(path, dep):
@@ -162,7 +167,7 @@ def make_vendor_file(chromium_version, target_os):
                         sha256 = open(memoized_path + ".sha256").read()
                     else:
                         shutil.rmtree(memoized_path, ignore_errors=True)
-                        sha256 = checkout_git(url, rev, memoized_path)
+                        sha256 = checkout_git(url, rev, memoized_path, fetch_submodules=(path not in NO_SUBMODULES))
                         open(memoized_path + ".sha256", "w").write(sha256)
 
                     if path != "src":
@@ -180,6 +185,7 @@ def make_vendor_file(chromium_version, target_os):
                         "rev": rev,
                         "sha256": sha256,
                         "dep_type": "git",
+                        "fetch_submodules": path not in NO_SUBMODULES,
                     }
 
                 elif fields['dep_type'] == "cipd":
