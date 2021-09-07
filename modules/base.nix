@@ -353,6 +353,16 @@ in
         '';
       };
 
+      moduleInfo = let
+        moduleInfoTarget = "out/target/product/${config.device}/module-info.json";
+      in mkAndroid {
+        name = "robotnix-module-info-${config.device}-${config.buildNumber}.json";
+        makeTargets = [ moduleInfoTarget ];
+        installPhase = ''
+          cp ${moduleInfoTarget} $out
+        '';
+      };
+
       otaTools = fixOtaTools "${config.build.android}/otatools.zip";
 
       # Also make a version without building all of target-files-package.  This
