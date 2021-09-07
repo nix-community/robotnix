@@ -20,5 +20,5 @@ for device in "${devices[@]}"; do
         ../*/repo-*.json
     )
     echo "### Fetching kernel sources for ${device} ###"
-    ../../scripts/mk_repo_file.py "${args[@]}"
+    ../../../../scripts/mk_repo_file.py "${args[@]}"
 done
