@@ -183,6 +183,21 @@ def make_repo_file(url: str, ref: str,
     return data
 
 
+def read_cached_repo_json(path: str) -> None:
+    for root, dirs, files in os.walk(path):
+        for filename in files:
+            if filename.startswith('repo-') and filename.endswith('.json') or filename == 'repo.json':
+                filepath = os.path.join(root, filename)
+                print(f"Loading cached sha256s from {filepath}")
+                data = json.load(open(filepath))
+                for name, p in data.items():
+                    if 'sha256' in p:
+                        revHashes[p['rev'], p.get('fetchSubmodules', False)] = p['sha256']
+                        if 'tree' in p:
+                            treeHashes[p['tree'], p.get('fetchSubmodules', False)] = p['sha256']
+                            revTrees[p['rev']] = p['tree']
+
+
 def main() -> None:
     check_free_space()
 
@@ -193,6 +208,8 @@ def main() -> None:
     parser.add_argument('--resume', help="resume a previous download", action='store_true')
     parser.add_argument('--local-manifest', help="path or URL to a .xml file to include in local_manifests",
                         action='append')
+    parser.add_argument('--cache-search-path', nargs='*',
+                        help="path to search for any existing repo json files to use for cached sha256s")
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
     parser.add_argument('--project-fetch-submodules', action="append", default=[],
@@ -202,7 +219,6 @@ def main() -> None:
     parser.add_argument('--exclude-path', action="append", default=[], help="paths to exclude from fetching")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
-    parser.add_argument('oldrepojson', nargs='*', help="any older repo json files to use for cached sha256s")
     args = parser.parse_args()
 
     ref_type = ManifestRefType[args.ref_type.upper()]
@@ -216,15 +232,9 @@ def main() -> None:
                 project, rev = line.split()
                 override_project_revs[project] = rev
 
-    # Read all oldrepojson files to populate hashtables
-    for filename in args.oldrepojson:
-        data = json.load(open(filename))
-        for name, p in data.items():
-            if 'sha256' in p:
-                revHashes[p['rev'], p.get('fetchSubmodules', False)] = p['sha256']
-                if 'tree' in p:
-                    treeHashes[p['tree'], p.get('fetchSubmodules', False)] = p['sha256']
-                    revTrees[p['rev']] = p['tree']
+    # Walk all cache_search_paths files to populate hashtables
+    for path in args.cache_search_path:
+        read_cached_repo_json(path)
 
     if args.out is not None:
         filename = args.out

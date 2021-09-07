@@ -10,8 +10,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 args=(
 	"https://github.com/pmanbox/platform_manifests"
     --ref-type branch
+    --cache-search-path ../../
     "pmanbox" # static branch name
-    ../*/repo-*.json
 )
 
 export TMPDIR=/tmp

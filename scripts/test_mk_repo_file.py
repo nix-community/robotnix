@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+import json
 import os
 import subprocess
 
@@ -71,3 +72,23 @@ def test_basic(tmpdir: Any, manifest_repo: Any) -> None:
         ls_remote.side_effect = Exception('Called ls-remote')
         data = mk_repo_file.make_repo_file(manifest_repo, "release", prev_data=data)
         assert 'sha256' in data['b']
+
+
+def test_read_cached_repo_json(tmpdir: Any) -> None:
+    top = tmpdir.mkdir("repo")
+    top.mkdir('test_subdir')
+    repo_test_filename = top / 'test_subdir' / 'repo-test.json'
+
+    repo_file_contents = {
+        'a': {
+            'rev': 'foo',
+            'tree': 'foo2',
+            'sha256': 'bar',
+            'fetchSubmodules': True,
+        },
+    }
+    repo_test_filename.write(json.dumps(repo_file_contents))
+
+    mk_repo_file.read_cached_repo_json(top)
+    assert mk_repo_file.revHashes['foo', True] == 'bar'
+    assert mk_repo_file.treeHashes['foo2', True] == 'bar'

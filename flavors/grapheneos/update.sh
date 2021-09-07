@@ -13,8 +13,8 @@ args=(
     --project-fetch-submodules "kernel/google/coral"
     --project-fetch-submodules "kernel/google/sunfish"
     --project-fetch-submodules "kernel/google/redbull"
+    --cache-search-path ../../
     "$@"
-    ../*/repo-*.json
 )
 
 export TMPDIR=/tmp

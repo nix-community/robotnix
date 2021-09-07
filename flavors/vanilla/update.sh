@@ -7,10 +7,10 @@ set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 args=(
+    --cache-search-path ../../
     --ref-type tag
     "https://android.googlesource.com/platform/manifest"
     "$@"
-    ../*/repo-*.json
 )
 
 export TMPDIR=/tmp
