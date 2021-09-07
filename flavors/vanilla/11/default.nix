@@ -14,8 +14,14 @@ in
 {
   buildDateTime = mkDefault 1627950498;
 
-  source.manifest.rev = mkDefault "android-11.0.0_r40";
-  apv.buildID = mkDefault "RQ3A.210805.001.A1";
+  source.manifest.rev = mkMerge [
+    (mkIf (config.device != "barbet") (mkDefault "android-11.0.0_r40"))
+    (mkIf (config.device == "barbet") (mkDefault "android-11.0.0_r42"))
+  ];
+  apv.buildID = mkMerge [
+    (mkIf (config.device != "barbet") (mkDefault "RQ3A.210805.001.A1"))
+    (mkIf (config.device == "barbet") (mkDefault "RD2A.210605.007"))
+  ];
 
   # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
   # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService

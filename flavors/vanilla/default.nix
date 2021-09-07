@@ -25,7 +25,8 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 
   warnings = optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
     "${config.device} is not a supported device for vanilla"
-    ++ optional (config.androidVersion < 11) "Selected older version of android. Security updates may be out-of-date";
+    ++ optional (config.androidVersion < 11) "Selected older version of android. Security updates may be out-of-date"
+    ++ optional (config.device == "barbet") "barbet has only untested support in robotnix. Please let the authors know if your robotnix-built image successfully boots on barbet.";
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
 }

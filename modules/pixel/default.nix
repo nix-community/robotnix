@@ -31,6 +31,7 @@ let
     sunfish = { family = "sunfish"; name = "Pixel 4a"; };
     bramble = { family = "redfin"; name = "Pixel 4a (5G)"; };
     redfin = { family = "redfin"; name = "Pixel 5"; };
+    barbet = { family = "redfin"; name = "Pixel 5a (5G)"; };
   };
 
   # Make a uuid based on some string data
