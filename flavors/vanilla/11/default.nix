@@ -12,14 +12,17 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1627950498;
+  buildDateTime = mkMerge [
+    (mkIf (config.device != "barbet") (mkDefault 1631052581))
+    (mkIf (config.device == "barbet") (mkDefault 1627950498))
+  ];
 
   source.manifest.rev = mkMerge [
-    (mkIf (config.device != "barbet") (mkDefault "android-11.0.0_r40"))
+    (mkIf (config.device != "barbet") (mkDefault "android-11.0.0_r43"))
     (mkIf (config.device == "barbet") (mkDefault "android-11.0.0_r42"))
   ];
   apv.buildID = mkMerge [
-    (mkIf (config.device != "barbet") (mkDefault "RQ3A.210805.001.A1"))
+    (mkIf (config.device != "barbet") (mkDefault "RQ3A.210905.001"))
     (mkIf (config.device == "barbet") (mkDefault "RD2A.210605.007"))
   ];
 
