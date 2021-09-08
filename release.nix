@@ -35,6 +35,7 @@ let
     { device="sunfish";    flavor="grapheneos"; }
     { device="bramble";    flavor="grapheneos"; }
     { device="redfin";     flavor="grapheneos"; }
+    { device="barbet";     flavor="grapheneos"; }
 
     { device="marlin";     flavor="lineageos"; }
     { device="pioneer";    flavor="lineageos"; }

@@ -14,6 +14,7 @@ args=(
     --project-fetch-submodules "kernel/google/coral"
     --project-fetch-submodules "kernel/google/sunfish"
     --project-fetch-submodules "kernel/google/redbull"
+    --project-fetch-submodules "kernel/google/barbet"
     "$@"
 )
 

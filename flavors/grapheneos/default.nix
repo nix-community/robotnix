@@ -10,7 +10,7 @@ let
   upstreamParams = import ./upstream-params.nix;
   grapheneOSRelease = "${config.apv.buildID}.${upstreamParams.buildNumber}";
 
-  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" ];
+  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -29,7 +29,10 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault "RQ3A.210805.001.A1";
+  apv.buildID = mkMerge [
+    (mkIf (config.device != "barbet") (mkDefault "RQ3A.210805.001.A1"))
+    (mkIf (config.device == "barbet") (mkDefault "RD2A.210605.007"))
+  ];
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -49,7 +52,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     })
   ];
 
-  # No need to include these in AOSP build source since we build separately
+  # No need to include kernel sources in Android source trees since we build separately
   source.dirs."kernel/google/marlin".enable = false;
   source.dirs."kernel/google/wahoo".enable = false;
   source.dirs."kernel/google/crosshatch".enable = false;
@@ -57,6 +60,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/coral".enable = false;
   source.dirs."kernel/google/sunfish".enable = false;
   source.dirs."kernel/google/redbull".enable = false;
+  source.dirs."kernel/google/barbet".enable = false;
 
   # Enable Vanadium (GraphaneOS's chromium fork).
   apps.vanadium.enable = mkDefault true;
@@ -103,8 +107,9 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   # Hackish exceptions
   kernel.src = mkIf (config.deviceFamily == "bonito") (mkForce config.source.dirs."kernel/google/crosshatch".src);
   kernel.configName = mkMerge [
-    (mkIf (config.device       == "sargo") (mkForce "bonito"))
-    (mkIf (config.deviceFamily == "coral") (mkForce "floral"))
+    (mkIf (config.device       == "sargo" ) (mkForce "bonito" ))
+    (mkIf (config.deviceFamily == "coral" ) (mkForce "floral" ))
+    (mkIf (config.device       == "barbet") (mkForce "bramble"))
   ];
   kernel.relpath = mkMerge [
     (mkIf (config.device == "sargo") (mkForce "device/google/bonito-kernel"))

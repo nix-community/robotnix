@@ -171,8 +171,8 @@ in
         nukeReferences
       ]
       ++ lib.optionals (cfg.compiler == "clang") [ prebuiltClang ]  # TODO: Generalize to other arches
-      ++ lib.optionals (config.deviceFamily != "redfin") [ prebuiltGCC prebuiltGCCarm32 ]
-      ++ lib.optionals (config.deviceFamily == "redfin") [
+      ++ lib.optionals (!postRedfin) [ prebuiltGCC prebuiltGCCarm32 ]
+      ++ lib.optionals postRedfin [
         # HACK: Additional dependencies needed by redfin.
         python bison flex cpio
         prebuiltGas
@@ -186,7 +186,7 @@ in
         "ARCH=arm64"
         #"CONFIG_COMPAT_VDSO=n"
       ] ++ (
-        if (config.deviceFamily == "redfin")
+        if postRedfin
         then [
           "LLVM=1"
           # Redfin kernel builds still need "gas" (GNU assembler), everything else is LLVM
@@ -238,7 +238,7 @@ in
 
       dontFixup = true;
       dontStrip = true;
-    } // lib.optionalAttrs (lib.elem config.deviceFamily [ "coral" "sunfish" "redfin" ]) {
+    } // lib.optionalAttrs (lib.elem config.deviceFamily [ "coral" "sunfish" "redfin" "barbet" ]) {
       # HACK: Needed for coral (pixel 4) (Don't turn this on for other devices)
       DTC_EXT = "${prebuiltMisc}/bin/dtc";
       DTC_OVERLAY_TEST_EXT = "${prebuiltMisc}/bin/ufdt_apply_overlay";
