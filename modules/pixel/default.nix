@@ -31,7 +31,7 @@ let
     sunfish = { family = "sunfish"; name = "Pixel 4a"; };
     bramble = { family = "redfin"; name = "Pixel 4a (5G)"; };
     redfin = { family = "redfin"; name = "Pixel 5"; };
-    barbet = { family = "redfin"; name = "Pixel 5a (5G)"; };
+    barbet = { family = "barbet"; name = "Pixel 5a (5G)"; };
   };
 
   # Make a uuid based on some string data
@@ -152,5 +152,13 @@ mkMerge [
     ];
     kernel.name = mkDefault "redbull";
     kernel.configName = mkDefault "redbull"; # redfin + bramble
+  })
+  (mkIf (config.deviceFamily == "barbet") {
+    signing.avb.mode = "vbmeta_chained_v2";
+    kernel.buildProductFilenames = [
+      "arch/arm64/boot/Image.lz4"
+      "arch/arm64/boot/dtbo.img"
+      "arch/arm64/boot/dts/google/qcom-base/lito.dtb"
+    ];
   })
 ]

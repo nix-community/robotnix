@@ -45,7 +45,7 @@ in
   ];
 }
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) {
-  kernel.enable = mkDefault (config.deviceFamily != "redfin");  # Disable for now until we have it tested working
+  kernel.enable = mkDefault (!(lib.elem config.deviceFamily [ "redfin" "barbet" ]));  # Disable for now until we have it tested working
   kernel.configName = mkMerge [
     (mkIf (elem config.deviceFamily [ "taimen" "muskie" ]) "wahoo")
     (mkIf (config.deviceFamily == "crosshatch") "b1c1")
