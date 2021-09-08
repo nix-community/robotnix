@@ -8,9 +8,9 @@ set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 args=(
-	"https://github.com/pmanbox/platform_manifests"
-    --ref-type branch
     --cache-search-path ../../
+    --ref-type branch
+    "https://github.com/pmanbox/platform_manifests"
     "pmanbox" # static branch name
 )
 

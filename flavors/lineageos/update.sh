@@ -9,8 +9,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 branch=$1
 
 args=(
-    --ref-type branch
     --cache-search-path ../../
+    --ref-type branch
     "https://github.com/LineageOS/android"
     "$branch"
 )
