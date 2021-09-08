@@ -63,6 +63,8 @@ let
       cp ${config.source.dirs."system/libufdt".src}/utils/src/mkdtboimg.py $out/bin
     '';
   };
+
+  postRedfin = lib.elem config.deviceFamily [ "redfin" "barbet" ];
 in
 {
   options = {
@@ -226,6 +228,7 @@ in
       installPhase = ''
         mkdir -p $out
         shopt -s globstar nullglob
+        ${lib.optionalString postRedfin "cp out/arch/arm64/boot/dtbo_${config.device}.img out/arch/arm64/boot/dtbo.img"}
       '' + (lib.concatMapStringsSep "\n" (filename: "cp out/${filename} $out/") cfg.buildProductFilenames)
       + ''
 
