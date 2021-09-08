@@ -44,7 +44,7 @@ let
   hashSeed = uuidgen "persist-hash-${config.buildNumber}-${builtins.toString config.buildDateTime}";
 in
 mkMerge [
-  (mkIf ((config.flavor != "lineageos") && (config.device != null) && (lib.hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
+  (mkIf ((lib.elem config.flavor [ "vanilla" "grapheneos" ]) && (config.device != null) && (lib.hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault (deviceMap.${config.device}.family or config.device);
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
