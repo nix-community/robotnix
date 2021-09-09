@@ -30,8 +30,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkMerge [
-    (mkIf (config.device != "barbet") (mkDefault "RQ3A.210805.001.A1"))
-    (mkIf (config.device == "barbet") (mkDefault "RD2A.210605.007"))
+    (mkIf (config.device != "barbet") (mkDefault "RQ3A.210905.001"))
+    (mkIf (config.device == "barbet") (mkDefault "RD2A.210905.003"))
   ];
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
