@@ -1,4 +1,4 @@
-From c75f51d5672c44b4b45620cf495771ab06f9a3a8 Mon Sep 17 00:00:00 2001
+From c56ee58d0129f14cacf0171064008d4f8caab0e9 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 21 Aug 2021 13:59:49 -0700
 Subject: [PATCH 1/5] Custom listen settings
@@ -24,17 +24,17 @@ index 6036768..abff87d 100644
 2.32.0
 
 
-From 665d021327c21d9edfa8bffc529023106bf1e6e0 Mon Sep 17 00:00:00 2001
+From 326dbeee8880ec07239263998e569c43f5cb459a Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
-Date: Sun, 14 Jul 2019 17:01:18 -0400
+Date: Thu, 9 Sep 2021 22:19:32 -0700
 Subject: [PATCH 2/5] Custom fingerprints
 
 ---
- .../server/AttestationProtocol.java           | 45 ++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+ .../server/AttestationProtocol.java           | 49 ++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index ae4ae96..e0f595f 100644
+index 908ce1c..649b3ff 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -166,7 +166,7 @@ class AttestationProtocol {
@@ -46,7 +46,7 @@ index ae4ae96..e0f595f 100644
      private static final int OS_VERSION_MINIMUM = 80000;
      private static final int OS_PATCH_LEVEL_MINIMUM = 201801;
      private static final int VENDOR_PATCH_LEVEL_MINIMUM = 201808;
-@@ -242,6 +242,7 @@ class AttestationProtocol {
+@@ -243,6 +243,7 @@ class AttestationProtocol {
  
      private static final String OS_STOCK = "Stock";
      private static final String OS_GRAPHENE = "GrapheneOS";
@@ -54,10 +54,10 @@ index ae4ae96..e0f595f 100644
  
      static class DeviceInfo {
          final String name;
-@@ -312,6 +313,29 @@ class AttestationProtocol {
-                     new DeviceInfo(DEVICE_PIXEL_4a_5G, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
-             .put("36A99EAB7907E4FB12A70E3C41C456BCBE46C13413FBFE2436ADEE2B2B61120F",
+@@ -315,6 +316,31 @@ class AttestationProtocol {
                      new DeviceInfo(DEVICE_PIXEL_5, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
+             .put("0ABDDEDA03B6CE10548C95E0BEA196FAA539866F929BCDF7ECA84B4203952514",
+                     new DeviceInfo(DEVICE_PIXEL_5a, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
 +            // Robotnix
 +            .put("@walleye@",
 +                    new DeviceInfo(DEVICE_PIXEL_2, 2, 3, true, true, OS_ROBOTNIX))
@@ -81,13 +81,15 @@ index ae4ae96..e0f595f 100644
 +                    new DeviceInfo(DEVICE_PIXEL_4a_5G, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
 +            .put("@redfin@",
 +                    new DeviceInfo(DEVICE_PIXEL_5, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@barbet@",
++                    new DeviceInfo(DEVICE_PIXEL_5a, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
-@@ -458,6 +482,25 @@ class AttestationProtocol {
-                     new DeviceInfo(DEVICE_PIXEL_4a_5G, 4, 41, false /* uses new API */, true, OS_GRAPHENE))
-             .put("36A99EAB7907E4FB12A70E3C41C456BCBE46C13413FBFE2436ADEE2B2B61120F",
+@@ -465,6 +491,27 @@ class AttestationProtocol {
                      new DeviceInfo(DEVICE_PIXEL_5, 4, 41, false /* uses new API */, true, OS_GRAPHENE))
+             .put("0ABDDEDA03B6CE10548C95E0BEA196FAA539866F929BCDF7ECA84B4203952514",
+                     new DeviceInfo(DEVICE_PIXEL_5a, 4, 41, false /* uses new API */, true, OS_GRAPHENE))
 +            // Robotnix
 +            .put("@blueline@",
 +                    new DeviceInfo(DEVICE_PIXEL_3, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
@@ -107,6 +109,8 @@ index ae4ae96..e0f595f 100644
 +                    new DeviceInfo(DEVICE_PIXEL_4a_5G, 4, 41, false /* uses new API */, true, OS_ROBOTNIX))
 +            .put("@redfin@",
 +                    new DeviceInfo(DEVICE_PIXEL_5, 4, 41, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@barbet@",
++                    new DeviceInfo(DEVICE_PIXEL_5a, 4, 41, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
@@ -114,7 +118,7 @@ index ae4ae96..e0f595f 100644
 2.32.0
 
 
-From a7fb22de69200f2ae6a973c1891a1c15f0d11e20 Mon Sep 17 00:00:00 2001
+From 723f1c786efff54c8f7147ae969312615ed4ce4f Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:50:29 -0400
 Subject: [PATCH 3/5] Custom appId
@@ -124,7 +128,7 @@ Subject: [PATCH 3/5] Custom appId
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index e0f595f..4551239 100644
+index 649b3ff..a9dfbb8 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -161,7 +161,7 @@ class AttestationProtocol {
@@ -140,7 +144,7 @@ index e0f595f..4551239 100644
 2.32.0
 
 
-From 77f8852d9e801836a5e8e0df6d3abcc6e5f3f258 Mon Sep 17 00:00:00 2001
+From fc00050d88c95b26e7e0ac792447b63096005906 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 21 Aug 2021 14:19:22 -0700
 Subject: [PATCH 4/5] Custom whitelabeling
@@ -180,7 +184,7 @@ index 81cdf02..e85c430 100644
      </body>
  </html>
 diff --git a/static/about.html b/static/about.html
-index 4b36600..972d685 100644
+index 8ee3b48..afea5ec 100644
 --- a/static/about.html
 +++ b/static/about.html
 @@ -8,8 +8,6 @@
@@ -321,7 +325,7 @@ index 696463e..1f62c7a 100644
 2.32.0
 
 
-From 55f5232b2590b9a124c2fe873e17c1785e744091 Mon Sep 17 00:00:00 2001
+From d4a02709f0e3e40fac20d0ac1d986009c13ad43c Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 20 Mar 2021 13:43:47 -0700
 Subject: [PATCH 5/5] Workaround checking for fresh database

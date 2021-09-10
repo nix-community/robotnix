@@ -20,15 +20,15 @@ let
 in
 buildGradle {
   pname = "AttestationServer";
-  version = "2021-08-21";
+  version = "2021-09-08";
 
   envSpec = ./gradle-env.json;
 
   src = fetchFromGitHub {
     owner = "grapheneos";
     repo = "AttestationServer";
-    rev = "769da1ef59dc57a160b160e548367de7094144e1";
-    sha256 = "1f8fj6rhg7bkkwzvqhsz1iwvzyj8l6d9r1n8p491dnwzvr7z93ka";
+    rev = "cf42a655a98c0ab890cb931077229d2234b5bf37";
+    sha256 = "0riiww9gi1n5fj3d7q467cryypjwzlzrmssyh9hnqhjirgszml16";
   };
 
   patches = [
