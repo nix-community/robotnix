@@ -1,0 +1,75 @@
+From e0ac6de88217c743794d793b5a0fcaae0c0ec124 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Thu, 9 Sep 2021 22:14:01 -0700
+Subject: [PATCH 1/2] Revert "move to newer way of disabling dex compression"
+
+This reverts commit 96ea5260bc79f9a1f16268b8ebe67f1059b9ab65.
+---
+ app/build.gradle | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/app/build.gradle b/app/build.gradle
+index 1e2e0c6..6fcca67 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -27,10 +27,8 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_8
+         targetCompatibility JavaVersion.VERSION_1_8
+     }
+-    packagingOptions {
+-        dex {
+-            useLegacyPackaging = false
+-        }
++    aaptOptions {
++        noCompress "dex"
+     }
+ }
+ 
+-- 
+2.32.0
+
+
+From d3f2d48845393a3dbe2bd786025851f6a58e2238 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Thu, 9 Sep 2021 22:14:07 -0700
+Subject: [PATCH 2/2] Revert "add kotlin support"
+
+This reverts commit 0d3c1e8f8bf490df680f82cc67a0ba30a7af89ea.
+---
+ app/build.gradle | 1 -
+ build.gradle     | 2 --
+ 2 files changed, 3 deletions(-)
+
+diff --git a/app/build.gradle b/app/build.gradle
+index 6fcca67..e75a94d 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -1,5 +1,4 @@
+ apply plugin: 'com.android.application'
+-apply plugin: 'kotlin-android'
+ 
+ android {
+     compileSdkVersion 30
+diff --git a/build.gradle b/build.gradle
+index 1dff614..5908d34 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -1,7 +1,6 @@
+ // Top-level build file where you can add configuration options common to all sub-projects/modules.
+ 
+ buildscript {
+-    ext.kotlin_version = '1.5.30'
+     repositories {
+         google()
+         mavenCentral()
+@@ -9,7 +8,6 @@ buildscript {
+     }
+     dependencies {
+         classpath 'com.android.tools.build:gradle:7.0.2'
+-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+ 
+         // NOTE: Do not place your application dependencies here; they belong
+         // in the individual module build.gradle files
+-- 
+2.32.0
+

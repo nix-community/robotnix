@@ -18,7 +18,7 @@ let
 in
 buildGradle rec {
   name = "Auditor-${version}.apk";
-  version = "28"; # Latest as of 2021-05-19
+  version = "29"; # Latest as of 2021-09-09
 
   envSpec = ./gradle-env.json;
 
@@ -26,7 +26,7 @@ buildGradle rec {
     owner = "grapheneos";
     repo = "Auditor";
     rev = version;
-    sha256 = "0q65kg7szxm653m7z2pf9srycc7csf28hvaivlzp63cslb27ly6g";
+    sha256 = "0hvl45m4l5x0bpqbx3iairkvsd34cf045bsqrir8111h9vh89cvc";
   };
 
   patches = [
@@ -37,6 +37,9 @@ buildGradle rec {
       signatureFingerprint = lib.toUpper signatureFingerprint;
     }
     // lib.genAttrs supportedDevices (d: if (device == d) then avbFingerprint else "DISABLED_CUSTOM_${d}")))
+
+    # TODO: Ugly downgrades due to not being able to update to gradle 7.0.2, since its not working with gradle2nix
+    ./build-hacks.patch
   ];
 
   # gradle2nix not working with the more recent version of com.android.tools.build:gradle for an unknown reason
@@ -47,10 +50,11 @@ buildGradle rec {
   #           - Provides attribute 'artifactType' with value 'android-base-module-metadata' but the consumer didn't ask for it
   #           - Provides attribute 'com.android.build.api.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
   postPatch = ''
-    substituteInPlace build.gradle --replace "com.android.tools.build:gradle:7.0.1" "com.android.tools.build:gradle:4.0.1"
+    substituteInPlace build.gradle --replace "com.android.tools.build:gradle:7.0.2" "com.android.tools.build:gradle:4.0.1"
   '';
 
   # TODO: 2021-05-19. Now encountering another issue with gradle2nix, worked with gradle 6.7 but fails with 7.0.1
+  # Had to change gradle/wrapper/gradle-wrapper.properties back to 6.7 to run gradle2nix
 
   gradleFlags = [ "assembleRelease" ];
 

@@ -10,4 +10,5 @@
   "sunfish" # Pixel 4a
   "bramble" # Pixel 4a (5G)
   "redfin" # Pixel 5
+  "barbet" # Pixel 5a (5G)
 ]
