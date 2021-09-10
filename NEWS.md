@@ -8,6 +8,24 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2021-09-09
+## Highlights:
+- Added support for new device, "barbet" (Pixel 5a), on vanilla and GrapheneOS flavors.
+- Updated vanilla flavor to RQ3A.210905
+- Updated GrapheneOS flavor to 2021090819
+- Updated LineageOS flavor to 2021.08.10.22
+- Updated Auditor / AttestationServer to 29 / 2021-09-08
+- Updated Chromium / Vanadium to 93.0.4577.62, Bromite to 92.0.4515.134
+- Updated Updater to 2021-08-25
+- Updated MicroG to 0.2.22.212658
+- Installation documentation improvements (thanks @mschwaig)
+- Significant code-quality improvements (enabled tests, various checks) to update scripts
+- Added `--cache-search-path` and `--local_manifest` options to `mk_repo_file.py`
+
+There are no intentional backward incompatible changes since the last release.
+We have (hopefully temporarily) switched back to prebuilt kernels for redfin and related devices (bramble and barbet) in the vanilla flavor.
+Re-adding support for building these kernels in robotnix will likely require resolving [#116](https://github.com/danielfullmer/robotnix/issues/116).
+
 # 2021-08-03
 ## Highlights:
 - Updated vanilla flavor to RQ3A.210805
