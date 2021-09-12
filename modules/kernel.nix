@@ -25,6 +25,13 @@ in
         description = "Path to kernel source";
       };
 
+      buildDateTime = mkOption {
+        type = types.int;
+        description = "Unix time to use for kernel build timestamp";
+        default = config.buildDateTime;
+        defaultText = "config.buildDateTime";
+      };
+
       patches = mkOption {
         default = [];
         type = types.listOf types.path;
