@@ -106,8 +106,8 @@ in
       type = types.str;
       description = ''
         Set this to something meaningful to identify the build.
-        Defaults to `YYYY.MM.DD.HH` based on `buildDateTime`.
-        Should be unique for each build used for disambiguation.
+        Defaults to `YYYYMMDDHH` based on `buildDateTime`.
+        Should be unique for each build for disambiguation.
       '';
       example = "201908121";
     };
