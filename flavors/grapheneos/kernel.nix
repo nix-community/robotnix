@@ -91,8 +91,10 @@ let
         patchShebangs scripts/generate_initcall_order.pl
       fi
 
-      # TODO: Set proper timestamp
-      sed -i '/^export KBUILD_BUILD_TIMESTAMP/d' build.sh
+      # Set kernel timestamp
+      substituteInPlace build.sh \
+        --replace "\$(git show -s --format=%ct)" "${builtins.toString config.kernel.buildDateTime}"
+
       sed -i '/^chrt/d' build.sh
 
       # TODO: Not using prebuilt clang for HOSTCC/HOSTCXX/HOSTLD, since it refers to FHS sysroot and not the sysroot from nixpkgs.
@@ -119,6 +121,7 @@ let
   };
 in mkIf (config.flavor == "grapheneos" && config.kernel.enable) {
   kernel.src = mkDefault config.source.dirs.${sourceRelpath}.src;
+  kernel.buildDateTime = mkDefault config.source.dirs.${sourceRelpath}.dateTime;
   kernel.relpath = mkDefault builtRelpath;
 
   build.kernel = kernel;
