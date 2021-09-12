@@ -62,6 +62,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/redbull".enable = false;
   source.dirs."kernel/google/barbet".enable = false;
 
+  kernel.enable = mkDefault (elem config.deviceFamily phoneDeviceFamilies);
+
   # Enable Vanadium (GraphaneOS's chromium fork).
   apps.vanadium.enable = mkDefault true;
   webview.vanadium.enable = mkDefault true;
@@ -95,24 +97,6 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   signing.signTargetFilesArgs = [ "--extra_apks OsuLogin.apk,ServiceWifiResources.apk=$KEYSDIR/${config.device}/releasekey" ];
 
   # Leave the existing auditor in the build--just in case the user wants to
-  # audit devices using the official upstream build
-}
-(mkIf (elem config.deviceFamily phoneDeviceFamilies) {
-  kernel.enable = mkDefault true;
-  kernel.src = mkDefault config.source.dirs."kernel/google/${config.kernel.name}".src;
-  kernel.configName = config.device;
-  kernel.relpath = "device/google/${config.device}-kernel";
-})
-{
-  # Hackish exceptions
-  kernel.src = mkIf (config.deviceFamily == "bonito") (mkForce config.source.dirs."kernel/google/crosshatch".src);
-  kernel.configName = mkMerge [
-    (mkIf (config.device       == "sargo" ) (mkForce "bonito" ))
-    (mkIf (config.deviceFamily == "coral" ) (mkForce "floral" ))
-    (mkIf (config.device       == "barbet") (mkForce "bramble"))
-  ];
-  kernel.relpath = mkMerge [
-    (mkIf (config.device == "sargo") (mkForce "device/google/bonito-kernel"))
-  ];
+  # audit devices running the official upstream build
 }
 ])

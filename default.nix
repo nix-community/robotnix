@@ -32,10 +32,12 @@ let
       configuration
       ./flavors/anbox
       ./flavors/grapheneos
+      ./flavors/grapheneos/kernel.nix
       ./flavors/lineageos
       ./flavors/vanilla
       ./flavors/vanilla/10
       ./flavors/vanilla/11
+      ./flavors/vanilla/11/kernel
       ./flavors/vanilla/12
       ./modules/10
       ./modules/11
