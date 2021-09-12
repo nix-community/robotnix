@@ -371,18 +371,18 @@ Refer to this <a href="https://developer.android.com/reference/android/Manifest.
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3 id="builddatetime"><a class="header" href="#builddatetime"><code>buildDateTime</code></a></h3>
-<p>Seconds since the epoch that this build is taking place.
+<p>Unix time (seconds since the epoch) that this build is taking place.
 Needs to be monotonically increasing for each build if you use the over-the-air (OTA) update mechanism.
 e.g. output of <code>date +%s</code></p>
-<p><em>Default</em>: <code>1</code></p>
+<p><em>Default</em>: <code>&quot;*maximum of source.dirs.&lt;name&gt;.dateTime*&quot;</code></p>
 <p><em>Example</em>: <code>1565645583</code></p>
 <p><em>Type</em>: signed integer</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3 id="buildnumber"><a class="header" href="#buildnumber"><code>buildNumber</code></a></h3>
 <p>Set this to something meaningful to identify the build.
-Defaults to <code>YYYY.MM.DD.HH</code> based on <code>buildDateTime</code>.
-Should be unique for each build used for disambiguation.</p>
+Defaults to <code>YYYYMMDDHH</code> based on <code>buildDateTime</code>.
+Should be unique for each build for disambiguation.</p>
 <p><em>Example</em>: <code>&quot;201908121&quot;</code></p>
 <p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
@@ -467,9 +467,10 @@ Current options are <code>vanilla</code>, <code>grapheneos</code>, and <code>lin
 <p><em>Type</em>: boolean</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/release.nix">modules/release.nix</a></p>
-<h3 id="kernelbuildproductfilenames"><a class="header" href="#kernelbuildproductfilenames"><code>kernel.buildProductFilenames</code></a></h3>
-<p>List of build products in kernel <code>out/</code> to copy into path specified by <code>kernel.relpath</code>.</p>
-<p><em>Type</em>: list of strings</p>
+<h3 id="kernelbuilddatetime"><a class="header" href="#kernelbuilddatetime"><code>kernel.buildDateTime</code></a></h3>
+<p>Unix time to use for kernel build timestamp</p>
+<p><em>Default</em>: <code>&quot;config.buildDateTime&quot;</code></p>
+<p><em>Type</em>: signed integer</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
 <h3 id="kernelclangversion"><a class="header" href="#kernelclangversion"><code>kernel.clangVersion</code></a></h3>
@@ -478,29 +479,11 @@ See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/m
 <p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
-<h3 id="kernelcompiler"><a class="header" href="#kernelcompiler"><code>kernel.compiler</code></a></h3>
-<p>Compilter to use for building kernel</p>
-<p><em>Default</em>: <code>&quot;clang&quot;</code></p>
-<p><em>Type</em>: one of &quot;gcc&quot;, &quot;clang&quot;</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
 <h3 id="kernelenable"><a class="header" href="#kernelenable"><code>kernel.enable</code></a></h3>
 <p>Whether to enable building custom kernel.</p>
 <p><em>Default</em>: <code>false</code></p>
 <p><em>Example</em>: <code>true</code></p>
 <p><em>Type</em>: boolean</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
-<h3 id="kernelinstallmodules"><a class="header" href="#kernelinstallmodules"><code>kernel.installModules</code></a></h3>
-<p>Install .ko modules</p>
-<p><em>Default</em>: <code>false</code></p>
-<p><em>Type</em>: boolean</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
-<h3 id="kernellinker"><a class="header" href="#kernellinker"><code>kernel.linker</code></a></h3>
-<p>Linker to use for building kernel</p>
-<p><em>Default</em>: <code>&quot;gold&quot;</code></p>
-<p><em>Type</em>: one of &quot;gold&quot;, &quot;lld&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/kernel.nix">modules/kernel.nix</a></p>
 <h3 id="kernelpatches"><a class="header" href="#kernelpatches"><code>kernel.patches</code></a></h3>
