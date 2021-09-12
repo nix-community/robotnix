@@ -113,14 +113,15 @@ in
     };
 
     buildDateTime = mkOption {
-      default = 1;
       type = types.int;
       description = ''
-        Seconds since the epoch that this build is taking place.
+        Unix time (seconds since the epoch) that this build is taking place.
         Needs to be monotonically increasing for each build if you use the over-the-air (OTA) update mechanism.
         e.g. output of `date +%s`
         '';
       example = 1565645583;
+      default = with lib; foldl' max 1 (mapAttrsToList (n: v: if v.enable then v.dateTime else 1) config.source.dirs);
+      defaultText = "*maximum of source.dirs.<name>.dateTime*";
     };
 
     androidVersion = mkOption {
