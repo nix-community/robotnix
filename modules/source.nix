@@ -140,6 +140,12 @@ let
         internal = true;
       };
 
+      dateTime = mkOption {
+        default = 1;
+        type = types.int;
+        internal = true;
+      };
+
       sha256 = mkOption {
         type = types.nullOr types.str;
         default = null;

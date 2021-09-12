@@ -83,6 +83,7 @@ def test_read_cached_repo_json(tmpdir: Any) -> None:
         'a': {
             'rev': 'foo',
             'tree': 'foo2',
+            'dateTime': 1,
             'sha256': 'bar',
             'fetchSubmodules': True,
         },
@@ -90,5 +91,5 @@ def test_read_cached_repo_json(tmpdir: Any) -> None:
     repo_test_filename.write(json.dumps(repo_file_contents))
 
     mk_repo_file.read_cached_repo_json(top)
-    assert mk_repo_file.revHashes['foo', True] == 'bar'
-    assert mk_repo_file.treeHashes['foo2', True] == 'bar'
+    assert mk_repo_file.revInfo['foo', True] == {'sha256': 'bar', 'tree': 'foo2', 'dateTime': 1}
+    assert mk_repo_file.treeInfo['foo2', True] == {'sha256': 'bar', 'tree': 'foo2', 'dateTime': 1}

@@ -13,6 +13,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+from datetime import datetime
 
 from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, check_free_space
 
@@ -36,6 +37,7 @@ class ProjectInfoDict(TypedDict, total=False):
     url: str
     rev: str
     revisionExpr: str
+    dateTime: int
     tree: str
     sha256: str
     fetchSubmodules: bool
@@ -44,9 +46,28 @@ class ProjectInfoDict(TypedDict, total=False):
     linkfiles: List[Dict[str, str]]
 
 
-revHashes: Dict[Tuple[str, bool], str] = {}  # (rev, fetch_submodules) -> sha256hash
-revTrees: Dict[str, str] = {}           # rev -> treeHash
-treeHashes: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> sha256hash
+class CachedInfo(TypedDict, total=False):
+    sha256: str
+    dateTime: int
+    tree: str
+
+
+revInfo: Dict[Tuple[str, bool], CachedInfo] = {}  # (rev, fetch_submodules) -> CachedInfo
+treeInfo: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> CachedInfo
+
+
+def add_to_cache(p: ProjectInfoDict) -> None:
+    revIndex = (p['rev'], p.get('fetchSubmodules', False))
+
+    cached_info = revInfo.get(revIndex, {})
+    revInfo[revIndex] = cached_info
+
+    cached_info.update({'sha256': p['sha256']})
+    if 'dateTime' in p:
+        cached_info.update({'dateTime': p['dateTime']})
+    if 'tree' in p:
+        cached_info.update({'tree': p['tree']})
+        treeInfo[p['tree'], p.get('fetchSubmodules', False)] = dict(cached_info)
 
 
 def make_repo_file(url: str, ref: str,
@@ -141,10 +162,8 @@ def make_repo_file(url: str, ref: str,
         if 'sha256' not in p:
             print("Fetching information for %s %s" % (p['url'], p['rev']))
             # Used cached copies if available
-            if (p['rev'], fetch_submodules) in revHashes:
-                p['sha256'] = revHashes[p['rev'], fetch_submodules]
-                if p['rev'] in revTrees:
-                    p['tree'] = revTrees[p['rev']]
+            if (p['rev'], fetch_submodules) in revInfo:
+                p.update(revInfo.get((p['rev'], fetch_submodules), {}))
                 continue
 
             p_url = get_mirrored_url(p['url'])
@@ -154,8 +173,8 @@ def make_repo_file(url: str, ref: str,
                 p['tree'] = subprocess.check_output(
                     ['git', 'log', '-1', '--pretty=%T', p['rev']],
                     cwd=p_url+'.git').decode().strip()
-                if (p['tree'], fetch_submodules) in treeHashes:
-                    p['sha256'] = treeHashes[p['tree'], fetch_submodules]
+                if (p['tree'], fetch_submodules) in treeInfo:
+                    p.update(treeInfo.get((p['tree'], fetch_submodules), {}))
                     found_treehash = True
             if found_treehash:
                 continue
@@ -166,12 +185,11 @@ def make_repo_file(url: str, ref: str,
                 git_info = checkout_git(p_url, p['revisionExpr'], fetch_submodules)
             else:
                 git_info = checkout_git(p_url, p['rev'], fetch_submodules)
+
+            p['dateTime'] = int(datetime.fromisoformat(git_info['date']).timestamp())
             p['sha256'] = git_info['sha256']
 
-            # Add to cache
-            revHashes[p['rev'], fetch_submodules] = p['sha256']
-            if 'tree' in p:
-                treeHashes[p['tree'], fetch_submodules] = p['sha256']
+            add_to_cache(p)
 
             if callback is not None:
                 callback(data)
@@ -192,10 +210,7 @@ def read_cached_repo_json(path: str) -> None:
                 data = json.load(open(filepath))
                 for name, p in data.items():
                     if 'sha256' in p:
-                        revHashes[p['rev'], p.get('fetchSubmodules', False)] = p['sha256']
-                        if 'tree' in p:
-                            treeHashes[p['tree'], p.get('fetchSubmodules', False)] = p['sha256']
-                            revTrees[p['rev']] = p['tree']
+                        add_to_cache(p)
 
 
 def main() -> None:
