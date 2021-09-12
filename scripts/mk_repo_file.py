@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-from typing import Any, Callable, Optional, Dict, List, Tuple, TypedDict
+from typing import Any, Callable, Optional, Dict, List, Tuple, TypedDict, cast
 from enum import Enum
 
 import argparse
@@ -53,13 +53,13 @@ class CachedInfo(TypedDict, total=False):
 
 
 revInfo: Dict[Tuple[str, bool], CachedInfo] = {}  # (rev, fetch_submodules) -> CachedInfo
-treeInfo: Dict[Tuple[str, bool], str] = {}  # (treeHash, fetch_submodules) -> CachedInfo
+treeInfo: Dict[Tuple[str, bool], CachedInfo] = {}  # (treeHash, fetch_submodules) -> CachedInfo
 
 
 def add_to_cache(p: ProjectInfoDict) -> None:
     revIndex = (p['rev'], p.get('fetchSubmodules', False))
 
-    cached_info = revInfo.get(revIndex, {})
+    cached_info: CachedInfo = revInfo.get(revIndex, {})
     revInfo[revIndex] = cached_info
 
     cached_info.update({'sha256': p['sha256']})
@@ -67,7 +67,7 @@ def add_to_cache(p: ProjectInfoDict) -> None:
         cached_info.update({'dateTime': p['dateTime']})
     if 'tree' in p:
         cached_info.update({'tree': p['tree']})
-        treeInfo[p['tree'], p.get('fetchSubmodules', False)] = dict(cached_info)
+        treeInfo[p['tree'], p.get('fetchSubmodules', False)] = cast(CachedInfo, dict(cached_info))
 
 
 def make_repo_file(url: str, ref: str,
@@ -163,7 +163,7 @@ def make_repo_file(url: str, ref: str,
             print("Fetching information for %s %s" % (p['url'], p['rev']))
             # Used cached copies if available
             if (p['rev'], fetch_submodules) in revInfo:
-                p.update(revInfo.get((p['rev'], fetch_submodules), {}))
+                p.update(cast(ProjectInfoDict, revInfo.get((p['rev'], fetch_submodules), {})))
                 continue
 
             p_url = get_mirrored_url(p['url'])
@@ -174,7 +174,7 @@ def make_repo_file(url: str, ref: str,
                     ['git', 'log', '-1', '--pretty=%T', p['rev']],
                     cwd=p_url+'.git').decode().strip()
                 if (p['tree'], fetch_submodules) in treeInfo:
-                    p.update(treeInfo.get((p['tree'], fetch_submodules), {}))
+                    p.update(cast(ProjectInfoDict, treeInfo.get((p['tree'], fetch_submodules), {})))
                     found_treehash = True
             if found_treehash:
                 continue
