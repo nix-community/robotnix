@@ -7,13 +7,13 @@ let
   vanadium_src = fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "Vanadium";
-    rev = "RQ3A.210805.001.A1.2021090401";
-    sha256 = "0h6cahykl3s76aalcc3h4a1ygb6vq3jpzhhfldgcmnkblphb8z87";
+    rev = "RQ3A.210905.001.2021091407";
+    sha256 = "186di92z9lhwa44zbwgwvaip36gj81rprby1chc702n71c2c4xl3";
   };
 in (chromium.override {
   name = "vanadium";
   displayName = "Vanadium";
-  version = "93.0.4577.62";
+  version = "93.0.4577.82";
   enableRebranding = false; # Patches already include rebranding
   customGnFlags = {
     is_component_build = false;
