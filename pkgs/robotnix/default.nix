@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ lib, runCommand, androidPkgs, makeWrapper, jre8_headless, openssl }:
+{ lib, callPackage, runCommand, androidPkgs, makeWrapper, jre8_headless, openssl }:
 
 let
   # Try to avoid using the derivations below, since they rely on "import-from-derivation"
@@ -56,4 +56,4 @@ in {
   inherit
     build-tools apksigner signApk verifyApk
     apkFingerprint certFingerprint sha256Fingerprint;
-}
+} // (callPackage ./unpack-images.nix {})
