@@ -60,6 +60,7 @@ let
       ./modules/kernel.nix
       ./modules/microg.nix
       ./modules/pixel
+      ./modules/pixel/driver-binaries.nix
       ./modules/release.nix
       ./modules/resources.nix
       ./modules/signing.nix

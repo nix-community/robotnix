@@ -32,3 +32,12 @@ curl --fail -s --cookie "devsite_wall_acks=nexus-ota-tos" https://developers.goo
              url: (.[1].children|.[0].href),
              sha256: .[2].text,
             }' | jq -s > pixel-otas.json
+
+curl --fail -s --cookie "devsite_wall_acks=nexus-ota-tos" https://developers.google.com/android/drivers \
+    | pup "div table tbody tr json{}" \
+    | jq '.[].children
+          | {
+             url: (.[2].children|.[0].href),
+             sha256: .[3].text,
+            }
+          | select(.url != null)' | jq -s > pixel-drivers.json
