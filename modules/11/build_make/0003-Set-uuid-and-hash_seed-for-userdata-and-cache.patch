@@ -1,4 +1,4 @@
-From f214c1b6692c46a961478d4fc6f5c62eae0a3267 Mon Sep 17 00:00:00 2001
+From 8633bdf1b660a84494d5edcd79c7cbe8243f3615 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 17 May 2020 00:46:11 -0400
 Subject: [PATCH 3/5] Set uuid and hash_seed for userdata and cache
@@ -9,7 +9,7 @@ Change-Id: I14c44af7426f2d1b1917933f21f169e5d2bae0f5
  1 file changed, 6 insertions(+)
 
 diff --git a/tools/releasetools/add_img_to_target_files.py b/tools/releasetools/add_img_to_target_files.py
-index f58b6978a..87300d5ed 100644
+index f58b6978a8..87300d5edb 100644
 --- a/tools/releasetools/add_img_to_target_files.py
 +++ b/tools/releasetools/add_img_to_target_files.py
 @@ -447,6 +447,9 @@ def AddUserdata(output_zip):
@@ -33,5 +33,5 @@ index f58b6978a..87300d5ed 100644
    build_image.BuildImage(user_dir, image_props, img.name)
  
 -- 
-2.28.0
+2.32.0
 
