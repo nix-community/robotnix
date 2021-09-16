@@ -50,8 +50,8 @@ mkMerge [
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
 
-    apv.img = mkIf config.apv.enable (mkDefault (fetchItem imgList));
-    apv.ota = mkIf config.apv.enable (mkDefault (fetchItem otaList));
+    apv.img = mkDefault (fetchItem imgList);
+    apv.ota = mkDefault (fetchItem otaList);
 
     # Exclude all devices by default
     source.excludeGroups = mkDefault (lib.attrNames deviceMap);
