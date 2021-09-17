@@ -15,11 +15,12 @@ let
 
   configFile = "${android-prepare-vendor.evalTimeSrc}/${config.device}/config.json";
   apvConfig = builtins.fromJSON (builtins.readFile configFile);
+  replacedApvConfig = lib.recursiveUpdate apvConfig config.apv.customConfig;
 
   # TODO: There's probably a better way to do this
-  mergedConfig = lib.recursiveUpdate apvConfig {
+  mergedConfig = lib.recursiveUpdate replacedApvConfig {
     "api-${apiStr}".naked = let
-      _config = apvConfig."api-${apiStr}".naked;
+      _config = replacedApvConfig."api-${apiStr}".naked;
     in _config // {
       system-bytecode = _config.system-bytecode ++ cfg.systemBytecode;
       # We don't use the apns-conf.xml generator currently
@@ -100,6 +101,13 @@ in
     buildID = mkOption {
       type = types.str;
       description = "Build ID associated with the upstream img/ota (used to select images)";
+    };
+
+    customConfig = mkOption {
+      type = types.attrs;
+      default = {};
+      internal = true;
+      description = "Replacement apv JSON to use instead of upstream";
     };
   };
 

@@ -91,8 +91,6 @@ in
   vanilla-12-emulator = (robotnix { device="x86_64"; flavor="vanilla"; productNamePrefix="sdk_phone_"; androidVersion=12; }).emulator;
   danielfullmer-emulator = (robotnix { device="x86_64"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).emulator;
 
-  example-apv-diff = (robotnix { device="crosshatch"; flavor="grapheneos"; }).config.build.apv.diff;
-
   tests = lib.recurseIntoAttrs tests;
 
   # Stuff to upload to binary cache
