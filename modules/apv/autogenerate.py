@@ -73,13 +73,16 @@ def main() -> None:
                              if filename in upstream_files and filename.startswith('vendor/')
                              )
 
+    # Manual addition. Might not be needed if we include the corresponding stuff in system_ext
+    vendor_skip_files.add('etc/vintf/manifest/manifest_wifi_ext.xml')
+
     naked_config = {
-        'new-modules': [],
+        # 'new-modules': [],
         'dep-dso': [
             dso for dso in DEP_DSOS
             if dso in needed_files
         ],
-        'rro-overlays': [],
+        # 'rro-overlays': [],
         'forced-modules': sorted(set(modulename for modulename in needed_modules if modulename not in SKIP_MODULES)),
         'vendor-skip-files': sorted(vendor_skip_files),
         'system-bytecode': sorted(

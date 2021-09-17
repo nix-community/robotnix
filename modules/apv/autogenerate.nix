@@ -51,7 +51,6 @@ in {
   combined = pkgs.runCommand "apv-generated-combined" {}
     (lib.concatMapStringsSep "\n" (device: ''
       mkdir -p $out/${device}
-      cp ${(deviceAttrs device).suggestedConfig} $out/${device}/${device}.json
-      cp ${(deviceAttrs device).jsonDiff} $out/${device}/${device}.json.diff
+      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' ${pkgs.android-prepare-vendor.src}/${device}/config.json ${(deviceAttrs device).suggestedConfig} > $out/${device}/config.json
     '') devices);
 }
