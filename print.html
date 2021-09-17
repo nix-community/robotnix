@@ -1168,26 +1168,26 @@ Refer to this <a href="https://developer.android.com/reference/android/Manifest.
 <p>Build ID associated with the upstream img/ota (used to select images)</p>
 <p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv.nix">modules/apv.nix</a></p>
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv">modules/apv</a></p>
 <h3 id="apvenable"><a class="header" href="#apvenable"><code>apv.enable</code></a></h3>
 <p>Whether to enable android-prepare-vendor.</p>
 <p><em>Default</em>: <code>false</code></p>
 <p><em>Example</em>: <code>true</code></p>
 <p><em>Type</em>: boolean</p>
 <p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv.nix">modules/apv.nix</a></p>
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv">modules/apv</a></p>
 <h3 id="apvimg"><a class="header" href="#apvimg"><code>apv.img</code></a></h3>
 <p>A factory image <code>.zip</code> from upstream whose vendor contents should be extracted and included in the build</p>
 <p><em>Default</em>: <code>null</code></p>
 <p><em>Type</em>: path</p>
 <p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv.nix">modules/apv.nix</a></p>
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv">modules/apv</a></p>
 <h3 id="apvota"><a class="header" href="#apvota"><code>apv.ota</code></a></h3>
 <p>An <code>OTA</code> from upstream whose vendor contents should be extracted and included in the build. (Android &gt;=10 builds require this in addition to <code>apv.img</code>)</p>
 <p><em>Default</em>: <code>null</code></p>
 <p><em>Type</em>: path</p>
 <p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv.nix">modules/apv.nix</a></p>
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apv">modules/apv</a></p>
 <h3 id="arch"><a class="header" href="#arch"><code>arch</code></a></h3>
 <p>Architecture of phone, usually set automatically by device</p>
 <p><em>Default</em>: <code>&quot;arm64&quot;</code></p>
@@ -1344,6 +1344,12 @@ See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/m
 <p><em>Default</em>: <code>[ ]</code></p>
 <p><em>Type</em>: list of unspecifieds</p>
 <p><em>Declared by</em>:</p>
+<h3 id="pixeluseupstreamdriverbinaries"><a class="header" href="#pixeluseupstreamdriverbinaries"><code>pixel.useUpstreamDriverBinaries</code></a></h3>
+<p>Use device vendor binaries from https://developers.google.com/android/drivers</p>
+<p><em>Default</em>: <code>false</code></p>
+<p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/pixel/driver-binaries.nix">modules/pixel/driver-binaries.nix</a></p>
 <h3 id="productadditionalproductpackages"><a class="header" href="#productadditionalproductpackages"><code>product.additionalProductPackages</code></a></h3>
 <p><code>PRODUCT_PACKAGES</code> to add under <code>product</code> partition.</p>
 <p><em>Default</em>: <code>[ ]</code></p>
