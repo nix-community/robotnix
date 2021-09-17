@@ -10,9 +10,11 @@
 import sys
 import json
 
+from typing import List
 
-def main():
-    def _replace_system_system(s):
+
+def main() -> None:
+    def _replace_system_system(s: str) -> str:
         if s.startswith('system/system/'):
             return s[len('system/'):]
         else:
@@ -52,17 +54,17 @@ def main():
             if filename.startswith(filename_prefix):
                 modules_files.add(filename[len(filename_prefix):])
 
-    def _is_bytecode(s):
+    def _is_bytecode(s: str) -> bool:
         return s.endswith('.apk') or s.endswith('.jar')
 
-    DEP_DSOS = [
+    DEP_DSOS: List[str] = [
         "vendor/lib/libadsprpc.so",
         "vendor/lib/libsdsprpc.so",
         "vendor/lib64/libadsprpc.so",
         "vendor/lib64/libsdsprpc.so",
     ]
 
-    SKIP_MODULES = []
+    SKIP_MODULES: List[str] = []
 
     vendor_skip_files = set(filename[len('vendor/'):] for filename in modules_files
                             if filename.startswith('vendor/')
