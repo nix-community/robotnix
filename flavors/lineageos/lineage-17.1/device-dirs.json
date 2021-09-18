@@ -159,16 +159,16 @@
     "url": "https://github.com/LineageOS/android_device_fairphone_FP3"
   },
   "device/fxtec/pro1": {
-    "date": "2020-11-26T16:51:42+02:00",
+    "date": "2021-09-05T13:33:58-06:00",
     "deepClone": false,
     "deps": [
       "kernel/fxtec/msm8998"
     ],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/jz50wd4in8dbknfqdkznm14lp316i14p-android_device_fxtec_pro1",
-    "rev": "a192ce19d167aba513deff4d05eb7416f7b61870",
-    "sha256": "1aybbzgdlwsl7lbkmin9krd73w16622vby7dylvnwxrfss1n8nh1",
+    "path": "/nix/store/64r1x1cd8c6f5bk6biy083ml656s0vsd-android_device_fxtec_pro1",
+    "rev": "d158020665e6d50a58045d7115c3a6cb0f907897",
+    "sha256": "1s5xm2m3cjcbkac5h4ib9kazhb36darl2sc5w9ilnqkbd23b8bg4",
     "url": "https://github.com/LineageOS/android_device_fxtec_pro1"
   },
   "device/google/blueline": {
@@ -943,6 +943,24 @@
     "sha256": "0lsk1751dq84vqwy5jxayjzj1c6dqwg29r7vd9iqnb5wh3x4d5fy",
     "url": "https://github.com/LineageOS/android_device_motorola_evert"
   },
+  "device/motorola/exynos9610-common": {
+    "date": "2020-12-24T20:08:56+01:00",
+    "deepClone": false,
+    "deps": [
+      "hardware/motorola",
+      "hardware/samsung_slsi/fm",
+      "hardware/samsung_slsi/libbt",
+      "hardware/samsung_slsi/scsc_wifibt/wifi_hal",
+      "hardware/samsung_slsi/scsc_wifibt/wpa_supplicant_lib",
+      "kernel/motorola/exynos9610"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/f5gdgdpapmkhbmf7xsx2amzrmbmicdy6-android_device_motorola_exynos9610-common",
+    "rev": "407ebf3aec6769947410f7d7a01063953c511a3c",
+    "sha256": "1xpch1f0l9gs0ch2x5yp67ml5pkxkwi3abq9vd16nb4nxl5lzgxd",
+    "url": "https://github.com/LineageOS/android_device_motorola_exynos9610-common"
+  },
   "device/motorola/griffin": {
     "date": "2021-02-11T17:22:19+01:00",
     "deepClone": false,
@@ -997,6 +1015,19 @@
     "sha256": "02rkf6f8x6wlyv6pazf0q5x5x3px9ywdwdxfcp0jqzlbnh2vdkq3",
     "url": "https://github.com/LineageOS/android_device_motorola_harpia"
   },
+  "device/motorola/kane": {
+    "date": "2020-12-07T08:39:52+01:00",
+    "deepClone": false,
+    "deps": [
+      "device/motorola/exynos9610-common"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/hn8kmf85kclfrh94v9x7niy17sp07p5m-android_device_motorola_kane",
+    "rev": "c06cc3bfd3cf49ba76a3367b4affb4ade1be7a1c",
+    "sha256": "0nih3zvjvk234y7r528fa4y5nr9gllcxvkspwzinrcss0zin3zyk",
+    "url": "https://github.com/LineageOS/android_device_motorola_kane"
+  },
   "device/motorola/lake": {
     "date": "2020-12-02T19:13:58-05:00",
     "deepClone": false,
@@ -1050,7 +1081,7 @@
     "url": "https://github.com/LineageOS/android_device_motorola_montana"
   },
   "device/motorola/msm8916-common": {
-    "date": "2021-08-10T02:42:06+02:00",
+    "date": "2021-08-24T13:23:40+02:00",
     "deepClone": false,
     "deps": [
       "kernel/motorola/msm8916",
@@ -1061,9 +1092,9 @@
     ],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/glj49918cq5gdrbs92ajixxgi2ac29ax-android_device_motorola_msm8916-common",
-    "rev": "323abe26e9d91c72de1f54ee49e87ed6ddfb3638",
-    "sha256": "008q5v8bsdadgviv2xddzgwc7k7crirvwjr22rpj0j9mk55260pg",
+    "path": "/nix/store/jxkcjzg1nw0ps6xrqplzzzbrrm7hvmdd-android_device_motorola_msm8916-common",
+    "rev": "c0ca0810e4daa3a0b72608c9a83df07ee4b162ca",
+    "sha256": "103p5cp5mnq0l9ikhbfv4d1bh9rqk6qcrd913xvdid2mw9qjr532",
     "url": "https://github.com/LineageOS/android_device_motorola_msm8916-common"
   },
   "device/motorola/msm8937-common": {
@@ -1233,6 +1264,19 @@
     "rev": "ff729fb1dae1501bef605a4f0bbac91c335fbc51",
     "sha256": "1gkcx1w1ah1ilajcnchl827wwhs3jf1yv8c2pakz6d92nsi98r3q",
     "url": "https://github.com/LineageOS/android_device_motorola_surnia"
+  },
+  "device/motorola/troika": {
+    "date": "2020-12-07T08:40:48+01:00",
+    "deepClone": false,
+    "deps": [
+      "device/motorola/exynos9610-common"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/f0836qpcjfh1qwiwb4s2qwcmiizxsgq4-android_device_motorola_troika",
+    "rev": "6c1b99584a83545c5ba845df06df1506551840cd",
+    "sha256": "1p3z1wd9wp8jjzfrwnbq41ddqy7sabsl638srsdy5i1pcc4v9zrz",
+    "url": "https://github.com/LineageOS/android_device_motorola_troika"
   },
   "device/motorola/victara": {
     "date": "2021-04-01T04:09:43+01:00",
@@ -2359,6 +2403,19 @@
     "sha256": "0fl52h79yqbvg07ll57y6gqsb7qk3200vp89a60maa88l353bm0s",
     "url": "https://github.com/LineageOS/android_device_sony_shinano-common"
   },
+  "device/sony/sirius": {
+    "date": "2020-12-18T12:13:55+01:00",
+    "deepClone": false,
+    "deps": [
+      "device/sony/shinano-common"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/knsbxlix756kpcx74q0pa77s7ppyc2l6-android_device_sony_sirius",
+    "rev": "3048758386b82521b90f7e5e89ee9ec0808876b3",
+    "sha256": "00wn0mgm9scxp73p4kydjx29dl7kfj35z5q2x8awkgdb67i0qblv",
+    "url": "https://github.com/LineageOS/android_device_sony_sirius"
+  },
   "device/sony/tama-common": {
     "date": "2020-10-06T14:25:43+08:00",
     "deepClone": false,
@@ -2518,7 +2575,7 @@
     "url": "https://github.com/LineageOS/android_device_xiaomi_gemini"
   },
   "device/xiaomi/ginkgo": {
-    "date": "2021-03-05T18:41:30+01:00",
+    "date": "2021-08-29T07:55:16+02:00",
     "deepClone": false,
     "deps": [
       "device/xiaomi/sm6125-common"
@@ -2526,7 +2583,7 @@
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/iqk16yrihd9pmw9ykpzrg8zklvpqdwlm-android_device_xiaomi_ginkgo",
-    "rev": "0ab3feed2b409e265cf4511b93b06c9efb4b42ed",
+    "rev": "16bc5bc795a742ec3df861d90a2fb347f840d855",
     "sha256": "0vbxml8fags5raynbjcz0wxg2mqw2f5nnx50xmrfgcdmifdwhjl2",
     "url": "https://github.com/LineageOS/android_device_xiaomi_ginkgo"
   },
@@ -2905,14 +2962,14 @@
     "url": "https://github.com/LineageOS/android_hardware_motorola"
   },
   "hardware/samsung": {
-    "date": "2021-08-08T01:38:22+02:00",
+    "date": "2021-09-10T15:44:57+01:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/dplm9qpxr3amn7cim8x1psq00q60pcbi-android_hardware_samsung",
-    "rev": "2d56e19f2a3228d56358dc69c7b1397f843e8d64",
-    "sha256": "1pnldqgyrk3ya46d30vjjxrsz563q4s4rcap3jzz363mvp9idxp8",
+    "path": "/nix/store/sjj016lvzij23vfchpx87ya8h2nff7bj-android_hardware_samsung",
+    "rev": "4219bab508411936c2f4dd1799d97a83c0ae3c12",
+    "sha256": "1ipmwdjf3j4k6r4xmcy2xfw2yg73kpdrwmbdxwy0sqmnwlsxaxhs",
     "url": "https://github.com/LineageOS/android_hardware_samsung"
   },
   "hardware/samsung/slsi/exynos": {
@@ -2975,6 +3032,17 @@
     "rev": "18bdc652debc646704d3c2cd08521eeac8b88881",
     "sha256": "17rak22hbx4hswl77xp7c29a62s67hlz4av24l53s866fykvwizq",
     "url": "https://github.com/LineageOS/android_hardware_samsung_slsi_exynos7580"
+  },
+  "hardware/samsung_slsi/fm": {
+    "date": "2020-05-18T13:17:56+02:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/32kglwa6aaxq4ck7ma6yrrqjvlzh2rkf-android_hardware_samsung_slsi_fm",
+    "rev": "1f85f60a7dfa6dd455b81fac47e777e93e237dbe",
+    "sha256": "1hx9z7ddpa7kz0r44i81694140jilfadvy3n7inf8259vsk2ravw",
+    "url": "https://github.com/LineageOS/android_hardware_samsung_slsi_fm"
   },
   "hardware/samsung_slsi/libbt": {
     "date": "2020-09-08T22:18:42+02:00",
@@ -3153,14 +3221,14 @@
     "url": "https://github.com/LineageOS/android_kernel_cyanogen_msm8916"
   },
   "kernel/essential/msm8998": {
-    "date": "2021-07-31T07:34:14-06:00",
+    "date": "2021-08-19T06:54:55-06:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/fyvraidf7kc0457pf673nx34vh01f3bx-android_kernel_essential_msm8998",
-    "rev": "c9d0147fc0a658196ec104837048abdd4a62f08f",
-    "sha256": "1xgki25qgnrfscc13apdmwh5bml5cbg327c7ccgpcwqgzvgn3wn4",
+    "path": "/nix/store/i760pxdkd17fxm7k8wi2pxr26jlxh485-android_kernel_essential_msm8998",
+    "rev": "34784e6e7035c96452d82d648b358e7caf552da7",
+    "sha256": "13xr8w8q2ji0dqsb0y8gfvxp3y8z31gly6y5ywgvsgd53wv6xvww",
     "url": "https://github.com/LineageOS/android_kernel_essential_msm8998"
   },
   "kernel/fairphone/msm8974": {
@@ -3186,14 +3254,14 @@
     "url": "https://github.com/LineageOS/android_kernel_fairphone_sdm632"
   },
   "kernel/fxtec/msm8998": {
-    "date": "2021-03-31T22:15:55+01:00",
+    "date": "2021-09-08T06:32:01-06:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/5m0ksz1a4h8p09j555878i6k858v8743-android_kernel_fxtec_msm8998",
-    "rev": "df2061738a4656805266a0c6a51adeae66f42d79",
-    "sha256": "0gkkiyl4k5j8y2yny78wls8xl91gswx6rbyfjp1bhp50ph3cvjfs",
+    "path": "/nix/store/kilghx5h2wvgqbda0bx43h4k29g6qv64-android_kernel_fxtec_msm8998",
+    "rev": "1265e28e3c3674ca8d45d9a4635d124b6532cf77",
+    "sha256": "0ljfwgh964p14b3j297myvc8vv317ycc6g461b3n12q3gdaqvmif",
     "url": "https://github.com/LineageOS/android_kernel_fxtec_msm8998"
   },
   "kernel/google/coral": {
@@ -3360,6 +3428,17 @@
     "rev": "733c871e252fc6be3d2a794e9d6059a74c160ece",
     "sha256": "1bghy2qr8ll4plczbyhf2m38kffkphkhpbick8w00jx7xl3gbbd8",
     "url": "https://github.com/LineageOS/android_kernel_moto_shamu"
+  },
+  "kernel/motorola/exynos9610": {
+    "date": "2020-10-16T20:56:14+00:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/jz3d3ml41amwq0anxgmiqbgd9r23kyk7-android_kernel_motorola_exynos9610",
+    "rev": "a4e4e47a3ece5b657a148f2a5624595898fd7dab",
+    "sha256": "0hxzr81f1bgmcmp58hlbr4i428pq16a36bmxjk163k3a5ycc2ddm",
+    "url": "https://github.com/LineageOS/android_kernel_motorola_exynos9610"
   },
   "kernel/motorola/msm8916": {
     "date": "2021-02-17T12:02:36+01:00",

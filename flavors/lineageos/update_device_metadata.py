@@ -8,9 +8,7 @@ import urllib.request
 import os
 import pathlib
 
-
-def save(filename: str, data: str) -> None:
-    open(filename, 'w').write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
+from robotnix_common import save
 
 
 def fetch_metadata(

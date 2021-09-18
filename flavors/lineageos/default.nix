@@ -73,7 +73,7 @@ in mkIf (config.flavor == "lineageos")
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
-  buildDateTime = mkDefault 1628634098;
+  buildDateTime = mkDefault 1631937333;
 
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
