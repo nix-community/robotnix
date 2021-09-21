@@ -21,9 +21,7 @@ SKIP_DEPS = [
     "src/testing/rts", # CIPD package depends on ${{platform}}, which we don't yet handle well
 ]
 
-NO_SUBMODULES = [
-    "src/third_party/swiftshader" # Fails when trying to fetch git-hooks submodule
-]
+NO_SUBMODULES = []
 
 def hash_path(path):
     sha256 = subprocess.check_output(["nix", "hash-path", "--base32", "--type", "sha256", path]).strip()
