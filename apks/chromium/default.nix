@@ -64,6 +64,8 @@ let
     is_official_build = true;
     is_debug = false;
 
+    disable_fieldtrial_testing_config = true;
+
     enable_nacl = false;
     is_component_build = false;
     is_clang = true;
