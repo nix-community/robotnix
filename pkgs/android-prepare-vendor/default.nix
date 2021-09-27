@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 { stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
-  simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3,
+  simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3, libarchive,
   api ? 30
 }:
 
@@ -76,7 +76,7 @@ in
     cp -r ${oatdump}/* hostTools/Linux/api-${apiStr}/
 
     for i in ./execute-all.sh ./scripts/download-nexus-image.sh ./scripts/extract-factory-images.sh ./scripts/generate-vendor.sh ./scripts/gen-prop-blobs-list.sh ./scripts/realpath.sh ./scripts/system-img-repair.sh ./scripts/extract-ota.sh; do
-        sed -i '2 i export PATH=$PATH:${lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk utillinux perl curl ]}' $i
+        sed -i '2 i export PATH=$PATH:${lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk utillinux perl curl libarchive ]}' $i
     done
 
     # Fix when using --input containing readonly files

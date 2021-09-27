@@ -83,6 +83,10 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   nixpkgs.overlays = [ (self: super: {
     android-prepare-vendor = super.android-prepare-vendor.overrideAttrs (_: {
       src = config.source.dirs."vendor/android-prepare-vendor".src;
+      patches = [
+        ./apv/0001-Just-write-proprietary-blobs.txt-to-current-dir.patch
+        ./apv/0002-Allow-for-externally-set-config-file.patch
+      ];
       passthru.evalTimeSrc = builtins.fetchTarball {
         url = "https://github.com/GrapheneOS/android-prepare-vendor/archive/${config.source.dirs."vendor/android-prepare-vendor".rev}.tar.gz";
         inherit (config.source.dirs."vendor/android-prepare-vendor") sha256;

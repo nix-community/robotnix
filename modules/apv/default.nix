@@ -17,20 +17,22 @@ let
   apvConfig = builtins.fromJSON (builtins.readFile configFile);
   replacedApvConfig = lib.recursiveUpdate apvConfig config.apv.customConfig;
 
-  # TODO: There's probably a better way to do this
-  mergedConfig = lib.recursiveUpdate replacedApvConfig {
-    "api-${apiStr}".naked = let
-      _config = replacedApvConfig."api-${apiStr}".naked;
-    in _config // {
-      system-bytecode = _config.system-bytecode ++ cfg.systemBytecode;
-      # We don't use the apns-conf.xml generator currently
-      # system/product workaround needed for taimen
-      system-other = (lib.filter (n: n != "system/product/etc/apns-conf.xml") _config.system-other) ++ cfg.systemOther;
-    } // lib.optionalAttrs (_config ? product-other) {
-      # We don't use the apns-conf.xml generator currently
-      product-other = lib.filter (n: n != "product/etc/apns-conf.xml") _config.product-other;
-    };
+  filterConfig = _config: _config // {
+    system-bytecode = _config.system-bytecode ++ cfg.systemBytecode;
+    # We don't use the apns-conf.xml generator currently
+    # system/product workaround needed for taimen
+    system-other = (lib.filter (n: n != "system/product/etc/apns-conf.xml") _config.system-other) ++ cfg.systemOther;
+  } // lib.optionalAttrs (_config ? product-other) {
+    # We don't use the apns-conf.xml generator currently
+    product-other = lib.filter (n: n != "product/etc/apns-conf.xml") _config.product-other;
   };
+
+  # TODO: There's probably a better way to do this
+  mergedConfig = lib.recursiveUpdate replacedApvConfig (
+    if (config.flavor == "grapheneos")
+    then filterConfig replacedApvConfig
+    else { "api-${apiStr}".naked = filterConfig replacedApvConfig."api-${apiStr}".naked; }
+  );
   mergedConfigFile = builtins.toFile "config.json" (builtins.toJSON mergedConfig);
 
   # Original function used for creating vendor files. Left here for debugging
@@ -45,8 +47,8 @@ let
         --buildID "${buildID}" \
         --imgs "${img}" \
         ${lib.optionalString (ota != null) "--ota ${ota}"} \
-        --debugfs \
-        --timestamp "${builtins.toString timestamp}" \
+        ${lib.optionalString (config.flavor != "grapheneos") "--debugfs"} \
+        ${lib.optionalString (config.flavor != "grapheneos") "--timestamp \"${builtins.toString timestamp}\""} \
         ${lib.optionalString (configFile != null) "--conf-file ${configFile}"}
 
       mkdir -p $out
@@ -58,7 +60,7 @@ let
       ${android-prepare-vendor}/scripts/extract-factory-images.sh \
         --input "${img}" \
         --output $out \
-        --debugfs  \
+        ${lib.optionalString (config.flavor != "grapheneos") "--debugfs"} \
         --conf-file ${mergedConfigFile}
     '';
 
@@ -123,19 +125,14 @@ in
       unpackedImg = unpackImg cfg.img;
       unpackedOta = unpackOta cfg.ota;
 
-      repairedSystem = let
-        bytecodeList = pkgs.writeText "bytecode_list.txt"
-          (lib.concatStringsSep "\n" (with apvConfig."api-${apiStr}".naked; system-bytecode ++ product-bytecode));
-      in
-        pkgs.runCommand "repaired-system-${config.device}-${cfg.buildID}" {} ''
+      repairedSystem = pkgs.runCommand "repaired-system-${config.device}-${cfg.buildID}" {} ''
           mkdir -p $out
           ${android-prepare-vendor}/scripts/system-img-repair.sh \
             --input ${config.build.apv.unpackedImg}/system/system \
             --output $out \
             --method OATDUMP \
             --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${apiStr}/bin/oatdump \
-            --bytecode-list ${bytecodeList} \
-            --timestamp 1
+            ${lib.optionalString (config.flavor != "grapheneos") "--timestamp 1"}
         '';
 
       files = pkgs.runCommand "vendor-files-${config.device}-${cfg.buildID}" {} (with config.build.apv; ''
@@ -164,17 +161,17 @@ in
         ${android-prepare-vendor}/scripts/gen-prop-blobs-list.sh \
           --input ${unpackedImg}/vendor \
           --output . \
-          --api ${apiStr} \
+          ${lib.optionalString (config.flavor != "grapheneos") "--api ${apiStr}"} \
           --conf-file ${mergedConfigFile} \
-          --conf-type naked
+          ${lib.optionalString (config.flavor != "grapheneos") "--conf-type naked"}
 
         mkdir -p $out
         ${android-prepare-vendor}/scripts/generate-vendor.sh \
           --input $(pwd)/tmp \
           --output $out \
-          --api ${apiStr} \
+          ${lib.optionalString (config.flavor != "grapheneos") "--api ${apiStr}"} \
           --conf-file ${mergedConfigFile} \
-          --conf-type naked \
+          ${lib.optionalString (config.flavor != "grapheneos") "--conf-type naked"} \
           ${lib.optionalString (config.flavor != "grapheneos") "--allow-preopt"}
       '');
 
