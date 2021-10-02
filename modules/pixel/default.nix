@@ -65,11 +65,6 @@ mkMerge [
   (mkIf (config.deviceFamily == "marlin") {
     signing.avb.mode = "verity_only";
     signing.apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
-    nixpkgs.overlays = [ (self: super: {
-      android-prepare-vendor = super.android-prepare-vendor.overrideAttrs ({ patches ? [], ...}: {
-        patches = patches ++ [ ../../pkgs/android-prepare-vendor/0004-marlin-sailfish-fix-build-failure.patch ];
-      });
-    })];
   })
   (mkIf (lib.elem config.deviceFamily [ "taimen" "muskie" ]) {
     signing.avb.mode = "vbmeta_simple";
