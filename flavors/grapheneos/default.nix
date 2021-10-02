@@ -86,6 +86,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
       patches = [
         ./apv/0001-Just-write-proprietary-blobs.txt-to-current-dir.patch
         ./apv/0002-Allow-for-externally-set-config-file.patch
+        ./apv/0003-Add-option-to-use-externally-provided-carrier_list.p.patch
       ];
       passthru.evalTimeSrc = builtins.fetchTarball {
         url = "https://github.com/GrapheneOS/android-prepare-vendor/archive/${config.source.dirs."vendor/android-prepare-vendor".rev}.tar.gz";

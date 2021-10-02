@@ -6,6 +6,8 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+../../modules/apv/update-carrierlist.sh
+
 args=(
     --cache-search-path ../../
     --ref-type tag

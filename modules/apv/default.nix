@@ -19,12 +19,9 @@ let
 
   filterConfig = _config: _config // {
     system-bytecode = _config.system-bytecode ++ cfg.systemBytecode;
-    # We don't use the apns-conf.xml generator currently
-    # system/product workaround needed for taimen
-    system-other = (lib.filter (n: n != "system/product/etc/apns-conf.xml") _config.system-other) ++ cfg.systemOther;
+    system-other = _config.system-other ++ cfg.systemOther;
   } // lib.optionalAttrs (_config ? product-other) {
-    # We don't use the apns-conf.xml generator currently
-    product-other = lib.filter (n: n != "product/etc/apns-conf.xml") _config.product-other;
+    product-other = _config.product-other;
   };
 
   # TODO: There's probably a better way to do this
@@ -35,17 +32,26 @@ let
   );
   mergedConfigFile = builtins.toFile "config.json" (builtins.toJSON mergedConfig);
 
-  # Original function used for creating vendor files. Left here for debugging
+  latestTelephonyProvider = pkgs.fetchgit {
+    inherit (lib.importJSON ./latest-telephony-provider.json)
+      url rev sha256;
+  };
+
   buildVendorFiles =
     { device, img, ota ? null, full ? false, timestamp ? 1, buildID ? "robotnix", configFile ? null }:
     pkgs.runCommand "vendor-files-${device}" {} ''
-      ${android-prepare-vendor}/execute-all.sh \
+      # Copy source files since scripts assume that script directories are writable
+      cp -r ${android-prepare-vendor} apv
+      chmod -R u+w apv
+
+      apv/execute-all.sh \
         ${lib.optionalString full "--full"} \
         --yes \
         --output . \
         --device "${device}" \
         --buildID "${buildID}" \
         --imgs "${img}" \
+        --carrier-list-folder ${latestTelephonyProvider}/assets/latest_carrier_id \
         ${lib.optionalString (ota != null) "--ota ${ota}"} \
         ${lib.optionalString (config.flavor != "grapheneos") "--debugfs"} \
         ${lib.optionalString (config.flavor != "grapheneos") "--timestamp \"${builtins.toString timestamp}\""} \
@@ -115,80 +121,14 @@ in
 
   config = {
     build.apv = {
-      origfiles =
+      files =
         buildVendorFiles {
           inherit (config) device;
           inherit (cfg) img ota;
           configFile = mergedConfigFile;
         };
 
-      unpackedImg = unpackImg cfg.img;
-      unpackedOta = unpackOta cfg.ota;
-
-      repairedSystem = pkgs.runCommand "repaired-system-${config.device}-${cfg.buildID}" {} ''
-          mkdir -p $out
-          ${android-prepare-vendor}/scripts/system-img-repair.sh \
-            --input ${config.build.apv.unpackedImg}/system/system \
-            --output $out \
-            --method OATDUMP \
-            --oatdump ${android-prepare-vendor}/hostTools/Linux/api-${apiStr}/bin/oatdump \
-            ${lib.optionalString (config.flavor != "grapheneos") "--timestamp 1"}
-        '';
-
-      files = pkgs.runCommand "vendor-files-${config.device}-${cfg.buildID}" {} (with config.build.apv; ''
-        mkdir -p tmp
-        ln -s ${repairedSystem}/system tmp/system
-
-        # See "execute-all.sh" of android-prepare-vendor:
-
-        ln -s ${unpackedImg}/vendor tmp/vendor
-        if [[ -d ${unpackedImg}/product ]]; then
-          ln -s ${unpackedImg}/product tmp/product
-        fi
-        if [[ -d ${unpackedImg}/system_ext ]]; then
-          ln -s ${unpackedImg}/system_ext tmp/system_ext
-        fi
-
-        cp ${unpackedImg}/vendor_partition_size tmp
-        if [[ -f ${unpackedImg}/product_partition_size ]]; then
-          cp ${unpackedImg}/product_partition_size tmp
-        fi
-
-        mkdir -p tmp/radio
-        cp -r ${unpackedImg}/radio tmp/
-        cp -r ${unpackedOta}/radio tmp/
-
-        ${android-prepare-vendor}/scripts/gen-prop-blobs-list.sh \
-          --input ${unpackedImg}/vendor \
-          --output . \
-          ${lib.optionalString (config.flavor != "grapheneos") "--api ${apiStr}"} \
-          --conf-file ${mergedConfigFile} \
-          ${lib.optionalString (config.flavor != "grapheneos") "--conf-type naked"}
-
-        mkdir -p $out
-        ${android-prepare-vendor}/scripts/generate-vendor.sh \
-          --input $(pwd)/tmp \
-          --output $out \
-          ${lib.optionalString (config.flavor != "grapheneos") "--api ${apiStr}"} \
-          --conf-file ${mergedConfigFile} \
-          ${lib.optionalString (config.flavor != "grapheneos") "--conf-type naked"} \
-          ${lib.optionalString (config.flavor != "grapheneos") "--allow-preopt"}
-      '');
-
-      # For debugging differences between upstream vendor files and ours
-      diff = let
-        unpackedUpstream = pkgs.robotnix.unpackImg config.apv.img;
-        unpackedBuilt = pkgs.robotnix.unpackImg config.build.factoryImg;
-      in pkgs.runCommand "apv-diff" { nativeBuildInputs = [ pkgs.binutils ]; } ''
-        mkdir -p $out
-        ln -s ${unpackedUpstream} $out/upstream
-        ln -s ${unpackedBuilt} $out/built
-
-        find ${unpackedUpstream} -type f -printf "%P\n" | sort > $out/upstream-files
-        find ${unpackedBuilt} -type f -printf "%P\n" | sort > $out/built-files
-        diff -u $out/upstream-files $out/built-files > $out/diff || true
-      '';
-        #bash ${./apv-lib-check.sh} $out/built-files $out/upstream-files | sort > $out/shared-libs-report.txt
+      unpackedImg = pkgs.robotnix.unpackImg cfg.img;
     };
 
     # TODO: Re-add support for vendor_overlay if it is ever used again
