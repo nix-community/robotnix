@@ -11,11 +11,14 @@
   ... }@args:
 
 let
-  inherit (inputs) nixpkgs androidPkgs;
+  inherit (inputs) nixpkgs nixpkgsUnstable androidPkgs;
 in nixpkgs.legacyPackages.x86_64-linux.appendOverlays [
   (self: super: {
     androidPkgs.packages = androidPkgs.packages.x86_64-linux;
     androidPkgs.sdk = androidPkgs.sdk.x86_64-linux;
+
+    inherit (nixpkgsUnstable.legacyPackages.x86_64-linux)
+      diffoscope;
   })
   (import ./overlay.nix)
 ]

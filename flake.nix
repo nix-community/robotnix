@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
+    nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
   };
 
