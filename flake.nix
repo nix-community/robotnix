@@ -6,13 +6,8 @@
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
   };
 
-  outputs = { self, nixpkgs, androidPkgs, ... }: let
-    pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays [
-        (self: super: {
-          androidPkgs.sdk = androidPkgs.sdk.x86_64-linux;
-        })
-        (import ./pkgs/overlay.nix)
-      ];
+  outputs = { self, nixpkgs, androidPkgs, ... }@inputs: let
+    pkgs = import ./pkgs/default.nix { inherit inputs; };
   in {
     # robotnixSystem evaluates a robotnix configuration
     lib.robotnixSystem = configuration: import ./default.nix {
@@ -31,6 +26,21 @@
       manual = (import ./docs { inherit pkgs; }).manual;
     };
 
-    devShell.x86_64-linux = import ./shell.nix { inherit pkgs; };
+    devShell.x86_64-linux = pkgs.mkShell {
+      name = "robotnix-scripts";
+      nativeBuildInputs = with pkgs; [
+        # For android updater scripts
+        (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
+        gitRepo nix-prefetch-git
+        curl go-pup jq
+        shellcheck
+
+        # For chromium updater script
+        python2 cipd git
+
+        cachix
+      ];
+      PYTHONPATH=./scripts;
+    };
   };
 }

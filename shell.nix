@@ -1,17 +1,7 @@
-{ pkgs ? (import ./pkgs {}) }:
-pkgs.mkShell {
-  name = "robotnix-scripts";
-  nativeBuildInputs = with pkgs; [
-    # For android updater scripts
-    (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
-    gitRepo nix-prefetch-git
-    curl go-pup jq
-    shellcheck
-
-    # For chromium updater script
-    python2 cipd git
-
-    cachix
-  ];
-  PYTHONPATH=./scripts;
-}
+(import (
+  fetchTarball {
+    url = "https://github.com/edolstra/flake-compat/archive/12c64ca55c1014cdc1b16ed5a804aa8576601ff2.tar.gz";
+    sha256 = "0jm6nzb83wa6ai17ly9fzpqc40wg1viib8klq8lby54agpl213w5"; }
+) {
+  src =  ./.;
+}).shellNix.default
