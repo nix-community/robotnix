@@ -64,6 +64,7 @@ in
     ./0001-Disable-oatdump-update.patch
     ./0002-Just-write-proprietary-blobs.txt-to-current-dir.patch
     ./0003-Allow-for-externally-set-config-file.patch
+    ./0004-Add-option-to-use-externally-provided-carrier_list.p.patch
   ];
 
   # TODO: No need to copy oatdump now that we're making a standalone android-prepare-vendor.
