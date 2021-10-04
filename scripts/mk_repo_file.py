@@ -223,7 +223,7 @@ def main() -> None:
     parser.add_argument('--resume', help="resume a previous download", action='store_true')
     parser.add_argument('--local-manifest', help="path or URL to a .xml file to include in local_manifests",
                         action='append')
-    parser.add_argument('--cache-search-path', nargs='*',
+    parser.add_argument('--cache-search-path', nargs='*', default=[],
                         help="path to search for any existing repo json files to use for cached sha256s")
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
