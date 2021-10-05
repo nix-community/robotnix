@@ -138,7 +138,7 @@ in
       grapheneos = pkgs.writeText "${config.device}-${config.channel}" ''
         ${config.buildNumber} ${toString config.buildDateTime} BUILDID_PLACEHOLDER ${config.channel}
       '';
-      lineageos = pkgs.writeText "${config.device}.json" (
+      lineageos = pkgs.writeText "lineageos-${config.device}.json" (
         # https://github.com/LineageOS/android_packages_apps_Updater#server-requirements
         builtins.toJSON {
           response = [
@@ -161,7 +161,7 @@ in
         cat ${otaMetadata} > ${path}/${config.device}-${config.channel}
       '';
       lineageos = ''
-        sed -e "s:\"ROM_SIZE\":$(du -b ${ota} | cut -f1):" ${otaMetadata} > ${path}/${config.device}.json
+        sed -e "s:\"ROM_SIZE\":$(du -b ${ota} | cut -f1):" ${otaMetadata} > ${path}/lineageos-${config.device}.json
       '';
     }.${config.apps.updater.flavor};
 

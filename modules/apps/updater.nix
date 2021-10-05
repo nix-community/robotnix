@@ -74,7 +74,7 @@ in
 
       (mkIf (cfg.flavor == "lineageos") {
         resources."packages/apps/Updater" = mkIf (cfg.flavor == "lineageos") {
-          updater_server_url = cfg.url;
+          updater_server_url = "${cfg.url}lineageos-${config.device}.json";
         };
       })
     ]))
