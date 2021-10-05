@@ -12,7 +12,7 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 11) (mkMerge [
 {
-  buildDateTime = mkDefault 1631052581;
+  buildDateTime = mkDefault 1633456788;
 
   source.manifest.rev = mkMerge [
     (mkIf (config.device != "barbet") (mkDefault "android-11.0.0_r46"))

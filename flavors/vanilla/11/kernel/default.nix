@@ -107,10 +107,12 @@ let
       "arch/arm64/boot/dts/google/qcom-base/sdmmagpie.dtb"
     ] ++ optionals (config.deviceFamily == "redfin") [
       "arch/arm64/boot/Image.lz4"
+      "arch/arm64/boot/Image.lz4-dtb"
       "arch/arm64/boot/dtbo.img"
       "arch/arm64/boot/dts/google/qcom-base/lito.dtb"
     ] ++ optionals (config.deviceFamily == "barbet") [
       "arch/arm64/boot/Image.lz4"
+      "arch/arm64/boot/Image.lz4-dtb"
       "arch/arm64/boot/dtbo.img"
       "arch/arm64/boot/dts/google/qcom-base/lito.dtb"
     ];
