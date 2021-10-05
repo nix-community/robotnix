@@ -59,7 +59,7 @@ let
     } ];
   });
 
-  cvd-host_package = robotnixCuttlefish.build.mkAndroid {
+  cvd-host_package = robotnixCuttlefish.config.build.mkAndroid {
     name = "cvd-host_package";
     makeTargets = 
       lib.optional stdenv.isx86_64 "hosttar"

@@ -4,7 +4,7 @@
 virtual device that (in contrast to the standard android emulator) uses crosvm
 along with standard virtio drivers.
 
-Requires kernel >= 4.8 (see host/lib/vm_manager/host_configuration.cpp)
+Requires Linux kernel >= 4.8 (see host/lib/vm_manager/host_configuration.cpp)
 
 First, build cuttlefish using the following commands:
 ```shell
