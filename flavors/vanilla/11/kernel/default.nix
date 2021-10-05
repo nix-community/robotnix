@@ -73,6 +73,7 @@ let
     "crosshatch" = "b1c1";
     "coral" = "floral";
     "redfin" =  "redbull";
+    "bramble" =  "redbull";
   }.${config.deviceFamily} or config.deviceFamily;
   compiler = if (elem config.deviceFamily == "marlin") then "gcc" else "clang";
   linker = if (elem config.deviceFamily [ "coral" "sunfish" ]) then "lld" else "gold";
@@ -254,7 +255,9 @@ in mkIf (config.flavor == "vanilla" && config.kernel.enable) {
     '') kernelDirs));
 
   kernel.relpath = let
-      kernelName =  if elem config.deviceFamily [ "taimen" "muskie"] then "wahoo" else config.deviceFamily;
+    kernelName = if elem config.deviceFamily [ "taimen" "muskie"] then "wahoo"
+                 else if elem config.deviceFamily [ "redfin" ] then "redbull"
+                 else config.deviceFamily;
   in mkDefault "device/google/${kernelName}-kernel";
 
   build.kernel = kernel;
