@@ -15,12 +15,12 @@ in
   buildDateTime = mkDefault 1631052581;
 
   source.manifest.rev = mkMerge [
-    (mkIf (config.device != "barbet") (mkDefault "android-11.0.0_r43"))
-    (mkIf (config.device == "barbet") (mkDefault "android-11.0.0_r44"))
+    (mkIf (config.device != "barbet") (mkDefault "android-11.0.0_r46"))
+    (mkIf (config.device == "barbet") (mkDefault "android-11.0.0_r48"))
   ];
   apv.buildID = mkMerge [
-    (mkIf (config.device != "barbet") (mkDefault "RQ3A.210905.001"))
-    (mkIf (config.device == "barbet") (mkDefault "RD2A.210905.002"))
+    (mkIf (config.device != "barbet") (mkDefault "RQ3A.211001.001"))
+    (mkIf (config.device == "barbet") (mkDefault "RD2A.211001.002"))
   ];
 
   # Disable for now until we have it tested working
