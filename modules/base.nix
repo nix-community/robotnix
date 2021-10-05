@@ -10,7 +10,7 @@ let
   fakeuser = pkgs.callPackage ./fakeuser {};
 
   # Taken from https://github.com/edolstra/flake-compat/
-  # Format number of seconds in the Unix epoch as %Y.%m.%d.%H
+  # Format number of seconds in the Unix epoch as %Y%m%d%H
   formatSecondsSinceEpoch = t:
     let
       rem = x: y: x - x / y * y;
@@ -33,7 +33,7 @@ let
       y' = y + (if m <= 2 then 1 else 0);
 
       pad = s: if builtins.stringLength s < 2 then "0" + s else s;
-    in "${toString y'}.${pad (toString m)}.${pad (toString d)}.${pad (toString hours)}";
+    in "${toString y'}${pad (toString m)}${pad (toString d)}${pad (toString hours)}";
 in
 {
   options = {
@@ -106,21 +106,22 @@ in
       type = types.str;
       description = ''
         Set this to something meaningful to identify the build.
-        Defaults to `YYYY.MM.DD.HH` based on `buildDateTime`.
-        Should be unique for each build used for disambiguation.
+        Defaults to `YYYYMMDDHH` based on `buildDateTime`.
+        Should be unique for each build for disambiguation.
       '';
-      example = "2019.08.12.1";
+      example = "201908121";
     };
 
     buildDateTime = mkOption {
-      default = 1;
       type = types.int;
       description = ''
-        Seconds since the epoch that this build is taking place.
+        Unix time (seconds since the epoch) that this build is taking place.
         Needs to be monotonically increasing for each build if you use the over-the-air (OTA) update mechanism.
         e.g. output of `date +%s`
         '';
       example = 1565645583;
+      default = with lib; foldl' max 1 (mapAttrsToList (n: v: if v.enable then v.dateTime else 1) config.source.dirs);
+      defaultText = "*maximum of source.dirs.<name>.dateTime*";
     };
 
     androidVersion = mkOption {
@@ -356,6 +357,16 @@ in
           mkdir -p $out
           cp -r out/*.{log,gz} $out/
           cp -r out/.module_paths $out/
+        '';
+      };
+
+      moduleInfo = let
+        moduleInfoTarget = "out/target/product/${config.device}/module-info.json";
+      in mkAndroid {
+        name = "robotnix-module-info-${config.device}-${config.buildNumber}.json";
+        makeTargets = [ moduleInfoTarget ];
+        installPhase = ''
+          cp ${moduleInfoTarget} $out
         '';
       };
 

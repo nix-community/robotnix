@@ -7,5 +7,9 @@ let
   inherit (lib) mkIf;
 in
 mkIf (config.androidVersion == 12) {
+  source.dirs."build/make".patches = [
+    ./build_make/0001-Readonly-source-fix.patch
+  ];
+
   #kernel.clangVersion = mkDefault "r370808";
 }

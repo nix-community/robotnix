@@ -11,9 +11,11 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "platform_packages_apps_Updater";
-    rev = "f4fea23153407b7448e9440c31dc0398befc00c8"; # 2021-01-04
-    sha256 = "1my5kxia201sikxr2bjk5v4icw5av9c1q5v56g03zw0mmvddyv6a";
+    rev = "55cdaf75f046929ccf898b23a1e294847be73539"; # 2021-08-25
+    sha256 = "1hjh5wy4mh11svxw8qzl1fzjbwariwgc9gj3bmad92s1wy62y7rw";
   };
+
+  relpath = (if cfg.includedInFlavor then "packages" else "robotnix") + "/apps/Updater";
 in
 {
   options = {
@@ -33,33 +35,53 @@ in
           Which updater package to use, and which kind of metadata to generate for it.
         '';
       };
+
+      includedInFlavor = mkOption {
+        default = false;
+        type = types.bool;
+        internal = true;
+      };
     };
   };
 
-  config = mkIf cfg.enable (mkMerge [
-    {
-      source.dirs."robotnix/apps/Updater".src = mkIf (cfg.flavor == "grapheneos") src;
+  config = mkMerge [
+    (mkIf cfg.enable (mkMerge [
+      {
+        # TODO: It's currently on system partition in upstream. Shouldn't it be on product partition?
+        system.additionalProductPackages = [ "Updater" ];
+      }
 
-      # It's currently a system package in upstream
-      system.additionalProductPackages = [ "Updater" ];
+      (mkIf (cfg.flavor == "grapheneos") {
+        resources.${relpath} = {
+          inherit (cfg) url;
+          channel_default = config.channel;
+        };
 
-      resources."robotnix/apps/Updater" = mkIf (cfg.flavor == "grapheneos") {
-        inherit (cfg) url;
-        channel_default = config.channel;
-      };
+        source.dirs = mkIf (!cfg.includedInFlavor) (mkMerge [
+          {
+            ${relpath}.src = src;
+          }
+          (mkIf (!cfg.includedInFlavor && config.androidVersion >= 11) {
+            # Add selinux policies
+            source.dirs."robotnix/updater-sepolicy".src = ./updater-sepolicy;
+            source.dirs."build/make".postPatch = ''
+              # Originally from https://github.com/RattlesnakeOS/core-config-repo/blob/0d2cb86007c3b4df98d4f99af3dedf1ccf52b6b1/hooks/aosp_build_pre.sh
+              sed -i '/product-graph dump-products/a #add selinux policies last\n$(eval include robotnix/updater-sepolicy/sepolicy.mk)' "core/config.mk"
+            '';
+          })
+        ]);
+      })
 
-      resources."packages/apps/Updater" = mkIf (cfg.flavor == "lineageos") {
-        updater_server_url = cfg.url;
-      };
-    }
+      (mkIf (cfg.flavor == "lineageos") {
+        resources."packages/apps/Updater" = mkIf (cfg.flavor == "lineageos") {
+          updater_server_url = cfg.url;
+        };
+      })
+    ]))
 
-    # Add selinux policies
-    (mkIf (config.flavor == "grapheneos" && config.androidVersion >= 11) {
-      source.dirs."robotnix/updater-sepolicy".src = ./updater-sepolicy;
-      source.dirs."build/make".postPatch = ''
-        # Originally from https://github.com/RattlesnakeOS/core-config-repo/blob/0d2cb86007c3b4df98d4f99af3dedf1ccf52b6b1/hooks/aosp_build_pre.sh
-        sed -i '/product-graph dump-products/a #add selinux policies last\n$(eval include robotnix/updater-sepolicy/sepolicy.mk)' "core/config.mk"
-      '';
+    # Remove package if it's disabled by configuration
+    (mkIf (!cfg.enable && cfg.includedInFlavor) {
+      source.dirs.${relpath}.enable = false;
     })
-  ]);
+  ];
 }

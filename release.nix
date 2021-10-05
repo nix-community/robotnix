@@ -22,6 +22,7 @@ let
     { device="sunfish";    flavor="vanilla"; }
     { device="bramble";    flavor="vanilla"; }
     { device="redfin";     flavor="vanilla"; }
+    { device="barbet";     flavor="vanilla"; }
 
     { device="x86_64";     flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
@@ -34,6 +35,7 @@ let
     { device="sunfish";    flavor="grapheneos"; }
     { device="bramble";    flavor="grapheneos"; }
     { device="redfin";     flavor="grapheneos"; }
+    { device="barbet";     flavor="grapheneos"; }
 
     { device="marlin";     flavor="lineageos"; }
     { device="pioneer";    flavor="lineageos"; }
@@ -88,8 +90,6 @@ in
   vanilla-emulator = (robotnix { device="x86_64"; flavor="vanilla"; }).emulator;
   vanilla-12-emulator = (robotnix { device="x86_64"; flavor="vanilla"; productNamePrefix="sdk_phone_"; androidVersion=12; }).emulator;
   danielfullmer-emulator = (robotnix { device="x86_64"; flavor="grapheneos"; imports = [ ./example.nix ]; apps.auditor.enable = lib.mkForce false; }).emulator;
-
-  example-apv-diff = (robotnix { device="crosshatch"; flavor="grapheneos"; }).config.build.apv.diff;
 
   tests = lib.recurseIntoAttrs tests;
 

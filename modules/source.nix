@@ -140,6 +140,12 @@ let
         internal = true;
       };
 
+      dateTime = mkOption {
+        default = 1;
+        type = types.int;
+        internal = true;
+      };
+
       sha256 = mkOption {
         type = types.nullOr types.str;
         default = null;
@@ -232,7 +238,7 @@ in
         type = types.attrsOf dirModule;
         description = ''
           Directories to include in Android build process.
-          Normally set by the output of `mk-repo-file.py`.
+          Normally set by the output of `mk_repo_file.py`.
           However, additional source directories can be added to the build here using this option as well.
         '';
       };

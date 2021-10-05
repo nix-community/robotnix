@@ -1,0 +1,82 @@
+From 9737a264fc8b70de09d906f9935f8ebcb11666e7 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 00:42:48 -0400
+Subject: [PATCH] Readonly source fix
+
+Have CopyFile just always set u+w on copied files. Fixes a bunch of
+issues that would be too difficult to track down otherwise. HACK
+
+Change-Id: Ic905ab7c3c41f013fc70c92b375f5dc41d5cf586
+---
+ core/Makefile            | 1 +
+ core/definitions.mk      | 4 ++++
+ tools/libhost/CopyFile.c | 4 ++--
+ 3 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/core/Makefile b/core/Makefile
+index f2d75851e2..f9a4ca5a0c 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -3430,6 +3430,7 @@ INSTALLED_DTBOIMAGE_TARGET := $(PRODUCT_OUT)/dtbo.img
+ ifeq ($(BOARD_AVB_ENABLE),true)
+ $(INSTALLED_DTBOIMAGE_TARGET): $(BOARD_PREBUILT_DTBOIMAGE) $(AVBTOOL) $(BOARD_AVB_DTBO_KEY_PATH)
+ 	cp $(BOARD_PREBUILT_DTBOIMAGE) $@
++	chmod u+w $@
+ 	$(AVBTOOL) add_hash_footer \
+ 	    --image $@ \
+ 	    --partition_size $(BOARD_DTBOIMG_PARTITION_SIZE) \
+diff --git a/core/definitions.mk b/core/definitions.mk
+index 981c6cb3b8..7f3aa6ac6e 100644
+--- a/core/definitions.mk
++++ b/core/definitions.mk
+@@ -2690,6 +2690,7 @@ define copy-file-to-target
+ @mkdir -p $(dir $@)
+ $(hide) rm -f $@
+ $(hide) cp "$<" "$@"
++$(hide) chmod u+w "$@"
+ endef
+ 
+ # The same as copy-file-to-target, but use the local
+@@ -2698,6 +2699,7 @@ define copy-file-to-target-with-cp
+ @mkdir -p $(dir $@)
+ $(hide) rm -f $@
+ $(hide) cp -p "$<" "$@"
++$(hide) chmod u+w "$@"
+ endef
+ 
+ # The same as copy-file-to-target, but strip out "# comment"-style
+@@ -2714,6 +2716,7 @@ define copy-file-to-new-target
+ @mkdir -p $(dir $@)
+ $(hide) rm -f $@
+ $(hide) cp $< $@
++$(hide) chmod u+w "$@"
+ endef
+ 
+ # The same as copy-file-to-new-target, but use the local
+@@ -2722,6 +2725,7 @@ define copy-file-to-new-target-with-cp
+ @mkdir -p $(dir $@)
+ $(hide) rm -f $@
+ $(hide) cp $< $@
++$(hide) chmod u+w "$@"
+ endef
+ 
+ # The same as copy-file-to-new-target, but preserve symlinks. Symlinks are
+diff --git a/tools/libhost/CopyFile.c b/tools/libhost/CopyFile.c
+index f9bda86fd1..44b36e4bdf 100644
+--- a/tools/libhost/CopyFile.c
++++ b/tools/libhost/CopyFile.c
+@@ -180,9 +180,9 @@ static int setPermissions(const char* dst, const struct stat* pSrcStat, unsigned
+         /*
+          * Set the permissions.
+          */
+-        if (chmod(dst, pSrcStat->st_mode & ~(S_IFMT)) != 0) {
++        if (chmod(dst, (pSrcStat->st_mode | S_IWUSR) & ~(S_IFMT)) != 0) {
+             DBUG(("---   unable to set perms on '%s' to 0%o: %s\n",
+-                dst, pSrcStat->st_mode & ~(S_IFMT), strerror(errno)));
++                dst, (pSrcStat->st_mode | S_IWUSR) & ~(S_IFMT), strerror(errno)));
+         }
+ #ifndef _WIN32
+         /*
+-- 
+2.32.0
+

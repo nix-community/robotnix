@@ -3,24 +3,17 @@
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-set -eu
+set -euo pipefail
 
-if [[ "$USER" = "danielrf" ]]; then
-    mirror_args=(
-        --mirror "https://android.googlesource.com=/mnt/cache/mirror"
-        --mirror "https://github.com/anbox=/mnt/cache/anbox/anbox"
-    )
-else
-    mirror_args=()
-fi
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 args=(
-	"https://github.com/pmanbox/platform_manifests"
+    --cache-search-path ../../
     --ref-type branch
+    "https://github.com/pmanbox/platform_manifests"
     "pmanbox" # static branch name
-    ../*/repo-*.json
 )
 
 export TMPDIR=/tmp
 
-../../mk-repo-file.py "${mirror_args[@]}" "${args[@]}"
+../../scripts/mk_repo_file.py "${args[@]}"

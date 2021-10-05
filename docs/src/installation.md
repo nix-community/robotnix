@@ -20,15 +20,8 @@ upstream documentation](https://source.android.com/setup/build/running).
  0. Before you can begin you have to boot the stock OS, go to "Settings / About
     phone" and tap the "Build number" field 7 times to enable the "Developer
     options" menu.  Next go to “Settings / System / Advanced / Developer
-    options” and enable “OEM unlocking”.  On my device I had to insert a SIM
-    card and connect to the network for that, so it looks like you have to
-    connect your device with Google [at least
-    once](https://grapheneos.org/install#enabling-oem-unlocking).  This is part
-    of Google's so called Factory Reset Protection (FRP) for anti-theft
-    protection .  However, [this
-    comment](https://www.kuketz-blog.de/grapheneos-das-android-fuer-sicherheits-und-datenschutzfreaks/#comment-52681)
-    on a German IT privacy blog suggests that it is sufficient to allow access
-    to the captive portal such that the phone thinks it is online.
+    options” and enable “OEM unlocking”.  This option is greyed out until you connect your device to Google [at least once](https://grapheneos.org/install#enabling-oem-unlocking).
+    This is part of Google's so called Factory Reset Protection (FRP) for anti-theft protection. You do not need to insert a SIM or log into a Google Account to make the “OEM unlocking” option available, but connecting to the internet is required.
 
  1. First reboot into the bootloader. You can either do that physically by
     turning off your phone and then holding both the POWER and the VOLUME DOWN
@@ -51,15 +44,15 @@ upstream documentation](https://source.android.com/setup/build/running).
     Select the option to unlock the device and confirm. This step effectively
     performs a factory reset, and will remove all user data from the device.
 
- 4. *(Strongly recommended, but technically optional)*
-    Flash your custom AVB signing key using
+ 4. Flash your custom AVB signing key using
     ```console
     $ fastboot erase avb_custom_key
-    $ fastboot flash avb_custom_key avb_pkmd.bin
+    $ fastboot flash avb_custom_key ./avb_pkmd.bin
     $ fastboot reboot bootloader
     ```
 
- 5. Unzip the factory image built by robotnix. To flash the image run
+ 5. Unzip the factory image built by robotnix. Double check that you're
+    flashing to the correct device. To flash the image run
     ```console
     $ ./flash-all.sh
     ```
@@ -79,15 +72,14 @@ upstream documentation](https://source.android.com/setup/build/running).
     $ fastboot reboot bootloader
     ```
 
- 6. *(Strongly recommended, but technically optional)*
-    At this point you want to relock the bootloader to enable enforcement of
+ 6. At this point you want to relock the bootloader to enable enforcement of
     the verified boot chain.
     ```console
     $ fastboot flashing lock
     ```
     This step has to be confirmed on the device.
 
- 7. After rebooting you will be greeted with an orange exclamation mark and a
+ 7. After rebooting you will be greeted with a yellow exclamation mark and a
     message like
 
     > Your device is loading a different operating system.
@@ -103,6 +95,12 @@ upstream documentation](https://source.android.com/setup/build/running).
     ID on the last line are the first eight characters of the fingerprint of
     your AVB key.
 
+ 8. Finally you can disable OEM unlocking and afterwards even the developer options again if you do not actively use them.
+    Note that if you later lose the ability to re-enable OEM unlocking, for example by pushing a bad update that you cannot rollback,
+    and you cannot push another working update because you also lost your signing keys,
+    you might not even be able to recover your device by flashing a stock image, effectively bricking the device.
+
+> If you are unable to enroll a custom AVB key on your device, you could theoretically skip steps 4, 6 and 8. This is highly discouraged as it leaves your device in the [vulnerable UNLOCKED state instead of being LOCKED with a custom root of trust.](https://source.android.com/security/verifiedboot/boot-flow#communicating-verified-boot-state-to-users).
 
 ## Updating by sideloading OTA files
 Preferably, you can update your Vanilla/GrapheneOS flavor device using true "over-the-air" mechanism provided by the `apps.updater` module with a server hosting the OTA files, as shown [here](modules/ota.md).

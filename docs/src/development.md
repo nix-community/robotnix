@@ -14,7 +14,41 @@ but rather (once a developer has a working build) makes it easier to share that 
 As such, robotnix does not replace the existing Android build system, but provides a convenient Nix-based wrapper around the build system.
 (See [blueprint2nix](https://github.com/danielfullmer/blueprint2nix) and [soongnix](https://github.com/danielfullmer/soongnix) for an experimental attempt at reimplementing part of the Android build system natively in Nix.)
 
-Feel free to ask robotnix development questions in `#robotnix` on Freenode.
+Feel free to ask robotnix development questions in `#robotnix:nixos.org` on Matrix.
+
+## Git mirrors
+Robotnix can be configured to use local git mirrors of Android source code.
+The AOSP documentation includes instructions to [create a local mirror of the Android source code](https://source.android.com/setup/build/downloading#using-a-local-mirror).
+Maintaining a local mirror can save bandwidth in the long-run when repeatedly updating a flavor over time which contains incremental updates.
+
+This functionality is enabled by setting the `ROBOTNIX_GIT_MIRRORS` environment variable.
+The value of `ROBOTNIX_GIT_MIRRORS` contains a number of mappings, each separated by a `|` character.
+Each mapping is of the format `<remote_url>=<local_url>`.
+For example:
+```
+ROBOTNIX_GIT_MIRRORS=https://android.googlesource.com=/mnt/cache/mirror|https://github.com/LineageOS=/mnt/cache/lineageos/LineageOS
+```
+
+Both the robotnix update scripts as well as robotnix's overridden `fetchgit` derivation use `ROBOTNIX_GIT_MIRRORS`.
+This environment variable is passed to `fetchgit` via `impureEnvVars` (search for `impureEnvVars` in the [Nix manual](https://nixos.org/manual/nix/stable/)).
+If the Nix daemon is being used, it needs to have this `ROBOTNIX_GIT_MIRRORS` in its environment, not just in the user's environment when running `nix-build` or `nix build`.
+The following NixOS configuration can be used to easily set this environment variable for the Nix daemon:
+```nix
+let
+  mirrors = {
+    "https://android.googlesource.com" = "/mnt/cache/mirror";
+    "https://github.com/LineageOS" = "/mnt/cache/lineageos/LineageOS";
+  };
+in
+{
+  systemd.services.nix-daemon.serviceConfig.Environment = [
+    ("ROBOTNIX_GIT_MIRRORS=" + lib.concatStringsSep "|" (lib.mapAttrsToList (local: remote: "${local}=${remote}") mirrors))
+  ];
+
+  # Also add local mirrors to nix sandbox exceptions
+  nix.sandboxPaths = lib.attrValues mirrors;
+}
+```
 
 ## Helper scripts
 Robotnix can produce a few helper scripts that can make Android development easier in some circumstances.
@@ -51,7 +85,7 @@ Any options or configuration set by the specified module will be included in the
 To create a new flavor, the developer should create a robotnix module that conditions on `config.flavor`.
 The flavor configuration defaults should be set conditionally using (for example) `mkIf (config.flavor = "...") { ... }`.
 Those configuration defaults should include:
- - Setting `source.dirs` using a repo JSON file produced by `mk-repo-file.py`.
+ - Setting `source.dirs` using a repo JSON file produced by `mk_repo_file.py`.
  - Setting the default `androidVersion`.
  - Setting the default `buildDateTime` based on (for example) the time that the flavor was last updated.
  - Providing a warning if the user has not selected a valid device for this flavor.
@@ -61,7 +95,7 @@ It is recommended to take a look at the Nix expressions implementing the current
 
 ## Emulator
 Robotnix can also build a script which will start the Android emulator using an attached robotnix-built system image.
-This can be accomplished with the `emulator` Nix output
+This can be accomplished with the `emulator` Nix output.
 To build and run an emulator with an attached vanilla system image, use (for example):
 ```console
 $ nix-build ./default.nix --arg configuration '{device="x86_64"; flavor="vanilla";}' -A emulator

@@ -2,29 +2,21 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-set -eu
+set -euo pipefail
 
-if [[ "$USER" = "danielrf" ]]; then
-    mirror_args=(
-        --mirror "https://android.googlesource.com=/mnt/cache/mirror"
-        --mirror "https://github.com/LineageOS=/mnt/cache/lineageos/LineageOS"
-        --mirror "https://github.com/TheMuppets=/mnt/cache/muppets/TheMuppets"
-    )
-else
-    mirror_args=()
-fi
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 branch=$1
 
 args=(
+    --cache-search-path ../../
     --ref-type branch
     "https://github.com/LineageOS/android"
     "$branch"
-    */repo*.json
 )
 
 export TMPDIR=/tmp
 
-./update-device-metadata.py
-../../mk-repo-file.py --out "${branch}/repo.json" "${mirror_args[@]}" "${args[@]}"
-./update-device-dirs.py --branch "$branch" "${mirror_args[@]}"
+./update_device_metadata.py
+../../scripts/mk_repo_file.py --out "${branch}/repo.json" "${args[@]}"
+./update_device_dirs.py --branch "$branch"

@@ -1,4 +1,4 @@
-From 032daa0aa1956c3d40b60487a0a0ebfabf111481 Mon Sep 17 00:00:00 2001
+From c3d963045b0a746dcb6346c3e91c6945edaac07d Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Wed, 11 Sep 2019 13:02:03 -0400
 Subject: [PATCH 3/4] Allow for externally-set config file
@@ -9,10 +9,10 @@ Subject: [PATCH 3/4] Allow for externally-set config file
  2 files changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/execute-all.sh b/execute-all.sh
-index 29cd7aa..b434549 100755
+index da22db5..66399e4 100755
 --- a/execute-all.sh
 +++ b/execute-all.sh
-@@ -426,6 +426,10 @@ do
+@@ -433,6 +433,10 @@ do
        TIMESTAMP="$2"
        shift
        ;;
@@ -23,7 +23,7 @@ index 29cd7aa..b434549 100755
      *)
        echo "[-] Invalid argument '$1'"
        usage
-@@ -478,7 +482,9 @@ update_java_path
+@@ -485,7 +489,9 @@ update_java_path
  check_supported_device
  
  # Check supported API for device
@@ -35,10 +35,10 @@ index 29cd7aa..b434549 100755
  # Prepare output dir structure
  OUT_BASE="$OUTPUT_DIR/$DEVICE/$BUILDID"
 diff --git a/scripts/generate-vendor.sh b/scripts/generate-vendor.sh
-index 90f9f45..73f6130 100755
+index d30e728..eb94f1a 100755
 --- a/scripts/generate-vendor.sh
 +++ b/scripts/generate-vendor.sh
-@@ -1202,7 +1202,8 @@ isValidConfigType "$CONFIG_TYPE"
+@@ -1278,7 +1278,8 @@ isValidConfigType "$CONFIG_TYPE"
  isValidApiLevel "$API_LEVEL"
  
  # Populate config files from base conf dir
@@ -47,8 +47,8 @@ index 90f9f45..73f6130 100755
 +readonly DEVICE_CONFIG_DIR="$SCRIPTS_DIR/../$DEVICE"
  readonly BLOBS_LIST="./proprietary-blobs.txt"
  readonly OVERLAYS_DIR="$(setOverlaysDir)"
- readonly DEP_DSO_BLOBS_LIST="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "dep-dso" "$CONFIG_FILE" | grep -Ev '(^#|^$)')"
-@@ -1223,7 +1224,6 @@ readarray -t PSIG_BC_FILES < <(
+ readonly RRO_OVERLAYS="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "rro-overlays" "$CONFIG_FILE")"
+@@ -1300,7 +1301,6 @@ readarray -t PSIG_BC_FILES < <(
  verify_input "$INPUT_DIR"
  
  # Get device details
@@ -56,7 +56,7 @@ index 90f9f45..73f6130 100755
  DEVICE_FAMILY="$(jqRawStrTop "device-family" "$CONFIG_FILE")"
  VENDOR=$(get_vendor "$INPUT_DIR/system/build.prop")
  VENDOR_DIR="$(jqRawStrTop "aosp-vendor-dir" "$CONFIG_FILE")"
-@@ -1242,7 +1242,6 @@ if [[ "$OTA_IMGS_LIST" != "" ]]; then
+@@ -1319,7 +1319,6 @@ if [[ "$OTA_IMGS_LIST" != "" ]]; then
    readarray -t OTA_IMGS < <(echo "$OTA_IMGS_LIST")
  fi
  
@@ -65,5 +65,5 @@ index 90f9f45..73f6130 100755
  
  # Prepare vendor output directory structure
 -- 
-2.26.1
+2.32.0
 

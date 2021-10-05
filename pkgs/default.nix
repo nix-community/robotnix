@@ -1,32 +1,24 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ overlays ? [ ], ... }@args:
+{ inputs ? (import (
+    fetchTarball {
+      url = "https://github.com/edolstra/flake-compat/archive/12c64ca55c1014cdc1b16ed5a804aa8576601ff2.tar.gz";
+      sha256 = "0jm6nzb83wa6ai17ly9fzpqc40wg1viib8klq8lby54agpl213w5"; }
+  ) {
+    src =  ../.;
+  }).defaultNix.inputs,
+  ... }@args:
 
 let
-  # TODO: Replace this all with flake-compat?
-  lock = builtins.fromJSON (builtins.readFile ../flake.lock);
+  inherit (inputs) nixpkgs nixpkgsUnstable androidPkgs;
+in nixpkgs.legacyPackages.x86_64-linux.appendOverlays [
+  (self: super: {
+    androidPkgs.packages = androidPkgs.packages.x86_64-linux;
+    androidPkgs.sdk = androidPkgs.sdk.x86_64-linux;
 
-  nixpkgs = fetchTarball (with lock.nodes.${lock.nodes.root.inputs.nixpkgs}.locked; {
-    url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
-    sha256 = narHash;
-  });
-
-  androidPkgs = fetchTarball (with lock.nodes.${lock.nodes.root.inputs.androidPkgs}.locked; {
-    url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
-    sha256 = narHash;
-  });
-
-  androidPkgsNixpkgs = fetchTarball (with lock.nodes.${lock.nodes.${lock.nodes.root.inputs.androidPkgs}.inputs.nixpkgs}.locked; {
-    url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
-    sha256 = narHash;
-  });
-in
-import nixpkgs ({
-  overlays = overlays ++ [
-    (self: super: {
-      androidPkgs = import androidPkgs { pkgs = import androidPkgsNixpkgs {}; };
-    })
-    (import ./overlay.nix)
-  ];
-} // builtins.removeAttrs args [ "overlays" ])
+    inherit (nixpkgsUnstable.legacyPackages.x86_64-linux)
+      diffoscope;
+  })
+  (import ./overlay.nix)
+]

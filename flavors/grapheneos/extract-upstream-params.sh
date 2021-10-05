@@ -1,5 +1,4 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash -p simg2img e2fsprogs
+#!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
@@ -9,11 +8,13 @@
 
 set -euo pipefail
 
-DEVICE=crosshatch
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+DEVICE=sunfish
 CHANNEL=beta
 
 METADATA=$(curl https://releases.grapheneos.org/${DEVICE}-${CHANNEL})
-BUILD_NUMBER=$(echo $METADATA | cut -d" " -f1)
-BUILD_DATETIME=$(echo $METADATA | cut -d" " -f2)
+BUILD_NUMBER=$(echo "$METADATA" | cut -d" " -f1)
+BUILD_DATETIME=$(echo "$METADATA" | cut -d" " -f2)
 
 echo "{ buildNumber = \"${BUILD_NUMBER}\"; buildDateTime = ${BUILD_DATETIME}; }" > upstream-params.nix

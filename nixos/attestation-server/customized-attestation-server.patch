@@ -1,265 +1,40 @@
-From 165e6370f19f37afca651cee47a48aedbb607ff7 Mon Sep 17 00:00:00 2001
+From c56ee58d0129f14cacf0171064008d4f8caab0e9 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
-Date: Wed, 19 May 2021 20:05:11 -0700
+Date: Sat, 21 Aug 2021 13:59:49 -0700
 Subject: [PATCH 1/5] Custom listen settings
 
 ---
- src/main/java/app/attestation/server/AttestationServer.java | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ src/main/java/app/attestation/server/AttestationServer.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index 16b53e4..c2cb988 100644
+index 6036768..abff87d 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -367,9 +367,9 @@ public class AttestationServer {
+@@ -368,7 +368,7 @@ public class AttestationServer {
          executor.prestartAllCoreThreads();
  
          System.setProperty("sun.net.httpserver.nodelay", "true");
 -        final HttpServer server = HttpServer.create(new InetSocketAddress("::1", 8080), 4096);
--        server.createContext("/api/create-account", new CreateAccountHandler());
--        server.createContext("/api/change-password", new ChangePasswordHandler());
 +        final HttpServer server = HttpServer.create(new InetSocketAddress("@listenHost@", @port@), 4096);
-+        server.createContext("/api/create_account", new CreateAccountHandler());
-+        server.createContext("/api/change_password", new ChangePasswordHandler());
-         server.createContext("/api/login", new LoginHandler());
-         server.createContext("/api/logout", new LogoutHandler());
-         server.createContext("/api/logout-everywhere", new LogoutEverywhereHandler());
+         server.createContext("/api/status", new StatusHandler());
+         server.createContext("/api/create-account", new CreateAccountHandler());
+         server.createContext("/api/change-password", new ChangePasswordHandler());
 -- 
-2.31.1
+2.32.0
 
 
-From eac301a860161c81f79c2a6bfdf7566e4fe43ca8 Mon Sep 17 00:00:00 2001
+From 326dbeee8880ec07239263998e569c43f5cb459a Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
-Date: Wed, 19 May 2021 20:11:21 -0700
-Subject: [PATCH 2/5] Custom domain
+Date: Thu, 9 Sep 2021 22:19:32 -0700
+Subject: [PATCH 2/5] Custom fingerprints
 
 ---
- .../attestation/server/AlertDispatcher.java   |  8 +++---
- .../attestation/server/AttestationServer.java |  4 +--
- static/about.html                             | 10 +++----
- static/contact.html                           | 27 +++++++------------
- static/index.html                             |  8 +++---
- static/robots.txt                             |  2 +-
- static/tutorial.html                          | 14 +++++-----
- 7 files changed, 33 insertions(+), 40 deletions(-)
-
-diff --git a/src/main/java/app/attestation/server/AlertDispatcher.java b/src/main/java/app/attestation/server/AlertDispatcher.java
-index 79f7675..fabb868 100644
---- a/src/main/java/app/attestation/server/AlertDispatcher.java
-+++ b/src/main/java/app/attestation/server/AlertDispatcher.java
-@@ -161,8 +161,8 @@ class AlertDispatcher implements Runnable {
-                                         alertDelay / 60 / 60 + " hours");
-                                 message.setText("This is an alert for the account '" + username + "'.\n\n" +
-                                         "The following devices have failed to provide valid attestations before the expiry time:\n\n" +
--                                        expired.toString() + "\nLog in to https://attestation.app/ for more information." +
--                                        "\nIf you do not want to receive these alerts and cannot log in to the account,\nemail contact@attestation.app from the address receiving the alerts.");
-+                                        expired.toString() + "\nLog in to https://@domain@/ for more information." +
-+                                        "\nIf you do not want to receive these alerts and cannot log in to the account,\nemail contact@@domain@ from the address receiving the alerts.");
- 
-                                 Transport.send(message);
- 
-@@ -201,8 +201,8 @@ class AlertDispatcher implements Runnable {
-                                 message.setSubject("Devices provided invalid attestations");
-                                 message.setText("This is an alert for the account '" + username + "'.\n\n" +
-                                         "The following devices have provided invalid attestations:\n\n" +
--                                        failed.toString() + "\nLog in to https://attestation.app/ for more information." +
--                                        "\nIf you do not want to receive these alerts and cannot log in to the account,\nemail contact@attestation.app from the address receiving the alerts");
-+                                        failed.toString() + "\nLog in to https://@domain@/ for more information." +
-+                                        "\nIf you do not want to receive these alerts and cannot log in to the account,\nemail contact@@domain@ from the address receiving the alerts");
- 
-                                 Transport.send(message);
-                             } catch (final MessagingException e) {
-diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index c2cb988..a9986f9 100644
---- a/src/main/java/app/attestation/server/AttestationServer.java
-+++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -92,7 +92,7 @@ public class AttestationServer {
-     private static final long SESSION_LENGTH = 48 * 60 * 60 * 1000;
-     private static final int HISTORY_PER_PAGE = 20;
- 
--    private static final String ORIGIN = "https://attestation.app";
-+    private static final String ORIGIN = "https://@domain@";
- 
-     private static final Logger logger = Logger.getLogger(AttestationServer.class.getName());
- 
-@@ -951,7 +951,7 @@ public class AttestationServer {
-             exchange.getResponseHeaders().set("Content-Type", "image/png");
-             exchange.sendResponseHeaders(200, 0);
-             try (final OutputStream output = exchange.getResponseBody()) {
--                final String contents = "attestation.app " +
-+                final String contents = "@domain@ " +
-                     account.userId + " " +
-                     BaseEncoding.base64().encode(account.subscribeKey) + " " +
-                     account.verifyInterval;
-diff --git a/static/about.html b/static/about.html
-index 3137435..f6743c6 100644
---- a/static/about.html
-+++ b/static/about.html
-@@ -12,13 +12,13 @@
-         <meta property="og:title" content="Auditor overview"/>
-         <meta property="og:description" content="Overview of the Auditor Android app and associated service."/>
-         <meta property="og:type" content="website"/>
--        <meta property="og:image" content="https://attestation.app/opengraph.png"/>
-+        <meta property="og:image" content="https://@domain@/opengraph.png"/>
-         <meta property="og:image:width" content="512"/>
-         <meta property="og:image:height" content="512"/>
-         <meta property="og:image:alt" content="Auditor logo"/>
--        <meta property="og:url" content="https://attestation.app/about"/>
--        <meta property="og:site_name" content="attestation.app"/>
--        <link rel="canonical" href="https://attestation.app/about"/>
-+        <meta property="og:url" content="https://@domain@/about"/>
-+        <meta property="og:site_name" content="@domain@"/>
-+        <link rel="canonical" href="https://@domain@/about"/>
-         <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
-         <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
-         <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-@@ -60,7 +60,7 @@
-             pairing process between the device performing verification (Auditor) and the device
-             being verified (Auditee) to implement a Trust On First Use (TOFU) model. The device
-             performing verification can either be another Android device running the app in the
--            Auditor mode or the <a href="https://attestation.app/">https://attestation.app/</a>
-+            Auditor mode or the <a href="https://@domain@/">https://@domain@/</a>
-             service for automated verification on a regular schedule with support for email
-             alerts. See <a href="/tutorial">the tutorial</a> for usage instructions. The protocol
-             used for both local and remote attestation is
-diff --git a/static/contact.html b/static/contact.html
-index 7af5f95..b2c1618 100644
---- a/static/contact.html
-+++ b/static/contact.html
-@@ -12,13 +12,13 @@
-         <meta property="og:title" content="Auditor contact information"/>
-         <meta property="og:description" content="Contact information for the Auditor Android app and associated service."/>
-         <meta property="og:type" content="website"/>
--        <meta property="og:image" content="https://attestation.app/opengraph.png"/>
-+        <meta property="og:image" content="https://@domain@/opengraph.png"/>
-         <meta property="og:image:width" content="512"/>
-         <meta property="og:image:height" content="512"/>
-         <meta property="og:image:alt" content="Auditor logo"/>
--        <meta property="og:url" content="https://attestation.app/contact"/>
--        <meta property="og:site_name" content="attestation.app"/>
--        <link rel="canonical" href="https://attestation.app/contact"/>
-+        <meta property="og:url" content="https://@domani@/contact"/>
-+        <meta property="og:site_name" content="@domain@"/>
-+        <link rel="canonical" href="https://@domain@/contact"/>
-         <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
-         <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
-         <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-@@ -44,6 +44,9 @@
-         <main id="contact">
-             <h1><a href="#contact">Contact</a></h1>
- 
-+            <p>NOTICE: This is an unofficial version of the Attestation Server intended for
-+            experimental use with robotnix builds.</p>
-+
-             <p>Do not contact us with offers to sell us products or services.</p>
- 
-             <p>Please do not send multiple copies / versions of the same email to different
-@@ -68,19 +71,9 @@
-             {
-                 "@context": "https://schema.org",
-                 "@type": "Organization",
--                "url": "https://attestation.app/",
--                "logo": "https://attestation.app/ic_launcher-web.png",
--                "email": "contact@attestation.app",
--                "founder": {
--                    "@type": "Person",
--                    "name": "Daniel Micay",
--                    "email": "daniel.micay@grapheneos.org",
--                    "sameAs": [
--                        "https://twitter.com/DanielMicay",
--                        "https://github.com/thestinger",
--                        "https://reddit.com/u/DanielMicay"
--                    ]
--                }
-+                "url": "https://@domain@/",
-+                "logo": "https://@domain@/ic_launcher-web.png",
-+                "email": "contact@@domain@"
-             }
-         </script>
-     </body>
-diff --git a/static/index.html b/static/index.html
-index 827e272..9538120 100644
---- a/static/index.html
-+++ b/static/index.html
-@@ -12,13 +12,13 @@
-         <meta property="og:title" content="Device integrity monitoring"/>
-         <meta property="og:description" content="Hardware-based remote attestation service for monitoring the security of Android devices using the Auditor app."/>
-         <meta property="og:type" content="website"/>
--        <meta property="og:image" content="https://attestation.app/opengraph.png"/>
-+        <meta property="og:image" content="https://@domain@/opengraph.png"/>
-         <meta property="og:image:width" content="512"/>
-         <meta property="og:image:height" content="512"/>
-         <meta property="og:image:alt" content="Auditor logo"/>
--        <meta property="og:url" content="https://attestation.app/"/>
--        <meta property="og:site_name" content="attestation.app"/>
--        <link rel="canonical" href="https://attestation.app/"/>
-+        <meta property="og:url" content="https://@domain@/"/>
-+        <meta property="og:site_name" content="@domain@"/>
-+        <link rel="canonical" href="https://@domain@/"/>
-         <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
-         <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
-         <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-diff --git a/static/robots.txt b/static/robots.txt
-index 2747cbe..acceea4 100644
---- a/static/robots.txt
-+++ b/static/robots.txt
-@@ -1,2 +1,2 @@
- User-agent: *
--Sitemap: https://attestation.app/sitemap.xml
-+Sitemap: https://@domain@/sitemap.xml
-diff --git a/static/tutorial.html b/static/tutorial.html
-index 210ec3b..c078025 100644
---- a/static/tutorial.html
-+++ b/static/tutorial.html
-@@ -12,13 +12,13 @@
-         <meta property="og:title" content="Auditor tutorial"/>
-         <meta property="og:description" content="Tutorial on using the Auditor Android app and associated service."/>
-         <meta property="og:type" content="website"/>
--        <meta property="og:image" content="https://attestation.app/opengraph.png"/>
-+        <meta property="og:image" content="https://@domain@/opengraph.png"/>
-         <meta property="og:image:width" content="512"/>
-         <meta property="og:image:height" content="512"/>
-         <meta property="og:image:alt" content="Auditor logo"/>
--        <meta property="og:url" content="https://attestation.app/tutorial"/>
--        <meta property="og:site_name" content="attestation.app"/>
--        <link rel="canonical" href="https://attestation.app/tutorial"/>
-+        <meta property="og:url" content="https://@domain@/tutorial"/>
-+        <meta property="og:site_name" content="@domain@"/>
-+        <link rel="canonical" href="https://@domain@/tutorial"/>
-         <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
-         <link rel="icon" sizes="any" type="image/svg+xml" href="/mask-icon.svg"/>
-         <link rel="mask-icon" href="/mask-icon.svg" color="#000000"/>
-@@ -91,12 +91,12 @@
-                 <p>To set up regularly scheduled remote verification via the remote attestation service:</p>
- 
-                 <ol>
--                    <li>create an account on https://attestation.app/ from a separate device</li>
-+                    <li>create an account on https://@domain@/ from a separate device</li>
-                     <li>press the menu button in the app</li>
-                     <li>press the 'Enable remote verification' action in the menu</li>
--                    <li>scan the account QR code displayed on https://attestation.app/</li>
-+                    <li>scan the account QR code displayed on https://@domain@/</li>
-                     <li>configure an alert email address to receive alerts if the device fails to provide valid attestations in time</li>
--                    <li>refresh https://attestation.app/ to view the initial attestation result</li>
-+                    <li>refresh https://@domain@/ to view the initial attestation result</li>
-                 </ol>
-             </section>
- 
--- 
-2.31.1
-
-
-From c9977b1f3dc8019b564bf45283950e9fe5948d3d Mon Sep 17 00:00:00 2001
-From: Daniel Fullmer <danielrf12@gmail.com>
-Date: Sun, 14 Jul 2019 17:01:18 -0400
-Subject: [PATCH 3/5] Custom fingerprints
-
----
- .../server/AttestationProtocol.java           | 45 ++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+ .../server/AttestationProtocol.java           | 49 ++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index ae4ae96..e0f595f 100644
+index 908ce1c..649b3ff 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -166,7 +166,7 @@ class AttestationProtocol {
@@ -271,7 +46,7 @@ index ae4ae96..e0f595f 100644
      private static final int OS_VERSION_MINIMUM = 80000;
      private static final int OS_PATCH_LEVEL_MINIMUM = 201801;
      private static final int VENDOR_PATCH_LEVEL_MINIMUM = 201808;
-@@ -242,6 +242,7 @@ class AttestationProtocol {
+@@ -243,6 +243,7 @@ class AttestationProtocol {
  
      private static final String OS_STOCK = "Stock";
      private static final String OS_GRAPHENE = "GrapheneOS";
@@ -279,10 +54,10 @@ index ae4ae96..e0f595f 100644
  
      static class DeviceInfo {
          final String name;
-@@ -312,6 +313,29 @@ class AttestationProtocol {
-                     new DeviceInfo(DEVICE_PIXEL_4a_5G, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
-             .put("36A99EAB7907E4FB12A70E3C41C456BCBE46C13413FBFE2436ADEE2B2B61120F",
+@@ -315,6 +316,31 @@ class AttestationProtocol {
                      new DeviceInfo(DEVICE_PIXEL_5, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
+             .put("0ABDDEDA03B6CE10548C95E0BEA196FAA539866F929BCDF7ECA84B4203952514",
+                     new DeviceInfo(DEVICE_PIXEL_5a, 3, 4, false /* uses new API */, true, OS_GRAPHENE))
 +            // Robotnix
 +            .put("@walleye@",
 +                    new DeviceInfo(DEVICE_PIXEL_2, 2, 3, true, true, OS_ROBOTNIX))
@@ -306,13 +81,15 @@ index ae4ae96..e0f595f 100644
 +                    new DeviceInfo(DEVICE_PIXEL_4a_5G, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
 +            .put("@redfin@",
 +                    new DeviceInfo(DEVICE_PIXEL_5, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@barbet@",
++                    new DeviceInfo(DEVICE_PIXEL_5a, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
-@@ -458,6 +482,25 @@ class AttestationProtocol {
-                     new DeviceInfo(DEVICE_PIXEL_4a_5G, 4, 41, false /* uses new API */, true, OS_GRAPHENE))
-             .put("36A99EAB7907E4FB12A70E3C41C456BCBE46C13413FBFE2436ADEE2B2B61120F",
+@@ -465,6 +491,27 @@ class AttestationProtocol {
                      new DeviceInfo(DEVICE_PIXEL_5, 4, 41, false /* uses new API */, true, OS_GRAPHENE))
+             .put("0ABDDEDA03B6CE10548C95E0BEA196FAA539866F929BCDF7ECA84B4203952514",
+                     new DeviceInfo(DEVICE_PIXEL_5a, 4, 41, false /* uses new API */, true, OS_GRAPHENE))
 +            // Robotnix
 +            .put("@blueline@",
 +                    new DeviceInfo(DEVICE_PIXEL_3, 3, 4, false /* uses new API */, true, OS_ROBOTNIX))
@@ -332,24 +109,26 @@ index ae4ae96..e0f595f 100644
 +                    new DeviceInfo(DEVICE_PIXEL_4a_5G, 4, 41, false /* uses new API */, true, OS_ROBOTNIX))
 +            .put("@redfin@",
 +                    new DeviceInfo(DEVICE_PIXEL_5, 4, 41, false /* uses new API */, true, OS_ROBOTNIX))
++            .put("@barbet@",
++                    new DeviceInfo(DEVICE_PIXEL_5a, 4, 41, false /* uses new API */, true, OS_ROBOTNIX))
              .build();
      static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 -- 
-2.31.1
+2.32.0
 
 
-From bda980cf12d78e2869c0ba1f1027bfe53d9f1997 Mon Sep 17 00:00:00 2001
+From 723f1c786efff54c8f7147ae969312615ed4ce4f Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:50:29 -0400
-Subject: [PATCH 4/5] Custom appId
+Subject: [PATCH 3/5] Custom appId
 
 ---
  src/main/java/app/attestation/server/AttestationProtocol.java | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationProtocol.java b/src/main/java/app/attestation/server/AttestationProtocol.java
-index e0f595f..4551239 100644
+index 649b3ff..a9dfbb8 100644
 --- a/src/main/java/app/attestation/server/AttestationProtocol.java
 +++ b/src/main/java/app/attestation/server/AttestationProtocol.java
 @@ -161,7 +161,7 @@ class AttestationProtocol {
@@ -362,10 +141,191 @@ index e0f595f..4551239 100644
      private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
              "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
 -- 
-2.31.1
+2.32.0
 
 
-From 2a92491ab9be866677973cf61a59a78754df7ab9 Mon Sep 17 00:00:00 2001
+From fc00050d88c95b26e7e0ac792447b63096005906 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sat, 21 Aug 2021 14:19:22 -0700
+Subject: [PATCH 4/5] Custom whitelabeling
+
+---
+ static/404.html            |  5 +----
+ static/about.html          |  2 --
+ static/contact.html        | 43 ++------------------------------------
+ static/donate.html         |  2 --
+ static/index.html          |  2 --
+ static/privacy-policy.html |  2 --
+ static/source.html         |  2 --
+ static/tutorial.html       |  2 --
+ 8 files changed, 3 insertions(+), 57 deletions(-)
+
+diff --git a/static/404.html b/static/404.html
+index 81cdf02..e85c430 100644
+--- a/static/404.html
++++ b/static/404.html
+@@ -8,8 +8,6 @@
+         <meta name="color-scheme" content="dark light"/>
+         <meta name="msapplication-TileColor" content="#ffffff"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+-        <meta name="twitter:site" content="@GrapheneOS"/>
+-        <meta name="twitter:creator" content="@GrapheneOS"/>
+         <meta property="og:title" content="Page not found"/>
+         <meta property="og:description" content="The requested page does not exist."/>
+         <meta property="og:type" content="website"/>
+@@ -43,8 +41,7 @@
+         <main id="page-not-found">
+             <h1><a href="#page-not-found">Page not found</a></h1>
+ 
+-            <p>The requested page does not exist. If you think this is a mistake, please
+-            <a href="https://github.com/GrapheneOS/AttestationServer/issues">report an issue</a>.</p>
++            <p>The requested page does not exist.</p>
+         </main>
+     </body>
+ </html>
+diff --git a/static/about.html b/static/about.html
+index 8ee3b48..afea5ec 100644
+--- a/static/about.html
++++ b/static/about.html
+@@ -8,8 +8,6 @@
+         <meta name="color-scheme" content="dark light"/>
+         <meta name="msapplication-TileColor" content="#ffffff"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+-        <meta name="twitter:site" content="@GrapheneOS"/>
+-        <meta name="twitter:creator" content="@GrapheneOS"/>
+         <meta property="og:title" content="Auditor overview"/>
+         <meta property="og:description" content="Overview of the Auditor Android app and associated service."/>
+         <meta property="og:type" content="website"/>
+diff --git a/static/contact.html b/static/contact.html
+index 2516eb6..91bccc3 100644
+--- a/static/contact.html
++++ b/static/contact.html
+@@ -8,8 +8,6 @@
+         <meta name="color-scheme" content="dark light"/>
+         <meta name="msapplication-TileColor" content="#ffffff"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+-        <meta name="twitter:site" content="@GrapheneOS"/>
+-        <meta name="twitter:creator" content="@GrapheneOS"/>
+         <meta property="og:title" content="Auditor contact information"/>
+         <meta property="og:description" content="Contact information for the Auditor Android app and associated service."/>
+         <meta property="og:type" content="website"/>
+@@ -45,44 +43,7 @@
+         <main id="contact">
+             <h1><a href="#contact">Contact</a></h1>
+ 
+-            <p>Do not contact us with offers to sell us products or services.</p>
+-
+-            <p>Please do not send multiple copies / versions of the same email to different
+-            addresses. Either send it to a single address or CC the other addresses. In general,
+-            it's the same person handling every email address, and they don't need to see multiple
+-            copies of the same email in their inbox.</p>
+-
+-            <p>You can contact <a href="mailto:contact@attestation.app">contact@attestation.app</a>
+-            for topics related to the attestation project. Please don't send emails unrelated to
+-            the attestation project to this address.</p>
+-
+-            <p>The <a href="mailto:security@attestation.app">security@attestation.app</a>
+-            address is for reporting high priority security issues related to the attestation
+-            project. Please don't send other kinds of emails to this address. It is not a way of
+-            increasing the priority of emails that are not security reports. Your emails will be
+-            treated as a much lower priority if you misuse this address.</p>
+-
+-            <p>The email address of the lead developer is
+-            <a href="mailto:daniel.micay@attestation.app">daniel.micay@attestation.app</a>.</p>
+-        </main>
+-        <script type="application/ld+json">
+-            {
+-                "@context": "https://schema.org",
+-                "@type": "Organization",
+-                "url": "https://attestation.app/",
+-                "logo": "https://attestation.app/ic_launcher-web.png",
+-                "email": "contact@attestation.app",
+-                "founder": {
+-                    "@type": "Person",
+-                    "name": "Daniel Micay",
+-                    "email": "daniel.micay@grapheneos.org",
+-                    "sameAs": [
+-                        "https://twitter.com/DanielMicay",
+-                        "https://github.com/thestinger",
+-                        "https://reddit.com/u/DanielMicay"
+-                    ]
+-                }
+-            }
+-        </script>
++            <p>NOTICE: This is an unofficial version of the Attestation Server intended for
++            experimental use with robotnix builds.</p>
+     </body>
+ </html>
+diff --git a/static/donate.html b/static/donate.html
+index f0b397a..ce7767d 100644
+--- a/static/donate.html
++++ b/static/donate.html
+@@ -8,8 +8,6 @@
+         <meta name="color-scheme" content="dark light"/>
+         <meta name="msapplication-TileColor" content="#ffffff"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+-        <meta name="twitter:site" content="@GrapheneOS"/>
+-        <meta name="twitter:creator" content="@GrapheneOS"/>
+         <meta property="og:title" content="Auditor donations"/>
+         <meta property="og:description" content="Donating to support development of the Auditor Android app and associated service."/>
+         <meta property="og:type" content="website"/>
+diff --git a/static/index.html b/static/index.html
+index 9b16b27..b787fbc 100644
+--- a/static/index.html
++++ b/static/index.html
+@@ -8,8 +8,6 @@
+         <meta name="color-scheme" content="dark light"/>
+         <meta name="msapplication-TileColor" content="#ffffff"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+-        <meta name="twitter:site" content="@GrapheneOS"/>
+-        <meta name="twitter:creator" content="@GrapheneOS"/>
+         <meta property="og:title" content="Device integrity monitoring"/>
+         <meta property="og:description" content="Hardware-based remote attestation service for monitoring the security of Android devices using the Auditor app."/>
+         <meta property="og:type" content="website"/>
+diff --git a/static/privacy-policy.html b/static/privacy-policy.html
+index d8c8f2f..e5b6358 100644
+--- a/static/privacy-policy.html
++++ b/static/privacy-policy.html
+@@ -8,8 +8,6 @@
+         <meta name="color-scheme" content="dark light"/>
+         <meta name="msapplication-TileColor" content="#ffffff"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+-        <meta name="twitter:site" content="@GrapheneOS"/>
+-        <meta name="twitter:creator" content="@GrapheneOS"/>
+         <meta property="og:title" content="Auditor privacy policy"/>
+         <meta property="og:description" content="Privacy policy for the Auditor Android app and associated service."/>
+         <meta property="og:type" content="website"/>
+diff --git a/static/source.html b/static/source.html
+index c26ca1c..8b60e73 100644
+--- a/static/source.html
++++ b/static/source.html
+@@ -8,8 +8,6 @@
+         <meta name="color-scheme" content="dark light"/>
+         <meta name="msapplication-TileColor" content="#ffffff"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+-        <meta name="twitter:site" content="@GrapheneOS"/>
+-        <meta name="twitter:creator" content="@GrapheneOS"/>
+         <meta property="og:title" content="Auditor source"/>
+         <meta property="og:description" content="Source code and issue trackers for the Auditor Android app and associated service."/>
+         <meta property="og:type" content="website"/>
+diff --git a/static/tutorial.html b/static/tutorial.html
+index 696463e..1f62c7a 100644
+--- a/static/tutorial.html
++++ b/static/tutorial.html
+@@ -8,8 +8,6 @@
+         <meta name="color-scheme" content="dark light"/>
+         <meta name="msapplication-TileColor" content="#ffffff"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+-        <meta name="twitter:site" content="@GrapheneOS"/>
+-        <meta name="twitter:creator" content="@GrapheneOS"/>
+         <meta property="og:title" content="Auditor tutorial"/>
+         <meta property="og:description" content="Tutorial on using the Auditor Android app and associated service."/>
+         <meta property="og:type" content="website"/>
+-- 
+2.32.0
+
+
+From d4a02709f0e3e40fac20d0ac1d986009c13ad43c Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 20 Mar 2021 13:43:47 -0700
 Subject: [PATCH 5/5] Workaround checking for fresh database
@@ -379,10 +339,10 @@ otherwise fresh database.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/main/java/app/attestation/server/AttestationServer.java b/src/main/java/app/attestation/server/AttestationServer.java
-index a9986f9..a7a80c1 100644
+index abff87d..30646f1 100644
 --- a/src/main/java/app/attestation/server/AttestationServer.java
 +++ b/src/main/java/app/attestation/server/AttestationServer.java
-@@ -217,7 +217,7 @@ public class AttestationServer {
+@@ -218,7 +218,7 @@ public class AttestationServer {
          try {
              open(attestationConn, false);
  
@@ -392,5 +352,5 @@ index a9986f9..a7a80c1 100644
                  attestationConn.exec("PRAGMA user_version = 4");
              }
 -- 
-2.31.1
+2.32.0
 

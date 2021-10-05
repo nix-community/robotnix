@@ -37,14 +37,14 @@ Only the latest GrapheneOS release is included with robotnix, even if that relea
 If you would prefer to stick to only stable releases, wait until the release is marked "stable" upstream.
 
 Before reporting bugs to upstream GrapheneOS, please ensure that you can reproduce your issue using the official GrapheneOS images.
-Alternatively, feel free to ask about your issue on the `#robotnix` IRC channel on Freenode.
+Alternatively, feel free to ask about your issue on the `#robotnix:nixos.org` channel on Matrix.
 
 ## LineageOS
 LineageOS is a free and open-source operating system for various devices, based on the Android mobile platform.
 LineageOS support may be enabled by setting `flavor = "lineageos";`.
 At the time of writing, this includes support for ~160 devices.
 
-Robotnix includes support for both LineageOS 17.1 as well as LineaegOS 18.1.
+Robotnix includes support for both LineageOS 17.1 as well as LineageOS 18.1.
 By default, robotnix will select the latest supported version for the device specified in the configuration.
 This can be overridden by setting `androidVersion` to either 10 or 11, for LineageOS 17.1 and 18.1, respectively.
 

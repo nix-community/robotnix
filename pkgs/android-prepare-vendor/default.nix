@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 { stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
-  simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3,
+  simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3, libarchive,
   api ? 30
 }:
 
@@ -34,14 +34,14 @@ let
     '';
   };
 
-  version = if api >= 30 then "2021-05-06" else "2020-08-26";
+  version = if api >= 30 then "2021-09-07" else "2020-08-26";
   src = if api >= 30
     then fetchFromGitHub {
       # Android11 branch
       owner = "AOSPAlliance";
       repo = "android-prepare-vendor";
-      rev = "59d2a75bffc23cccbf50c6ba08512a4c750f8f43";
-      sha256 = "18qwa7zihl74x7zg1qrc19m58si12vz01h114qf2hqlc7zxs51x6";
+      rev = "227f5ce7cd89a3f57291fe2b84869c7a5d1e17fa";
+      sha256 = "07g5dcl2x44ai5q2yfq9ybx7j7kn41s82hgpv7jff5v1vr38cia9";
     } else fetchFromGitHub {
       # Android10 branch
       owner = "AOSPAlliance";
@@ -64,7 +64,7 @@ in
     ./0001-Disable-oatdump-update.patch
     ./0002-Just-write-proprietary-blobs.txt-to-current-dir.patch
     ./0003-Allow-for-externally-set-config-file.patch
-    #./0004-marlin-sailfish-fix-build-failure.patch # Just set this only if using marlin/sailfish
+    ./0004-Add-option-to-use-externally-provided-carrier_list.p.patch
   ];
 
   # TODO: No need to copy oatdump now that we're making a standalone android-prepare-vendor.
@@ -77,7 +77,7 @@ in
     cp -r ${oatdump}/* hostTools/Linux/api-${apiStr}/
 
     for i in ./execute-all.sh ./scripts/download-nexus-image.sh ./scripts/extract-factory-images.sh ./scripts/generate-vendor.sh ./scripts/gen-prop-blobs-list.sh ./scripts/realpath.sh ./scripts/system-img-repair.sh ./scripts/extract-ota.sh; do
-        sed -i '2 i export PATH=$PATH:${lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk utillinux perl curl ]}' $i
+        sed -i '2 i export PATH=$PATH:${lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk utillinux perl curl libarchive ]}' $i
     done
 
     # Fix when using --input containing readonly files

@@ -1,4 +1,4 @@
-From 002e5706eabb098cd8e6d7f63fdf3720205e2d90 Mon Sep 17 00:00:00 2001
+From 5ec61d52c8d8ffa9b1bfce663eef4c8b02f6c4af Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sun, 14 Jul 2019 15:53:34 -0400
 Subject: [PATCH 1/4] Custom domain
@@ -8,10 +8,10 @@ Subject: [PATCH 1/4] Custom domain
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java b/app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java
-index 78eb7c5..8d14f81 100644
+index 7fbe44c..7b5d5b6 100644
 --- a/app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java
 +++ b/app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java
-@@ -33,7 +33,7 @@ public class RemoteVerifyJob extends JobService {
+@@ -35,7 +35,7 @@ public class RemoteVerifyJob extends JobService {
      private static final String TAG = "RemoteVerifyJob";
      private static final int PERIODIC_JOB_ID = 0;
      private static final int FIRST_RUN_JOB_ID = 1;
@@ -21,21 +21,21 @@ index 78eb7c5..8d14f81 100644
      private static final String VERIFY_URL = "https://" + DOMAIN + "/verify";
      private static final int CONNECT_TIMEOUT = 60000;
 -- 
-2.30.1
+2.32.0
 
 
-From 701d8afcbce209f1f59b64861e3d66390db4e1b4 Mon Sep 17 00:00:00 2001
+From 425dff79ecc3982b579808e867fd5feaabf11179 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
-Date: Sun, 14 Jul 2019 16:17:57 -0400
+Date: Thu, 9 Sep 2021 13:54:25 -0700
 Subject: [PATCH 2/4] Custom fingerprints
 
 ---
- .../auditor/AttestationProtocol.java          | 44 ++++++++++++++++++-
+ .../auditor/AttestationProtocol.java          | 48 ++++++++++++++++++-
  app/src/main/res/values/strings.xml           |  1 +
- 2 files changed, 44 insertions(+), 1 deletion(-)
+ 2 files changed, 48 insertions(+), 1 deletion(-)
 
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index e5f3d51..4d67098 100644
+index c79a860..d8fbb1d 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -229,7 +229,7 @@ class AttestationProtocol {
@@ -47,10 +47,10 @@ index e5f3d51..4d67098 100644
      private static final int OS_VERSION_MINIMUM = 80000;
      private static final int OS_PATCH_LEVEL_MINIMUM = 201801;
      private static final int VENDOR_PATCH_LEVEL_MINIMUM = 201808;
-@@ -321,6 +321,29 @@ class AttestationProtocol {
-                     new DeviceInfo(R.string.device_pixel_4a_5g, 3, 4, false /* uses new API */, true, R.string.os_graphene))
-             .put("36A99EAB7907E4FB12A70E3C41C456BCBE46C13413FBFE2436ADEE2B2B61120F",
+@@ -324,6 +324,31 @@ class AttestationProtocol {
                      new DeviceInfo(R.string.device_pixel_5, 3, 4, false /* uses new API */, true, R.string.os_graphene))
+             .put("0ABDDEDA03B6CE10548C95E0BEA196FAA539866F929BCDF7ECA84B4203952514",
+                     new DeviceInfo(R.string.device_pixel_5a, 3, 4, false /* uses new API */, true, R.string.os_graphene))
 +            // Robotnix
 +            .put("@walleye@",
 +                    new DeviceInfo(R.string.device_pixel_2, 2, 3, true, true, R.string.os_robotnix))
@@ -74,13 +74,15 @@ index e5f3d51..4d67098 100644
 +                    new DeviceInfo(R.string.device_pixel_4a_5g, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
 +            .put("@redfin@",
 +                    new DeviceInfo(R.string.device_pixel_5, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@barbet@",
++                    new DeviceInfo(R.string.device_pixel_5a, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
              .build();
      private static final ImmutableMap<String, DeviceInfo> fingerprintsStock = ImmutableMap
              .<String, DeviceInfo>builder()
-@@ -467,6 +490,25 @@ class AttestationProtocol {
-                     new DeviceInfo(R.string.device_pixel_4a_5g, 4, 41, false /* uses new API */, true, R.string.os_graphene))
-             .put("36A99EAB7907E4FB12A70E3C41C456BCBE46C13413FBFE2436ADEE2B2B61120F",
+@@ -474,6 +499,27 @@ class AttestationProtocol {
                      new DeviceInfo(R.string.device_pixel_5, 4, 41, false /* uses new API */, true, R.string.os_graphene))
+             .put("0ABDDEDA03B6CE10548C95E0BEA196FAA539866F929BCDF7ECA84B4203952514",
+                     new DeviceInfo(R.string.device_pixel_5a, 4, 41, false /* uses new API */, true, R.string.os_graphene))
 +            // Robotnix
 +            .put("@blueline@",
 +                    new DeviceInfo(R.string.device_pixel_3, 3, 4, false /* uses new API */, true, R.string.os_robotnix))
@@ -100,24 +102,26 @@ index e5f3d51..4d67098 100644
 +                    new DeviceInfo(R.string.device_pixel_4a_5g, 4, 41, false /* uses new API */, true, R.string.os_robotnix))
 +            .put("@redfin@",
 +                    new DeviceInfo(R.string.device_pixel_5, 4, 41, false /* uses new API */, true, R.string.os_robotnix))
++            .put("@barbet@",
++                    new DeviceInfo(R.string.device_pixel_5a, 4, 41, false /* uses new API */, true, R.string.os_robotnix))
              .build();
      private static final ImmutableMap<String, DeviceInfo> fingerprintsStrongBoxStock = ImmutableMap
              .<String, DeviceInfo>builder()
 diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 5aa5f48..260b429 100644
+index 8d62c77..2fd7db4 100644
 --- a/app/src/main/res/values/strings.xml
 +++ b/app/src/main/res/values/strings.xml
-@@ -143,4 +143,5 @@
+@@ -144,4 +144,5 @@
  
      <string name="os_stock">Stock</string>
      <string name="os_graphene">GrapheneOS</string>
 +    <string name="os_robotnix">Robotnix</string>
  </resources>
 -- 
-2.30.1
+2.32.0
 
 
-From 942e24e9ab87d619b3d9b01061f69fc971a4949f Mon Sep 17 00:00:00 2001
+From b6e71c5aee4cd318f5b086d6214a6f7627535317 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 16:49:04 -0400
 Subject: [PATCH 3/4] Customize appId
@@ -128,20 +132,20 @@ Subject: [PATCH 3/4] Customize appId
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/app/build.gradle b/app/build.gradle
-index daeb410..7d7985a 100644
+index 4db737f..1e2e0c6 100644
 --- a/app/build.gradle
 +++ b/app/build.gradle
-@@ -4,7 +4,7 @@ android {
+@@ -5,7 +5,7 @@ android {
      compileSdkVersion 30
-     buildToolsVersion "30.0.2"
+     buildToolsVersion "30.0.3"
      defaultConfig {
 -        applicationId "app.attestation.auditor"
 +        applicationId "@applicationId@"
          minSdkVersion 26
          targetSdkVersion 30
-         versionCode 26
+         versionCode 29
 diff --git a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
-index 4d67098..db6052b 100644
+index d8fbb1d..63a48b1 100644
 --- a/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 +++ b/app/src/main/java/app/attestation/auditor/AttestationProtocol.java
 @@ -224,7 +224,7 @@ class AttestationProtocol {
@@ -154,10 +158,10 @@ index 4d67098..db6052b 100644
      private static final String ATTESTATION_APP_SIGNATURE_DIGEST_DEBUG =
              "17727D8B61D55A864936B1A7B4A2554A15151F32EBCF44CDAA6E6C3258231890";
 -- 
-2.30.1
+2.32.0
 
 
-From 8dddc661013258296fa29138d42f171edafc2d02 Mon Sep 17 00:00:00 2001
+From 26acd20ddbc3590be0b7c8963a7ea52f9eff5594 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Sat, 24 Aug 2019 17:03:03 -0400
 Subject: [PATCH 4/4] Change application name to Robotnix Auditor for clarity
@@ -167,7 +171,7 @@ Subject: [PATCH 4/4] Change application name to Robotnix Auditor for clarity
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 260b429..d73ee6b 100644
+index 2fd7db4..d04d61c 100644
 --- a/app/src/main/res/values/strings.xml
 +++ b/app/src/main/res/values/strings.xml
 @@ -1,5 +1,5 @@
@@ -178,5 +182,5 @@ index 260b429..d73ee6b 100644
      <string name="unsupported_auditee">Device is not one of the supported models.</string>
      <string name="camera_permission_denied">Camera permission is required to scan QR codes. Please try again.</string>
 -- 
-2.30.1
+2.32.0
 

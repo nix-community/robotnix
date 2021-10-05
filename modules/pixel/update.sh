@@ -1,7 +1,10 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash -p curl go-pup jq
+#!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
+
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 curl --fail -s --cookie "devsite_wall_acks=nexus-image-tos" https://developers.google.com/android/images \
     | pup "div table tbody tr json{}" \
@@ -29,3 +32,12 @@ curl --fail -s --cookie "devsite_wall_acks=nexus-ota-tos" https://developers.goo
              url: (.[1].children|.[0].href),
              sha256: .[2].text,
             }' | jq -s > pixel-otas.json
+
+curl --fail -s --cookie "devsite_wall_acks=nexus-ota-tos" https://developers.google.com/android/drivers \
+    | pup "div table tbody tr json{}" \
+    | jq '.[].children
+          | {
+             url: (.[2].children|.[0].href),
+             sha256: .[3].text,
+            }
+          | select(.url != null)' | jq -s > pixel-drivers.json

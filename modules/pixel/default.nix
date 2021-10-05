@@ -31,6 +31,7 @@ let
     sunfish = { family = "sunfish"; name = "Pixel 4a"; };
     bramble = { family = "redfin"; name = "Pixel 4a (5G)"; };
     redfin = { family = "redfin"; name = "Pixel 5"; };
+    barbet = { family = "barbet"; name = "Pixel 5a (5G)"; };
   };
 
   # Make a uuid based on some string data
@@ -44,54 +45,33 @@ let
   hashSeed = uuidgen "persist-hash-${config.buildNumber}-${builtins.toString config.buildDateTime}";
 in
 mkMerge [
-  (mkIf ((config.flavor != "lineageos") && (config.device != null) && (lib.hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
+  (mkIf ((lib.elem config.flavor [ "vanilla" "grapheneos" ]) && (config.device != null) && (lib.hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault (deviceMap.${config.device}.family or config.device);
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
 
-    kernel.configName = mkOptionDefault config.deviceFamily;
-    apv.img = mkIf config.apv.enable (mkDefault (fetchItem imgList));
-    apv.ota = mkIf config.apv.enable (mkDefault (fetchItem otaList));
+    apv.img = mkDefault (fetchItem imgList);
+    apv.ota = mkDefault (fetchItem otaList);
 
     # Exclude all devices by default
     source.excludeGroups = mkDefault (lib.attrNames deviceMap);
     # But include names related to our device
-    source.includeGroups = mkDefault [ config.device config.deviceFamily config.kernel.name config.kernel.configName ];
+    source.includeGroups = mkDefault [ config.device config.deviceFamily ];
 
     signing.avb.enable = mkDefault true;
   })
 
   # Device-specific overrides
   (mkIf (config.deviceFamily == "marlin") {
-    kernel.compiler = "gcc";
-    kernel.buildProductFilenames = [
-      "arch/arm64/boot/Image.lz4-dtb"
-    ];
     signing.avb.mode = "verity_only";
     signing.apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
-    nixpkgs.overlays = [ (self: super: {
-      android-prepare-vendor = super.android-prepare-vendor.overrideAttrs ({ patches ? [], ...}: {
-        patches = patches ++ [ ../../pkgs/android-prepare-vendor/0004-marlin-sailfish-fix-build-failure.patch ];
-      });
-    })];
   })
   (mkIf (lib.elem config.deviceFamily [ "taimen" "muskie" ]) {
     signing.avb.mode = "vbmeta_simple";
-    kernel.buildProductFilenames = [
-      "arch/arm64/boot/Image.lz4-dtb"
-      "arch/arm64/boot/dtbo.img"
-    ];
-    kernel.name = mkDefault "wahoo";
   })
   (mkIf (config.deviceFamily == "crosshatch") {
     signing.avb.mode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
-    kernel.buildProductFilenames = [
-      "arch/arm64/boot/Image.lz4"
-      "arch/arm64/boot/dtbo.img"
-      "arch/arm64/boot/dts/qcom/sdm845-v2.dtb"
-      "arch/arm64/boot/dts/qcom/sdm845-v2.1.dtb"
-    ];
 
     # Reproducibility fix for persist.img.
     # TODO: Generate uuid based on fingerprint
@@ -106,11 +86,6 @@ mkMerge [
   (mkIf (config.deviceFamily == "bonito") {
     signing.avb.mode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
-    kernel.buildProductFilenames = [
-      "arch/arm64/boot/Image.lz4"
-      "arch/arm64/boot/dtbo.img"
-      "arch/arm64/boot/dts/qcom/sdm670.dtb"
-    ];
 
     # Reproducibility fix for persist.img.
     # TODO: Generate uuid based on fingerprint
@@ -122,34 +97,7 @@ mkMerge [
       })
     ];
   })
-  (mkIf (config.deviceFamily == "coral") {
+  (mkIf (lib.elem config.deviceFamily [ "coral" "sunfish" "redfin" "barbet" ]) {
     signing.avb.mode = "vbmeta_chained_v2";
-    kernel.buildProductFilenames = [
-      "arch/arm64/boot/Image.lz4"
-      "arch/arm64/boot/dtbo.img"
-      "arch/arm64/boot/dts/google/qcom-base/sm8150.dtb"
-      "arch/arm64/boot/dts/google/qcom-base/sm8150-v2.dtb"
-    ];
-    kernel.configName = mkDefault "floral"; # coral + flame
-    kernel.linker = "lld";
-  })
-  (mkIf (config.deviceFamily == "sunfish") {
-    signing.avb.mode = "vbmeta_chained_v2";
-    kernel.buildProductFilenames = [
-      "arch/arm64/boot/Image.lz4"
-      "arch/arm64/boot/dtbo.img"
-      "arch/arm64/boot/dts/google/qcom-base/sdmmagpie.dtb"
-    ];
-    kernel.linker = "lld";
-  })
-  (mkIf (config.deviceFamily == "redfin") {
-    signing.avb.mode = "vbmeta_chained_v2";
-    kernel.buildProductFilenames = [
-      "arch/arm64/boot/Image.lz4"
-      "arch/arm64/boot/dtbo.img"
-      "arch/arm64/boot/dts/google/qcom-base/lito.dtb"
-    ];
-    kernel.name = mkDefault "redbull";
-    kernel.configName = mkDefault "redbull"; # redfin + bramble
   })
 ]

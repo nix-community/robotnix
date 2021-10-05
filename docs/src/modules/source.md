@@ -14,8 +14,6 @@ For example, the following configuration will include a new repository checked o
 }
 ```
 While the above uses `pkgs.fetchGit`, the `src` option could refer to any Nix derivation producing a directory.
-The `source.dirs` option does not currently support "nested" directories.
-For example, if `source.dirs."foo"` is set, then setting `source.dirs."foo/bar".src` will not work properly.
 
 Additionaly, robotnix provides a convenient mechanism for patching existing source directories:
 ```nix
@@ -25,7 +23,7 @@ Additionaly, robotnix provides a convenient mechanism for patching existing sour
 
   # source.dirs.<name>.postPatch can refer to a snippet of shell script to modify the source tree
   source.dirs."frameworks/base".postPatch = ''
-    sed -i 's/hello/there' example.txt
+    sed -i 's/hello/there/' example.txt
   '';
 }
 ```
@@ -37,7 +35,7 @@ Robotnix supports two alternative approaches for fetching source files:
 
 - Build-time source fetching with `pkgs.fetchgit`. This is the default.
   An end user wanting to fetch sources not already included in `robotnix` would
-  need to create a repo json file using `mk-repo-file.py` and set
+  need to create a repo json file using `scripts/mk_repo_file.py` and set
   `source.dirs = lib.importJSON ./example.json;`
 - Evaluation-time source fetching with `builtins.fetchGit`.
   This is more convenient for development when changing branches, as it allows

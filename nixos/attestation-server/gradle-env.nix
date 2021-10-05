@@ -371,7 +371,7 @@ let
 
   buildRootProject = buildProject projectEnv gradleFlags;
 
-in stdenv.mkDerivation (args // {
+in stdenv.mkDerivation ((builtins.removeAttrs args [ "fetchers" ]) // {
 
   inherit pname version;
 

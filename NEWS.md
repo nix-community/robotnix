@@ -8,6 +8,51 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2021-09-09
+## Highlights:
+- Added support for new device, "barbet" (Pixel 5a), on vanilla and GrapheneOS flavors.
+- Updated vanilla flavor to RQ3A.210905
+- Updated GrapheneOS flavor to 2021090819
+- Updated LineageOS flavor to 2021.08.10.22
+- Updated Auditor / AttestationServer to 29 / 2021-09-08
+- Updated Chromium / Vanadium to 93.0.4577.62, Bromite to 92.0.4515.134
+- Updated Updater to 2021-08-25
+- Updated MicroG to 0.2.22.212658
+- Installation documentation improvements (thanks @mschwaig)
+- Significant code-quality improvements (enabled tests, various checks) to update scripts
+- Added `--cache-search-path` and `--local_manifest` options to `mk_repo_file.py`
+
+There are no intentional backward incompatible changes since the last release.
+We have (hopefully temporarily) switched back to prebuilt kernels for redfin and related devices (bramble and barbet) in the vanilla flavor.
+Re-adding support for building these kernels in robotnix will likely require resolving [#116](https://github.com/danielfullmer/robotnix/issues/116).
+
+# 2021-08-03
+## Highlights:
+- Updated vanilla flavor to RQ3A.210805
+- Updated vanilla beta (Android 12) to android-s-beta-3
+- Updated GrapheneOS flavor to 2021.08.03.03
+- Updated Lineageos flavor to 2021.07.12.17
+- Added ROBOTNIX_GIT_MIRRORS environment variable (See [documentation](https://docs.robotnix.org/development.html#git-mirrors))
+- Updated Chromium / Vanadium to 92.0.4515.115, Bromite to 92.0.4515.125
+- Updated Updater to 2021-08-02
+
+There are no intentional backward incompatible changes since the last release.
+
+Between commits on Aug 2-3 there was brief period where the robotnix would not correctly include the Update package for the GrapheneOS flavor.
+If you have already updated your device with a build produced during this interval, and you don't see "System updates" under "Settings", you can still update your device by sideloading, [instructions here](https://docs.robotnix.org/installation.html#updating-by-sideloading-ota-files).
+
+# 2021-07-07
+## Highlights:
+- Added experimental Anbox flavor (thanks @samueldr) (See initial docs [here](https://docs.robotnix.org/modules/flavors.html#anbox))
+- Updated vanilla flavor to RQ3A.210705
+- Updated GrapheneOS flavor to 2021.07.07.19
+- Updated LineageOS flavor to 2021.06.21.20 (thanks @Kranzes)
+- Updated F-Droid to 1.12.1, F-Droid privileged extension to 0.2.12
+- Updated MicroG to 0.2.21.212158
+- Updated Chromium / Vanadium to 91.0.4472.134, Bromite to 91.0.4472.102
+
+There are no intentional backward incompatible changes since the last release.
+
 # 2021-06-09
 ## Highlights:
 - Updated LineageOS flavor from 17.1 to 18.1 (up-to-date as of 2021-05-22) [PR #96](https://github.com/danielfullmer/robotnix/pull/96) (thanks @hmenke).

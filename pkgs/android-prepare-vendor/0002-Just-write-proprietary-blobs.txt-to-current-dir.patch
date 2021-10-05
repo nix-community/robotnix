@@ -1,4 +1,4 @@
-From d6ec8970d08a05e6a21860df80fc0d67c07e2fff Mon Sep 17 00:00:00 2001
+From af75ce11426e321a007dfa451b202e714170262f Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Fri, 6 Sep 2019 16:59:30 -0400
 Subject: [PATCH 2/4] Just write proprietary-blobs.txt to current dir
@@ -9,10 +9,10 @@ Subject: [PATCH 2/4] Just write proprietary-blobs.txt to current dir
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/execute-all.sh b/execute-all.sh
-index 1b72cd4..29cd7aa 100755
+index aefe810..da22db5 100755
 --- a/execute-all.sh
 +++ b/execute-all.sh
-@@ -639,7 +639,7 @@ echo "[*] Processing with 'API-$API_LEVEL $CONFIG_TYPE' configuration"
+@@ -646,7 +646,7 @@ echo "[*] Processing with 'API-$API_LEVEL $CONFIG_TYPE' configuration"
  
  # Generate unified readonly "proprietary-blobs.txt"
  $GEN_BLOBS_LIST_SCRIPT --input "$FACTORY_IMGS_DATA/vendor" \
@@ -22,18 +22,18 @@ index 1b72cd4..29cd7aa 100755
      --conf-file "$CONFIG_FILE" \
      --conf-type "$CONFIG_TYPE" || {
 diff --git a/scripts/generate-vendor.sh b/scripts/generate-vendor.sh
-index ef06c4e..90f9f45 100755
+index 32b2185..d30e728 100755
 --- a/scripts/generate-vendor.sh
 +++ b/scripts/generate-vendor.sh
-@@ -1203,7 +1203,7 @@ isValidApiLevel "$API_LEVEL"
+@@ -1279,7 +1279,7 @@ isValidApiLevel "$API_LEVEL"
  
  # Populate config files from base conf dir
  readonly DEVICE_CONFIG_DIR="$(dirname "$CONFIG_FILE")"
 -readonly BLOBS_LIST="$DEVICE_CONFIG_DIR/proprietary-blobs.txt"
 +readonly BLOBS_LIST="./proprietary-blobs.txt"
  readonly OVERLAYS_DIR="$(setOverlaysDir)"
+ readonly RRO_OVERLAYS="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "rro-overlays" "$CONFIG_FILE")"
  readonly DEP_DSO_BLOBS_LIST="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "dep-dso" "$CONFIG_FILE" | grep -Ev '(^#|^$)')"
- readonly MK_FLAGS_LIST="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "BoardConfigVendor" "$CONFIG_FILE")"
 -- 
-2.26.1
+2.32.0
 
