@@ -404,9 +404,9 @@ links) with possibly different timestamps and hashes of course:</p>
 described in the next section.</p>
 <h2 id="actually-serving-ota-updates-over-the-air"><a class="header" href="#actually-serving-ota-updates-over-the-air">Actually serving OTA updates over the air</a></h2>
 <blockquote>
-<p><em>Note:</em> These instructions have only been tested with the Vanilla and
-GrapheneOS flavors.  This method likely will not with the LineageOS flavor
-because it uses its own updater.</p>
+<p><em>Note:</em> The Vanilla and GrapheneOS flavors use a different updater than the LineageOS flavor,
+therefore they might behave slightly different from one another.
+The instructions below should however work for both.</p>
 </blockquote>
 <p>Essentially this boils down to just serving the <code>otaDir</code> build output on the
 web, e.g. with nginx.  To receive OTA updates on the device, enable the updater
@@ -445,9 +445,9 @@ updating before the copy/upload is complete.</p>
 <pre><code class="language-console">$ cp --no-dereference ota-dir /var/www/android
 $ tree -l /var/www
 /var/www
-└── android -&gt; /nix/store/dbjcl9lwn6xif9c0fy8d2wwpn9zi4hw4-sunfish-otaDir                   
+└── android -&gt; /nix/store/dbjcl9lwn6xif9c0fy8d2wwpn9zi4hw4-sunfish-otaDir
     ├── sunfish-ota_update-2021.02.06.16.zip -&gt; /nix/store/wwr49all6x868f0mdl11369ybfwyir0f-sunfish-ota_update-2021.02.06.16.zip
-    ├── sunfish-stable -&gt; /nix/store/c1rp46m9spncanacglqs5mxk6znfs44s-sunfish-stable                             
+    ├── sunfish-stable -&gt; /nix/store/c1rp46m9spncanacglqs5mxk6znfs44s-sunfish-stable
     └── sunfish-target_files-2021.02.06.16.zip -&gt; /nix/store/8ys21rzjqhi2055d7bd4iwa15fv1m446-sunfish-signed_target_files-2021.02.06.16.zip
 </code></pre>
 <p>Of course, this doesn't have to be located at <code>/var/www</code> and it's totally
@@ -1150,6 +1150,12 @@ Refer to this <a href="https://developer.android.com/reference/android/Manifest.
 <p><em>Default</em>: <code>false</code></p>
 <p><em>Example</em>: <code>true</code></p>
 <p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/updater.nix">modules/apps/updater.nix</a></p>
+<h3 id="appsupdaterflavor"><a class="header" href="#appsupdaterflavor"><code>apps.updater.flavor</code></a></h3>
+<p>Which updater package to use, and which kind of metadata to generate for it.</p>
+<p><em>Default</em>: <code>&quot;grapheneos&quot;</code></p>
+<p><em>Type</em>: one of &quot;grapheneos&quot;, &quot;lineageos&quot;</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/updater.nix">modules/apps/updater.nix</a></p>
 <h3 id="appsupdaterurl"><a class="header" href="#appsupdaterurl"><code>apps.updater.url</code></a></h3>
