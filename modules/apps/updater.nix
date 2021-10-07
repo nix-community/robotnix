@@ -28,6 +28,14 @@ in
         apply = x: if lib.hasSuffix "/" x then x else x + "/";
       };
 
+      flavor = mkOption {
+        type = types.enum [ "grapheneos" "lineageos" ];
+        default = "grapheneos";
+        description = ''
+          Which updater package to use, and which kind of metadata to generate for it.
+        '';
+      };
+
       includedInFlavor = mkOption {
         default = false;
         type = types.bool;
@@ -39,26 +47,35 @@ in
   config = mkMerge [
     (mkIf cfg.enable (mkMerge [
       {
+        # TODO: It's currently on system partition in upstream. Shouldn't it be on product partition?
+        system.additionalProductPackages = [ "Updater" ];
+      }
+
+      (mkIf (cfg.flavor == "grapheneos") {
         resources.${relpath} = {
           inherit (cfg) url;
           channel_default = config.channel;
         };
 
-        # TODO: It's currently on system partition in upstream. Shouldn't it be on product partition?
-        system.additionalProductPackages = [ "Updater" ];
+        source.dirs = mkIf (!cfg.includedInFlavor) (mkMerge [
+          {
+            ${relpath}.src = src;
+          }
+          (mkIf (!cfg.includedInFlavor && config.androidVersion >= 11) {
+            # Add selinux policies
+            source.dirs."robotnix/updater-sepolicy".src = ./updater-sepolicy;
+            source.dirs."build/make".postPatch = ''
+              # Originally from https://github.com/RattlesnakeOS/core-config-repo/blob/0d2cb86007c3b4df98d4f99af3dedf1ccf52b6b1/hooks/aosp_build_pre.sh
+              sed -i '/product-graph dump-products/a #add selinux policies last\n$(eval include robotnix/updater-sepolicy/sepolicy.mk)' "core/config.mk"
+            '';
+          })
+        ]);
+      })
 
-        source.dirs = mkIf (!cfg.includedInFlavor) {
-          ${relpath}.src = src;
+      (mkIf (cfg.flavor == "lineageos") {
+        resources."packages/apps/Updater" = mkIf (cfg.flavor == "lineageos") {
+          updater_server_url = "${cfg.url}lineageos-${config.device}.json";
         };
-      }
-
-      # Add selinux policies
-      (mkIf (!cfg.includedInFlavor && config.androidVersion >= 11) {
-        source.dirs."robotnix/updater-sepolicy".src = ./updater-sepolicy;
-        source.dirs."build/make".postPatch = ''
-          # Originally from https://github.com/RattlesnakeOS/core-config-repo/blob/0d2cb86007c3b4df98d4f99af3dedf1ccf52b6b1/hooks/aosp_build_pre.sh
-          sed -i '/product-graph dump-products/a #add selinux policies last\n$(eval include robotnix/updater-sepolicy/sepolicy.mk)' "core/config.mk"
-        '';
       })
     ]))
 
