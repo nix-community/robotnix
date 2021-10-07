@@ -19,7 +19,7 @@ rec {
   resourceValueXML = value: type: {
     bool = lib.boolToString value;
     color = value; # define our own specialized type for these?
-    dimension = value;
+    dimen = value;
     integer = toString value;
     string = value;
     integer-array = lib.concatMapStringsSep "" (i: "<item>${toString i}</item>") value;
