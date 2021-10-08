@@ -13,7 +13,7 @@ in
       includedInFlavor = mkOption {
         type = types.bool;
         internal = true;
-        default = config.flavor == "lineageos";
+        default = false;
         description = "Whether Active Edge support is already included in the chosen flavor";
       };
     };
