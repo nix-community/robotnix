@@ -9,7 +9,7 @@ in
 {
   options = {
     pixel.activeEdge = {
-      enable = mkEnableOption "Enable Active Edge gestures using the open-source implementation from LineageOS";
+      enable = mkEnableOption "Active Edge gestures using the open-source implementation from LineageOS";
       includedInFlavor = mkOption {
         type = types.bool;
         internal = true;
