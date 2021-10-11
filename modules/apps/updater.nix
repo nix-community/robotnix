@@ -63,8 +63,8 @@ in
           }
           (mkIf (!cfg.includedInFlavor && config.androidVersion >= 11) {
             # Add selinux policies
-            source.dirs."robotnix/updater-sepolicy".src = ./updater-sepolicy;
-            source.dirs."build/make".postPatch = ''
+            "robotnix/updater-sepolicy".src = ./updater-sepolicy;
+            "build/make".postPatch = ''
               # Originally from https://github.com/RattlesnakeOS/core-config-repo/blob/0d2cb86007c3b4df98d4f99af3dedf1ccf52b6b1/hooks/aosp_build_pre.sh
               sed -i '/product-graph dump-products/a #add selinux policies last\n$(eval include robotnix/updater-sepolicy/sepolicy.mk)' "core/config.mk"
             '';
