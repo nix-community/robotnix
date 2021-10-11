@@ -68,6 +68,7 @@ let
   repoName = {
     "sargo" = "crosshatch";
     "bonito" = "crosshatch";
+    "sunfish" = "coral";
     "bramble" = "redbull";
     "redfin" = "redbull";
   }.${config.device} or config.deviceFamily;
@@ -76,6 +77,7 @@ let
   builtKernelName = {
     "sargo" = "bonito";
     "flame" = "coral";
+    "sunfish" = "coral";
   }.${config.device} or config.device;
   builtRelpath = "device/google/${builtKernelName}-kernel";
 
@@ -127,7 +129,7 @@ let
 
     # Useful to use upstream's build.sh to catch regressions if any dependencies change
     buildPhase = let
-      useCodenameArg = lib.elem config.deviceFamily [ "bonito" "crosshatch" "redfin" "barbet" ];
+      useCodenameArg = true;
     in ''
       mkdir -p ../../../${builtRelpath}
       bash ./build.sh ${lib.optionalString useCodenameArg builtKernelName}
