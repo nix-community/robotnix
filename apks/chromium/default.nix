@@ -163,13 +163,7 @@ in stdenvNoCC.mkDerivation rec {
 
   requiredSystemFeatures = [ "big-parallel" ];
 
-  patches =
-    lib.optional enableRebranding
-      (substituteAll {
-        src = ./rebranding.patch;
-        inherit displayName;
-      })
-    ++ lib.optional ((lib.versionAtLeast version "84") && (lib.versionOlder version "85"))
+  patches = lib.optional ((lib.versionAtLeast version "84") && (lib.versionOlder version "85"))
       # https://chromium-review.googlesource.com/c/chromium/src/+/2214390
       (fetchgerritpatchset {
         domain = "chromium-review.googlesource.com";
@@ -219,9 +213,11 @@ in stdenvNoCC.mkDerivation rec {
   '' + lib.optionalString enableRebranding ''
     ( cd src
       # Example from Vanadium's string-rebranding patch
-      sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' chrome/browser/touch_to_fill/android/internal/java/strings/android_touch_to_fill_strings.grd chrome/browser/ui/android/strings/android_chrome_strings.grd components/components_chromium_strings.grd components/new_or_sad_tab_strings.grdp components/security_interstitials_strings.grdp
+      sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' chrome/browser/touch_to_fill/android/internal/java/strings/android_touch_to_fill_strings.grd chrome/browser/ui/android/strings/android_chrome_strings.grd components/components_chromium_strings.grd components/new_or_sad_tab_strings.grdp components/security_interstitials_strings.grdp chrome/android/java/res_chromium_base/values/channel_constants.xml
       find components/strings/ -name '*.xtb' -exec sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' {} +
       find chrome/browser/ui/android/strings/translations -name '*.xtb' -exec sed -ri 's/(Google )?Chrom(e|ium)/${displayName}/g' {} +
+
+      sed -ri 's/Android System WebView/${displayName} Webview/g' android_webview/nonembedded/java/AndroidManifest.xml
     )
   '';
 
