@@ -1,0 +1,14 @@
+diff --git a/cros_async/src/uring_executor.rs b/cros_async/src/uring_executor.rs
+index 39bce958..678e31dc 100644
+--- a/cros_async/src/uring_executor.rs
++++ b/cros_async/src/uring_executor.rs
+@@ -125,7 +125,8 @@ pub(crate) fn use_uring() -> bool {
+             // Create a dummy uring context to check that the kernel understands the syscalls.
+             if URingContext::new(8).is_ok() {
+                 USE_URING.store(URING, Ordering::Relaxed);
+-                true
++                // true
++                false
+             } else {
+                 USE_URING.store(FD, Ordering::Relaxed);
+                 false

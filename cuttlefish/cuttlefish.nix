@@ -2,7 +2,7 @@
   autoPatchelfHook, addOpenGLRunpath,
   bash, grpc, xorg, libGL, mesa,
   ubootTools, openssl,
-  python2, libglvnd, vulkan-loader, libdrm,
+  python3, libglvnd, vulkan-loader, libdrm,
   device
 }:
 
@@ -14,19 +14,19 @@ let
 
   cuttlefish_common = stdenv.mkDerivation {
     name = "android-cuttlefish";
-    version = "2020-10-26";
+    version = "2021-10-15";
 
     src = fetchFromGitHub {
       owner = "google";
       repo = "android-cuttlefish";
-      rev = "a384d3e692437583abb0b95854adc874ea63b0c3";
-      sha256 = "17rhld2kvilywdamfbp3zidkxxwjbz4mviqh21wsdhgvpj3wbbv4";
+      rev = "31df03a29f690298c8f893e279d510db593b5847";
+      sha256 = "1hnxpzsawz8ac2x5h3gazahfs428p2wp1bfmavzgyqqy99z8pz5v";
     };
 
     preBuild = "cd host/commands/adbshell";
     postBuild = "cd ../../..";
 
-    buildInputs = [ python2 ];
+    buildInputs = [ python3 ];
 
     installPhase = ''
       mkdir -p $out/bin/
@@ -43,18 +43,32 @@ let
     configuration = lib.mkMerge [ {
       inherit device;
       variant = "userdebug";
-      source.dirs = builtins.fromJSON (builtins.readFile ./repo-master-2020-10-28.json);
-      buildNumber = "2020-10-29";
+      source.dirs = builtins.fromJSON (builtins.readFile ./repo-android-12.0.0_r2.json);
+      buildNumber = "2021-10-15";
       androidVersion = 12;
-      envVars.ALLOW_NINJA_ENV = "true";
     } {
-      source.dirs."device/google/cuttlefish".patches = [ 
-        (substituteAll {
-          src = ./path-fixes.patch;
-          inherit cuttlefish_common;
-          inherit (pkgs) bash;
-        })
-        ./skip-validate-host.patch
+      source.dirs."device/google/cuttlefish" = {
+        patches = [ 
+          ./0001-Hack-to-always-validate-host.patch
+        ];
+        postPatch = ''
+          substituteInPlace common/libs/utils/network.cpp \
+              --replace '/bin/bash' '${pkgs.bash}/bin/bash'
+
+          substituteInPlace host/commands/assemble_cvd/boot_image_utils.cc \
+              --replace '/bin/bash' '${pkgs.bash}/bin/bash'
+
+          substituteInPlace common/libs/utils/archive.cpp \
+              --replace '/usr/bin/bsdtar' '${pkgs.libarchive}/bin/bsdtar'
+
+          substituteInPlace host/libs/config/cuttlefish_config.cpp \
+              --replace '/usr/lib/cuttlefish-common' '${cuttlefish_common}'
+        '';
+      };
+
+      # TODO: Figure out why it crashes if this hack to not use URingExecutor is not used
+      source.dirs."external/crosvm".patches = [
+        ./crosvm-hack.patch
       ];
     } ];
   });
@@ -63,15 +77,15 @@ let
     name = "cvd-host_package";
     makeTargets = 
       lib.optional stdenv.isx86_64 "hosttar"
-      ++ lib.optional stdenv.isAarch64 "out/soong/host/linux_bionic-arm64/cvd_host_package.tar.gz";
+      ++ lib.optional stdenv.isAarch64 "out/soong/host/linux_bionic-arm64/cvd-host_package.tar.gz";
 
-    # Note that it's cvd-host_package.tar.gz for x86_64 and cvd_host_package.tar.gz for aarch64, this is likely an upstream typo
-    installPhase = ''
+    installPhase = let
+      host = if stdenv.isx86_64 then "linux-x86"
+        else if stdenv.isAarch64 then "linux_bionic-arm64"
+        else throw "AOSP build system does not support selected architecture";
+    in ''
       mkdir -p $out
-    '' + lib.optionalString stdenv.isx86_64 ''
-      cp out/host/linux-x86/cvd-host_package.tar.gz $out/cvd-host_package.tar.gz
-    '' + lib.optionalString stdenv.isAarch64 ''
-      cp out/soong/host/linux_bionic-arm64/cvd_host_package.tar.gz $out/cvd-host_package.tar.gz
+      cp out/soong/host/${host}/cvd-host_package.tar.gz $out/cvd-host_package.tar.gz
     '';
   };
 
@@ -84,17 +98,12 @@ let
       lib.optionals stdenv.isx86_64 [ autoPatchelfHook addOpenGLRunpath ]
       ++ lib.optional stdenv.isAarch64 [ cuttlefish_common ]; # So nix can find the reference to this from inside the zip file
     buildInputs =
-      lib.optionals stdenv.isx86_64 [ grpc xorg.libX11 libGL mesa ]
+      lib.optionals stdenv.isx86_64 [ xorg.libX11 libGL mesa ]
       ++ lib.optional stdenv.isAarch64 [ bash ];
 
     sourceRoot = ".";
 
-    installPhase = lib.optionalString stdenv.isx86_64 ''
-      rm -f bin/resize.f2fs bin/fsck.f2fs # Missing libext2_uuid-host.so under lib64/ . How would it even work normally?
-      rm -rf nativetest64
-      rm lib64/libgbm.so
-    ''
-    + ''
+    installPhase = ''
       rm env-vars # So we don't have unneeded references to nix store
       cp -r . $out
     ''
@@ -107,14 +116,12 @@ let
     '';
 
     # This needs to be after autoPatchelfHook
+    dontStrip = true;
     dontAutoPatchelf = stdenv.isx86_64;
     postFixup = lib.optionalString stdenv.isx86_64 ''
       autoPatchelf -- $out
-      patchelf --set-rpath "${lib.makeLibraryPath [ libglvnd vulkan-loader ]}:$(patchelf --print-rpath $out/bin/detect_graphics)" $out/bin/detect_graphics
       patchelf --set-rpath "${lib.makeLibraryPath [ libdrm libglvnd vulkan-loader ]}:$(patchelf --print-rpath $out/bin/x86_64-linux-gnu/crosvm)" $out/bin/x86_64-linux-gnu/crosvm
-      patchelf --set-rpath "${lib.makeLibraryPath [ libdrm libglvnd vulkan-loader ]}:$(patchelf --print-rpath $out/bin/x86_64-linux-gnu/libgfxstream_backend.so)" $out/bin/x86_64-linux-gnu/libgfxstream_backend.so
       addOpenGLRunpath $out/bin/x86_64-linux-gnu/crosvm
-      addOpenGLRunpath $out/bin/x86_64-linux-gnu/libgfxstream_backend.so # TODO: Needed?
     '';
 
     dontFixup = stdenv.isAarch64;

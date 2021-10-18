@@ -4,7 +4,7 @@
 virtual device that (in contrast to the standard android emulator) uses crosvm
 along with standard virtio drivers.
 
-Requires Linux kernel >= 4.8 (see host/lib/vm_manager/host_configuration.cpp)
+Requires Linux kernel >= 4.8 (see host/libs/vm_manager/host_configuration.cpp)
 
 First, build cuttlefish using the following commands:
 ```shell
@@ -18,8 +18,8 @@ The cuttlefish device appears to require at least 2GB memory, as it fails to boo
 
 The second command above builds the cuttlefish android image, which takes quite a while.
 One alternative is to just grab the cuttlefish image from android's CI system: https://ci.android.com/ .
-Look for the build artifacts associated with a "userdebug" build of `aosp_cf_x86_phone`.
-The file you need looks something like `aosp_cf_x86_phone-img-6981209.zip`.
+Look for the build artifacts associated with a "userdebug" build of `aosp_cf_x86_64_phone`.
+The file you need looks something like `aosp_cf_x86_64_phone-img-6981209.zip`.
 Google's CI built version of `cvd-host_package`, however, will not work for us, since we have some patches to the source to fix hardcoded path issues.
 
 Naturally, Google doesn't believe in separating read-only code from read/write state.
