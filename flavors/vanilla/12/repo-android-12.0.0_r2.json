@@ -594,6 +594,19 @@
     "tree": "e8eca9e06a230da27fd639ec6d8c94b14ea9b4b2",
     "url": "https://android.googlesource.com/device/google/coral"
   },
+  "device/google/coral-kernel": {
+    "dateTime": 1629241075,
+    "groups": [
+      "coral",
+      "device",
+      "generic_fs"
+    ],
+    "rev": "c823a25313e43ab0f084cee0953562d91a49db0a",
+    "revisionExpr": "refs/tags/android-12.0.0_r2",
+    "sha256": "02k6qnyg6mcpd1czsjb6k8lcdk9qzm6dgpm4lnwwda6g896xnjnp",
+    "tree": "41d6022d0e9a5b980675bb52ab7109af6a86c81e",
+    "url": "https://android.googlesource.com/device/google/coral-kernel"
+  },
   "device/google/coral-sepolicy": {
     "dateTime": 1626310915,
     "groups": [
@@ -692,6 +705,19 @@
     "tree": "1cdfd266ee122679c32716ee0e7b62a54976c56f",
     "url": "https://android.googlesource.com/device/google/redbull"
   },
+  "device/google/redbull-kernel": {
+    "dateTime": 1629241114,
+    "groups": [
+      "bramble",
+      "device",
+      "redfin"
+    ],
+    "rev": "c84a0fc420bdcdd1301557f1d502609fefc2ef2f",
+    "revisionExpr": "refs/tags/android-12.0.0_r2",
+    "sha256": "0mrj5kfl5p4lbk386cvjb738lm6c11hqcyl6jr588r3ksswk6p61",
+    "tree": "65478164c66df28bf1a356e3c645d138505593e5",
+    "url": "https://android.googlesource.com/device/google/redbull-kernel"
+  },
   "device/google/redbull-sepolicy": {
     "dateTime": 1626310919,
     "groups": [
@@ -739,6 +765,18 @@
     "sha256": "0s2zdykz1yf55f8zwiqq8b27ya9bfjh38wjk6jlq51wskba6i0g7",
     "tree": "a262d1acca968c162a4d92ceab52e6c0ce3fe158",
     "url": "https://android.googlesource.com/device/google/sunfish"
+  },
+  "device/google/sunfish-kernel": {
+    "dateTime": 1629241058,
+    "groups": [
+      "device",
+      "sunfish"
+    ],
+    "rev": "6add309f00a30e255c37c267d05143c9f7dd7796",
+    "revisionExpr": "refs/tags/android-12.0.0_r2",
+    "sha256": "0mf310xs3vh0zzd8d8vssdnrkaqfkjv06smf8xaakicgn8bbk3zv",
+    "tree": "1c8876c3e0bc6b0a2c63387c09e101c2580aeb7b",
+    "url": "https://android.googlesource.com/device/google/sunfish-kernel"
   },
   "device/google/sunfish-sepolicy": {
     "dateTime": 1626397318,
