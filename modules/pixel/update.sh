@@ -41,3 +41,12 @@ curl --fail -s --cookie "devsite_wall_acks=nexus-ota-tos" https://developers.goo
              sha256: .[3].text,
             }
           | select(.url != null)' | jq -s > pixel-drivers.json
+
+curl --fail -s --cookie "devsite_wall_acks=nexus-ota-tos" https://developer.android.com/about/versions/12/download \
+    | pup "div table tbody tr json{}" \
+    | jq '.[].children
+          | {
+             url: ("https://dl.google.com/developers/android/sc/images/factory/" + (.[1].children|.[0].text)),
+             sha256: .[2].children|.[0].text,
+            }
+          | select(.sha256 != null)' | jq -s > pixel-beta-imgs.json
