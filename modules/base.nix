@@ -445,7 +445,9 @@ in
 
         installPhase = let
           # Patchelf breaks the executables with embedded python interpreters
-          # Instead, we just wrap all the binaries with a chrootenv. This is ugly.
+          # Instead, for android < 12, we just wrap all the binaries with a
+          # chrootenv. This is ugly.
+          # TODO: Try to remove this
           env = pkgs.buildFHSUserEnv {
             name = "otatools-env";
             targetPkgs = p: with p; [ openssl ]; # for bin/avbtool
@@ -455,7 +457,14 @@ in
               exec -- "$run" "$@"
             '';
           };
-        in ''
+        in lib.optionalString (config.androidVersion >= 12) ''
+          # Can only do this for android 12, android 11 doesn't have the
+          # prebuilt py*-launcher* files that we patchelf earlier
+          for file in bin/*; do
+            isELF "$file" || continue
+            patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "$file" || continue
+          done
+        '' + lib.optionalString (config.androidVersion < 12) ''
           while read -r file; do
             # isELF is provided by stdenv
             isELF "$file" || continue
@@ -465,19 +474,20 @@ in
             echo "exec ${env}/bin/otatools-env $out/bin/.$(basename $file) \"\$@\"" >> $file
             chmod +x $file
           done < <(find ./bin -type f -maxdepth 1 -executable)
+        '' + ''
 
           mkdir -p $out
           cp --reflink=auto -r * $out/
         '';
+
         # Since we copy everything from build dir into $out, we don't want
         # env-vars file which contains a bunch of references we don't need
         noDumpEnvVars = true;
 
-        # See patchelf note above
+        # This breaks the executables with embedded python interpreters
         dontStrip = true;
-        dontPatchELF = true;
 
-        # TODO: Fix with android 11
+        # TODO: Fix with android >=11
         doInstallCheck = config.androidVersion <= 10;
         installCheckPhase = ''
           cd $out/releasetools

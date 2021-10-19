@@ -56,7 +56,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   '';
 }
 
-(mkIf (elem config.androidVersion [ 9 10 11 ]) {
+(mkIf (elem config.androidVersion [ 9 10 11 12 ]) {
   source.dirs."packages/apps/Launcher3".patches = [ (./. + "/${toString config.androidVersion}/disable-quicksearch.patch") ];
 })
 (mkIf (elem config.deviceFamily phoneDeviceFamilies) {
