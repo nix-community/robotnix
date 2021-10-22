@@ -1,0 +1,58 @@
+From da0387bf07cf7c0d12cb79a552105a11756487e5 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Fri, 1 Oct 2021 19:15:34 -0700
+Subject: [PATCH 3/4] Add option to use externally provided carrier_list.pb
+
+---
+ execute-all.sh | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/execute-all.sh b/execute-all.sh
+index 69d714e..791a448 100755
+--- a/execute-all.sh
++++ b/execute-all.sh
+@@ -59,6 +59,7 @@ cat <<_EOF
+       -o|--output <path> : Path to save generated vendor data
+       -i|--img <path>    : [OPTIONAL] Read factory image archive from file instead of downloading
+       -O|--ota <path>    : [OPTIONAL] Read OTA image archive from file instead of downloading
++      -C|--carrier-list-folder <path> : [OPTIONAL] Path to folder containing carrier_list.pb instead of downloading
+       -r|--repair        : [OPTIONAL] Repair bytecode with oatdump
+       -j|--java <path    : [OPTIONAL] Java path to use instead of system auto detected global version
+       -k|--keep    : [OPTIONAL] Keep all extracted factory images & repaired data (default: false)
+@@ -251,6 +252,10 @@ do
+       INPUT_OTA="$(_realpath "$2")"
+       shift
+       ;;
++    -C|--carrier-list-folder)
++      CARRIER_LIST_FOLDER="$(_realpath "$2")"
++      shift
++      ;;
+     -k|--keep)
+       KEEP_DATA=true
+       ;;
+@@ -386,12 +391,16 @@ if [[ "$OtaArchive" == "" ]]; then
+ fi
+ fi
+ 
+-# Download carrier list
+-aospCarrierListFolder="$SCRIPTS_ROOT/scripts/carriersettings-extractor"
+-$DOWNLOAD_CARRIER_LIST_SCRIPT --output "$aospCarrierListFolder" || {
+-  echo "[-] Carrier list download failed"
+-  abort 1
+-}
++# Download carrier list if not provided
++if [[ "$CARRIER_LIST_FOLDER" == "" ]]; then
++  aospCarrierListFolder="$SCRIPTS_ROOT/scripts/carriersettings-extractor"
++  $DOWNLOAD_CARRIER_LIST_SCRIPT --output "$aospCarrierListFolder" || {
++    echo "[-] Carrier list download failed"
++    abort 1
++  }
++else
++  aospCarrierListFolder="$CARRIER_LIST_FOLDER"
++fi
+ 
+ # Clear old data if present & extract data from factory images
+ if [ -d "$FACTORY_IMGS_DATA" ]; then
+-- 
+2.33.0
+
