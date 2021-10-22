@@ -24,6 +24,9 @@ let
     { device="redfin";     flavor="vanilla"; }
     { device="barbet";     flavor="vanilla"; }
 
+    { device="sunfish";    flavor="vanilla";    androidVersion=12; }
+    { device="sunfish";    flavor="grapheneos"; androidVersion=12; }
+
     { device="x86_64";     flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
     { device="crosshatch"; flavor="grapheneos"; }
