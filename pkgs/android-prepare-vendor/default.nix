@@ -19,19 +19,19 @@ let
   }.${builtins.toString api};
 
   src = {
-    "30" = (fetchFromGitHub {
-      # Android11 branch
-      owner = "AOSPAlliance";
-      repo = "android-prepare-vendor";
-      rev = "227f5ce7cd89a3f57291fe2b84869c7a5d1e17fa";
-      sha256 = "07g5dcl2x44ai5q2yfq9ybx7j7kn41s82hgpv7jff5v1vr38cia9";
-    });
     "29" = (fetchFromGitHub {
       # Android10 branch
       owner = "AOSPAlliance";
       repo = "android-prepare-vendor";
       rev = "a9602ca6ef16ff10641d668dcb203f89f402d40d";
       sha256 = "0wldj8ykwh8r7m1ff6vbkbc73a80lmmxwfmk8nm0cnzpbfk4cq7w";
+    });
+    "30" = (fetchFromGitHub {
+      # Android11 branch
+      owner = "AOSPAlliance";
+      repo = "android-prepare-vendor";
+      rev = "227f5ce7cd89a3f57291fe2b84869c7a5d1e17fa";
+      sha256 = "07g5dcl2x44ai5q2yfq9ybx7j7kn41s82hgpv7jff5v1vr38cia9";
     });
     "31" = (fetchFromGitHub {
       owner = "grapheneos";
@@ -51,17 +51,25 @@ in
     (python.withPackages (p: [ p.protobuf ])) # Python is used by "extract_android_ota_payload"
   ];
 
-  patches = if api <= 30 then [
-    ./11/0001-Disable-oatdump-update.patch
-    ./11/0002-Just-write-proprietary-blobs.txt-to-current-dir.patch
-    ./11/0003-Allow-for-externally-set-config-file.patch
-    ./11/0004-Add-option-to-use-externally-provided-carrier_list.p.patch
-  ] else [
-    ./12/0001-Just-write-proprietary-blobs.txt-to-current-dir.patch
-    ./12/0002-Allow-for-externally-set-config-file.patch
-    ./12/0003-Add-option-to-use-externally-provided-carrier_list.p.patch
-    ./12/0004-Add-Android-12-workaround-for-PRODUCT_COPY_FILES.patch
-  ];
+  patches = {
+    "29" = [
+      ./10/0001-Disable-oatdump-update.patch
+      ./10/0002-Just-write-proprietary-blobs.txt-to-current-dir.patch
+      ./10/0003-Allow-for-externally-set-config-file.patch
+    ];
+    "30" = [
+      ./11/0001-Disable-oatdump-update.patch
+      ./11/0002-Just-write-proprietary-blobs.txt-to-current-dir.patch
+      ./11/0003-Allow-for-externally-set-config-file.patch
+      ./11/0004-Add-option-to-use-externally-provided-carrier_list.p.patch
+    ];
+    "31" = [
+      ./12/0001-Just-write-proprietary-blobs.txt-to-current-dir.patch
+      ./12/0002-Allow-for-externally-set-config-file.patch
+      ./12/0003-Add-option-to-use-externally-provided-carrier_list.p.patch
+      ./12/0004-Add-Android-12-workaround-for-PRODUCT_COPY_FILES.patch
+    ];
+  }.${builtins.toString api};
 
   postPatch = ''
     patchShebangs ./execute-all.sh
