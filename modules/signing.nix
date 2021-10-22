@@ -16,6 +16,7 @@ let
                     ++ (lib.optional (config.signing.avb.mode == "verity_only") "${config.device}/verity")
                     ++ (lib.optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
                     ++ (lib.optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
+                    ++ (lib.optionals (config.androidVersion >= 12) [ "com.android.connectivity.resources" ])
                     ++ (lib.optional config.signing.apex.enable config.signing.apex.packageNames)
                     ++ (lib.mapAttrsToList
                         (name: prebuilt: prebuilt.certificate)
@@ -101,16 +102,22 @@ in
     signing.avb.verityCert = mkIf config.signing.enable (mkOptionDefault (putInStore "${config.signing.keyStorePath}/${config.device}/verity.x509.pem"));
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
+    # TODO: Some of these apex packages share the same underlying keys. We should try to match that. See META/apexkeys.txt from  target-files
     signing.apex.packageNames = map (s: "com.android.${s}") (
-      lib.optionals (config.androidVersion == 10) [ "runtime.release" ]
-      ++ lib.optionals (config.androidVersion >= 10) [
+      lib.optionals (config.androidVersion == 10) [
+        "runtime.release"
+      ] ++ lib.optionals (config.androidVersion >= 10) [
         "conscrypt" "media" "media.swcodec" "resolv" "tzdata"
-      ]
-      ++ lib.optionals (config.androidVersion >= 11) [
-        "adbd" "art.release" "cellbroadcast" "extservices" "i18n"
-        "ipsec" "mediaprovider" "neuralnetworks" "os.statsd" "runtime"
-        "permission" "sdkext" "telephony" "tethering" "wifi"
-        "vndk.current" "vndk.v27" "vndk.v28" "vndk.v29"
+      ] ++ lib.optionals (config.androidVersion == 11) [
+        "art.release" "vndk.v27"
+      ] ++ lib.optionals (config.androidVersion >= 11) [
+        "adbd" "cellbroadcast" "extservices" "i18n" "ipsec" "mediaprovider"
+        "neuralnetworks" "os.statsd" "permission" "runtime" "sdkext"
+        "telephony" "tethering" "wifi" "vndk.current" "vndk.v28" "vndk.v29"
+      ] ++ lib.optionals (config.androidVersion >= 12) [
+        "appsearch" "art" "art.debug" "art.host" "art.testing" "compos" "geotz"
+        "scheduling" "support.apexer" "tethering.inprocess" "virt"
+        "vndk.current.on_vendor" "vndk.v30"
       ]
     );
 
@@ -149,9 +156,15 @@ in
       // lib.optionalAttrs (config.androidVersion >= 10) {
         "build/make/target/product/security/networkstack" = "${config.device}/networkstack";
       }
-      // lib.optionalAttrs (config.androidVersion >= 11) {
+      // lib.optionalAttrs (config.androidVersion == 11) {
         "frameworks/base/packages/OsuLogin/certs/com.android.hotspot2.osulogin" = "com.android.hotspot2.osulogin";
         "frameworks/opt/net/wifi/service/resources-certs/com.android.wifi.resources" = "com.android.wifi.resources";
+      }
+      // lib.optionalAttrs (config.androidVersion >= 12) {
+        # Paths to OsuLogin and com.android.wifi have changed
+        "packages/modules/Wifi/OsuLogin/certs/com.android.hotspot2.osulogin" = "com.android.hotspot2.osulogin";
+        "packages/modules/Wifi/service/ServiceWifiResources/resources-certs/com.android.wifi.resources" = "com.android.wifi.resources";
+        "packages/modules/Connectivity/service/ServiceConnectivityResources/resources-certs/com.android.connectivity.resources" = "com.android.connectivity.resources";
       }
       # App-specific keys
       // lib.mapAttrs'
@@ -169,7 +182,7 @@ in
 
     build.generateKeysScript = let
       # Get a bunch of utilities to generate keys
-      keyTools = pkgs.runCommandCC "android-key-tools" { buildInputs = [ pkgs.python ]; } ''
+      keyTools = pkgs.runCommandCC "android-key-tools" { buildInputs = [ (if config.androidVersion >= 12 then pkgs.python3 else pkgs.python2) ]; } ''
         mkdir -p $out/bin
 
         cp ${config.source.dirs."development".src}/tools/make_key $out/bin/make_key
@@ -177,7 +190,7 @@ in
 
         cc -o $out/bin/generate_verity_key \
           ${config.source.dirs."system/extras".src}/verity/generate_verity_key.c \
-          ${config.source.dirs."system/core".src}/libcrypto_utils/android_pubkey.c \
+          ${config.source.dirs."system/core".src}/libcrypto_utils/android_pubkey.c${lib.optionalString (config.androidVersion >= 12) "pp"} \
           -I ${config.source.dirs."system/core".src}/libcrypto_utils/include/ \
           -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
 
@@ -293,9 +306,7 @@ in
         echo Certain keys were missing from KEYSDIR. Have you run generateKeysScript?
         echo Additionally, some robotnix configuration options require that you re-run
         echo generateKeysScript to create additional new keys.  This should not overwrite
-        echo existing keys. If you have previously generated keys and see this message
-        echo after recent changes in early December 2020, please read the release notes
-        echo in NEWS.md.
+        echo existing keys.
       fi
       exit $RETVAL
     '';
