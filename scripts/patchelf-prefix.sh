@@ -26,8 +26,8 @@ trap 'rm $tmpFile' EXIT
 cp "$file" "$tmpFile"
 
 echo "$file"
-dd if="$file" of="$tmpFile" bs=$offset count=1 2>&1 >/dev/null
+dd if="$file" of="$tmpFile" bs=$offset count=1 >/dev/null 2>&1
 patchelf --set-interpreter "$interpreter" "$tmpFile"
-dd if="$file" of="$tmpFile" bs=$offset skip=1 conv=notrunc oflag=append 2>&1 >/dev/null
+dd if="$file" of="$tmpFile" bs=$offset skip=1 conv=notrunc oflag=append >/dev/null 2>&1
 mv "$tmpFile" "$file"
 chmod +x "$file"
