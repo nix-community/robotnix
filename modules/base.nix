@@ -203,9 +203,20 @@ in
   };
 
   config = mkMerge [
+  # Generic devices
   (mkIf (lib.elem config.device ["arm64" "arm" "x86" "x86_64"]) {
-    # If this is a generic build for an arch, just set the arch as well
     arch = mkDefault config.device;
+    deviceFamily = mkDefault "generic";
+  })
+  # Cuttlefish devices
+  (mkIf (lib.hasPrefix "cf_" config.device) {
+    arch = mkDefault (
+      if lib.hasPrefix "cf_arm64" config.device then "arm64"
+      else if lib.hasPrefix "cf_arm" config.device then "arm"
+      else if lib.hasPrefix "cf_x86_64" config.device then "x86_64"
+      else if lib.hasPrefix "cf_x86" config.device then "x86"
+      else throw "invalid arch for cuttlefish in ${config.device}"
+    );
     deviceFamily = mkDefault "generic";
   })
   {
