@@ -26,7 +26,7 @@ let
 
   # TODO: There's probably a better way to do this
   mergedConfig = lib.recursiveUpdate replacedApvConfig (
-    if (config.flavor == "grapheneos")
+    if (config.androidVersion >= 12 || config.flavor == "grapheneos")
     then filterConfig replacedApvConfig
     else { "api-${apiStr}".naked = filterConfig replacedApvConfig."api-${apiStr}".naked; }
   );
@@ -51,10 +51,10 @@ let
         --device "${device}" \
         --buildID "${buildID}" \
         --imgs "${img}" \
-        --carrier-list-folder ${latestTelephonyProvider}/assets/latest_carrier_id \
+        ${lib.optionalString (config.androidVersion >= 11) "--carrier-list-folder ${latestTelephonyProvider}/assets/latest_carrier_id"} \
         ${lib.optionalString (ota != null) "--ota ${ota}"} \
-        ${lib.optionalString (config.flavor != "grapheneos") "--debugfs"} \
-        ${lib.optionalString (config.flavor != "grapheneos") "--timestamp \"${builtins.toString timestamp}\""} \
+        ${lib.optionalString (config.flavor == "vanilla" && config.androidVersion < 12) "--debugfs"} \
+        ${lib.optionalString (config.flavor == "vanilla" && config.androidVersion < 12) "--timestamp \"${builtins.toString timestamp}\""} \
         ${lib.optionalString (configFile != null) "--conf-file ${configFile}"}
 
       mkdir -p $out
@@ -66,7 +66,7 @@ let
       ${android-prepare-vendor}/scripts/extract-factory-images.sh \
         --input "${img}" \
         --output $out \
-        ${lib.optionalString (config.flavor != "grapheneos") "--debugfs"} \
+        ${lib.optionalString (config.flavor == "vanilla" && config.androidVersion < 12) "--debugfs"} \
         --conf-file ${mergedConfigFile}
     '';
 

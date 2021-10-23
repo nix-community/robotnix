@@ -5,25 +5,17 @@
 let
   inherit (lib)
     optional optionalString optionalAttrs elem
-    mkIf mkMerge mkDefault;
+    mkIf mkMerge mkDefault mkForce;
 
   inherit (import ../supported-devices.nix { inherit lib config; })
     supportedDeviceFamilies phoneDeviceFamilies;
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 12) (mkMerge [
 {
-  buildDateTime = mkDefault 1633374352;
+  buildDateTime = mkDefault 1634663130;
 
-#  source.manifest.rev = mkMerge [
-#    (mkIf (config.device != "barbet") (mkDefault "android-12.0.0_r1"))
-#    (mkIf (config.device == "barbet") (mkDefault "android-12.0.0_r2"))
-#  ];
-#  apv.buildID = mkMerge [
-#    (mkIf (config.device != "barbet") (mkDefault "RQ3A.210905.001"))
-#    (mkIf (config.device == "barbet") (mkDefault "RD2A.210905.002"))
-#  ];
   source.manifest.rev = mkDefault "android-12.0.0_r1";
-  apv.enable = false; # TODO: Update apv for android 12
+  apv.buildID = mkDefault "SP1A.210812.015";
 
 #  # Disable for now until we have it tested working
 #  kernel.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies &&
@@ -44,13 +36,12 @@ in
     type = "string-array";
   };
 
-# TODO: Does not apply
-#  # Clock app needs battery optimization exemption. Currently not in AOSP
-#  source.dirs."packages/apps/DeskClock".patches = [
-#    (pkgs.fetchpatch {
-#      url = "https://github.com/GrapheneOS/platform_packages_apps_DeskClock/commit/0b21e707d7dca4c9c3e4ff030bef8fae3abed088.patch";
-#      sha256 = "0mzjzxyl8g2i520902bhc3ww3vbcwcx06m3zg033z0w6pw87apqc";
-#    })
-#  ];
+  # Work around issue with checks for uses-library with apv output
+  source.dirs."build/soong".patches = [
+    (pkgs.fetchpatch {
+      url = "https://github.com/GrapheneOS/platform_build_soong/commit/2c00471cb204a9927570f48c92f058e3ae80a116.patch";
+      sha256 = "110018jxzlflcm08lnvl8lik017xfq212y0qjd4rclxa1b652mnx";
+    })
+  ];
 }
 ]))

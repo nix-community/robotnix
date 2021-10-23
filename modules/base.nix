@@ -390,94 +390,27 @@ in
         sourceRoot = ".";
         nativeBuildInputs = with pkgs; [ unzip pythonPackages.pytest ];
         buildInputs = [ (pkgs.python.withPackages (p: [ p.protobuf ])) ];
-        postPatch = let
-          # Android 11 uses JDK 9, but jre9 is not in nixpkgs anymore
-          jre = if (config.androidVersion >= 11) then pkgs.jdk11_headless else pkgs.jre8_headless;
-        in ''
-          ${lib.optionalString (config.androidVersion >= 11) "cp bin/debugfs_static bin/debugfs"}
-
-          for file in bin/{boot_signer,verity_signer}; do
-            substituteInPlace $file --replace "java " "${lib.getBin jre}/bin/java "
-          done
-
+        postPatch = lib.optionalString (config.androidVersion == 11) ''
+          cp bin/debugfs_static bin/debugfs
+        '' + lib.optionalString (config.androidVersion <= 10) ''
           substituteInPlace releasetools/common.py \
             --replace 'self.search_path = platform_search_path.get(sys.platform)' "self.search_path = \"$out\"" \
-            --replace 'self.java_path = "java"' 'self.java_path = "${lib.getBin jre}/bin/java"' \
-            --replace '"zip"' '"${lib.getBin pkgs.zip}/bin/zip"' \
-            --replace '"unzip"' '"${lib.getBin pkgs.unzip}/bin/unzip"'
-
-          substituteInPlace bin/lib/shflags/shflags \
-            --replace "FLAGS_GETOPT_CMD:-getopt" "FLAGS_GETOPT_CMD:-${pkgs.getopt}/bin/getopt"
-
-          substituteInPlace bin/brillo_update_payload \
-            --replace "which delta_generator" "${pkgs.which}/bin/which delta_generator" \
-            --replace "python " "${pkgs.python}/bin/python " \
-            --replace "xxd " "${lib.getBin pkgs.toybox}/bin/xxd " \
-            --replace "cgpt " "${lib.getBin pkgs.vboot_reference}/bin/cgpt " \
-            --replace "look " "${lib.getBin pkgs.utillinux}/bin/look " \
-            --replace "unzip " "${lib.getBin pkgs.unzip}/bin/unzip "
-
-          for file in releasetools/{check_ota_package_signature,sign_target_files_apks,test_common,common,test_ota_from_target_files,ota_from_target_files,check_target_files_signatures}.py; do
-            substituteInPlace "$file" \
-              --replace "'openssl'" "'${lib.getBin pkgs.openssl}/bin/openssl'" \
-              --replace "\"openssl\"" "\"${lib.getBin pkgs.openssl}/bin/openssl\""
-          done
-          for file in releasetools/testdata/{payload_signer,signing_helper}.sh; do
-            substituteInPlace "$file" \
-              --replace "openssl" "${lib.getBin pkgs.openssl}/bin/openssl"
-          done
-
-          for file in releasetools/test_*.py; do
-            substituteInPlace "$file" \
-              --replace "@test_utils.SkipIfExternalToolsUnavailable()" ""
-          done
-
-          # This test is broken
-          substituteInPlace releasetools/test_sign_target_files_apks.py \
-            --replace test_ReadApexKeysInfo_presignedKeys skip_test_ReadApexKeysInfo_presignedKeys
-
-          # These tests are too slow
-          substituteInPlace releasetools/test_common.py \
-            --replace test_ZipWrite skip_test_zipWrite
         '';
 
         dontBuild = true;
 
-        installPhase = let
-          # Patchelf breaks the executables with embedded python interpreters
-          # Instead, for android < 12, we just wrap all the binaries with a
-          # chrootenv. This is ugly.
-          # TODO: Try to remove this
-          env = pkgs.buildFHSUserEnv {
-            name = "otatools-env";
-            targetPkgs = p: with p; [ openssl ]; # for bin/avbtool
-            runScript = pkgs.writeShellScript "run" ''
-              run="$1"
-              shift
-              exec -- "$run" "$@"
-            '';
-          };
-        in lib.optionalString (config.androidVersion >= 12) ''
-          # Can only do this for android 12, android 11 doesn't have the
-          # prebuilt py*-launcher* files that we patchelf earlier
+        installPhase = ''
           for file in bin/*; do
             isELF "$file" || continue
-            patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "$file" || continue
+            bash ${../scripts/patchelf-prefix.sh} "$file" "${pkgs.stdenv.cc.bintools.dynamicLinker}" || continue
           done
-        '' + lib.optionalString (config.androidVersion < 12) ''
-          while read -r file; do
-            # isELF is provided by stdenv
-            isELF "$file" || continue
-
-            mv "$file" "bin/.$(basename $file)"
-            echo "#!${pkgs.runtimeShell}" > $file
-            echo "exec ${env}/bin/otatools-env $out/bin/.$(basename $file) \"\$@\"" >> $file
-            chmod +x $file
-          done < <(find ./bin -type f -maxdepth 1 -executable)
         '' + ''
-
           mkdir -p $out
           cp --reflink=auto -r * $out/
+        '' + lib.optionalString (config.androidVersion <= 10) ''
+          ln -s $out/releasetools/sign_target_files_apks.py $out/bin/sign_target_files_apks
+          ln -s $out/releasetools/img_from_target_files.py $out/bin/img_from_target_files
+          ln -s $out/releasetools/ota_from_target_files.py $out/bin/ota_from_target_files
         '';
 
         # Since we copy everything from build dir into $out, we don't want
@@ -486,15 +419,6 @@ in
 
         # This breaks the executables with embedded python interpreters
         dontStrip = true;
-
-        # TODO: Fix with android >=11
-        doInstallCheck = config.androidVersion <= 10;
-        installCheckPhase = ''
-          cd $out/releasetools
-          export PATH=$out/bin:$PATH
-          export EXT2FS_NO_MTAB_OK=yes
-          pytest
-        '';
       };
 
       # Just included for convenience when building outside of nix.

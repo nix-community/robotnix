@@ -4,12 +4,17 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkDefault mkOption types optionalString;
+  inherit (lib) mkIf mkDefault mkOption types optional optionalString;
 
   otaTools = config.build.otaTools;
 
-  wrapScript = { commands, keysDir }: ''
-    export PATH=${otaTools}/bin:$PATH
+  wrapScript = { commands, keysDir }: let
+    jre = if (config.androidVersion >= 11) then pkgs.jdk11_headless else pkgs.jre8_headless;
+    deps = with pkgs;
+      [ otaTools openssl jre zip unzip pkgs.getopt which toybox vboot_reference utillinux ]
+      ++ optional (config.androidVersion <= 10) python;  # For brillo_update_payload in Android 10, truncate_file calls out to python
+  in ''
+    export PATH=${lib.makeBinPath deps}:$PATH
     export EXT2FS_NO_MTAB_OK=yes
 
     # build-tools releasetools/common.py hilariously tries to modify the
@@ -41,18 +46,18 @@ let
   signedTargetFilesScript = { targetFiles, out }: ''
   ( OUT=$(realpath ${out})
     cd ${otaTools}; # Enter otaTools dir so relative paths are correct for finding original keys
-    ${otaTools}/releasetools/sign_target_files_apks.py \
+    sign_target_files_apks \
       -o ${toString config.signing.signTargetFilesArgs} \
       ${targetFiles} $OUT
   )
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
-    ${otaTools}/releasetools/ota_from_target_files.py  \
+    ota_from_target_files  \
       ${toString config.otaArgs} \
       ${lib.optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
       ${targetFiles} ${out}
   '';
-  imgScript = { targetFiles, out }: ''${otaTools}/releasetools/img_from_target_files.py ${targetFiles} ${out}'';
+  imgScript = { targetFiles, out }: ''img_from_target_files ${targetFiles} ${out}'';
   factoryImgScript = { targetFiles, img, out }: ''
       ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
       ln -s ${img} ${config.device}-img-${config.buildNumber}.zip || true

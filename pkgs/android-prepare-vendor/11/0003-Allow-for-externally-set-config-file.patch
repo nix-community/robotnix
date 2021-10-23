@@ -1,4 +1,4 @@
-From c3d963045b0a746dcb6346c3e91c6945edaac07d Mon Sep 17 00:00:00 2001
+From c6deab344679d41e21fa05f61b045ea61786ecf8 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Wed, 11 Sep 2019 13:02:03 -0400
 Subject: [PATCH 3/4] Allow for externally-set config file
@@ -9,7 +9,7 @@ Subject: [PATCH 3/4] Allow for externally-set config file
  2 files changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/execute-all.sh b/execute-all.sh
-index da22db5..66399e4 100755
+index c289549..80ad6b2 100755
 --- a/execute-all.sh
 +++ b/execute-all.sh
 @@ -433,6 +433,10 @@ do
@@ -65,5 +65,5 @@ index d30e728..eb94f1a 100755
  
  # Prepare vendor output directory structure
 -- 
-2.32.0
+2.33.0
 

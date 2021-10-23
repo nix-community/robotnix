@@ -1,20 +1,20 @@
-From 3c24527bd9b3bdfa29a2a52a8e58fa93acfe613a Mon Sep 17 00:00:00 2001
+From 248e75da4fbb5b914d85f8bfbd01dff965cfc9e8 Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
-Date: Wed, 11 Sep 2019 13:02:03 -0400
-Subject: [PATCH 2/3] Allow for externally-set config file
+Date: Fri, 22 Oct 2021 15:01:01 -0700
+Subject: [PATCH 3/3] Allow for externally-set config file
 
 ---
  execute-all.sh             | 8 +++++++-
- scripts/generate-vendor.sh | 5 ++---
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ scripts/generate-vendor.sh | 3 ++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/execute-all.sh b/execute-all.sh
-index 08ce5ed..69d714e 100755
+index 4d85ccb..08ad579 100755
 --- a/execute-all.sh
 +++ b/execute-all.sh
-@@ -273,6 +273,10 @@ do
-     --force-vimg)
-       FORCE_VIMG=true
+@@ -426,6 +426,10 @@ do
+       TIMESTAMP="$2"
+       shift
        ;;
 +    --conf-file)
 +      CONFIG_FILE="$(_realpath $2)"
@@ -23,10 +23,10 @@ index 08ce5ed..69d714e 100755
      *)
        echo "[-] Invalid argument '$1'"
        usage
-@@ -310,7 +314,9 @@ update_java_path
+@@ -478,7 +482,9 @@ update_java_path
  check_supported_device
  
- # Specify device configuration json
+ # Check supported API for device
 -CONFIG_FILE="$SCRIPTS_ROOT/$DEVICE/config.json"
 +if [[ "$CONFIG_FILE" = "" ]]; then
 +    CONFIG_FILE="$SCRIPTS_ROOT/$DEVICE/config.json"
@@ -35,20 +35,19 @@ index 08ce5ed..69d714e 100755
  # Prepare output dir structure
  OUT_BASE="$OUTPUT_DIR/$DEVICE/$BUILDID"
 diff --git a/scripts/generate-vendor.sh b/scripts/generate-vendor.sh
-index 2dd531c..6b0c4be 100755
+index 9f9f14b..805de7b 100755
 --- a/scripts/generate-vendor.sh
 +++ b/scripts/generate-vendor.sh
-@@ -1244,7 +1244,8 @@ check_dir "$OUTPUT_DIR" "Output"
- check_file "$CONFIG_FILE" "Device Config File"
+@@ -1141,6 +1141,8 @@ API_LEVEL=""
+ ALLOW_PREOPT=false
+ FORCE_VIMG=false
  
- # Populate config files from base conf dir
--readonly DEVICE_CONFIG_DIR="$(dirname "$CONFIG_FILE")"
 +DEVICE=$(get_device_codename "$INPUT_DIR/system/build.prop")
 +readonly DEVICE_CONFIG_DIR="$SCRIPTS_DIR/../$DEVICE"
- readonly BLOBS_LIST="./proprietary-blobs.txt"
- readonly OVERLAYS_DIR="$(setOverlaysDir)"
- readonly RRO_OVERLAYS="$(jqIncRawArray "rro-overlays" "$CONFIG_FILE")"
-@@ -1265,7 +1266,6 @@ readarray -t PSIG_BC_FILES < <(
+ DEVICE_CONFIG_DIR=""
+ DEVICE=""
+ DEVICE_FAMILY=""
+@@ -1231,7 +1233,6 @@ readarray -t PSIG_BC_FILES < <(
  verify_input "$INPUT_DIR"
  
  # Get device details
@@ -56,14 +55,6 @@ index 2dd531c..6b0c4be 100755
  DEVICE_FAMILY="$(jqRawStrTop "device-family" "$CONFIG_FILE")"
  VENDOR=$(get_vendor "$INPUT_DIR/system/build.prop")
  VENDOR_DIR="$(jqRawStrTop "aosp-vendor-dir" "$CONFIG_FILE")"
-@@ -1276,7 +1276,6 @@ if [[ "$OTA_IMGS_LIST" != "" ]]; then
-   readarray -t OTA_IMGS < <(echo "$OTA_IMGS_LIST")
- fi
- 
--
- echo "[*] Generating '$DEVICE' vendor blobs"
- 
- # Prepare vendor output directory structure
 -- 
 2.33.0
 
