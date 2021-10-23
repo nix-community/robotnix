@@ -8,7 +8,7 @@ let
   android12SourceDirs = (import ../../default.nix {
     inherit pkgs;
     configuration = {
-      source.dirs = lib.importJSON ./repo-SP1A.210812.015.2021102203.json;
+      source.dirs = lib.importJSON ./repo-SP1A.210812.015.2021102300.json;
     };
   }).config.source.dirs;
 
