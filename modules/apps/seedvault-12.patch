@@ -1,0 +1,31 @@
+From 17d386a68f2b72783af1f24cdf8534329713b607 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sat, 23 Oct 2021 11:43:03 -0700
+Subject: [PATCH] Revert "Move LocalContactsBackup to product partition"
+
+This reverts commit acc332b0fdd36823332f7d003adf80bc49378027.
+---
+ contactsbackup/Android.bp | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/contactsbackup/Android.bp b/contactsbackup/Android.bp
+index e0d6020..9a4e2e6 100644
+--- a/contactsbackup/Android.bp
++++ b/contactsbackup/Android.bp
+@@ -13,13 +13,11 @@ android_app {
+     required: [
+         "default-permissions_org.calyxos.backup.contacts",
+     ],
+-    product_specific: true,
+     sdk_version: "current",
+ }
+ 
+ prebuilt_etc {
+     name: "default-permissions_org.calyxos.backup.contacts",
+-    product_specific: true,
+     sub_dir: "default-permissions",
+     src: "default-permissions_org.calyxos.backup.contacts.xml",
+     filename_from_src: true,
+-- 
+2.33.0
+

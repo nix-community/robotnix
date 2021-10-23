@@ -31,7 +31,20 @@ in
     resources."frameworks/base/packages/SettingsProvider".def_backup_enabled = true;
     resources."frameworks/base/packages/SettingsProvider".def_backup_transport = "com.stevesoltys.seedvault.transport.ConfigurableBackupTransport";
   }
-  (mkIf (config.androidVersion >= 11) {
+  (mkIf (config.androidVersion == 12) {
+    # For android 11, just use the source tree from upstream, and have soong build it
+    source.dirs."robotnix/seedvault".src = pkgs.fetchFromGitHub {
+      owner = "seedvault-app";
+      repo = "seedvault";
+      rev = "b0c6eeb9f7af7845cabdac58a87f183551a053a1"; # 2021-10-23
+      sha256 = "0fc7bq8wmav25cb51s7hidrbdb17wq03naymclqbwsc9pxrv4px6";
+    };
+    source.dirs."robotnix/seedvault".patches = [ ./seedvault-12.patch ];
+
+    # TODO: Move to product partition?
+    system.additionalProductPackages = [ "Seedvault" ];
+  })
+  (mkIf (config.androidVersion == 11) {
     # For android 11, just use the source tree from upstream, and have soong build it
     source.dirs."robotnix/seedvault".src = pkgs.fetchFromGitHub {
       owner = "seedvault-app";
