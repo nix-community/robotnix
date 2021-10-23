@@ -23,14 +23,36 @@ in
 
   config = mkIf config.microg.enable {
     # Uses better patch for microg that hardcodes the fake google signature and only allows microg apps to use it
-    source.dirs."frameworks/base".patches =
-      if (config.androidVersion >= 11)
-      then [ ./microg-android11.patch ]
-      else [ (pkgs.fetchpatch {
-        name = "microg.patch";
-        url = "https://gitlab.com/calyxos/platform_frameworks_base/commit/dccce9d969f11c1739d19855ade9ccfbacf8ef76.patch";
-        sha256 = "15c2i64dz4i0i5xv2cz51k08phlkhhg620b06n25bp2x88226m06";
-      }) ];
+    source.dirs = mkMerge [
+      (mkIf (config.androidVersion >= 12) {
+        "frameworks/base".patches = [
+          (pkgs.fetchpatch {
+            name = "microg-12.patch";
+            url = "https://github.com/microg/GmsCore/commit/8249ff4cc26b090a19079c4560273e87cab94115.patch";
+            sha256 = "1i7vbqk9m3s0l0ilc4db8898kd162f0s1xssnd5vjh87smzq5b26";
+          })
+        ];
+        "packages/modules/Permission".patches = [
+          (pkgs.fetchpatch {
+            name = "fake-package-signature.patch";
+            url = "https://github.com/ProtonAOSP/android_packages_modules_Permission/commit/de7846184379955956021b6e7b1730b24c8f4802.patch";
+            sha256 = "1644nh8fnf5nxawdfqixxsf786s1fhx6jp42awjiii98nkc8pg6d";
+          })
+        ];
+      })
+      (mkIf (config.androidVersion == 11) {
+        "frameworks/base".patches = [ ./microg-android11.patch ];
+      })
+      (mkIf (config.androidVersion == 10) {
+        "frameworks/base".patches = [
+          (pkgs.fetchpatch {
+            name = "microg.patch";
+            url = "https://gitlab.com/calyxos/platform_frameworks_base/commit/dccce9d969f11c1739d19855ade9ccfbacf8ef76.patch";
+            sha256 = "15c2i64dz4i0i5xv2cz51k08phlkhhg620b06n25bp2x88226m06";
+          })
+        ];
+      })
+    ];
 
     resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = mkIf (config.androidVersion == 9) (mkDefault "gps,network");
 
