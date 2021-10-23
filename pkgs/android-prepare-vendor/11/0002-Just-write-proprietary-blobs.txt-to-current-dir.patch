@@ -1,4 +1,4 @@
-From af75ce11426e321a007dfa451b202e714170262f Mon Sep 17 00:00:00 2001
+From 8e1d192cb94f80bc51bfea317dfe358f49a768ed Mon Sep 17 00:00:00 2001
 From: Daniel Fullmer <danielrf12@gmail.com>
 Date: Fri, 6 Sep 2019 16:59:30 -0400
 Subject: [PATCH 2/4] Just write proprietary-blobs.txt to current dir
@@ -9,7 +9,7 @@ Subject: [PATCH 2/4] Just write proprietary-blobs.txt to current dir
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/execute-all.sh b/execute-all.sh
-index aefe810..da22db5 100755
+index 4a8fda0..c289549 100755
 --- a/execute-all.sh
 +++ b/execute-all.sh
 @@ -646,7 +646,7 @@ echo "[*] Processing with 'API-$API_LEVEL $CONFIG_TYPE' configuration"
@@ -35,5 +35,5 @@ index 32b2185..d30e728 100755
  readonly RRO_OVERLAYS="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "rro-overlays" "$CONFIG_FILE")"
  readonly DEP_DSO_BLOBS_LIST="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "dep-dso" "$CONFIG_FILE" | grep -Ev '(^#|^$)')"
 -- 
-2.32.0
+2.33.0
 

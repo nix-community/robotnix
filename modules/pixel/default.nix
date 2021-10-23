@@ -100,4 +100,10 @@ mkMerge [
   (mkIf (lib.elem config.deviceFamily [ "coral" "sunfish" "redfin" "barbet" ]) {
     signing.avb.mode = "vbmeta_chained_v2";
   })
+  (mkIf (config.deviceFamily == "sunfish") {
+    signing.apex.packageNames = [ "com.android.vibrator.sunfish" ];
+  })
+  (mkIf (lib.elem config.deviceFamily [ "sunfish" "redfin" "barbet" ]) {
+    signing.apex.packageNames = [ "com.android.vibrator.drv2624" ];
+  })
 ]
