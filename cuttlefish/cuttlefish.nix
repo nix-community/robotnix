@@ -95,8 +95,8 @@ let
     src = "${cvd-host_package}/cvd-host_package.tar.gz";
 
     nativeBuildInputs =
-      lib.optionals stdenv.isx86_64 [ autoPatchelfHook addOpenGLRunpath ]
-      ++ lib.optional stdenv.isAarch64 [ cuttlefish_common ]; # So nix can find the reference to this from inside the zip file
+      [ cuttlefish_common ] # So nix can find the reference to this from inside the zip file
+      ++ lib.optionals stdenv.isx86_64 [ autoPatchelfHook addOpenGLRunpath ];
     buildInputs =
       lib.optionals stdenv.isx86_64 [ xorg.libX11 libGL mesa ]
       ++ lib.optional stdenv.isAarch64 [ bash ];
@@ -104,27 +104,29 @@ let
     sourceRoot = ".";
 
     installPhase = ''
-      rm env-vars # So we don't have unneeded references to nix store
       cp -r . $out
+
+      for file in $out/bin/* $out/bin/x86_64-linux-gnu/crosvm; do
+        isELF "$file" || continue
+        bash ${../scripts/patchelf-prefix.sh} "$file" "${stdenv.cc.bintools.dynamicLinker}" || continue
+      done
+      patchelf \
+        --set-rpath "${lib.makeLibraryPath [ libdrm ]}:$(patchelf --print-rpath bin/x86_64-linux-gnu/crosvm)" \
+        $out/bin/x86_64-linux-gnu/crosvm
+      addOpenGLRunpath $out/bin/x86_64-linux-gnu/crosvm
+      patchShebangs $out/bin/crosvm
     ''
     + lib.optionalString stdenv.isAarch64 ''
       # For some reason, the mkenvimage built by android is for x86_64, not
       # aarch64 like the other executables.
       cp ${my_ubootTools}/bin/mkenvimage $out/bin/
-
-      patchShebangs $out/bin/crosvm
     '';
 
-    # This needs to be after autoPatchelfHook
+    dontFixup = true;
     dontStrip = true;
-    dontAutoPatchelf = stdenv.isx86_64;
-    postFixup = lib.optionalString stdenv.isx86_64 ''
-      autoPatchelf -- $out
-      patchelf --set-rpath "${lib.makeLibraryPath [ libdrm libglvnd vulkan-loader ]}:$(patchelf --print-rpath $out/bin/x86_64-linux-gnu/crosvm)" $out/bin/x86_64-linux-gnu/crosvm
-      addOpenGLRunpath $out/bin/x86_64-linux-gnu/crosvm
-    '';
-
-    dontFixup = stdenv.isAarch64;
+    dontMoveLib64 = true;
+    noDumpEnvVars = true;
+    dontAutoPatchelf = true;
   };
 in {
   cvd-host_package = fixedup;
