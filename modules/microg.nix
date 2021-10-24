@@ -4,7 +4,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkDefault mkEnableOption;
+  inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
   version = {
     part1 = "0.2.22";
