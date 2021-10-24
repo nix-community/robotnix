@@ -64,6 +64,32 @@
     "sha256": "1mpckibxy7vhjws7673cksxpk4hkx3agi4v3fmjci5q0gb9a94wp",
     "url": "https://github.com/LineageOS/android_device_asus_flox"
   },
+  "device/asus/obiwan": {
+    "date": "2021-02-01T20:20:03+01:00",
+    "deepClone": false,
+    "deps": [
+      "device/asus/sm8250-common"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/fblz7ynhck4lm070sihlsg2wg2w97fpl-android_device_asus_obiwan",
+    "rev": "662036b27cf1b7b4344607e1d59292fcb587caf1",
+    "sha256": "1b38pf9qb7w3s3fnqgzl5w7b33icq98hqr05gj4zmg1yla3b9xz8",
+    "url": "https://github.com/LineageOS/android_device_asus_obiwan"
+  },
+  "device/asus/sm8250-common": {
+    "date": "2021-01-21T01:33:57+01:00",
+    "deepClone": false,
+    "deps": [
+      "kernel/asus/sm8250"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/1x6sz2slnja1qpdh2rh99pv1ksayrg2a-android_device_asus_sm8250-common",
+    "rev": "d201222df1b5b853d6730ea5e4fa3fd46ab4d127",
+    "sha256": "1cczlwj1zpv782s4l75vfvyk4x7ib5l1vh9sk70j6w3flfxmjdvv",
+    "url": "https://github.com/LineageOS/android_device_asus_sm8250-common"
+  },
   "device/bq/bardock": {
     "date": "2020-02-03T10:28:12+01:00",
     "deepClone": false,
@@ -1239,7 +1265,7 @@
     "url": "https://github.com/LineageOS/android_device_motorola_sdm660-common"
   },
   "device/motorola/sm7250-common": {
-    "date": "2021-03-08T15:10:05+03:30",
+    "date": "2021-10-13T17:10:17+03:30",
     "deepClone": false,
     "deps": [
       "kernel/motorola/sm7250",
@@ -1247,9 +1273,9 @@
     ],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/pk44mrr2rs3vngzhppf5r6hpvlb3qmv1-android_device_motorola_sm7250-common",
-    "rev": "3bda9fbbe14d94a7f1181f8efef5b5f77d948969",
-    "sha256": "0zc497zzmva62lykxvbs4waisjzy11d2pdk349ajnh6z8dmzsnqs",
+    "path": "/nix/store/rv5y00w3l1l9hzhli5sb7ysaqrgld0hr-android_device_motorola_sm7250-common",
+    "rev": "249006dc31a0e7c8c2065a4ec36346491fb1a79a",
+    "sha256": "03swhbzld89dwizkmfci9lpclkq35rf757l1x7cix4l0bg2x82da",
     "url": "https://github.com/LineageOS/android_device_motorola_sm7250-common"
   },
   "device/motorola/surnia": {
@@ -1308,6 +1334,19 @@
     "sha256": "1v8bwsrqabdqm9jzs6bg6zxir4bqnnww2vhinmrq4vig4v0kh77x",
     "url": "https://github.com/LineageOS/android_device_nextbit_ether"
   },
+  "device/nokia/DRG": {
+    "date": "2021-06-24T13:45:39+02:00",
+    "deepClone": false,
+    "deps": [
+      "device/nokia/sdm660-common"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/yig9r87ipfja7k8rd2739wnagnqw2rhv-android_device_nokia_DRG",
+    "rev": "f901d7dd6a1796bfaeb473422f728a9a7c7769dc",
+    "sha256": "00j0nk73q6jhxi5r54ajbp2x1n78l143xmxnw0a1mf9ggwlfdjgw",
+    "url": "https://github.com/LineageOS/android_device_nokia_DRG"
+  },
   "device/nokia/PL2": {
     "date": "2021-03-08T06:51:49+01:00",
     "deepClone": false,
@@ -1359,6 +1398,88 @@
     "rev": "dbaf51f33939c969c6f3cfbd528b01d05e8d9a3d",
     "sha256": "1x1xjsp0qpcl2nc8p0rdf1lpmq8v73pz1bm9ha6fbazg9z7ayn92",
     "url": "https://github.com/LineageOS/android_device_nubia_nx563j"
+  },
+  "device/nvidia/foster": {
+    "date": "2021-10-06T21:41:53-05:00",
+    "deepClone": false,
+    "deps": [
+      "device/nvidia/shield-common",
+      "device/nvidia/t210-common",
+      "kernel/nvidia/cypress-fmac",
+      "kernel/nvidia/linux-4.9/kernel/kernel-4.9",
+      "kernel/nvidia/wireguard",
+      "hardware/nvidia/interfaces",
+      "hardware/nvidia/light",
+      "hardware/nvidia/power",
+      "hardware/nvidia/thermal"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/5y6chfmbaz0hj9vxz1lsb0w49yd688hh-android_device_nvidia_foster",
+    "rev": "f54f3a2b541d80c0c9106b62ad7a8f279d0e1ee8",
+    "sha256": "1ihk4g9qzq9vb4ysh4qvgiqr9j27sc59ba60s35xpsbd1wvx5m3w",
+    "url": "https://github.com/LineageOS/android_device_nvidia_foster"
+  },
+  "device/nvidia/mdarcy": {
+    "date": "2021-10-06T17:16:40-05:00",
+    "deepClone": false,
+    "deps": [
+      "device/nvidia/foster"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/cmsal73b2nbvjw2rmw4ir5bb9g1gzlyf-android_device_nvidia_mdarcy",
+    "rev": "50bb9e937a3d126d87324ded4d6436285b38457b",
+    "sha256": "0gxmrnr0sxixx0zkanhjgg0szyprj5z3sly7dincsl5ymid5apja",
+    "url": "https://github.com/LineageOS/android_device_nvidia_mdarcy"
+  },
+  "device/nvidia/sepolicy": {
+    "date": "2021-10-04T21:10:45-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/7q1y987hzidl07vbcxyk44cqj0gsnizm-android_device_nvidia_sepolicy",
+    "rev": "0d1517eaf4c4fbad910462210eced9f12c5784ad",
+    "sha256": "0sfpd3m14p2y4q5zqg505lxc2jqjk5m9fn5ikzja206lhk985pp2",
+    "url": "https://github.com/LineageOS/android_device_nvidia_sepolicy"
+  },
+  "device/nvidia/shield-common": {
+    "date": "2021-07-07T13:44:17-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/wxqa74xsqywy695b0p0wcw53m3ij1b3a-android_device_nvidia_shield-common",
+    "rev": "c6d536748705d04e9b9078f9b74d11649102bbed",
+    "sha256": "1lyif2i5cv320l66yigzqprj09x15lxj5fgxhkkx7084p5vdyfjz",
+    "url": "https://github.com/LineageOS/android_device_nvidia_shield-common"
+  },
+  "device/nvidia/t210-common": {
+    "date": "2021-08-16T14:39:40-05:00",
+    "deepClone": false,
+    "deps": [
+      "device/nvidia/tegra-common"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/8gxpf1c89f6lyczk8rxv8r8nf6bjfhpy-android_device_nvidia_t210-common",
+    "rev": "b1c8a50176b199d0a7b816458fe9a9a8bef4eaa7",
+    "sha256": "00ypr5gwdshghz0nhnggx3r35mbs565sd976b63jwv1nh3nvb2va",
+    "url": "https://github.com/LineageOS/android_device_nvidia_t210-common"
+  },
+  "device/nvidia/tegra-common": {
+    "date": "2021-10-18T03:39:18-05:00",
+    "deepClone": false,
+    "deps": [
+      "device/nvidia/sepolicy"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/cz0h5b3ryq9cpkyhfr3c67564w6b7ij6-android_device_nvidia_tegra-common",
+    "rev": "f8d9507bb7e4077d7684e9493bdc84472bd3f0c3",
+    "sha256": "1992l54dm4lgjw3rdh29mlgzfwqwggb5fi0hcj445xzaqbk3v0zi",
+    "url": "https://github.com/LineageOS/android_device_nvidia_tegra-common"
   },
   "device/oneplus/avicii": {
     "date": "2021-01-27T10:01:30+01:00",
@@ -2961,6 +3082,50 @@
     "sha256": "1b8cavpqiy64xc6w1l9mxp13824lxcv4fkzg2534n5lsl0fch7rr",
     "url": "https://github.com/LineageOS/android_hardware_motorola"
   },
+  "hardware/nvidia/interfaces": {
+    "date": "2021-01-10T00:08:43-06:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/fpig29cgzhyd22gr9l702hw64zqzy25z-android_hardware_nvidia_interfaces",
+    "rev": "aa92880ad6711dd7beed68cd800c21bbd5d04b7f",
+    "sha256": "1nwiavp44y7rlxg1z0sqddzf97ig23islb7sq89g51wjv831866j",
+    "url": "https://github.com/LineageOS/android_hardware_nvidia_interfaces"
+  },
+  "hardware/nvidia/light": {
+    "date": "2021-04-01T21:53:10-04:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/zc8p4f01rpc70pbw38irxhznil1q09nh-android_hardware_nvidia_light",
+    "rev": "3c2f1442dd007bd118a1894600e508b31beacaf6",
+    "sha256": "0q0kbyjpw8pgck9cxd5h4pj72grg8m0s8qrvxgdwy8jms994yw12",
+    "url": "https://github.com/LineageOS/android_hardware_nvidia_light"
+  },
+  "hardware/nvidia/power": {
+    "date": "2021-04-02T03:56:45+02:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/lags0qj5jbr6p69awx19q75j7ydm47h5-android_hardware_nvidia_power",
+    "rev": "9fe22c30822417679f19134bece4c3e7ac4c011e",
+    "sha256": "0fmngpak29wxhpkk7h1i8c6liiw1fibviap21xfaqc3c49yjsi2m",
+    "url": "https://github.com/LineageOS/android_hardware_nvidia_power"
+  },
+  "hardware/nvidia/thermal": {
+    "date": "2021-04-01T21:58:19-04:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/mbizj47r42ic79i95d91xip6prn4w9hc-android_hardware_nvidia_thermal",
+    "rev": "7ad8cc419f64fa9ac8db080285b660330ba30364",
+    "sha256": "1s6q23w5v2sz4ci79k95d355yisksf3gvl07lsc7mppnqij0xl64",
+    "url": "https://github.com/LineageOS/android_hardware_nvidia_thermal"
+  },
   "hardware/samsung": {
     "date": "2021-09-10T15:44:57+01:00",
     "deepClone": false,
@@ -3198,6 +3363,17 @@
     "sha256": "13bkd5n4di5cxahyifarfvqlb76s0a69ldg6zlb0bps25pw6jbxi",
     "url": "https://github.com/LineageOS/android_kernel_asus_sm8150"
   },
+  "kernel/asus/sm8250": {
+    "date": "2021-02-01T18:27:22+01:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/b2vyn3qp0bzl8ny8h60zak1fjalpdglh-android_kernel_asus_sm8250",
+    "rev": "1d1c60e6c66796ded02f5e31ad99fa1348d3c24e",
+    "sha256": "0mmx13f774xkwdycnll6ymll5nmfa61s3q1v51wzyq6j2yyn57yx",
+    "url": "https://github.com/LineageOS/android_kernel_asus_sm8250"
+  },
   "kernel/bq/msm8953": {
     "date": "2021-05-12T15:51:05+02:00",
     "deepClone": false,
@@ -3221,14 +3397,14 @@
     "url": "https://github.com/LineageOS/android_kernel_cyanogen_msm8916"
   },
   "kernel/essential/msm8998": {
-    "date": "2021-08-19T06:54:55-06:00",
+    "date": "2021-10-19T23:40:03-06:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/i760pxdkd17fxm7k8wi2pxr26jlxh485-android_kernel_essential_msm8998",
-    "rev": "34784e6e7035c96452d82d648b358e7caf552da7",
-    "sha256": "13xr8w8q2ji0dqsb0y8gfvxp3y8z31gly6y5ywgvsgd53wv6xvww",
+    "path": "/nix/store/4ldycf91nxpfskyv6l3z91q4m7qw7n6m-android_kernel_essential_msm8998",
+    "rev": "935484a92a25ebecbeff65b3b53a3307717d1088",
+    "sha256": "1p1vivljh38a4clhakcvbma8hh9pwi27y07wkfhygnyq65ay0rah",
     "url": "https://github.com/LineageOS/android_kernel_essential_msm8998"
   },
   "kernel/fairphone/msm8974": {
@@ -3254,14 +3430,14 @@
     "url": "https://github.com/LineageOS/android_kernel_fairphone_sdm632"
   },
   "kernel/fxtec/msm8998": {
-    "date": "2021-09-08T06:32:01-06:00",
+    "date": "2021-10-09T19:54:14-06:00",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/kilghx5h2wvgqbda0bx43h4k29g6qv64-android_kernel_fxtec_msm8998",
-    "rev": "1265e28e3c3674ca8d45d9a4635d124b6532cf77",
-    "sha256": "0ljfwgh964p14b3j297myvc8vv317ycc6g461b3n12q3gdaqvmif",
+    "path": "/nix/store/bjr4bq8q9fdx3gmsnf4qmb9hvx23bx5r-android_kernel_fxtec_msm8998",
+    "rev": "d9d2150e6057efa5cc5b998b772fa1fa1be0610b",
+    "sha256": "05pnl34bfnvga5dvggljizbvdjsz6zz8zk3grs4a58jcj4kv3qwj",
     "url": "https://github.com/LineageOS/android_kernel_fxtec_msm8998"
   },
   "kernel/google/coral": {
@@ -3507,14 +3683,14 @@
     "url": "https://github.com/LineageOS/android_kernel_motorola_sdm632"
   },
   "kernel/motorola/sm7250": {
-    "date": "2021-03-08T14:59:33+03:30",
+    "date": "2021-10-13T14:27:05+03:30",
     "deepClone": false,
     "deps": [],
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/mn800hqs1hbq6gl2zqsa33mywiwl75pz-android_kernel_motorola_sm7250",
-    "rev": "27f13cff8c1c2e012f6256732ec4e93ca34c5a75",
-    "sha256": "1wd73ipwl35z8a449wr9m4vzn5r3iqahk5ykkcnhgmhay7yv3jrr",
+    "path": "/nix/store/0dmff539p9gqxxj0kvaf94m2zyll0idd-android_kernel_motorola_sm7250",
+    "rev": "ec4f029ace286f803f52e26ee7c2d7da8db48202",
+    "sha256": "0nk9j185xcpamkg67zc9bwqncih2qxy393inypkqh09kvlc2szag",
     "url": "https://github.com/LineageOS/android_kernel_motorola_sm7250"
   },
   "kernel/nextbit/msm8992": {
@@ -3549,6 +3725,329 @@
     "rev": "c51835027b1aee9f41fbbce0dd14c30ca210ecf8",
     "sha256": "13pk66q0srngvmnkqkhzvp1mbl9nyjyhppmnrsk0v0svf4ij6kba",
     "url": "https://github.com/LineageOS/android_kernel_nubia_msm8998"
+  },
+  "kernel/nvidia/cypress-fmac": {
+    "date": "2021-10-06T22:05:58-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/ixwwppx01mf6s58vlzw3ghc010mig6gn-android_kernel_nvidia_cypress-fmac",
+    "rev": "729ed81d62d36593dac9ef233d8199a03ca2194a",
+    "sha256": "0wnjwv4nb9ynjvkhha3h34fi5r7hq30gfnix3xasrzkbysh5apx3",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_cypress-fmac"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t18x/common": {
+    "date": "2021-03-26T21:18:00-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/x30r0y521i97f9p6sfr9d97am3xr58pk-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t18x_common",
+    "rev": "226a67a372135b885c2dd25b60f23b008181f6d9",
+    "sha256": "0n3r4rwdmijh2bplybdm1dyldniz8qmgdwv0cwndkfas1viyr4rc",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t18x_common"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t18x/lanai": {
+    "date": "2021-09-17T18:38:43-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/l4indhzwjxbp3lgswh0gsdr8f3r32mvr-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t18x_lanai",
+    "rev": "ef1360c671880d74dfdb0b2022eb2183084049e7",
+    "sha256": "0lcrgd1wf0z7i8zgpdxlsispb271gi8fkmqsfrz8xbm5q7d78fzw",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t18x_lanai"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t18x/quill": {
+    "date": "2021-01-22T13:51:29-06:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/k6h42xz4dsin2hwarcg3wyjd43ww833m-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t18x_quill",
+    "rev": "cc4cab1af26a4e95a02d9f925e53b7020412fd45",
+    "sha256": "0s71s6dlbp0zxzgpn42zawbq2fq4b48046khvk3bii181qzxx4nv",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t18x_quill"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t19x/common": {
+    "date": "2020-09-03T09:10:24-07:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/1sxp3h0jwb086p7d3m9cfl23vqraqckn-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t19x_common",
+    "rev": "e88e0ae5d25a91472a8b903972de8cadeb41aaac",
+    "sha256": "16hc3lgq9dwfy28g2bikp26lnbbh2rjdmji41qhiapizb7yk0g7v",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t19x_common"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t19x/galen/kernel-dts": {
+    "date": "2021-01-22T13:37:42-06:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/a4qi3rj0m92h138qjb2lg8pl8g2v7l7y-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t19x_galen_kernel-dts",
+    "rev": "940fa7c9e76e9efabf421434f0cc9ec7ce1b69ff",
+    "sha256": "0c117myiz1q1q8b3wqsihfips3g1amrq2klwfzr30y47j5bn6nib",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t19x_galen_kernel-dts"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t19x/jakku/kernel-dts": {
+    "date": "2021-03-06T15:05:30-06:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/rd741i7lgjic3w9in7jq39888mnccn28-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t19x_jakku_kernel-dts",
+    "rev": "deb838b0311bcd4a0a8d1adb267c144af0ee0dd1",
+    "sha256": "0jvnznw6s0q9dqh0mx2bsb8n0hmi8f082fwkay7w26yn3144m2xx",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t19x_jakku_kernel-dts"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t19x/mccoy/kernel-dts": {
+    "date": "2021-01-08T10:53:42-08:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/rns8ws0h0l5bw3mn1gbgf5fzbrwyc61z-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t19x_mccoy_kernel-dts",
+    "rev": "e4bd19c95912607a7b9c873e23c70792bddf0215",
+    "sha256": "041mbp8afbw3cmg7ai7sx9nj7b5bpbz4bzmip4704kaygwb5qy0a",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t19x_mccoy_kernel-dts"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/batuu/kernel-dts": {
+    "date": "2021-10-10T01:26:44-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/n17dndzrq2amf2zh7rd8b85g1rkm58fd-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_batuu_kernel-dts",
+    "rev": "3a8744ba2253adad58d56f2afb4a3b2a0b625d40",
+    "sha256": "1bl4hf2wdbi2mipcbpfg283c68fx33w2y70zwdm1ik67sg3fwgyv",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_batuu_kernel-dts"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/common": {
+    "date": "2020-09-14T17:40:10-07:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/dv3j0rhbhnfbkhkx89xsrci4wraa35id-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_common",
+    "rev": "846ce66ee941b49ff32bc721e4c8cc99eea2e979",
+    "sha256": "0wq0dqdb3d9zgzwcxspynknx3bksgl4vqwwnimkspkban574wls0",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_common"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/foster": {
+    "date": "2021-04-12T23:45:55-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/c42vk9y46845d8zasr56cs3f3sh6vn14-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_foster",
+    "rev": "ca3a0014a928b4b53038fff9befee6c378c49b92",
+    "sha256": "175pcdhi3h897azxgbaqgr6rv7r84y2fxrcf7m5blmp8cbvi3rx9",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_foster"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/icosa": {
+    "date": "2021-07-29T15:39:24-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/ijwwnhz571y5h8q8yxsxna9dvz8lq5xm-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_icosa",
+    "rev": "58ed45827fa3d36a6a67c86188b9ccc9233080b2",
+    "sha256": "0dvzkvwcs0hss9hbzw2033vywgyxa6f91267bd9j99bw1ly1f0p0",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_icosa"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/jetson": {
+    "date": "2021-01-22T13:54:54-06:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/d6j0mndygd2rnxy3v4slgpji11snpzay-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_jetson",
+    "rev": "6aaa285651639dce007114eefd36e383efc3cb87",
+    "sha256": "1gp90wl17j1ghfd3cxna8620nfkcs8c8gb4k044xy7bc4av0xncm",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_jetson"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/porg": {
+    "date": "2021-01-22T13:59:25-06:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/nih3lp8da2g3lkh22y1mdm7fllpbz5xr-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_porg",
+    "rev": "4998675b1d6222b9e6e4586c8b05ad0764008d96",
+    "sha256": "0abq4hrn1zwz1yh5sb0zhm8arn5wlnm8qzrnrhr4sd3iyhx8hp05",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210_porg"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210b01/common": {
+    "date": "2017-08-15T16:15:18-07:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/arh12p5mpbpb8ad2vc7qq8x2824gamrh-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210b01_common",
+    "rev": "59a41c245194b97459f4af8b20949427e6e6c47b",
+    "sha256": "15mvm78m6rpbw9gjsk7gpg9ybxdj4ghqygad4rfjk2nn0yj848p9",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210b01_common"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210b01/darcy": {
+    "date": "2021-03-26T20:57:40-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/f1rhiiy40b58rahgndg98mwrgsrf66vx-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210b01_darcy",
+    "rev": "d1f7c3fb8108bd2492634ad1fd02a2a9b11584b5",
+    "sha256": "0bl5mmdyw5pq67d7x44747qbqyd8xxc872vcmikdw4gdcc3a3w4g",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210b01_darcy"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210b01/ers": {
+    "date": "2020-10-10T02:34:25-07:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/gi9sdsxw45sm6kvnr22nlkix2hvsp0d8-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210b01_ers",
+    "rev": "45ffece283ceb224c51e3706258e8ad197ebcdc1",
+    "sha256": "0h20qq0cvygrax4kyr2k55vgpbw64qsm5achx99brv3i0x55ay6k",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210b01_ers"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210b01/sif": {
+    "date": "2021-01-24T20:34:53-06:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/frsrpibgh4ys2b0sy6cgiyy9bz9fhqg7-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210b01_sif",
+    "rev": "097446a9f7950816a2e7cca6ad96e3bd214a5a3d",
+    "sha256": "1iz4w4vwyrd07b21kkij29jmkbx5d30d1q1fda7bj4i4agi1bv67",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_t210b01_sif"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/platform/tegra/common": {
+    "date": "2020-09-17T05:23:58-07:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/n2h64aqbzb24z7hg41km2yygwhqdl0wv-android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_tegra_common",
+    "rev": "1677f40a0b1bfa7c7273143b0f4944de28b73444",
+    "sha256": "0ly3fmipkibw5yals8sldbp8jc342c88zxw3lnyd9glbdka7jimh",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_platform_tegra_common"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/soc/t18x": {
+    "date": "2020-09-21T04:15:44-07:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/094b587ak7bzh87g2kayfs6rpvhwjibg-android_kernel_nvidia_linux-4.9_hardware_nvidia_soc_t18x",
+    "rev": "bd31a3ac52141cabebe90f6ac22370b7600464ca",
+    "sha256": "13q7zi1kh62pfv03p2fjvxd01wsk42chbxwpnkw00z1dpj8dpdyk",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_soc_t18x"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/soc/t19x": {
+    "date": "2020-09-21T04:15:59-07:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/5234czyi28cc7zg10z3n0cavkwlbhg25-android_kernel_nvidia_linux-4.9_hardware_nvidia_soc_t19x",
+    "rev": "b952c57eb3fb9d48d39c646b364291a007631eba",
+    "sha256": "1kkpfax0xskl24dyy7xv8ixlqa5pxhpcj1jmpr0a90kb406cf48r",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_soc_t19x"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/soc/t210": {
+    "date": "2021-03-27T02:52:15+01:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/rzix4aiib13hwg9v1waid7305ca9r3vv-android_kernel_nvidia_linux-4.9_hardware_nvidia_soc_t210",
+    "rev": "b56ffafc1fab797f687961abf7e79477be75b59c",
+    "sha256": "102gvxd93jq30x9v8aamad3kwd1cj7rvkyaqpl8cvsgkj5ggs07k",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_soc_t210"
+  },
+  "kernel/nvidia/linux-4.9/hardware/nvidia/soc/tegra": {
+    "date": "2021-02-08T10:09:41-08:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/wlb5cv022ddpvdagzdpqrx27a5ik1cqh-android_kernel_nvidia_linux-4.9_hardware_nvidia_soc_tegra",
+    "rev": "d2692b96d3a89e26d3bad94eb7e6bc4caccbdbdb",
+    "sha256": "11il6w2gg5n400rm31ilq0sp2zkh5d6bl28ighy1g1yv2zsn8w5r",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_hardware_nvidia_soc_tegra"
+  },
+  "kernel/nvidia/linux-4.9/kernel/kernel-4.9": {
+    "date": "2021-10-06T20:23:20-05:00",
+    "deepClone": false,
+    "deps": [
+      "kernel/nvidia/linux-4.9/kernel/nvgpu",
+      "kernel/nvidia/linux-4.9/kernel/nvidia",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/tegra/common",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/soc/tegra",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/batuu/kernel-dts",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/common",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/foster",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/icosa",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/jetson",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210/porg",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/soc/t210",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210b01/common",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210b01/darcy",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210b01/ers",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t210b01/sif",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t18x/common",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t18x/lanai",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t18x/quill",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/soc/t18x",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t19x/common",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t19x/galen/kernel-dts",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t19x/jakku/kernel-dts",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/platform/t19x/mccoy/kernel-dts",
+      "kernel/nvidia/linux-4.9/hardware/nvidia/soc/t19x",
+      "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu-6.4.1"
+    ],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/v2nin4zkp2s3rf764plgmxjmh70zs6ck-android_kernel_nvidia_linux-4.9_kernel_kernel-4.9",
+    "rev": "929f123da07cc9f73af2861eccf5a01591794e52",
+    "sha256": "02md6qsd4mjkp6bbdfiyg0hi7k088k8rlydkwr8qb9y6m4lxnfxx",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_kernel_kernel-4.9"
+  },
+  "kernel/nvidia/linux-4.9/kernel/nvgpu": {
+    "date": "2020-11-23T08:40:17-08:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/r2wr154nczq3yv0x9klkhb17v4znm41m-android_kernel_nvidia_linux-4.9_kernel_nvgpu",
+    "rev": "7bf2833f340f87ea643d3ef66b0e4c22ffb1e891",
+    "sha256": "1n0k4bqnraxksyzii3jzs5bi4fiwlpgk5f4zjwik3vb1frydapiv",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_kernel_nvgpu"
+  },
+  "kernel/nvidia/linux-4.9/kernel/nvidia": {
+    "date": "2021-07-30T14:48:14-05:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/s1jm43gsbyxgc3fyknp33yasf1mzgh4c-android_kernel_nvidia_linux-4.9_kernel_nvidia",
+    "rev": "fce8aaec080411aba1f2dfdb0b76999f547414dd",
+    "sha256": "0gi9pd6qx7zc041742dzy533bd4nf5dqqbvl7iv7i7j5sy99gn65",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_linux-4.9_kernel_nvidia"
+  },
+  "kernel/nvidia/wireguard": {
+    "date": "2021-02-19T15:08:33+01:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/g5nsl0rvwvk1p94zilbjc9kpw8mr5i15-android_kernel_nvidia_wireguard",
+    "rev": "6e36d328018f8b525b0de0649453f222035ad1d8",
+    "sha256": "1awjikirlrvm3plf2054rswd8r2a0mvnw7jlg8lrshhqbph4vr9p",
+    "url": "https://github.com/LineageOS/android_kernel_nvidia_wireguard"
   },
   "kernel/oneplus/msm8994": {
     "date": "2020-09-26T16:38:22+02:00",
@@ -3912,6 +4411,17 @@
     "rev": "c08e328d1220f4a39a116dd4d3890389848c3378",
     "sha256": "0iw9hqi4vnnri7cj7zns3w18ia45yccld97gmz93a1qhqbia7dd6",
     "url": "https://github.com/LineageOS/android_packages_resources_devicesettings"
+  },
+  "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu-6.4.1": {
+    "date": "2017-11-21T12:20:47-08:00",
+    "deepClone": false,
+    "deps": [],
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/jlb8l7hsjfyaa200b9gz2pxlj2zyc08x-android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-6.4.1",
+    "rev": "16f73337b3616cfe640b0130629a9569b30482ca",
+    "sha256": "1i0w13wxvykkaph9fwjfl6hhy39vgzhixhznrqgvlx38sp5pscgh",
+    "url": "https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-6.4.1"
   },
   "system/qcom": {
     "date": "2019-10-14T23:49:49+00:00",
