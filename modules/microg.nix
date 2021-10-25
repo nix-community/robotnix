@@ -4,7 +4,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkDefault mkEnableOption;
+  inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
   version = {
     part1 = "0.2.22";
@@ -23,14 +23,37 @@ in
 
   config = mkIf config.microg.enable {
     # Uses better patch for microg that hardcodes the fake google signature and only allows microg apps to use it
-    source.dirs."frameworks/base".patches =
-      if (config.androidVersion >= 11)
-      then [ ./microg-android11.patch ]
-      else [ (pkgs.fetchpatch {
-        name = "microg.patch";
-        url = "https://gitlab.com/calyxos/platform_frameworks_base/commit/dccce9d969f11c1739d19855ade9ccfbacf8ef76.patch";
-        sha256 = "15c2i64dz4i0i5xv2cz51k08phlkhhg620b06n25bp2x88226m06";
-      }) ];
+    source.dirs = mkMerge [
+      (mkIf (config.androidVersion >= 12) {
+        # From: https://github.com/microg/GmsCore/pull/1586
+        "frameworks/base".patches = [
+          (pkgs.fetchpatch {
+            name = "microg-12.patch";
+            url = "https://github.com/ProtonAOSP/android_frameworks_base/commit/0deff13d05e451fbe3803f66be73853237c6729c.patch";
+            sha256 = "0gcwb5811wv5fz4vjavljcbw9m5rplrd3fc7d51w3r4w4vv0yl4c";
+          })
+        ];
+        "packages/modules/Permission".patches =
+          lib.optional (config.flavor == "grapheneos") (pkgs.fetchpatch {
+            name = "fake-package-signature.patch";
+            url = "https://github.com/ProtonAOSP/android_packages_modules_Permission/commit/de7846184379955956021b6e7b1730b24c8f4802.patch";
+            sha256 = "1644nh8fnf5nxawdfqixxsf786s1fhx6jp42awjiii98nkc8pg6d";
+          })
+          ++ lib.optional (config.flavor != "grapheneos") ./microg-android12-permission.patch;
+      })
+      (mkIf (config.androidVersion == 11) {
+        "frameworks/base".patches = [ ./microg-android11.patch ];
+      })
+      (mkIf (config.androidVersion == 10) {
+        "frameworks/base".patches = [
+          (pkgs.fetchpatch {
+            name = "microg.patch";
+            url = "https://gitlab.com/calyxos/platform_frameworks_base/commit/dccce9d969f11c1739d19855ade9ccfbacf8ef76.patch";
+            sha256 = "15c2i64dz4i0i5xv2cz51k08phlkhhg620b06n25bp2x88226m06";
+          })
+        ];
+      })
+    ];
 
     resources."frameworks/base/packages/SettingsProvider".def_location_providers_allowed = mkIf (config.androidVersion == 9) (mkDefault "gps,network");
 

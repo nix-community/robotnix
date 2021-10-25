@@ -8,12 +8,21 @@ let
 
   cfg = config.apps.updater;
 
-  src = pkgs.fetchFromGitHub {
-    owner = "GrapheneOS";
-    repo = "platform_packages_apps_Updater";
-    rev = "55cdaf75f046929ccf898b23a1e294847be73539"; # 2021-08-25
-    sha256 = "1hjh5wy4mh11svxw8qzl1fzjbwariwgc9gj3bmad92s1wy62y7rw";
-  };
+  src =
+    if config.androidVersion >= 12 then
+      pkgs.fetchFromGitHub {
+        owner = "GrapheneOS";
+        repo = "platform_packages_apps_Updater";
+        rev = "55cdaf75f046929ccf898b23a1e294847be73539"; # 2021-08-25
+        sha256 = "1hjh5wy4mh11svxw8qzl1fzjbwariwgc9gj3bmad92s1wy62y7rw";
+      }
+    else
+      pkgs.fetchFromGitHub {
+        owner = "GrapheneOS";
+        repo = "platform_packages_apps_Updater";
+        rev = "d8a07b7670d6a52978534adc54c3cf16597b537d"; # 2021-10-22
+        sha256 = "000h5wy4mh11svxw8qzl1fzjbwariwgc9gj3bmad92s1wy62y7rw";
+      };
 
   relpath = (if cfg.includedInFlavor then "packages" else "robotnix") + "/apps/Updater";
 in
