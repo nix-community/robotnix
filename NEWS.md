@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+SPDX-FileCopyrightText: 2021 Daniel Fullmer
 SPDX-License-Identifier: MIT
 -->
 
@@ -7,6 +7,22 @@ Updates are added to this file approximately monthly, or whenever significant
 changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
+
+# 2021-10-24
+## Highlights:
+- Android 12 support for `vanilla` and `grapheneos` flavors. Set default `androidVersion = 12`.
+- New LineageOS-flavored updater module [PR #90](https://github.com/danielfullmer/robotnix/pull/90) (thanks @ajs124)
+- New Active Edge module for Pixel devices [PR #125](https://github.com/danielfullmer/robotnix/pull/125) (thanks @zhaofengli)
+- New `pixel.useUpstreamDriverBinaries` option to use binaries from [here](https://developers.google.com/android/drivers) instead of android-prepare-vendor. (Only recommended for testing)
+- Updated vanilla flavor to SP1A.210812
+- Updated grapheneos flavor to 2021102300
+- Updated lineageos flavor to 2021102406
+- Updated Chromium / Vanadium to 95.0.4638.50, Bromite to 94.0.4606.102
+- Updated Seedvault to 11-2.3 tag for Android 11, 2021-10-23 for Android 12
+- Added microG patches for Android 12
+- Updated Updater to 2021-10-22
+- Refactor and separate kernel building for vanilla and GrapheneOS
+- Now set default `buildDateTime` automatically based on maximal `source.dirs.<relpath>.dateTime`, as fallback in case there is not a better way to set it.
 
 # 2021-09-09
 ## Highlights:
