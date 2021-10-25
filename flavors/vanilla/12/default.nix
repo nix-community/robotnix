@@ -38,7 +38,7 @@ in
 
   # Temporary fix for crashes
   # https://github.com/GrapheneOS/platform_frameworks_base/commit/3c81f90076fbb49efb0bdd86826695ab88cd085f
-  resources."framsworks/base/core/res".config_appsNotReportingCrashes = [ "com.android.statementservice" ];
+  resources."frameworks/base/core/res".config_appsNotReportingCrashes = [ "com.android.statementservice" ];
 
   # Work around issue with checks for uses-library with apv output
   source.dirs."build/soong".patches = [
