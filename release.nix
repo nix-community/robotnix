@@ -11,8 +11,8 @@ let
     { device="arm64";      flavor="vanilla"; }
     { device="marlin";     flavor="vanilla"; androidVersion=10; } # Out-of-date
     { device="sailfish";   flavor="vanilla"; androidVersion=10; } # Out-of-date
-    { device="taimen";     flavor="vanilla"; }
-    { device="walleye";    flavor="vanilla"; }
+    { device="taimen";     flavor="vanilla"; androidVersion=11; } # Out-of-date
+    { device="walleye";    flavor="vanilla"; androidVersion=11; } # Out-of-date
     { device="crosshatch"; flavor="vanilla"; }
     { device="blueline";   flavor="vanilla"; }
     { device="bonito";     flavor="vanilla"; }
