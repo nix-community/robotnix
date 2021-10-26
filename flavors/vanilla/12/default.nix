@@ -40,6 +40,14 @@ in
   # https://github.com/GrapheneOS/platform_frameworks_base/commit/3c81f90076fbb49efb0bdd86826695ab88cd085f
   resources."frameworks/base/core/res".config_appsNotReportingCrashes = "com.android.statementservice";
 
+  # Fixes a crash when opening Battery Manager settings
+  source.dirs."packages/apps/Settings".patches = [
+    (pkgs.fetchpatch {
+      url = "https://github.com/ProtonAOSP/android_packages_apps_Settings/commit/1aa49ec5017326ec6297e9ee067eb23647618494.patch";
+      sha256 = "0nzr8c5chhlvd2zwvbk6a0cfxm6psrqbw94012igmhps4c04f2lx";
+    })
+  ];
+
   # Work around issue with checks for uses-library with apv output
   source.dirs."build/soong".patches = [
     (pkgs.fetchpatch {
