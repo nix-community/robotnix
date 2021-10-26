@@ -76,7 +76,7 @@ def main() -> None:
     # Manual addition. Might not be needed if we include the corresponding stuff in system_ext
     vendor_skip_files.add('etc/vintf/manifest/manifest_wifi_ext.xml')
 
-    naked_config = {
+    apv_config = {
         # 'new-modules': [],
         'dep-dso': [
             dso for dso in DEP_DSOS
@@ -114,11 +114,6 @@ def main() -> None:
         #     if (filename.startswith('product/') and not _is_bytecode(filename)
         #         and not (filename.endswith('.odex') or filename.endswith('.vdex')))
         # ),
-    }
-    apv_config = {
-        'api-30': {
-            'naked': naked_config
-        }
     }
 
     print(json.dumps(apv_config, sort_keys=True, indent=2, separators=(',', ': ')))

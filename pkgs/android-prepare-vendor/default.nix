@@ -3,7 +3,7 @@
 
 { stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
   simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3, libarchive,
-  api ? 30
+  api ? 31
 }:
 
 let

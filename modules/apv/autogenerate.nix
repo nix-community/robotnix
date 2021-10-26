@@ -25,11 +25,14 @@ let
         envVars.ALLOW_MISSING_DEPENDENCIES = "true"; # Avoid warning about chre needing libadsprpc
       };
       suggestedConfig = pkgs.runCommand "${device}.json" { nativeBuildInputs = [ pkgs.python3 ]; } ''
+        find ${pkgs.robotnix.unpackImg aospBuild.config.apv.img} -type f -printf "%P\n" | sort > upstream-files
+        find ${pkgs.robotnix.unpackImg aospBuild.img} -type f -printf "%P\n" | sort > built-files
+
         python3 ${./autogenerate.py} \
           ${aospBuild.config.device} \
           ${aospBuild.config.build.moduleInfo} \
-          ${aospBuild.config.build.apv.diff}/built-files \
-          ${aospBuild.config.build.apv.diff}/upstream-files \
+          built-files \
+          upstream-files \
           > $out
       '';
       suggestedBuild = robotnix { inherit device; flavor = "vanilla"; apv.customConfig = lib.importJSON suggestedConfig; };
