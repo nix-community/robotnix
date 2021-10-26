@@ -42,12 +42,11 @@ let
       '';
     in {
       inherit aospBuild;
-      aospDiff = aospBuild.config.build.apv.diff;
       inherit suggestedConfig;
       inherit jsonDiff;
       inherit suggestedBuild;
-      suggestedBuildDiff = suggestedBuild.config.build.apv.diff;
-      AOSPAllianceBuildDiff = AOSPAllianceBuild.config.build.apv.diff;
+      aospDiff = pkgs.robotnix.compareImagesQuickDiff aospBuild.config.apv.img aospBuild.img;
+      suggestedBuildDiff = pkgs.robotnix.compareImagesQuickDiff suggestedBuild.config.apv.img suggestedBuild.img;
     });
 in {
   devices = lib.genAttrs devices deviceAttrs;
