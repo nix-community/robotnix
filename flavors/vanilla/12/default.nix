@@ -23,25 +23,50 @@ in
 #                    (mkDefault true);
   kernel.enable = false;
 
-  # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
-  # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
-  # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
-  # where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
-  # and Strength as defined in Authenticators.java
-  # TODO: This ought to show up in the vendor (not system or product) resource overlay
-  resources."frameworks/base/core/res".config_biometric_sensors = {
-    value = optional (elem config.deviceFamily phoneDeviceFamilies) (
-              if (config.deviceFamily == "coral") then "0:8:15"
-              else "0:2:15");
-    type = "string-array";
+  resources."frameworks/base/core/res" = {
+    # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
+    # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
+    # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
+    # where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
+    # and Strength as defined in Authenticators.java
+    # TODO: This ought to show up in the vendor (not system or product) resource overlay
+    config_biometric_sensors = {
+      value = optional (elem config.deviceFamily phoneDeviceFamilies) (
+                if (config.deviceFamily == "coral") then "0:8:15"
+                else "0:2:15");
+      type = "string-array";
+    };
+
+    # Temporary fix for crashes
+    # https://github.com/GrapheneOS/platform_frameworks_base/commit/3c81f90076fbb49efb0bdd86826695ab88cd085f
+    config_appsNotReportingCrashes = "com.android.statementservice";
+
+    ### Additional usability improvements ###
+
+    # Whether this device is supporting the microphone toggle
+    config_supportsMicToggle = true;
+    # Whether this device is supporting the camera toggle
+    config_supportsCamToggle = true;
+    # Default value for Settings.ASSIST_LONG_PRESS_HOME_ENABLED
+    config_assistLongPressHomeEnabledDefault = false;
+    # Default value for Settings.ASSIST_TOUCH_GESTURE_ENABLED
+    config_assistTouchGestureEnabledDefault = false;
+    # If this is true, long press on power button will be available from the non-interactive state
+    config_supportLongPressPowerWhenNonInteractive = true;
+    # Control the behavior when the user long presses the power button.
+    #    0 - Nothing
+    #    1 - Global actions menu
+    #    2 - Power off (with confirmation)
+    #    3 - Power off (without confirmation)
+    #    4 - Go to voice assist
+    #    5 - Go to assistant (Settings.Secure.ASSISTANT)
+    config_longPressOnPowerBehavior = 1;
+    #  Control the behavior when the user presses the power and volume up buttons together.
+    #     0 - Nothing
+    #     1 - Mute toggle
+    #     2 - Global actions menu
+    config_keyChordPowerVolumeUp = 1;
   };
-
-  # Override default power button long press behavior to bring up "global actions menu" instead of the (missing in AOSP) assistant.
-  resources."frameworks/base/core/res".config_longPressOnPowerBehavior = 1;
-
-  # Temporary fix for crashes
-  # https://github.com/GrapheneOS/platform_frameworks_base/commit/3c81f90076fbb49efb0bdd86826695ab88cd085f
-  resources."frameworks/base/core/res".config_appsNotReportingCrashes = "com.android.statementservice";
 
   # Fixes a crash when opening Battery Manager settings
   source.dirs."packages/apps/Settings".patches = [
