@@ -26,8 +26,8 @@ let
         else throw "${fname}: please supply a `name` argument because a default name can only be computed when the `apk` is a path or is an attribute set with a `name` attribute.";
 
   build-tools =
-    (androidPkgs.sdk (p: with p; [ cmdline-tools-latest build-tools-30-0-2 ]))
-    + "/share/android-sdk/build-tools/30.0.2";
+    (androidPkgs.sdk (p: with p; [ cmdline-tools-latest build-tools-31-0-0 ]))
+    + "/share/android-sdk/build-tools/31.0.0";
 
   apksigner = runCommand "apksigner" { nativeBuildInputs = [ makeWrapper ]; } ''
       mkdir -p $out/bin
