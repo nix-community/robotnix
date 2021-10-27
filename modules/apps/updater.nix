@@ -9,7 +9,7 @@ let
   cfg = config.apps.updater;
 
   src =
-    if config.androidVersion >= 12 then
+    if config.androidVersion < 12 then
       pkgs.fetchFromGitHub {
         owner = "GrapheneOS";
         repo = "platform_packages_apps_Updater";
