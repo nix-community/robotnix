@@ -133,5 +133,9 @@ in
       attestation-server = tests.attestation-server.test;
       inherit (tests) generateKeys;
     };
+
+    packages = lib.recurseIntoAttrs {
+      inherit (pkgs) cipd;
+    };
   };
 }
