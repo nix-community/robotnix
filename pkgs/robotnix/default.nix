@@ -54,10 +54,38 @@ let
       exit 1
     fi
   '';
+
+  # Unpack and compare two images
+  # Excludes known differences--also all of the APKs since signatures are different. TODO: Copy/replace sigs
+  compareImagesQuickDiff = a: b: pkgs.runCommand "images.diff" {} ''
+    ln -s ${pkgs.robotnix.unpackImg a} a
+    ln -s ${pkgs.robotnix.unpackImg b} b
+
+    cat >excludes <<EOF
+    *.apk
+    plat_mac_permissions.xml
+    vendor_mac_permissions.xml
+    file_signatures.txt
+    otacerts.zip
+    EOF
+
+    diff -ur --exclude-from=excludes a b > $out || true
+  '';
+
+  compareImagesDiffoscope = a: b: pkgs.runCommand "images-diffoscope" { nativeBuildInputs = with pkgs; [ diffoscope pkgsCross.aarch64-multiplatform.buildPackages.binutils-unwrapped ]; } ''
+    mkdir -p $out
+    diffoscope \
+      --html-dir $out \
+      --tool-prefix-binutils aarch64-unknown-linux-gnu- \
+      --exclude "**/META-INF/CERT.RSA" \
+      --exclude-command "^xxd" \
+      ${a} ${b} || true
+  '';
 in {
   inherit
     build-tools apksigner signApk verifyApk
-    apkFingerprint certFingerprint sha256Fingerprint;
+    apkFingerprint certFingerprint sha256Fingerprint
+    compareImagesQuickDiff compareImagesDiffoscope;
 
   inherit (unpack-images)
     unpackImg unpack_bootimg avbtool;
