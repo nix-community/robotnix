@@ -36,12 +36,14 @@ for filename in *; do
             ;;
         *)
             if [[ $part == vendor_boot ]]; then
-            mkdir "$out/$part"
-            unpack_bootimg.py --boot_img "$filename" --out "$out/$part" | tee "$out/$part/info"
-            mkdir "$out/$part/vendor_ramdisk-ext"
-            bsdtar xf "$out/$part/vendor_ramdisk" -C "$out/$part/vendor_ramdisk-ext"
+                mkdir "$out/$part"
+                unpack_bootimg.py --boot_img "$filename" --out "$out/$part" | tee "$out/$part/info"
+                for filepath in "$out"/"$part"/vendor_ramdisk*; do
+                    mkdir "$filepath-ext"
+                    bsdtar xf "$filepath" -C "$filepath-ext"
+                done
             elif [[ $part == vbmeta ]]; then
-            avbtool.py info_image --image "$filename" --out "$out/vbmeta-info"
+                avbtool.py info_image --image "$filename" --out "$out/vbmeta-info"
             fi
             ;;
         esac
