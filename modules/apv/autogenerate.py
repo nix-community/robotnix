@@ -88,7 +88,8 @@ def main() -> None:
             if dso in needed_files
         ],
         # 'rro-overlays': [],
-        'forced-modules': sorted(set(modulename for modulename in needed_modules_with_arch if modulename not in SKIP_MODULES)),
+        'forced-modules': sorted(set(modulename for modulename in needed_modules_with_arch
+                                     if modulename not in SKIP_MODULES)),
         'vendor-skip-files': sorted(vendor_skip_files),
         'system-bytecode': sorted(
             filename for filename in needed_files
