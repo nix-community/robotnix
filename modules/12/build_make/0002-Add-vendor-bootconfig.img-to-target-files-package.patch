@@ -1,0 +1,30 @@
+From 879b0d704924b298b7508ca408880bc0b83d03c6 Mon Sep 17 00:00:00 2001
+From: Devin Moore <devinmoore@google.com>
+Date: Wed, 9 Jun 2021 10:44:44 -0700
+Subject: [PATCH 2/2] Add vendor-bootconfig.img to target-files-package
+
+INTERNAL_VENDOR_BOOTCONFIG_TARGET is a required dependency of
+target-files-package so it can be built from a clean build.
+
+Test: rm -rf out/target/product && m target-files-package
+Bug: 190329824
+Change-Id: I9873aee3c9fb303d2ad245b5433d13eb76ab55f9
+---
+ core/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/core/Makefile b/core/Makefile
+index 792be5b213..ef292ab833 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -4848,6 +4848,7 @@ endif
+ ifdef BUILDING_VENDOR_BOOT_IMAGE
+   $(BUILT_TARGET_FILES_PACKAGE): $(INTERNAL_VENDOR_RAMDISK_FILES)
+   $(BUILT_TARGET_FILES_PACKAGE): $(INTERNAL_VENDOR_RAMDISK_FRAGMENT_TARGETS)
++  $(BUILT_TARGET_FILES_PACKAGE): $(INTERNAL_VENDOR_BOOTCONFIG_TARGET)
+   # The vendor ramdisk may be built from the recovery ramdisk.
+   ifeq (true,$(BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT))
+     $(BUILT_TARGET_FILES_PACKAGE): $(INTERNAL_RECOVERY_RAMDISK_FILES_TIMESTAMP)
+-- 
+2.33.0
+
