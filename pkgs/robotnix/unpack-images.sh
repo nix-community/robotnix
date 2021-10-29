@@ -5,7 +5,7 @@ set -euo pipefail
 img=$1
 out=$2
 
-cd $(mktemp -d)
+cd "$(mktemp -d)"
 
 if [[ "$img" =~ -factory- ]]; then
     bsdtar xvf "$img" --strip-components 1
