@@ -24,19 +24,6 @@ in
   kernel.enable = false;
 
   resources."frameworks/base/core/res" = {
-    # See also: https://github.com/GrapheneOS/os_issue_tracker/issues/325
-    # List of biometric sensors on the device, in decreasing strength. Consumed by AuthService
-    # when registering authenticators with BiometricService. Format must be ID:Modality:Strength,
-    # where: IDs are unique per device, Modality as defined in BiometricAuthenticator.java,
-    # and Strength as defined in Authenticators.java
-    # TODO: This ought to show up in the vendor (not system or product) resource overlay
-    config_biometric_sensors = {
-      value = optional (elem config.deviceFamily phoneDeviceFamilies) (
-                if (config.deviceFamily == "coral") then "0:8:15"
-                else "0:2:15");
-      type = "string-array";
-    };
-
     # Temporary fix for crashes
     # https://github.com/GrapheneOS/platform_frameworks_base/commit/3c81f90076fbb49efb0bdd86826695ab88cd085f
     config_appsNotReportingCrashes = "com.android.statementservice";
