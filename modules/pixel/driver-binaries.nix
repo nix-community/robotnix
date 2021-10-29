@@ -2,7 +2,7 @@
 
 let
   inherit (lib)
-    mkIf mkOption mkMerge types;
+    mkIf mkOption mkMerge types optionalAttrs optionalString;
 
   driversList = lib.importJSON ./pixel-drivers.json;
   fetchItem = type: device: buildID: let
@@ -20,6 +20,8 @@ let
     mkdir -p $out
     tail -n +315 ./extract-*.sh | tar zxv -C $out
   '';
+
+  usesQcomDrivers = config.deviceFamily != "raviole";
 in
 {
   options = {
@@ -39,17 +41,21 @@ in
       ];
 
       # Merge qcom and google drivers
-      source.dirs."vendor/google_devices/${config.device}".src = pkgs.runCommand "${config.device}-vendor" {} ''
-        mkdir extracted
+      source.dirs = {
+        "vendor/google_devices/${config.device}".src = pkgs.runCommand "${config.device}-vendor" {} (''
+          mkdir extracted
 
-        cp -r ${config.build.driversGoogle}/vendor/google_devices/${config.device}/. extracted
-        chmod +w -R extracted
-        cp -r ${config.build.driversQcom}/vendor/google_devices/${config.device}/. extracted
+          cp -r ${config.build.driversGoogle}/vendor/google_devices/${config.device}/. extracted
+          chmod +w -R extracted
+        '' + optionalString usesQcomDrivers ''
+          cp -r ${config.build.driversQcom}/vendor/google_devices/${config.device}/. extracted
+        '' + ''
 
-        mv extracted $out
-      '';
-
-      source.dirs."vendor/qcom/${config.device}".src = "${config.build.driversQcom}/vendor/qcom/${config.device}";
+          mv extracted $out
+        '');
+      } // optionalAttrs usesQcomDrivers {
+        "vendor/qcom/${config.device}".src = "${config.build.driversQcom}/vendor/qcom/${config.device}";
+      };
     })
 
     ({
