@@ -1,9 +1,11 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ lib, callPackage, runCommand, androidPkgs, makeWrapper, jre8_headless, openssl }:
+{ pkgs, lib, callPackage, runCommand, androidPkgs, makeWrapper, jre8_headless, openssl }:
 
 let
+  unpack-images = callPackage ./unpack-images.nix {};
+
   # Try to avoid using the derivations below, since they rely on "import-from-derivation"
   apkFingerprint = apk: (import runCommand "apk-fingerprint" { nativeBuildInputs = [ jre8_headless ]; } ''
     fingerprint=$(keytool -printcert -jarfile ${apk} | grep "SHA256:" | tr --delete ':' | cut --delimiter ' ' --fields 3)
@@ -56,4 +58,7 @@ in {
   inherit
     build-tools apksigner signApk verifyApk
     apkFingerprint certFingerprint sha256Fingerprint;
-} // (callPackage ./unpack-images.nix {})
+
+  inherit (unpack-images)
+    unpackImg unpack_bootimg avbtool;
+}
