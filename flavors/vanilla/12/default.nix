@@ -14,8 +14,16 @@ in
 {
   buildDateTime = mkDefault 1635365653;
 
-  source.manifest.rev = mkDefault "android-12.0.0_r1";
-  apv.buildID = mkDefault "SP1A.210812.015";
+  source.manifest.rev = mkMerge [
+    (mkIf (config.deviceFamily != "raviole") (mkDefault "android-12.0.0_r1"))
+    (mkIf (config.deviceFamily == "raviole") (mkDefault "android-12.0.0_r4"))
+  ];
+  apv.buildID = mkMerge [
+    (mkIf (config.deviceFamily != "raviole") (mkDefault "SP1A.210812.015"))
+    (mkIf (config.deviceFamily == "raviole") (mkDefault "SD1A.210817.015.A4"))
+  ];
+
+  apv.enable = mkIf (config.deviceFamily == "raviole") false;
 
 #  # Disable for now until we have it tested working
 #  kernel.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies &&
