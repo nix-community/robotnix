@@ -1,8 +1,9 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+{ pkgs ? (import ./pkgs {}) }:
+
 let
-  pkgs = import ./pkgs {};
   lib = pkgs.lib;
   robotnix = configuration: import ./default.nix { inherit configuration pkgs; };
 
@@ -23,9 +24,6 @@ let
     { device="bramble";    flavor="vanilla"; }
     { device="redfin";     flavor="vanilla"; }
     { device="barbet";     flavor="vanilla"; }
-
-    { device="sunfish";    flavor="vanilla";    androidVersion=12; }
-    { device="sunfish";    flavor="grapheneos"; androidVersion=12; }
 
     { device="x86_64";     flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
