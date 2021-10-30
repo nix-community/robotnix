@@ -115,7 +115,7 @@ in
       # For an unknown reason, Bromite fails to build chrome_modern_public_bundle
       # simultaneously with system_webview_apk as of 2020-12-22
       { name = "bromite"; displayName = "Bromite"; buildSeparately = true; isTriChrome = false; }
-      { name = "vanadium"; displayName = "Vanadium"; }
+      { name = "vanadium"; displayName = "Vanadium"; isTriChrome = false; } # TODO: Temporary workaround
     ]
   )) ++ [
     {
