@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-FileCopyrightText: 2021 Daniel Fullmer
 # SPDX-License-Identifier: MIT
 
 #{ callPackage, substituteAll, fetchFromGitHub, buildGradle, jdk, gradle }:
@@ -31,11 +31,11 @@
 
 stdenv.mkDerivation rec {
   pname = "bundletool";
-  version = "1.2.0";
+  version = "1.8.1";
 
   src = fetchurl {
     url = "https://github.com/google/bundletool/releases/download/${version}/bundletool-all-${version}.jar";
-    sha256 = "0dx83k7p2ymy0d10xiga9v4xhznyxyrzyk1x279sq54sdy61dvr5";
+    sha256 = "0hrzzcpifc59wf833pqdp7dbmzmdf6l5ijn9i2qbr2zgncmcmrh8";
   };
 
   nativeBuildInputs = [ makeWrapper ];
