@@ -34,7 +34,7 @@ let
   patchTrichromeApk = name: src: newCertDigest: pkgs.runCommand "${name}-trichrome-patched.apk" {
     nativeBuildInputs = with pkgs; [ python3 ];
   } ''
-    python3 ${./chromium-trichrome-patcher.py} ${src} patched.apk ${defaultTrichromeCertDigest} ${newCertDigest}
+    python3 ${./chromium-trichrome-patcher.py} ${src} patched.apk ${lib.toLower defaultTrichromeCertDigest} ${lib.toLower newCertDigest}
     ${pkgs.robotnix.build-tools}/zipalign -p -f -z 4 patched.apk $out
   '';
 in
