@@ -53,6 +53,8 @@ let
   buildTimeKeyPath = name: _keyPath config.signing.buildTimeKeyStorePath name;
 
   putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
+
+  nonNullPrebuilts = lib.filter (p: p.apk != null) (lib.attrValues cfg);
 in
 {
   options = {
@@ -71,7 +73,8 @@ in
           };
 
           apk = mkOption {
-            type = types.path;
+            type = with types; nullOr path;
+            default = null; # TODO: Consider a .enable option
             description = "APK file to include in build";
           };
 
@@ -240,7 +243,7 @@ in
           cp ${prebuilt.snakeoilKeyPath}/${prebuilt.certificate}.{pk8,x509.pem} $out/
         '');
       };
-    }) (lib.attrValues cfg));
+    }) nonNullPrebuilts);
 
     # TODO: Make just a single file with each of these configuration types instead of one for each app?
     etc = let
@@ -251,7 +254,7 @@ in
             text = (f prebuilt).text;
             inherit (prebuilt) partition;
           };
-        }) (lib.filter (prebuilt: (f prebuilt).filter) (lib.attrValues cfg))));
+        }) (lib.filter (prebuilt: (f prebuilt).filter) nonNullPrebuilts)));
     in
       confToAttrs (prebuilt: {
         path = "permissions/privapp-permissions-${prebuilt.packageName}.xml";
@@ -289,12 +292,12 @@ in
         '';
       });
 
-    system.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "system") (lib.attrValues cfg));
-    product.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "product") (lib.attrValues cfg));
+    system.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "system") nonNullPrebuilts);
+    product.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "product") nonNullPrebuilts);
 
     # Convenience derivation to get all prebuilt apks -- for use in custom fdroid repo?
     build.prebuiltApks = pkgs.linkFarm "${config.device}-prebuilt-apks"
       (map (p: { name="${p.name}.apk"; path=p.signedApk; })
-      (lib.filter (p: p.name != "CustomWebview") (lib.attrValues cfg)));
+      (lib.filter (p: p.name != "CustomWebview") nonNullPrebuilts));
   };
 }
