@@ -72,6 +72,7 @@ in
         privileged = true;
         privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" "UPDATE_APP_OPS_STATS" ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
+        usesLibraries = [ "com.android.location.provider" ];
         allowInPowerSave = true;
         certificate = "microg";
       };

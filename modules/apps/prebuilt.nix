@@ -28,6 +28,8 @@ let
     }
     ${lib.optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
     ${lib.optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
+    ${lib.optionalString (prebuilt.usesLibraries != []) "LOCAL_USES_LIBRARIES := ${builtins.concatStringsSep " " prebuilt.usesLibraries}"}
+    ${lib.optionalString (prebuilt.usesOptionalLibraries != []) "LOCAL_OPTIONAL_USES_LIBRARIES := ${builtins.concatStringsSep " " prebuilt.usesOptionalLibraries}"}
     ${prebuilt.extraConfig}
 
     include $(BUILD_PREBUILT)
@@ -148,6 +150,26 @@ in
             description = ''
               Whether to allow this application to operate in \"power save\" mode.
               Disables battery optimization for this app.
+            '';
+          };
+
+          usesLibraries = mkOption {
+            default = [];
+            type = types.listOf types.str;
+            description = ''
+              Shared library dependencies of this app.
+
+              For more information, see <https://android.googlesource.com/platform/build/+/75342c19323fea64dbc93fdc5a7def3f81113c83/Changes.md>.
+            '';
+          };
+
+          usesOptionalLibraries = mkOption {
+            default = [];
+            type = types.listOf types.str;
+            description = ''
+              Optional shared library dependencies of this app.
+
+              For more information, see <https://android.googlesource.com/platform/build/+/75342c19323fea64dbc93fdc5a7def3f81113c83/Changes.md>.
             '';
           };
 
