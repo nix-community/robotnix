@@ -7,7 +7,7 @@ let
   driversList = lib.importJSON ./pixel-drivers.json;
   fetchItem = type: device: buildID: let
     matchingItem = lib.findSingle
-      (v: lib.hasInfix "/${type}-${device}-${lib.toLower buildID}" v.url)
+      (v: lib.hasInfix "/${type}-${device}-${lib.toLower buildID}-" v.url)
       (throw "no items found for ${type} ${device} drivers")
       (throw "multiple items found for ${type} ${device} drivers")
       driversList;
