@@ -86,4 +86,7 @@ in
   source.manifest.rev = "android-12.0.0_r1";
   apv.buildID = "SP1A.210812.015";
 })
+(mkIf (config.deviceFamily == "raviole") {
+  source.dirs."device/google/gs101".patches = [ ./device_google_gs101-workaround.patch ];
+})
 ]))
