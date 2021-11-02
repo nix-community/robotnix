@@ -30,7 +30,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkDefault (
-    if (elem config.device [ "bontio" "sargo" ]) then "SP1A.211105.002"
+    if (elem config.device [ "bonito" "sargo" ]) then "SP1A.211105.002"
     else if (elem config.device [ "barbet" ]) then "SP1A.211105.003"
     else "SP1A.211105.004"
   );
