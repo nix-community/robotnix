@@ -50,7 +50,7 @@ in
   ];
 }
 (mkIf (elem config.device [ "taimen" "walleye" ]) {
-  warnings = [ "taimen and walleye are no longer receiving monthly vendor security updates from Google. Support is left just for testing" ];
+  warnings = [ "taimen and walleye are no longer receiving monthly vendor security updates from Google" ];
   source.manifest.rev = "android-11.0.0_r25"; # More recent sources don't even include device/google/muskie
   apv.buildID = "RP1A.201005.004.A1";
 })
