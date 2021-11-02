@@ -10,7 +10,7 @@ let
   upstreamParams = import ./upstream-params.nix;
   grapheneOSRelease = "${config.apv.buildID}.${upstreamParams.buildNumber}";
 
-  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" ];
+  phoneDeviceFamilies = [ "bonito" "coral" "sunfish" "redfin" "barbet" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
