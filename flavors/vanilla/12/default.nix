@@ -12,10 +12,16 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 12) (mkMerge [
 {
-  buildDateTime = mkDefault 1635365653;
+  buildDateTime = mkDefault 1635822919;
 
-  source.manifest.rev = mkDefault "android-12.0.0_r1";
-  apv.buildID = mkDefault "SP1A.210812.015";
+  source.manifest.rev = mkDefault (
+    if (elem config.deviceFamily [ "redfin" "barbet" ]) then "android-12.0.0_r10"
+    else "android-12.0.0_r8"
+  );
+  apv.buildID = mkDefault (
+    if (elem config.deviceFamily [ "redfin" "barbet" ]) then "SP1A.211105.003"
+    else "SP1A.211105.002"
+  );
 
 #  # Disable for now until we have it tested working
 #  kernel.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies &&
@@ -71,4 +77,9 @@ in
     })
   ];
 }
+(mkIf (config.deviceFamily == "crosshatch") {
+  warnings = [ "crosshatch and blueline are no longer receiving monthly vendor security updates from Google" ];
+  source.manifest.rev = "android-12.0.0_r1";
+  apv.buildID = "SP1A.210812.015";
+})
 ]))
