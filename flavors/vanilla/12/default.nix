@@ -15,12 +15,12 @@ in
   buildDateTime = mkDefault 1635822919;
 
   source.manifest.rev = mkDefault (
-    if (config.deviceFamily == "raviole") then "android-12.0.0_r4"
+    if (config.deviceFamily == "raviole") then "android-12.0.0_r12"
     else if (elem config.deviceFamily [ "redfin" "barbet" ]) then "android-12.0.0_r10"
     else "android-12.0.0_r8"
   );
   apv.buildID = mkDefault (
-    if (config.deviceFamily == "raviole") then "SD1A.210817.015.A4"
+    if (config.deviceFamily == "raviole") then "SD1A.210817.036"
     else if (elem config.deviceFamily [ "redfin" "barbet" ]) then "SP1A.211105.003"
     else "SP1A.211105.002"
   );
