@@ -10,7 +10,7 @@ let
   upstreamParams = import ./upstream-params.nix;
   grapheneOSRelease = "${config.apv.buildID}.${upstreamParams.buildNumber}";
 
-  phoneDeviceFamilies = [ "bonito" "coral" "sunfish" "redfin" "barbet" ];
+  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -30,7 +30,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkDefault (
-    if (elem config.device [ "bonito" "sargo" ]) then "SP1A.211105.002"
+    if (elem config.device [ "crosshatch" "blueline" ]) then "SP1A.210812.015"
+    else if (elem config.device [ "bonito" "sargo" ]) then "SP1A.211105.002"
     else if (elem config.device [ "barbet" ]) then "SP1A.211105.003"
     else "SP1A.211105.004"
   );
@@ -41,7 +42,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   warnings = (optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
     "${config.device} is not a supported device for GrapheneOS")
-    ++ (optional (!(elem config.androidVersion [ 12 ])) "Unsupported androidVersion (!= 12) for GrapheneOS");
+    ++ (optional (!(elem config.androidVersion [ 12 ])) "Unsupported androidVersion (!= 12) for GrapheneOS")
+    ++ (optional (config.deviceFamily == "crosshatch") "crosshatch/blueline only receive extended support updates from GrapheneOS and no longer receive vendor updates from Google");
 }
 {
   # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
