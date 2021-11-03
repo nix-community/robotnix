@@ -18,7 +18,7 @@
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
 , trichromeLibraryPackageName ? "org.chromium.trichromelibrary"
-, version ? "95.0.4638.50"
+, version ? "95.0.4638.74"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_bundle + system_webview_apk
