@@ -29,7 +29,7 @@ buildGradle rec {
     substituteInPlace app/build.gradle --replace "getVersionName()" "\"${version}\""
   '';
 
-  # Lenient dependency verification needed so we can patch aapt2. Its hash is verifid by nix anyway
+  # Lenient dependency verification needed so we can patch aapt2. Its hash is verified by nix anyway
   gradleFlags = [ "-Dorg.gradle.dependency.verification=lenient" "assembleRelease" ];
 
   ANDROID_HOME = "${androidsdk}/share/android-sdk";

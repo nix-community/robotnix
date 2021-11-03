@@ -22,7 +22,6 @@ in
   };
 
   config = mkIf config.microg.enable {
-    # Uses better patch for microg that hardcodes the fake google signature and only allows microg apps to use it
     source.dirs = mkMerge [
       (mkIf (config.androidVersion >= 12) {
         # From: https://github.com/microg/GmsCore/pull/1586
@@ -42,6 +41,7 @@ in
           ++ lib.optional (config.flavor != "grapheneos") ./microg-android12-permission.patch;
       })
       (mkIf (config.androidVersion == 11) {
+        # Uses better patch for microg that hardcodes the fake google signature and only allows microg apps to use it
         "frameworks/base".patches = [ ./microg-android11.patch ];
       })
       (mkIf (config.androidVersion == 10) {
@@ -63,7 +63,7 @@ in
     # TODO: Preferably build this stuff ourself.
     # Used https://github.com/lineageos4microg/android_prebuilts_prebuiltapks as source for Android.mk options
     apps.prebuilt = {
-      GmsCore = { 
+      GmsCore = {
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
           sha256 = "1gj8hi6mfa2p7z91k9zw0fg40s1v25kwcw8p5srw4fx2xsxjrblr";
