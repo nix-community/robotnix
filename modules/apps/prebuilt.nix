@@ -54,7 +54,7 @@ let
 
   putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 
-  nonNullPrebuilts = lib.filter (p: p.apk != null) (lib.attrValues cfg);
+  enabledPrebuilts = lib.filter (p: p.enable) (lib.attrValues cfg);
 in
 {
   options = {
@@ -66,6 +66,12 @@ in
         _config = config;
       in types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
+          enable = mkOption {
+            default = true;
+            description = "Include ${name} APK in Android build";
+            type = types.bool;
+          };
+
           name = mkOption {
             default = name;
             description = "Name of application. (No spaces)";
@@ -243,7 +249,7 @@ in
           cp ${prebuilt.snakeoilKeyPath}/${prebuilt.certificate}.{pk8,x509.pem} $out/
         '');
       };
-    }) nonNullPrebuilts);
+    }) enabledPrebuilts);
 
     # TODO: Make just a single file with each of these configuration types instead of one for each app?
     etc = let
@@ -254,7 +260,7 @@ in
             text = (f prebuilt).text;
             inherit (prebuilt) partition;
           };
-        }) (lib.filter (prebuilt: (f prebuilt).filter) nonNullPrebuilts)));
+        }) (lib.filter (prebuilt: (f prebuilt).filter) enabledPrebuilts)));
     in
       confToAttrs (prebuilt: {
         path = "permissions/privapp-permissions-${prebuilt.packageName}.xml";
@@ -292,12 +298,12 @@ in
         '';
       });
 
-    system.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "system") nonNullPrebuilts);
-    product.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "product") nonNullPrebuilts);
+    system.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "system") enabledPrebuilts);
+    product.additionalProductPackages = map (p: "Robotnix${p.name}") (lib.filter (p: p.partition == "product") enabledPrebuilts);
 
     # Convenience derivation to get all prebuilt apks -- for use in custom fdroid repo?
     build.prebuiltApks = pkgs.linkFarm "${config.device}-prebuilt-apks"
       (map (p: { name="${p.name}.apk"; path=p.signedApk; })
-      (lib.filter (p: p.name != "CustomWebview") nonNullPrebuilts));
+      (lib.filter (p: p.name != "CustomWebview") enabledPrebuilts));
   };
 }

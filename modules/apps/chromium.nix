@@ -4,7 +4,10 @@
 { config, pkgs, apks, lib, ... }:
 
 let
-  inherit (lib) mkIf mkMerge mkEnableOption;
+  inherit (lib) mkIf mkMerge mkEnableOption mkOverride;
+
+  mkWeakDefault = mkOverride 1200; # Priority betrween mkDefault and mkOptionDefault
+
   # aapt2 from android build-tools doesn't work here:
   # error: failed to deserialize resources.pb: duplicate configuration in resource table.
   # The version from chromium works, however:  https://bugs.chromium.org/p/chromium/issues/detail?id=1106115
@@ -83,14 +86,16 @@ in
         ));
 
     in [
-      (mkIf (config.apps.${name}.enable) {
-        apps.prebuilt.${name}.apk =
-          if isTriChrome then patchedTrichromeApk "browser" (aab2apk "${browser}/TrichromeChrome.aab")
-          else if chromeModernIsBundled then aab2apk "${browser}/ChromeModernPublic.aab"
-          else "${browser}/ChromeModernPublic.apk";
-      })
+      {
+        apps.prebuilt.${name} = {
+          apk =
+            if isTriChrome then patchedTrichromeApk "browser" (aab2apk "${browser}/TrichromeChrome.aab")
+            else if chromeModernIsBundled then aab2apk "${browser}/ChromeModernPublic.aab"
+            else "${browser}/ChromeModernPublic.apk";
+          enable = mkWeakDefault config.apps.${name}.enable;
+        };
 
-      { # Unconditionally fill out the apk/description here, but it will not be included unless webview.<name>.enable = true;
+        # Unconditionally fill out the apk/description here, but it will not be included unless webview.<name>.enable = true;
         webview.${name} = {
           packageName = webviewPackageName;
           description = "${displayName} WebView";
@@ -101,15 +106,14 @@ in
         };
 
         build.${name} = browser; # Put here for convenience
-      }
 
-      (mkIf (isTriChrome && (config.apps.${name}.enable || config.webview.${name}.enable)) {
         apps.prebuilt."${name}TrichromeLibrary" = {
           apk = "${browser}/TrichromeLibrary.apk";
+          enable = mkWeakDefault (isTriChrome && (config.apps.${name}.enable || config.webview.${name}.enable));
           certificate = config.apps.prebuilt.${name}.certificate;  # Share certificate with application
           fingerprint = config.apps.prebuilt.${name}.fingerprint;
         };
-      })
+      }
     ])
     [ { name = "chromium"; displayName = "Chromium"; }
       # For an unknown reason, Bromite fails to build chrome_modern_public_bundle
