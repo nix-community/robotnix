@@ -11,7 +11,7 @@ let
   # TODO: Find a better way to do this?
   putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 
-  keysToGenerate = lib.unique (
+  keysToGenerate = lib.unique (lib.flatten (
                     map (key: "${config.device}/${key}") [ "releasekey" "platform" "shared" "media" ]
                     ++ (lib.optional (config.signing.avb.mode == "verity_only") "${config.device}/verity")
                     ++ (lib.optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
@@ -20,8 +20,8 @@ let
                     ++ (lib.optional config.signing.apex.enable config.signing.apex.packageNames)
                     ++ (lib.mapAttrsToList
                         (name: prebuilt: prebuilt.certificate)
-                        (lib.filterAttrs (name: prebuilt: prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
-                    );
+                        (lib.filterAttrs (name: prebuilt: prebuilt.enable && prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
+                    ));
 in
 {
   options = {
