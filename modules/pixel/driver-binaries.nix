@@ -59,6 +59,14 @@ in
         "vendor/qcom/${config.device}".src = "${config.build.driversQcom}/vendor/qcom/${config.device}";
       };
     })
+    (mkIf (config.pixel.useUpstreamDriverBinaries && config.deviceFamily == "raviole") {
+      signing.prebuiltImages = let
+        prebuilt = partition: "${config.source.dirs."vendor/google_devices/${config.device}".src}/proprietary/${partition}.img";
+      in [
+        (prebuilt "vendor")
+        (prebuilt "vendor_dlkm")
+      ];
+    })
 
     ({
       build = {
