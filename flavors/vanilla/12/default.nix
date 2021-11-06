@@ -25,8 +25,6 @@ in
     else "SP1A.211105.002"
   );
 
-  apv.enable = mkIf (config.deviceFamily == "raviole") false;
-
 #  # Disable for now until we have it tested working
 #  kernel.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies &&
 #                        !(elem config.deviceFamily [ "redfin" "barbet"]))
