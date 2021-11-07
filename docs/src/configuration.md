@@ -51,7 +51,6 @@ $ nix-build --arg configuration ./crosshatch.nix -A img
 ```
 
 See my own configuration under `example.nix` for inspiration.
-Robotnix module options are described in this documentation [here](modules.md).
 Reference documentation of the available options is [here](options.md).
 
 ## Flakes (experimental)

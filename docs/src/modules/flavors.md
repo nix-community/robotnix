@@ -3,10 +3,11 @@
 In normal usage, the user needs to select a robotnix "flavor" in their configuration file by setting the `flavor` option.
 Flavors may change the default settings of some other modules, which might not match the default setting shown on the [Options](options.md) reference page.
 As an example, the GrapheneOS flavor enables `apps.vanadium.enable` by default.
+For further details, consult the implementation of the flavor under (for example) `flavors/grapheneos/*`.
 
-Currently, the vanilla and GrapheneOS flavors are based on Android 11, while the LineageOS flavor uses either Android 10 or Android 11, depending on the device.
+Currently, the vanilla and GrapheneOS flavors are based on Android 12, while the LineageOS flavor uses either Android 10 or Android 11, depending on the device.
 If a robotnix flavor supports multiple Android versions (either older or experimental newer versions),
-this can be overridden by setting (for example) `androidVersion = 10`.
+this can be overridden by setting (for example) `androidVersion = 11`.
 
 ## Vanilla
 The vanilla flavor is meant to represent a (mostly) unaltered version of the AOSP code published by Google.
@@ -14,11 +15,11 @@ Vanilla AOSP support may be enabled by setting `flavor = "vanilla";`.
 It does, however, include some small fixes and usability improvements.
 Enabling the vanilla flavor also enables the chromium webview/app by default as well.
 
-The vanilla flavor in robotnix currently supports only Pixel phones (>= Pixel 3).
+The vanilla flavor in robotnix currently supports only Pixel phones which still receive updates from Google (>= Pixel 3a).
 Older Pixel phones (e.g. `marlin` / Pixel 1 XL) may be still be built by overriding `androidVersion = 10;`.
 However, these might be removed in the future as they are no longer receiving device updates from Google.
 
-Like GrapheneOS described below, the vanilla flavor retains working support for Android Verified Boot,
+The vanilla flavor retains working support for Android Verified Boot,
 and allows a user to re-lock the bootloader using the user's own generated root of trust.
 
 ## GrapheneOS
@@ -54,7 +55,7 @@ This metadata can be found under `flavors/lineageos/*/*.json`.
 
 LineageOS support in robotnix should be considered "experimental," as it does yet have the same level of support provided for `vanilla` and `grapheneos` flavors.
 LineageOS source metadata may be updated irregularly in robotnix, and certain modules (such as the updater) are not guaranteed to work.
-Moreover, LineageOS does not appear to provide the same level of security as even the vanilla flavor, with dm-verity/AVB, `userdebug` as the default variant, and vendor files with unclear origin.
+Moreover, LineageOS does not appear to provide the same level of security as even the vanilla flavor, as it disables dm-verity/AVB, sets `userdebug` as the default variant, and uses vendor files with unclear origin.
 LineageOS support is still valuable to include as it extends support to a much wider variety of devices, and provides the base that many other Android ROMs use to customize.
 Contributions and fixes from LineageOS users are especially welcome!
 
