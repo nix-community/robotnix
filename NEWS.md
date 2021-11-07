@@ -8,6 +8,17 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2021-11-07
+- Switch to Trichrome by default for chromium/webview variants
+- Updated vanilla flavor to 2021110203
+- Updated GrapheneOS flavor to 2021110617
+- Updated Chromium / Vanadium to 95.0.4638.74, Bromite to 95.0.4638.78
+- Added Android 12 support for `pixel.activeEdge` module
+- Various fixes for vanilla flavor
+
+## Backward-incompatible changes
+- Pixel 3 (XL) devices (`crosshatch` and `blueline`) are no longer receiving monthly vendor updates from Google.
+
 # 2021-10-24
 ## Highlights:
 - Android 12 support for `vanilla` and `grapheneos` flavors. Set default `androidVersion = 12`.
