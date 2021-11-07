@@ -85,6 +85,8 @@ in
   apv.buildID = "SP1A.210812.015";
 })
 (mkIf (config.deviceFamily == "raviole") {
-  source.dirs."device/google/gs101".patches = [ ./device_google_gs101-workaround.patch ];
+  source.dirs."device/google/gs101".patches = [
+    ./device_google_gs101-workaround.patch
+  ] ++ optional config.apv.enable ./device_google_gs101-vintf-manifest.patch;
 })
 ]))

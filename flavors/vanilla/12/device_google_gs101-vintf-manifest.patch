@@ -1,0 +1,53 @@
+From a46f0da73123187e385ff10e6efed658a8257dfc Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sat, 6 Nov 2021 17:18:33 -0700
+Subject: [PATCH] Include missing upstream stuff in VINTF manifest
+
+---
+ manifest.xml | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/manifest.xml b/manifest.xml
+index 9a98b4d..0af978d 100644
+--- a/manifest.xml
++++ b/manifest.xml
+@@ -186,6 +186,36 @@
+            <name>IAudioMetricExt</name>
+            <instance>default</instance>
+        </interface>
++   </hal>
++   <hal format="hidl">
++        <name>android.hardware.radio</name>
++        <transport>hwbinder</transport>
++        <fqname>@1.2::ISap/slot1</fqname>
++        <fqname>@1.2::ISap/slot2</fqname>
++        <fqname>@1.6::IRadio/slot1</fqname>
++        <fqname>@1.6::IRadio/slot2</fqname>
++    </hal>
++    <hal format="hidl">
++        <name>android.hardware.radio.config</name>
++        <transport>hwbinder</transport>
++        <fqname>@1.1::IRadioConfig/default</fqname>
++    </hal>
++    <hal>
++        <name>android.hardware.secure_element</name>
++        <transport>hwbinder</transport>
++        <fqname>@1.2::ISecureElement/SIM1</fqname>
++        <fqname>@1.2::ISecureElement/SIM2</fqname>
++    </hal>
++    <hal format="hidl">
++        <name>vendor.samsung_slsi.telephony.hardware.oemservice</name>
++        <transport>hwbinder</transport>
++        <fqname>@1.0::IOemService/dm0</fqname>
++        <fqname>@1.0::IOemService/dm1</fqname>
++    </hal>
++    <hal format="hidl">
++        <name>vendor.samsung_slsi.telephony.hardware.radioExternal</name>
++        <transport>hwbinder</transport>
++        <fqname>@1.1::IOemSlsiRadioExternal/rilExternal</fqname>
+     </hal>
+     <kernel target-level="6"/>
+ </manifest>
+-- 
+2.33.0
+
