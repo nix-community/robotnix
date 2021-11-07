@@ -166,19 +166,20 @@
                         <h1 id="flavors"><a class="header" href="#flavors">Flavors</a></h1>
 <p>In normal usage, the user needs to select a robotnix &quot;flavor&quot; in their configuration file by setting the <code>flavor</code> option.
 Flavors may change the default settings of some other modules, which might not match the default setting shown on the <a href="options.html">Options</a> reference page.
-As an example, the GrapheneOS flavor enables <code>apps.vanadium.enable</code> by default.</p>
-<p>Currently, the vanilla and GrapheneOS flavors are based on Android 11, while the LineageOS flavor uses either Android 10 or Android 11, depending on the device.
+As an example, the GrapheneOS flavor enables <code>apps.vanadium.enable</code> by default.
+For further details, consult the implementation of the flavor under (for example) <code>flavors/grapheneos/*</code>.</p>
+<p>Currently, the vanilla and GrapheneOS flavors are based on Android 12, while the LineageOS flavor uses either Android 10 or Android 11, depending on the device.
 If a robotnix flavor supports multiple Android versions (either older or experimental newer versions),
-this can be overridden by setting (for example) <code>androidVersion = 10</code>.</p>
+this can be overridden by setting (for example) <code>androidVersion = 11</code>.</p>
 <h2 id="vanilla"><a class="header" href="#vanilla">Vanilla</a></h2>
 <p>The vanilla flavor is meant to represent a (mostly) unaltered version of the AOSP code published by Google.
 Vanilla AOSP support may be enabled by setting <code>flavor = &quot;vanilla&quot;;</code>.
 It does, however, include some small fixes and usability improvements.
 Enabling the vanilla flavor also enables the chromium webview/app by default as well.</p>
-<p>The vanilla flavor in robotnix currently supports only Pixel phones (&gt;= Pixel 3).
+<p>The vanilla flavor in robotnix currently supports only Pixel phones which still receive updates from Google (&gt;= Pixel 3a).
 Older Pixel phones (e.g. <code>marlin</code> / Pixel 1 XL) may be still be built by overriding <code>androidVersion = 10;</code>.
 However, these might be removed in the future as they are no longer receiving device updates from Google.</p>
-<p>Like GrapheneOS described below, the vanilla flavor retains working support for Android Verified Boot,
+<p>The vanilla flavor retains working support for Android Verified Boot,
 and allows a user to re-lock the bootloader using the user's own generated root of trust.</p>
 <h2 id="grapheneos"><a class="header" href="#grapheneos">GrapheneOS</a></h2>
 <p>GrapheneOS is a privacy and security focused mobile OS with Android app compatibility developed as a non-profit open source project.
@@ -206,7 +207,7 @@ we periodically take snapshots of the upstream repositories and include metadata
 This metadata can be found under <code>flavors/lineageos/*/*.json</code>.</p>
 <p>LineageOS support in robotnix should be considered &quot;experimental,&quot; as it does yet have the same level of support provided for <code>vanilla</code> and <code>grapheneos</code> flavors.
 LineageOS source metadata may be updated irregularly in robotnix, and certain modules (such as the updater) are not guaranteed to work.
-Moreover, LineageOS does not appear to provide the same level of security as even the vanilla flavor, with dm-verity/AVB, <code>userdebug</code> as the default variant, and vendor files with unclear origin.
+Moreover, LineageOS does not appear to provide the same level of security as even the vanilla flavor, as it disables dm-verity/AVB, sets <code>userdebug</code> as the default variant, and uses vendor files with unclear origin.
 LineageOS support is still valuable to include as it extends support to a much wider variety of devices, and provides the base that many other Android ROMs use to customize.
 Contributions and fixes from LineageOS users are especially welcome!</p>
 <p>For devices with &quot;boot-as-recovery&quot;, the typical LineageOS flashing process involves first producing a <code>boot.img</code> and <code>ota</code>, flashing <code>boot.img</code> with fastboot, and then sideloading the <code>ota</code> in recovery mode.
