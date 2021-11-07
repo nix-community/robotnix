@@ -34,10 +34,10 @@ let
       sha256 = "07g5dcl2x44ai5q2yfq9ybx7j7kn41s82hgpv7jff5v1vr38cia9";
     });
     "31" = (fetchFromGitHub {
-      owner = "zhaofengli";
+      owner = "danielfullmer";
       repo = "android-prepare-vendor";
-      rev = "f444b97cf8e31c8ca999c68c0192083529d074e9";
-      sha256 = "01ddvhl9svcqr7iy3vlv4pk5bkfhs8xhka6pa7i46bfg38v69gii";
+      rev = "4dbe19c54ff2ab5b97b8e2639f34c3666bf2dc5e";
+      sha256 = "0y62lrw07sskw352v6ginlkaz9dwd9ahqacjnj0i7yjxyf11gn0i";
     });
   }.${builtins.toString api};
 
