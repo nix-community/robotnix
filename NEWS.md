@@ -15,14 +15,16 @@ listing of changes. See the git commit log for additional details.
 - New Active Edge module for Pixel devices [PR #125](https://github.com/danielfullmer/robotnix/pull/125) (thanks @zhaofengli)
 - New `pixel.useUpstreamDriverBinaries` option to use binaries from [here](https://developers.google.com/android/drivers) instead of android-prepare-vendor. (Only recommended for testing)
 - Updated vanilla flavor to SP1A.210812
-- Updated grapheneos flavor to 2021102300
-- Updated lineageos flavor to 2021102406
+- Updated GrapheneOS flavor to 2021102300
+- Updated LineageOS flavor to 2021102406
 - Updated Chromium / Vanadium to 95.0.4638.50, Bromite to 94.0.4606.102
 - Updated Seedvault to 11-2.3 tag for Android 11, 2021-10-23 for Android 12
 - Added microG patches for Android 12
 - Updated Updater to 2021-10-22
 - Refactor and separate kernel building for vanilla and GrapheneOS
 - Now set default `buildDateTime` automatically based on maximal `source.dirs.<relpath>.dateTime`, as fallback in case there is not a better way to set it.
+
+There are no intentional backward incompatible changes since the last release.
 
 # 2021-09-09
 ## Highlights:
@@ -39,6 +41,7 @@ listing of changes. See the git commit log for additional details.
 - Added `--cache-search-path` and `--local_manifest` options to `mk_repo_file.py`
 
 There are no intentional backward incompatible changes since the last release.
+
 We have (hopefully temporarily) switched back to prebuilt kernels for redfin and related devices (bramble and barbet) in the vanilla flavor.
 Re-adding support for building these kernels in robotnix will likely require resolving [#116](https://github.com/danielfullmer/robotnix/issues/116).
 
