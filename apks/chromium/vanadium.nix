@@ -7,8 +7,8 @@ let
   vanadium_src = fetchFromGitHub {
     owner = "GrapheneOS";
     repo = "Vanadium";
-    rev = "SP1A.211105.002.2021110507";
-    sha256 = "15db8d6f6n2r0f4dsdkyiv55xnwvf37mkppr005v0s7hcqrzqqjl";
+    rev = "SP1A.211105.002.2021110617";
+    sha256 = "0v47f8bcyvasjs3b75lk46krf33m1f8p2vf6wnhfhdg852cvmhn8";
   };
 in (chromium.override {
   name = "vanadium";
