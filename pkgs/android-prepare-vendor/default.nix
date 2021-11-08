@@ -36,8 +36,8 @@ let
     "31" = (fetchFromGitHub {
       owner = "danielfullmer";
       repo = "android-prepare-vendor";
-      rev = "4dbe19c54ff2ab5b97b8e2639f34c3666bf2dc5e";
-      sha256 = "0y62lrw07sskw352v6ginlkaz9dwd9ahqacjnj0i7yjxyf11gn0i";
+      rev = "82a52ee758fdc95ac030ebbce34e987bdb47a2ea";
+      sha256 = "1nr955v1dlnw48x9am7cahb10a4qvx8bxi3a8lzpf718y1llj8cp";
     });
   }.${builtins.toString api};
 
