@@ -49,6 +49,8 @@ in
           chmod +w -R extracted
         '' + optionalString usesQcomDrivers ''
           cp -r ${config.build.driversQcom}/vendor/google_devices/${config.device}/. extracted
+        '' + optionalString (config.deviceFamily == "raviole") ''
+          patch extracted/proprietary/Android.mk ${./raviole-ims-presigned.patch}
         '' + ''
 
           mv extracted $out
