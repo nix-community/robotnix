@@ -85,8 +85,39 @@ in
   apv.buildID = "SP1A.210812.015";
 })
 (mkIf (config.deviceFamily == "raviole") {
-  source.dirs."device/google/gs101".patches = [
-    ./device_google_gs101-workaround.patch
-  ] ++ optional config.apv.enable ./device_google_gs101-vintf-manifest.patch;
+  source.dirs = {
+    "device/google/gs101".patches = [
+      ./device_google_gs101-workaround.patch
+    ] ++ optional config.apv.enable ./device_google_gs101-vintf-manifest.patch;
+
+    # Workaround for prebuilt apex package in vendor partition.
+    # TODO: Replace with Nix-based apv alternative
+    "robotnix/prebuilt/com.google.pixel.camera.hal" = {
+      src = let
+        Androidbp = pkgs.writeText "Android.bp" ''
+          prebuilt_apex {
+              name: "com.google.pixel.camera.hal",
+              arch: {
+                  arm64: {
+                      src: "com.google.pixel.camera.hal.apex",
+                  },
+              },
+              filename: "com.google.pixel.camera.hal.apex",
+              vendor: true,
+          }
+        '';
+      in pkgs.runCommand "com.google.pixel.camera.hal" {} ''
+        mkdir -p $out
+
+        cp ${Androidbp} $out/Android.bp
+        cp ${config.build.apv.unpackedImg}/vendor/apex/com.google.pixel.camera.hal.apex $out/com.google.pixel.camera.hal.apex
+      '';
+
+      enable = config.apv.enable;
+    };
+  };
+
+  vendor.additionalProductPackages = mkIf config.apv.enable [ "com.google.pixel.camera.hal" ];
+  signing.apex.packageNames = mkIf config.apv.enable [ "com.google.pixel.camera.hal" ];
 })
 ]))
