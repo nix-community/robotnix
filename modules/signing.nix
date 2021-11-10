@@ -225,7 +225,7 @@ in
           # make_key exits with unsuccessful code 1 instead of 0
           make_key "$key" "/CN=Robotnix ''${key/\// }/" && exit 1
         else
-          echo "Skipping generating $key since it is already exists"
+          echo "Skipping generating $key key since it is already exists"
         fi
       done
 
