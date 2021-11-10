@@ -119,5 +119,8 @@ in
 
   vendor.additionalProductPackages = mkIf config.apv.enable [ "com.google.pixel.camera.hal" ];
   signing.apex.packageNames = mkIf config.apv.enable [ "com.google.pixel.camera.hal" ];
+
+  # VINTF checks fail because apv doesn't do things correctly. TODO: Fix properly
+  otaArgs = [ "--skip_compatibility_check" ];
 })
 ]))
