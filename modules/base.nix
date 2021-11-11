@@ -247,9 +247,9 @@ in
     source.dirs."build/make".postPatch = ''
       ${lib.concatMapStringsSep "\n" (name: "sed -i '/${name} \\\\/d' target/product/*.mk") config.removedProductPackages}
     '' + (if (config.androidVersion >= 10) then ''
-      echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/base_system.mk
-      echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/base_product.mk
-      echo "\$(call inherit-product-if-exists, robotnix/config/vendor.mk)" >> target/product/base_vendor.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/handheld_system.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/handheld_product.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/vendor.mk)" >> target/product/handheld_vendor.mk
     '' else if (config.androidVersion >= 8) /* FIXME Unclear if android 8 has these... */ then ''
       echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/core.mk
       echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/core.mk
