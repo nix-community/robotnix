@@ -123,6 +123,23 @@ in
   signing.apex.packageNames = mkIf config.apv.enable [ "com.google.pixel.camera.hal" ];
 
   # VINTF checks fail because apv doesn't do things correctly. TODO: Fix properly
-  otaArgs = mkIf (config.apv.enable && config.deviceFamily == "raviole") [ "--skip_compatibility_check" ];
+  otaArgs = mkIf config.apv.enable [ "--skip_compatibility_check" ];
+
+  nixpkgs.overlays = let
+    owner = "danielfullmer";
+    repo = "android-prepare-vendor";
+    rev = "82a52ee758fdc95ac030ebbce34e987bdb47a2ea";
+    sha256 = "1nr955v1dlnw48x9am7cahb10a4qvx8bxi3a8lzpf718y1llj8cp";
+  in [ (self: super: {
+    android-prepare-vendor = super.android-prepare-vendor.overrideAttrs (_: {
+      src = pkgs.fetchFromGitHub {
+        inherit owner repo rev sha256;
+      };
+      passthru.evalTimeSrc = builtins.fetchTarball {
+        url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
+        inherit sha256;
+      };
+    });
+  }) ];
 })
 ]))
