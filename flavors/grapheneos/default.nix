@@ -43,7 +43,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   warnings = (optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
     "${config.device} is not a supported device for GrapheneOS")
     ++ (optional (!(elem config.androidVersion [ 12 ])) "Unsupported androidVersion (!= 12) for GrapheneOS")
-    ++ (optional (config.deviceFamily == "crosshatch") "crosshatch/blueline only receive extended support updates from GrapheneOS and no longer receive vendor updates from Google");
+    ++ (optional (config.deviceFamily == "crosshatch") "crosshatch/blueline are considered legacy devices and receive only extended support updates from GrapheneOS and no longer receive vendor updates from Google");
 }
 {
   # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
