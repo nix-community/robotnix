@@ -121,6 +121,6 @@ in
   signing.apex.packageNames = mkIf config.apv.enable [ "com.google.pixel.camera.hal" ];
 
   # VINTF checks fail because apv doesn't do things correctly. TODO: Fix properly
-  otaArgs = [ "--skip_compatibility_check" ];
+  otaArgs = mkIf (config.apv.enable && config.deviceFamily == "raviole") [ "--skip_compatibility_check" ];
 })
 ]))
