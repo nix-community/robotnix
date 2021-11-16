@@ -74,8 +74,13 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
 (mkIf ((elem config.deviceFamily [ "taimen" "muskie" ]) && (elem config.androidVersion [ 9 10 11 ])) {
   source.dirs."device/google/wahoo".postPatch = patchSystemUIGoogle;
 })
-(mkIf ((elem config.deviceFamily [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "raviole" ]) && (elem config.androidVersion [ 9 10 11 12 ])) {
-  source.dirs."device/google/${if config.deviceFamily == "redfin" then "redbull" else config.deviceFamily}".postPatch = patchSystemUIGoogle;
-})
+(mkIf ((elem config.deviceFamily [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "raviole" ]) && (elem config.androidVersion [ 9 10 11 12 ])) (let
+  dirName =
+    if config.deviceFamily == "redfin" then "redbull"
+    else if config.deviceFamily == "raviole" then "gs101"
+    else config.deviceFamily;
+in {
+  source.dirs."device/google/${dirName}".postPatch = patchSystemUIGoogle;
+}))
 
 ])
