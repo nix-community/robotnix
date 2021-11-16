@@ -1,0 +1,27 @@
+From 5b7a9835a63a3b2b99960515b9a0db79e1b058d4 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Mon, 15 Nov 2021 18:01:44 -0800
+Subject: [PATCH] Workaround crosshatch/blueline buildid mismatch
+
+---
+ core/build_id.mk | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/core/build_id.mk b/core/build_id.mk
+index d82beb245..783816b7a 100644
+--- a/core/build_id.mk
++++ b/core/build_id.mk
+@@ -18,7 +18,9 @@
+ # (like "CRB01").  It must be a single word, and is
+ # capitalized by convention.
+ 
+-ifneq (,$(filter bonito sargo,$(TARGET_PRODUCT)))
++ifneq (,$(filter crosshatch blueline,$(TARGET_PRODUCT)))
++    BUILD_ID=SP1A.210812.015
++else ifneq (,$(filter bonito sargo,$(TARGET_PRODUCT)))
+     BUILD_ID=SP1A.211105.002
+ else ifneq (,$(filter barbet,$(TARGET_PRODUCT)))
+     BUILD_ID=SP1A.211105.003
+-- 
+2.33.1
+
