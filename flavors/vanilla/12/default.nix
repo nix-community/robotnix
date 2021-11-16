@@ -85,6 +85,8 @@ in
   apv.buildID = "SP1A.210812.015";
 })
 (mkIf (config.deviceFamily == "raviole") {
+  warnings = [ "raven and oriole have only experimental support in vanilla" ];
+
   source.dirs = {
     "device/google/gs101".patches = [
       ./device_google_gs101-workaround.patch
