@@ -321,6 +321,20 @@ Refer to this <a href="https://developer.android.com/reference/android/Manifest.
 <p><em>Type</em>: boolean</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3 id="appsprebuiltnameuseslibraries"><a class="header" href="#appsprebuiltnameuseslibraries"><code>apps.prebuilt.&lt;name&gt;.usesLibraries</code></a></h3>
+<p>Shared library dependencies of this app.</p>
+<p>For more information, see <a href="https://android.googlesource.com/platform/build/+/75342c19323fea64dbc93fdc5a7def3f81113c83/Changes.md">https://android.googlesource.com/platform/build/+/75342c19323fea64dbc93fdc5a7def3f81113c83/Changes.md</a>.</p>
+<p><em>Default</em>: <code>[ ]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
+<h3 id="appsprebuiltnameusesoptionallibraries"><a class="header" href="#appsprebuiltnameusesoptionallibraries"><code>apps.prebuilt.&lt;name&gt;.usesOptionalLibraries</code></a></h3>
+<p>Optional shared library dependencies of this app.</p>
+<p>For more information, see <a href="https://android.googlesource.com/platform/build/+/75342c19323fea64dbc93fdc5a7def3f81113c83/Changes.md">https://android.googlesource.com/platform/build/+/75342c19323fea64dbc93fdc5a7def3f81113c83/Changes.md</a>.</p>
+<p><em>Default</em>: <code>[ ]</code></p>
+<p><em>Type</em>: list of strings</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
 <h3 id="appsseedvaultenable"><a class="header" href="#appsseedvaultenable"><code>apps.seedvault.enable</code></a></h3>
 <p>Whether to enable Seedvault (backup).</p>
 <p><em>Default</em>: <code>false</code></p>
@@ -730,6 +744,12 @@ Also enables use of <code>builtins.fetchGit</code> instead of <code>pkgs.fetchgi
 <code>eng</code> is the development configuration with additional debugging tools.</p>
 <p><em>Default</em>: <code>&quot;user&quot;</code></p>
 <p><em>Type</em>: one of &quot;user&quot;, &quot;userdebug&quot;, &quot;eng&quot;</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
+<h3 id="vendoradditionalproductpackages"><a class="header" href="#vendoradditionalproductpackages"><code>vendor.additionalProductPackages</code></a></h3>
+<p><code>PRODUCT_PACKAGES</code> to add under <code>vendor</code> partition.</p>
+<p><em>Default</em>: <code>[ ]</code></p>
+<p><em>Type</em>: list of strings</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/base.nix">modules/base.nix</a></p>
 <h3 id="webview"><a class="header" href="#webview"><code>webview</code></a></h3>
