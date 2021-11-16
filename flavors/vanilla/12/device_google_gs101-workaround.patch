@@ -1,0 +1,35 @@
+From bb45e22473a08345ea3f22f235de30be92aa2cc5 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Thu, 28 Oct 2021 18:48:05 -0700
+Subject: [PATCH] Workaround references to missing file
+
+---
+ device.mk         | 2 +-
+ telephony/user.mk | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/device.mk b/device.mk
+index 982ecb6..fda41ae 100644
+--- a/device.mk
++++ b/device.mk
+@@ -582,7 +582,7 @@ PRODUCT_COPY_FILES += \
+ 	frameworks/native/data/etc/android.hardware.camera.concurrent.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.concurrent.xml \
+ 	frameworks/native/data/etc/android.hardware.camera.full.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.full.xml\
+ 	frameworks/native/data/etc/android.hardware.camera.raw.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.raw.xml\
+-	vendor/google/services/LyricCameraHAL/src/vendor.android.hardware.camera.preview-dis.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/vendor.android.hardware.camera.preview-dis.xml\
++#	vendor/google/services/LyricCameraHAL/src/vendor.android.hardware.camera.preview-dis.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/vendor.android.hardware.camera.preview-dis.xml\
+ 
+ #PRODUCT_COPY_FILES += \
+ 	frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml \
+diff --git a/telephony/user.mk b/telephony/user.mk
+index 983a19a..6023a7d 100644
+--- a/telephony/user.mk
++++ b/telephony/user.mk
+@@ -1,2 +1,3 @@
+-PRODUCT_COPY_FILES += vendor/samsung_slsi/telephony/common/device/samsung/init.radio.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.radio.sh
++# TODO: Includes references to vendor/samsung_slsi, which we don't have access to
++# PRODUCT_COPY_FILES += vendor/samsung_slsi/telephony/common/device/samsung/init.radio.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.radio.sh
+ BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs101-sepolicy/telephony/user/
+-- 
+2.33.0
+

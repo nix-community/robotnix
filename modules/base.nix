@@ -142,6 +142,7 @@ in
       readOnly = true;
     };
 
+    # TODO: extract system/product/vendor options into a submodule
     system.additionalProductPackages = mkOption {
       default = [];
       type = types.listOf types.str;
@@ -152,6 +153,12 @@ in
       default = [];
       type = types.listOf types.str;
       description = "`PRODUCT_PACKAGES` to add under `product` partition.";
+    };
+
+    vendor.additionalProductPackages = mkOption {
+      default = [];
+      type = types.listOf types.str;
+      description = "`PRODUCT_PACKAGES` to add under `vendor` partition.";
     };
 
     removedProductPackages = mkOption {
@@ -171,6 +178,13 @@ in
       default = "";
       type = types.lines;
       description = "Additional configuration to be included in product .mk file";
+      internal = true;
+    };
+
+    vendor.extraConfig = mkOption {
+      default = "";
+      type = types.lines;
+      description = "Additional configuration to be included in vendor .mk file";
       internal = true;
     };
 
@@ -226,6 +240,7 @@ in
 
     system.extraConfig = lib.concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.system.additionalProductPackages;
     product.extraConfig = lib.concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.product.additionalProductPackages;
+    vendor.extraConfig = lib.concatMapStringsSep "\n" (name: "PRODUCT_PACKAGES += ${name}") config.vendor.additionalProductPackages;
 
     # TODO: The " \\" in the below sed is a bit flaky, and would require the line to end in " \\"
     # come up with something more robust.
@@ -234,9 +249,11 @@ in
     '' + (if (config.androidVersion >= 10) then ''
       echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/handheld_system.mk
       echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/handheld_product.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/vendor.mk)" >> target/product/handheld_vendor.mk
     '' else if (config.androidVersion >= 8) /* FIXME Unclear if android 8 has these... */ then ''
       echo "\$(call inherit-product-if-exists, robotnix/config/system.mk)" >> target/product/core.mk
       echo "\$(call inherit-product-if-exists, robotnix/config/product.mk)" >> target/product/core.mk
+      echo "\$(call inherit-product-if-exists, robotnix/config/vendor.mk)" >> target/product/core.mk
     '' else ''
       # no-op as it's not present in android 7 and under?
     '');
@@ -244,11 +261,13 @@ in
     source.dirs."robotnix/config".src = let
       systemMk = pkgs.writeTextFile { name = "system.mk"; text = config.system.extraConfig; };
       productMk = pkgs.writeTextFile { name = "product.mk"; text = config.product.extraConfig; };
+      vendorMk = pkgs.writeTextFile { name = "vendor.mk"; text = config.vendor.extraConfig; };
     in
       pkgs.runCommand "robotnix-config" {} ''
         mkdir -p $out
         cp ${systemMk} $out/system.mk
         cp ${productMk} $out/product.mk
+        cp ${vendorMk} $out/vendor.mk
       '';
 
     envVars = mkMerge [

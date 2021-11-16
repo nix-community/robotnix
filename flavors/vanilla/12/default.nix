@@ -15,11 +15,13 @@ in
   buildDateTime = mkDefault 1635822919;
 
   source.manifest.rev = mkDefault (
-    if (elem config.deviceFamily [ "redfin" "barbet" ]) then "android-12.0.0_r10"
+    if (config.deviceFamily == "raviole") then "android-12.0.0_r12"
+    else if (elem config.deviceFamily [ "redfin" "barbet" ]) then "android-12.0.0_r10"
     else "android-12.0.0_r8"
   );
   apv.buildID = mkDefault (
-    if (elem config.deviceFamily [ "redfin" "barbet" ]) then "SP1A.211105.003"
+    if (config.deviceFamily == "raviole") then "SD1A.210817.036"
+    else if (elem config.deviceFamily [ "redfin" "barbet" ]) then "SP1A.211105.003"
     else "SP1A.211105.002"
   );
 
@@ -81,5 +83,44 @@ in
   warnings = [ "crosshatch and blueline are no longer receiving monthly vendor security updates from Google" ];
   source.manifest.rev = "android-12.0.0_r1";
   apv.buildID = "SP1A.210812.015";
+})
+(mkIf (config.deviceFamily == "raviole") {
+  source.dirs = {
+    "device/google/gs101".patches = [
+      ./device_google_gs101-workaround.patch
+    ] ++ optional config.apv.enable ./device_google_gs101-vintf-manifest.patch;
+
+    # Workaround for prebuilt apex package in vendor partition.
+    # TODO: Replace with Nix-based apv alternative
+    "robotnix/prebuilt/com.google.pixel.camera.hal" = {
+      src = let
+        Androidbp = pkgs.writeText "Android.bp" ''
+          prebuilt_apex {
+              name: "com.google.pixel.camera.hal",
+              arch: {
+                  arm64: {
+                      src: "com.google.pixel.camera.hal.apex",
+                  },
+              },
+              filename: "com.google.pixel.camera.hal.apex",
+              vendor: true,
+          }
+        '';
+      in pkgs.runCommand "com.google.pixel.camera.hal" {} ''
+        mkdir -p $out
+
+        cp ${Androidbp} $out/Android.bp
+        cp ${config.build.apv.unpackedImg}/vendor/apex/com.google.pixel.camera.hal.apex $out/com.google.pixel.camera.hal.apex
+      '';
+
+      enable = config.apv.enable;
+    };
+  };
+
+  vendor.additionalProductPackages = mkIf config.apv.enable [ "com.google.pixel.camera.hal" ];
+  signing.apex.packageNames = mkIf config.apv.enable [ "com.google.pixel.camera.hal" ];
+
+  # VINTF checks fail because apv doesn't do things correctly. TODO: Fix properly
+  otaArgs = mkIf (config.apv.enable && config.deviceFamily == "raviole") [ "--skip_compatibility_check" ];
 })
 ]))

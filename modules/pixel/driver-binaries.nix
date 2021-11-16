@@ -2,12 +2,12 @@
 
 let
   inherit (lib)
-    mkIf mkOption mkMerge types;
+    mkIf mkOption mkMerge types optionalAttrs optionalString;
 
   driversList = lib.importJSON ./pixel-drivers.json;
   fetchItem = type: device: buildID: let
     matchingItem = lib.findSingle
-      (v: lib.hasInfix "/${type}-${device}-${lib.toLower buildID}" v.url)
+      (v: lib.hasInfix "/${type}-${device}-${lib.toLower buildID}-" v.url)
       (throw "no items found for ${type} ${device} drivers")
       (throw "multiple items found for ${type} ${device} drivers")
       driversList;
@@ -20,6 +20,8 @@ let
     mkdir -p $out
     tail -n +315 ./extract-*.sh | tar zxv -C $out
   '';
+
+  usesQcomDrivers = config.deviceFamily != "raviole";
 in
 {
   options = {
@@ -39,17 +41,31 @@ in
       ];
 
       # Merge qcom and google drivers
-      source.dirs."vendor/google_devices/${config.device}".src = pkgs.runCommand "${config.device}-vendor" {} ''
-        mkdir extracted
+      source.dirs = {
+        "vendor/google_devices/${config.device}".src = pkgs.runCommand "${config.device}-vendor" {} (''
+          mkdir extracted
 
-        cp -r ${config.build.driversGoogle}/vendor/google_devices/${config.device}/. extracted
-        chmod +w -R extracted
-        cp -r ${config.build.driversQcom}/vendor/google_devices/${config.device}/. extracted
+          cp -r ${config.build.driversGoogle}/vendor/google_devices/${config.device}/. extracted
+          chmod +w -R extracted
+        '' + optionalString usesQcomDrivers ''
+          cp -r ${config.build.driversQcom}/vendor/google_devices/${config.device}/. extracted
+        '' + optionalString (config.deviceFamily == "raviole") ''
+          patch extracted/proprietary/Android.mk ${./raviole-ims-presigned.patch}
+        '' + ''
 
-        mv extracted $out
-      '';
-
-      source.dirs."vendor/qcom/${config.device}".src = "${config.build.driversQcom}/vendor/qcom/${config.device}";
+          mv extracted $out
+        '');
+      } // optionalAttrs usesQcomDrivers {
+        "vendor/qcom/${config.device}".src = "${config.build.driversQcom}/vendor/qcom/${config.device}";
+      };
+    })
+    (mkIf (config.pixel.useUpstreamDriverBinaries && config.deviceFamily == "raviole") {
+      signing.prebuiltImages = let
+        prebuilt = partition: "${config.source.dirs."vendor/google_devices/${config.device}".src}/proprietary/${partition}.img";
+      in [
+        (prebuilt "vendor")
+        (prebuilt "vendor_dlkm")
+      ];
     })
 
     ({

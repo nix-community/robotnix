@@ -38,6 +38,15 @@ in
         internal = true;
       };
 
+      prebuiltImages = mkOption {
+        default = [];
+        type = types.listOf types.str;
+        internal = true;
+        description = ''
+          A list of prebuilt images to be added to target-files.
+        '';
+      };
+
       avb = {
         enable = mkEnableOption "AVB signing";
 
@@ -91,6 +100,13 @@ in
   config = let
     testKeysStorePath = config.source.dirs."build/make".src + /target/product/security;
   in {
+    assertions = [
+      {
+        assertion = (builtins.length cfg.prebuiltImages) != 0 -> config.androidVersion == 12;
+        message = "The --prebuilt-image patch is only applied to Android 12";
+      }
+    ];
+
     signing.keyStorePath = mkIf (!config.signing.enable) (mkDefault testKeysStorePath);
     signing.buildTimeKeyStorePath = mkMerge [
       (mkIf config.signing.enable (mkDefault "/keys"))
@@ -173,7 +189,8 @@ in
     in
       lib.mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") keyMappings
       ++ lib.optionals cfg.avb.enable avbFlags
-      ++ lib.optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames);
+      ++ lib.optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames)
+      ++ lib.optionals (builtins.length cfg.prebuiltImages != 0) (map (image: "--prebuilt_image ${image}") cfg.prebuiltImages);
 
     otaArgs =
       if config.signing.enable

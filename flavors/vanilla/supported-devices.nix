@@ -5,7 +5,8 @@ let
   # https://source.android.com/setup/start/build-numbers
   phoneDeviceFamilies =
     (lib.optional (config.androidVersion <= 10) "marlin")
-    ++ [ "taimen" "muskie" "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" ];
+    ++ (lib.optionals (config.androidVersion <= 11) [ "taimen" "muskie" ])
+    ++ [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" "raviole" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 in {
   inherit phoneDeviceFamilies supportedDeviceFamilies;

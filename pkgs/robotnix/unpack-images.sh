@@ -42,8 +42,8 @@ for filename in *; do
                     mkdir "$filepath-ext"
                     bsdtar xf "$filepath" -C "$filepath-ext"
                 done
-            elif [[ $part == vbmeta ]]; then
-                avbtool.py info_image --image "$filename" --out "$out/vbmeta-info"
+            elif [[ $part == vbmeta* ]]; then
+                avbtool.py info_image --image "$filename" --out "$out/$part-info"
             fi
             ;;
         esac

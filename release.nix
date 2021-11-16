@@ -24,6 +24,8 @@ let
     { device="bramble";    flavor="vanilla"; }
     { device="redfin";     flavor="vanilla"; }
     { device="barbet";     flavor="vanilla"; }
+    { device="raven";      flavor="vanilla"; }
+    { device="oriole";     flavor="vanilla"; }
 
     { device="x86_64";     flavor="grapheneos"; }
     { device="arm64";      flavor="grapheneos"; }
