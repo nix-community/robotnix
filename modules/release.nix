@@ -134,6 +134,7 @@ in
     incrementalOta = runWrappedCommand "incremental-${config.prevBuildNumber}" otaScript { inherit targetFiles; inherit (config) prevTargetFiles; };
     img = runWrappedCommand "img" imgScript { inherit targetFiles; };
     factoryImg = runWrappedCommand "factory" factoryImgScript { inherit targetFiles img; };
+    unpackedImg = pkgs.robotnix.unpackImg config.build.img;
 
     # Pull this out of target files, because (at least) verity key gets put into boot ramdisk
     bootImg = pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out";
