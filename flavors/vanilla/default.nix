@@ -64,6 +64,7 @@ in mkIf (config.flavor == "vanilla") (mkMerge [
   # devices, all with the name for this device.  This is OK.
   source.dirs."device/google/${config.deviceFamily}".postPatch = ''
     sed -i 's/PRODUCT_MODEL :=.*/PRODUCT_MODEL := ${config.deviceDisplayName}/' aosp_*.mk
+    sed -i 's/PRODUCT_BRAND :=.*/PRODUCT_BRAND := google/' aosp_*.mk
     sed -i 's/PRODUCT_MANUFACTURER :=.*/PRODUCT_MANUFACTURER := Google/' aosp_*.mk
   '';
 })
