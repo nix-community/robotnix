@@ -19,15 +19,13 @@ sectionHeadersOffset=$(echo "$elfHeader" | sed -En "s/Start of section headers:\
 sectionHeadersSize=$(echo "$elfHeader" | sed -En "s/Size of section headers:\W+([0-9]*).*$/\1/p")
 sectionHeadersNum=$(echo "$elfHeader" | sed -En "s/Number of section headers:\W+([0-9]*).*$/\1/p")
 offset=$(("$sectionHeadersOffset" + "$sectionHeadersSize" * "$sectionHeadersNum"))
-echo $offset
 
 tmpFile=$(mktemp)
 trap 'rm $tmpFile' EXIT
 cp "$file" "$tmpFile"
 
-echo "$file"
 dd if="$file" of="$tmpFile" bs=$offset count=1 >/dev/null 2>&1
 patchelf --set-interpreter "$interpreter" "$tmpFile"
 dd if="$file" of="$tmpFile" bs=$offset skip=1 conv=notrunc oflag=append >/dev/null 2>&1
-mv "$tmpFile" "$file"
+cp "$tmpFile" "$file"
 chmod +x "$file"
