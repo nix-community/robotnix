@@ -18,7 +18,7 @@
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
 , trichromeLibraryPackageName ? "org.chromium.trichromelibrary"
-, version ? "95.0.4638.74"
+, version ? "96.0.4664.45"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_bundle + system_webview_apk
@@ -180,7 +180,7 @@ in stdenvNoCC.mkDerivation rec {
   postPatch = lib.optionalString (lib.versionAtLeast version "91") ''
     ( cd src
       # Required for patchShebangs (unsupported)
-      chmod -x third_party/webgpu-cts/src/tools/deno
+      chmod -x third_party/webgpu-cts/src/tools/${lib.optionalString (lib.versionAtLeast version "96") "run_"}deno
     )
   '' + ''
     ( cd src
