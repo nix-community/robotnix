@@ -65,10 +65,6 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/redbull".enable = false;
   source.dirs."kernel/google/barbet".enable = false;
 
-  # Hopefully temporary workaround for the following build error caused by apv/build_id mismatch in tagged release:
-  # "Expected BUILD_ID is SP1A.210812.015 and currently building with SP1A.211105.004"
-  source.dirs."build/make".patches = mkIf (config.deviceFamily == "crosshatch") [ ./crosshatch-buildid.patch ];
-
   kernel.enable = mkDefault (elem config.deviceFamily phoneDeviceFamilies);
 
   # Enable Vanadium (GraphaneOS's chromium fork).
