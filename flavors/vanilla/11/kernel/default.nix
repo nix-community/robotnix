@@ -36,6 +36,7 @@ let
       cp -r . $out
       cp ${pkgs.libedit}/lib/libedit.so.0 $out/lib64/libedit.so.2 # ABI is the same--but distros have inconsistent numbering
     '';
+    autoPatchelfIgnoreMissingDeps=true; # Ignore missing liblog.so
   };
   prebuiltGas = let
     # Not always included in the platform repo manifest

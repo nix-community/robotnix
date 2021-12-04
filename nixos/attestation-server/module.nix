@@ -8,7 +8,11 @@ let
 
   cfg = config.services.attestation-server;
   supportedDevices = import ../../apks/auditor/supported-devices.nix;
-  attestation-server = pkgs.callPackage ./default.nix {};
+
+  # Don't use nixos's nixpkgs, since gradle has changed too much in latest
+  # nixpkgs, use a pinned version instead
+  pinnedPkgs = import ../../pkgs {};
+  attestation-server = pinnedPkgs.callPackage ./default.nix {};
 in
 {
   options.services.attestation-server = {
