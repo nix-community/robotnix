@@ -198,7 +198,7 @@ let
       '') config.copyfiles)
       + (lib.concatMapStringsSep "\n" (c: ''
         mkdir -p $(dirname ${c.dest})
-        ln -sf --relative ${config.relpath}/${c.src} ${c.dest}
+        ln --no-dereference -sf --relative ${config.relpath}/${c.src} ${c.dest}
       '') config.linkfiles);
     };
   });
