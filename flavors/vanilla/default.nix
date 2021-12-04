@@ -12,7 +12,7 @@ let
 
   # Replaces references to SystemUIGoogle with SystemUI in device source tree
   patchSystemUIGoogle = ''
-    substituteInPlace device.mk --replace SystemUIGoogle SystemUI
+    substituteInPlace device${lib.optionalString (config.deviceFamily == "redfin") "-common"}.mk --replace SystemUIGoogle SystemUI
     substituteInPlace overlay/frameworks/base/core/res/res/values/config.xml --replace SystemUIGoogle SystemUI
   '';
 in mkIf (config.flavor == "vanilla") (mkMerge [
