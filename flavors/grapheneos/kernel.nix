@@ -32,6 +32,7 @@ let
       postPatch = ''
         rm -r python3
       '';
+      autoPatchelfIgnoreMissingDeps=true; # Ignore missing liblog.so
     };
     "prebuilts/gas/linux-x86" = {};
     "prebuilts/misc/linux-x86" = {
