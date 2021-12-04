@@ -11,6 +11,7 @@ let
   ;
   androidVersionToTWRPBranch = {
     "9" = "twrp-9.0";
+    "10" = "twrp-10.0-deprecated";
   };
   TWRPBranch = androidVersionToTWRPBranch.${toString config.androidVersion};
   repoDirs = lib.importJSON (./. + "/${TWRPBranch}/repo.json");
@@ -66,3 +67,21 @@ in mkIf (config.flavor == "twrp")
     }
   ]);
 })
+(mkIf (config.androidVersion == 10) {
+  # It seems to want a lot of packages normally present in androidVersion == 9...
+  envPackages = with pkgs; [
+      openssl.dev
+      bison
+      flex
+      perl
+      which
+  ];
+
+  # Ugh, something really wants `ccache` in these repos.
+  # :/
+  ccache.enable = lib.mkForce true;
+  envVars = {
+    CCACHE_DIR = lib.mkForce "/tmp"; # Make configurable?
+  };
+})
+])
