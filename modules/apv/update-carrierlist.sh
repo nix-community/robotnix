@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-FileCopyrightText: 2021 Daniel Fullmer
 # SPDX-License-Identifier: MIT
 
 set -euo pipefail
