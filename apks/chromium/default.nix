@@ -147,7 +147,7 @@ in stdenvNoCC.mkDerivation rec {
     # Android stuff (from src/build/install-build-deps-android.sh)
     # Including some of the stuff from src/.vpython as well
     [ bsdiff
-      (python2.withPackages (p: with p; [ ply jinja2 setuptools ]))
+      (python2.withPackages (p: with p; [ ply setuptools ]))
       (python3.withPackages (p: with p; [ ply jinja2 setuptools ]))
       binutils # Needs readelf
       perl # Used by //third_party/libvpx
