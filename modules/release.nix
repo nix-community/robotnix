@@ -69,10 +69,10 @@ let
 
       get_radio_image() {
         ${lib.getBin pkgs.unzip}/bin/unzip -p ${targetFiles} OTA/android-info.txt  \
-          |  grep -Po "require version-$1=\K.+" | tr '[:upper:]' '[:lower:]'
+          |  grep "require version-$1" | cut -d'=' -f2 | tr '[:upper:]' '[:lower:]' || exit 1
       }
-      export BOOTLOADER=$(get_radio_image bootloader google_devices/$DEVICE)
-      export RADIO=$(get_radio_image baseband google_devices/$DEVICE)
+      export BOOTLOADER=$(get_radio_image bootloader)
+      export RADIO=$(get_radio_image baseband)
 
       export PATH=${lib.getBin pkgs.zip}/bin:${lib.getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
