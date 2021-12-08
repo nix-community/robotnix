@@ -889,9 +889,7 @@ The following NixOS configuration can be used to easily set this environment var
   };
 in
 {
-  systemd.services.nix-daemon.serviceConfig.Environment = [
-    (&quot;ROBOTNIX_GIT_MIRRORS=&quot; + lib.concatStringsSep &quot;|&quot; (lib.mapAttrsToList (local: remote: &quot;${local}=${remote}&quot;) mirrors))
-  ];
+  nix.envVars.ROBOTNIX_GIT_MIRRORS = lib.concatStringsSep &quot;|&quot; (lib.mapAttrsToList (local: remote: &quot;${local}=${remote}&quot;) mirrors);
 
   # Also add local mirrors to nix sandbox exceptions
   nix.sandboxPaths = lib.attrValues mirrors;
