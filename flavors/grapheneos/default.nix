@@ -31,7 +31,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkDefault (
     if (elem config.device [ "crosshatch" "blueline" ]) then "SP1A.210812.015"
-    else "SP1A.210812.015"
+    else "SQ1A.211205.008"
   );
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
