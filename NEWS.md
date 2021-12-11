@@ -8,11 +8,11 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
-# 2021-12-07
+# 2021-12-08
 - Experimental support for Pixel 6 (Pro) (`raven`/`oriole`) for vanilla flavor [PR #131](https://github.com/danielfullmer/robotnix/pull/131) (thanks @zhaofengli)
 - Updated nixpkgs to 21.11 channel
 - Updated vanilla flavor to 2021120720
-- Updated GrapheneOS flavor to 2021XXXXXX (thanks @yu-re-ka)
+- Updated GrapheneOS flavor to 2021120717 (thanks @yu-re-ka)
 - Updated Chromium to 96.0.4664.92, Vanadium to 96.0.4664.45, and Bromite to 96.0.4664.54
 - Added `vendor.*` partition options
 - Set `PRODUCT_BRAND` name for vanilla flavor (thanks @zhaofengli)
