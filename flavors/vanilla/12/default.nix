@@ -91,6 +91,24 @@ in
       ./device_google_gs101-workaround.patch
     ] ++ optional config.apv.enable ./device_google_gs101-vintf-manifest.patch;
 
+    "frameworks/base".patches = [
+      (pkgs.fetchpatch {
+        name = "systemui-import-pixel-display-interfaces.patch";
+        url = "https://github.com/ProtonAOSP/android_frameworks_base/commit/132bea5688fd7705a4c8a4ffe0a92a4c258f6b89.patch";
+        sha256 = "sha256-sJA8zWRPQwo3sPIPPQQpJLdLmC9hOY96aHfl+NsPIN0=";
+      })
+      (pkgs.fetchpatch {
+        name = "systemui-add-hbm-provider-for-udfps-n-pixel-devices.patch";
+        url = "https://github.com/ProtonAOSP/android_frameworks_base/commit/155b137e1dfef173eeb391d5eea5ce3252ceaddc.patch";
+        sha256 = "sha256-o03f5XZ+u+K1UrywG2Y28AjjK3ybaQE8mO0hVK9ypiQ=";
+      })
+      (pkgs.fetchpatch {
+        name = "systemui-use-pixel-udfps-hbm-provider.patch";
+        url = "https://github.com/ProtonAOSP/android_frameworks_base/commit/fa93eb6b0f87f8cb1f0a048285f55e4ca312e61f.patch";
+        sha256 = "sha256-IKMlxUrdXYjtwU4ep7iwqjJtcXxBE4WDkNv4GfCnbw4=";
+      })
+    ];
+
     # Workaround for prebuilt apex package in vendor partition.
     # TODO: Replace with Nix-based apv alternative
     "robotnix/prebuilt/com.google.pixel.camera.hal" = {
