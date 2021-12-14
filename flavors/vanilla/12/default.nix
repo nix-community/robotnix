@@ -12,14 +12,14 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 12) (mkMerge [
 {
-  buildDateTime = mkDefault 1638909168;
+  buildDateTime = mkDefault 1639515950;
 
   source.manifest.rev = mkDefault (
-    if (config.deviceFamily == "raviole") then "android-12.0.0_r14"
+    if (config.deviceFamily == "raviole") then "android-12.0.0_r19"
     else "android-12.0.0_r16"
   );
   apv.buildID = mkDefault (
-    if (config.deviceFamily == "raviole") then "SD1A.210817.037"
+    if (config.deviceFamily == "raviole") then "SQ1D.211205.017"
     else "SQ1A.211205.008"
   );
 
@@ -60,15 +60,6 @@ in
     #     2 - Global actions menu
     config_keyChordPowerVolumeUp = 1;
   };
-
-  # Fixes a crash when opening Battery Manager settings
-  # TODO: Remove when we have a new tag for raviole
-  source.dirs."packages/apps/Settings".patches = mkIf (config.deviceFamily == "raviole") [
-    (pkgs.fetchpatch {
-      url = "https://github.com/ProtonAOSP/android_packages_apps_Settings/commit/1aa49ec5017326ec6297e9ee067eb23647618494.patch";
-      sha256 = "0nzr8c5chhlvd2zwvbk6a0cfxm6psrqbw94012igmhps4c04f2lx";
-    })
-  ];
 
   # Work around issue with checks for uses-library with apv output
   source.dirs."build/soong".patches = [
@@ -145,8 +136,8 @@ in
   nixpkgs.overlays = let
     owner = "danielfullmer";
     repo = "android-prepare-vendor";
-    rev = "82a52ee758fdc95ac030ebbce34e987bdb47a2ea";
-    sha256 = "1nr955v1dlnw48x9am7cahb10a4qvx8bxi3a8lzpf718y1llj8cp";
+    rev = "0067892ef57af7e0420bf7942e83d50f6d8f5baf";
+    sha256 = "03y3m2jjxlqmisxvd7cmjmqxgk9hnrs677ncgw47aarw5y4s3vrx";
   in [ (self: super: {
     android-prepare-vendor = super.android-prepare-vendor.overrideAttrs (_: {
       src = pkgs.fetchFromGitHub {
