@@ -151,7 +151,7 @@ SPDX-License-Identifier: MIT
 <p>GrapheneOS has created an Auditor app, as well as a Remote Attestation service, which &quot;use hardware-based security features to validate the identity of a device along with authenticity and integrity of the operating system.
 See the <a href="https://attestation.app/about">About page</a> for additional details.</p>
 <p>Robotnix patches the Auditor app and Remote Attestation service to allow for using the user-created keys.
-This makes the Android build itself depend on the signing key.
+This makes the app (and also the Android build itself) depend on information derived from the device signing key(s).
 The current code in robotnix only works with a single custom device type.
 E.g. the attestation service cannot handle robotnix-customized versions of both <code>crosshatch</code> and <code>sunfish</code>.
 Future improvements may allow the Auditor app and attestation service to work with multiple custom robotnix devices.</p>
