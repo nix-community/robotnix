@@ -9,7 +9,7 @@ GrapheneOS has created an Auditor app, as well as a Remote Attestation service, 
 See the [About page](https://attestation.app/about) for additional details.
 
 Robotnix patches the Auditor app and Remote Attestation service to allow for using the user-created keys.
-This makes the Android build itself depend on the signing key.
+This makes the app (and also the Android build itself) depend on information derived from the device signing key(s).
 The current code in robotnix only works with a single custom device type.
 E.g. the attestation service cannot handle robotnix-customized versions of both `crosshatch` and `sunfish`.
 Future improvements may allow the Auditor app and attestation service to work with multiple custom robotnix devices.
