@@ -27,8 +27,8 @@ let
     }
     ${lib.optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
     ${lib.optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
-    ${lib.optionalString (prebuilt.usesLibraries != []) "LOCAL_USES_LIBRARIES := ${builtins.concatStringsSep " " prebuilt.usesLibraries}"}
-    ${lib.optionalString (prebuilt.usesOptionalLibraries != []) "LOCAL_OPTIONAL_USES_LIBRARIES := ${builtins.concatStringsSep " " prebuilt.usesOptionalLibraries}"}
+    ${lib.optionalString (config.androidVersion >= 11 && prebuilt.usesLibraries != []) "LOCAL_USES_LIBRARIES := ${builtins.concatStringsSep " " prebuilt.usesLibraries}"}
+    ${lib.optionalString (config.androidVersion >= 11 && prebuilt.usesOptionalLibraries != []) "LOCAL_OPTIONAL_USES_LIBRARIES := ${builtins.concatStringsSep " " prebuilt.usesOptionalLibraries}"}
     ${prebuilt.extraConfig}
 
     include $(BUILD_PREBUILT)
