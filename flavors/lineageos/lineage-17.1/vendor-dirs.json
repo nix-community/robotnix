@@ -2,6 +2,7 @@
   "vendor/asus": {
     "date": "2021-04-10T21:00:47-06:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/1rz4frdzm8w70sh1pz7krlkxmmrm22wi-proprietary_vendor_asus",
@@ -12,6 +13,7 @@
   "vendor/bq": {
     "date": "2020-09-28T09:10:01+02:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/qff99cbw2k4wqf9x7mcg3l0ldvifcaiy-proprietary_vendor_bq",
@@ -22,6 +24,7 @@
   "vendor/essential": {
     "date": "2020-09-22T11:28:01-04:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/bcjckf81ls1x06w0mrnpy9jkipx21l76-proprietary_vendor_essential",
@@ -32,6 +35,7 @@
   "vendor/fairphone": {
     "date": "2021-05-18T08:27:43+02:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/01snwcy2r5fx43r3h3cmb03qj2fxl4gz-proprietary_vendor_fairphone",
@@ -42,6 +46,7 @@
   "vendor/fxtec": {
     "date": "2020-11-20T16:54:31+00:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/zlbbaagwffjm939a4yvj0f6i2xccchwb-proprietary_vendor_fxtec",
@@ -52,6 +57,7 @@
   "vendor/google": {
     "date": "2021-02-07T18:53:48-05:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/85ppfxp43wnwzmfw5g6idbwz3dvl1mx3-proprietary_vendor_google",
@@ -62,6 +68,7 @@
   "vendor/htc": {
     "date": "2020-11-03T18:01:01+00:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/f9n19hgjw06d6yl6jaqn1wfjn01gjjal-proprietary_vendor_htc",
@@ -72,6 +79,7 @@
   "vendor/huawei": {
     "date": "2021-01-05T23:08:12+01:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/afp4klav24pvrmh7r2h6lddib2q076cd-proprietary_vendor_huawei",
@@ -82,6 +90,7 @@
   "vendor/leeco": {
     "date": "2021-05-28T05:58:41-06:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/5xyxrjn7djh6nxvpda48c409gjsf3lyx-proprietary_vendor_leeco",
@@ -92,6 +101,7 @@
   "vendor/lenovo": {
     "date": "2020-04-16T04:02:54+03:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/213hh400qnd7gbyajzndadrqqam5a1hc-proprietary_vendor_lenovo",
@@ -102,6 +112,7 @@
   "vendor/lge": {
     "date": "2021-03-16T10:35:04+01:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/gysqpy9mjq07abghc01g2km5dpkw7wi5-proprietary_vendor_lge",
@@ -112,6 +123,7 @@
   "vendor/motorola": {
     "date": "2021-02-09T20:13:06+08:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/a7m7z5n30nywgks83pw4kxnlwvy54yhl-proprietary_vendor_motorola",
@@ -122,6 +134,7 @@
   "vendor/nextbit": {
     "date": "2020-10-29T21:56:55-04:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/mlvp52gvjak0zf4n77fpqdqahjl1jnan-proprietary_vendor_nextbit",
@@ -132,6 +145,7 @@
   "vendor/nokia": {
     "date": "2021-06-30T12:36:15+00:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/jw33hb8myicg6qkw41mapxzcvpfnn7rp-proprietary_vendor_nokia",
@@ -142,6 +156,7 @@
   "vendor/nubia": {
     "date": "2021-01-05T07:29:33-05:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/jhqf2j05jip2immf9nhmxjnljzrv3qmv-proprietary_vendor_nubia",
@@ -150,18 +165,20 @@
     "url": "https://github.com/TheMuppets/proprietary_vendor_nubia"
   },
   "vendor/nvidia": {
-    "date": "2021-10-13T11:22:22-05:00",
+    "date": "2021-12-05T02:02:33-06:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/g9nnbyvli9pmwwl8p8c59rja8rp6apl3-proprietary_vendor_nvidia",
-    "rev": "74f52e8721cf35eff4a21afe2bb160d831192945",
-    "sha256": "11lqmqxjvzk3lw2wg52pbmgl6b16avbh2w5xjv2rv6njp50lzr3k",
+    "path": "/nix/store/a9ma95dhdq31ajbr0jc27l4xgha9vlcd-proprietary_vendor_nvidia",
+    "rev": "3a2550618b5e0fac0218f694fa3fc408ae6ae910",
+    "sha256": "0g68wj9lzi98zv8h35g4w2hbd3kjrwjpf9il5yk92z2xzsdnj0v3",
     "url": "https://github.com/TheMuppets/proprietary_vendor_nvidia"
   },
   "vendor/oneplus": {
     "date": "2021-03-07T20:14:20-05:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/ad3sflgwcdfrmbap8rqyz36r3mj4ab58-proprietary_vendor_oneplus",
@@ -172,6 +189,7 @@
   "vendor/oppo": {
     "date": "2020-12-17T15:55:11-05:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/w1cfpgv2sxdzsj36ynd67nsmys54fc2g-proprietary_vendor_oppo",
@@ -182,6 +200,7 @@
   "vendor/razer": {
     "date": "2020-11-21T20:24:40+02:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/cyb98w5lx06wsc0zk0ds31qrhdpd9lg1-proprietary_vendor_razer",
@@ -190,28 +209,31 @@
     "url": "https://github.com/TheMuppets/proprietary_vendor_razer"
   },
   "vendor/realme": {
-    "date": "2021-06-29T18:30:14+02:00",
+    "date": "2021-11-09T06:04:21-05:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/wgrr69iv63gyqza1jmlzfgmaaqlbjc0b-proprietary_vendor_realme",
-    "rev": "a289708be427c3beaaeaf62beb5cca2007a84804",
-    "sha256": "1n86ml3iimq2361w0xddvqnppfxhpg2hy0vriwc2ls9hvc426bsz",
+    "path": "/nix/store/j36bqfrfvclfdvdd0acdf4jlaqp4j122-proprietary_vendor_realme",
+    "rev": "4aecaaac1b0547ff5bf6e4c2edb0df5212978643",
+    "sha256": "1z4bb9apaq4saxvzsgpfz3fb3s0nclarpnq5pkkcam707pf1gcsp",
     "url": "https://github.com/TheMuppets/proprietary_vendor_realme"
   },
   "vendor/samsung": {
-    "date": "2021-03-23T11:29:03+00:00",
+    "date": "2021-12-21T07:19:49+01:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/kqs85xg1i2wcgmf2acaqwfjy33gb7w4s-proprietary_vendor_samsung",
-    "rev": "b34e784aeeb16388d63c1b7a4d61c9a1685359aa",
-    "sha256": "1a6gn7hvimagpykdrryzyvax5w1rk3ihff6n1csqys4nl6fig678",
+    "path": "/nix/store/i3hyklsx1kbynfmr3n949x9yqxqwmvzl-proprietary_vendor_samsung",
+    "rev": "332fcf062d447c4cee54ccd240553f310d793f1c",
+    "sha256": "1ih9jspk3rwrcivarqnvhb26q3p28j19ly1qwqnpvh81wmc2xxfj",
     "url": "https://github.com/TheMuppets/proprietary_vendor_samsung"
   },
   "vendor/sony": {
     "date": "2021-03-01T22:29:16+01:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/4i5h14w2pzmpj89ig4xz4j4b2fbw448j-proprietary_vendor_sony",
@@ -222,6 +244,7 @@
   "vendor/wileyfox": {
     "date": "2020-06-27T22:12:34+03:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/byd8i1q6r83qyd10wkn815b478sbnz3m-proprietary_vendor_wileyfox",
@@ -232,6 +255,7 @@
   "vendor/wingtech": {
     "date": "2020-06-27T20:17:16+08:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/h0mywljis2p0kr6cw69fbahlj6rmv6h6-proprietary_vendor_wingtech",
@@ -240,18 +264,20 @@
     "url": "https://github.com/TheMuppets/proprietary_vendor_wingtech"
   },
   "vendor/xiaomi": {
-    "date": "2021-01-03T11:10:23+05:30",
+    "date": "2021-12-27T13:28:25+01:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/z4jc0di32p28jmp3bwfpdhmw8l8s0inz-proprietary_vendor_xiaomi",
-    "rev": "6935360ced2c437d8006471d03d200d4fe000c6b",
-    "sha256": "122a3f3ljklx03rmjxmj22zmmxrdif2nwmhrx9c9bqz31h9d9lxn",
+    "path": "/nix/store/vysbsvx8jcpsxpdip20ia0aq6s1hnknx-proprietary_vendor_xiaomi",
+    "rev": "165bc2885ecc151b9f4da19959d276c5aaa285e7",
+    "sha256": "0jbh8v7wqm23da16173vpx6k2rc079rbaz58x257k3mfyhy4jg2w",
     "url": "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi.git/"
   },
   "vendor/yandex": {
     "date": "2020-11-08T08:28:17-06:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/h3nndd0kxjdlbnjsxv0c62lv56ygqcj8-proprietary_vendor_yandex",
@@ -262,6 +288,7 @@
   "vendor/zuk": {
     "date": "2020-04-05T21:13:38+02:00",
     "deepClone": false,
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/2rsvdw3hrdz81y4pa77w8gp3xl83ar8h-proprietary_vendor_zuk",
