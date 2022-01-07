@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
@@ -26,7 +26,7 @@ NO_SUBMODULES = [
 ]
 
 def hash_path(path):
-    sha256 = subprocess.check_output(["nix", "hash-path", "--base32", "--type", "sha256", path]).strip()
+    sha256 = subprocess.check_output(["nix", "hash-path", "--base32", "--type", "sha256", path]).decode().strip()
     if re.match(r'[0-9a-z]{52}', sha256) == None:
         raise ValueError('bad hash %s' % sha256)
     return sha256
@@ -140,15 +140,15 @@ def make_vendor_file(chromium_version, target_os):
     while need_another_iteration:
         need_another_iteration = False
 
-        subprocess.check_call(["python2", "depot_tools/gclient.py", "config", "https://chromium.googlesource.com/chromium/src.git"], cwd=topdir)
-        flat = subprocess.check_output(["python2", "depot_tools/gclient.py", "flatten", "--pin-all-deps"], cwd=topdir)
+        subprocess.check_call(["python3", "depot_tools/gclient.py", "config", "https://chromium.googlesource.com/chromium/src.git"], cwd=topdir)
+        flat = subprocess.check_output(["python3", "depot_tools/gclient.py", "flatten", "--pin-all-deps"], cwd=topdir).decode()
 
         content = gclient_eval.Parse(flat, filename='DEPS', vars_override={}, builtin_vars=builtin_vars)
 
         merged_vars = dict(content['vars'])
         merged_vars.update(builtin_vars)
 
-        for path, fields in content['deps'].iteritems():
+        for path, fields in content['deps'].items():
             # Skip these
             if path in SKIP_DEPS:
                 continue
@@ -221,7 +221,7 @@ def make_vendor_file(chromium_version, target_os):
         vendor_nix.write("{fetchgit, fetchcipd, fetchurl, runCommand, symlinkJoin}:\n");
         vendor_nix.write("{\n");
 
-        for path, dep in sorted(deps.iteritems()):
+        for path, dep in sorted(deps.items()):
             if dep['dep_type'] == "git":
                 vendor_nix.write(nix_str_git(path, dep))
             if dep['dep_type'] == "cipd":
@@ -265,7 +265,7 @@ def make_vendor_file(chromium_version, target_os):
             url = GS_HTTP_URL + gs_url[len(gz_prefix):]
         else:
             url = GS_HTTP_URL + "chromeos-prebuilt/afdo-job/llvm/" + gs_url
-        sha256 = subprocess.check_output(["nix-prefetch-url", "--type", "sha256", url]).strip()
+        sha256 = subprocess.check_output(["nix-prefetch-url", "--type", "sha256", url]).decode().strip()
         path = "src/chrome/android/profiles/afdo.prof"
         vendor_nix.write(
 '''
@@ -281,7 +281,7 @@ def make_vendor_file(chromium_version, target_os):
         global_scope = {"__file__": "update.py"}
         exec(open(os.path.join(topdir, "src/tools/clang/scripts/update.py")).read(), local_scope, global_scope) # TODO: Safety?
         url = '%s/Linux_x64/clang-%s.tgz' % (global_scope['CDS_URL'], global_scope['PACKAGE_VERSION'])
-        sha256 = subprocess.check_output(["nix-prefetch-url", "--type", "sha256", url]).strip()
+        sha256 = subprocess.check_output(["nix-prefetch-url", "--type", "sha256", url]).decode().strip()
         path = "src/third_party/llvm-build/Release+Asserts"
         vendor_nix.write(
 '''
