@@ -18,7 +18,7 @@
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
 , trichromeLibraryPackageName ? "org.chromium.trichromelibrary"
-, version ? "96.0.4664.104"
+, version ? "97.0.4692.70"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_bundle + system_webview_apk
@@ -182,6 +182,13 @@ in stdenvNoCC.mkDerivation rec {
       # Required for patchShebangs (unsupported)
       chmod -x third_party/webgpu-cts/src/tools/${lib.optionalString (lib.versionAtLeast version "96") "run_"}deno
     )
+  ''
+  # Work around missing library when building md5sum_bin and monochrome. TODO: Hack
+  + lib.optionalString (lib.versionAtLeast version "97") ''
+    cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/aarch64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libatomic.a
+    cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/arm-linux-androideabi/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libatomic.a
+    cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/x86_64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libatomic.a
+    cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/i686-linux-android/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/libatomic.a
   '' + ''
     ( cd src
 
