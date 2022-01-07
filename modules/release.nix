@@ -163,12 +163,12 @@ in
       );
     }).${config.apps.updater.flavor};
 
-    writeOtaMetadata = { targetFiles, path }: {
+    writeOtaMetadata = { otaFile, path }: {
       grapheneos = ''
         cat ${otaMetadata} > ${path}/${config.device}-${config.channel}
       '';
       lineageos = ''
-        sed -e "s:\"ROM_SIZE\":$(du -b ${targetFiles} | cut -f1):" ${otaMetadata} > ${path}/lineageos-${config.device}.json
+        sed -e "s:\"ROM_SIZE\":$(du -b ${otaFile} | cut -f1):" ${otaMetadata} > ${path}/lineageos-${config.device}.json
       '';
     }.${config.apps.updater.flavor};
 
@@ -179,7 +179,7 @@ in
       ln -s "${targetFiles}" "$out/${config.device}-target_files-${config.buildNumber}.zip"
       ${lib.optionalString config.incremental ''ln -s ${incrementalOta} "$out/${incrementalOta.name}"''}
 
-      ${writeOtaMetadata { targetFiles = ota; path = placeholder "out"; }}
+      ${writeOtaMetadata { otaFile = ota; path = placeholder "out"; }}
     '';
 
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
@@ -211,7 +211,7 @@ in
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
       echo Writing updater metadata
-      ${writeOtaMetadata { targetFiles=ota.name; path = "."; }}
+      ${writeOtaMetadata { otaFile=ota.name; path = "."; }}
     ''; }));
   };
 }
