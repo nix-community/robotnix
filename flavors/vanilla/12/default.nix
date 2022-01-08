@@ -12,15 +12,15 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 12) (mkMerge [
 {
-  buildDateTime = mkDefault 1639515950;
+  buildDateTime = mkDefault 1641669748;
 
   source.manifest.rev = mkDefault (
     if (config.deviceFamily == "raviole") then "android-12.0.0_r19"
-    else "android-12.0.0_r16"
+    else "android-12.0.0_r26"
   );
   apv.buildID = mkDefault (
     if (config.deviceFamily == "raviole") then "SQ1D.211205.017"
-    else "SQ1A.211205.008"
+    else "SQ1A.220105.002"
   );
 
 #  # Disable for now until we have it tested working
@@ -71,8 +71,8 @@ in
 }
 (mkIf (config.deviceFamily == "crosshatch") {
   warnings = [ "crosshatch and blueline are no longer receiving monthly vendor security updates from Google" ];
-  source.manifest.rev = "android-12.0.0_r1";
-  apv.buildID = "SP1A.210812.015";
+  source.manifest.rev = "android-12.0.0_r25";
+  apv.buildID = "SP1A.210812.016.A2";
 })
 (mkIf (config.deviceFamily == "raviole") {
   warnings = [ "raven and oriole have only experimental support in vanilla" ];
