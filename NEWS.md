@@ -8,6 +8,17 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2022-01-08
+- Updated vanilla flavor to 2022010819. Pixel 6 / `raviole` devices are still on `SQ1D.211205`.
+- Updated GrapheneOS flavor to 2022010500
+- Updated LineageOS flavor to 2022010122 (thanks @samueldr)
+- Updated Chromium/Vanadium to 97.0.4692.70
+- Fixed error with MicroG module for Android < 12
+- Added working fingerprint support for Pixel 6 / `raviole` (thanks @zhaofengli)
+- Fixed dependency on `signedTargetFiles` when building LineageOS `releaseScript` (thanks @ajs124)
+
+There are no intentional backward incompatible changes since the last release.
+
 # 2021-12-08
 - Experimental support for Pixel 6 (Pro) (`raven`/`oriole`) for vanilla flavor [PR #131](https://github.com/danielfullmer/robotnix/pull/131) (thanks @zhaofengli)
 - Updated nixpkgs to 21.11 channel
