@@ -85,7 +85,7 @@ in {
   # in the future:
   inherit (config.build)
     targetFiles unsignedTargetFiles signedTargetFiles
-    ota incrementalOta img factoryImg bootImg otaDir
+    ota incrementalOta img factoryImg bootImg recoveryImg otaDir
     releaseScript generateKeysScript verifyKeysScript
     emulator;
 }

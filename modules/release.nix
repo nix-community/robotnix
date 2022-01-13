@@ -139,6 +139,7 @@ in
 
     # Pull this out of target files, because (at least) verity key gets put into boot ramdisk
     bootImg = pkgs.runCommand "boot.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/boot.img > $out";
+    recoveryImg = pkgs.runCommand "recovery.img" {} "${pkgs.unzip}/bin/unzip -p ${targetFiles} IMAGES/recovery.img > $out";
 
     # BUILDID_PLACEHOLDER below was originally config.apv.buildID, but we don't want to have to depend on setting a buildID generally.
     otaMetadata = (rec {
