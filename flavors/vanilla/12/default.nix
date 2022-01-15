@@ -12,7 +12,7 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 12) (mkMerge [
 {
-  buildDateTime = mkDefault 1641669748;
+  buildDateTime = mkDefault 1642284614;
 
   source.manifest.rev = mkDefault (
     if (config.deviceFamily == "raviole") then "android-12.0.0_r27"
