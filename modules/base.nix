@@ -379,13 +379,12 @@ in
         '';
       };
 
-      moduleInfo = let
-        moduleInfoTarget = "out/target/product/${config.device}/module-info.json";
-      in mkAndroid {
+      moduleInfo = mkAndroid {
         name = "robotnix-module-info-${config.device}-${config.buildNumber}.json";
-        makeTargets = [ moduleInfoTarget ];
+        # Can't use absolute path from $ANDROID_PRODUCT_OUT here since make needs a relative path
+        makeTargets = [ "$(get_build_var PRODUCT_OUT)/module-info.json" ];
         installPhase = ''
-          cp ${moduleInfoTarget} $out
+          cp $ANDROID_PRODUCT_OUT/module-info.json $out
         '';
       };
 
