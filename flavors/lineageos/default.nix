@@ -13,6 +13,7 @@ let
   androidVersionToLineageBranch = {
     "10" = "lineage-17.1";
     "11" = "lineage-18.1";
+    "12" = "lineage-19.0";
   };
   lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
 
@@ -152,7 +153,7 @@ in mkIf (config.flavor == "lineageos")
   pixel.activeEdge.includedInFlavor = mkDefault true;
 
   # Needed by included kernel build for some devices (pioneer at least)
-  envPackages = [ pkgs.openssl.dev ] ++ optionals (config.androidVersion == 11) [ pkgs.gcc.cc pkgs.glibc.dev ];
+  envPackages = [ pkgs.openssl.dev ] ++ optionals (config.androidVersion >= 11) [ pkgs.gcc.cc pkgs.glibc.dev ];
 
   envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL";  # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
 
