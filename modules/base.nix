@@ -388,6 +388,34 @@ in
         '';
       };
 
+      # Save significant build time by building components simultaneously.
+      mkAndroidComponents = targets: mkAndroid {
+        name = "robotnix-android-components";
+        makeTargets = targets ++ [ "$(get_build_var PRODUCT_OUT)/module-info.json" ];
+        installPhase = ''
+          ${pkgs.python3.interpreter} - "$out" "$ANDROID_PRODUCT_OUT/module-info.json" ${lib.escapeShellArgs targets} << EOF
+          import json
+          import os
+          import shutil
+          import sys
+          outdir = sys.argv[1]
+          module_info = json.load(open(sys.argv[2]))
+          targets = sys.argv[3:]
+          for target in targets:
+              if target in module_info:
+                  for item in module_info[target]['installed']:
+                      if item.startswith('out/'):
+                          output = outdir + item[3:]
+                      else:
+                          output = outdir + '/' + item
+                      os.makedirs(os.path.dirname(output), exist_ok=True)
+                      shutil.copyfile(item, output)
+          EOF
+        '';
+      };
+
+      mkAndroidComponent = target: (mkAndroidComponents [ target ]).overrideAttrs (_: { name=target; });
+
       otaTools = fixOtaTools "${config.build.android}/otatools.zip";
 
       # Also make a version without building all of target-files-package.  This
