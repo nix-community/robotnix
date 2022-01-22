@@ -246,6 +246,15 @@ This eliminates the requirement for an end-user to spend hours building android.
 This unfortunately decreases the possibility of sharing build products between users.
 The F-Droid privileged extension and Trichrome (disabled for now) are two components which have this issue.
 Fixes for this are still under investigation.</p>
+<h2 id="building-individual-android-components"><a class="header" href="#building-individual-android-components">Building individual android components</a></h2>
+<p>For convenience, individual android components may be easily built using the <code>components.nix</code> at the root of the repo.
+For example, to build <code>adb</code>, run</p>
+<pre><code class="language-console">$ nix-build ./components.nix -A adb
+</code></pre>
+<p>The set of components available may be found in <code>components.json</code>.</p>
+<p>Only what Android considers the &quot;installed output&quot; of the components is copied into the resuting derivation, and not &quot;intermediate&quot; results.
+Sometimes these intermediate results are what is desired, in which case the user should manually set the <code>installPhase</code> for a <code>mkAndroid</code> invokation.
+For more detailed information about what exactly these components produce as &quot;installed output&quot;, see the <code>config.build.moduleInfo</code> output for a build.</p>
 <h2 id="additional-notes"><a class="header" href="#additional-notes">Additional Notes</a></h2>
 <p>Robotnix bind mounts the source directories from <code>/nix/store</code>.
 These files/directories have their &quot;user write&quot; (<code>u-w</code>) permission removed.
