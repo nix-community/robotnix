@@ -14,7 +14,10 @@ jobs:
       with:
         extra_nix_config: |
           experimental-features = nix-command flakes
-    - run: nix run github:nix-community/nix-eval-jobs -- --workers $(nproc) --max-memory-size $(free -m  | grep ^Mem | tr -s ' ' | cut -d ' ' -f 3 ) --option allow-import-from-derivation false --show-trace ./release.nix
+    - run: |
+        nix run github:nix-community/nix-eval-jobs -- --workers $(nproc) --max-memory-size $(free -m  | grep ^Mem | tr -s ' ' | cut -d ' ' -f 3 ) --option allow-import-from-derivation false --show-trace ./release.nix | tee eval.json
+        jq -c 'select(.error)' eval.json | tee errors.json
+        if [[ "$(wc -l < errors.json)" > 0 ]]; then exit 1; fi
   robotnix-eval-tests:
     runs-on: ubuntu-latest
     steps:
