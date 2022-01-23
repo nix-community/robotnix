@@ -28,30 +28,11 @@ let
     '';
   };
 
-  # TODO: Reunify with module in reproducibility reports
-  snakeoilSignedModule = { config, ... }: let
-    snakeoilKeys = pkgs.runCommand "snakeoil-keys" {} ''
-      mkdir -p $out
-      ${config.build.generateKeysScript} $out
-    '';
-  in {
-    signing.enable = true;
-    signing.keyStorePath = builtins.toString snakeoilKeys;
-    signing.buildTimeKeyStorePath = "${snakeoilKeys}";
-  };
 in
 {
   inherit (pkgs) diffoscope;
 
   imgs = lib.mapAttrs (name: c: c.img) builtConfigs;
-
-  # Generates img and ota files for each configuration using snakeoil keys
-  signingCheck = lib.mapAttrs (name: c:  { inherit (robotnix { imports = [ snakeoilSignedModule c ]; }) img ota; }) {
-    "lineageos-10" = { device="marlin"; flavor="lineageos"; androidVersion=10; };
-    "vanilla-10" = { device="sunfish"; flavor="vanilla"; androidVersion=10; apv.enable=false; pixel.useUpstreamDriverBinaries=true; }; # APV not working on Android 10...
-    "vanilla-11" = { device="sunfish"; flavor="vanilla"; androidVersion=11; };
-    "vanilla-12" = { device="sunfish"; flavor="vanilla"; androidVersion=12; };
-  };
 
   # For testing instantiation
   vanilla-arm64 = {
