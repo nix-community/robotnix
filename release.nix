@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
 { pkgs ? (import ./pkgs {}) }:
@@ -6,49 +6,8 @@
 let
   lib = pkgs.lib;
   robotnix = configuration: import ./default.nix { inherit configuration pkgs; };
-
-  configs = (lib.listToAttrs (builtins.map (c: lib.nameValuePair "${c.flavor}-${c.device}" c) [
-    { device="x86_64";     flavor="vanilla"; }
-    { device="arm64";      flavor="vanilla"; }
-    { device="marlin";     flavor="vanilla"; androidVersion=10; } # Out-of-date
-    { device="sailfish";   flavor="vanilla"; androidVersion=10; } # Out-of-date
-    { device="taimen";     flavor="vanilla"; androidVersion=11; } # Out-of-date
-    { device="walleye";    flavor="vanilla"; androidVersion=11; } # Out-of-date
-    { device="crosshatch"; flavor="vanilla"; }
-    { device="blueline";   flavor="vanilla"; }
-    { device="bonito";     flavor="vanilla"; }
-    { device="sargo";      flavor="vanilla"; }
-    { device="coral";      flavor="vanilla"; }
-    { device="flame";      flavor="vanilla"; }
-    { device="sunfish";    flavor="vanilla"; }
-    { device="bramble";    flavor="vanilla"; }
-    { device="redfin";     flavor="vanilla"; }
-    { device="barbet";     flavor="vanilla"; }
-    { device="raven";      flavor="vanilla"; }
-    { device="oriole";     flavor="vanilla"; }
-
-    { device="x86_64";     flavor="grapheneos"; }
-    { device="arm64";      flavor="grapheneos"; }
-    { device="crosshatch"; flavor="grapheneos"; }
-    { device="blueline";   flavor="grapheneos"; }
-    { device="bonito";     flavor="grapheneos"; }
-    { device="sargo";      flavor="grapheneos"; }
-    { device="coral";      flavor="grapheneos"; }
-    { device="flame";      flavor="grapheneos"; }
-    { device="sunfish";    flavor="grapheneos"; }
-    { device="bramble";    flavor="grapheneos"; }
-    { device="redfin";     flavor="grapheneos"; }
-    { device="barbet";     flavor="grapheneos"; }
-
-    { device="marlin";     flavor="lineageos"; }
-    { device="pioneer";    flavor="lineageos"; }
-
-    { device="x86_64";     flavor="anbox"; }
-    { device="arm64";      flavor="anbox"; }
-  ]));
-
+  configs = import ./configs.nix { inherit lib; };
   builtConfigs = lib.mapAttrs (name: c: robotnix c) configs;
-
   defaultBuild = robotnix { device="arm64"; flavor="vanilla"; };
 
   tests = {
@@ -77,28 +36,22 @@ let
     '';
   in {
     signing.enable = true;
-    signing.keyStorePath = snakeoilKeys;
+    signing.keyStorePath = builtins.toString snakeoilKeys;
     signing.buildTimeKeyStorePath = "${snakeoilKeys}";
   };
 in
 {
   inherit (pkgs) diffoscope;
 
-  check = lib.mapAttrs (name: c: (robotnix c).config.build.checkAndroid) configs;
-
   imgs = lib.recurseIntoAttrs (lib.mapAttrs (name: c: c.img) builtConfigs);
 
   # Generates img and ota files for each configuration using snakeoil keys
-  signingCheck = lib.mapAttrs (name: c: { inherit (robotnix { imports = [ snakeoilSignedModule c ]; }) img ota; }) {
+  signingCheck = lib.recurseIntoAttrs (lib.mapAttrs (name: c: lib.recurseIntoAttrs { inherit (robotnix { imports = [ snakeoilSignedModule c ]; }) img ota; }) {
     "lineageos-10" = { device="marlin"; flavor="lineageos"; androidVersion=10; };
     "vanilla-10" = { device="sunfish"; flavor="vanilla"; androidVersion=10; apv.enable=false; pixel.useUpstreamDriverBinaries=true; }; # APV not working on Android 10...
     "vanilla-11" = { device="sunfish"; flavor="vanilla"; androidVersion=11; };
     "vanilla-12" = { device="sunfish"; flavor="vanilla"; androidVersion=12; };
-  };
-
-  lineageosImgs = let
-    deviceMetadata = lib.importJSON ./flavors/lineageos/device-metadata.json;
-  in lib.dontRecurseIntoAttrs (lib.mapAttrs (name: x: (robotnix { device=name; flavor="lineageos"; }).img) deviceMetadata);
+  });
 
   # For testing instantiation
   vanilla-arm64 = lib.recurseIntoAttrs {
