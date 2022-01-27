@@ -98,6 +98,18 @@ in
         url = "https://github.com/ProtonAOSP/android_frameworks_base/commit/fa93eb6b0f87f8cb1f0a048285f55e4ca312e61f.patch";
         sha256 = "sha256-IKMlxUrdXYjtwU4ep7iwqjJtcXxBE4WDkNv4GfCnbw4=";
       })
+
+      # In AOSP master
+      (pkgs.fetchurl {
+        name = "fix-concurrency-issue-with-batteryusagestats.patch";
+        url = "https://github.com/aosp-mirror/platform_frameworks_base/commit/0856f76846e61ad058e1e9ec0759739812a00600.patch";
+        sha256 = "sha256-of8dyOCicSVh64kLicuIk9av2K29YXLzUxeb6CI0NZo=";
+      })
+      (pkgs.fetchurl {
+        name = "include-saved-battery-history-chunks-into-batteryusagestats-parcel.patch";
+        url = "https://github.com/aosp-mirror/platform_frameworks_base/commit/c4b9de7d95fd2d6bd8072f16f0ac71d2b1773a1b.patch";
+        sha256 = "sha256-ZIi96yF2qTgQ4iGTY86ppBmg4TeIRJ1qu7CSA5IPSnE=";
+      })
     ];
 
     # Workaround for prebuilt apex package in vendor partition.
