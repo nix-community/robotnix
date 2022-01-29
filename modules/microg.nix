@@ -7,9 +7,9 @@ let
   inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
   version = {
-    part1 = "0.2.22";
-    part2 = "212658";
-    part3 = "044";
+    part1 = "0.2.23";
+    part2 = "214816";
+    part3 = "046";
   };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
@@ -19,6 +19,8 @@ in
 {
   options = {
     microg.enable = mkEnableOption "MicroG";
+
+    # TODO: Add support for spoofing device profiles. See: https://github.com/microg/GmsCore/releases/tag/v0.2.23.214816
   };
 
   config = mkIf config.microg.enable {
@@ -66,7 +68,7 @@ in
       GmsCore = {
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "1gj8hi6mfa2p7z91k9zw0fg40s1v25kwcw8p5srw4fx2xsxjrblr";
+          sha256 = "0jdh7c2i1nnbrqbvgd6wssyrfmvcp2kfwwnw46gf7nlkw6zyh3kf";
         });
         packageName = "com.google.android.gms";
         privileged = true;
