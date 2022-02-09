@@ -1,16 +1,16 @@
-# SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
+# SPDX-FileCopyrightText: 2021 Daniel Fullmer
 # SPDX-License-Identifier: MIT
 
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "96.0.4664.54";
+  version = "96.0.4664.183";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "0r3ns2qdpsjhlzddrhl68ncyv98k1w1z8bf0hcladh9ygp1ykg0j";
+    sha256 = "10f3wlc9nf5ln5namwsr8hksqs58a273awqkdm055na52v318l6h";
   };
 
 in (chromium.override {
