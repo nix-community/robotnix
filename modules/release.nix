@@ -211,6 +211,7 @@ in
       ${imgScript { targetFiles=signedTargetFiles.name; out=img.name; }}
       echo Building factory image
       ${factoryImgScript { targetFiles=signedTargetFiles.name; img=img.name; out=factoryImg.name; }}
+    '' + lib.optionalString config.apps.updater.enable ''
       echo Writing updater metadata
       ${writeOtaMetadata { otaFile=ota.name; path = "."; }}
     ''; }));
