@@ -184,7 +184,7 @@ in stdenvNoCC.mkDerivation rec {
     )
   ''
   # Work around missing library when building md5sum_bin and monochrome. TODO: Hack
-  + lib.optionalString (lib.versionAtLeast version "97" && lib.versionOlder version "98") ''
+  + lib.optionalString (lib.versionAtLeast version "97") ''
     cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/aarch64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libatomic.a
     cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/arm-linux-androideabi/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libatomic.a
     cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/x86_64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libatomic.a
