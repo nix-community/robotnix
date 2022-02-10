@@ -46,7 +46,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
   # Upstream tag doesn't always set the BUILD_ID and platform security patch correctly for legacy crosshatch/blueline
   source.dirs."build/make".postPatch = mkIf (elem config.device [ "crosshatch" "blueline" ]) ''
-    echo BUILD_ID=SP1A.210812.016.A2 > core/build_id.mk
+    echo BUILD_ID=SP1A.210812.016.C1 > core/build_id.mk
     sed -i 's/PLATFORM_SECURITY_PATCH := 2021-11-05/PLATFORM_SECURITY_PATCH := 2021-11-01/g' core/version_defaults.mk
   '';
 
