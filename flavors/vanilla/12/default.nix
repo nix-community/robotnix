@@ -12,15 +12,15 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 12) (mkMerge [
 {
-  buildDateTime = mkDefault 1642284614;
+  buildDateTime = mkDefault 1644472459;
 
   source.manifest.rev = mkDefault (
-    if (config.deviceFamily == "raviole") then "android-12.0.0_r27"
-    else "android-12.0.0_r26"
+    if (config.deviceFamily == "raviole") then "android-12.0.0_r29"
+    else "android-12.0.0_r28"
   );
   apv.buildID = mkDefault (
-    if (config.deviceFamily == "raviole") then "SQ1D.220105.007"
-    else "SQ1A.220105.002"
+    if (config.deviceFamily == "raviole") then "SQ1D.220205.003"
+    else "SQ1A.220205.002"
   );
 
 #  # Disable for now until we have it tested working
@@ -71,8 +71,8 @@ in
 }
 (mkIf (config.deviceFamily == "crosshatch") {
   warnings = [ "crosshatch and blueline are no longer receiving monthly vendor security updates from Google" ];
-  source.manifest.rev = "android-12.0.0_r25";
-  apv.buildID = "SP1A.210812.016.A2";
+  source.manifest.rev = "android-12.0.0_r31";
+  apv.buildID = "SP1A.210812.016.C1";
 })
 (mkIf (config.deviceFamily == "raviole") {
   source.dirs = {
