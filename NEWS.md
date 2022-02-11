@@ -8,6 +8,19 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2022-02-10
+- Added LineageOS version 19.0. Use by setting `androidVersion=12` (thanks @Kranzes)
+- Updated vanilla flavor to 2022021005
+- Updated GrapheneOS flavor to 2022020800 (thanks @yu-re-ka)
+- Updated LineageOS flavor to 2022010122 (thanks @samueldr and @Kranzes)
+- Updated Chromium/Vanadium to 98.0.4758.87, and Bromite to 96.0.4664.183
+- Updated MicroG to 0.2.24.214816
+- Fixed Github CI failures
+- Fixed battery history graph for vanilla with Pixel 6 (Pro) (thanks @zhaofengli)
+- Added ability to easily build individual android components (e.g. `nix-build ./components.nix -A adb`)
+- Added `recoveryImg` output (thanks @samueldr)
+- Removed experimental warning for Pixel 6 (Pro) devices
+
 # 2022-01-08
 - Updated vanilla flavor to 2022010819. Pixel 6 / `raviole` devices are still on `SQ1D.211205`.
 - Updated GrapheneOS flavor to 2022010500
