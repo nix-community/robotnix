@@ -71,3 +71,13 @@ $ nix build .#robotnixConfigurations.dailydriver.img
 ```
 This is assuming the `flake.nix` is in the current directory, the desired configuration is named `dailydriver`, and will produce the `img` output.
 Other robotnix outputs are available using a similar command.
+
+## External nix store use
+
+If your main volume is of a smaller capacity and you wish to use an external disk to hold the nix store, then use the following example 
+
+```shell
+$ nix build -L --store "<External Drive or NFS>/Android/store" --option extra-sandbox-paths "/keys=$(pwd)/keys /var/cache/ccache?" -j$(nproc) --cores $(nproc) "$@"
+```
+
+Note though that the final 'result' symlink will not prepend your external nix store to the ota or img link.
