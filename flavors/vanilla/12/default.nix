@@ -12,14 +12,14 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 12) (mkMerge [
 {
-  buildDateTime = mkDefault 1644472459;
+  buildDateTime = mkDefault 1645396670;
 
   source.manifest.rev = mkDefault (
-    if (config.deviceFamily == "raviole") then "android-12.0.0_r29"
+    if (config.deviceFamily == "raviole") then "android-12.0.0_r32"
     else "android-12.0.0_r28"
   );
   apv.buildID = mkDefault (
-    if (config.deviceFamily == "raviole") then "SQ1D.220205.003"
+    if (config.deviceFamily == "raviole") then "SQ1D.220205.004"
     else "SQ1A.220205.002"
   );
 
