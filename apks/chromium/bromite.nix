@@ -4,13 +4,13 @@
 { chromium, fetchFromGitHub, git, python3 }:
 
 let
-  version = "99.0.4844.55";
+  version = "99.0.4844.58";
 
   bromite_src = fetchFromGitHub {
     owner = "bromite";
     repo = "bromite";
     rev = version;
-    sha256 = "sha256-DmSnur52gAmhdA5oMBvLhNQMdVk+tZOM4RSTYLPjgeo=";
+    sha256 = "sha256-zJGNEtNPmfTUWW01Yq8JS2O04iCLtwD+TsdzIV0lvA4=";
   };
 
 in (chromium.override {
@@ -20,6 +20,8 @@ in (chromium.override {
   enableRebranding = true;
   customGnFlags = { # From bromite/build/GN_ARGS
     blink_symbol_level=1;
+    build_contextual_search=false;
+    build_with_tflite_lib=false;
     chrome_pgo_phase=0;
     dcheck_always_on=false;
     debuggable_apks=false;
@@ -36,15 +38,16 @@ in (chromium.override {
     enable_mdns=false;
     enable_mse_mpeg2ts_stream_parser=true;
     enable_nacl=false;
-    enable_nacl_nonsfi=false;
     enable_platform_dolby_vision=true;
     enable_platform_hevc=true;
     enable_remoting=false;
     enable_reporting=false;
+    enable_supervised_users=false;
     enable_vr=false;
     exclude_unwind_tables=false;
     ffmpeg_branding="Chrome";
     icu_use_data_file=true;
+    is_cfi=true;
     is_component_build=false;
     is_debug=false;
     is_official_build=true;
@@ -52,6 +55,7 @@ in (chromium.override {
     rtc_build_examples=false;
     safe_browsing_mode=0;
     symbol_level=1;
+    use_cfi_cast=true;
     use_debug_fission=true;
     use_errorprone_java_compiler=false;
     use_gnome_keyring=false;
@@ -68,12 +72,14 @@ in (chromium.override {
 }).overrideAttrs (attrs: {
   postPatch = ''
     ( cd src
-      # Auto updater only set up to work with official builds
-      sed '/Bromite-auto-updater/d' ${bromite_src}/build/bromite_patches_list.txt > bromite_patches_list.txt
-      cat bromite_patches_list.txt | while read patchfile; do
+      cat ${bromite_src}/build/bromite_patches_list.txt | while read patchfile; do
         echo Applying $patchfile
         ${git}/bin/git apply --unsafe-paths "${bromite_src}/build/patches/$patchfile"
       done
+
+      # Disable Auto updater by default. It's only set up to work with official builds.
+      substituteInPlace chrome/android/java/src/org/chromium/chrome/browser/omaha/inline/BromiteInlineUpdateController.java \
+        --replace "private boolean mEnabled = true" "private boolean mEnabled = false"
     )
   '' + attrs.postPatch;
 })
