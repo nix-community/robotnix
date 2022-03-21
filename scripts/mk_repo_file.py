@@ -102,7 +102,7 @@ def make_repo_file(url: str, ref: str,
         with tempfile.TemporaryDirectory() as tmpdir:
             subprocess.check_call([
                 'repo', 'init', f'--manifest-url={url}', f'--manifest-branch=refs/{ref_type.value}/{ref}', *REPO_FLAGS
-                ], cwd=tmpdir)
+                ], cwd=tmpdir, stdin=open('/dev/null'))  # repo becomes non-interactive when a file is attached to stdin
 
             local_manifests_dir = os.path.join(tmpdir, ".repo/local_manifests")
             os.makedirs(local_manifests_dir, exist_ok=True)
