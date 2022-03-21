@@ -13,7 +13,7 @@ let
   androidVersionToLineageBranch = {
     "10" = "lineage-17.1";
     "11" = "lineage-18.1";
-    "12" = "lineage-19.0";
+    "12" = "lineage-19.1";
   };
   lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
 
@@ -75,7 +75,7 @@ in mkIf (config.flavor == "lineageos")
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
-  buildDateTime = mkDefault 1647677324;
+  buildDateTime = mkDefault 1647885931;
 
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
