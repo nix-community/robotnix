@@ -20,3 +20,5 @@ export TMPDIR=/tmp
 ./update_device_metadata.py
 ../../scripts/mk_repo_file.py --out "${branch}/repo.json" "${args[@]}"
 ./update_device_dirs.py --branch "$branch"
+
+echo Updated branch "$branch". End epoch: "$(date +%s)"
