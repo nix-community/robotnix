@@ -8,6 +8,8 @@ from enum import Enum
 import argparse
 import copy
 import json
+import multiprocessing
+import multiprocessing.pool
 import os
 import re
 import shutil
@@ -79,6 +81,7 @@ def make_repo_file(url: str, ref: str,
                    override_tag: Optional[str] = None, include_prefix: Optional[List[str]] = None,
                    exclude_path: Optional[List[str]] = None,
                    callback: Optional[Callable[[Any], Any]] = None,
+                   jobs: int = 1,
                    ) -> Dict[str, ProjectInfoDict]:
     if local_manifests is None:
         local_manifests = []
@@ -118,12 +121,22 @@ def make_repo_file(url: str, ref: str,
             if callback is not None:
                 callback(data)
 
-    for relpath, p in data.items():
+    pool = multiprocessing.pool.ThreadPool(jobs)
+    cb_lock = multiprocessing.Lock()
+
+    def process_item(item: Tuple[str, ProjectInfoDict]) -> None:
+        assert override_project_revs is not None
+        assert project_fetch_submodules is not None
+        assert include_prefix is not None
+        assert exclude_path is not None
+
+        relpath, p = item
+
         if len(include_prefix) > 0 and (not any(relpath.startswith(p) for p in include_prefix)):
-            continue
+            return
 
         if relpath in exclude_path:
-            continue
+            return
 
         for project, rev in override_project_revs.items():
             # We have to iterate over the whole output since we don't save
@@ -164,7 +177,7 @@ def make_repo_file(url: str, ref: str,
             # Used cached copies if available
             if (p['rev'], fetch_submodules) in revInfo:
                 p.update(cast(ProjectInfoDict, revInfo.get((p['rev'], fetch_submodules), {})))
-                continue
+                return
 
             p_url = get_mirrored_url(p['url'])
             found_treehash = False
@@ -177,7 +190,7 @@ def make_repo_file(url: str, ref: str,
                     p.update(cast(ProjectInfoDict, treeInfo.get((p['tree'], fetch_submodules), {})))
                     found_treehash = True
             if found_treehash:
-                continue
+                return
 
             # Fetch information. Use revisionExpr if it is a tag so we use the
             # tag in the name of the nix derivation instead of the revision
@@ -191,8 +204,11 @@ def make_repo_file(url: str, ref: str,
 
             add_to_cache(p)
 
-            if callback is not None:
-                callback(data)
+            with cb_lock:
+                if callback is not None:
+                    callback(data)
+
+    pool.map(process_item, data.items())
 
     # Save at the end as well!
     if callback is not None:
@@ -232,6 +248,7 @@ def main() -> None:
     parser.add_argument('--include-prefix', action="append", default=[],
                         help="only include paths if they start with the specified prefix")
     parser.add_argument('--exclude-path', action="append", default=[], help="paths to exclude from fetching")
+    parser.add_argument('--jobs', '-j', default=multiprocessing.cpu_count(), type=int, help="number of concurrent jobs")
     parser.add_argument('url', help="manifest URL")
     parser.add_argument('ref', help="manifest ref")
     args = parser.parse_args()
@@ -269,6 +286,7 @@ def main() -> None:
                    include_prefix=args.include_prefix,
                    exclude_path=args.exclude_path,
                    callback=lambda dirs: save(filename, dirs),
+                   jobs=args.jobs,
                    )
 
 
