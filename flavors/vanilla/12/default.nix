@@ -16,11 +16,11 @@ in
 
   source.manifest.rev = mkDefault (
     if (config.deviceFamily == "raviole") then "android-12.1.0_r2"
-    else "android-12.0.0_r28"
+    else "android-12.1.0_r1"
   );
   apv.buildID = mkDefault (
     if (config.deviceFamily == "raviole") then "SP2A.220305.013.A3"
-    else "SQ1A.220205.002"
+    else "SP2A.220305.012"
   );
 
 #  # Disable for now until we have it tested working
