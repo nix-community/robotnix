@@ -144,10 +144,10 @@ in
   otaArgs = mkIf config.apv.enable [ "--skip_compatibility_check" ];
 
   nixpkgs.overlays = let
-    owner = "danielfullmer";
+    owner = "zhaofengli";
     repo = "android-prepare-vendor";
-    rev = "0067892ef57af7e0420bf7942e83d50f6d8f5baf";
-    sha256 = "03y3m2jjxlqmisxvd7cmjmqxgk9hnrs677ncgw47aarw5y4s3vrx";
+    rev = "21b3650fe627d95ccce3237b8154a841d16ac265";
+    sha256 = "1zyxc05lfiil1yzbivihfs9jafa3jkzyfha21bcgd07r482h2slf";
   in [ (self: super: {
     android-prepare-vendor = super.android-prepare-vendor.overrideAttrs (_: {
       src = pkgs.fetchFromGitHub {
