@@ -18,12 +18,13 @@
 , packageName ? "org.chromium.chrome"
 , webviewPackageName ? "com.android.webview"
 , trichromeLibraryPackageName ? "org.chromium.trichromelibrary"
-, version ? "99.0.4844.73"
+, version ? "100.0.4896.58"
 , versionCode ? null
 # Potential buildTargets:
 # chrome_modern_public_bundle + system_webview_apk
 # trichrome_webview_apk + trichrome_chrome_bundle + trichome_library_apk
 # monochrome_public_apk
+, depsOverrides ? {}
 }:
 
 let
@@ -93,7 +94,10 @@ let
     #target_cpu = { i686-linux = "x86"; x86_64-linux = "x64"; armv7l-linux = "arm"; aarch64-linux = "arm64"; }.${stdenv.hostPlatform.system};
   } // customGnFlags;
 
-  deps = import (./vendor- + version + ".nix") { inherit fetchgit fetchcipd fetchurl runCommand symlinkJoin; };
+  deps = import (./vendor- + version + ".nix") {
+    inherit fetchgit fetchcipd fetchurl runCommand symlinkJoin;
+    platform = "linux-amd64"; # TODO: Figure out mapping for cipd platform
+  };
 
   src = runCommand "chromium-${version}-src" {} # TODO: changed from mkDerivation since it needs passAsFile or else this can get too big for the derivation: nixos "while setting up the build environment" "argument list too long"
       # <nixpkgs/pkgs/build-support/trivial-builders.nix>'s `linkFarm` or `buildEnv` would work here if they supported nested paths
@@ -184,11 +188,16 @@ in stdenvNoCC.mkDerivation rec {
     )
   ''
   # Work around missing library when building md5sum_bin and monochrome. TODO: Hack
-  + lib.optionalString (lib.versionAtLeast version "97") ''
+  + lib.optionalString (lib.versionAtLeast version "97" && lib.versionOlder version "100") ''
     cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/aarch64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libatomic.a
     cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/arm-linux-androideabi/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libatomic.a
     cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/x86_64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libatomic.a
     cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/i686-linux-android/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/libatomic.a
+  '' + lib.optionalString (lib.versionAtLeast version "100") ''
+    cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.5/lib/linux/aarch64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libatomic.a
+    cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.5/lib/linux/arm/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libatomic.a
+    cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.5/lib/linux/x86_64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libatomic.a
+    cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.5/lib/linux/i386/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/libatomic.a
   '' + ''
     ( cd src
 
