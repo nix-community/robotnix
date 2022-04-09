@@ -3,7 +3,7 @@
 
 { stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
   simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3, libarchive,
-  api ? 31
+  api ? 32
 }:
 
 let
@@ -16,6 +16,7 @@ let
     "29" = "2020-08-26";
     "30" = "2021-09-07";
     "31" = "2021-10-21";
+    "32" = "2022-03-18";
   }.${builtins.toString api};
 
   src = {
@@ -34,10 +35,18 @@ let
       sha256 = "07g5dcl2x44ai5q2yfq9ybx7j7kn41s82hgpv7jff5v1vr38cia9";
     });
     "31" = (fetchFromGitHub {
+      # Android12
       owner = "grapheneos";
       repo = "android-prepare-vendor";
       rev = "7c09cb887d3b9a2643cfc6ecf3966db1e378be32";
       sha256 = "0j579ick4cihv3ha2gg0b88h33zfik118376g4rw1qfq0cwbwdg8";
+    });
+    "32" = (fetchFromGitHub {
+      # Android12.1
+      owner = "grapheneos";
+      repo = "android-prepare-vendor";
+      rev = "888e116ea243a120ad47f1698515fc4cff08583a";
+      sha256 = "0wiq9z8mjxa5fanzz28iq41y5hwvsz6yh3aylkj71ggzhbpgc9wd";
     });
   }.${builtins.toString api};
 
@@ -64,6 +73,12 @@ in
       ./11/0004-Add-option-to-use-externally-provided-carrier_list.p.patch
     ];
     "31" = [
+      ./12/0001-Just-write-proprietary-blobs.txt-to-current-dir.patch
+      ./12/0002-Allow-for-externally-set-config-file.patch
+      ./12/0003-Add-option-to-use-externally-provided-carrier_list.p.patch
+      ./12/0004-Add-Android-12-workaround-for-PRODUCT_COPY_FILES.patch
+    ];
+    "32" = [
       ./12/0001-Just-write-proprietary-blobs.txt-to-current-dir.patch
       ./12/0002-Allow-for-externally-set-config-file.patch
       ./12/0003-Add-option-to-use-externally-provided-carrier_list.p.patch

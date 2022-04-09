@@ -231,8 +231,8 @@ in
       "9" = 28;
       "10" = 29;
       "11" = 30;
-      "12" = 31;
-    }.${builtins.toString config.androidVersion} or 30;
+      "12" = 32;
+    }.${builtins.toString config.androidVersion} or 32;
 
     buildNumber = mkOptionDefault (formatSecondsSinceEpoch config.buildDateTime);
 
