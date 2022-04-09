@@ -28,14 +28,13 @@ let
     '';
   };
 
-in
-{
+in {
   inherit (pkgs) diffoscope;
 
-  imgs = lib.mapAttrs (name: c: c.img) builtConfigs;
+  imgs = lib.recurseIntoAttrs (lib.mapAttrs (name: c: c.img) builtConfigs);
 
   # For testing instantiation
-  vanilla-arm64 = {
+  vanilla-arm64 = lib.recurseIntoAttrs {
     inherit (defaultBuild)
       ota img factoryImg bootImg otaDir
       releaseScript;
@@ -51,8 +50,8 @@ in
   inherit tests;
 
   # Stuff to upload to binary cache
-  cached = {
-    browsers = {
+  cached = lib.recurseIntoAttrs {
+    browsers = lib.recurseIntoAttrs {
       inherit ((robotnix { device = "arm64"; flavor="vanilla"; }).config.build)
         chromium;
       inherit ((robotnix { device = "arm64"; flavor="vanilla"; apps.bromite.enable=true; webview.bromite.enable=true; }).config.build)
@@ -61,16 +60,16 @@ in
         vanadium;
     };
 
-    kernels =
+    kernels = lib.recurseIntoAttrs (
       (lib.mapAttrs (name: c: c.config.build.kernel)
-        (lib.filterAttrs (name: c: c.config.kernel.enable) builtConfigs));
+        (lib.filterAttrs (name: c: c.config.kernel.enable) builtConfigs)));
 
-    tests = {
+    tests = lib.recurseIntoAttrs {
       attestation-server = tests.attestation-server.test;
       inherit (tests) generateKeys;
     };
 
-    packages = {
+    packages = lib.recurseIntoAttrs {
       inherit (pkgs) cipd;
     };
   };
