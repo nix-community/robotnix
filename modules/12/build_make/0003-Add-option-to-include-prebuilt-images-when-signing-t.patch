@@ -1,6 +1,6 @@
-From 105e08518e96424d9a8deaead77290baea906f42 Mon Sep 17 00:00:00 2001
+From 203d99fcfe8ec55a04c12fdb070c893cfa604022 Mon Sep 17 00:00:00 2001
 From: Zhaofeng Li <hello@zhaofeng.li>
-Date: Sat, 6 Nov 2021 12:48:25 -0700
+Date: Wed, 23 Mar 2022 19:16:53 -0700
 Subject: [PATCH] Add option to include prebuilt images when signing target
  files.
 
@@ -34,13 +34,13 @@ Change-Id: Id906b2e32797f95b0ee47859036ba31ea7975b64
  1 file changed, 30 insertions(+)
 
 diff --git a/tools/releasetools/sign_target_files_apks.py b/tools/releasetools/sign_target_files_apks.py
-index 0842af9018..b160a21c67 100755
+index 936ef888dc..a78b178cb7 100755
 --- a/tools/releasetools/sign_target_files_apks.py
 +++ b/tools/releasetools/sign_target_files_apks.py
-@@ -136,6 +136,11 @@ Usage:  sign_target_files_apks [flags] input_target_files output_target_files
- 
-   --android_jar_path <path>
-       Path to the android.jar to repack the apex file.
+@@ -141,6 +141,11 @@ Usage:  sign_target_files_apks [flags] input_target_files output_target_files
+       Allow the existence of the file 'userdebug_plat_sepolicy.cil' under
+       (/system/system_ext|/system_ext)/etc/selinux.
+       If not set, error out when the file exists.
 +
 +  --prebuilt_image <path to prebuilt image>
 +      Specify a path to a prebuilt image file, to be added to the
@@ -49,7 +49,7 @@ index 0842af9018..b160a21c67 100755
  """
  
  from __future__ import print_function
-@@ -173,6 +178,7 @@ OPTIONS = common.OPTIONS
+@@ -178,6 +183,7 @@ OPTIONS = common.OPTIONS
  
  OPTIONS.extra_apks = {}
  OPTIONS.extra_apex_payload_keys = {}
@@ -57,7 +57,7 @@ index 0842af9018..b160a21c67 100755
  OPTIONS.skip_apks_with_path_prefix = set()
  OPTIONS.key_map = {}
  OPTIONS.rebuild_recovery = False
-@@ -1190,6 +1196,8 @@ def main(argv):
+@@ -1206,6 +1212,8 @@ def main(argv):
        names = names.split(",")
        for n in names:
          OPTIONS.extra_apks[n] = key
@@ -66,15 +66,15 @@ index 0842af9018..b160a21c67 100755
      elif o == "--extra_apex_payload_key":
        apex_name, key = a.split("=")
        OPTIONS.extra_apex_payload_keys[apex_name] = key
-@@ -1339,6 +1347,7 @@ def main(argv):
-           "gki_signing_key=",
+@@ -1358,6 +1366,7 @@ def main(argv):
            "gki_signing_algorithm=",
            "gki_signing_extra_args=",
+           "allow_gsi_debug_sepolicy",
 +          "prebuilt_image=",
        ],
        extra_option_handler=option_handler)
  
-@@ -1381,6 +1390,23 @@ def main(argv):
+@@ -1400,6 +1409,23 @@ def main(argv):
                       platform_api_level, codename_to_api_level_map,
                       compressed_extension)
  
@@ -98,7 +98,7 @@ index 0842af9018..b160a21c67 100755
    common.ZipClose(input_zip)
    common.ZipClose(output_zip)
  
-@@ -1390,6 +1416,10 @@ def main(argv):
+@@ -1409,6 +1435,10 @@ def main(argv):
    # recovery patch is guaranteed to be regenerated there.
    if OPTIONS.rebuild_recovery:
      new_args.append("--rebuild_recovery")
@@ -110,5 +110,5 @@ index 0842af9018..b160a21c67 100755
    add_img_to_target_files.main(new_args)
  
 -- 
-2.33.0
+2.35.1
 

@@ -12,15 +12,15 @@ let
 in
 (mkIf (config.flavor == "vanilla" && config.androidVersion == 12) (mkMerge [
 {
-  buildDateTime = mkDefault 1645396670;
+  buildDateTime = mkDefault 1648156966;
 
   source.manifest.rev = mkDefault (
-    if (config.deviceFamily == "raviole") then "android-12.0.0_r32"
-    else "android-12.0.0_r28"
+    if (config.deviceFamily == "raviole") then "android-12.1.0_r2"
+    else "android-12.1.0_r1"
   );
   apv.buildID = mkDefault (
-    if (config.deviceFamily == "raviole") then "SQ1D.220205.004"
-    else "SQ1A.220205.002"
+    if (config.deviceFamily == "raviole") then "SP2A.220305.013.A3"
+    else "SP2A.220305.012"
   );
 
 #  # Disable for now until we have it tested working
@@ -144,10 +144,10 @@ in
   otaArgs = mkIf config.apv.enable [ "--skip_compatibility_check" ];
 
   nixpkgs.overlays = let
-    owner = "danielfullmer";
+    owner = "zhaofengli";
     repo = "android-prepare-vendor";
-    rev = "0067892ef57af7e0420bf7942e83d50f6d8f5baf";
-    sha256 = "03y3m2jjxlqmisxvd7cmjmqxgk9hnrs677ncgw47aarw5y4s3vrx";
+    rev = "21b3650fe627d95ccce3237b8154a841d16ac265";
+    sha256 = "1zyxc05lfiil1yzbivihfs9jafa3jkzyfha21bcgd07r482h2slf";
   in [ (self: super: {
     android-prepare-vendor = super.android-prepare-vendor.overrideAttrs (_: {
       src = pkgs.fetchFromGitHub {

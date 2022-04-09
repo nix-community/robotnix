@@ -15,7 +15,7 @@ let
   version = {
     "29" = "2020-08-26";
     "30" = "2021-09-07";
-    "31" = "2021-10-21";
+    "32" = "2021-10-21";
   }.${builtins.toString api};
 
   src = {
@@ -33,7 +33,7 @@ let
       rev = "227f5ce7cd89a3f57291fe2b84869c7a5d1e17fa";
       sha256 = "07g5dcl2x44ai5q2yfq9ybx7j7kn41s82hgpv7jff5v1vr38cia9";
     });
-    "31" = (fetchFromGitHub {
+    "32" = (fetchFromGitHub {
       owner = "grapheneos";
       repo = "android-prepare-vendor";
       rev = "7c09cb887d3b9a2643cfc6ecf3966db1e378be32";
@@ -63,7 +63,7 @@ in
       ./11/0003-Allow-for-externally-set-config-file.patch
       ./11/0004-Add-option-to-use-externally-provided-carrier_list.p.patch
     ];
-    "31" = [
+    "32" = [
       ./12/0001-Just-write-proprietary-blobs.txt-to-current-dir.patch
       ./12/0002-Allow-for-externally-set-config-file.patch
       ./12/0003-Add-option-to-use-externally-provided-carrier_list.p.patch
