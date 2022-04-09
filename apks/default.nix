@@ -41,7 +41,7 @@ rec {
   chromium = callPackage ./chromium/default.nix {};
   vanadium = import ./chromium/vanadium.nix {
     inherit chromium;
-    inherit (pkgs) fetchFromGitHub git;
+    inherit (pkgs) fetchFromGitHub git fetchcipd linkFarmFromDrvs fetchurl;
   };
   bromite = import ./chromium/bromite.nix {
     inherit chromium;

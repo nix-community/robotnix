@@ -97,7 +97,7 @@ let
   deps = import (./vendor- + version + ".nix") {
     inherit fetchgit fetchcipd fetchurl runCommand symlinkJoin;
     platform = "linux-amd64"; # TODO: Figure out mapping for cipd platform
-  };
+  } // depsOverrides;
 
   src = runCommand "chromium-${version}-src" {} # TODO: changed from mkDerivation since it needs passAsFile or else this can get too big for the derivation: nixos "while setting up the build environment" "argument list too long"
       # <nixpkgs/pkgs/build-support/trivial-builders.nix>'s `linkFarm` or `buildEnv` would work here if they supported nested paths
