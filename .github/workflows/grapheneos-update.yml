@@ -1,0 +1,51 @@
+name: "Update GrapheneOS"
+
+on: { schedule: [{ cron: '0 0 * * 0' }], workflow_dispatch }
+
+jobs:
+  updates:
+    name: "Update GrapheneOS"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.3.5
+    - uses: cachix/install-nix-action@v17
+      with:
+        extra_nix_config: |
+          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+    - name: "Determine build numbers"
+      run: |
+         # buildNumber is the only quoted string inside upstream-params.nix so we can
+         # just use grep to extract the first quoted string and use xargs to strip the
+         # quotes
+         OLD_BUILD_NUMBER=$(grep -o -m 1 '"[^"]*"' ./flavors/grapheneos/upstream-params.nix | xargs)
+         echo "OLD_BUILD_NUMBER=$OLD_BUILD_NUMBER" | tee -a $GITHUB_ENV
+
+         nix develop -c ./flavors/grapheneos/extract-upstream-params.sh
+
+         NEW_BUILD_NUMBER=$(grep -o -m 1 '"[^"]*"' ./flavors/grapheneos/upstream-params.nix | xargs)
+         echo "NEW_BUILD_NUMBER=$NEW_BUILD_NUMBER" | tee -a $GITHUB_ENV
+    - name: "Update devices"
+      if: env.OLD_BUILD_NUMBER != env.NEW_BUILD_NUMBER
+      run: |
+        for DEVICE in crosshatch sunfish oriole; do
+            METADATA=$(curl -sSfL "https://releases.grapheneos.org/$DEVICE-beta")
+            BUILD_PREFIX=$(echo "$METADATA" | cut -d" " -f3)
+            git mv "./flavors/grapheneos/repo-$BUILD_PREFIX.$OLD_BUILD_NUMBER.json" \
+                   "./flavors/grapheneos/repo-$BUILD_PREFIX.$NEW_BUILD_NUMBER.json"
+            nix develop -c ./flavors/grapheneos/update.sh "$BUILD_PREFIX.$NEW_BUILD_NUMBER"
+        done
+    - name: "Create Pull Request"
+      if: env.OLD_BUILD_NUMBER != env.NEW_BUILD_NUMBER
+      id: cpr
+      uses: peter-evans/create-pull-request@v3.10.1
+      with:
+        commit-message: "grapheneos: ${{ env.OLD_BUILD_NUMBER }} -> ${{ env.NEW_BUILD_NUMBER }}"
+        title: "grapheneos: ${{ env.OLD_BUILD_NUMBER }} -> ${{ env.NEW_BUILD_NUMBER }}"
+        branch: "grapheneos-${{ env.NEW_BUILD_NUMBER }}"
+        delete-branch : true
+        labels: "automated"
+    - name: "Check outputs"
+      if: env.OLD_BUILD_NUMBER != env.NEW_BUILD_NUMBER
+      run: |
+        echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+        echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
