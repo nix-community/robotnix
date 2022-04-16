@@ -9,20 +9,22 @@ let
     mkMerge
     mkBefore
   ;
-  repoDirs = lib.importJSON (./. + "/repo-lineage-17.1.json");
+  repoDirs = lib.importJSON ./repo-lineage-17.1.json;
   patchMetadata = lib.importJSON ./patch-metadata.json;
+  repoDateTimes = lib.mapAttrsToList (name: value: value.dateTime) repoDirs;
+  maxRepoDateTime = lib.foldl (a: b: lib.max a b) 0 repoDateTimes;
 in mkIf (config.flavor == "waydroid")
 {
-  buildDateTime = mkDefault 1629060864;
+  buildDateTime = mkDefault maxRepoDateTime;
 
   androidVersion = mkDefault 10;
-  productNamePrefix = "lineage_anbox_";
+  productNamePrefix = "lineage_waydroid_";
   variant = mkDefault "userdebug";
 
   source.dirs = mkMerge [
     repoDirs
     (lib.mapAttrs (relpath: patches: {
-      patches = (builtins.map (p: "${config.source.dirs."anbox-patches".src}/${relpath}/${p}") patches);
+      patches = (builtins.map (p: "${config.source.dirs."vendor/extra".src}/${patches.dir}/${p}") patches.files);
     }) patchMetadata)
   ];
 
@@ -50,8 +52,11 @@ in mkIf (config.flavor == "waydroid")
           $ANDROID_PRODUCT_OUT/build_fingerprint.txt \
           $ANDROID_PRODUCT_OUT/installed-files.txt
 
-        cp --reflink=auto -r $ANDROID_PRODUCT_OUT/system.img $out
-        cp --reflink=auto -r $ANDROID_PRODUCT_OUT/vendor.img $out
+        for v in system.img vendor.img; do
+          ${pkgs.simg2img}/bin/simg2img $ANDROID_PRODUCT_OUT/$v $out/$v
+          ${pkgs.e2fsprogs}/bin/e2fsck -fy $out/$v
+          ${pkgs.e2fsprogs}/bin/resize2fs -M $out/$v
+        done
       '';
     };
   };

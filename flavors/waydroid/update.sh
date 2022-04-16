@@ -6,15 +6,22 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-# https://github.com/WayDroid/anbox-halium/issues/22
-#curl -o anbox.xml "https://raw.githubusercontent.com/Anbox-halium/anbox-halium/lineage-17.1/anbox.xml"
+# https://docs.waydro.id/development/compile-waydroid-lineage-os-based-images
+repo_tmp="$(mktemp -d)"
+pushd "${repo_tmp}"
+repo init -u https://github.com/LineageOS/android.git -b lineage-17.1
+wget -O - https://raw.githubusercontent.com/waydroid/android_vendor_waydroid/lineage-17.1/manifest_scripts/generate-manifest.sh | bash
+popd
 
 args=(
     "https://github.com/LineageOS/android.git"
     "lineage-17.1" # static branch name
     --ref-type branch
-    --local-manifest anbox.xml
 )
+
+for manifest in "${repo_tmp}"/.repo/local_manifests/*.xml; do
+    args+=(--local-manifest "${manifest}")
+done
 
 export TMPDIR=/tmp
 
