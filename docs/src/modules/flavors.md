@@ -69,3 +69,10 @@ Anbox support may be enabled by setting `flavor = "anbox";`.
 
 At the time of writing, support is experimental.
 Given that Anbox is based on an older Android release (7), support for Robotnix options is not guaranteed.
+
+## Waydroid
+Waydroid is a Free and open-source container-based approach at running Android on Linux systems.
+Waydroid support may be enabled by setting device and flavor, e.g. `device="x86_64"; flavor="waydroid";`.
+LineageOS based system/vendor images can be built using `nix-build ... -A config.build.waydroid`.
+
+At the time of writing, support is experimental.
