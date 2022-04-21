@@ -50,6 +50,7 @@ let
       ./modules/apps/seedvault.nix
       ./modules/apps/updater.nix
       ./modules/apv
+      ./modules/adevtool.nix
       ./modules/assertions.nix
       ./modules/base.nix
       ./modules/emulator.nix
