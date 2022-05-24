@@ -1556,7 +1556,7 @@
     "url": "https://github.com/LineageOS/android_device_nubia_nx563j"
   },
   "device/nvidia/foster": {
-    "date": "2022-01-28T12:24:27-06:00",
+    "date": "2022-05-06T15:31:28-05:00",
     "deepClone": false,
     "deps": [
       "device/nvidia/shield-common",
@@ -1572,9 +1572,9 @@
     "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/z07pqz5lpqyzvvkb1w2b49af2z945ma2-android_device_nvidia_foster",
-    "rev": "d1bba221bf03978e54f8a324de41362b60a15917",
-    "sha256": "1is4agnjkmami36aprr05wbl962d2p2ars73y7m55dwlacbsvqak",
+    "path": "/nix/store/5x6sc9dqmm2l1xrqzrl1jii1kq4bpa3c-android_device_nvidia_foster",
+    "rev": "9cab91a523d88f66db40e2976691f3d7186d1799",
+    "sha256": "1qhvgd5hva56qzq99yizm0fc4p2r4n7x08al6j82zjsikj684wxy",
     "url": "https://github.com/LineageOS/android_device_nvidia_foster"
   },
   "device/nvidia/foster_tab": {
@@ -1699,15 +1699,15 @@
     "url": "https://github.com/LineageOS/android_device_nvidia_sepolicy"
   },
   "device/nvidia/shield-common": {
-    "date": "2021-12-17T19:59:36-06:00",
+    "date": "2022-04-08T04:58:45+02:00",
     "deepClone": false,
     "deps": [],
     "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/6aidf8kd14a3x9jymkhvx0ml0pbz57p0-android_device_nvidia_shield-common",
-    "rev": "d2f0b76673e5d2384055ac587dfdd9e04a66c7a8",
-    "sha256": "1r0qy53i8mpydc4mzwqimc91jx74sa1xd4ihj0chb69lpj22pslj",
+    "path": "/nix/store/65j7z4g9ifhr86fmvb8c0d1cfasj4s9y-android_device_nvidia_shield-common",
+    "rev": "d6e312841e0aef3ecb597a9d24776fb549f270e6",
+    "sha256": "0faiw4cg99aa2l8jpkn0xa8n7y27xfq64lmln1gqvpkwbvd6hh0w",
     "url": "https://github.com/LineageOS/android_device_nvidia_shield-common"
   },
   "device/nvidia/t186-common": {
@@ -1725,7 +1725,7 @@
     "url": "https://github.com/LineageOS/android_device_nvidia_t186-common"
   },
   "device/nvidia/t210-common": {
-    "date": "2022-02-04T04:45:42+01:00",
+    "date": "2022-04-05T01:23:59-04:00",
     "deepClone": false,
     "deps": [
       "device/nvidia/tegra-common"
@@ -1733,9 +1733,9 @@
     "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/1h5amh8v8mj8j5mivhrxiyxdvjaazwia-android_device_nvidia_t210-common",
-    "rev": "794c5bb87b51770832dc2375cb922db5c1c4c227",
-    "sha256": "1whgqah0wfjsffm8difkw3iicc5c80qmkpwcfyq5n9np34nmh0jj",
+    "path": "/nix/store/dkv6icifkigqg4zrs54m2x8agwz0dfi9-android_device_nvidia_t210-common",
+    "rev": "aeffd4d9dac1274c3c531b00f1e1453b565fc43b",
+    "sha256": "1f1wvvhjzssn9f9vsficxaahd3g7r5ig9mf1l1faqy6xn4yn0ad3",
     "url": "https://github.com/LineageOS/android_device_nvidia_t210-common"
   },
   "device/nvidia/tegra-common": {
@@ -1871,6 +1871,7 @@
     "deps": [
       "device/oneplus/sm8150-common"
     ],
+    "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
     "path": "/nix/store/g5lhw1v3p4qfalr6rxw4x5v15ij58ana-android_device_oneplus_guacamoleb",
