@@ -585,6 +585,12 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p><em>Type</em>: boolean</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/release.nix">modules/release.nix</a></p>
+<h3 id="securitypkicertificatefiles"><a class="header" href="#securitypkicertificatefiles"><code>security.pki.certificateFiles</code></a></h3>
+<p>A list of files containing trusted root certificates in PEM format.  These are added as system-level trust anchors.</p>
+<p><em>Default</em>: <code>[ ]</code></p>
+<p><em>Type</em>: list of paths</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/security-pki.nix">modules/security-pki.nix</a></p>
 <h3 id="signingapexenable"><a class="header" href="#signingapexenable"><code>signing.apex.enable</code></a></h3>
 <p>Whether to enable signing APEX packages.</p>
 <p><em>Default</em>: <code>false</code></p>
