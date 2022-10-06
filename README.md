@@ -62,14 +62,5 @@ This can build chromium+android in about an hour.
 The `#robotnix:nixos.org` channel on Matrix is available for a place to chat about the project, ask questions, and discuss robotnix development.
 You can easily join the channel using the Element web client via [this link](https://app.element.io/#/room/#robotnix:nixos.org).
 
-## Donating to robotnix
-If you find robotnix helpful, please consider donating to the project.
-Especially consider making a donation if you rely on regular robotnix updates for your personal device.
-Donations will be used to support ongoing Android updates, developer hardware and build infrastructure, as well as future improvements.
-Your support is greatly appreciated.
- - My GitHub sponsors page is [here](https://github.com/sponsors/danielfullmer).
- - Paypal donations may be made using this [link](https://www.paypal.com/donate/?cmd=_donations&business=FAV4QV9CTLXF2&currency_code=USD).
- - Bitcoin donations may be directed toward `3GEtqfkPkSSrRFpdcfy4T6YALgTwRyufip`.
-
 ## License information
 This project is available as open source under the terms of MIT license. However, for accurate information, please check individual files.
