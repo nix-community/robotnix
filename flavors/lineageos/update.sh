@@ -15,7 +15,7 @@ args=(
     "$branch"
 )
 
-export TMPDIR=/tmp
+export TMPDIR=/var/tmp
 
 ./update_device_metadata.py
 ../../scripts/mk_repo_file.py --out "${branch}/repo.json" "${args[@]}"
