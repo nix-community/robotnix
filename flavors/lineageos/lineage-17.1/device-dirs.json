@@ -2296,7 +2296,7 @@
     "url": "https://github.com/LineageOS/android_device_samsung_jactivelte"
   },
   "device/samsung/jf-common": {
-    "date": "2021-07-14T05:08:58+02:00",
+    "date": "2022-08-16T00:44:33+02:00",
     "deepClone": false,
     "deps": [
       "device/samsung/qcom-common",
@@ -2305,9 +2305,9 @@
     "fetchLFS": false,
     "fetchSubmodules": false,
     "leaveDotGit": false,
-    "path": "/nix/store/zw95zxfnwnj5djl2jk6fgxxla4zvbqpa-android_device_samsung_jf-common",
-    "rev": "e4036d76b228b73ad5768510cbf5a09be19615a4",
-    "sha256": "10shpsx3ggj53gfvy5jn5h905ix1n751s4p3dlpyrpj7xhmhyi5v",
+    "path": "/nix/store/jd2n2afsgvak8f3bpgnwnwdrc368yaz3-android_device_samsung_jf-common",
+    "rev": "89a3c91e7fa0fd687bcf21edd3f4a5a673d2d078",
+    "sha256": "01cd3kg3bzvhx6iahf5jmk5s7p5ri6xb6zan1nhhzkhkf6bbh7y9",
     "url": "https://github.com/LineageOS/android_device_samsung_jf-common"
   },
   "device/samsung/jflteatt": {
@@ -3038,6 +3038,20 @@
     "sha256": "0a4lv5g2f1s4vycnxw0z631i4sxyxfld45vwv01ghhc0p7s4mvya",
     "url": "https://github.com/LineageOS/android_device_xiaomi_dipper"
   },
+  "device/xiaomi/equuleus": {
+    "date": "2020-07-17T15:43:21+02:00",
+    "deepClone": false,
+    "deps": [
+      "device/xiaomi/sdm845-common"
+    ],
+    "fetchLFS": false,
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/zryllv46x5m03s0fd6s754gzzcm1mp09-android_device_xiaomi_equuleus",
+    "rev": "5ed9338919a02ac090c61d75d2b17208241a25e1",
+    "sha256": "0krmi4rf5xmz9jj5dbj8ixqhycdjl2dfw2mhs6cm3vnc04l1c1gl",
+    "url": "https://github.com/LineageOS/android_device_xiaomi_equuleus"
+  },
   "device/xiaomi/gemini": {
     "date": "2020-06-14T21:08:32+04:30",
     "deepClone": false,
@@ -3326,6 +3340,20 @@
     "rev": "a3bd1bdd89f66571f6872aac23f726ca86e747f3",
     "sha256": "19i0qrjd20j56gb2fayj20aic135g2fk8whpwqyqc1pc4zpivx1d",
     "url": "https://github.com/LineageOS/android_device_xiaomi_twolip"
+  },
+  "device/xiaomi/ursa": {
+    "date": "2020-06-30T22:01:28+01:00",
+    "deepClone": false,
+    "deps": [
+      "device/xiaomi/sdm845-common"
+    ],
+    "fetchLFS": false,
+    "fetchSubmodules": false,
+    "leaveDotGit": false,
+    "path": "/nix/store/21f5gc4v4azpsbgd5sps7vr152rvp0qy-android_device_xiaomi_ursa",
+    "rev": "9f12c8356cc03f2d021ea4b06a1f301bdd3c811c",
+    "sha256": "0hzpz0jxal59a7995800fxq25j1sz9xlfppl7s5zmmnzmfj7b6m1",
+    "url": "https://github.com/LineageOS/android_device_xiaomi_ursa"
   },
   "device/xiaomi/wayne": {
     "date": "2020-06-21T19:50:38+03:00",
