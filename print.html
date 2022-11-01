@@ -269,6 +269,11 @@ Check the upstream documentation for your particular device before following the
 Anbox support may be enabled by setting <code>flavor = &quot;anbox&quot;;</code>.</p>
 <p>At the time of writing, support is experimental.
 Given that Anbox is based on an older Android release (7), support for Robotnix options is not guaranteed.</p>
+<h2 id="waydroid"><a class="header" href="#waydroid">Waydroid</a></h2>
+<p>Waydroid is a Free and open-source container-based approach at running Android on Linux systems.
+Waydroid support may be enabled by setting device and flavor, e.g. <code>device=&quot;x86_64&quot;; flavor=&quot;waydroid&quot;;</code>.
+LineageOS based system/vendor images can be built using <code>nix-build ... -A config.build.waydroid</code>.</p>
+<p>At the time of writing, support is experimental.</p>
 <div style="break-before: page; page-break-before: always;"></div><!--
 SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
