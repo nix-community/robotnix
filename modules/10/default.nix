@@ -14,7 +14,7 @@ mkIf (config.androidVersion == 10) (mkMerge [
 {
   source.dirs."build/make".patches = [
     ./build_make/0001-Readonly-source-fix.patch
-  ] ++ (lib.optional (config.flavor != "lineageos")
+  ] ++ (lib.optional (!(lib.elem config.flavor [ "lineageos" "waydroid" ]))
     (pkgs.substituteAll {
       src = ./build_make/0002-Partition-size-fix.patch;
       inherit (pkgs) coreutils;

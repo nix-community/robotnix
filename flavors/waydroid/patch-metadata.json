@@ -1,0 +1,240 @@
+{
+  "bionic": {
+    "dir": "waydroid-patches/base-patches/bionic",
+    "files": [
+      "0001-hybris-don-t-fail-because-of-fsetxattr.patch",
+      "0002-anbox-add-vendor_extra-lib-folders-to-default-librar.patch",
+      "0003-linker-Allow-text-relocs-for-x86-only.patch",
+      "0004-Add-syscalls-ioperm-and-iopl.patch",
+      "0005-We-need-text-relocations.patch"
+    ]
+  },
+  "build/soong": {
+    "dir": "waydroid-patches/base-patches/build/soong",
+    "files": [
+      "0001-anbox-do-not-fail-on-VNDK-ABI-mismatch.patch"
+    ]
+  },
+  "external/wayland-protocols": {
+    "dir": "waydroid-patches/base-patches/external/wayland-protocols",
+    "files": [
+      "0001-stable-Add-xdg-shell.patch"
+    ]
+  },
+  "frameworks/av": {
+    "dir": "waydroid-patches/base-patches/frameworks/av",
+    "files": [
+      "0001-libcameraservice-Use-listByInterface.patch",
+      "0002-media-xmlparser-Add-host-dirs-to-search-path.patch",
+      "0003-mediacodec-Use-vendor_extra-seccomp-minijail.patch",
+      "0004-media-Add-host-media_profiles-search-paths.patch",
+      "0005-drm-Fix-drm-on-older-vendors.patch",
+      "0006-codec2-Fix-media-on-older-vendors.patch",
+      "0007-SW-encode-Fix-output-buffer-size.patch",
+      "0007-apex-Add-vendor_extra-to-ld-search-paths.patch",
+      "0008-Change-max-width-and-height-supported-by-H.263-decod.patch",
+      "0009-FLACExtractor-Add-more-sample-rates-support.patch",
+      "0010-Don-t-use-YV12-color-format-for-video-decoding.patch",
+      "0011-Allow-screenrecord-usage-on-Android-x86.patch",
+      "0012-media-enable-dithering-for-RGB565-conversion.patch",
+      "0013-nuplayer-skip-bad-SAR-values.patch",
+      "0014-stagefright-Add-support-for-loading-a-custom-OMXPlug.patch",
+      "0015-stagefright-allow-multiple-custom-OMXPlugins.patch",
+      "0016-libstagefright-Extended-media-support-via-FFMPEG.patch",
+      "0017-Add-paths-and-system-libraries-for-swcodec-APEX.patch",
+      "0018-Setup-FFMPEG-audio-mpeg-L2-codec-correctly.patch",
+      "0019-av-Keep-FMPEG-for-i386.patch",
+      "0020-mediaextractor-seccomp-Allow-memfd-related-syscalls.patch"
+    ]
+  },
+  "frameworks/base": {
+    "dir": "waydroid-patches/base-patches/frameworks/base",
+    "files": [
+      "0001-anbox-disable-SELinux-parts.patch",
+      "0002-anbox-disable-suspend-control.patch",
+      "0003-temp-anbox-neutralize-sound-pool-audio-sample-loadi.patch",
+      "0004-anbox-core-jni-start-thread-pool-for-host-hwbinder-w.patch",
+      "0005-fwb-Don-t-check-vintf-compatibility.patch",
+      "0006-Power-Add-proper-suspender.patch",
+      "0007-core-Add-support-for-MicroG.patch",
+      "0008-AndroidManifest-add-a-permission-group-for-signature.patch",
+      "0009-Zygote-Disable-seccomp.patch",
+      "0010-wm-Include-task-id-in-surface-name-for-easier-tracki.patch",
+      "0011-wm-Disable-all-app-transitions-as-they-conflict-with.patch",
+      "0012-clipboard-Talk-with-waydroid-host-service-to-get-cli.patch",
+      "0013-SystemConfig-Add-host-permissions-dir.patch",
+      "0014-Add-minimize-pip-buttons-to-freeform-windows.patch",
+      "0015-Add-back-button-for-freeform-window.patch",
+      "0016-Update-back-button-graphics.patch",
+      "0017-BoringdroidSystemUI-Use-persist.sys.systemuiplugin.e.patch",
+      "0018-Add-basic-freeform-bounds-windowing-mode-persistence.patch",
+      "0019-Allow-boringdroid-to-use-ROM-s-navbar-button-placeme.patch",
+      "0020-Impl-basic-window-round-corner-with-Outline.patch",
+      "0021-base-Keep-using-our-multi-win-props.patch",
+      "0022-base-Add-TID-to-SurfaceView-layer-name.patch",
+      "0023-base-Limit-window-from-going-out-of-display.patch",
+      "0024-base-Lower-windows-shadow-size.patch",
+      "0025-base-Always-enable-caption.patch",
+      "0026-Modify-color-inversion-matrix-to-swap-Red-and-Blue-c.patch",
+      "0027-Update-titlebar-button-graphics.patch",
+      "0028-Only-show-pip-button-if-activity-supports-it.patch",
+      "0029-Use-F11-to-change-window-state-between-freeform-and-.patch"
+    ]
+  },
+  "frameworks/native": {
+    "dir": "waydroid-patches/base-patches/frameworks/native",
+    "files": [
+      "0001-waydroid-installd-run-without-SELinux.patch",
+      "0002-halium-disable-SELinux-checks-in-ServiceManager.patch",
+      "0003-halium-never-set-FLAT_BINDER_FLAG_TXN_SECURITY_CTX-f.patch",
+      "0004-Hack-EventHub-until-it-works-with-our-fake-evdev-eve.patch",
+      "0005-surfaceflinger-Provide-layer-names-and-stuffs.patch",
+      "0006-EventHub-Add-wayland-inputs-support.patch",
+      "0007-inputflinger-add-absolute-event-support-for-cursor.patch",
+      "0008-RenderEngine-support-non-RGBA_8888-format.patch",
+      "0009-libEGL-select-pixel-format-by-EGL_NATIVE_VISUAL_ID.patch",
+      "0010-native-Address-host-uid-services-as-system-UID.patch",
+      "0011-GraphicBufferMapper-Skip-buffer-validation.patch"
+    ]
+  },
+  "hardware/libhardware": {
+    "dir": "waydroid-patches/base-patches/hardware/libhardware",
+    "files": [
+      "0001-anbox-add-vendor_extra-lib-hw-to-HAL-search-path.patch",
+      "0002-libhardware-Don-t-check-for-ro.hardware.patch",
+      "0003-HACK-Avoid-crashes-on-SurfaceFlinger-when-using-soft.patch",
+      "0004-libhardware-Try-system-hals-in-vndk-lite.patch",
+      "0005-gralloc-Force-use-ashmem.patch"
+    ]
+  },
+  "lineage-sdk": {
+    "dir": "waydroid-patches/base-patches/lineage-sdk",
+    "files": [
+      "0001-sdk-Introduce-WayDroid-Service.patch",
+      "0002-sdk-Add-reboot-and-upgrade-to-waydroid.IHardware.patch",
+      "0003-WayDroid-Fix-icons-permissions.patch"
+    ]
+  },
+  "packages/apps/LineageParts": {
+    "dir": "waydroid-patches/base-patches/packages/apps/LineageParts",
+    "files": [
+      "0001-LineageParts-Kill-trust.patch"
+    ]
+  },
+  "packages/apps/PermissionController": {
+    "dir": "waydroid-patches/base-patches/packages/apps/PermissionController",
+    "files": [
+      "0001-Utils-add-FAKE_PACKAGE_SIGNATURE-to-platform-permiss.patch"
+    ]
+  },
+  "packages/apps/Settings": {
+    "dir": "waydroid-patches/base-patches/packages/apps/Settings",
+    "files": [
+      "0001-Settings-Disable-double_tap_sleep_gesture-by-default.patch"
+    ]
+  },
+  "prebuilts/vndk/v28": {
+    "dir": "waydroid-patches/base-patches/prebuilts/vndk/v28",
+    "files": [
+      "0001-v28-Import-edited-libs.patch",
+      "0002-Import-patched-media-xmlparser.patch"
+    ]
+  },
+  "system/core": {
+    "dir": "waydroid-patches/base-patches/system/core",
+    "files": [
+      "0001-anbox-init-start-inside-LXC-container-without-SELinu.patch",
+      "0002-anbox-init-modify-mount_all-to-skip-mounts-and-trigg.patch",
+      "0003-anbox-add-vendor_extra-path-as-a-clone-of-vendor-ent.patch",
+      "0004-libsync-Add-sw_sync-symbols-to-map.patch",
+      "0005-sdcard-Bring-back-fuse.patch",
+      "0006-sdcard-Add-full-mount-directory.patch",
+      "0007-init-Define-host-user.patch",
+      "0008-rootdir-Add-system-hw-to-vndk-lite-sphal-paths.patch",
+      "0009-rootdir-Add-odm_extra-to-ld-paths.patch",
+      "0010-core-Add-waydroid-to-product-allowed-sources.patch",
+      "0011-core-Allow-sphal-to-access-system-libs.patch",
+      "0012-init-Allow-setting-sys.use_memfd-before-boot.patch"
+    ]
+  },
+  "system/hardware/interfaces": {
+    "dir": "waydroid-patches/base-patches/system/hardware/interfaces",
+    "files": [
+      "0001-suspend-Set-mUseSuspendCounter-to-true.patch"
+    ]
+  },
+  "system/hwservicemanager": {
+    "dir": "waydroid-patches/base-patches/system/hwservicemanager",
+    "files": [
+      "0001-halium-disable-SELinux-parts.patch"
+    ]
+  },
+  "system/libhidl": {
+    "dir": "waydroid-patches/base-patches/system/libhidl",
+    "files": [
+      "0001-ServiceManagement-Use-host_hwbinder-if-available.patch",
+      "0002-Select-host_hwbinder-by-passing-argument-instead-of-.patch",
+      "0003-Don-t-wait-for-host-hwbinder.patch",
+      "0004-Always-re-new-ServiceManager.patch",
+      "0005-Fix-ABI-breakage-headers.patch",
+      "0006-libhidl-Add-vendor_extra-to-passthrough-paths.patch",
+      "0007-Always-pass-useHostHwBinder-to-modified-methods-that.patch",
+      "0008-Add-support-for-host-hals-whitelist.patch"
+    ]
+  },
+  "system/libhwbinder": {
+    "dir": "waydroid-patches/base-patches/system/libhwbinder",
+    "files": [
+      "0001-hwbinder-Add-support-for-host_hwbinder-driver.patch",
+      "0002-Select-host_hwbinder-by-passing-argument-instead-of-.patch",
+      "0003-Add-mIsHost-to-missing-functions.patch",
+      "0004-Pass-mIsHost-to-parcels.patch",
+      "0005-Fix-expungeHandle.patch",
+      "0006-Fix-ABI-breakage-headers.patch",
+      "0007-Be-more-explicit-about-using-host-hwbinder.patch",
+      "0008-Never-set-FLAT_BINDER_FLAG_TXN_SECURITY_CTX-flag.patch",
+      "0009-Fix-host-binder-freeBuffer.patch"
+    ]
+  },
+  "system/netd": {
+    "dir": "waydroid-patches/base-patches/system/netd",
+    "files": [
+      "0001-netd-Fix-networking.patch"
+    ]
+  },
+  "system/nfc": {
+    "dir": "waydroid-patches/base-patches/system/nfc",
+    "files": [
+      "0001-nfc-Add-host-search-paths.patch"
+    ]
+  },
+  "system/security": {
+    "dir": "waydroid-patches/base-patches/system/security",
+    "files": [
+      "0001-keystore-Supress-SELinux-errors.patch"
+    ]
+  },
+  "system/tools/hidl": {
+    "dir": "waydroid-patches/base-patches/system/tools/hidl",
+    "files": [
+      "0001-anbox-Allow-host_hwbinder-to-be-used-for-HALs.patch"
+    ]
+  },
+  "system/vold": {
+    "dir": "waydroid-patches/base-patches/system/vold",
+    "files": [
+      "0001-vold-Fix-fuse-sdcard.patch",
+      "0002-vold-Drop-selinux-checks-on-prepare_subdirs.patch",
+      "0003-Revert-Remove-waitpid-on-UnMount.patch",
+      "0004-vold-Disable-fstab-check.patch"
+    ]
+  },
+  "vendor/lineage": {
+    "dir": "waydroid-patches/base-patches/vendor/lineage",
+    "files": [
+      "0001-lineage-Add-more-build-types.patch",
+      "0002-sdk-Kill-trust.patch",
+      "0003-lineage-Disable-adb-secure.patch"
+    ]
+  }
+}

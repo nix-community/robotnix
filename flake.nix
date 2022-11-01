@@ -35,6 +35,7 @@
         gitRepo nix-prefetch-git
         curl go-pup jq
         shellcheck
+        wget
 
         # For chromium updater script
         python2 cipd git

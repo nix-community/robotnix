@@ -85,8 +85,8 @@ let
           then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" {} ''
             cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${src} $out/
             chmod u+w -R $out
-            ${lib.concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
             cd $out
+            ${lib.concatMapStringsSep "\n" (p: "${pkgs.git}/bin/git apply ${p}") config.patches}
             ${config.postPatch}
           '')
           else src;
