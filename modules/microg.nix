@@ -7,9 +7,9 @@ let
   inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
   version = {
-    part1 = "0.2.24";
-    part2 = "214816";
-    part3 = "048";
+    part1 = "0.2.25";
+    part2 = "223616";
+    part3 = "050"; # The number after part2 in the GH release's APK
   };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
@@ -68,13 +68,14 @@ in
       GmsCore = {
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "1s0l38wai6xby46fwqbk5w25csakjilj27qw5hvbrzwm0z2wcacd";
+          sha256 = "sha256-Yt0dTtzLahaH22LMEopgAZqCxM1OKzn/mdO00eRRdwY=";
         });
         packageName = "com.google.android.gms";
         privileged = true;
         privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" "UPDATE_APP_OPS_STATS" ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         usesLibraries = [ "com.android.location.provider" ];
+        usesOptionalLibraries = [ "androidx.window.extensions" "androidx.window.sidecar" ];
         allowInPowerSave = true;
         certificate = "microg";
       };
