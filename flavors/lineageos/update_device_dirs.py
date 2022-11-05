@@ -61,7 +61,12 @@ def fetch_device_dirs(metadata: Any,
     dirs_to_fetch = set()  # Pairs of (relpath, url)
     dirs_fetched = set()  # Just strings of relpath
     for device, data in metadata.items():
-        vendor = data['vendor']
+        # They're google devices but their vendor is askey for some reason
+        if device in [ 'deadpool', 'wade' ]:
+            vendor = 'askey'
+        else:
+            vendor = data['vendor']
+
         url = f'{url_base}/android_device_{vendor}_{device}'
 
         refs = ls_remote(url)
@@ -115,6 +120,10 @@ def fetch_vendor_dirs(metadata: Any,
         if device == 'shamu':
             required_vendor.add('motorola')
             required_vendor.remove('moto')
+        # wade is Google but uses askey vendor dirs? Dynalink is definitely wrong though.
+        if device == 'wade':
+            required_vendor.add('askey')
+            required_vendor.remove('dynalink')
 
     if prev_data is not None:
         dirs = copy.deepcopy(prev_data)
