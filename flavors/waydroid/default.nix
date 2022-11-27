@@ -24,7 +24,7 @@ in mkIf (config.flavor == "waydroid")
   source.dirs = mkMerge [
     repoDirs
     (lib.mapAttrs (relpath: patches: {
-      patches = (builtins.map (p: "${config.source.dirs."vendor/extra".src}/${patches.dir}/${p}") patches.files);
+      gitPatches = (builtins.map (p: "${config.source.dirs."vendor/extra".src}/${patches.dir}/${p}") patches.files);
     }) patchMetadata)
   ];
 

@@ -85,8 +85,9 @@ let
           then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" {} ''
             cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${src} $out/
             chmod u+w -R $out
+            ${lib.concatMapStringsSep "\n" (p: "echo Applying ${p} && patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
+            ${lib.concatMapStringsSep "\n" (p: "echo Applying ${p} && ${pkgs.git}/bin/git apply --directory=$out --unsafe-paths ${p}") config.gitPatches}
             cd $out
-            ${lib.concatMapStringsSep "\n" (p: "${pkgs.git}/bin/git apply ${p}") config.patches}
             ${config.postPatch}
           '')
           else src;
@@ -96,6 +97,15 @@ let
         default = [];
         type = types.listOf types.path;
         description = "Patches to apply to source directory.";
+      };
+
+      # TODO: Ugly workaround since "git apply" doesn't handle fuzz in the hunk
+      # line numbers like GNU patch does.
+      gitPatches = mkOption {
+        default = [];
+        type = types.listOf types.path;
+        description = "Patches to apply to source directory using 'git apply' instead of GNU patch.";
+        internal = true;
       };
 
       postPatch = mkOption {
