@@ -31,8 +31,8 @@
       name = "robotnix-scripts";
       nativeBuildInputs = with pkgs; [
         # For android updater scripts
-        (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
-        gitRepo nix-prefetch-git
+        (python39.withPackages (p: with p; [ mypy flake8 pytest ]))
+        (gitRepo.override { python3 = python39; }) nix-prefetch-git
         curl pup jq
         shellcheck
         wget
