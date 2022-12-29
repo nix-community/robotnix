@@ -2,7 +2,7 @@
   description = "Build Android (AOSP) using Nix";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
   };
@@ -33,7 +33,7 @@
         # For android updater scripts
         (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
         gitRepo nix-prefetch-git
-        curl go-pup jq
+        curl pup jq
         shellcheck
         wget
 
