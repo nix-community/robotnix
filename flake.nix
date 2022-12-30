@@ -5,18 +5,19 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
+    flake-utils.url = "github:numtide/flake-utils";
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, androidPkgs, ... }@inputs: let
-    pkgs = import ./pkgs/default.nix { inherit inputs; };
+  outputs = { self, nixpkgs, androidPkgs, flake-utils, ... }@inputs: flake-utils.lib.eachDefaultSystem (system: let
+    pkgs = import ./pkgs/default.nix { inherit inputs system; };
   in {
     # robotnixSystem evaluates a robotnix configuration
     lib.robotnixSystem = configuration: import ./default.nix {
-      inherit configuration pkgs;
+      inherit configuration system pkgs;
     };
 
     defaultTemplate = {
@@ -27,11 +28,11 @@
     nixosModule = import ./nixos; # Contains all robotnix nixos modules
     nixosModules.attestation-server = import ./nixos/attestation-server/module.nix;
 
-    packages.x86_64-linux = {
+    packages = {
       manual = (import ./docs { inherit pkgs; }).manual;
     };
 
-    devShell.x86_64-linux = pkgs.mkShell {
+    devShell = pkgs.mkShell {
       name = "robotnix-scripts";
       nativeBuildInputs = with pkgs; [
         # For android updater scripts
@@ -48,5 +49,5 @@
       ];
       PYTHONPATH=./scripts;
     };
-  };
+  });
 }

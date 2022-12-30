@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: MIT
 
 { configuration,
-  pkgs ? (import ./pkgs {}),
+  system ? builtins.currentSystem,
+  pkgs ? (import ./pkgs { inherit system; }),
   lib ? pkgs.lib
 }:
 
