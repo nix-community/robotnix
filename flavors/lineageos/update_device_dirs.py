@@ -23,6 +23,11 @@ debug = False
 class ProjectInfoDict(GitCheckoutInfoDict, total=False):
     deps: List[str]
 
+def get_store_path(path):
+    prefix = os.getenv('NIX_REMOTE');
+    if prefix and not prefix.startswith('/'):
+        raise Exception('Must be run on a local Nix store.')
+    return f"{prefix}/{path}"
 
 def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> ProjectInfoDict:
     if debug:
@@ -38,7 +43,7 @@ def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> 
     newest_rev = refs[ref]
     if (current_rev != newest_rev
             or ('path' not in dirs[relpath])
-            or (not os.path.exists(dirs[relpath]['path']))):
+            or (not os.path.exists(get_store_path(dirs[relpath]['path'])))):
         if debug:
             print(f'Previous data did not contain up-to-date {relpath}, fetching')
         dirs[relpath] = checkout_git(url, ref)
@@ -98,7 +103,7 @@ def fetch_device_dirs(metadata: Any,
             continue
 
         # Also grab any dirs that this one depends on
-        lineage_dependencies_filename = os.path.join(dir_info['path'], 'lineage.dependencies')
+        lineage_dependencies_filename = get_store_path(os.path.join(dir_info['path'], 'lineage.dependencies'))
         if os.path.exists(lineage_dependencies_filename):
             lineage_dependencies = json.load(open(lineage_dependencies_filename))
 
