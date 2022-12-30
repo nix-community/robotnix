@@ -1,23 +1,22 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ lib, stdenv, buildGoPackage, fetchgit, fetchhg, fetchbzr, fetchsvn }:
+{ lib, stdenv, buildGoModule, fetchgit, fetchhg, fetchbzr, fetchsvn }:
 
-buildGoPackage rec {
+buildGoModule rec {
   name = "cipd-${version}";
-  version = "2019-12-13";
-  rev = "95480de32ef149429a7a6ab0e5c7380bfb0f102b";
+  version = "2022-12-28";
+  rev = "85390a103024a9150132156400908c7694265e31";
 
-  goPackagePath = "go.chromium.org/luci";
   subPackages = [ "cipd/client/cmd/cipd" ];
+
+  vendorSha256 = "sha256-fbjl0XYWo4wCt4KjESoFBC8nRXDLNq0IsIpHQx8LhuA=";
 
   src = fetchgit {
     inherit rev;
     url = "https://chromium.googlesource.com/infra/luci/luci-go";
-    sha256 = "0hkg2j4y7vqjhfvlgkfjpc0hcrrb08f6nmz00zxrsf7735lv09i9";
+    sha256 = "sha256-24G3pwKF7AR75sHXLFTwdjOg4dU7X5gKB5sdw0lDPRY=";
   };
-
-  goDeps = ./deps.nix;
 
   meta = with lib; {
     description = "Chrome Infrastructure Package Deployment";
@@ -29,6 +28,6 @@ buildGoPackage rec {
     homepage = "https://chromium.googlesource.com/infra/luci/luci-go/+/refs/heads/master/cipd/";
     license = licenses.asl20;
     maintainers = with maintainers; [ danielfullmer ];
-    platforms = with platforms; linux;
+    platforms = with platforms; linux ++ darwin;
   };
 }
