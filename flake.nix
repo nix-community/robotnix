@@ -5,6 +5,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, androidPkgs, ... }@inputs: let
