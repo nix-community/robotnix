@@ -49,7 +49,7 @@ let
             *Declared by*:
             ${concatMapStringsSep ", " (declaration: declarationToLink declaration) option.declarations}
           '';
-        in
+        in optionalString (isString option.description) # work around _module "option"
         ''
           ### `${name}`
           ${body}
