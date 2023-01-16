@@ -7,9 +7,9 @@ let
   inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
   version = {
-    part1 = "0.2.24";
-    part2 = "214816";
-    part3 = "048";
+    part1 = "0.2.26";
+    part2 = "223616";
+    part3 = "052";
   };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
@@ -68,13 +68,14 @@ in
       GmsCore = {
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "1s0l38wai6xby46fwqbk5w25csakjilj27qw5hvbrzwm0z2wcacd";
+          sha256 = "sha256-7esPETy0j/k4HC84SaA/7OCTUhynUublLixRsgjBxNE=";
         });
         packageName = "com.google.android.gms";
         privileged = true;
-        privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" "UPDATE_APP_OPS_STATS" ];
+        privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" "UPDATE_APP_OPS_STATS" "MANAGE_USB" ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         usesLibraries = [ "com.android.location.provider" ];
+        usesOptionalLibraries = [ "androidx.window.extensions" "androidx.window.sidecar" ];
         allowInPowerSave = true;
         certificate = "microg";
       };
