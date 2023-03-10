@@ -434,8 +434,8 @@ in
         name = "ota-tools";
         inherit src;
         sourceRoot = ".";
-        nativeBuildInputs = with pkgs; [ unzip pythonPackages.pytest ];
-        buildInputs = [ (pkgs.python.withPackages (p: [ p.protobuf ])) ];
+        nativeBuildInputs = with pkgs; [ unzip python3Packages.pytest ];
+        buildInputs = [ (pkgs.python3.withPackages (p: [ p.protobuf ])) ];
         postPatch = lib.optionalString (config.androidVersion == 11) ''
           cp bin/debugfs_static bin/debugfs
         '' + lib.optionalString (config.androidVersion <= 10) ''
