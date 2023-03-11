@@ -17,6 +17,7 @@ from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, che
 # TODO: Output a timestamp somewhere
 # TODO: Optionally parallelize fetching
 
+debug = False
 
 # Project info is just GitCheckoutInfoDict plus deps
 class ProjectInfoDict(GitCheckoutInfoDict, total=False):
@@ -61,6 +62,9 @@ def fetch_device_dirs(metadata: Any,
     dirs_to_fetch = set()  # Pairs of (relpath, url)
     dirs_fetched = set()  # Just strings of relpath
     for device, data in metadata.items():
+        if debug:
+            print(data)
+
         # They're google devices but their vendor is askey for some reason
         if device in [ 'deadpool', 'wade' ]:
             vendor = 'askey'
@@ -68,6 +72,9 @@ def fetch_device_dirs(metadata: Any,
             vendor = data['vendor']
 
         url = f'{url_base}/android_device_{vendor}_{device}'
+
+        if debug:
+            print(url)
 
         refs = ls_remote(url)
         if f'refs/heads/{branch}' in refs:
@@ -159,7 +166,11 @@ def main() -> None:
                         help='product to fetch directory metadata for, specified by <vendor>_<device> '
                         '(example: google_crosshatch) '
                         'If no products are specified, all products in device-metadata.json will be updated')
+    parser.add_argument('--debug', action='store_true', help="print debug info", default=False)
     args = parser.parse_args()
+
+    global debug
+    debug = args.debug
 
     if len(args.product) == 0:
         metadata = json.load(open('device-metadata.json'))
