@@ -71,6 +71,7 @@ def fetch_device_dirs(metadata: Any,
         else:
             vendor = data['vendor']
 
+
         url = f'{url_base}/android_device_{vendor}_{device}'
 
         if debug:
@@ -180,20 +181,23 @@ def main() -> None:
             vendor, device = product.split('_', 1)
             metadata[device] = {'vendor': vendor}
 
+    # Really?
+    true_branch = 'lineage-20' if args.branch == 'lineage-20.0' else args.branch
+
     device_dirs_fn = os.path.join(args.branch, 'device-dirs.json')
     if os.path.exists(device_dirs_fn):
         device_dirs = json.load(open(device_dirs_fn))
     else:
         device_dirs = {}
-    fetch_device_dirs(metadata, "https://github.com/LineageOS", args.branch,
+    fetch_device_dirs(metadata, "https://github.com/LineageOS", true_branch,
                       device_dirs, lambda dirs: save(device_dirs_fn, dirs))
 
-    vendor_dirs_fn = os.path.join(args.branch, 'vendor-dirs.json')
+    vendor_dirs_fn = os.path.join(true_branch, 'vendor-dirs.json')
     if os.path.exists(vendor_dirs_fn):
         vendor_dirs = json.load(open(vendor_dirs_fn))
     else:
         vendor_dirs = {}
-    fetch_vendor_dirs(metadata, "https://github.com/TheMuppets", args.branch,
+    fetch_vendor_dirs(metadata, "https://github.com/TheMuppets", true_branch,
                       vendor_dirs, lambda dirs: save(vendor_dirs_fn, dirs))
 
 
