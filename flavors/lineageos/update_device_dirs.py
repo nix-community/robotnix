@@ -71,6 +71,9 @@ def fetch_device_dirs(metadata: Any,
         else:
             vendor = data['vendor']
 
+        # Urgh
+        if vendor == '10.or':
+            vendor = '10or'
 
         url = f'{url_base}/android_device_{vendor}_{device}'
 
@@ -132,6 +135,11 @@ def fetch_vendor_dirs(metadata: Any,
         if device == 'wade':
             required_vendor.add('askey')
             required_vendor.remove('dynalink')
+        # 10.or is apparently a vendor name. Why TF do you have to put dots in your name.
+        # Also, why the name of the device is included in the vendor name? Don't ask me.
+        if '10.or' in required_vendor:
+            required_vendor.add('10or_G')
+            required_vendor.remove('10.or')
 
     if prev_data is not None:
         dirs = copy.deepcopy(prev_data)
