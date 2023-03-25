@@ -5,7 +5,7 @@ let
     mkIf mkMerge mkDefault;
 
   clangVersion = "r416183b";
-  postRedfin = lib.elem config.deviceFamily [ "redfin" "barbet" ];
+  postRedfin = lib.elem config.deviceFamily [ "redfin" "barbet" "bluejay" "pantah" ];
 
   dependencies = let
     fixupRepo = repoName: { buildInputs ? [], ... }@args: pkgs.stdenv.mkDerivation ({
@@ -55,6 +55,8 @@ let
     "sunfish" = "coral";
     "bramble" = "redbull";
     "redfin" = "redbull";
+    "panther" = "pantah";
+    "cheetah" = "pantah";
   }.${config.device} or config.deviceFamily;
   sourceRelpath = "kernel/google/${repoName}";
 
@@ -62,6 +64,8 @@ let
     "sargo" = "bonito";
     "flame" = "coral";
     "sunfish" = "coral";
+    "panther" = "pantah";
+    "cheetah" = "pantah";
   }.${config.device} or config.device;
   builtRelpath = "device/google/${builtKernelName}-kernel";
 
