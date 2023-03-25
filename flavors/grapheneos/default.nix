@@ -15,6 +15,7 @@ let
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
+  androidVersion = mkDefault 13;
   buildNumber = mkDefault upstreamParams.buildNumber;
   buildDateTime = mkDefault upstreamParams.buildDateTime;
 
@@ -38,7 +39,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   warnings = (optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
     "${config.device} is not a supported device for GrapheneOS")
-    ++ (optional (!(elem config.androidVersion [ 12 ])) "Unsupported androidVersion (!= 12) for GrapheneOS")
+    ++ (optional (!(elem config.androidVersion [ 13 ])) "Unsupported androidVersion (!= 13) for GrapheneOS")
     ++ (optional (config.deviceFamily == "crosshatch") "crosshatch/blueline are considered legacy devices and receive only extended support updates from GrapheneOS and no longer receive vendor updates from Google");
 }
 {
