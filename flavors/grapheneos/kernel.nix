@@ -20,8 +20,14 @@ let
       '';
     } // (lib.filterAttrs (n: v: n != "buildInputs") args));
   in lib.mapAttrs (n: v: fixupRepo n v) ({
-    "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9" = { buildInputs = with pkgs; [ python ]; };
-    "prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9" = { buildInputs = with pkgs; [ python ]; };
+    "prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8/aarch64/aarch64-linux-android-4.9" = {
+      src = config.source.dirs."prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8".src + "/aarch64/aarch64-linux-android-4.9";
+      buildInputs = with pkgs; [ python ];
+    };
+    "prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8/arm/arm-linux-androideabi-4.9" = {
+      src = config.source.dirs."prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8".src + "/arm/arm-linux-android-4.9";
+      buildInputs = with pkgs; [ python ];
+    };
     "prebuilts/clang/host/linux-x86/clang-${clangVersion}"= {
       src = config.source.dirs."prebuilts/clang/host/linux-x86".src + "/clang-${clangVersion}";
       buildInputs = with pkgs; [
@@ -39,7 +45,7 @@ let
       src = config.source.dirs."prebuilts/misc".src + "/linux-x86";
       buildInputs = with pkgs; [ python ];
     };
-    "platform/prebuilts/build-tools" = {
+    "kernel/prebuilts/build-tools" = {
       src = config.source.dirs."prebuilts/build-tools".src;
       buildInputs = with pkgs; [ python ];
       postInstall = ''
