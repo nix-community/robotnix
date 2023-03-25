@@ -39,8 +39,8 @@ let
       src = config.source.dirs."prebuilts/misc".src + "/linux-x86";
       buildInputs = with pkgs; [ python ];
     };
-    "kernel/prebuilts/build-tools" = {
-      src = config.source.dirs."kernel/prebuilts/build-tools".src;
+    "platform/prebuilts/build-tools" = {
+      src = config.source.dirs."platform/prebuilts/build-tools".src;
       buildInputs = with pkgs; [ python ];
       postInstall = ''
         # Workaround for patchelf not working with embedded python interpreter
