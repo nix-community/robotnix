@@ -34,7 +34,7 @@ let
       '';
       autoPatchelfIgnoreMissingDeps=true; # Ignore missing liblog.so
     };
-    "prebuilts/gas/linux-x86" = {};
+    # "prebuilts/gas/linux-x86" = {};
     "prebuilts/misc/linux-x86" = {
       src = config.source.dirs."prebuilts/misc".src + "/linux-x86";
       buildInputs = with pkgs; [ python ];
