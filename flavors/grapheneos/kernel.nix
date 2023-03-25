@@ -40,7 +40,7 @@ let
       buildInputs = with pkgs; [ python ];
     };
     "platform/prebuilts/build-tools" = {
-      src = config.source.dirs."platform/prebuilts/build-tools".src;
+      src = config.source.dirs."prebuilts/build-tools".src;
       buildInputs = with pkgs; [ python ];
       postInstall = ''
         # Workaround for patchelf not working with embedded python interpreter
