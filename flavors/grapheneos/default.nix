@@ -10,7 +10,7 @@ let
   upstreamParams = import ./upstream-params.nix;
   grapheneOSRelease = "${config.apv.buildID}.${upstreamParams.buildNumber}";
 
-  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" ];
+  phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" "bluejay" "pantah" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
 
 in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -29,10 +29,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
   apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-  apv.buildID = mkDefault (
-    if (elem config.device [ "crosshatch" "blueline" ]) then "SP1A.210812.016.C1"
-    else "SP2A.220405.003"
-  );
+  apv.buildID = mkDefault (if (elem config.device [ "panther" ]) then "TQ2A.230305.008" else
+    (if (elem config.device [ "bluejay" ]) then "TQ2A.230305.008.E1" else "TQ2A.230305.008.C1"));
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -68,6 +66,8 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   source.dirs."kernel/google/sunfish".enable = false;
   source.dirs."kernel/google/redbull".enable = false;
   source.dirs."kernel/google/barbet".enable = false;
+  source.dirs."kernel/google/bluejay".enable = false;
+  source.dirs."kernel/google/pantah".enable = false;
 
   kernel.enable = mkDefault (elem config.deviceFamily phoneDeviceFamilies);
 
