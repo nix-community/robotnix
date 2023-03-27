@@ -29,7 +29,7 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
 
   source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
 
-  apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
+  apv.enable = mkDefault false;
   apv.buildID = mkDefault (if (elem config.device [ "panther" ]) then "TQ2A.230305.008" else
     (if (elem config.device [ "bluejay" ]) then "TQ2A.230305.008.E1" else "TQ2A.230305.008.C1"));
 
