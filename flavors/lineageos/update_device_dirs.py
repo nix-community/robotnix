@@ -41,9 +41,7 @@ def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> 
     if ref not in refs:
         raise ValueError(f'{url} is missing {ref}')
     newest_rev = refs[ref]
-    if (current_rev != newest_rev
-            or ('path' not in dirs[relpath])
-            or (not os.path.exists(get_store_path(dirs[relpath]['path'])))):
+    if current_rev != newest_rev:
         if debug:
             print(f'Previous data did not contain up-to-date {relpath}, fetching')
         dirs[relpath] = checkout_git(url, ref)
@@ -126,36 +124,47 @@ def fetch_vendor_dirs(metadata: Any,
                       url_base: str,
                       branch: str,
                       true_branch: str,
+                      device_dirs: Any,
                       prev_data: Optional[Any] = None,
-                      callback: Optional[Callable[[Any], Any]] = None
+                      callback: Optional[Callable[[Any], Any]] = None,
                       ) -> Any:
     required_vendor = set()
     for device, data in metadata.items():
         if debug:
             print(device, data)
-        if 'vendor' in data:
-            workaround_map = {
-                # Bacon needs vendor/oppo
-                # https://github.com/danielfullmer/robotnix/issues/26
-                'bacon' : 'oppo',
-                # shamu needs a workaround as well
-                'shamu' : 'moto',
-                # wade is Google but uses askey vendor dirs? Dynalink is definitely wrong though.
-                'wade' : 'askey',
-                'deadpool' : 'askey',
-                # 10.or is apparently a vendor name. Why TF do you have to put dots in your name.
-                # TODO check whether we can exclude this case by always fetching from vendor_device for LOS-20 devices
-                'G' : '10or'
-            }
-            vendor = workaround_map[device] if device in workaround_map else data['vendor']
+        if 'vendor_dir' in data:
+            vendor_dir = data['vendor_dir']
+
+            if debug:
+                print(branch)
 
             if branch == 'lineage-20.0':
                 if 'branch' in data and data['branch'] == branch:
-                    required_vendor.add(os.path.join(vendor, device))
+                    required_vendor.add(os.path.join(vendor_dir, device))
                 else:
                     print(f'SKIP: {device} is not available for {branch}')
             else:
-                required_vendor.add(vendor)
+                required_vendor.add(vendor_dir)
+
+        if 'vendor' in data:
+            # Some devices need an additional vendor dir for their SoC.
+            # This seems to be the case when it depends on 'device/<vendor>/<socname>-common'.
+            # The accompanying vendor dir is:              'vendor/<vendor>/<socname>-common'.
+            vendor = data['vendor']
+            device_dir_name = f'device/{vendor}/{device}'
+            if device_dir_name in device_dirs and 'deps' in device_dirs[device_dir_name]:
+                deps = device_dirs[device_dir_name]['deps']
+                if debug:
+                    print(f'{device_dir_name} has deps: {deps}')
+                for dep in deps:
+                    if debug:
+                        print(dep)
+                    # Nvidia doesn't have common deps (obviously...)
+                    if dep.endswith('-common') and vendor != 'nvidia' and not dep.endswith('xiaomi/sm8350-common'):
+                        relpath = dep.replace('device/', '')
+                        required_vendor.add(relpath)
+
+
 
     if prev_data is not None:
         dirs = copy.deepcopy(prev_data)
@@ -171,20 +180,21 @@ def fetch_vendor_dirs(metadata: Any,
         # Only some of google's devices are on gitlab...
         gitlab_vendors = [ 'google/bluejay', 'google/cheetah', 'google/oriole', 'google/panther', 'google/raven' ]
         # Two motorola devices are /not/ on gitlab!
-        motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar' ]
+        motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar', 'motorola/sm8250-common' ]
         real_url_base = url_base
-        if branch == 'lineage-20.0' and (motorola_gitlab or vendor in gitlab_vendors):
+        if vendor == 'xiaomi' or (branch == 'lineage-20.0' and (motorola_gitlab or vendor in gitlab_vendors)):
             real_url_base = "https://gitlab.com/the-muppets"
 
-        url = f"{real_url_base}/proprietary_{relpath.replace('/', '_')}"
+        to_fetch = [ f"{real_url_base}/proprietary_{relpath.replace('/', '_')}" ];
 
-        refs = ls_remote(url)
-        if f'refs/heads/{true_branch}' in refs:
-            fetch_relpath(dirs, relpath, url, true_branch)
-            if callback is not None:
-                callback(dirs)
-        else:
-            print(f'SKIP: {branch} branch does not exist for {url}')
+        for url in to_fetch:
+            refs = ls_remote(url)
+            if f'refs/heads/{true_branch}' in refs:
+                fetch_relpath(dirs, relpath, url, true_branch)
+                if callback is not None:
+                    callback(dirs)
+            else:
+                print(f'SKIP: {branch} branch does not exist for {url}')
 
     return dirs
 
@@ -215,13 +225,13 @@ def main() -> None:
     # Really?
     true_branch = 'lineage-20' if args.branch == 'lineage-20.0' else args.branch
 
-    # device_dirs_fn = os.path.join(args.branch, 'device-dirs.json')
-    # if os.path.exists(device_dirs_fn):
-    #     device_dirs = json.load(open(device_dirs_fn))
-    # else:
-    #     device_dirs = {}
-    # fetch_device_dirs(metadata, "https://github.com/LineageOS", true_branch,
-    #                   device_dirs, lambda dirs: save(device_dirs_fn, dirs))
+    device_dirs_fn = os.path.join(args.branch, 'device-dirs.json')
+    if os.path.exists(device_dirs_fn):
+        device_dirs = json.load(open(device_dirs_fn))
+    else:
+        device_dirs = {}
+    device_dirs_result = fetch_device_dirs(metadata, "https://github.com/LineageOS", true_branch,
+                      device_dirs, lambda dirs: save(device_dirs_fn, dirs))
 
     vendor_dirs_fn = os.path.join(args.branch, 'vendor-dirs.json')
     if os.path.exists(vendor_dirs_fn):
@@ -229,7 +239,7 @@ def main() -> None:
     else:
         vendor_dirs = {}
     fetch_vendor_dirs(metadata, "https://github.com/TheMuppets", args.branch, true_branch,
-                      vendor_dirs, lambda dirs: save(vendor_dirs_fn, dirs))
+                      device_dirs_result, vendor_dirs, lambda dirs: save(vendor_dirs_fn, dirs))
 
 
 if __name__ == '__main__':

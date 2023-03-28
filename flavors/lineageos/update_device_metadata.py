@@ -38,20 +38,34 @@ def fetch_metadata(
         if data['model'] not in metadata:
             continue
 
-        vendor = data['oem']
-        vendor = vendor.lower()
+        workaround_map = {
+            # shamu needs a workaround as well
+            'shamu' : 'moto',
+            # Workaround google device names source tree inconsistency
+            'flox' : 'asus',
+            # wade is Google but uses askey vendor dirs? Dynalink is definitely wrong though.
+            'wade' : 'askey',
+            'deadpool' : 'askey',
+            # 10.or is apparently a vendor name. Why TF do you have to put dots in your name.
+            # TODO check whether we can exclude this case by always fetching from vendor_device for LOS-20 devices
+            'G' : '10or'
+        }
+        device = data['model']
+        vendor = workaround_map[device] if device in workaround_map else data['oem'].lower()
 
         # Workaround name inconsistency with LG
         if vendor == 'lg':
             vendor = 'lge'
 
-        # Workaround google device names source tree inconsistency
-        if data['model'] == 'shamu':
-            vendor = 'moto'
-        if data['model'] == 'flox':
-            vendor = 'asus'
+        # Bacon needs vendor/oppo but is device/oneplus/bacon...
+        # https://github.com/danielfullmer/robotnix/issues/26
+        vendor_dir = 'oppo' if device == 'bacon' else vendor 
 
         metadata[data['model']].update({
+            # LOS 20.0 has vendor dirs like this: proprietary/vendor/vendorName/deviceName
+            # Versions before that have one dir per vendor: proprietary/vendor/vendorName
+            'vendor_dir': vendor_dir,
+            'vendor_dir_new': os.path.join(vendor_dir, device),
             'vendor': vendor,
             'name': data['name'],
             'lineage_recovery': data.get('lineage_recovery', False)
