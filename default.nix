@@ -42,6 +42,7 @@ let
       ./modules/10
       ./modules/11
       ./modules/12
+      ./modules/13
       ./modules/9
       ./modules/apps/auditor.nix
       ./modules/apps/chromium.nix

@@ -1,0 +1,12 @@
+diff --git a/config/Android.mk b/config/Android.mk
+--- a/config/Android.mk
++++ b/config/Android.mk
+@@ -28,6 +28,6 @@
+ 
+ $(_build-manifest_xml):
+ 	mkdir -p $(dir $@)
+-	python3 .repo/repo/repo manifest -o - -r | grep -Ev "proprietary_$(MANIFEST_EXCLUDES)" > $@
++	echo 'stubbed' > $@
+ 
+ include $(BUILD_SYSTEM)/base_rules.mk
+\ No newline at end of file

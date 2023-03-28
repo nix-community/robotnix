@@ -8,6 +8,9 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
+# 2023-09-14
+- Support LineageOS version 20.0 (`androidVersion=13`)
+
 # 2022-02-10
 - Added LineageOS version 19.0. Use by setting `androidVersion=12` (thanks @Kranzes)
 - Updated vanilla flavor to 2022021005

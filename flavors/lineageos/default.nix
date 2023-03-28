@@ -5,15 +5,17 @@
 let
   inherit (lib)
     optional optionals optionalString optionalAttrs
-    elem mapAttrs mapAttrs' nameValuePair filterAttrs
+    elem filter
+    mapAttrs mapAttrs' nameValuePair filterAttrs
     attrNames getAttrs flatten remove
     mkIf mkMerge mkDefault mkForce
-    importJSON toLower hasPrefix removePrefix;
+    importJSON toLower hasPrefix removePrefix hasSuffix replaceStrings;
 
   androidVersionToLineageBranch = {
     "10" = "lineage-17.1";
     "11" = "lineage-18.1";
     "12" = "lineage-19.1";
+    "13" = "lineage-20.0";
   };
   lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
 
@@ -92,15 +94,19 @@ in mkIf (config.flavor == "lineageos")
 
     {
       "vendor/lineage".patches = [
-        (if lib.versionAtLeast (toString config.androidVersion) "12"
-         then ./0001-Remove-LineageOS-keys-12.patch
-         else ./0001-Remove-LineageOS-keys.patch)
+        (if lib.versionAtLeast (toString config.androidVersion) "13"
+         then ./0001-Remove-LineageOS-keys-20.patch
+         else ./0001-Remove-LineageOS-keys-19.patch)
 
         (pkgs.substituteAll {
           src = ./0002-bootanimation-Reproducibility-fix.patch;
           inherit (pkgs) imagemagick;
         })
-        ./0003-kernel-Set-constant-kernel-timestamp.patch
+
+        (if lib.versionAtLeast (toString config.androidVersion) "13"
+         then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
+         else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
+        
       ];
       "system/extras".patches = [
         # pkgutil.get_data() not working, probably because we don't use their compiled python
@@ -115,19 +121,26 @@ in mkIf (config.flavor == "lineageos")
       # So we'll just build chromium webview ourselves.
       "external/chromium-webview".enable = false;
     }
-  ] ++ optionals (deviceMetadata ? "${config.device}") [
+  ] ++ optionals (deviceMetadata ? "${config.device}") (let
     # Device-specific source dirs
-    (let
-      vendor = toLower deviceMetadata.${config.device}.vendor;
-      relpathWithDependencies = relpath: [ relpath ] ++ (flatten (map (p: relpathWithDependencies p) deviceDirs.${relpath}.deps));
-      relpaths = relpathWithDependencies "device/${vendor}/${config.device}";
-      filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
-    in filterDirsAttrs (getAttrs filteredRelpaths deviceDirs))
+    vendor = toLower deviceMetadata.${config.device}.vendor;
+    relpathWithDependencies = relpath: [ relpath ] ++ (flatten (map (p: relpathWithDependencies p) deviceDirs.${relpath}.deps));
+    relpaths = relpathWithDependencies "device/${vendor}/${config.device}";
+    filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
 
+    # Device-specific common vendor dirs
+    deviceDirsCommon = filter (path: hasPrefix "device/" path && hasSuffix "-common" path && !hasSuffix "xiaomi/sm8350-common" path) relpaths;
+    vendorDeviceDirs = map (replaceStrings [ "device/" ] [ "vendor/" ]) deviceDirsCommon;
+  in [
+    (filterDirsAttrs (getAttrs filteredRelpaths deviceDirs))
+    (filterDirsAttrs (getAttrs vendorDeviceDirs vendorDirs))
+  ]) ++ [
     # Vendor-specific source dirs
     (let
-      _vendor = toLower deviceMetadata.${config.device}.vendor;
-      vendor = if config.device == "shamu" then "motorola" else _vendor;
+      vendor = if config.androidVersion >= 13 then
+        deviceMetadata.${config.device}.vendor_dir_new
+      else
+        deviceMetadata.${config.device}.vendor_dir;
       relpath = "vendor/${vendor}";
     in filterDirsAttrs (getAttrs [relpath] vendorDirs))
   ] ++ optional (config.device == "bacon")
