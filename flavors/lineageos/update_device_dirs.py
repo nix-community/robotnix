@@ -25,6 +25,8 @@ class ProjectInfoDict(GitCheckoutInfoDict, total=False):
 
 
 def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> ProjectInfoDict:
+    if debug:
+        print(f'Trying to fetch {relpath}')
     orig_url = url
     url = get_mirrored_url(url)
 
@@ -37,6 +39,8 @@ def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> 
     if (current_rev != newest_rev
             or ('path' not in dirs[relpath])
             or (not os.path.exists(dirs[relpath]['path']))):
+        if debug:
+            print(f'Previous data did not contain up-to-date {relpath}, fetching')
         dirs[relpath] = checkout_git(url, ref)
         dirs[relpath]['url'] = orig_url
     else:
@@ -116,48 +120,62 @@ def fetch_device_dirs(metadata: Any,
 def fetch_vendor_dirs(metadata: Any,
                       url_base: str,
                       branch: str,
+                      true_branch: str,
                       prev_data: Optional[Any] = None,
                       callback: Optional[Callable[[Any], Any]] = None
                       ) -> Any:
     required_vendor = set()
     for device, data in metadata.items():
+        if debug:
+            print(device, data)
         if 'vendor' in data:
-            required_vendor.add(data['vendor'].lower())
-        # Bacon needs vendor/oppo
-        # https://github.com/danielfullmer/robotnix/issues/26
-        if device == 'bacon':
-            required_vendor.add('oppo')
-        # shamu needs a workaround as well
-        if device == 'shamu':
-            required_vendor.add('motorola')
-            required_vendor.remove('moto')
-        # wade is Google but uses askey vendor dirs? Dynalink is definitely wrong though.
-        if device == 'wade':
-            required_vendor.add('askey')
-            required_vendor.remove('dynalink')
-        # 10.or is apparently a vendor name. Why TF do you have to put dots in your name.
-        # Also, why the name of the device is included in the vendor name? Don't ask me.
-        if '10.or' in required_vendor:
-            required_vendor.add('10or_G')
-            required_vendor.remove('10.or')
+            workaround_map = {
+                # Bacon needs vendor/oppo
+                # https://github.com/danielfullmer/robotnix/issues/26
+                'bacon' : 'oppo',
+                # shamu needs a workaround as well
+                'shamu' : 'moto',
+                # wade is Google but uses askey vendor dirs? Dynalink is definitely wrong though.
+                'wade' : 'askey',
+                'deadpool' : 'askey',
+                # 10.or is apparently a vendor name. Why TF do you have to put dots in your name.
+                # TODO check whether we can exclude this case by always fetching from vendor_device for LOS-20 devices
+                'G' : '10or'
+            }
+            vendor = workaround_map[device] if device in workaround_map else data['vendor']
+
+            if branch == 'lineage-20.0':
+                if 'branch' in data and data['branch'] == branch:
+                    required_vendor.add(os.path.join(vendor, device))
+                else:
+                    print(f'SKIP: {device} is not available for {branch}')
+            else:
+                required_vendor.add(vendor)
 
     if prev_data is not None:
         dirs = copy.deepcopy(prev_data)
     else:
         dirs = {}
 
+    if debug:
+        print(prev_data)
+        print(required_vendor)
     for vendor in required_vendor:
         relpath = f'vendor/{vendor}'
 
-        # XXX: HACK
-        if vendor == "xiaomi":
-            url = "https://gitlab.com/the-muppets/proprietary_vendor_xiaomi.git/"
-        else:
-            url = f"{url_base}/proprietary_{relpath.replace('/', '_')}"
+        # Only some of google's devices are on gitlab...
+        gitlab_vendors = [ 'google/bluejay', 'google/cheetah', 'google/oriole', 'google/panther', 'google/raven' ]
+        # Two motorola devices are /not/ on gitlab!
+        motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar' ]
+        real_url_base = url_base
+        if branch == 'lineage-20.0' and (motorola_gitlab or vendor in gitlab_vendors):
+            real_url_base = "https://gitlab.com/the-muppets"
+
+        url = f"{real_url_base}/proprietary_{relpath.replace('/', '_')}"
 
         refs = ls_remote(url)
-        if f'refs/heads/{branch}' in refs:
-            fetch_relpath(dirs, relpath, url, branch)
+        if f'refs/heads/{true_branch}' in refs:
+            fetch_relpath(dirs, relpath, url, true_branch)
             if callback is not None:
                 callback(dirs)
         else:
@@ -192,20 +210,20 @@ def main() -> None:
     # Really?
     true_branch = 'lineage-20' if args.branch == 'lineage-20.0' else args.branch
 
-    device_dirs_fn = os.path.join(args.branch, 'device-dirs.json')
-    if os.path.exists(device_dirs_fn):
-        device_dirs = json.load(open(device_dirs_fn))
-    else:
-        device_dirs = {}
-    fetch_device_dirs(metadata, "https://github.com/LineageOS", true_branch,
-                      device_dirs, lambda dirs: save(device_dirs_fn, dirs))
+    # device_dirs_fn = os.path.join(args.branch, 'device-dirs.json')
+    # if os.path.exists(device_dirs_fn):
+    #     device_dirs = json.load(open(device_dirs_fn))
+    # else:
+    #     device_dirs = {}
+    # fetch_device_dirs(metadata, "https://github.com/LineageOS", true_branch,
+    #                   device_dirs, lambda dirs: save(device_dirs_fn, dirs))
 
-    vendor_dirs_fn = os.path.join(true_branch, 'vendor-dirs.json')
+    vendor_dirs_fn = os.path.join(args.branch, 'vendor-dirs.json')
     if os.path.exists(vendor_dirs_fn):
         vendor_dirs = json.load(open(vendor_dirs_fn))
     else:
         vendor_dirs = {}
-    fetch_vendor_dirs(metadata, "https://github.com/TheMuppets", true_branch,
+    fetch_vendor_dirs(metadata, "https://github.com/TheMuppets", args.branch, true_branch,
                       vendor_dirs, lambda dirs: save(vendor_dirs_fn, dirs))
 
 
