@@ -27,11 +27,17 @@ in
     source.dirs = mkMerge [
       (mkIf (config.androidVersion >= 12) {
         # From: https://github.com/microg/GmsCore/pull/1586
-        "frameworks/base".patches = [
+        "frameworks/base".patches = lib.optionals (config.androidVersion == 12) [
           (pkgs.fetchpatch {
             name = "microg-12.patch";
             url = "https://github.com/ProtonAOSP/android_frameworks_base/commit/0deff13d05e451fbe3803f66be73853237c6729c.patch";
             sha256 = "0gcwb5811wv5fz4vjavljcbw9m5rplrd3fc7d51w3r4w4vv0yl4c";
+          })
+        ] ++ lib.optionals (config.androidVersion >= 13) [
+          (pkgs.fetchpatch {
+            name = "microg-12.patch";
+            url = "https://github.com/AOSP-XIII/frameworks_base/commit/fdc0204576d61b5a90838ae5b407535e5db125e6.patch";
+            sha256 = "09xsw4dizjxjr8siaaw6lw6zwbcjrvxz574hz6251p4j7v4y2ddr";
           })
         ];
         "packages/modules/Permission".patches =
