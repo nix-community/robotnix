@@ -291,15 +291,9 @@ in
     ];
 
     build = rec {
-      mkAndroid =
-        { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
-        # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
-        pkgs.stdenvNoCC.mkDerivation ({
-          inherit name;
-          srcs = [];
-
-          # TODO: Clean this stuff up. unshare / robotnix-build could probably be combined into a single utility.
-          builder = pkgs.writeShellScript "builder.sh" ''
+      androidBuilderToolkit = let
+        requiredNativeBuildInputs = [ config.build.env fakeuser pkgs.utillinux ];
+        builder = pkgs.writeShellScript "builder.sh" ''
             export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
             export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
 
@@ -309,27 +303,43 @@ in
             genericBuild
             EOF
           '';
+      in {
+        inherit requiredNativeBuildInputs builder;
+        # pass this to stdenv.mkDerivation to get the unpacked source for builds.
+        flags = {
+          inherit builder;
+          srcs = [];
 
-          inherit outputs;
+          nativeBuildInputs = requiredNativeBuildInputs;
 
-          requiredSystemFeatures = [ "big-parallel" ];
-
-          nativeBuildInputs = [ config.build.env fakeuser ];
-
-          unpackPhase = ''
+          unpackPhase = pkgs.writeShellScript "android-source-unpack.sh" ''
             export rootDir=$PWD
             source ${config.build.unpackScript}
           '';
+        };
+
+        enterUserEnv = name: buildPhase: pkgs.writeShellScript "enter-user-env-for-${name}.sh" ''
+          # Become the original user--not fake root.
+          set -e -o pipefail
+          ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID robotnix-build
+          ${buildPhase}
+          EOF2
+        '';
+      };
+
+      mkAndroid =
+        { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
+        # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
+        pkgs.stdenvNoCC.mkDerivation (androidBuilderToolkit.flags // {
+          inherit name outputs installPhase;
+
+          # TODO: Clean this stuff up. unshare / robotnix-build could probably be combined into a single utility.
+          requiredSystemFeatures = [ "big-parallel" ];
 
           dontConfigure = true;
-
           # This was originally in the buildPhase, but building the sdk / atree would complain for unknown reasons when it was set
           # export OUT_DIR=$rootDir/out
-          buildPhase = ''
-            # Become the original user--not fake root.
-            ${pkgs.toybox}/bin/cat << 'EOF2' | fakeuser $SAVED_UID $SAVED_GID robotnix-build
-            set -e -o pipefail
-
+          buildPhase = androidBuilderToolkit.enterUserEnv "mkAndroid-${name}" ''
             ${lib.optionalString (config.androidVersion >= 6 && config.androidVersion <= 8) ''
             # Needed for the jack compilation server
             # https://source.android.com/setup/build/jack
@@ -345,13 +355,11 @@ in
             export NINJA_ARGS="-j$NIX_BUILD_CORES ${toString ninjaArgs}"
             m ${toString makeTargets} | cat
             echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
-
-            EOF2
           '';
 
-          installPhase = ''
+          preInstall = ''
             export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
-          '' + installPhase;
+          '';
 
           dontFixup = true;
           dontMoveLib64 = true;

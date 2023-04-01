@@ -8,15 +8,20 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 ../../modules/apv/update-carrierlist.sh
 
+_KERNEL_PREFIX=${KERNEL_PREFIX:-kernel/google}
+
 args=(
     --cache-search-path ../../
     --ref-type tag
+    --project-fetch-submodules "${_KERNEL_PREFIX}/crosshatch"
+    --project-fetch-submodules "${_KERNEL_PREFIX}/coral"
+    --project-fetch-submodules "${_KERNEL_PREFIX}/sunfish"
+    --project-fetch-submodules "${_KERNEL_PREFIX}/redbull"
+    --project-fetch-submodules "${_KERNEL_PREFIX}/barbet"
+    --project-fetch-submodules "${_KERNEL_PREFIX}/raviole"
+    --project-fetch-submodules "${_KERNEL_PREFIX}/bluejay"
+    --project-fetch-submodules "${_KERNEL_PREFIX}/pantah"
     "https://github.com/GrapheneOS/platform_manifest"
-    --project-fetch-submodules "kernel/google/crosshatch"
-    --project-fetch-submodules "kernel/google/coral"
-    --project-fetch-submodules "kernel/google/sunfish"
-    --project-fetch-submodules "kernel/google/redbull"
-    --project-fetch-submodules "kernel/google/barbet"
     "$@"
 )
 

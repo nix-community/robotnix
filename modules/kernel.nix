@@ -6,7 +6,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkOption mkOptionDefault mkMerge mkEnableOption types;
+  inherit (lib) mkIf mkOption mkOptionDefault mkMerge mkEnableOption types mkDefault;
 
   cfg = config.kernel;
 in
@@ -33,7 +33,7 @@ in
       };
 
       patches = mkOption {
-        default = [];
+        default = [ ];
         type = types.listOf types.path;
         description = "List of patches to apply to kernel source";
       };
@@ -69,7 +69,7 @@ in
     # config.build.kernel drv output in place of source.dirs.${cfg.relpath}.
     # This is because there are some additional things in the prebuilt kernel
     # output directory like kernel headers for sunfish under device/google/sunfish-kernel/sm7150
-    source = mkIf cfg.enable {
+    source = {
       dirs.${cfg.relpath}.postPatch = ''
         # Warn if we have prebuilt files that we aren't replacing
         for filename in *; do

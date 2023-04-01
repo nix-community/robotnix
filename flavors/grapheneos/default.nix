@@ -12,9 +12,25 @@ let
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" "bluejay" "pantah" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
+  kernelPrefix = if config.androidVersion >= 13 then "kernel/android" else "kernel/google";
 
+  kernelRepoName = {
+    "sargo" = "crosshatch";
+    "bonito" = "crosshatch";
+    "sunfish" = "coral";
+    "bramble" = "redbull";
+    "redfin" = "redbull";
+    "bluejay" = "bluejay";
+    "panther" = "pantah";
+    "cheetah" = "pantah";
+  }.${config.device} or config.deviceFamily;
+  kernelSourceRelpath = "${kernelPrefix}/${kernelRepoName}";
+  kernelSources = lib.mapAttrs' (path: src: {
+    name = "${kernelSourceRelpath}/${path}";
+    value = src;
+  }) (lib.importJSON (./kernel-repos/repo- + "${config.deviceFamily}-${grapheneOSRelease}.json"));
 in mkIf (config.flavor == "grapheneos") (mkMerge [
-{
+rec {
   androidVersion = mkDefault 13;
   buildNumber = mkDefault upstreamParams.buildNumber;
   buildDateTime = mkDefault upstreamParams.buildDateTime;
@@ -26,10 +42,10 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
     BUILD_USERNAME = "grapheneos";
     BUILD_HOSTNAME = "grapheneos";
   };
+  source.dirs = (lib.importJSON (./. + "/repo-${grapheneOSRelease}.json") // kernelSources);
 
-  source.dirs = lib.importJSON (./. + "/repo-${grapheneOSRelease}.json");
-
-  apv.enable = mkDefault false;
+  # TODO: re-add the legacy devices
+  apv.enable = mkIf (config.androidVersion <= 12 && elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkDefault (if (elem config.device [ "panther" ]) then "TQ2A.230305.008" else
     (if (elem config.device [ "bluejay" ]) then "TQ2A.230305.008.E1" else "TQ2A.230305.008.C1"));
 
@@ -59,16 +75,16 @@ in mkIf (config.flavor == "grapheneos") (mkMerge [
   ];
 
   # No need to include kernel sources in Android source trees since we build separately
-  source.dirs."kernel/google/marlin".enable = false;
-  source.dirs."kernel/google/wahoo".enable = false;
-  source.dirs."kernel/google/crosshatch".enable = false;
-  source.dirs."kernel/google/bonito".enable = false;
-  source.dirs."kernel/google/coral".enable = false;
-  source.dirs."kernel/google/sunfish".enable = false;
-  source.dirs."kernel/google/redbull".enable = false;
-  source.dirs."kernel/google/barbet".enable = false;
-  source.dirs."kernel/google/bluejay".enable = false;
-  source.dirs."kernel/google/pantah".enable = false;
+  source.dirs."${kernelPrefix}/marlin".enable = false;
+  source.dirs."${kernelPrefix}/wahoo".enable = false;
+  source.dirs."${kernelPrefix}/crosshatch".enable = false;
+  source.dirs."${kernelPrefix}/bonito".enable = false;
+  source.dirs."${kernelPrefix}/coral".enable = false;
+  source.dirs."${kernelPrefix}/sunfish".enable = false;
+  source.dirs."${kernelPrefix}/redbull".enable = false;
+  source.dirs."${kernelPrefix}/barbet".enable = false;
+  source.dirs."${kernelPrefix}/bluejay".enable = false;
+  source.dirs."${kernelPrefix}/pantah".enable = false;
 
   kernel.enable = mkDefault (elem config.deviceFamily phoneDeviceFamilies);
 

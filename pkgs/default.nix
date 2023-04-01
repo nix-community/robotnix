@@ -17,6 +17,7 @@ in nixpkgs.legacyPackages.x86_64-linux.appendOverlays [
     androidPkgs.packages = androidPkgs.packages.x86_64-linux;
     androidPkgs.sdk = androidPkgs.sdk.x86_64-linux;
 
+    unstable = nixpkgsUnstable.legacyPackages.x86_64-linux;
     inherit (nixpkgsUnstable.legacyPackages.x86_64-linux)
       diffoscope;
   })
