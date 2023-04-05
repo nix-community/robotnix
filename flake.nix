@@ -31,7 +31,6 @@
       packages.x86_64-linux = {
         manual = (import ./docs { inherit pkgs; }).manual;
       };
-      temp = pkgs;
 
       devShell.x86_64-linux = pkgs.mkShell {
         name = "robotnix-scripts";
@@ -55,7 +54,7 @@
         ];
         PYTHONPATH = ./scripts;
       };
-      androidImages = (pkgs.lib.listToAttrs (map
+      exampleImages = (pkgs.lib.listToAttrs (map
         (device: {
           name = device;
           value = lib.robotnixSystem {
