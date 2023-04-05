@@ -1,13 +1,36 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook, buildPackages
-, python2, python3, ninja, llvmPackages_11, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
-, dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, utillinux, kerberos, gdk-pixbuf
-, glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libXdamage
-, libdrm, libxkbcommon
-, zlib, ncurses5, libxml2, binutils, perl
-, substituteAll, fetchgerritpatchset
+{ pkgsBuildHost, pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook
+, python3, ninja, llvmPackages_15, pkg-config, systemd
+, substituteAll, fetchgerritpatchset, nodejs, jdk11, bsdiff, binutils, perl, dbus, at-spi2-atk, atk, utillinux, kerberos, gdk-pixbuf
+
+  # buildInputs
+, libpng
+, bzip2, flac, speex, libopus
+, libevent, expat, libjpeg, snappy
+, libcap
+, xdg-utils, minizip, libwebp
+, libusb1, re2
+, ffmpeg, libxslt, libxml2
+, nasm
+, nspr, nss
+, util-linux, alsa-lib
+, bison, gperf, libkrb5
+, glib, gtk3, dbus-glib
+, libXScrnSaver, libXcursor, libXtst, libxshmfence, libGLU, libGL
+, mesa
+, pciutils, protobuf, speechd, libXdamage, at-spi2-core
+, pipewire
+, libva
+, libdrm, wayland, libxkbcommon # Ozone
+, curl
+, libffi
+, libepoxy, sqlite-jdbc
+# postPatch:
+, glibc # gconv + locale
+# postFixup:
+, vulkan-loader
 
 , name ? "chromium"
 , displayName ? "Chromium"
@@ -51,7 +74,7 @@ let
     in
       attrs: lib.concatStringsSep " " (lib.attrValues (lib.mapAttrs toFlag attrs));
 
-  gnFlags = {
+  gnFlags = gnToString ({
     target_os = "android";
     target_cpu = targetCPU;
 
@@ -64,6 +87,8 @@ let
 
     is_official_build = true;
     is_debug = false;
+    # custom_toolchain = "//build/toolchain/linux/unbundle:default";
+    # host_toolchain = "//build/toolchain/linux/unbundle:default";
 
     disable_fieldtrial_testing_config = true;
 
@@ -82,17 +107,43 @@ let
 
     # enable support for the H.264 codec
     proprietary_codecs = true;
+    enable_hangout_services_extension = true;
     ffmpeg_branding = "Chrome";
 
     # Only include minimal symbols to save space
-    symbol_level = 1;
-    blink_symbol_level = 1;
+    symbol_level = 0;
+    blink_symbol_level = 0;
+
+    use_relative_vtables_abi = false;
+
+    chrome_pgo_phase = 0;
+    # leaving the prebuilt clang in places forces a check on the revision that we can't satisfy
+    # so trick it by giving it the store path of clang rather than the in-tree path
+    clang_base_path = "${deps."src/third_party/llvm-build/Release+Asserts"}";
+    use_qt = false;
+    use_system_libffi = true;
 
     # explicit host_cpu and target_cpu prevent "nix-shell pkgsi686Linux.chromium-git" from building x86_64 version
     # there is no problem with nix-build, but platform detection in nix-shell is not correct
     host_cpu   = { i686-linux = "x86"; x86_64-linux = "x64"; armv7l-linux = "arm"; aarch64-linux = "arm64"; }.${stdenv.buildPlatform.system};
     #target_cpu = { i686-linux = "x86"; x86_64-linux = "x64"; armv7l-linux = "arm"; aarch64-linux = "arm64"; }.${stdenv.hostPlatform.system};
-  } // customGnFlags;
+  } // customGnFlags);
+
+  gnSystemLibraries = [
+    # TODO:
+    # "ffmpeg"
+    # "snappy"
+    "flac"
+    "libjpeg"
+    "libpng"
+    "libwebp"
+    "libxslt"
+    # "opus"
+  ];
+
+  buildType = "Release";
+  buildPath = "out/${buildType}";
+  libExecPath = "$out/libexec/${packageName}";
 
   deps = import (./vendor- + version + ".nix") {
     inherit fetchgit fetchcipd fetchurl runCommand symlinkJoin;
@@ -103,34 +154,37 @@ let
       # <nixpkgs/pkgs/build-support/trivial-builders.nix>'s `linkFarm` or `buildEnv` would work here if they supported nested paths
       (lib.concatStringsSep "\n" (
         lib.mapAttrsToList (path: src: ''
-                              echo mkdir -p $(dirname "$out/${path}")
-                                    mkdir -p $(dirname "$out/${path}")
-                              if [[ -d "${src}" ]]; then
-                                echo cp -r "${src}/." "$out/${path}"
-                                      cp -r "${src}/." "$out/${path}"
-                              else
-                                echo cp -r "${src}" "$out/${path}"
-                                      cp -r "${src}" "$out/${path}"
-                              fi
-                              chmod -R u+w "$out/${path}"
-                            '') deps # Use ${src}/. in case $out/${path} already exists, so it copies the contents to that directory.
+          echo mkdir -p $(dirname "$out/${path}")
+          mkdir -p $(dirname "$out/${path}")
+          if [[ -d "${src}" ]]; then
+            echo cp -r "${src}/." "$out/${path}"
+            cp -r "${src}/." "$out/${path}"
+          else
+            echo cp -r "${src}" "$out/${path}"
+            cp -r "${src}" "$out/${path}"
+          fi
+          chmod -R u+w "$out/${path}"
+        '') deps # Use ${src}/. in case $out/${path} already exists, so it copies the contents to that directory.
       ) +
       # introduce files missing in git repos
       ''
-        echo 'LASTCHANGE=${deps."src".rev}-refs/heads/master@{#0}'             > $out/src/build/util/LASTCHANGE
-        echo '1555555555'                                                      > $out/src/build/util/LASTCHANGE.committime
+        echo 'LASTCHANGE=${deps."src".rev}-refs/heads/master@{#0}'                   > $out/src/build/util/LASTCHANGE
+        echo '1555555555'                                                            > $out/src/build/util/LASTCHANGE.committime
 
-        echo '/* Generated by lastchange.py, do not edit.*/'                   > $out/src/gpu/config/gpu_lists_version.h
-        echo '#ifndef GPU_CONFIG_GPU_LISTS_VERSION_H_'                        >> $out/src/gpu/config/gpu_lists_version.h
-        echo '#define GPU_CONFIG_GPU_LISTS_VERSION_H_'                        >> $out/src/gpu/config/gpu_lists_version.h
-        echo '#define GPU_LISTS_VERSION "${deps."src".rev}"'                  >> $out/src/gpu/config/gpu_lists_version.h
-        echo '#endif  // GPU_CONFIG_GPU_LISTS_VERSION_H_'                     >> $out/src/gpu/config/gpu_lists_version.h
+        echo '/* Generated by lastchange.py, do not edit.*/'                         > $out/src/gpu/config/gpu_lists_version.h
+        echo '#ifndef GPU_CONFIG_GPU_LISTS_VERSION_H_'                              >> $out/src/gpu/config/gpu_lists_version.h
+        echo '#define GPU_CONFIG_GPU_LISTS_VERSION_H_'                              >> $out/src/gpu/config/gpu_lists_version.h
+        echo '#define GPU_LISTS_VERSION "${deps."src".rev}"'                        >> $out/src/gpu/config/gpu_lists_version.h
+        echo '#endif  // GPU_CONFIG_GPU_LISTS_VERSION_H_'                           >> $out/src/gpu/config/gpu_lists_version.h
 
-        echo '/* Generated by lastchange.py, do not edit.*/'                   > $out/src/skia/ext/skia_commit_hash.h
-        echo '#ifndef SKIA_EXT_SKIA_COMMIT_HASH_H_'                           >> $out/src/skia/ext/skia_commit_hash.h
-        echo '#define SKIA_EXT_SKIA_COMMIT_HASH_H_'                           >> $out/src/skia/ext/skia_commit_hash.h
-        echo '#define SKIA_COMMIT_HASH "${deps."src/third_party/skia".rev}-"' >> $out/src/skia/ext/skia_commit_hash.h
-        echo '#endif  // SKIA_EXT_SKIA_COMMIT_HASH_H_'                        >> $out/src/skia/ext/skia_commit_hash.h
+        echo '/* Generated by lastchange.py, do not edit.*/'                         > $out/src/skia/ext/skia_commit_hash.h
+        echo '#ifndef SKIA_EXT_SKIA_COMMIT_HASH_H_'                                 >> $out/src/skia/ext/skia_commit_hash.h
+        echo '#define SKIA_EXT_SKIA_COMMIT_HASH_H_'                                 >> $out/src/skia/ext/skia_commit_hash.h
+        echo '#define SKIA_COMMIT_HASH "${deps."src/third_party/skia".rev}-"'       >> $out/src/skia/ext/skia_commit_hash.h
+        echo '#endif  // SKIA_EXT_SKIA_COMMIT_HASH_H_'                              >> $out/src/skia/ext/skia_commit_hash.h
+
+        echo -n '${deps."src/third_party/dawn".rev}'                                 > $out/src/gpu/webgpu/DAWN_VERSION
+        echo '1677777777'                                                            > $out/src/gpu/webgpu/DAWN_VERSION.committime
       '');
 
   # Use the prebuilt one from CIPD
@@ -142,16 +196,20 @@ let
       install -Dm755 gn $out/bin/gn
     '';
   };
+  clangFormatPython3 = fetchurl {
+    url = "https://chromium.googlesource.com/chromium/tools/build/+/e77882e0dde52c2ccf33c5570929b75b4a2a2522/recipes/recipe_modules/chromium/resources/clang-format?format=TEXT";
+    sha256 = "0ic3hn65dimgfhakli1cyf9j3cxcqsf1qib706ihfhmlzxf7256l";
+  };
 
-in stdenvNoCC.mkDerivation rec {
+
+in stdenv.mkDerivation rec {
   pname = name;
-  inherit version src;
+  inherit version src gnSystemLibraries gnFlags;
 
-  nativeBuildInputs = [ gn ninja pkg-config jre8 gperf bison nodejs ] ++
+  nativeBuildInputs = [ gn ninja pkg-config jdk11 nodejs gperf bison libwebp flac libjpeg libpng libxslt libxml2 binutils autoPatchelfHook ] ++
     # Android stuff (from src/build/install-build-deps-android.sh)
     # Including some of the stuff from src/.vpython as well
     [ bsdiff
-      (python2.withPackages (p: with p; [ ply setuptools ]))
       (python3.withPackages (p: with p; [ ply jinja2 setuptools ]))
       binutils # Needs readelf
       perl # Used by //third_party/libvpx
@@ -161,7 +219,7 @@ in stdenvNoCC.mkDerivation rec {
   # Even though we are building for android, it still complains if its missing linux libs/headers>..
   buildInputs = [
     dbus at-spi2-atk atk at-spi2-core nspr nss pciutils utillinux kerberos libxkbcommon
-    gdk-pixbuf glib gtk3 alsaLib libXScrnSaver libXcursor libXtst libXdamage
+    gdk-pixbuf glib gtk3 alsa-lib libXScrnSaver libXcursor libXtst libXdamage
     libdrm
   ];
 
@@ -202,15 +260,51 @@ in stdenvNoCC.mkDerivation rec {
     ( cd src
 
       # `patchShebangs --build .` would fail (see https://github.com/NixOS/nixpkgs/issues/99539)
-      for f in $(find . -type f -executable ! -regex '.+\.make$'); do
-        patchShebangs --build "$f"
-      done
+      unset -f patchShebangs
+      source ${../../scripts/patch-shebangs.sh}
 
-      mkdir -p buildtools/linux64
-      ln -s --force ${llvmPackages_11.clang.cc}/bin/clang-format buildtools/linux64/clang-format || true
+      # Workaround/fix for https://bugs.chromium.org/p/chromium/issues/detail?id=1313361:
+      substituteInPlace BUILD.gn \
+        --replace '"//infra/orchestrator:orchestrator_all",' ""
+      # Required for patchShebangs (unsupported interpreter directive, basename: invalid option -- '*', etc.):
+      substituteInPlace native_client/SConstruct --replace "#! -*- python -*-" ""
+      if [ -e third_party/harfbuzz-ng/src/src/update-unicode-tables.make ]; then
+        substituteInPlace third_party/harfbuzz-ng/src/src/update-unicode-tables.make \
+          --replace "/usr/bin/env -S make -f" "/usr/bin/make -f"
+      fi
+      chmod -x third_party/webgpu-cts/src/tools/run_deno
+      chmod -x third_party/dawn/third_party/webgpu-cts/tools/run_deno
+      # We want to be able to specify where the sandbox is via CHROME_DEVEL_SANDBOX
+      substituteInPlace sandbox/linux/suid/client/setuid_sandbox_host.cc \
+        --replace \
+          'return sandbox_binary;' \
+          'return base::FilePath(GetDevelSandboxPath());'
+      substituteInPlace services/audio/audio_sandbox_hook_linux.cc \
+        --replace \
+          '/usr/share/alsa/' \
+          '${alsa-lib}/share/alsa/' \
+        --replace \
+          '/usr/lib/x86_64-linux-gnu/gconv/' \
+          '${glibc}/lib/gconv/' \
+        --replace \
+          '/usr/share/locale/' \
+          '${glibc}/share/locale/'
 
+      sed -i -e 's@"\(#!\)\?.*xdg-@"\1${xdg-utils}/bin/xdg-@' \
+        chrome/browser/shell_integration_linux.cc
+      sed -i -e '/lib_loader.*Load/s!"\(libudev\.so\)!"${lib.getLib systemd}/lib/\1!' \
+        device/udev_linux/udev?_loader.cc
+      sed -i -e '/libpci_loader.*Load/s!"\(libpci\.so\)!"${pciutils}/lib/\1!' \
+        gpu/config/gpu_info_collector_linux.cc
+      # Allow to put extensions into the system-path.
+      sed -i -e 's,/usr,/run/current-system/sw,' chrome/common/chrome_paths.cc
+      # We need the fix for https://bugs.chromium.org/p/chromium/issues/detail?id=1254408:
+      base64 --decode ${clangFormatPython3} > buildtools/linux64/clang-format
+      patchShebangs .
+      # Link to our own Node.js and Java (required during the build):
       mkdir -p third_party/node/linux/node-linux-x64/bin
-      ln -s --force ${nodejs}/bin/node                    third_party/node/linux/node-linux-x64/bin/node      || true
+      ln -s "${nodejs}/bin/node" third_party/node/linux/node-linux-x64/bin/node
+      ln -sf "${jdk11}/bin/java" third_party/jdk/current/bin/
 
       # TODO: Have mk-vendor-file.py output this
       echo 'build_with_chromium = true'                > build/config/gclient_args.gni
@@ -225,6 +319,12 @@ in stdenvNoCC.mkDerivation rec {
       echo 'checkout_libaom = false'                  >> build/config/gclient_args.gni
       # Added sometime between 91.0.4472.120 and 91.0.4472.143
       echo 'generate_location_tags = false'           >> build/config/gclient_args.gni
+      # Added sometime before 112
+      echo 'checkout_src_internal = false'            >> build/config/gclient_args.gni
+      echo 'checkout_clang_coverage_tools = false'    >> build/config/gclient_args.gni
+      echo 'checkout_clang_tidy = false'              >> build/config/gclient_args.gni
+      echo 'checkout_clang_libs = false'              >> build/config/glcient_args.gni
+      echo 'checkout_clangd = false'                  >> build/config/gclient_args.gni
     )
   '' + lib.optionalString enableRebranding ''
     ( cd src
@@ -241,7 +341,7 @@ in stdenvNoCC.mkDerivation rec {
     # attept to fix python2 failing with "EOFError: EOF read where object expected" on multi-core builders
     export PYTHONDONTWRITEBYTECODE=true
     ( cd src
-      gn gen ${lib.escapeShellArg "--args=${gnToString gnFlags}"} out/Release
+      ${gn}/bin/gn gen --args=${lib.escapeShellArg gnFlags} out/Release
     )
   '';
 

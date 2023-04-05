@@ -27,7 +27,9 @@ let
   kernelSourceRelpath = "${kernelPrefix}/${kernelRepoName}";
   kernelSources = lib.mapAttrs' (path: src: {
     name = "${kernelSourceRelpath}/${path}";
-    value = src;
+    value = src // {
+      enable = false;
+    };
   }) (lib.importJSON (./kernel-repos/repo- + "${config.deviceFamily}-${grapheneOSRelease}.json"));
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 rec {
@@ -48,6 +50,8 @@ rec {
   apv.enable = mkIf (config.androidVersion <= 12 && elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
   apv.buildID = mkDefault (if (elem config.device [ "panther" ]) then "TQ2A.230305.008" else
     (if (elem config.device [ "bluejay" ]) then "TQ2A.230305.008.E1" else "TQ2A.230305.008.C1"));
+  adevtool.enable = mkIf (config.androidVersion >= 13 && elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
+  adevtool.buildID = config.apv.buildID;
 
   # Not strictly necessary for me to set these, since I override the source.dirs above
   source.manifest.url = mkDefault "https://github.com/GrapheneOS/platform_manifest.git";
@@ -73,6 +77,16 @@ rec {
       revert = true;
     })
   ];
+
+  # hack to make sure the out directory remains writeable after copying files/directories from /nix/store mounted sources
+  source.dirs."prebuilts/build-tools".postPatch = mkIf (config.androidVersion >= 13) ''
+    pushd path/linux-x86
+    mv cp .cp-wrapped
+    cp ${pkgs.substituteAll { src = ./fix-perms.sh; inherit (pkgs) bash; }} cp
+
+    chmod +x cp
+    popd
+  '';
 
   # No need to include kernel sources in Android source trees since we build separately
   source.dirs."${kernelPrefix}/marlin".enable = false;

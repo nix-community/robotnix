@@ -63,9 +63,9 @@ mkMerge [
     apv.ota = mkDefault (fetchItem otaList);
 
     # Exclude all devices by default
-    source.excludeGroups = mkDefault (lib.attrNames deviceMap);
-    # But include names related to our device
-    source.includeGroups = mkDefault [ config.device config.deviceFamily ];
+    # source.excludeGroups = mkDefault (lib.attrNames deviceMap);
+    # # But include names related to our device
+    # source.includeGroups = mkDefault [ config.device config.deviceFamily ];
 
     signing.avb.enable = mkDefault true;
   })

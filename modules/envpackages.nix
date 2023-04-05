@@ -43,7 +43,7 @@ in
       curl
       flex
       gcc
-      gitRepo
+      git-repo
       gnupg
       gperf
       imagemagick

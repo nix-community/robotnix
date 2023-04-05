@@ -2,7 +2,7 @@
   description = "Build Android (AOSP) using Nix";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
   };
@@ -41,7 +41,7 @@
           (gitRepo.override { python3 = python39; })
           nix-prefetch-git
           curl
-          go-pup
+          pup
           jq
           shellcheck
           wget
@@ -62,6 +62,7 @@
             inherit device;
             flavor = "grapheneos";
             apv.enable = false;
+            adevtool.hash = "sha256-aA54o2FPfI+9iDLiUaGJAqMzUuNyWwCuWOoa1lADKuM=";
           };
         }) [ "bluejay" "panther" "cheetah" ]));
     };

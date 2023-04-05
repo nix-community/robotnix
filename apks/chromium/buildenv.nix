@@ -9,7 +9,7 @@ buildFHSUserEnv {
   name = "chromium-fhs";
   targetPkgs = pkgs: with pkgs; [
     # Stuff verified to be needed in chromium
-    jdk8
+    jdk11
     glibc_multi.dev # Needs unistd.h
     kerberos.dev # Needs headers
     kerberos
@@ -20,6 +20,7 @@ buildFHSUserEnv {
     zlib
     ncurses5
     gcc
+    clang
     libgcc # Needed by their clang toolchain
   ];
 }

@@ -24,7 +24,6 @@ let
   subPaths = prefix: (lib.filter (name: (lib.hasPrefix prefix name)) (lib.attrNames config.source.dirs));
   kernelSources = subPaths sourceRelpath;
   unpackSrc = name: src: ''
-    set -x
     mkdir -p $(dirname ${name})
     cp -r ${src} ${name}
   '';
@@ -164,7 +163,6 @@ let
             nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
             format = "other";
             installPhase = ''
-              set -x
               mkdir -p $out/lib/python3.9/site-packages $out/bin
               cp mkuserimg_mke2fs.py $out/lib/python3.9/site-packages
               cp mke2fs.conf $out/lib/python3.9/site-packages
@@ -214,7 +212,6 @@ let
           nativeBuildInputs = with pkgs; [ release-tools-py makeWrapper ];
           postInstall = ''
             # Workaround for patchelf not working with embedded python interpreter
-            set -x
             ln -sf ${release-tools-py}/bin/build_image $out/linux-x86/bin/build_image
             ln -sf ${release-tools-py}/bin/mkuserimg_mke2fs $out/linux-x86/bin/mkuserimg_mke2fs
             ln -sf ${release-tools-py}/bin/avbtool $out/linux-x86/bin/avbtool
@@ -308,7 +305,6 @@ let
 
       preUnpack = ''
         shopt -s dotglob
-        set -x
         ${lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "mkdir -p $(dirname ${n}); ln -s ${v} ${n}") dependencies)}
         ${unpackSrcs (lib.filter
           (name: !lib.any (depName: lib.hasPrefix name depName) (lib.attrNames dependencies))
@@ -445,8 +441,4 @@ mkIf (config.flavor == "grapheneos" && config.kernel.enable) (mkMerge [
 
     build.kernel = kernel;
   }
-  (mkIf (config.androidVersion >= 13) {
-    source.dirs."${sourceRelpath}/prebuilts/build-tools".enable = lib.mkForce false;
-    source.dirs."${sourceRelpath}/private/google-modules/edgetpu/janeiro".patches = [ ./01-remove-git-status-checks.patch ];
-  })
 ])
