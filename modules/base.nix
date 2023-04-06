@@ -389,10 +389,13 @@ in
             '';
 
             preInstall = ''
-              export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
-            '';
+              if [ -f ANDROID_PRODUCT_OUT ]; then
+                export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
+              fi
+            '' + (inputs.preInstall or "");
 
             installPhase = ''
+              set -e -o pipefail
               runHook preInstall
               ${installPhase}
               runHook postInstall
@@ -402,18 +405,24 @@ in
             dontMoveLib64 = true;
           }) // config.envVars);
 
-        android = mkAndroid {
-          name = "robotnix-${config.productName}-${config.buildNumber}";
-          makeTargets = (lib.optional config.build.postRaviole [ "vendorbootimage" ])
-            ++ (lib.optional config.build.postPantah [ "vendorkernelbootimage" ])
-            ++ [ "target-files-package" "otatools-package" ];
-          # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
-          installPhase = ''
-            mkdir -p $out
-            cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
-            cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.productName}-target_files-${config.buildNumber}.zip $out/
-          '';
-        };
+        android =
+          let
+            sepolicyDirNames = lib.filter (d: lib.hasSuffix "-sepolicy") (lib.attrNames config.source.dirs);
+          in
+          mkAndroid {
+            inherit (config.build.adevtool) patchPhase;
+            name = "robotnix-${config.productName}-${config.buildNumber}";
+            nativeBuildInputs = with pkgs; [ unzip ];
+            makeTargets = (lib.optional config.build.postRaviole [ "vendorbootimage" ])
+              ++ (lib.optional config.build.postPantah [ "vendorkernelbootimage" ])
+              ++ [ "target-files-package" "otatools-package" ];
+            # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
+            installPhase = ''
+              mkdir -p $out
+              cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
+              cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.productName}-target_files-${config.buildNumber}.zip $out/
+            '';
+          };
 
         checkAndroid = mkAndroid {
           name = "robotnix-check-${config.device}-${config.buildNumber}";
@@ -491,6 +500,7 @@ in
           '' + lib.optionalString (config.androidVersion <= 10) ''
             substituteInPlace releasetools/common.py \
               --replace 'self.search_path = platform_search_path.get(sys.platform)' "self.search_path = \"$out\"" \
+            patchShebangs releasetools
           '';
 
           dontBuild = true;
@@ -501,6 +511,7 @@ in
               bash ${../scripts/patchelf-prefix.sh} "$file" "${pkgs.stdenv.cc.bintools.dynamicLinker}" || continue
             done
           '' + ''
+            set -x
             mkdir -p $out
             cp --reflink=auto -r * $out/
           '' + lib.optionalString (config.androidVersion <= 10) ''

@@ -111,10 +111,9 @@ let
     ffmpeg_branding = "Chrome";
 
     # Only include minimal symbols to save space
-    symbol_level = 0;
+    symbol_level = 1;
     blink_symbol_level = 0;
-
-    use_relative_vtables_abi = false;
+    v8_symbol_level=0;
 
     chrome_pgo_phase = 0;
     # leaving the prebuilt clang in places forces a check on the revision that we can't satisfy
@@ -206,7 +205,7 @@ in stdenv.mkDerivation rec {
   pname = name;
   inherit version src gnSystemLibraries gnFlags;
 
-  nativeBuildInputs = [ gn ninja pkg-config jdk11 nodejs gperf bison libwebp flac libjpeg libpng libxslt libxml2 binutils autoPatchelfHook ] ++
+  nativeBuildInputs = [ gn ninja pkg-config jdk11 nodejs gperf bison libwebp flac libjpeg libpng libxslt libxml2 binutils ] ++
     # Android stuff (from src/build/install-build-deps-android.sh)
     # Including some of the stuff from src/.vpython as well
     [ bsdiff

@@ -93,6 +93,10 @@ in
             else if chromeModernIsBundled then aab2apk "${browser}/ChromeModernPublic.aab"
             else "${browser}/ChromeModernPublic.apk";
           enable = mkWeakDefault config.apps.${name}.enable;
+          extraConfig = ''
+            LOCAL_DEX_PREOPT := false
+            LOCAL_REQUIRED_MODULES := ${config.apps.prebuilt.${name}.moduleName}TrichromeLibrary
+          '';
         };
 
         # Unconditionally fill out the apk/description here, but it will not be included unless webview.<name>.enable = true;
@@ -103,6 +107,14 @@ in
             if isTriChrome
             then patchedTrichromeApk "webview" "${browser}/TrichromeWebView.apk"
             else "${browser}/SystemWebView.apk";
+          extraConfig = ''
+            LOCAL_MULTILIB := both
+            LOCAL_MODULE_TARGET_ARCH := ${config.arch}
+            LOCAL_DEX_PREOPT := false
+            LOCAL_REQUIRED_MODULES := libwebviewchromium_loader \
+              libwebviewchromium_plat_support \
+              ${config.apps.prebuilt.${name}.moduleName}TrichromeLibrary
+          '';
         };
 
         build.${name} = browser; # Put here for convenience
@@ -112,6 +124,9 @@ in
           enable = mkWeakDefault (isTriChrome && (config.apps.${name}.enable || config.webview.${name}.enable));
           certificate = config.apps.prebuilt.${name}.certificate;  # Share certificate with application
           fingerprint = config.apps.prebuilt.${name}.fingerprint;
+          extraConfig = ''
+            LOCAL_DEX_PREOPT := false
+          '';
         };
       }
     ])

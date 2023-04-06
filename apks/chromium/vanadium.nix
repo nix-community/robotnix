@@ -32,10 +32,13 @@ in
     proprietary_codecs = true;
 
     is_cfi = true;
+    use_cfi_cast = true;
+    use_relative_vtables_abi = false;
 
     enable_gvr_services = false;
     enable_remoting = false;
     enable_reporting = true; # 83.0.4103.83 build is broken without building this code
+    enable_multidex = true;
   };
   # Needed for patces/0082-update-dependencies.patch in earlier versions of vanadium
   # -- this patch no longer exists at least as of 112.

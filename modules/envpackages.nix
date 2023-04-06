@@ -14,7 +14,7 @@ in
       bc
       git
       gnumake
-      jre8_headless
+      jdk11
       lsof
       m4
       ncurses5

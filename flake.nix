@@ -5,6 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
+    androidPkgs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, androidPkgs, ... }@inputs:

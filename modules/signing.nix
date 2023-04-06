@@ -17,6 +17,9 @@ let
                     ++ (lib.optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
                     ++ (lib.optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
                     ++ (lib.optionals (config.androidVersion >= 12) [ "com.android.connectivity.resources" ])
+                    #++ (lib.optionals (config.androidVersion >= 13) [ "com.android.bluetooth" "com.android.adservices.api" "com.android.nearby.halfsheet" "com.android.safetycenter.resources" "com.android.uwb.resources" "com.android.wifi.dialog" ])
+                    ++ (lib.optionals (config.androidVersion >= 13) [ "${config.device}/bluetooth" ])
+                    ++ (lib.optionals (config.androidVersion >= 13) [ "${config.device}/sdk_sandbox" ])
                     ++ (lib.optional config.signing.apex.enable config.signing.apex.packageNames)
                     ++ (lib.mapAttrsToList
                         (name: prebuilt: prebuilt.certificate)

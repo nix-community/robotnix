@@ -18,13 +18,13 @@ let
       outputHashAlgo = "sha256";
       outputHash = hash;
     };
+  sepolicyDirNames = lib.filter (d: lib.hasSuffix "-sepolicy" d) (lib.attrNames config.source.dirs);
   unpackPhase =
     let
       unpackDirNames = lib.filter
-        (d: (
-          !(lib.elem d [ "vendor/adevtool" "vendor/google_devices/${config.device}" ])
-          && !(lib.hasPrefix "kernel/android" d)
-        ))
+        (d:
+          !(lib.elem d ([ "vendor/adevtool" "vendor/google_devices/${config.device}" ]))
+          && !(lib.hasPrefix "kernel/android" d))
         (lib.attrNames config.source.dirs);
       unpackDirs = lib.attrVals unpackDirNames config.source.dirs;
     in
@@ -40,24 +40,19 @@ let
     config.build.mkAndroid {
       name = "unpack-img-${device}-${buildID}";
       unpackPhase = ''
-        runHook preUnpack
         ${unpackPhase}
-        runHook postUnpack
       '';
       nativeBuildInputs = with pkgs; [ unzip ];
       buildPhase = ''
-        set -e
-        export HOME=$(pwd)
-        source build/envsetup.sh
-        m aapt2
-
+        set -ex
         cp ${img}/${device}-${lib.toLower buildID}-*.zip img.zip
         cp ${img}/${device}-ota-${lib.toLower buildID}-*.zip ota.zip
 
         ${adevtool} generate-all \
           vendor/adevtool/config/${device}.yml \
           -c vendor/state/${device}.json \
-          -s img.zip
+          -s img.zip \
+          -a ${pkgs.robotnix.build-tools}/aapt2
 
         ${adevtool} ota-firmware \
           vendor/adevtool/config/${device}.yml \
@@ -87,15 +82,35 @@ in
     };
   };
   config = {
-    build.adevtool = {
-      files = unpackImg rec {
+    build.adevtool = rec {
+      img = fetchImage {
+        inherit (config) device;
+        inherit (cfg) hash buildID;
+      };
+      files = unpackImg {
         inherit (config) device deviceFamily;
         inherit (cfg) buildID;
-        img = fetchImage {
-          inherit device buildID;
-          inherit (cfg) hash;
-        };
+        inherit img;
       };
+
+      patchPhase = lib.optionalString cfg.enable ''
+        export HOME=$(pwd)
+        ${lib.concatMapStringsSep "\n"
+          (name: ''
+            umount ${config.source.dirs.${name}.relpath}
+            rmdir ${config.source.dirs.${name}.relpath}
+            cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.source.dirs.${name}.src} ${config.source.dirs.${name}.relpath}
+            chmod u+w -R ${config.source.dirs.${name}.relpath}
+          '')
+          sepolicyDirNames}
+
+        cp -r ${config.build.adevtool.img}/${config.device}-${lib.toLower cfg.buildID}-*.zip img.zip
+        ${adevtool} \
+          fix-certs \
+          -s  img.zip \
+          -d ${config.device} \
+          -p ${lib.concatStringsSep " " sepolicyDirNames}
+      '';
     };
     source.dirs = mkIf cfg.enable {
       "vendor/google_devices/${config.device}".src = config.build.adevtool.files;
