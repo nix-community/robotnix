@@ -17,7 +17,6 @@ let
   in {
     signing.enable = true;
     signing.keyStorePath = builtins.toString snakeoilKeys;
-    signing.buildTimeKeyStorePath = "${snakeoilKeys}";
   };
 in {
   check = lib.recurseIntoAttrs (lib.mapAttrs (name: c: (robotnix c).config.build.checkAndroid) configs);

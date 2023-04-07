@@ -9,7 +9,7 @@ let
   cfg = config.signing;
 
   # TODO: Find a better way to do this?
-  putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
+  putInStore = path: path;
 
   keysToGenerate = lib.unique (lib.flatten (
                     map (key: "${config.device}/${key}") [ "releasekey" "platform" "shared" "media" ]
@@ -83,19 +83,48 @@ in
       };
 
       keyStorePath = mkOption {
-        type = types.str;
+        type = types.either types.str types.path;
         description = ''
-          String containing absolute path to generated keys for signing.
-          This must be a _string_ and not a "nix path" to ensure that your secret keys are not imported into the public `/nix/store`.
+          String containing absolute path to generated keys for signing or relative path if your keys are encrypted with sops.
+          This must be a _string_ and not a "nix path" to ensure that your plain-text secret keys are not imported into the public `/nix/store`,
+          if you do not enable sops encryption. Read the documentation for sopsDecrypt.keyType for more details.
+
+          If this value is an absolute path, make sure to add this path to extra-sandbox-paths in your nix config or pass --extra-sandbox-paths
+          to the nix cli so that these keys are available.
         '';
         example = "/var/secrets/android-keys";
       };
 
-      buildTimeKeyStorePath = mkOption {
-        type = with types; either str path;
-        description = ''
-          Path to generated keys for signing to use at build-time, as opposed to keyStorePath, which is used at evaluation-time.
-        '';
+      sopsDecrypt = {
+        enable = mkEnableOption "decrypt key files using sops";
+        keyType = {
+          type = types.enum ["age" "pgp_public" "pgp"];
+          description = ''
+            denotes the kind of key passed to this module:
+              * age - the key refers to an age keys.txt file that contains the age key(s), one line per key
+              * pgp - the key refers to a pgp public key and the private key will need to be read from config.signing.sopsDecrypt.gpgHome
+
+            make sure to add `--extra-sandbox-paths "$GPG_HOME"` to the nix cli invocation to ensure this path is readable.
+          '';
+        };
+        key = {
+          type = types.str;
+          description = "see keyType";
+        };
+        sopsConfig = {
+          type = types.path;
+          description = ''
+            config file for sops to use to choose a private key from those provided -- refer to https://github.com/mozilla/sops/ for details on how to provide this file.
+          '';
+        };
+        gpgHome = {
+          type = types.str;
+          description = "see keyType";
+        };
+        gpgTTY = {
+          type = types.str;
+          description = "if your pgp key must be read from a card, you will need to set this var so GPG_TTY gets set correctly";
+        };
       };
     };
   };
@@ -111,10 +140,6 @@ in
     ];
 
     signing.keyStorePath = mkIf (!config.signing.enable) (mkDefault testKeysStorePath);
-    signing.buildTimeKeyStorePath = mkMerge [
-      (mkIf config.signing.enable (mkDefault "/keys"))
-      (mkIf (!config.signing.enable) (mkDefault testKeysStorePath))
-    ];
     signing.avb.fingerprint = mkIf config.signing.enable (mkOptionDefault
       (pkgs.robotnix.sha256Fingerprint (putInStore "${config.signing.keyStorePath}/${config.device}/avb_pkmd.bin"))
       );
@@ -185,6 +210,10 @@ in
         "packages/modules/Wifi/service/ServiceWifiResources/resources-certs/com.android.wifi.resources" = "com.android.wifi.resources";
         "packages/modules/Connectivity/service/ServiceConnectivityResources/resources-certs/com.android.connectivity.resources" = "com.android.connectivity.resources";
       }
+      // lib.optionalAttrs (config.androidVersion >= 13) {
+        "build/make/target/product/security/bluetooth" = "${config.device}/bluetooth";
+        "build/make/target/product/security/sdk_sandbox" = "${config.device}/sdk_sandbox";
+      }
       # App-specific keys
       // lib.mapAttrs'
         (name: prebuilt: lib.nameValuePair "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}" prebuilt.certificate)
@@ -212,7 +241,7 @@ in
           ${config.source.dirs."system/extras".src}/verity/generate_verity_key.c \
           ${config.source.dirs."system/core".src}/libcrypto_utils/android_pubkey.c${lib.optionalString (config.androidVersion >= 12) "pp"} \
           -I ${config.source.dirs."system/core".src}/libcrypto_utils/include/ \
-          -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
+          -I ${pkgs.boringssl.dev}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
 
         cp ${config.source.dirs."external/avb".src}/avbtool $out/bin/avbtool
 
@@ -329,6 +358,36 @@ in
         echo existing keys.
       fi
       exit $RETVAL
+    '';
+
+    build.signing.withKeys = keysDir: script: ''
+      set -x
+      export KEYSDIR=${keysDir}
+      if [[ "$KEYSDIR" ]]; then
+        if [[ ! -d "$KEYSDIR" ]]; then
+          echo 'Missing KEYSDIR directory, did you use "--option extra-sandbox-paths /keys=..." ?'
+          exit 1
+        fi
+        ${lib.optionalString config.signing.enable "${config.build.verifyKeysScript} \"$KEYSDIR\" || exit 1"}
+        NEW_KEYSDIR=$(mktemp -d /dev/shm/robotnix_keys.XXXXXXXXXX)
+        trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
+
+        # copy the keys over
+        SOPS_AGE_KEY_FILE=${lib.optionalString (config.signing.sopsDecrypt.keyType == "age") config.signing.sopsDecrypt.key};
+        SOPS_PGP_KEY=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp") config.signing.sopsDecrypt.key};
+        GPG_HOME=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp") config.signing.sopsDecrypt.gpgHome};
+        GPG_TTY=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp" && builtins.isString config.signing.sopsDecrypt.gpgTTY) config.signing.sopsDecrypt.gpgTTY};
+        cd $KEYSDIR
+        for f in `find . -type f`; do
+          mkdir -p $(dirname $NEW_KEYSDIR/''${f#./})
+          ${if config.signing.sopsDecrypt.enable then "sops -c ${config.signing.sopsDecrypt.sopsConfig} -d $f --output" else "cp $f"} $NEW_KEYSDIR/''${f#./}
+        done
+
+        # now set the new KEYSDIR and run the script
+        KEYSDIR=$NEW_KEYSDIR
+        chmod u+w -R "$NEW_KEYSDIR"
+        ${script}
+      fi
     '';
   };
 

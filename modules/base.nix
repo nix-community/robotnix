@@ -506,13 +506,14 @@ in
           dontBuild = true;
 
           installPhase = ''
+            mkdir -p $out/unmodified
+            cp --reflink=auto -r * $out/unmodified
             for file in bin/*; do
               isELF "$file" || continue
               bash ${../scripts/patchelf-prefix.sh} "$file" "${pkgs.stdenv.cc.bintools.dynamicLinker}" || continue
             done
           '' + ''
             set -x
-            mkdir -p $out
             cp --reflink=auto -r * $out/
           '' + lib.optionalString (config.androidVersion <= 10) ''
             ln -s $out/releasetools/sign_target_files_apks.py $out/bin/sign_target_files_apks

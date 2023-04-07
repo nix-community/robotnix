@@ -14,34 +14,16 @@ let
       [ otaTools openssl jre zip unzip pkgs.getopt which toybox vboot_reference utillinux
         python3 # ota_from_target_files invokes, brillo_update_payload which has "truncate_file" which invokes python
       ];
-  in ''
+  in config.build.signing.withKeys keysDir ''
     export PATH=${lib.makeBinPath deps}:$PATH
     export EXT2FS_NO_MTAB_OK=yes
-
-    # build-tools releasetools/common.py hilariously tries to modify the
-    # permissions of the source file in ZipWrite. Since signing uses this
-    # function with a key, we need to make a temporary copy of our keys so the
-    # sandbox doesn't complain if it doesn't have permissions to do so.
-    export KEYSDIR=${keysDir}
-    if [[ "$KEYSDIR" ]]; then
-      if [[ ! -d "$KEYSDIR" ]]; then
-        echo 'Missing KEYSDIR directory, did you use "--option extra-sandbox-paths /keys=..." ?'
-        exit 1
-      fi
-      ${lib.optionalString config.signing.enable "${config.build.verifyKeysScript} \"$KEYSDIR\" || exit 1"}
-      NEW_KEYSDIR=$(mktemp -d /dev/shm/robotnix_keys.XXXXXXXXXX)
-      trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
-      cp -r "$KEYSDIR"/* "$NEW_KEYSDIR"
-      chmod u+w -R "$NEW_KEYSDIR"
-      KEYSDIR=$NEW_KEYSDIR
-    fi
 
     ${commands}
   '';
 
   runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
     commands = script (args // {out="$out";});
-    keysDir = config.signing.buildTimeKeyStorePath;
+    keysDir = config.signing.keyStorePath;
   });
 
   signedTargetFilesScript = { targetFiles, out }: ''
@@ -60,6 +42,7 @@ let
   '';
   imgScript = { targetFiles, out }: ''img_from_target_files ${targetFiles} ${out}'';
   factoryImgScript = { targetFiles, img, out }: ''
+      set -x
       ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
       ln -s ${img} ${config.device}-img-${config.buildNumber}.zip || true
 
@@ -69,7 +52,7 @@ let
       export VERSION=${lib.toLower config.buildNumber}
 
       get_radio_image() {
-        ${lib.getBin pkgs.unzip}/bin/unzip -p ${targetFiles} OTA/android-info.txt  \
+        ${lib.getBin pkgs.libarchive}/bin/bsdtar xvf ${targetFiles} -O OTA/android-info.txt  \
           |  grep "require version-$1" | cut -d'=' -f2 | tr '[:upper:]' '[:lower:]' || exit 1
       }
       export BOOTLOADER=$(get_radio_image bootloader)
@@ -77,7 +60,9 @@ let
 
       export PATH=${lib.getBin pkgs.zip}/bin:${lib.getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
-      mv *-factory-*.zip ${out}
+      ls -l
+      dd if=${config.device}-factory-${config.buildNumber}.zip of=${out}
+      ls -l $out
   '';
 in
 {

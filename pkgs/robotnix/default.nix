@@ -12,9 +12,9 @@ let
     echo "\"$fingerprint\"" > $out
   '');
 
-  certFingerprint = cert: (import (runCommand "cert-fingerprint" {} ''
+  certFingerprint = keysFun: cert: (import (runCommand "cert-fingerprint" {} (keysFun ''
     ${openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${cert} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
-  ''));
+  '')));
 
   sha256Fingerprint = file: lib.toUpper (builtins.hashFile "sha256" file);
 
@@ -39,10 +39,10 @@ let
         --add-flags "-jar ${build-tools}/lib/apksigner.jar"
     '';
 
-  signApk = { apk, keyPath, name ? (getName "signApk" apk) + "-signed.apk" }: runCommand name {} ''
+  signApk = { apk, keyPath, keysFun, name ? (getName "signApk" apk) + "-signed.apk" }: runCommand name {} (keysFun ''
       cp ${apk} $out
       ${apksigner}/bin/apksigner sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
-    '';
+    '');
 
   # Currently only supports 1 signer.
   verifyApk = { apk, sha256, name ? (getName "verifyApk" apk) + ".apk" }: runCommand name {} ''

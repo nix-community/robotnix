@@ -63,6 +63,16 @@
             flavor = "grapheneos";
             apv.enable = false;
             adevtool.hash = "sha256-aA54o2FPfI+9iDLiUaGJAqMzUuNyWwCuWOoa1lADKuM=";
+            signing = {
+              enable = true;
+              keyStorePath = ./test-keys;
+              sopsDecrypt = {
+                enable = true;
+                sopsConfig = ./.sops.yaml;
+                key = ./test-keys/keystore-private-keys.txt;
+                keyType = "age";
+              };
+            };
           };
         }) [ "bluejay" "panther" "cheetah" ]));
     };
