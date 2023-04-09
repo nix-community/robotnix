@@ -345,8 +345,8 @@ in
 
               # Fail early if the product was not selected properly
               test -n "$TARGET_PRODUCT" || exit 1
-
-              export NINJA_ARGS="-j$NIX_BUILD_CORES ${toString ninjaArgs} -v -d explain"
+              CORES=''${NIX_BUILD_CORES:-$(${pkgs.coreutils}/bin/nproc)}
+              export NINJA_ARGS="-j$CORES ${toString ninjaArgs} -v -d explain"
               ${lib.optionalString (config.androidVersion >= 13)''
               # needed for fontconfig
               export XDG_CACHE_HOME=$(pwd)
@@ -405,14 +405,10 @@ in
             dontMoveLib64 = true;
           }) // config.envVars);
 
-        android =
-          let
-            sepolicyDirNames = lib.filter (d: lib.hasSuffix "-sepolicy") (lib.attrNames config.source.dirs);
-          in
-          mkAndroid {
+        android = mkAndroid {
             inherit (config.build.adevtool) patchPhase;
             name = "robotnix-${config.productName}-${config.buildNumber}";
-            nativeBuildInputs = with pkgs; [ unzip ];
+            nativeBuildInputs = with pkgs; [ unzip libarchive ];
             makeTargets = (lib.optional config.build.postRaviole [ "vendorbootimage" ])
               ++ (lib.optional config.build.postPantah [ "vendorkernelbootimage" ])
               ++ [ "target-files-package" "otatools-package" ];
@@ -420,9 +416,28 @@ in
             installPhase = ''
               mkdir -p $out
               cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
-              cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.productName}-target_files-${config.buildNumber}.zip $out/
+              cp --reflink=auto -r $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/* $out/
+            '' + lib.optionalString (config.androidVersion >= 13) ''
+              bsdtar tvf $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.device}-target_files-${config.buildNumber}.zip > $out/target_files_list_pre
+              bsdtar tvf $out/${config.device}-target_files-${config.buildNumber}.zip > $out/target_files_list
+              diff $out/target_files_list_pre $out/target_files_list || echo "files missing in copied archive"
+              exit ''${PIPESTATUS[0]}
             '';
           };
+
+        checkTargetFiles = pkgs.stdenv.mkDerivation {
+          name = "check-${config.device}-target_files-${config.buildNumber}";
+          src = pkgs.emptyDirectory;
+          nativeBuildInputs = with pkgs; [diffutils libarchive];
+          buildPhase = ''
+            mkdir -p $out
+          '' + lib.optionalString (config.androidVersion >= 13) ''
+            bsdtar tvf ${config.build.android}/${config.device}-target_files-${config.buildNumber}.zip > $out/target_files_list_post
+            diff $out/target_files_list_post ${config.build.android}/target_files_list || echo "files missing in copied archive"
+            cat $out/target_files_list_post
+            exit ''${PIPESTATUS[0]}
+          '';
+        };
 
         checkAndroid = mkAndroid {
           name = "robotnix-check-${config.device}-${config.buildNumber}";
@@ -513,7 +528,6 @@ in
               bash ${../scripts/patchelf-prefix.sh} "$file" "${pkgs.stdenv.cc.bintools.dynamicLinker}" || continue
             done
           '' + ''
-            set -x
             cp --reflink=auto -r * $out/
           '' + lib.optionalString (config.androidVersion <= 10) ''
             ln -s $out/releasetools/sign_target_files_apks.py $out/bin/sign_target_files_apks
@@ -533,18 +547,34 @@ in
         # TODO: Better way than creating all these scripts and feeding with init-file?
         #        debugUnpackScript = config.build.debugUnpackScript;
         #        debugPatchScript = config.build.debugPatchScript;
-        debugEnterEnv = pkgs.writeShellScript "debug-enter-env.sh" ''
-          export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
-          export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
-          ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeShellScript "debug-enter-env2.sh" ''
+        debugBuildScript = pkgs.writeShellScript "debug-build.sh" ''
+          ${lib.replaceStrings [" | cat"] [""] (config.build.androidBuilderToolkit.buildPhase { makeTargets = config.build.android.makeTargets; })}
+        '';
+        unsharedDebugEnterEnv = pkgs.writeShellScript "debug-enter-env2.sh" ''
           export rootDir=$PWD
           source ${config.build.unpackScript}
+          ${config.build.adevtool.patchPhase}
           ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}
 
           # Become the original user--not fake root. Enter an FHS user namespace
           ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${config.build.env}/bin/robotnix-build
-          ''}
+          '';
+        debugEnterEnv = pkgs.writeShellScript "debug-enter-env.sh" ''
+          export SAVED_UID=$(${pkgs.coreutils}/bin/id -u) SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
+          unshare -m -r ${unsharedDebugEnterEnv}
         '';
+        debugShell = config.build.mkAndroid {
+          name = "${config.device}-debug-shell";
+          outputs = ["out"];
+          unpackPhase = "true";
+          buildPhase = "true";
+          installPhase = ''
+            mkdir -p $out/bin
+            ln -s ${debugEnterEnv} $out/bin/debug-enter-env.sh
+            ln -s ${unsharedDebugEnterEnv} $out/bin/unshared-debug-enter-env.sh
+            ln -s ${debugBuildScript} $out/bin/debug-build.sh
+          '';
+        };
 
         env =
           let

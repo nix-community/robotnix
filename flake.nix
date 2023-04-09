@@ -33,28 +33,32 @@
         manual = (import ./docs { inherit pkgs; }).manual;
       };
 
-      devShell.x86_64-linux = pkgs.mkShell {
-        name = "robotnix-scripts";
-        nativeBuildInputs = with pkgs; [
-          # For android updater scripts
-          python3-local
-          (gitRepo.override { python3 = python39; })
-          nix-prefetch-git
-          curl
-          pup
-          jq
-          shellcheck
-          wget
+      devShells.x86_64-linux = {
+        default = pkgs.mkShell {
+          name = "robotnix-scripts";
+          nativeBuildInputs = with pkgs; [
+            # For android updater scripts
+            python3-local
+            (gitRepo.override { python3 = python39; })
+            nix-prefetch-git
+            curl
+            pup
+            jq
+            shellcheck
+            wget
 
-          # For chromium updater script
-          python2
-          cipd
-          git
+            # For chromium updater script
+            python2
+            cipd
+            git
 
-          cachix
-        ];
-        PYTHONPATH = ./scripts;
-      };
+            cachix
+          ];
+          PYTHONPATH = ./scripts;
+        };
+      } // (pkgs.lib.mapAttrs
+        (device: robotnixSystem: robotnixSystem.config.build.debugShell)
+        exampleImages);
       exampleImages = (pkgs.lib.listToAttrs (map
         (device: {
           name = device;
@@ -69,7 +73,7 @@
               sopsDecrypt = {
                 enable = true;
                 sopsConfig = ./.sops.yaml;
-                key = ./test-keys/keystore-private-keys.txt;
+                key = ./.keystore-private-keys.txt;
                 keyType = "age";
               };
             };

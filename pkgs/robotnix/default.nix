@@ -12,11 +12,17 @@ let
     echo "\"$fingerprint\"" > $out
   '');
 
-  certFingerprint = keysFun: cert: (import (runCommand "cert-fingerprint" {} (keysFun ''
+  certFingerprint = keysFun: cert: (import (runCommand "cert-fingerprint" {
+    nativeBuildInputs = with pkgs; [ sops age gnupg ];
+  } (keysFun ''
     ${openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${cert} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
   '')));
 
-  sha256Fingerprint = file: lib.toUpper (builtins.hashFile "sha256" file);
+  sha256Fingerprint = keysFun: file: (import (runCommand "sha256-fingerprint" {
+    nativeBuildInputs = with pkgs; [ sops age gnupg ];
+  }) (keysFun ''
+    sha256sum ${file} | tr '[:lower:]' '[:upper:]' > $out
+  ''));
 
   # getName snippet originally from nixpkgs/pkgs/build-support/trivial-builders.nix
   getName = fname: apk:
@@ -39,7 +45,9 @@ let
         --add-flags "-jar ${build-tools}/lib/apksigner.jar"
     '';
 
-  signApk = { apk, keyPath, keysFun, name ? (getName "signApk" apk) + "-signed.apk" }: runCommand name {} (keysFun ''
+  signApk = { apk, keyPath, keysFun, name ? (getName "signApk" apk) + "-signed.apk" }: runCommand name {
+    nativeBuildInputs = with pkgs; [ sops age gnupg ];
+  } (keysFun ''
       cp ${apk} $out
       ${apksigner}/bin/apksigner sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
     '');

@@ -21,18 +21,30 @@ let
     ${commands}
   '';
 
-  runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {} (wrapScript {
+  runWrappedCommand = name: script: args: pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" {
+    nativeBuildInputs = with pkgs; [ sops age gnupg config.build.checkTargetFiles ];
+  } (wrapScript {
     commands = script (args // {out="$out";});
     keysDir = config.signing.keyStorePath;
   });
 
+  fileSigningEnvironment = name: script: args: config.build.mkAndroid {
+    name = "${config.device}-${name}-${config.buildNumber}.zip";
+    outputs = ["out"];
+    nativeBuildInputs = with pkgs; [ sops age gnupg config.build.checkTargetFiles ];
+    buildPhase = wrapScript {
+      commands = script (args // {out="$out";});
+      keysDir = config.signing.keyStorePath;
+    };
+
+    installPhase = "true";
+  };
+
   signedTargetFilesScript = { targetFiles, out }: ''
-  ( OUT=$(realpath ${out})
-    cd ${otaTools}; # Enter otaTools dir so relative paths are correct for finding original keys
+    OUT=$(realpath ${out})
     sign_target_files_apks \
       -o ${toString config.signing.signTargetFilesArgs} \
       ${targetFiles} $OUT
-  )
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
     ota_from_target_files  \
@@ -42,9 +54,8 @@ let
   '';
   imgScript = { targetFiles, out }: ''img_from_target_files ${targetFiles} ${out}'';
   factoryImgScript = { targetFiles, img, out }: ''
-      set -x
-      ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
-      ln -s ${img} ${config.device}-img-${config.buildNumber}.zip || true
+      ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip
+      ${pkgs.coreutils}/bin/cp -rL --copy-contents ${img} ${config.device}-img-${config.buildNumber}.zip
 
       export DEVICE=${config.device}
       export PRODUCT=${config.device}
@@ -60,9 +71,7 @@ let
 
       export PATH=${lib.getBin pkgs.zip}/bin:${lib.getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
-      ls -l
-      dd if=${config.device}-factory-${config.buildNumber}.zip of=${out}
-      ls -l $out
+      ${pkgs.coreutils}/bin/cp -rL --copy-contents ${config.device}-factory-${config.buildNumber}.zip ${out}
   '';
 in
 {
@@ -114,7 +123,7 @@ in
   config.build = rec {
     # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
     unsignedTargetFiles = config.build.android + "/${config.productName}-target_files-${config.buildNumber}.zip";
-    signedTargetFiles = runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;};
+    signedTargetFiles = fileSigningEnvironment "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;};
     targetFiles = if config.signing.enable then signedTargetFiles else unsignedTargetFiles;
     ota = runWrappedCommand "ota_update" otaScript { inherit targetFiles; };
     incrementalOta = runWrappedCommand "incremental-${config.prevBuildNumber}" otaScript { inherit targetFiles; inherit (config) prevTargetFiles; };

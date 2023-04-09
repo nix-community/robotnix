@@ -4,7 +4,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkMerge mkOption mkEnableOption mkDefault mkOptionDefault mkRenamedOptionModule types;
+  inherit (lib) mkIf mkMerge mkOption mkEnableOption mkDefault mkOptionDefault mkRenamedOptionModule mkSubModule types;
 
   cfg = config.signing;
 
@@ -97,33 +97,31 @@ in
 
       sopsDecrypt = {
         enable = mkEnableOption "decrypt key files using sops";
-        keyType = {
-          type = types.enum ["age" "pgp_public" "pgp"];
+        keyType = mkOption {
+          type = types.enum ["age" "pgp"];
           description = ''
             denotes the kind of key passed to this module:
               * age - the key refers to an age keys.txt file that contains the age key(s), one line per key
               * pgp - the key refers to a pgp public key and the private key will need to be read from config.signing.sopsDecrypt.gpgHome
 
             make sure to add `--extra-sandbox-paths "$GPG_HOME"` to the nix cli invocation to ensure this path is readable.
+
+            DO NOT CHECK YOUR PRIVATE KEY INTO GIT!!
           '';
         };
-        key = {
-          type = types.str;
+        key = mkOption {
+          type = types.oneOf [types.str types.path];
           description = "see keyType";
         };
-        sopsConfig = {
+        sopsConfig = mkOption {
           type = types.path;
           description = ''
             config file for sops to use to choose a private key from those provided -- refer to https://github.com/mozilla/sops/ for details on how to provide this file.
           '';
         };
-        gpgHome = {
-          type = types.str;
+        gpgHome = mkOption {
+          type = types.nullOr types.str;
           description = "see keyType";
-        };
-        gpgTTY = {
-          type = types.str;
-          description = "if your pgp key must be read from a card, you will need to set this var so GPG_TTY gets set correctly";
         };
       };
     };
@@ -141,8 +139,7 @@ in
 
     signing.keyStorePath = mkIf (!config.signing.enable) (mkDefault testKeysStorePath);
     signing.avb.fingerprint = mkIf config.signing.enable (mkOptionDefault
-      (pkgs.robotnix.sha256Fingerprint (putInStore "${config.signing.keyStorePath}/${config.device}/avb_pkmd.bin"))
-      );
+      (pkgs.robotnix.sha256Fingerprint (config.build.signing.withKeys config.signing.keyStorePath) "$KEYSDIR/${config.device}/avb_pkmd.bin"));
     signing.avb.verityCert = mkIf config.signing.enable (mkOptionDefault (putInStore "${config.signing.keyStorePath}/${config.device}/verity.x509.pem"));
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
@@ -361,7 +358,6 @@ in
     '';
 
     build.signing.withKeys = keysDir: script: ''
-      set -x
       export KEYSDIR=${keysDir}
       if [[ "$KEYSDIR" ]]; then
         if [[ ! -d "$KEYSDIR" ]]; then
@@ -373,15 +369,16 @@ in
         trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
 
         # copy the keys over
-        SOPS_AGE_KEY_FILE=${lib.optionalString (config.signing.sopsDecrypt.keyType == "age") config.signing.sopsDecrypt.key};
-        SOPS_PGP_KEY=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp") config.signing.sopsDecrypt.key};
-        GPG_HOME=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp") config.signing.sopsDecrypt.gpgHome};
-        GPG_TTY=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp" && builtins.isString config.signing.sopsDecrypt.gpgTTY) config.signing.sopsDecrypt.gpgTTY};
-        cd $KEYSDIR
+        export SOPS_AGE_KEY_FILE=${lib.optionalString (config.signing.sopsDecrypt.keyType == "age") config.signing.sopsDecrypt.key};
+        export SOPS_PGP_FP=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp") config.signing.sopsDecrypt.key};
+        export GNUPGHOME=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp" && builtins.hasAttr "gpgHome" config.signing.sopsDecrypt) (builtins.getAttr "gpgHome" config.signing.sopsDecrypt)};
+        if [ -n $GNUPGHOME ]; then export HOME=$(dirname $GNUPGHOME); fi
+
+        (cd $KEYSDIR
         for f in `find . -type f`; do
           mkdir -p $(dirname $NEW_KEYSDIR/''${f#./})
-          ${if config.signing.sopsDecrypt.enable then "sops -c ${config.signing.sopsDecrypt.sopsConfig} -d $f --output" else "cp $f"} $NEW_KEYSDIR/''${f#./}
-        done
+          ${if config.signing.sopsDecrypt.enable then "sops --config ${config.signing.sopsDecrypt.sopsConfig} -d $f >" else "cp $f"} $NEW_KEYSDIR/''${f#./}
+        done)
 
         # now set the new KEYSDIR and run the script
         KEYSDIR=$NEW_KEYSDIR

@@ -97,7 +97,7 @@ in
         export HOME=$(pwd)
         ${lib.concatMapStringsSep "\n"
           (name: ''
-            umount ${config.source.dirs.${name}.relpath}
+            ${pkgs.utillinux}/bin/umount ${config.source.dirs.${name}.relpath}
             rmdir ${config.source.dirs.${name}.relpath}
             cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${config.source.dirs.${name}.src} ${config.source.dirs.${name}.relpath}
             chmod u+w -R ${config.source.dirs.${name}.relpath}
