@@ -25,8 +25,9 @@ let
   kernelSources = subPaths sourceRelpath;
   unpackSrc = name: src: ''
     shopt -s dotglob
-    mkdir -p ${name}
-    cp -r ${src}/* ${name}
+    rm -rf ${name}
+    mkdir -p $(dirname ${name})
+    cp -r ${src} ${name}
   '';
   linkSrc = name: c: lib.optionalString (lib.hasAttr "linkfiles" c) (lib.concatStringsSep "\n" (map
     ({ src, dest }: ''
@@ -113,6 +114,7 @@ let
       ];
 
       unpackPhase = ''
+        set -eo pipefail
         shopt -s dotglob
         ${unpackSrcs kernelSources}
         chmod -R a+w .

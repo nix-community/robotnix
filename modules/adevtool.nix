@@ -44,7 +44,7 @@ let
       '';
       nativeBuildInputs = with pkgs; [ unzip ];
       buildPhase = ''
-        set -ex
+        set -e
         cp ${img}/${device}-${lib.toLower buildID}-*.zip img.zip
         cp ${img}/${device}-ota-${lib.toLower buildID}-*.zip ota.zip
 
@@ -105,11 +105,13 @@ in
           sepolicyDirNames}
 
         cp -r ${config.build.adevtool.img}/${config.device}-${lib.toLower cfg.buildID}-*.zip img.zip
+        cat <<-EOH | robotnix-build
         ${adevtool} \
           fix-certs \
           -s  img.zip \
           -d ${config.device} \
           -p ${lib.concatStringsSep " " sepolicyDirNames}
+        EOH
       '';
     };
     source.dirs = mkIf cfg.enable {
