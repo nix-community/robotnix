@@ -27,6 +27,7 @@ in
       # Things not in build/soong/ui/build/paths/config.go
       nettools # Needed for "hostname" in build/soong/ui/build/sandbox_linux.go
       procps # Needed for "ps" in build/envsetup.sh
+      glibc
     ]
     (mkIf (config.androidVersion >= 10) [
       freetype # Needed by jdk9 prebuilt

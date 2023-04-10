@@ -42,9 +42,8 @@ let
       else { "${builtins.head xs}" = listToTreeBranch (builtins.tail xs); };
     combineTreeBranches = branches:
       lib.foldr lib.recursiveUpdate {} branches;
-    enabledDirs = lib.filterAttrs (name: dir: dir.enable) config.source.dirs;
   in
-    combineTreeBranches (lib.mapAttrsToList (name: dir: listToTreeBranch (lib.splitString "/" dir.relpath)) enabledDirs);
+    combineTreeBranches (lib.mapAttrsToList (name: dir: listToTreeBranch (lib.splitString "/" dir.relpath)) config.source.dirs);
 
   fileModule = types.submodule ({ config, ... }: {
     options = {

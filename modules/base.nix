@@ -605,6 +605,7 @@ in
             name = "robotnix-build";
             targetPkgs = pkgs: config.envPackages;
             multiPkgs = pkgs: with pkgs; [ zlib ];
+            extraOutputsToInstall = ["dev"];
           };
       };
     }

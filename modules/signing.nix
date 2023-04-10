@@ -358,6 +358,7 @@ in
     '';
 
     build.signing.withKeys = keysDir: script: ''
+      set -x
       export KEYSDIR=${keysDir}
       if [[ "$KEYSDIR" ]]; then
         if [[ ! -d "$KEYSDIR" ]]; then
