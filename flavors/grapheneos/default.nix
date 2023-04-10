@@ -35,7 +35,7 @@ let
         enable = false;
       };
     })
-    (lib.importJSON (./kernel-repos/repo- + "${config.deviceFamily}-${grapheneOSRelease}.json"));
+    (lib.importJSON (./kernel-repos/repo- + "${kernelRepoName}-${grapheneOSRelease}.json"));
 in
 mkIf (config.flavor == "grapheneos") (mkMerge [
   rec {
