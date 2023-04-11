@@ -38,7 +38,6 @@ in
     enable_gvr_services = false;
     enable_remoting = false;
     enable_reporting = true; # 83.0.4103.83 build is broken without building this code
-    enable_multidex = true;
   };
   # Needed for patces/0082-update-dependencies.patch in earlier versions of vanadium
   # -- this patch no longer exists at least as of 112.

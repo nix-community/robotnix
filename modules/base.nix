@@ -162,6 +162,24 @@ in
       description = "`PRODUCT_PACKAGES` to add under `vendor` partition.";
     };
 
+    system.additionalProductSoongNamespaces = mkOption {
+      default = [ ];
+      type = types.listOf types.str;
+      description = "`PRODUCT_SOONG_NAMESPACES` to add under `system` partition.";
+    };
+
+    product.additionalProductSoongNamespaces = mkOption {
+      default = [ ];
+      type = types.listOf types.str;
+      description = "`PRODUCT_SOONG_NAMESPACES` to add under `product` partition.";
+    };
+
+    vendor.additionalProductSoongNamespaces = mkOption {
+      default = [ ];
+      type = types.listOf types.str;
+      description = "`PRODUCT_SOONG_NAMESPACES` to add under `vendor` partition.";
+    };
+
     removedProductPackages = mkOption {
       default = [ ];
       type = types.listOf types.str;
@@ -406,29 +424,29 @@ in
           }) // config.envVars);
 
         android = mkAndroid {
-            inherit (config.build.adevtool) patchPhase;
-            name = "robotnix-${config.productName}-${config.buildNumber}";
-            nativeBuildInputs = with pkgs; [ unzip libarchive ];
-            makeTargets = (lib.optional config.build.postRaviole [ "vendorbootimage" ])
-              ++ (lib.optional config.build.postPantah [ "vendorkernelbootimage" ])
-              ++ [ "target-files-package" "otatools-package" ];
-            # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
-            installPhase = ''
-              mkdir -p $out
-              cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
-              cp --reflink=auto -r $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/* $out/
-            '' + lib.optionalString (config.androidVersion >= 13) ''
-              bsdtar tvf $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.device}-target_files-${config.buildNumber}.zip > $out/target_files_list_pre
-              bsdtar tvf $out/${config.device}-target_files-${config.buildNumber}.zip > $out/target_files_list
-              diff $out/target_files_list_pre $out/target_files_list || echo "files missing in copied archive"
-              exit ''${PIPESTATUS[0]}
-            '';
-          };
+          inherit (config.build.adevtool) patchPhase;
+          name = "robotnix-${config.productName}-${config.buildNumber}";
+          nativeBuildInputs = with pkgs; [ unzip libarchive ];
+          makeTargets = (lib.optional config.build.postRaviole [ "vendorbootimage" ])
+            ++ (lib.optional config.build.postPantah [ "vendorkernelbootimage" ])
+            ++ [ "target-files-package" "otatools-package" ];
+          # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
+          installPhase = ''
+            mkdir -p $out
+            cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
+            cp --reflink=auto -r $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/* $out/
+          '' + lib.optionalString (config.androidVersion >= 13) ''
+            bsdtar tvf $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.device}-target_files-${config.buildNumber}.zip > $out/target_files_list_pre
+            bsdtar tvf $out/${config.device}-target_files-${config.buildNumber}.zip > $out/target_files_list
+            diff $out/target_files_list_pre $out/target_files_list || echo "files missing in copied archive"
+            exit ''${PIPESTATUS[0]}
+          '';
+        };
 
         checkTargetFiles = pkgs.stdenv.mkDerivation {
           name = "check-${config.device}-target_files-${config.buildNumber}";
           src = pkgs.emptyDirectory;
-          nativeBuildInputs = with pkgs; [diffutils libarchive];
+          nativeBuildInputs = with pkgs; [ diffutils libarchive ];
           buildPhase = ''
             mkdir -p $out
           '' + lib.optionalString (config.androidVersion >= 13) ''
@@ -552,20 +570,21 @@ in
         '';
         unsharedDebugEnterEnv = pkgs.writeShellScript "debug-enter-env2.sh" ''
           export rootDir=$PWD
+          export PATH=${config.build.env}/bin/:$PATH
           source ${config.build.unpackScript}
           ${config.build.adevtool.patchPhase}
           ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}
 
           # Become the original user--not fake root. Enter an FHS user namespace
           ${fakeuser}/bin/fakeuser $SAVED_UID $SAVED_GID ${config.build.env}/bin/robotnix-build
-          '';
+        '';
         debugEnterEnv = pkgs.writeShellScript "debug-enter-env.sh" ''
           export SAVED_UID=$(${pkgs.coreutils}/bin/id -u) SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
           unshare -m -r ${unsharedDebugEnterEnv}
         '';
         debugShell = config.build.mkAndroid {
           name = "${config.device}-debug-shell";
-          outputs = ["out"];
+          outputs = [ "out" ];
           unpackPhase = "true";
           buildPhase = "true";
           installPhase = ''
@@ -605,7 +624,7 @@ in
             name = "robotnix-build";
             targetPkgs = pkgs: config.envPackages;
             multiPkgs = pkgs: with pkgs; [ zlib ];
-            extraOutputsToInstall = ["dev"];
+            extraOutputsToInstall = [ "dev" ];
           };
       };
     }

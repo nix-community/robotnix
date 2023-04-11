@@ -58,6 +58,12 @@ in
           extraConfig = mkOption {
             type = types.lines;
             description = "extra module configuration to include with the apk";
+            default = "";
+          };
+
+          usesLibraries = mkOption {
+            type = types.listOf types.str;
+            default = [];
           };
         };
       }));

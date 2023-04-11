@@ -49,7 +49,7 @@ in
   };
 
   config = mkMerge ((lib.flatten (map
-    ({ name, displayName, buildSeparately ? false, chromeModernIsBundled ? true, isTriChrome ? (config.androidVersion >= 10) }: let
+    ({ name, displayName, buildSeparately ? false, chromeModernIsBundled ? true, isTriChrome ? (config.androidVersion >= 10), triChromeBundled ? false }: let
       # There is a lot of shared code between chrome app and chrome webview. So we
       # default to building them in a single derivation. This is not optimal if
       # the user is enabling/disabling the apps/webview independently, but the
@@ -65,7 +65,8 @@ in
         targetCPU = { arm64 = "arm64"; arm = "arm"; x86_64 = "x64"; x86 = "x86";}.${config.arch};
       });
       chromiumTargets =
-        if isTriChrome then [ "trichrome_chrome_bundle" "trichrome_library_apk" ]
+        if isTriChrome
+        then if triChromeBundled then [ "trichrome_chrome_bundle" "trichrome_library_apk" ] else ["trichrome_chrome_64_32_apk" "trichrome_library_64_apk"]
         else if chromeModernIsBundled then [ "chrome_modern_public_bundle" ]
         else [ "chrome_modern_public_apk" ];
       webviewTargets =
@@ -89,7 +90,10 @@ in
       {
         apps.prebuilt.${name} = {
           apk =
-            if isTriChrome then patchedTrichromeApk "browser" (aab2apk "${browser}/TrichromeChrome.aab")
+            if isTriChrome then
+              if triChromeBundled
+              then patchedTrichromeApk "browser" (aab2apk "${browser}/TrichromeChrome.aab")
+              else patchedTrichromeApk "browser" "${browser}/TrichromeChrome6432.apk"
             else if chromeModernIsBundled then aab2apk "${browser}/ChromeModernPublic.aab"
             else "${browser}/ChromeModernPublic.apk";
           enable = mkWeakDefault config.apps.${name}.enable;
@@ -120,7 +124,7 @@ in
         build.${name} = browser; # Put here for convenience
 
         apps.prebuilt."${name}TrichromeLibrary" = {
-          apk = "${browser}/TrichromeLibrary.apk";
+          apk = if triChromeBundled then "${browser}/TrichromeLibrary.apk" else "${browser}/TrichromeLibrary6432.apk";
           enable = mkWeakDefault (isTriChrome && (config.apps.${name}.enable || config.webview.${name}.enable));
           certificate = config.apps.prebuilt.${name}.certificate;  # Share certificate with application
           fingerprint = config.apps.prebuilt.${name}.fingerprint;
@@ -134,7 +138,7 @@ in
       # For an unknown reason, Bromite fails to build chrome_modern_public_bundle
       # simultaneously with system_webview_apk as of 2020-12-22
       { name = "bromite"; displayName = "Bromite"; buildSeparately = true; isTriChrome = false; }
-      { name = "vanadium"; displayName = "Vanadium"; }
+      { name = "vanadium"; displayName = "Vanadium"; triChromeBundled = false; }
     ]
   )) ++ [
     {
