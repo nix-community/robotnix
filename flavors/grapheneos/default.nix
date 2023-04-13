@@ -21,6 +21,7 @@ let
     "sunfish" = "coral";
     "bramble" = "redbull";
     "redfin" = "redbull";
+    "barbet" = "redbull";
     "oriole" = "raviole";
     "raven" = "raviole";
     "bluejay" = "bluejay";
@@ -54,8 +55,8 @@ mkIf (config.flavor == "grapheneos") (mkMerge [
 
     # TODO: re-add the legacy devices
     apv.enable = mkIf (config.androidVersion <= 12 && elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-    apv.buildID = mkDefault (if (elem config.device [ "panther" ]) then "TQ2A.230305.008" else
-    (if (elem config.device [ "bluejay" ]) then "TQ2A.230305.008.E1" else "TQ2A.230305.008.C1"));
+    apv.buildID = mkDefault (if (elem config.device [ "oriole" "raven" "bluejay" "panther" "cheetah" ]) then "TQ2A.230405.003.E1" else
+    (if (elem config.device [ "sunfish" "bramble" "redfin" "barbet" ]) then "TQ2A.230405.003" else "TP1A.221005.002.B2"));
     adevtool.enable = mkIf (config.androidVersion >= 13 && elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
     adevtool.buildID = config.apv.buildID;
 
