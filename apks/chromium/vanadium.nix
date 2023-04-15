@@ -8,7 +8,7 @@ let
     owner = "GrapheneOS";
     repo = "Vanadium";
     rev = "112.0.5615.101.0";
-    sha256 = "sha256-FaYJnQgRL15u6PDJlvsFLDgKfey+pq1IV7NQkb9G6dQ=";
+    sha256 = "sha256-KyfLDeKp631HX4i51RrVpk4YAQ9sUOsY3ydPrUkjbhk=";
   };
 in
 (chromium.override rec {
