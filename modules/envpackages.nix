@@ -54,7 +54,7 @@ in
       perl
       python2
       schedtool
-      utillinux
+      util-linux
       which
     ])
   ]);
