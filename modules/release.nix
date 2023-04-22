@@ -180,15 +180,15 @@ in
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
     releaseScript =
       (if (!config.signing.enable) then lib.warn "releaseScript should be used only if signing.enable = true; Otherwise, the build might be using incorrect keys / certificate metadata" else lib.id)
-      pkgs.writeShellScript "release.sh" (''
+      pkgs.writeShellScript "release.sh" ( ''
       set -euo pipefail
 
-      if [[ $# -ge 2 ]]; then
-        PREV_BUILDNUMBER="$2"
+      if [[ $# -ge 1 ]]; then
+        PREV_BUILDNUMBER="$1"
       else
         PREV_BUILDNUMBER=""
       fi
-      '' + (wrapScript { keysDir="$1"; commands=''
+      '' + (wrapScript { keysDir=config.signing.keyStorePath; commands=''
       echo Signing target files
       ${signedTargetFilesScript { targetFiles=unsignedTargetFiles; out=signedTargetFiles.name; }}
       echo Building OTA zip

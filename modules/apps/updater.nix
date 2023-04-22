@@ -9,20 +9,32 @@ let
   cfg = config.apps.updater;
 
   src =
-    if config.androidVersion < 12 then
-      pkgs.fetchFromGitHub {
-        owner = "GrapheneOS";
-        repo = "platform_packages_apps_Updater";
-        rev = "55cdaf75f046929ccf898b23a1e294847be73539"; # 2021-08-25
-        sha256 = "1hjh5wy4mh11svxw8qzl1fzjbwariwgc9gj3bmad92s1wy62y7rw";
-      }
+    if config.androidVersion < 12
+    then
+      pkgs.fetchFromGitHub
+        {
+          owner = "GrapheneOS";
+          repo = "platform_packages_apps_Updater";
+          rev = "55cdaf75f046929ccf898b23a1e294847be73539"; # 2021-08-25
+          sha256 = "1hjh5wy4mh11svxw8qzl1fzjbwariwgc9gj3bmad92s1wy62y7rw";
+        }
     else
-      pkgs.fetchFromGitHub {
-        owner = "GrapheneOS";
-        repo = "platform_packages_apps_Updater";
-        rev = "c5343bb56bd22ec430fa9f706e9d3e75a5a50fd3"; # 2021-11-11
-        sha256 = "0sc0vpvp2yq71zr3bdnvkcds544127ijkqnq6dbr73ii4c270ff4";
-      };
+      if config.androidVersion < 13
+      then
+        pkgs.fetchFromGitHub
+          {
+            owner = "GrapheneOS";
+            repo = "platform_packages_apps_Updater";
+            rev = "c5343bb56bd22ec430fa9f706e9d3e75a5a50fd3"; # 2021-11-11
+            sha256 = "0sc0vpvp2yq71zr3bdnvkcds544127ijkqnq6dbr73ii4c270ff4";
+          }
+      else
+        pkgs.fetchFromGitHub {
+          owner = "GrapheneOS";
+          repo = "platform_packages_apps_Updater";
+          rev = "649df566ceaf5b930971601335b37adf146925df"; # 2023-04-17
+          sha256 = lib.fakeSha256;
+        };
 
   relpath = (if cfg.includedInFlavor then "packages" else "robotnix") + "/apps/Updater";
 in
