@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 { stdenv, lib, callPackage, fetchurl, fetchpatch, fetchFromGitHub, autoPatchelfHook, makeWrapper,
-  simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, utillinux, perl, python2, python3, libarchive,
+  simg2img, zip, unzip, e2fsprogs, jq, jdk, curl, util-linux, perl, python2, python3, libarchive,
   api ? 32
 }:
 
@@ -91,7 +91,7 @@ in
     patchShebangs ./scripts
 
     for i in ./execute-all.sh ./scripts/download-nexus-image.sh ./scripts/extract-factory-images.sh ./scripts/generate-vendor.sh ./scripts/gen-prop-blobs-list.sh ./scripts/realpath.sh ./scripts/system-img-repair.sh ./scripts/extract-ota.sh; do
-        sed -i '2 i export PATH=$PATH:${lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk utillinux perl curl libarchive ]}' $i
+        sed -i '2 i export PATH=$PATH:${lib.makeBinPath [ zip unzip simg2img dexrepair e2fsprogs jq jdk util-linux perl curl libarchive ]}' $i
     done
 
     # Fix when using --input containing readonly files

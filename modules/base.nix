@@ -303,7 +303,7 @@ in
             export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
 
             # Become a fake "root" in a new namespace so we can bind mount sources
-            ${pkgs.toybox}/bin/cat << 'EOF' | ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.runtimeShell}
+            ${pkgs.toybox}/bin/cat << 'EOF' | ${pkgs.util-linux}/bin/unshare -m -r ${pkgs.runtimeShell}
             source $stdenv/setup
             genericBuild
             EOF
@@ -474,7 +474,7 @@ in
       debugEnterEnv = pkgs.writeShellScript "debug-enter-env.sh" ''
         export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
         export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
-        ${pkgs.utillinux}/bin/unshare -m -r ${pkgs.writeShellScript "debug-enter-env2.sh" ''
+        ${pkgs.util-linux}/bin/unshare -m -r ${pkgs.writeShellScript "debug-enter-env2.sh" ''
         export rootDir=$PWD
         source ${config.build.unpackScript}
         ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}

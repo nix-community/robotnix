@@ -200,7 +200,7 @@ let
 
       unpackScript = (lib.optionalString config.enable ''
         mkdir -p ${config.relpath}
-        ${pkgs.utillinux}/bin/mount --bind ${config.src} ${config.relpath}
+        ${pkgs.util-linux}/bin/mount --bind ${config.src} ${config.relpath}
       '')
       + (lib.concatMapStringsSep "\n" (c: ''
         mkdir -p $(dirname ${c.dest})

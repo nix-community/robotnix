@@ -11,8 +11,8 @@ buildFHSUserEnv {
     # Stuff verified to be needed in chromium
     jdk8
     glibc_multi.dev # Needs unistd.h
-    kerberos.dev # Needs headers
-    kerberos
+    libkrb5.dev # Needs headers
+    libkrb5
     ncurses5
     libxml2
   ];

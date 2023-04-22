@@ -11,7 +11,7 @@ let
   wrapScript = { commands, keysDir }: let
     jre = if (config.androidVersion >= 11) then pkgs.jdk11_headless else pkgs.jre8_headless;
     deps = with pkgs;
-      [ otaTools openssl jre zip unzip pkgs.getopt which toybox vboot_reference utillinux
+      [ otaTools openssl jre zip unzip pkgs.getopt which toybox vboot_reference util-linux
         python # ota_from_target_files invokes, brillo_update_payload which has "truncate_file" which invokes python
       ];
   in ''
