@@ -33,7 +33,7 @@
         # For android updater scripts
         (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
         gitRepo nix-prefetch-git
-        curl go-pup jq
+        curl pup jq
         shellcheck
         wget
 
