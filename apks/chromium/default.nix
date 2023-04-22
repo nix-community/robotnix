@@ -3,8 +3,8 @@
 
 { pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook, buildPackages
 , python2, python3, ninja, llvmPackages_11, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
-, dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, utillinux, kerberos, gdk-pixbuf
-, glib, gtk3, alsaLib, pulseaudio, xdg_utils, libXScrnSaver, libXcursor, libXtst, libXdamage
+, dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, util-linux, libkrb5, gdk-pixbuf
+, glib, gtk3, alsa-lib, pulseaudio, xdg-utils, libXScrnSaver, libXcursor, libXtst, libXdamage
 , libdrm, libxkbcommon
 , zlib, ncurses5, libxml2, binutils, perl
 , substituteAll, fetchgerritpatchset
@@ -160,8 +160,8 @@ in stdenvNoCC.mkDerivation rec {
 
   # Even though we are building for android, it still complains if its missing linux libs/headers>..
   buildInputs = [
-    dbus at-spi2-atk atk at-spi2-core nspr nss pciutils utillinux kerberos libxkbcommon
-    gdk-pixbuf glib gtk3 alsaLib libXScrnSaver libXcursor libXtst libXdamage
+    dbus at-spi2-atk atk at-spi2-core nspr nss pciutils util-linux libkrb5 libxkbcommon
+    gdk-pixbuf glib gtk3 alsa-lib libXScrnSaver libXcursor libXtst libXdamage
     libdrm
   ];
 
