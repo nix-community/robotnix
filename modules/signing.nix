@@ -369,9 +369,9 @@ in
         trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
 
         # copy the keys over
-        export SOPS_AGE_KEY_FILE=${lib.optionalString (config.signing.sopsDecrypt.keyType == "age") config.signing.sopsDecrypt.key};
-        export SOPS_PGP_FP=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp") config.signing.sopsDecrypt.key};
-        export GNUPGHOME=${lib.optionalString (config.signing.sopsDecrypt.keyType == "pgp" && builtins.hasAttr "gpgHome" config.signing.sopsDecrypt) (builtins.getAttr "gpgHome" config.signing.sopsDecrypt)};
+        export SOPS_AGE_KEY_FILE=${lib.optionalString (config.signing.sopsDecrypt.enable && config.signing.sopsDecrypt.keyType == "age") config.signing.sopsDecrypt.key};
+        export SOPS_PGP_FP=${lib.optionalString (config.signing.sopsDecrypt.enable && config.signing.sopsDecrypt.keyType == "pgp") config.signing.sopsDecrypt.key};
+        export GNUPGHOME=${lib.optionalString (config.signing.sopsDecrypt.enable && config.signing.sopsDecrypt.keyType == "pgp" && builtins.hasAttr "gpgHome" config.signing.sopsDecrypt) (builtins.getAttr "gpgHome" config.signing.sopsDecrypt)};
         if [ -n $GNUPGHOME ]; then export HOME=$(dirname $GNUPGHOME); fi
 
         (cd $KEYSDIR
