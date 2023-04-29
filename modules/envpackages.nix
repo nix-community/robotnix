@@ -28,6 +28,8 @@ in
       nettools # Needed for "hostname" in build/soong/ui/build/sandbox_linux.go
       procps # Needed for "ps" in build/envsetup.sh
       glibc
+      glibc.dev.dev.dev
+      stdenv.cc.cc
     ]
     (mkIf (config.androidVersion >= 10) [
       freetype # Needed by jdk9 prebuilt

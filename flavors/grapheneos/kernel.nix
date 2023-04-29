@@ -4,13 +4,13 @@ let
   inherit (lib)
     mkIf mkMerge mkDefault;
 
-  clangVersion = "r450784e";
   postRedfin = lib.elem config.deviceFamily [ "redfin" "barbet" "raviole" "bluejay" "pantah" ];
   postRaviole = lib.elem config.deviceFamily [ "raviole" "bluejay" "pantah" ];
+  clangVersion = if postRaviole then "r450784e" else "r416183b";
   buildScriptFor = {
     "coral" = "build/build.sh";
     "sunfish" = "build/build.sh";
-    "redbull" = "build/build.sh";
+    "redfin" = "build/build.sh";
     "raviole" = "build_slider.sh";
     "bluejay" = "build_bluejay.sh";
     "pantah" = "build_cloudripper.sh";
@@ -20,7 +20,7 @@ let
   kernelPrefix = if (config.androidVersion >= 13) then "kernel/android" else "kernel/google";
   grapheneOSRelease = "${config.apv.buildID}.${config.buildNumber}";
 
-  buildConfigVar = "private/msm-google/build.config.${config.deviceFamily}";
+  buildConfigVar = "private/msm-google/build.config.${if config.deviceFamily != "redfin" then config.deviceFamily else "redbull"}${lib.optionalString (config.deviceFamily == "redfin") ".vintf"}";
   subPaths = prefix: (lib.filter (name: (lib.hasPrefix prefix name)) (lib.attrNames config.source.dirs));
   kernelSources = subPaths sourceRelpath;
   unpackSrc = name: src: ''
@@ -69,99 +69,98 @@ let
     "panther" = "pantah";
     "cheetah" = "pantah";
   }.${config.device} or config.device;
-  builtRelpath = "device/google/${builtKernelName}-kernel";
+  builtRelpath = "device/google/${builtKernelName}-kernel${lib.optionalString (config.deviceFamily == "redfin" && config.variant != "user") "/vintf"}";
 
-  kernel =
-    let
-      openssl' = pkgs.openssl;
-      pkgsCross = pkgs.unstable.pkgsCross.aarch64-android-prebuilt;
-      android-stdenv = pkgsCross.gccCrossLibcStdenv;
-      android-bintools = android-stdenv.cc.bintools.bintools_bin;
-      android-gcc = android-stdenv.cc;
-    in
-    config.build.mkAndroid (rec {
-      name = "grapheneos-${builtKernelName}-kernel";
-      inherit (config.kernel) patches postPatch;
+  kernel = config.build.mkAndroid (rec {
+    name = "grapheneos-${builtKernelName}-kernel";
+    inherit (config.kernel) patches postPatch;
 
-      nativeBuildInputs = with pkgs; [
-        perl
-        bc
-        nettools
-        openssl'
-        openssl'.out
-        rsync
-        gmp
-        libmpc
-        mpfr
-        lz4
-        which
-        nukeReferences
-        ripgrep
-        glibc.dev.dev.dev
-        pkg-config
-        autoPatchelfHook
-        coreutils
-        gawk
-      ] ++ lib.optionals postRedfin [
-        python3
-        bison
-        flex
-        cpio
-      ] ++ lib.optionals postRaviole [
-        git
-        zlib
-        elfutils
-      ];
+    nativeBuildInputs = with pkgs; [
+      perl
+      bc
+      nettools
+      openssl'
+      openssl'.out
+      rsync
+      gmp
+      libmpc
+      mpfr
+      lz4
+      which
+      nukeReferences
+      ripgrep
+      glibc.dev.dev.dev
+      pkg-config
+      autoPatchelfHook
+      coreutils
+      gawk
+    ] ++ lib.optionals postRedfin [
+      python
+      python3
+      bison
+      flex
+      cpio
+      zlib
+    ] ++ lib.optionals postRaviole [
+      git
+      elfutils
+    ];
 
-      unpackPhase = ''
+    unpackPhase = ''
+      set -eo pipefail
+      shopt -s dotglob
+      ${unpackSrcs kernelSources}
+      chmod -R a+w .
+      runHook postUnpack
+    '';
+
+    postUnpack = "cd ${sourceRelpath}";
+
+    # Useful to use upstream's build.sh to catch regressions if any dependencies change
+    prePatch = ''
+      for d in `find . -type d -name '*lib*'`; do
+        addAutoPatchelfSearchPath $d
+      done
+      autoPatchelf prebuilts${lib.optionalString (!postRaviole) "-master"}/clang/host/linux-x86/clang-${clangVersion}/bin
+      sed -i '/unset LD_LIBRARY_PATH/d' build/_setup_env.sh
+    '';
+    preBuild = ''
+      mkdir -p ../../../${builtRelpath} out
+      chmod a+w -R ../../../${builtRelpath} out
+    '';
+
+    # TODO: add KBUILD env vars for pre-redfin on android 13
+    buildPhase =
+      let
+        useCodenameArg = config.androidVersion <= 12;
+      in
+      ''
         set -eo pipefail
-        shopt -s dotglob
-        ${unpackSrcs kernelSources}
-        chmod -R a+w .
-        runHook postUnpack
+        ${preBuild}
+
+        ${if postRaviole
+          then "LTO=full BUILD_AOSP_KERNEL=1 cflags='--sysroot /usr '"
+          else "BUILD_CONFIG=${buildConfigVar} HOSTCFLAGS='--sysroot /usr '"} \
+          LD_LIBRARY_PATH="/usr/lib/:/usr/lib32/" \
+          ./${buildScript} \
+          ${lib.optionalString useCodenameArg builtKernelName}
+
+        ${postBuild}
       '';
 
-      postUnpack = "cd ${sourceRelpath}";
+    postBuild = ''
+      cp -r out/${if postRaviole
+                  then "mixed"
+                  else
+                    if postRedfin
+                    then "android-msm-pixel-4.19"
+                    else "android-msm-pixel-4.14"}/dist/* ../../../${builtRelpath}
+    '';
 
-      # Useful to use upstream's build.sh to catch regressions if any dependencies change
-      prePatch = ''
-        for d in `find prebuilts -type d -name '*lib*'`; do
-          addAutoPatchelfSearchPath $d
-        done
-        autoPatchelf prebuilts/clang/host/linux-x86/clang-${clangVersion}/bin
-        sed -i '/unset LD_LIBRARY_PATH/d' build/_setup_env.sh
-      '';
-      preBuild = ''
-        mkdir -p ../../../${builtRelpath} out
-        chmod a+w -R ../../../${builtRelpath} out
-      '';
-
-      # TODO: add KBUILD env vars for pre-raviole on android 13
-      buildPhase =
-        let
-          useCodenameArg = config.androidVersion <= 12;
-        in
-        ''
-          set -eo pipefail
-          ${preBuild}
-
-          ${if postRaviole then "LTO=full BUILD_AOSP_KERNEL=1" else "BUILD_CONFIG=${buildConfigVar}"} \
-            cflags="--sysroot /usr " \
-            LD_LIBRARY_PATH="/usr/lib/:/usr/lib32/" \
-            ./${buildScript} \
-            ${lib.optionalString useCodenameArg builtKernelName}
-
-          ${postBuild}
-        '';
-
-      postBuild = ''
-        cp -r out/mixed/dist/* ../../../${builtRelpath}
-      '';
-
-      installPhase = ''
-        cp -r ../../../${builtRelpath} $out
-      '';
-    });
+    installPhase = ''
+      cp -r ../../../${builtRelpath} $out
+    '';
+  });
 
 in
 mkIf (config.flavor == "grapheneos" && config.kernel.enable) (mkMerge [
