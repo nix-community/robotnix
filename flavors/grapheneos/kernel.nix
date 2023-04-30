@@ -79,8 +79,7 @@ let
       perl
       bc
       nettools
-      openssl'
-      openssl'.out
+      openssl
       rsync
       gmp
       libmpc

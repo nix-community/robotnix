@@ -1,12 +1,12 @@
 {
   "aosp": {
-    "dateTime": 1681169083,
+    "dateTime": 1682122586,
     "groups": [
       "partner"
     ],
-    "rev": "2ce43f87a1d5d5788b2ec0788f1d4f2ec9ad6c9c",
-    "revisionExpr": "2ce43f87a1d5d5788b2ec0788f1d4f2ec9ad6c9c",
-    "sha256": "0lfbsrbl8lgyq17q597zpmkvi3mcjma8kl2r5wd4n0ir7w5c1fng",
+    "rev": "7ec3b8565b6ee6f6d15a16a07c3ed6688d68266c",
+    "revisionExpr": "7ec3b8565b6ee6f6d15a16a07c3ed6688d68266c",
+    "sha256": "0c169bb4gf37qps0x5mnjs509zw0zf3rw4qcvjwkzwya8jvxqjpg",
     "url": "https://github.com/GrapheneOS/kernel_common-5.10"
   },
   "build/bazel_common_rules": {
@@ -86,9 +86,9 @@
         "src": "static_analysis"
       }
     ],
-    "rev": "b56e1214846682bdd56d384d41b5c906da5c4a77",
-    "revisionExpr": "b56e1214846682bdd56d384d41b5c906da5c4a77",
-    "sha256": "1ypqvlxz8h76vdsrnz34j2fjrjpsj07zfbw2p61z6sb9s4yjpl1k",
+    "rev": "07a36a6d39fff8e7dec37ec2e369b91a80dfd46d",
+    "revisionExpr": "07a36a6d39fff8e7dec37ec2e369b91a80dfd46d",
+    "sha256": "1kzn2vc5bi6xzr6ss705c9bxyh280v82g10zcdh9kdyydx6pcpsv",
     "url": "https://github.com/GrapheneOS/kernel_build-gs101"
   },
   "common-modules/virtual-device": {
@@ -226,31 +226,6 @@
     "revisionExpr": "c43649e7548e1054a4f999bfe4aab34ec2fbc8ee",
     "sha256": "0lsa07208c3p07sqs4r81ccpr7zmjq7702mm4pkmhqfrf358rzp3",
     "url": "https://android.googlesource.com/platform/prebuilts/misc"
-  },
-  "private/devices/google/bluejay": {
-    "dateTime": 1677056734,
-    "groups": [
-      "bluejay",
-      "partner"
-    ],
-    "linkfiles": [
-      {
-        "dest": "build_bluejay.sh",
-        "src": "build_bluejay.sh"
-      },
-      {
-        "dest": "update_symbol_list_bluejay.sh",
-        "src": "update_symbol_list_bluejay.sh"
-      },
-      {
-        "dest": "private/gs-google/arch/arm64/boot/dts/google/devices/bluejay",
-        "src": "dts"
-      }
-    ],
-    "rev": "70410309cbe8991f6e0c80b1f355b587315dd491",
-    "revisionExpr": "70410309cbe8991f6e0c80b1f355b587315dd491",
-    "sha256": "149s0y97i98bflmpf4zx0b6rfxfl19wlxbdqjwzxv7h5gd1w1jsn",
-    "url": "https://android.googlesource.com/kernel/devices/google/bluejay"
   },
   "private/google-modules/amplifiers": {
     "dateTime": 1673516666,
@@ -453,7 +428,7 @@
     "url": "https://github.com/GrapheneOS/kernel_google-modules_wlan_bcmdhd_bcm4389-gs101"
   },
   "private/gs-google": {
-    "dateTime": 1681169605,
+    "dateTime": 1682173071,
     "groups": [
       "partner"
     ],
@@ -483,9 +458,9 @@
         "src": "update_symbol_list.sh"
       }
     ],
-    "rev": "55701ef857ae8c467777d4513dd40f1b5f3066de",
-    "revisionExpr": "55701ef857ae8c467777d4513dd40f1b5f3066de",
-    "sha256": "0wqjq04a4j7ffvckxxr47gzvjy36hl0587fih28054mwjx5p65kc",
+    "rev": "c88454e5f852274648b7d5069fb226141131167c",
+    "revisionExpr": "c88454e5f852274648b7d5069fb226141131167c",
+    "sha256": "0pk9jdykvwx3yp53vljqiciz1gr1hhpqz2x2biavvqcd0gagqvgy",
     "url": "https://github.com/GrapheneOS/kernel_gs-gs101"
   },
   "tools/mkbootimg": {
