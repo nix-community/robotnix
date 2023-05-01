@@ -59,6 +59,9 @@ let
     sign_target_files_apks \
       -o ${toString config.signing.signTargetFilesArgs} \
       ${targetFiles} $OUT
+
+    ${pkgs.libarchive}/bin/bsdtar tvf $OUT > target_files_list
+    diff target_files_list ${config.build.android}/target_files_list
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
     ota_from_target_files  \
