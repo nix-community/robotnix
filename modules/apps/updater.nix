@@ -73,7 +73,7 @@ in
       }
 
       (mkIf (cfg.flavor == "grapheneos") {
-        resources.${relpath} = {
+        resources.${relpath}."values/config.xml" = {
           inherit (cfg) url;
           channel_default = config.channel;
         };
@@ -94,7 +94,7 @@ in
       })
 
       (mkIf (cfg.flavor == "lineageos") {
-        resources."packages/apps/Updater" = mkIf (cfg.flavor == "lineageos") {
+        resources."packages/apps/Updater"."values/config.xml" = mkIf (cfg.flavor == "lineageos") {
           updater_server_url = "${cfg.url}lineageos-${config.device}.json";
         };
       })

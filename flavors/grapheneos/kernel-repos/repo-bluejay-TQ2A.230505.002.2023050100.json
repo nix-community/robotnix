@@ -20,7 +20,7 @@
     "url": "https://android.googlesource.com/platform/build/bazel_common_rules"
   },
   "build/kernel": {
-    "dateTime": 1681168204,
+    "dateTime": 1681168243,
     "groups": [
       "partner"
     ],
@@ -86,10 +86,10 @@
         "src": "static_analysis"
       }
     ],
-    "rev": "1ffcf8899cbf89cdd31cace2254cbbc7bbb8c785",
-    "revisionExpr": "1ffcf8899cbf89cdd31cace2254cbbc7bbb8c785",
+    "rev": "07a36a6d39fff8e7dec37ec2e369b91a80dfd46d",
+    "revisionExpr": "07a36a6d39fff8e7dec37ec2e369b91a80dfd46d",
     "sha256": "1kzn2vc5bi6xzr6ss705c9bxyh280v82g10zcdh9kdyydx6pcpsv",
-    "url": "https://github.com/GrapheneOS/kernel_build-pantah"
+    "url": "https://github.com/GrapheneOS/kernel_build-gs101"
   },
   "common-modules/virtual-device": {
     "dateTime": 1670957655,
@@ -227,6 +227,31 @@
     "sha256": "0lsa07208c3p07sqs4r81ccpr7zmjq7702mm4pkmhqfrf358rzp3",
     "url": "https://android.googlesource.com/platform/prebuilts/misc"
   },
+  "private/devices/google/bluejay": {
+    "dateTime": 1677056734,
+    "groups": [
+      "bluejay",
+      "partner"
+    ],
+    "linkfiles": [
+      {
+        "dest": "build_bluejay.sh",
+        "src": "build_bluejay.sh"
+      },
+      {
+        "dest": "update_symbol_list_bluejay.sh",
+        "src": "update_symbol_list_bluejay.sh"
+      },
+      {
+        "dest": "private/gs-google/arch/arm64/boot/dts/google/devices/bluejay",
+        "src": "dts"
+      }
+    ],
+    "rev": "70410309cbe8991f6e0c80b1f355b587315dd491",
+    "revisionExpr": "70410309cbe8991f6e0c80b1f355b587315dd491",
+    "sha256": "149s0y97i98bflmpf4zx0b6rfxfl19wlxbdqjwzxv7h5gd1w1jsn",
+    "url": "https://android.googlesource.com/kernel/devices/google/bluejay"
+  },
   "private/google-modules/amplifiers": {
     "dateTime": 1673516666,
     "groups": [
@@ -287,15 +312,35 @@
     "sha256": "03c48w6nw2vk1jjg2dkr8jycgczblrvagv5ql5y05n7xp8kwz71l",
     "url": "https://android.googlesource.com/kernel/google-modules/display"
   },
-  "private/google-modules/edgetpu/janeiro": {
-    "dateTime": 1657076819,
+  "private/google-modules/edgetpu/abrolhos": {
+    "dateTime": 1668466541,
     "groups": [
       "partner"
     ],
-    "rev": "e218f92492bdd7c1e47004709f19995d879f8f94",
-    "revisionExpr": "e218f92492bdd7c1e47004709f19995d879f8f94",
-    "sha256": "127kpyrph28dg1c1650ihj3gzihlmzkvm2hf51q468jrdhgjvgdx",
-    "url": "https://android.googlesource.com/kernel/google-modules/edgetpu/janeiro"
+    "rev": "64dff03f321d3f5186ee2c275a15478375d166b7",
+    "revisionExpr": "64dff03f321d3f5186ee2c275a15478375d166b7",
+    "sha256": "0j6zg6mv8rk84nab3whja130zm2vzi528fg4gn1pvnxc3lds00hs",
+    "url": "https://android.googlesource.com/kernel/google-modules/edgetpu/abrolhos"
+  },
+  "private/google-modules/fingerprint/fpc": {
+    "dateTime": 1621472245,
+    "groups": [
+      "partner"
+    ],
+    "rev": "b6aad74e5fb83080ff7808c92df349443b406539",
+    "revisionExpr": "b6aad74e5fb83080ff7808c92df349443b406539",
+    "sha256": "1ai0x12nznvyzd9pwwy6gfgb7hh845bz2ls5v0sbd9jna3qx1kpn",
+    "url": "https://android.googlesource.com/kernel/google-modules/fingerprint/fpc"
+  },
+  "private/google-modules/fingerprint/goodix": {
+    "dateTime": 1603383836,
+    "groups": [
+      "partner"
+    ],
+    "rev": "c89b9dd0bef4b20ffdf3b3628617f97290bbc198",
+    "revisionExpr": "c89b9dd0bef4b20ffdf3b3628617f97290bbc198",
+    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
+    "url": "https://android.googlesource.com/kernel/google-modules/fingerprint/goodix"
   },
   "private/google-modules/gpu": {
     "dateTime": 1674248191,
@@ -305,17 +350,7 @@
     "rev": "2951d3516e2e38af8f9aa377c325147e4a9ee9b9",
     "revisionExpr": "2951d3516e2e38af8f9aa377c325147e4a9ee9b9",
     "sha256": "0idjiapx5rf6x01pz298x5v00akjx2v622i0p8lgjj9hlm3anqaq",
-    "url": "https://github.com/GrapheneOS/kernel_google-modules_gpu-pantah"
-  },
-  "private/google-modules/gxp/gs201": {
-    "dateTime": 1668547578,
-    "groups": [
-      "partner"
-    ],
-    "rev": "09c58ad0bf693bc971ce8182c039597f9e21d064",
-    "revisionExpr": "09c58ad0bf693bc971ce8182c039597f9e21d064",
-    "sha256": "0ravqkpbq6jpmrx1fmk1djv8czlgalvdgrhxxr49lqzi0vacxjnc",
-    "url": "https://android.googlesource.com/kernel/google-modules/gxp/gs201"
+    "url": "https://github.com/GrapheneOS/kernel_google-modules_gpu-gs101"
   },
   "private/google-modules/lwis": {
     "dateTime": 1673406791,
@@ -326,16 +361,6 @@
     "revisionExpr": "6247e718e12b5393da220c370bdc55f7f6eb6c7c",
     "sha256": "1z9a99zj9jiz3g3zfhfi7ms046b6hl4vy7kghm1bbppds1nxrxs4",
     "url": "https://android.googlesource.com/kernel/google-modules/lwis"
-  },
-  "private/google-modules/misc": {
-    "dateTime": 1654513107,
-    "groups": [
-      "partner"
-    ],
-    "rev": "34b23ad5680d2ec49c5d8dd5aaaacf75d0a19a6c",
-    "revisionExpr": "34b23ad5680d2ec49c5d8dd5aaaacf75d0a19a6c",
-    "sha256": "0npqf83qa71ms45p0gbkxbhqq1fgyss7msn9gf11rpk8fizdczsl",
-    "url": "https://android.googlesource.com/kernel/google-modules/misc"
   },
   "private/google-modules/nfc": {
     "dateTime": 1637205657,
@@ -357,6 +382,16 @@
     "sha256": "1vvqjlwjlw3fqrvhpv3d0pcv7c3jlg1acmjigbsbkv9y53z7dx2q",
     "url": "https://android.googlesource.com/kernel/google-modules/power/reset"
   },
+  "private/google-modules/sensors/hall_sensor": {
+    "dateTime": 1636119487,
+    "groups": [
+      "partner"
+    ],
+    "rev": "6fe459c14fd910bc7f659ee4e98e68bf1c8bc35f",
+    "revisionExpr": "6fe459c14fd910bc7f659ee4e98e68bf1c8bc35f",
+    "sha256": "1g1qqkslrq4c1yrw7453b6k4r6gkifyyi80ckdbhkgf9g89z47na",
+    "url": "https://android.googlesource.com/kernel/google-modules/sensors/hall_sensor"
+  },
   "private/google-modules/touch/common": {
     "dateTime": 1676339073,
     "groups": [
@@ -367,15 +402,15 @@
     "sha256": "04k4gwagiinshiqqdjgw5mazsda93ybzk9n58pi0n9mzgc6h8w1r",
     "url": "https://android.googlesource.com/kernel/google-modules/touch/common"
   },
-  "private/google-modules/touch/focaltech": {
-    "dateTime": 1668493596,
+  "private/google-modules/touch/fts": {
+    "dateTime": 1670579463,
     "groups": [
       "partner"
     ],
-    "rev": "eb0519a7447c6b19c400acb24924e0db3df1269b",
-    "revisionExpr": "eb0519a7447c6b19c400acb24924e0db3df1269b",
-    "sha256": "10hk5aw5nhp6vvm7k1vl493qbp635g1dhb5xcx8nypbiw8s6sisd",
-    "url": "https://android.googlesource.com/kernel/google-modules/touch/focaltech_touch"
+    "rev": "1ca39c4a6a0d038ec0308d977f0d1fdda7bf947f",
+    "revisionExpr": "1ca39c4a6a0d038ec0308d977f0d1fdda7bf947f",
+    "sha256": "0yvd404ddk0rav2yps257ankik04idbz354qgxb43j7h8jwhrkdz",
+    "url": "https://android.googlesource.com/kernel/google-modules/touch/fts_touch"
   },
   "private/google-modules/touch/sec": {
     "dateTime": 1666315841,
@@ -387,16 +422,6 @@
     "sha256": "1wl2whnw28ldh3k86r05nr5w1ljwn1k7h53ms1sy9pspxbwdzsc6",
     "url": "https://android.googlesource.com/kernel/google-modules/touch/sec_touch"
   },
-  "private/google-modules/touch/synaptics": {
-    "dateTime": 1666769100,
-    "groups": [
-      "partner"
-    ],
-    "rev": "1fba6aed071bc8f4c4a75e18db9a06981f9384bd",
-    "revisionExpr": "1fba6aed071bc8f4c4a75e18db9a06981f9384bd",
-    "sha256": "0hj7i3dyh4mnca7aizdlbvyfv9wzf2ncljxbz3hynkk9jv7h36b1",
-    "url": "https://android.googlesource.com/kernel/google-modules/touch/synaptics_touch"
-  },
   "private/google-modules/uwb": {
     "dateTime": 1673643459,
     "groups": [
@@ -406,16 +431,6 @@
     "revisionExpr": "d030aa0d4a7f0f3b31b0d2801ada36a69d438ae5",
     "sha256": "0ibfjjp24s889zyma3hhaqb6gq4gk2g8xxhkipqrrhrxl67v3s2p",
     "url": "https://android.googlesource.com/kernel/google-modules/uwb"
-  },
-  "private/google-modules/uwb-diags": {
-    "dateTime": 1599679742,
-    "groups": [
-      "uwb"
-    ],
-    "rev": "1ce8cd233f5bdc6dc4b13aa0a77b8faad1ea8935",
-    "revisionExpr": "1ce8cd233f5bdc6dc4b13aa0a77b8faad1ea8935",
-    "sha256": "0sjjj9z1dhilhpc8pq4154czrb79z9cm044jvn75kxcjv6v5l2m5",
-    "url": "https://android.googlesource.com/kernel/google-modules/uwb-diags"
   },
   "private/google-modules/video/gchips": {
     "dateTime": 1661844743,
@@ -428,27 +443,17 @@
     "url": "https://android.googlesource.com/kernel/google-modules/video/gchips"
   },
   "private/google-modules/wlan/bcmdhd4389": {
-    "dateTime": 1681167903,
+    "dateTime": 1681167880,
     "groups": [
       "partner"
     ],
-    "rev": "0ab40c2223d16eec422f1c4e43c2eaf869bb4b73",
-    "revisionExpr": "0ab40c2223d16eec422f1c4e43c2eaf869bb4b73",
+    "rev": "4d044501332fe0c92f696c7685b4b7696ab35978",
+    "revisionExpr": "4d044501332fe0c92f696c7685b4b7696ab35978",
     "sha256": "0i7w5xh0hnnb6nxbiib95i2a9y0l96v0gl69gmmi56dqxpkpwir7",
-    "url": "https://github.com/GrapheneOS/kernel_google-modules_wlan_bcmdhd_bcm4389-pantah"
-  },
-  "private/google-modules/wlan/wlan_ptracker": {
-    "dateTime": 1667526539,
-    "groups": [
-      "partner"
-    ],
-    "rev": "7cffa0f2c8dc09e110f88fa2634e100a3719f763",
-    "revisionExpr": "7cffa0f2c8dc09e110f88fa2634e100a3719f763",
-    "sha256": "0sc99g0y2j8nyh9kx2pws83568w4dvglh35wrkh1g5d0bx0vy2m8",
-    "url": "https://android.googlesource.com/kernel/google-modules/wlan/wlan_ptracker"
+    "url": "https://github.com/GrapheneOS/kernel_google-modules_wlan_bcmdhd_bcm4389-gs101"
   },
   "private/gs-google": {
-    "dateTime": 1682173031,
+    "dateTime": 1682993792,
     "groups": [
       "partner"
     ],
@@ -458,30 +463,30 @@
         "src": "build.config.slider"
       },
       {
+        "dest": "build_slider.sh",
+        "src": "build_slider.sh"
+      },
+      {
         "dest": "build_mixed.sh",
         "src": "build_mixed.sh"
       },
       {
-        "dest": "build_cloudripper.sh",
-        "src": "build_cloudripper.sh"
+        "dest": "download_hlos_boot_images_and_repack_kernel_boot_images.sh",
+        "src": "download_hlos_boot_images_and_repack_kernel_boot_images.sh"
       },
       {
-        "dest": "update_symbol_list_cloudripper-aosp.sh",
-        "src": "update_symbol_list_cloudripper-aosp.sh"
+        "dest": "repack_kernel_boot_images.sh",
+        "src": "repack_kernel_boot_images.sh"
       },
       {
-        "dest": "update_symbol_list_cloudripper-staging.sh",
-        "src": "update_symbol_list_cloudripper-staging.sh"
-      },
-      {
-        "dest": ".source_date_epoch_dir",
-        "src": "."
+        "dest": "update_symbol_list.sh",
+        "src": "update_symbol_list.sh"
       }
     ],
-    "rev": "3fa98354b09a61664cb7c429af7fea0e7b34c783",
-    "revisionExpr": "3fa98354b09a61664cb7c429af7fea0e7b34c783",
-    "sha256": "1acy8k11kvag99i197niqvy61s4i5dp0m7vs74cvlsab07qs691k",
-    "url": "https://github.com/GrapheneOS/kernel_gs-pantah"
+    "rev": "92fc18285a6377800d548ccb2d20611289f25518",
+    "revisionExpr": "92fc18285a6377800d548ccb2d20611289f25518",
+    "sha256": "100w39vzi07whbmfq6ih7wda61525cqxl7pqd5jj5qpbsgnmr9w6",
+    "url": "https://github.com/GrapheneOS/kernel_gs-gs101"
   },
   "tools/mkbootimg": {
     "dateTime": 1655319361,

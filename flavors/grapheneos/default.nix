@@ -55,8 +55,9 @@ mkIf (config.flavor == "grapheneos") (mkMerge [
 
     # TODO: re-add the legacy devices
     apv.enable = mkIf (config.androidVersion <= 12 && elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-    apv.buildID = mkDefault (if (elem config.device [ "oriole" "raven" "bluejay" "panther" "cheetah" ]) then "TQ2A.230405.003.E1" else
-    (if (elem config.device [ "sunfish" "bramble" "redfin" "barbet" ]) then "TQ2A.230405.003" else "TP1A.221005.002.B2"));
+    apv.buildID = mkDefault (if (elem config.device [ "sunfish" "bramble" "redfin" "barbet" "oriole" "raven" "bluejay" "panther" "cheetah" ])
+    then "TQ2A.230505.002"
+    else "TP1A.221005.002.B2");
     adevtool.enable = mkIf (config.androidVersion >= 13 && elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
     adevtool.buildID = config.apv.buildID;
 
@@ -104,6 +105,7 @@ mkIf (config.flavor == "grapheneos") (mkMerge [
     source.dirs."${kernelPrefix}/sunfish".enable = false;
     source.dirs."${kernelPrefix}/redbull".enable = false;
     source.dirs."${kernelPrefix}/barbet".enable = false;
+    source.dirs."${kernelPrefix}/raviole".enable = false;
     source.dirs."${kernelPrefix}/bluejay".enable = false;
     source.dirs."${kernelPrefix}/pantah".enable = false;
 
