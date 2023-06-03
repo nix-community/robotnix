@@ -103,7 +103,7 @@ in
         url = "https://github.com/aosp-mirror/platform_frameworks_base/commit/0856f76846e61ad058e1e9ec0759739812a00600.patch";
         sha256 = "sha256-of8dyOCicSVh64kLicuIk9av2K29YXLzUxeb6CI0NZo=";
       })
-      (pkgs.fetchurl {
+      (pkgs.fetchpatch {
         name = "include-saved-battery-history-chunks-into-batteryusagestats-parcel.patch";
         url = "https://github.com/aosp-mirror/platform_frameworks_base/commit/c4b9de7d95fd2d6bd8072f16f0ac71d2b1773a1b.patch";
         sha256 = "sha256-T9EBOMJJtZ2tPOYx3epXV9ZBg3gSuz3zwM7+9QIOgs8=";
