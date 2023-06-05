@@ -106,7 +106,7 @@ in
       (pkgs.fetchpatch {
         name = "include-saved-battery-history-chunks-into-batteryusagestats-parcel.patch";
         url = "https://github.com/aosp-mirror/platform_frameworks_base/commit/c4b9de7d95fd2d6bd8072f16f0ac71d2b1773a1b.patch";
-        sha256 = "sha256-T9EBOMJJtZ2tPOYx3epXV9ZBg3gSuz3zwM7+9QIOgs8=";
+        sha256 = "sha256-SalnJQSrc7X24XW1vg0N04PYIQ11vm++xy/CPbPogy4=";
       })
     ];
 
