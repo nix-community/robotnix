@@ -75,12 +75,10 @@ def fetch_device_dirs(metadata: Any,
         # They're google devices but their vendor is askey for some reason
         if device in [ 'deadpool', 'wade' ]:
             vendor = 'askey'
+        elif device == 'debx':
+            vendor = 'asus'
         else:
             vendor = data['vendor']
-
-        # Urgh
-        if vendor == '10.or':
-            vendor = '10or'
 
         url = f'{url_base}/android_device_{vendor}_{device}'
 
@@ -103,6 +101,8 @@ def fetch_device_dirs(metadata: Any,
         # Also grab any dirs that this one depends on
         lineage_dependencies_filename = get_store_path(os.path.join(dir_info['path'], 'lineage.dependencies'))
         if os.path.exists(lineage_dependencies_filename):
+            if debug:
+                print(f'found deps {lineage_dependencies_filename}')
             lineage_dependencies = json.load(open(lineage_dependencies_filename))
 
             for dep in lineage_dependencies:
@@ -135,6 +135,10 @@ def fetch_vendor_dirs(metadata: Any,
         if 'vendor_dir' in data:
             vendor_dir = data['vendor_dir']
 
+            # For the some devices, the vendor name used in device and vendor dir differs of course...
+            if vendor_dir in [ 'radxa', 'bananapi', 'hardkernel']:
+                vendor_dir = 'amlogic'
+
             if debug:
                 print(branch)
 
@@ -159,8 +163,8 @@ def fetch_vendor_dirs(metadata: Any,
                 for dep in deps:
                     if debug:
                         print(dep)
-                    # Nvidia doesn't have common deps (obviously...)
-                    if dep.endswith('-common') and vendor != 'nvidia' and not dep.endswith('xiaomi/sm8350-common'):
+                    # Nvidia and zuk don't follow this pattern (obviously...)
+                    if dep.endswith('-common') and vendor not in [ 'nvidia', 'zuk' ] and not dep.endswith('xiaomi/sm8350-common'):
                         relpath = dep.replace('device/', '')
                         required_vendor.add(relpath)
 
@@ -178,9 +182,9 @@ def fetch_vendor_dirs(metadata: Any,
         relpath = f'vendor/{vendor}'
 
         # Only some of google's devices are on gitlab...
-        gitlab_vendors = [ 'google/bluejay', 'google/cheetah', 'google/oriole', 'google/panther', 'google/raven' ]
-        # Two motorola devices are /not/ on gitlab!
-        motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar', 'motorola/sm8250-common' ]
+        gitlab_vendors = [ 'google/bluejay', 'google/cheetah', 'google/oriole', 'google/panther', 'google/raven', 'google/lynx', 'google/tangorpro' ]
+        # Two motorola devices are /not/ on gitlab! TODO perhaps invert this list, new devices seem to be added to github now
+        motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar', 'motorola/devon', 'motorola/rhode', 'motorola/hawao', 'motorola/sm8250-common', 'motorola/sm6225-common' ]
         real_url_base = url_base
         if vendor == 'xiaomi' or (branch == 'lineage-20.0' and (motorola_gitlab or vendor in gitlab_vendors)):
             real_url_base = "https://gitlab.com/the-muppets"

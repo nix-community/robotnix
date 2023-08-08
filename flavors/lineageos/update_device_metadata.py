@@ -56,6 +56,15 @@ def fetch_metadata(
         # Workaround name inconsistency with LG
         if vendor == 'lg':
             vendor = 'lge'
+        # Look how cool my name is mom, parenthesis!
+        if vendor == 'f(x)tec':
+            vendor = 'fxtec'
+        # Urgh
+        if vendor == '10.or':
+            vendor = '10or'
+        # Really?
+        if vendor == 'banana pi':
+            vendor = 'bananapi'
 
         # Bacon needs vendor/oppo but is device/oneplus/bacon...
         # https://github.com/danielfullmer/robotnix/issues/26
