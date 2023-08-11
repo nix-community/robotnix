@@ -110,7 +110,12 @@ def fetch_device_dirs(metadata: Any,
                     dirs_to_fetch.add((dep['target_path'], f"{url_base}/{dep['repository']}"))
 
             dir_info['deps'] = [dep['target_path'] for dep in lineage_dependencies]
-        else:
+        # If the path doesn't exist, there are two cases:
+        # 1. We just fetched the dir and lineage.dependencies does not exist
+        # 2. We didn't fetch the dir because it was up-to-date already but didn't have it in the store either
+        # In 1. we want deps to be an empty list.
+        # In 2. the dict would already contain 'deps' and those should remain as they were.
+        elif 'deps' not in dir_info:
             dir_info['deps'] = []
 
         if callback is not None:
