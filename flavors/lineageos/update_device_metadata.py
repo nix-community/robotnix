@@ -20,7 +20,7 @@ def fetch_metadata(
     # Devices we can't support due to repo naming inconsistencies. If you care
     # about a certain device in this list, you can add a workaround and remove
     # the device from the list.
-    ignore = [ ]
+    ignore = [ 'nx651j' ]
 
     lineage_build_targets_str = urllib.request.urlopen(lineage_build_targets_url).read().decode()
     for line in lineage_build_targets_str.split("\n"):
