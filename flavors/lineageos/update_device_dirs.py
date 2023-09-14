@@ -169,7 +169,7 @@ def fetch_vendor_dirs(metadata: Any,
                     if debug:
                         print(dep)
                     # Nvidia and zuk don't follow this pattern (obviously...)
-                    if dep.endswith('-common') and vendor not in [ 'nvidia', 'zuk' ] and not dep.endswith('xiaomi/sm8350-common'):
+                    if dep.endswith('-common') and vendor not in [ 'nvidia', 'zuk' ] and not any(dep.endswith(path) for path in [ 'xiaomi/sm8350-common', 'msm8953-common' ]):
                         relpath = dep.replace('device/', '')
                         required_vendor.add(relpath)
 
