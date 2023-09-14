@@ -82,12 +82,11 @@ in mkIf (config.flavor == "lineageos")
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
 
-  warnings = optional (
-      (config.device != null) &&
-      !(elem config.device supportedDevices) &&
-      (config.deviceFamily != "generic")
-    )
-    "${config.device} is not an officially-supported device for LineageOS";
+  warnings = let
+    isUnsupportedDevice = config.device != null && !(elem config.device supportedDevices) && config.deviceFamily != "generic";
+    isUnmaintained = lib.versionOlder (toString config.androidVersion) "12";
+  in optional isUnsupportedDevice "${config.device} is not an officially-supported device for LineageOS"
+     ++ optional isUnmaintained "${LineageOSRelease} is unmaintained in robotnix and may break at any time";
 
   source.dirs = mkMerge ([
     repoDirs
