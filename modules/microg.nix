@@ -106,12 +106,15 @@ in
 
       FakeStore = {
         apk = verifyApk (pkgs.fetchurl {
-          url = "https://github.com/microg/android_packages_apps_FakeStore/releases/download/v0.1.0/FakeStore-v0.1.0.apk";
-          sha256 = "1kp5v4qajp4cdx8pxw6j4776bcwc9f8jgfpiyllpk1kbhq92w1ci";
+          url = "https://github.com/microg/FakeStore/releases/download/v0.2.1/com.android.vending-83700037.apk";
+          sha256 = "sha256-qz5TlpVqgKGj68fBlT2gCNafaU8TO90MvJXg6OGezaA=";
         });
         packageName = "com.android.vending";
         privileged = true;
-        privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
+        privappPermissions = [
+          "FAKE_PACKAGE_SIGNATURE"
+          "CHECK_LICENSE"
+        ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         certificate = "microg";
       };
