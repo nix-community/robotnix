@@ -7,9 +7,9 @@ let
   inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
   version = {
-    part1 = "0.2.26";
-    part2 = "223616";
-    part3 = "052";
+    part1 = "0.2.28";
+    part2 = "231657";
+    part3 = "056";
   };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
@@ -68,14 +68,27 @@ in
       GmsCore = {
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "sha256-7esPETy0j/k4HC84SaA/7OCTUhynUublLixRsgjBxNE=";
+          sha256 = "sha256-nM5nm9kA4ojyEqiN3oRK4mtCcYwi5KqDqH7RqooGRVU=";
         });
         packageName = "com.google.android.gms";
         privileged = true;
-        privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" "INSTALL_LOCATION_PROVIDER" "CHANGE_DEVICE_IDLE_TEMP_WHITELIST" "UPDATE_APP_OPS_STATS" "MANAGE_USB" ];
+        privappPermissions = [
+          "FAKE_PACKAGE_SIGNATURE"
+          "INSTALL_LOCATION_PROVIDER"
+          "CHANGE_DEVICE_IDLE_TEMP_WHITELIST"
+          "UPDATE_APP_OPS_STATS"
+          "MANAGE_USB"
+
+          # New with v0.2.28.231657
+          "LOCATION_HARDWARE"
+          "MODIFY_PHONE_STATE"
+          "NETWORK_SCAN"
+          "UPDATE_DEVICE_STATS"
+          "WATCH_APPOPS"
+        ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         usesLibraries = [ "com.android.location.provider" ];
-        usesOptionalLibraries = [ "androidx.window.extensions" "androidx.window.sidecar" ];
+        usesOptionalLibraries = [ "org.apache.http.legacy" "androidx.window.extensions" "androidx.window.sidecar" ];
         allowInPowerSave = true;
         certificate = "microg";
       };
