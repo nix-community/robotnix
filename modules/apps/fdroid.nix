@@ -75,8 +75,13 @@ in
 
   config = mkIf cfg.enable {
     apps.prebuilt."F-Droid" = {
-      apk = apks.fdroid;
+      apk = pkgs.fetchurl {
+        url = "https://f-droid.org/repo/org.fdroid.fdroid_1017050.apk";
+        sha256 = "sha256-3Du4j2QZ7n3efRVHpBVpqgMoL+AODcQ84DXv18nSfXU=";
+      };
+
       fingerprint = mkIf (!config.signing.enable) "7352DAE94B237866E7FB44FD94ADE44E8B6E05397E7D1FB45616A00E225063FF";
+      usesOptionalLibraries = [ "androidx.window.extensions" "androidx.window.sidecar" ];
     };
 
     # TODO: Put this under product/
