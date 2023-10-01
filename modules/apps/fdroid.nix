@@ -10,8 +10,8 @@ let
   privext = pkgs.fetchFromGitLab {
     owner = "fdroid";
     repo = "privileged-extension";
-    rev = "0.2.12";
-    sha256 = "1xmsamr27nnpam4a6ml03zc09av9a764dmywwxnmkbbz066bpkai";
+    rev = "0.2.13";
+    sha256 = "sha256-lS/U42uBpfT0M8mlqGklG8tYB5qMrMnLK4+V89yFcH0=";
   };
 in
 {
