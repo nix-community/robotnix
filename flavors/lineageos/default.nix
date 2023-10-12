@@ -125,26 +125,33 @@ in mkIf (config.flavor == "lineageos")
   ] ++ optionals (deviceMetadata ? "${config.device}") (let
     # Device-specific source dirs
     vendor = toLower deviceMetadata.${config.device}.vendor;
-    relpathWithDependencies = relpath: [ relpath ] ++ (flatten (map (p: relpathWithDependencies p) deviceDirs.${relpath}.deps));
-    relpaths = relpathWithDependencies "device/${vendor}/${config.device}";
+    deviceRelpath = "device/${vendor}/${config.device}";
+
+    # Retuns a list of all relpaths for the device (including deps) recursively
+    relpathWithDeps = relpath: [ relpath ] ++ (
+      flatten (map (p: relpathWithDeps p) deviceDirs.${relpath}.deps)
+    );
+    # All relpaths required by the device
+    relpaths = relpathWithDeps deviceRelpath;
     filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
 
-    # Device-specific common vendor dirs
-    deviceDirsCommon = filter (path: hasPrefix "device/" path && hasSuffix "-common" path && !hasSuffix "xiaomi/sm8350-common" path) relpaths;
-    vendorDeviceDirs = map (replaceStrings [ "device/" ] [ "vendor/" ]) deviceDirsCommon;
+    # In LOS20, each device/ relpath has an associated vendor/ relpath.
+    # Well, usually...
+    deviceRelpaths = filter (path: hasPrefix "device/" path) relpaths;
+    vendorifiedRelpaths = map (replaceStrings [ "device/" ] [ "vendor/" ]) deviceRelpaths;
+
+    vendorRelpaths = if config.androidVersion >= 13 then (
+      # LOS20 needs vendor/$vendor/$device and all the common dirs but with
+      # vendor/ prefix
+      vendorifiedRelpaths
+    ) else [
+      # Older LOS need this
+      "vendor/${vendor}"
+    ];
   in [
-    (filterDirsAttrs (getAttrs filteredRelpaths deviceDirs))
-    (filterDirsAttrs (getAttrs vendorDeviceDirs vendorDirs))
-  ]) ++ [
-    # Vendor-specific source dirs
-    (let
-      vendor = if config.androidVersion >= 13 then
-        deviceMetadata.${config.device}.vendor_dir_new
-      else
-        deviceMetadata.${config.device}.vendor_dir;
-      relpath = "vendor/${vendor}";
-    in filterDirsAttrs (getAttrs [relpath] vendorDirs))
-  ]);
+    (filterDirsAttrs (getAttrs (filteredRelpaths) deviceDirs))
+    (filterDirsAttrs (getAttrs (vendorRelpaths) vendorDirs))
+  ]));
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
