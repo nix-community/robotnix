@@ -10,7 +10,7 @@ import pathlib
 
 from typing import Any, Callable, Dict, List, Optional, cast
 
-from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, check_free_space, GitCheckoutInfoDict
+from robotnix_common import save, get_store_path, checkout_git, ls_remote, get_mirrored_url, check_free_space, GitCheckoutInfoDict
 
 # A full run took approximately 12 minutes total. Needed to set TMPDIR=/tmp
 #
@@ -22,12 +22,6 @@ debug = False
 # Project info is just GitCheckoutInfoDict plus deps
 class ProjectInfoDict(GitCheckoutInfoDict, total=False):
     deps: List[str]
-
-def get_store_path(path):
-    prefix = os.getenv('NIX_REMOTE');
-    if prefix and not prefix.startswith('/'):
-        raise Exception('Must be run on a local Nix store.')
-    return f"{prefix}/{path}"
 
 def fetch_relpath(dirs: Dict[str, Any], relpath: str, url: str, branch: str) -> ProjectInfoDict:
     if debug:
