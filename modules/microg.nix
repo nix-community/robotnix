@@ -7,9 +7,9 @@ let
   inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
   version = {
-    part1 = "0.2.28";
-    part2 = "231657";
-    part3 = "056";
+    part1 = "0.2.29";
+    part2 = "233013";
+    part3 = "058";
   };
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
@@ -68,7 +68,7 @@ in
       GmsCore = {
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "sha256-nM5nm9kA4ojyEqiN3oRK4mtCcYwi5KqDqH7RqooGRVU=";
+          sha256 = "sha256-92VGUL7z6t14qQO3XnErmOHMmdsi5ArC9IlGanlhxNA=";
         });
         packageName = "com.google.android.gms";
         privileged = true;
@@ -85,6 +85,9 @@ in
           "NETWORK_SCAN"
           "UPDATE_DEVICE_STATS"
           "WATCH_APPOPS"
+
+          # New with v0.2.29.233013
+          "RECEIVE_SMS"
         ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         usesLibraries = [ "com.android.location.provider" ];
@@ -103,12 +106,15 @@ in
 
       FakeStore = {
         apk = verifyApk (pkgs.fetchurl {
-          url = "https://github.com/microg/android_packages_apps_FakeStore/releases/download/v0.1.0/FakeStore-v0.1.0.apk";
-          sha256 = "1kp5v4qajp4cdx8pxw6j4776bcwc9f8jgfpiyllpk1kbhq92w1ci";
+          url = "https://github.com/microg/FakeStore/releases/download/v0.2.1/com.android.vending-83700037.apk";
+          sha256 = "sha256-qz5TlpVqgKGj68fBlT2gCNafaU8TO90MvJXg6OGezaA=";
         });
         packageName = "com.android.vending";
         privileged = true;
-        privappPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
+        privappPermissions = [
+          "FAKE_PACKAGE_SIGNATURE"
+          "CHECK_LICENSE"
+        ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         certificate = "microg";
       };
