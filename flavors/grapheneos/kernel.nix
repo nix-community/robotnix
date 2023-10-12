@@ -4,50 +4,50 @@ let
   inherit (lib)
     mkIf mkMerge mkDefault;
 
-  clangVersion = "r416183b";
-  postRedfin = lib.elem config.deviceFamily [ "redfin" "barbet" ];
+  postRedfin = lib.elem config.deviceFamily [ "redfin" "barbet" "raviole" "bluejay" "pantah" ];
+  postRaviole = lib.elem config.deviceFamily [ "raviole" "bluejay" "pantah" ];
+  clangVersion = if postRaviole then "r450784e" else "r416183b";
+  buildScriptFor = {
+    "coral" = "build/build.sh";
+    "sunfish" = "build/build.sh";
+    "redfin" = "build/build.sh";
+    "raviole" = "build_slider.sh";
+    "bluejay" = "build_bluejay.sh";
+    "pantah" = "build_cloudripper.sh";
+  };
+  buildScript = if (config.androidVersion >= 13) then buildScriptFor.${config.deviceFamily} else "build.sh";
+  realBuildScript = if (config.androidVersion >= 13) then "build/build.sh" else "build.sh";
+  kernelPrefix = if (config.androidVersion >= 13) then "kernel/android" else "kernel/google";
+  grapheneOSRelease = "${config.apv.buildID}.${config.buildNumber}";
 
-  dependencies = let
-    fixupRepo = repoName: { buildInputs ? [], ... }@args: pkgs.stdenv.mkDerivation ({
-      name = lib.strings.sanitizeDerivationName repoName;
-      src = config.source.dirs.${repoName}.src;
-      buildInputs = with pkgs; buildInputs ++ [ autoPatchelfHook ];
-      installPhase = ''
-        runHook preInstall
-        rm -f env-vars
-        cp -r . $out
-        runHook postInstall
-      '';
-    } // (lib.filterAttrs (n: v: n != "buildInputs") args));
-  in lib.mapAttrs (n: v: fixupRepo n v) ({
-    "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9" = { buildInputs = with pkgs; [ python ]; };
-    "prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9" = { buildInputs = with pkgs; [ python ]; };
-    "prebuilts/clang/host/linux-x86/clang-${clangVersion}"= {
-      src = config.source.dirs."prebuilts/clang/host/linux-x86".src + "/clang-${clangVersion}";
-      buildInputs = with pkgs; [
-        zlib ncurses5 libedit
-        stdenv.cc.cc.lib # For libstdc++.so.6
-        python39 # LLDB links against this particular version of python
-      ];
-      postPatch = ''
-        rm -r python3
-      '';
-      autoPatchelfIgnoreMissingDeps=true; # Ignore missing liblog.so
-    };
-    "prebuilts/gas/linux-x86" = {};
-    "prebuilts/misc/linux-x86" = {
-      src = config.source.dirs."prebuilts/misc".src + "/linux-x86";
-      buildInputs = with pkgs; [ python ];
-    };
-    "kernel/prebuilts/build-tools" = {
-      src = config.source.dirs."kernel/prebuilts/build-tools".src;
-      buildInputs = with pkgs; [ python ];
-      postInstall = ''
-        # Workaround for patchelf not working with embedded python interpreter
-        cp ${config.source.dirs."system/libufdt".src}/utils/src/mkdtboimg.py $out/linux-x86/bin
-      '';
-    };
-  });
+  buildConfigVar = "private/msm-google/build.config.${if config.deviceFamily != "redfin" then config.deviceFamily else "redbull"}${lib.optionalString (config.deviceFamily == "redfin") ".vintf"}";
+  subPaths = prefix: (lib.filter (name: (lib.hasPrefix prefix name)) (lib.attrNames config.source.dirs));
+  kernelSources = subPaths sourceRelpath;
+  unpackSrc = name: src: ''
+    shopt -s dotglob
+    rm -rf ${name}
+    mkdir -p $(dirname ${name})
+    cp -r ${src} ${name}
+  '';
+  linkSrc = name: c: lib.optionalString (lib.hasAttr "linkfiles" c) (lib.concatStringsSep "\n" (map
+    ({ src, dest }: ''
+      mkdir -p $(dirname ${sourceRelpath}/${dest})
+      ln -rs ${name}/${src} ${sourceRelpath}/${dest}
+    '')
+    c.linkfiles));
+  copySrc = name: c: lib.optionalString (lib.hasAttr "copyfiles" c) (lib.concatStringsSep "\n" (map
+    ({ src, dest }: ''
+      mkdir -p $(dirname ${sourceRelpath}/${dest})
+      cp -r ${name}/${src} ${sourceRelpath}/${dest}
+    '')
+    c.copyfiles));
+  unpackCmd = name: c: lib.concatStringsSep "\n" [ (unpackSrc name c.src) (linkSrc name c) (copySrc name c) ];
+  unpackSrcs = sources: (lib.concatStringsSep "\n"
+    (lib.mapAttrsToList unpackCmd (lib.filterAttrs (name: src: (lib.elem name sources)) config.source.dirs)));
+
+  # the kernel build scripts deeply assume clang as of android 13
+  llvm = pkgs.llvmPackages_13;
+  stdenv = if (config.androidVersion >= 13) then pkgs.stdenv else pkgs.stdenv;
 
   repoName = {
     "sargo" = "crosshatch";
@@ -55,78 +55,120 @@ let
     "sunfish" = "coral";
     "bramble" = "redbull";
     "redfin" = "redbull";
+    "bluejay" = "bluejay";
+    "panther" = "pantah";
+    "cheetah" = "pantah";
   }.${config.device} or config.deviceFamily;
-  sourceRelpath = "kernel/google/${repoName}";
+  sourceRelpath = "${kernelPrefix}/${repoName}";
 
   builtKernelName = {
     "sargo" = "bonito";
     "flame" = "coral";
     "sunfish" = "coral";
+    "bluejay" = "bluejay";
+    "panther" = "pantah";
+    "cheetah" = "pantah";
   }.${config.device} or config.device;
-  builtRelpath = "device/google/${builtKernelName}-kernel";
+  builtRelpath = "device/google/${builtKernelName}-kernel${lib.optionalString (config.deviceFamily == "redfin" && config.variant != "user") "/vintf"}";
 
-  kernel = pkgs.stdenv.mkDerivation {
+  kernel = config.build.mkAndroid (rec {
     name = "grapheneos-${builtKernelName}-kernel";
-    inherit (config.kernel) src patches postPatch;
+    inherit (config.kernel) patches postPatch;
 
     nativeBuildInputs = with pkgs; [
-      perl bc nettools openssl rsync gmp libmpc mpfr lz4 which
+      perl
+      bc
+      nettools
+      openssl
+      rsync
+      gmp
+      libmpc
+      mpfr
+      lz4
+      which
       nukeReferences
+      ripgrep
+      glibc.dev.dev.dev
+      pkg-config
+      autoPatchelfHook
+      coreutils
+      gawk
     ] ++ lib.optionals postRedfin [
-      python bison flex cpio
+      python
+      python3
+      bison
+      flex
+      cpio
+      zlib
+    ] ++ lib.optionals postRaviole [
+      git
+      elfutils
     ];
 
-    preUnpack = ''
-      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "mkdir -p $(dirname ${n}); ln -s ${v} ${n}") dependencies)}
-
-      mkdir -p $(dirname ${sourceRelpath})
-      cd $(dirname ${sourceRelpath})
+    unpackPhase = ''
+      set -eo pipefail
+      shopt -s dotglob
+      ${unpackSrcs kernelSources}
+      chmod -R a+w .
+      runHook postUnpack
     '';
 
-    prePatch = ''
-      # From os-specific/linux/kernel/manual-config.nix in nixpkgs
-      for mf in $(find -name Makefile -o -name Makefile.include -o -name install.sh); do
-          echo "stripping FHS paths in \`$mf'..."
-          sed -i "$mf" -e 's|/usr/bin/||g ; s|/bin/||g ; s|/sbin/||g'
-      done
-      sed -i scripts/ld-version.sh -e "s|/usr/bin/awk|${pkgs.gawk}/bin/awk|"
-
-      if [[ -f scripts/generate_initcall_order.pl ]]; then
-        patchShebangs scripts/generate_initcall_order.pl
-      fi
-
-      # Set kernel timestamp
-      substituteInPlace build.sh \
-        --replace "\$(git show -s --format=%ct)" "${builtins.toString config.kernel.buildDateTime}"
-
-      sed -i '/^chrt/d' build.sh
-
-      # TODO: Not using prebuilt clang for HOSTCC/HOSTCXX/HOSTLD, since it refers to FHS sysroot and not the sysroot from nixpkgs.
-      sed -i '/HOST.*=/d' build.sh
-
-    '' + lib.optionalString postRedfin ''
-      # TODO: Remove HOSTCC / HOSTCXX. Currently, removing it makes it fail:
-      # ../scripts/basic/fixdep.c:97:10: fatal error: 'sys/types.h' file not found
-      sed -i '/make.*\\/a    HOSTCC=gcc \\\n    HOSTCXX=g++ \\' build.sh
-
-    '';
+    postUnpack = "cd ${sourceRelpath}";
 
     # Useful to use upstream's build.sh to catch regressions if any dependencies change
-    buildPhase = let
-      useCodenameArg = true;
-    in ''
-      mkdir -p ../../../${builtRelpath}
-      bash ./build.sh ${lib.optionalString useCodenameArg builtKernelName}
+    prePatch = ''
+      for d in `find . -type d -name '*lib*'`; do
+        addAutoPatchelfSearchPath $d
+      done
+      autoPatchelf prebuilts${lib.optionalString (!postRaviole) "-master"}/clang/host/linux-x86/clang-${clangVersion}/bin
+      sed -i '/unset LD_LIBRARY_PATH/d' build/_setup_env.sh
+    '';
+    preBuild = ''
+      mkdir -p ../../../${builtRelpath} out
+      chmod a+w -R ../../../${builtRelpath} out
+    '';
+
+    # TODO: add KBUILD env vars for pre-redfin on android 13
+    buildPhase =
+      let
+        useCodenameArg = config.androidVersion <= 12;
+      in
+      ''
+        set -eo pipefail
+        ${preBuild}
+
+        ${if postRaviole
+          then "LTO=full BUILD_AOSP_KERNEL=1 cflags='--sysroot /usr '"
+          else "BUILD_CONFIG=${buildConfigVar} HOSTCFLAGS='--sysroot /usr '"} \
+          LD_LIBRARY_PATH="/usr/lib/:/usr/lib32/" \
+          ./${buildScript} \
+          ${lib.optionalString useCodenameArg builtKernelName}
+
+        ${postBuild}
+      '';
+
+    postBuild = ''
+      cp -r out/${if postRaviole
+                  then "mixed"
+                  else
+                    if postRedfin
+                    then "android-msm-pixel-4.19"
+                    else "android-msm-pixel-4.14"}/dist/* ../../../${builtRelpath}
     '';
 
     installPhase = ''
       cp -r ../../../${builtRelpath} $out
     '';
-  };
-in mkIf (config.flavor == "grapheneos" && config.kernel.enable) {
-  kernel.src = mkDefault config.source.dirs.${sourceRelpath}.src;
-  kernel.buildDateTime = mkDefault config.source.dirs.${sourceRelpath}.dateTime;
-  kernel.relpath = mkDefault builtRelpath;
+  });
 
-  build.kernel = kernel;
-}
+in
+mkIf (config.flavor == "grapheneos" && config.kernel.enable) (mkMerge [
+  {
+    kernel.name = kernel.name;
+    kernel.src = pkgs.writeShellScript "unused" "true";
+    kernel.buildDateTime = mkDefault config.source.dirs.${sourceRelpath}.dateTime;
+    kernel.relpath = mkDefault builtRelpath;
+
+    build.kernel = kernel;
+  }
+])

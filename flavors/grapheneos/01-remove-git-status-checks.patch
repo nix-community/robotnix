@@ -1,0 +1,25 @@
+ drivers/edgetpu/Makefile | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/edgetpu/Makefile b/drivers/edgetpu/Makefile
+index 6b428ea..da7eca5 100644
+--- a/drivers/edgetpu/Makefile
++++ b/drivers/edgetpu/Makefile
+@@ -6,12 +6,12 @@
+ obj-$(CONFIG_JANEIRO)		+= janeiro.o
+ 
+ GIT_PATH=$(srctree)
+-ifeq ($(shell git --git-dir=$(GIT_PATH)/.git rev-parse --is-inside-work-tree),true)
+-	GIT_REPO_STATE=$(shell (git --git-dir=$(GIT_PATH)/.git --work-tree=$(GIT_PATH) status --porcelain | grep -q .) && echo -dirty)
+-	ccflags-y       += -DGIT_REPO_TAG=\"$(shell git --git-dir=$(GIT_PATH)/.git rev-parse --short HEAD)$(GIT_REPO_STATE)\"
+-else
++# ifeq ($(shell git --git-dir=$(GIT_PATH)/.git rev-parse --is-inside-work-tree),true)
++# 	GIT_REPO_STATE=$(shell (git --git-dir=$(GIT_PATH)/.git --work-tree=$(GIT_PATH) status --porcelain | grep -q .) && echo -dirty)
++# 	ccflags-y       += -DGIT_REPO_TAG=\"$(shell git --git-dir=$(GIT_PATH)/.git rev-parse --short HEAD)$(GIT_REPO_STATE)\"
++# else
+ 	ccflags-y       += -DGIT_REPO_TAG=\"Not\ a\ git\ repository\"
+-endif
++# endif
+ 
+ edgetpu-objs	:= edgetpu-async.o edgetpu-dmabuf.o edgetpu-iremap-pool.o \
+ 		   edgetpu-kci.o edgetpu-mailbox.o edgetpu-mapping.o \

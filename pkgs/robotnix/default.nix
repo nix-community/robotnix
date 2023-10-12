@@ -12,11 +12,17 @@ let
     echo "\"$fingerprint\"" > $out
   '');
 
-  certFingerprint = cert: (import (runCommand "cert-fingerprint" {} ''
+  certFingerprint = keysFun: cert: (import (runCommand "cert-fingerprint" {
+    nativeBuildInputs = with pkgs; [ sops age gnupg ];
+  } (keysFun ''
     ${openssl}/bin/openssl x509 -noout -fingerprint -sha256 -in ${cert} | awk -F"=" '{print "\"" $2 "\"" }' | sed 's/://g' > $out
-  ''));
+  '')));
 
-  sha256Fingerprint = file: lib.toUpper (builtins.hashFile "sha256" file);
+  sha256Fingerprint = keysFun: file: (import (runCommand "sha256-fingerprint" {
+    nativeBuildInputs = with pkgs; [ sops age gnupg ];
+  }) (keysFun ''
+    sha256sum ${file} | tr '[:lower:]' '[:upper:]' > $out
+  ''));
 
   # getName snippet originally from nixpkgs/pkgs/build-support/trivial-builders.nix
   getName = fname: apk:
@@ -27,9 +33,11 @@ let
         then lib.removeSuffix ".apk" apk.name
         else throw "${fname}: please supply a `name` argument because a default name can only be computed when the `apk` is a path or is an attribute set with a `name` attribute.";
 
-  build-tools =
-    (androidPkgs.sdk (p: with p; [ cmdline-tools-latest build-tools-31-0-0 ]))
-    + "/share/android-sdk/build-tools/31.0.0";
+  build-tools = runCommand "build-tools" { nativeBuildInputs = [ pkgs.autoPatchelfHook ]; } ''
+    cp -r ${(androidPkgs.sdk (p: with p; [ cmdline-tools-latest build-tools-31-0-0 ]))
+            + /share/android-sdk/build-tools/31.0.0}/ \
+          $out
+  '';
 
   apksigner = runCommand "apksigner" { nativeBuildInputs = [ makeWrapper ]; } ''
       mkdir -p $out/bin
@@ -37,10 +45,12 @@ let
         --add-flags "-jar ${build-tools}/lib/apksigner.jar"
     '';
 
-  signApk = { apk, keyPath, name ? (getName "signApk" apk) + "-signed.apk" }: runCommand name {} ''
+  signApk = { apk, keyPath, keysFun, name ? (getName "signApk" apk) + "-signed.apk" }: runCommand name {
+    nativeBuildInputs = with pkgs; [ sops age gnupg ];
+  } (keysFun ''
       cp ${apk} $out
       ${apksigner}/bin/apksigner sign --key ${keyPath}.pk8 --cert ${keyPath}.x509.pem $out
-    '';
+    '');
 
   # Currently only supports 1 signer.
   verifyApk = { apk, sha256, name ? (getName "verifyApk" apk) + ".apk" }: runCommand name {} ''

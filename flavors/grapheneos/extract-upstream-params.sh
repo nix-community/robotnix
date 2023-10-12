@@ -10,7 +10,7 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-DEVICE=sunfish
+DEVICE=panther
 CHANNEL=beta
 
 METADATA=$(curl -sSfL https://releases.grapheneos.org/${DEVICE}-${CHANNEL})

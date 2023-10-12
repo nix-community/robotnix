@@ -1,0 +1,146 @@
+{
+  "build": {
+    "dateTime": 1660853341,
+    "groups": [
+      "partner"
+    ],
+    "rev": "afffbe1a4874b6c9b378a35d3cbbfd61ed80e1f5",
+    "revisionExpr": "afffbe1a4874b6c9b378a35d3cbbfd61ed80e1f5",
+    "sha256": "1waivav80xhlj80h3xd35pfq6s8b8gjc84926jkskdxln9yw5wdx",
+    "url": "https://github.com/GrapheneOS/kernel_build-coral"
+  },
+  "prebuilts-master/clang/host/linux-x86": {
+    "dateTime": 1620327705,
+    "groups": [
+      "partner"
+    ],
+    "rev": "537e01a6ff78760ee5b69597efdbc47bc721058d",
+    "revisionExpr": "537e01a6ff78760ee5b69597efdbc47bc721058d",
+    "sha256": "0dcjqgb6dqjpykks5sxnf13spvdarsh8zga0di7lad03i2ryy5sv",
+    "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86"
+  },
+  "prebuilts-master/misc": {
+    "dateTime": 1591837723,
+    "groups": [
+      "partner"
+    ],
+    "rev": "f11ff29241658fc703bf36fcbc3c48af12535dc9",
+    "revisionExpr": "f11ff29241658fc703bf36fcbc3c48af12535dc9",
+    "sha256": "13rmwnhb8c5qi38kfdhh6y9sp6b3phkk1w25rw88gzqki10pzm37",
+    "url": "https://android.googlesource.com/platform/prebuilts/misc"
+  },
+  "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9": {
+    "dateTime": 1580602681,
+    "groups": [
+      "partner"
+    ],
+    "rev": "606f80986096476912e04e5c2913685a8f2c3b65",
+    "revisionExpr": "606f80986096476912e04e5c2913685a8f2c3b65",
+    "sha256": "0ag3hyvwi9sr0z95v09iwnx6n8wccxsga8z0gwgm286i0q5m4971",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"
+  },
+  "prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9": {
+    "dateTime": 1580602446,
+    "groups": [
+      "partner"
+    ],
+    "rev": "b0c6a654327ca8796bed1e61dffcf523d04dceaa",
+    "revisionExpr": "b0c6a654327ca8796bed1e61dffcf523d04dceaa",
+    "sha256": "1am7mjlf4vsybkzgvhhiak6j00awykncg0137wqagshyz5b0sp2h",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9"
+  },
+  "private/msm-google": {
+    "dateTime": 1682993608,
+    "groups": [
+      "partner"
+    ],
+    "linkfiles": [
+      {
+        "dest": "build.config",
+        "src": "build.config.no-cfi"
+      },
+      {
+        "dest": "build_floral.sh",
+        "src": "build_floral.sh"
+      },
+      {
+        "dest": "build_sunfish.sh",
+        "src": "build_sunfish.sh"
+      }
+    ],
+    "rev": "c290b209397de21b8e7e80fec41319a3d0a27c11",
+    "revisionExpr": "c290b209397de21b8e7e80fec41319a3d0a27c11",
+    "sha256": "0slix83s44n2452b0x4428ppvm2msrcg51666bqva1yia1lbljid",
+    "url": "https://github.com/GrapheneOS/kernel_msm-coral"
+  },
+  "private/msm-google-modules/data-kernel": {
+    "dateTime": 1641264872,
+    "groups": [
+      "partner"
+    ],
+    "rev": "faf33e445d59b22500d2251a667adffd6f10401b",
+    "revisionExpr": "faf33e445d59b22500d2251a667adffd6f10401b",
+    "sha256": "14iqp168mf8d4nyi6s4g1lyj3xid02cqkarinjz8vmamwn2v9l5l",
+    "url": "https://android.googlesource.com/kernel/msm-modules/data-kernel"
+  },
+  "private/msm-google-modules/touch/fts/floral": {
+    "dateTime": 1585281399,
+    "groups": [
+      "partner"
+    ],
+    "rev": "48d36bbf61fcdc6addb02df2f625554c66dbfa11",
+    "revisionExpr": "48d36bbf61fcdc6addb02df2f625554c66dbfa11",
+    "sha256": "1sv2jpc48rn6rw4crx6yk679p1ifc53wrxard60n071p4nc404pa",
+    "url": "https://android.googlesource.com/kernel/msm-modules/fts_touch"
+  },
+  "private/msm-google-modules/touch/fts/sunfish": {
+    "dateTime": 1587632962,
+    "groups": [
+      "partner"
+    ],
+    "rev": "0e5e23adf847c5e54442e471db5e4ff1b3192be4",
+    "revisionExpr": "0e5e23adf847c5e54442e471db5e4ff1b3192be4",
+    "sha256": "18mgqf2dn3xchn6fzr2gc0nfbch9gaa1ciaf6rnp00pl235l2wz2",
+    "url": "https://android.googlesource.com/kernel/msm-modules/fts_touch_s5"
+  },
+  "private/msm-google-modules/wlan/fw-api": {
+    "dateTime": 1601674073,
+    "groups": [
+      "partner"
+    ],
+    "rev": "2b33b7b3680784bc142edd960f29ca49e52fa5c2",
+    "revisionExpr": "2b33b7b3680784bc142edd960f29ca49e52fa5c2",
+    "sha256": "1zxcpgzbnv9d2pw949v6w45fbipjw371h1vaf7wpqb7imyskrv4s",
+    "url": "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api"
+  },
+  "private/msm-google-modules/wlan/qca-wifi-host-cmn": {
+    "dateTime": 1655358714,
+    "groups": [
+      "partner"
+    ],
+    "rev": "8e54eec6e8cd7ca6e1344b03110879d9e9ba10ca",
+    "revisionExpr": "8e54eec6e8cd7ca6e1344b03110879d9e9ba10ca",
+    "sha256": "12r2aa0i8p1s7wnw2h2kjzhpdhp7xzqzak829420xchsb4m1rzp1",
+    "url": "https://android.googlesource.com/kernel/msm-modules/qca-wfi-host-cmn"
+  },
+  "private/msm-google-modules/wlan/qcacld-3.0": {
+    "dateTime": 1663840700,
+    "groups": [
+      "partner"
+    ],
+    "rev": "dd9f704fa6e07ebeb2efee6272f56e07ede67702",
+    "revisionExpr": "dd9f704fa6e07ebeb2efee6272f56e07ede67702",
+    "sha256": "0akg0ngsnxlz6zwz8qgwdcx7dj6ij7qap866937dc9frp0734ki4",
+    "url": "https://android.googlesource.com/kernel/msm-modules/qcacld"
+  },
+  "private/msm-google/techpack/audio": {
+    "dateTime": 1668026905,
+    "groups": [
+      "partner"
+    ],
+    "rev": "66083d870b3f754385705e22fcd7dc33dabeffaa",
+    "revisionExpr": "66083d870b3f754385705e22fcd7dc33dabeffaa",
+    "sha256": "03pyx252g6rqj6m4h9gpcf0c0fv9gj62aj3max85djy1d1988439",
+    "url": "https://github.com/GrapheneOS/kernel_msm-extra-coral"
+  }
+}

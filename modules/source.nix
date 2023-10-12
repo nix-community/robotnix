@@ -42,9 +42,8 @@ let
       else { "${builtins.head xs}" = listToTreeBranch (builtins.tail xs); };
     combineTreeBranches = branches:
       lib.foldr lib.recursiveUpdate {} branches;
-    enabledDirs = lib.filterAttrs (name: dir: dir.enable) config.source.dirs;
   in
-    combineTreeBranches (lib.mapAttrsToList (name: dir: listToTreeBranch (lib.splitString "/" dir.relpath)) enabledDirs);
+    combineTreeBranches (lib.mapAttrsToList (name: dir: listToTreeBranch (lib.splitString "/" dir.relpath)) config.source.dirs);
 
   fileModule = types.submodule ({ config, ... }: {
     options = {
@@ -200,8 +199,8 @@ let
 
       unpackScript = (lib.optionalString config.enable ''
         mkdir -p ${config.relpath}
-        ${pkgs.util-linux}/bin/mount --bind ${config.src} ${config.relpath}
-      '')
+        ${pkgs.utillinux}/bin/mount --bind ${config.src} ${config.relpath}
+      ''
       + (lib.concatMapStringsSep "\n" (c: ''
         mkdir -p $(dirname ${c.dest})
         cp --reflink=auto -f ${config.relpath}/${c.src} ${c.dest}
@@ -209,7 +208,7 @@ let
       + (lib.concatMapStringsSep "\n" (c: ''
         mkdir -p $(dirname ${c.dest})
         ln -sf --relative ${config.relpath}/${c.src} ${c.dest}
-      '') config.linkfiles);
+      '') config.linkfiles));
     };
   });
 in
@@ -253,6 +252,15 @@ in
         '';
       };
 
+      dirsTree = mkOption {
+        type = types.attrs;
+        description = ''
+          Fully expanded directory tree after sources are unpacked.
+        '';
+        default = dirsTree;
+        internal = true;
+      };
+
       excludeGroups = mkOption {
         default = [ "darwin" "mips" ];
         type = types.listOf types.str;
@@ -279,7 +287,7 @@ in
       inherit (config.source.manifest) rev sha256;
     });
 
-    unpackScript = lib.concatMapStringsSep "\n" (d: d.unpackScript) (lib.attrValues config.source.dirs);
+    unpackScript = lib.concatMapStringsSep "\n" (d: d.unpackScript) (lib.attrVals (lib.attrNames (lib.filterAttrs (name: config: config.enable) config.source.dirs)) config.source.dirs);
   };
 
   config.build = {

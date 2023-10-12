@@ -3,6 +3,8 @@ self: super: {
 
   android-prepare-vendor = super.callPackage ./android-prepare-vendor {};
 
+  adevtool = super.callPackage ./adevtool.nix {};
+
   bundletool = super.callPackage ./bundletool {};
 
   diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {

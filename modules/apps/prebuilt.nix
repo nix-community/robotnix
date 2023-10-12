@@ -44,14 +44,12 @@ let
   };
   deviceCertificates = lib.attrNames defaultDeviceCertFingerprints;
 
-  _keyPath = keyStorePath: name:
+  keyPath = name:
     if builtins.elem name deviceCertificates
       then (if config.signing.enable
-        then "${keyStorePath}/${config.device}/${name}"
-        else "${keyStorePath}/${lib.replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
-      else "${keyStorePath}/${name}";
-  evalTimeKeyPath = name: _keyPath config.signing.keyStorePath name;
-  buildTimeKeyPath = name: _keyPath config.signing.buildTimeKeyStorePath name;
+        then "${config.device}/${name}"
+        else "${lib.replaceStrings ["releasekey"] ["testkey"] name}") # If not signing.enable, use test keys from AOSP
+      else "${name}";
 
   putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 
@@ -207,17 +205,20 @@ in
               inherit (config) apk;
               keyPath =
                 if _config.signing.enable
-                then buildTimeKeyPath config.certificate
+                # $KEYSDIR is set by the withKeys wrapper
+                then "$KEYSDIR/${keyPath config.certificate}"
                 else "${config.snakeoilKeyPath}/${config.certificate}";
+              keysFun = _config.build.signing.withKeys _config.signing.keyStorePath;
             }));
 
           fingerprint = let
-            snakeoilFingerprint = pkgs.robotnix.certFingerprint "${config.snakeoilKeyPath}/${config.certificate}.x509.pem";
+            snakeoilFingerprint = pkgs.robotnix.certFingerprint (s: s) "${config.snakeoilKeyPath}/${config.certificate}.x509.pem";
           in mkDefault (
             if config.certificate == "PRESIGNED"
               then pkgs.robotnix.apkFingerprint config.signedApk # TODO: IFD
             else if _config.signing.enable
-              then pkgs.robotnix.certFingerprint (putInStore "${evalTimeKeyPath config.certificate}.x509.pem") # TODO: IFD
+            # $KEYSDIR is set by the withKeys wrapper
+            then pkgs.robotnix.certFingerprint (_config.build.signing.withKeys _config.signing.keyStorePath) "$KEYSDIR/${keyPath config.certificate}.x509.pem" # TODO: IFD
             else # !_config.signing.enable
               defaultDeviceCertFingerprints.${name} or (
                 builtins.trace ''
@@ -247,7 +248,7 @@ in
             mkdir -p $out/
             cp ${config.certificate}.{pk8,x509.pem} $out/
           '';
-        };
+          };
       }));
     };
   };

@@ -1,0 +1,270 @@
+{
+  "build": {
+    "dateTime": 1681168500,
+    "groups": [
+      "partner"
+    ],
+    "rev": "79e327f84a0f898787fb6a81f417822188173835",
+    "revisionExpr": "79e327f84a0f898787fb6a81f417822188173835",
+    "sha256": "13c014zcl72p4mrrixba6h02y7xdbgafx1c2i1lsra63yylc0jdh",
+    "url": "https://github.com/GrapheneOS/kernel_build-redbull"
+  },
+  "prebuilts-master/clang/host/linux-x86": {
+    "dateTime": 1620327705,
+    "groups": [
+      "partner"
+    ],
+    "rev": "537e01a6ff78760ee5b69597efdbc47bc721058d",
+    "revisionExpr": "537e01a6ff78760ee5b69597efdbc47bc721058d",
+    "sha256": "0dcjqgb6dqjpykks5sxnf13spvdarsh8zga0di7lad03i2ryy5sv",
+    "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86"
+  },
+  "prebuilts-master/misc": {
+    "dateTime": 1528356471,
+    "groups": [
+      "partner"
+    ],
+    "rev": "15560bb32cdb9b47db48eb4865b736df9708a8fe",
+    "revisionExpr": "15560bb32cdb9b47db48eb4865b736df9708a8fe",
+    "sha256": "07q86xqknmz5cr39bsfvyzkl6j799xh0zxs0syc5swib7nz9g8rp",
+    "url": "https://android.googlesource.com/platform/prebuilts/misc"
+  },
+  "prebuilts/boot-artifacts": {
+    "dateTime": 1620013446,
+    "groups": [],
+    "rev": "9a4b503e0a93b68da75ccdc4f0d01d98a9415371",
+    "revisionExpr": "9a4b503e0a93b68da75ccdc4f0d01d98a9415371",
+    "sha256": "0ifzkj72nr4qv77ynar7pxbd2aa22aaxzwqv9hdhpj5razhsn73i",
+    "url": "https://android.googlesource.com/platform/prebuilts/boot-artifacts"
+  },
+  "prebuilts/build-tools": {
+    "dateTime": 1627559164,
+    "groups": [
+      "partner"
+    ],
+    "rev": "cfedc16ec3deb680fca6fe2aff44a1837a97b50d",
+    "revisionExpr": "cfedc16ec3deb680fca6fe2aff44a1837a97b50d",
+    "sha256": "1m9kbh7b5l6hkk91rsvrvgr8ksdw1shkr51s64dnz123d655lysh",
+    "url": "https://android.googlesource.com/platform/prebuilts/build-tools"
+  },
+  "prebuilts/gas/linux-x86": {
+    "dateTime": 1627296631,
+    "groups": [],
+    "rev": "b2a189331333e014bfef4c0425b3ef4b74accdd0",
+    "revisionExpr": "b2a189331333e014bfef4c0425b3ef4b74accdd0",
+    "sha256": "0gb3g13b8qp5ww223zwyqjrifrgkjgac7hvdnlhwzg1v26vrjz9j",
+    "url": "https://android.googlesource.com/platform/prebuilts/gas/linux-x86"
+  },
+  "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9": {
+    "dateTime": 1521617172,
+    "groups": [
+      "partner"
+    ],
+    "rev": "961622e926a1b21382dba4dd9fe0e5fb3ee5ab7c",
+    "revisionExpr": "961622e926a1b21382dba4dd9fe0e5fb3ee5ab7c",
+    "sha256": "05wql8z8mdadibk17acbapzk8a4yfhpqzfcq8s1a2jxqqq2d8pyk",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"
+  },
+  "prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9": {
+    "dateTime": 1521617245,
+    "groups": [
+      "partner"
+    ],
+    "rev": "cb7b3ac1b7fdb49474ff68761909934d1142f594",
+    "revisionExpr": "cb7b3ac1b7fdb49474ff68761909934d1142f594",
+    "sha256": "0hyv7ahdigz9pfj70nmv72qxif6fyiwjsbvly0wyi1yj5qlzczq3",
+    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9"
+  },
+  "prebuilts/kernel-build-tools": {
+    "dateTime": 1674584673,
+    "groups": [
+      "partner"
+    ],
+    "rev": "ca5b087f88c0302ff66f59a6f26be663e92baf15",
+    "revisionExpr": "ca5b087f88c0302ff66f59a6f26be663e92baf15",
+    "sha256": "1jgra2wxd06cw7zzhqb6yqfasxd6dqbzsl64bl3b469b2n8bblag",
+    "url": "https://android.googlesource.com/kernel/prebuilts/build-tools"
+  },
+  "private/msm-google": {
+    "dateTime": 1682993555,
+    "groups": [
+      "partner"
+    ],
+    "linkfiles": [
+      {
+        "dest": "build.config",
+        "src": "build.config.redbull.no-cfi"
+      },
+      {
+        "dest": "build_redbull-gki.sh",
+        "src": "build_redbull-gki.sh"
+      },
+      {
+        "dest": "build_redbull.sh",
+        "src": "build_redbull.sh"
+      },
+      {
+        "dest": "build_sm8250.sh",
+        "src": "build_sm8250.sh"
+      },
+      {
+        "dest": "build_sm7250.sh",
+        "src": "build_sm7250.sh"
+      }
+    ],
+    "rev": "d8153329f52eb23f43066f9d2ebd2592c3974256",
+    "revisionExpr": "d8153329f52eb23f43066f9d2ebd2592c3974256",
+    "sha256": "00lqs1lxw6fljkff2abkvna0pybfr4yj0426pzi5mairfm04i7hk",
+    "url": "https://github.com/GrapheneOS/kernel_msm-redbull"
+  },
+  "private/msm-google-modules/data-kernel": {
+    "dateTime": 1641379095,
+    "groups": [
+      "partner"
+    ],
+    "rev": "4367e909c96c2022ea8d195bbbd42d268918dfe5",
+    "revisionExpr": "4367e909c96c2022ea8d195bbbd42d268918dfe5",
+    "sha256": "06d58dh8slxc31qz0lmqyp5x3cmydpncj2dl51xmbnjwwd3xxqg1",
+    "url": "https://android.googlesource.com/kernel/msm-modules/data-kernel"
+  },
+  "private/msm-google-modules/touch/fts": {
+    "dateTime": 1650868265,
+    "groups": [
+      "partner"
+    ],
+    "rev": "a43c04864f7693c3dd9849330fc4d388820270be",
+    "revisionExpr": "a43c04864f7693c3dd9849330fc4d388820270be",
+    "sha256": "1rsxqjis9lfaz4rk8pdfwckq99vkk7xh1a4azc56x7xa066i8ijg",
+    "url": "https://android.googlesource.com/kernel/msm-modules/fts_touch"
+  },
+  "private/msm-google-modules/touch/sec": {
+    "dateTime": 1650868135,
+    "groups": [
+      "partner"
+    ],
+    "rev": "0701b191882dc408104ad8af9e2f5eb2bf34c297",
+    "revisionExpr": "0701b191882dc408104ad8af9e2f5eb2bf34c297",
+    "sha256": "1734bp805m0ymcr53idvh2qpdncfw88z0gvq9vmzxw9vpb4qdjyj",
+    "url": "https://android.googlesource.com/kernel/msm-modules/sec_touch"
+  },
+  "private/msm-google-modules/wlan/fw-api": {
+    "dateTime": 1660193617,
+    "groups": [
+      "partner"
+    ],
+    "rev": "b90e16652ca08258a908f780f051cd53daa8cf0f",
+    "revisionExpr": "b90e16652ca08258a908f780f051cd53daa8cf0f",
+    "sha256": "1dzjg6gam4l4al2b4kc6w51q7dx7ymlw8y4jj2jgiqkgz0kmmcnw",
+    "url": "https://android.googlesource.com/kernel/msm-modules/wlan-fw-api"
+  },
+  "private/msm-google-modules/wlan/qca-wifi-host-cmn": {
+    "dateTime": 1670922742,
+    "groups": [
+      "partner"
+    ],
+    "rev": "6204cc13f7a9e94dbbdce06c46a24bf0315be3e2",
+    "revisionExpr": "6204cc13f7a9e94dbbdce06c46a24bf0315be3e2",
+    "sha256": "1ms2c799bkwwpylxf3kfds5iyyymxh99wr82wx11ib5phnl3pqlg",
+    "url": "https://android.googlesource.com/kernel/msm-modules/qca-wfi-host-cmn"
+  },
+  "private/msm-google-modules/wlan/qcacld-3.0": {
+    "dateTime": 1668068045,
+    "groups": [
+      "partner"
+    ],
+    "rev": "88a54e30ad935ff9fb7a70a31ccad1b3110861a7",
+    "revisionExpr": "88a54e30ad935ff9fb7a70a31ccad1b3110861a7",
+    "sha256": "07xcpdr0j84qlynibcsq1d0nwxys95wr2gvgwgzbfqfy4yx172ny",
+    "url": "https://github.com/GrapheneOS/kernel_google_redbull_drivers_staging_qcacld-3.0"
+  },
+  "private/msm-google/arch/arm64/boot/dts/vendor": {
+    "dateTime": 1648116936,
+    "groups": [
+      "partner"
+    ],
+    "rev": "30211b25c711982716dd2b486bc9b2afe3fe16da",
+    "revisionExpr": "30211b25c711982716dd2b486bc9b2afe3fe16da",
+    "sha256": "1bijkgmx7m29rnpa08knrvvaqcjfzj1yb321gk4adyflirfsyp43",
+    "url": "https://android.googlesource.com/kernel/msm-extra/devicetree"
+  },
+  "private/msm-google/arch/arm64/boot/dts/vendor/qcom/camera": {
+    "dateTime": 1627305702,
+    "groups": [
+      "partner"
+    ],
+    "rev": "3d63f4795a04c39ed22a0eb110a808af64c14696",
+    "revisionExpr": "3d63f4795a04c39ed22a0eb110a808af64c14696",
+    "sha256": "0m0ccrpxyryx1x40nhj2r12fch2q420p7qria65magchicf2h7h9",
+    "url": "https://android.googlesource.com/kernel/msm-extra/camera-devicetree"
+  },
+  "private/msm-google/arch/arm64/boot/dts/vendor/qcom/display": {
+    "dateTime": 1627305706,
+    "groups": [
+      "partner"
+    ],
+    "rev": "43e15efe49673c877faa88046094bf1dd5389e3a",
+    "revisionExpr": "43e15efe49673c877faa88046094bf1dd5389e3a",
+    "sha256": "0v4sm7p77q709y12fcn051kdnqsy1p7fgmlml1szvvy6wsjf8l8j",
+    "url": "https://android.googlesource.com/kernel/msm-extra/display-devicetree"
+  },
+  "private/msm-google/techpack/audio": {
+    "dateTime": 1660841368,
+    "groups": [
+      "partner"
+    ],
+    "rev": "ab77356b22c8906ad73268ada99e4b4f75b2b15c",
+    "revisionExpr": "ab77356b22c8906ad73268ada99e4b4f75b2b15c",
+    "sha256": "1wd3j7f1hjkskgi1c8xbvfjqilvqk132vqa0vrhscy8ail4r2vhr",
+    "url": "https://github.com/GrapheneOS/kernel_google_redbull_techpack_audio"
+  },
+  "private/msm-google/techpack/camera": {
+    "dateTime": 1672022045,
+    "groups": [
+      "partner"
+    ],
+    "rev": "14a2c0b4f7d0dbd91a7492a0e9264ae7c6a9a563",
+    "revisionExpr": "14a2c0b4f7d0dbd91a7492a0e9264ae7c6a9a563",
+    "sha256": "105ncpjgi6600lk0dggfwjww7clzbnf2asbjrg0l2v6dc7y8flzn",
+    "url": "https://android.googlesource.com/kernel/msm-extra/camera-kernel"
+  },
+  "private/msm-google/techpack/dataipa": {
+    "dateTime": 1627305733,
+    "groups": [
+      "partner"
+    ],
+    "rev": "7063b704d5f99d7a8de5cedb490270b1ee8102c4",
+    "revisionExpr": "7063b704d5f99d7a8de5cedb490270b1ee8102c4",
+    "sha256": "0mwc6mzg2fh9pkymzq8pw6g3alh95rxy6c0rf9r8l8l0xbb5388v",
+    "url": "https://android.googlesource.com/kernel/msm-extra/dataipa"
+  },
+  "private/msm-google/techpack/display": {
+    "dateTime": 1654478612,
+    "groups": [
+      "partner"
+    ],
+    "rev": "9313b655ad608194990780c2fcb531019e93550c",
+    "revisionExpr": "9313b655ad608194990780c2fcb531019e93550c",
+    "sha256": "13idy0mbz6p6s2l3mpr91qsifp3jw42x90mm4ab5afw0bmf4mva8",
+    "url": "https://android.googlesource.com/kernel/msm-extra/display-drivers"
+  },
+  "private/msm-google/techpack/video": {
+    "dateTime": 1653873500,
+    "groups": [
+      "partner"
+    ],
+    "rev": "b5a05bd082cdacc6dbdd713de2c94b43c0ad807d",
+    "revisionExpr": "b5a05bd082cdacc6dbdd713de2c94b43c0ad807d",
+    "sha256": "1q2rh9swj82mvr27ghkkj00a203d7jbzldr4asb9mg0ymb5c1afl",
+    "url": "https://android.googlesource.com/kernel/msm-extra/video-driver"
+  },
+  "tools/mkbootimg": {
+    "dateTime": 1627297082,
+    "groups": [
+      "partner"
+    ],
+    "rev": "34bc8bfb493401f7aadbd3b434f9fbfa521e9301",
+    "revisionExpr": "34bc8bfb493401f7aadbd3b434f9fbfa521e9301",
+    "sha256": "1wsly03j1gk9k4zmd90sv6ijv1hrdq5imwkwi2b12iccbwmsd8iv",
+    "url": "https://android.googlesource.com/platform/system/tools/mkbootimg"
+  }
+}

@@ -8,13 +8,14 @@ let
 
   imgList = lib.importJSON ./pixel-imgs.json;
   otaList = lib.importJSON ./pixel-otas.json;
-  fetchItem = json: let
-    matchingItem = lib.findSingle
-      (v: (v.device == config.device) && (lib.hasInfix "(${config.apv.buildID}," v.version)) # Look for left paren + upstream buildNumber + ","
-      (throw "no items found for vendor img/ota")
-      (throw "multiple items found for vendor img/ota")
-      json;
-  in
+  fetchItem = json:
+    let
+      matchingItem = lib.findSingle
+        (v: (v.device == config.device) && (lib.hasInfix "(${config.apv.buildID}," v.version)) # Look for left paren + upstream buildNumber + ","
+        (throw "no items found for vendor img/ota")
+        (throw "multiple items found for vendor img/ota")
+        json;
+    in
     pkgs.fetchurl (lib.filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);
 
   deviceMap = {
@@ -34,20 +35,26 @@ let
     barbet = { family = "barbet"; name = "Pixel 5a (5G)"; };
     raven = { family = "raviole"; name = "Pixel 6 Pro"; };
     oriole = { family = "raviole"; name = "Pixel 6"; };
+    bluejay = { family = "bluejay"; name = "Pixel 6a"; };
+    panther = { family = "pantah"; name = "Pixel 7"; };
+    cheetah = { family = "pantah"; name = "Pixel 7 Pro"; };
   };
 
   # Make a uuid based on some string data
-  uuidgen = str: let
-    hash = builtins.hashString "sha256" str;
-    s = i: len: lib.substring i len hash;
-  in lib.toLower "${s 0 8}-${s 8 4}-${s 12 4}-${s 16 4}-${s 20 12}";
+  uuidgen = str:
+    let
+      hash = builtins.hashString "sha256" str;
+      s = i: len: lib.substring i len hash;
+    in
+    lib.toLower "${s 0 8}-${s 8 4}-${s 12 4}-${s 16 4}-${s 20 12}";
 
   # UUID for persist.img
   uuid = uuidgen "persist-${config.buildNumber}-${builtins.toString config.buildDateTime}";
   hashSeed = uuidgen "persist-hash-${config.buildNumber}-${builtins.toString config.buildDateTime}";
 in
 mkMerge [
-  (mkIf ((lib.elem config.flavor [ "vanilla" "grapheneos" ]) && (config.device != null) && (lib.hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
+  (mkIf ((lib.elem config.flavor [ "vanilla" "grapheneos" ]) && (config.device != null) && (lib.hasAttr config.device deviceMap)) {
+    # Default settings that apply to all devices unless overridden. TODO: Make conditional
     deviceFamily = mkDefault (deviceMap.${config.device}.family or config.device);
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
@@ -56,9 +63,9 @@ mkMerge [
     apv.ota = mkDefault (fetchItem otaList);
 
     # Exclude all devices by default
-    source.excludeGroups = mkDefault (lib.attrNames deviceMap);
-    # But include names related to our device
-    source.includeGroups = mkDefault [ config.device config.deviceFamily ];
+    # source.excludeGroups = mkDefault (lib.attrNames deviceMap);
+    # # But include names related to our device
+    # source.includeGroups = mkDefault [ config.device config.deviceFamily ];
 
     signing.avb.enable = mkDefault true;
   })

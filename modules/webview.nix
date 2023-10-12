@@ -54,6 +54,17 @@ in
             type = types.path;
             description = "APK file containing webview package.";
           };
+
+          extraConfig = mkOption {
+            type = types.lines;
+            description = "extra module configuration to include with the apk";
+            default = "";
+          };
+
+          usesLibraries = mkOption {
+            type = types.listOf types.str;
+            default = [];
+          };
         };
       }));
     };
@@ -70,19 +81,10 @@ in
     ];
 
     apps.prebuilt = lib.mapAttrs' (name: m: lib.nameValuePair "${name}webview" {
-      inherit (m) apk;
+      inherit (m) apk extraConfig;
 
       # Don't generate a cert if it's the prebuilt version from upstream
       certificate = if (name != "prebuilt") then "${name}webview" else "PRESIGNED";
-
-      # Extra stuff from the Android.mk from the example webview module in AOSP. Unsure if these are needed.
-      extraConfig = ''
-        LOCAL_MULTILIB := both
-        LOCAL_REQUIRED_MODULES := \
-          libwebviewchromium_loader \
-          libwebviewchromium_plat_support
-        LOCAL_MODULE_TARGET_ARCH := ${config.arch}
-      '';
     }) (lib.filterAttrs (name: m: m.enable) config.webview);
 
     product.extraConfig = "PRODUCT_PACKAGE_OVERLAYS += robotnix/webview-overlay";

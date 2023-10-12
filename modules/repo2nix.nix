@@ -43,7 +43,7 @@ in stdenvNoCC.mkDerivation {
     "GIT_PROXY_COMMAND" "SOCKS_SERVER"
   ];
 
-  nativeBuildInputs = [ gitRepo cacert ];
+  nativeBuildInputs = [ git-repo cacert ];
 
   GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
