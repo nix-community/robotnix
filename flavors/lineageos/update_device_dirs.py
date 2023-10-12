@@ -137,23 +137,23 @@ def fetch_vendor_dirs(metadata: Any,
     for device, data in metadata.items():
         if debug:
             print(device, data)
-        if 'vendor_dir' in data:
-            vendor_dir = data['vendor_dir']
+        if 'vendor' in data:
+            vendor = data['vendor']
 
             # For the some devices, the vendor name used in device and vendor dir differs of course...
-            if vendor_dir in [ 'radxa', 'bananapi', 'hardkernel']:
-                vendor_dir = 'amlogic'
+            if vendor in [ 'radxa', 'bananapi', 'hardkernel']:
+                vendor = 'amlogic'
 
             if debug:
                 print(branch)
 
             if branch == 'lineage-20.0':
                 if 'branch' in data and data['branch'] == branch:
-                    required_vendor.add(os.path.join(vendor_dir, device))
+                    required_vendor.add(os.path.join(vendor, device))
                 else:
                     print(f'SKIP: {device} is not available for {branch}')
             else:
-                required_vendor.add(vendor_dir)
+                required_vendor.add(vendor)
 
         if 'vendor' in data:
             # Some devices need an additional vendor dir for their SoC.

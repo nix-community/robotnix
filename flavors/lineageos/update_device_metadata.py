@@ -46,6 +46,8 @@ def fetch_metadata(
             continue
 
         workaround_map = {
+            # Bacon needs vendor/oppo but is device/oneplus/bacon...
+            'bacon' : 'oppo',
             # shamu needs a workaround as well
             'shamu' : 'moto',
             # Workaround google device names source tree inconsistency
@@ -73,15 +75,7 @@ def fetch_metadata(
         if vendor == 'banana pi':
             vendor = 'bananapi'
 
-        # Bacon needs vendor/oppo but is device/oneplus/bacon...
-        # https://github.com/danielfullmer/robotnix/issues/26
-        vendor_dir = 'oppo' if device == 'bacon' else vendor 
-
         metadata[data['model']].update({
-            # LOS 20.0 has vendor dirs like this: proprietary/vendor/vendorName/deviceName
-            # Versions before that have one dir per vendor: proprietary/vendor/vendorName
-            'vendor_dir': vendor_dir,
-            'vendor_dir_new': os.path.join(vendor_dir, device),
             'vendor': vendor,
             'name': data['name'],
             'lineage_recovery': data.get('lineage_recovery', False)
