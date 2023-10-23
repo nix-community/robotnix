@@ -23,7 +23,7 @@ def fetch_metadata(
     # Devices we can't support due to repo naming inconsistencies. If you care
     # about a certain device in this list, you can add a workaround and remove
     # the device from the list.
-    ignore = [ 'nx651j' ]
+    ignore = [ 'nx651j', 'm5_tab', 'odroidc4_tab', 'radxa0_tab' ]
 
 
     lineage_build_targets = open(f'{hudson_path}/{lineage_build_targets_path}').readlines()
