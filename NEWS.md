@@ -8,9 +8,9 @@ changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
 
-# 2023-09-14
+# 2023-10-23
 - Support LineageOS version 20.0 (`androidVersion=13`)
-- LineageOS 17.1 and 18.1 have been marked as deprecated
+- LineageOS 17.1, 18.1 and 19.1 have been marked as deprecated
 
 # 2022-02-10
 - Added LineageOS version 19.0. Use by setting `androidVersion=12` (thanks @Kranzes)

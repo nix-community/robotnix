@@ -84,7 +84,7 @@ in mkIf (config.flavor == "lineageos")
 
   warnings = let
     isUnsupportedDevice = config.device != null && !(elem config.device supportedDevices) && config.deviceFamily != "generic";
-    isUnmaintained = lib.versionOlder (toString config.androidVersion) "12";
+    isUnmaintained = lib.versionOlder (toString config.androidVersion) "13";
   in optional isUnsupportedDevice "${config.device} is not an officially-supported device for LineageOS"
      ++ optional isUnmaintained "${LineageOSRelease} is unmaintained in robotnix and may break at any time";
 
