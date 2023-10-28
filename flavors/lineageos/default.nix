@@ -5,15 +5,17 @@
 let
   inherit (lib)
     optional optionals optionalString optionalAttrs
-    elem mapAttrs mapAttrs' nameValuePair filterAttrs
+    elem filter
+    mapAttrs mapAttrs' nameValuePair filterAttrs
     attrNames getAttrs flatten remove
     mkIf mkMerge mkDefault mkForce
-    importJSON toLower hasPrefix removePrefix;
+    importJSON toLower hasPrefix removePrefix hasSuffix replaceStrings;
 
   androidVersionToLineageBranch = {
     "10" = "lineage-17.1";
     "11" = "lineage-18.1";
     "12" = "lineage-19.1";
+    "13" = "lineage-20.0";
   };
   lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
 
@@ -75,32 +77,37 @@ in mkIf (config.flavor == "lineageos")
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
-  buildDateTime = mkDefault 1649677132;
+  buildDateTime = mkDefault (import ./lastUpdated.epoch);
 
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
 
-  warnings = optional (
-      (config.device != null) &&
-      !(elem config.device supportedDevices) &&
-      (config.deviceFamily != "generic")
-    )
-    "${config.device} is not an officially-supported device for LineageOS";
+  warnings = let
+    isUnsupportedDevice = config.device != null && !(elem config.device supportedDevices) && config.deviceFamily != "generic";
+    isUnmaintained = lib.versionOlder (toString config.androidVersion) "13";
+  in optional isUnsupportedDevice "${config.device} is not an officially-supported device for LineageOS"
+     ++ optional isUnmaintained "${LineageOSRelease} is unmaintained in robotnix and may break at any time";
 
   source.dirs = mkMerge ([
     repoDirs
 
     {
       "vendor/lineage".patches = [
-        (if lib.versionAtLeast (toString config.androidVersion) "12"
-         then ./0001-Remove-LineageOS-keys-12.patch
-         else ./0001-Remove-LineageOS-keys.patch)
+        (if lib.versionAtLeast (toString config.androidVersion) "13"
+         then ./0001-Remove-LineageOS-keys-20.patch
+         else ./0001-Remove-LineageOS-keys-19.patch)
 
         (pkgs.substituteAll {
           src = ./0002-bootanimation-Reproducibility-fix.patch;
           inherit (pkgs) imagemagick;
         })
-        ./0003-kernel-Set-constant-kernel-timestamp.patch
+
+        (if lib.versionAtLeast (toString config.androidVersion) "13"
+         then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
+         else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
+        
+      ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "13") [
+        ./dont-run-repo-during-build.patch
       ];
       "system/extras".patches = [
         # pkgutil.get_data() not working, probably because we don't use their compiled python
@@ -115,26 +122,36 @@ in mkIf (config.flavor == "lineageos")
       # So we'll just build chromium webview ourselves.
       "external/chromium-webview".enable = false;
     }
-  ] ++ optionals (deviceMetadata ? "${config.device}") [
+  ] ++ optionals (deviceMetadata ? "${config.device}") (let
     # Device-specific source dirs
-    (let
-      vendor = toLower deviceMetadata.${config.device}.vendor;
-      relpathWithDependencies = relpath: [ relpath ] ++ (flatten (map (p: relpathWithDependencies p) deviceDirs.${relpath}.deps));
-      relpaths = relpathWithDependencies "device/${vendor}/${config.device}";
-      filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
-    in filterDirsAttrs (getAttrs filteredRelpaths deviceDirs))
+    vendor = toLower deviceMetadata.${config.device}.vendor;
+    deviceRelpath = "device/${vendor}/${config.device}";
 
-    # Vendor-specific source dirs
-    (let
-      _vendor = toLower deviceMetadata.${config.device}.vendor;
-      vendor = if config.device == "shamu" then "motorola" else _vendor;
-      relpath = "vendor/${vendor}";
-    in filterDirsAttrs (getAttrs [relpath] vendorDirs))
-  ] ++ optional (config.device == "bacon")
-    # Bacon needs vendor/oppo in addition to vendor/oneplus
-    # See https://github.com/danielfullmer/robotnix/issues/26
-    (filterDirsAttrs (getAttrs ["vendor/oppo"] vendorDirs))
-  );
+    # Retuns a list of all relpaths for the device (including deps) recursively
+    relpathWithDeps = relpath: [ relpath ] ++ (
+      flatten (map (p: relpathWithDeps p) deviceDirs.${relpath}.deps)
+    );
+    # All relpaths required by the device
+    relpaths = relpathWithDeps deviceRelpath;
+    filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
+
+    # In LOS20, each device/ relpath has an associated vendor/ relpath.
+    # Well, usually...
+    deviceRelpaths = filter (path: hasPrefix "device/" path) relpaths;
+    vendorifiedRelpaths = map (replaceStrings [ "device/" ] [ "vendor/" ]) deviceRelpaths;
+
+    vendorRelpaths = if config.androidVersion >= 13 then (
+      # LOS20 needs vendor/$vendor/$device and all the common dirs but with
+      # vendor/ prefix
+      vendorifiedRelpaths
+    ) else [
+      # Older LOS need this
+      "vendor/${vendor}"
+    ];
+  in [
+    (filterDirsAttrs (getAttrs (filteredRelpaths) deviceDirs))
+    (filterDirsAttrs (getAttrs (vendorRelpaths) vendorDirs))
+  ]));
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";

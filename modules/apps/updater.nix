@@ -53,7 +53,9 @@ in
     };
   };
 
-  config = mkMerge [
+  config = let
+    isLos20 = cfg.flavor == "lineageos" && lib.versionAtLeast (toString config.androidVersion) "13";
+  in mkMerge [
     (mkIf cfg.enable (mkMerge [
       {
         # TODO: It's currently on system partition in upstream. Shouldn't it be on product partition?
@@ -89,7 +91,8 @@ in
     ]))
 
     # Remove package if it's disabled by configuration
-    (mkIf (!cfg.enable && cfg.includedInFlavor) {
+    # Don't remove it in LineageOS 20, it doesn't like that
+    (mkIf (!cfg.enable && cfg.includedInFlavor && !isLos20) {
       source.dirs.${relpath}.enable = false;
     })
   ];
