@@ -282,6 +282,7 @@ in
         USE_CCACHE = "true";
         CCACHE_DIR = "/var/cache/ccache"; # Make configurable?
         CCACHE_UMASK = "007"; # CCACHE_DIR should be user root, group nixbld
+        CCACHE_COMPILERCHECK = "content"; # Default is a mtime+size check. We can't fully rely on that.
       })
       (mkIf (config.androidVersion >= 11) {
         # Android 11 ninja filters env vars for more correct incrementalism.
