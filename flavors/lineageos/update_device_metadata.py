@@ -18,7 +18,7 @@ def fetch_metadata(
         ) -> Any:
     metadata = {}
 
-    hudson_path = get_store_path(checkout_git(hudson_url, 'refs/heads/master')['path'])
+    hudson_path = get_store_path(checkout_git(hudson_url, 'refs/heads/main')['path'])
 
     # Devices we can't support due to repo naming inconsistencies. If you care
     # about a certain device in this list, you can add a workaround and remove
