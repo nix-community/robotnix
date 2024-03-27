@@ -1,4 +1,4 @@
-{ lib, stdenv, makeWrapper, gnused, nix, coreutils, findutils, gawk, git }:
+{ lib, stdenv, makeWrapper, gnused, nix, coreutils, findutils, gawk, git, git-lfs }:
 
 # Originally from nixpkgs/pkgs/tools/package-management/nix-prefetch-scripts
 stdenv.mkDerivation {
@@ -11,7 +11,7 @@ stdenv.mkDerivation {
   installPhase = ''
     install -vD ${./nix-prefetch-git} $out/bin/nix-prefetch-git
     wrapProgram $out/bin/nix-prefetch-git \
-      --prefix PATH : ${lib.makeBinPath [ coreutils findutils gawk git gnused nix ]} \
+      --prefix PATH : ${lib.makeBinPath [ coreutils findutils gawk git git-lfs gnused nix ]} \
       --set HOME /homeless-shelter
   '';
 

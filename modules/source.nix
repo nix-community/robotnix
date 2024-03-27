@@ -19,7 +19,7 @@ let
       }
     else
       pkgs.fetchgit { # Build-time source fetching. This should be preferred, but is slightly less convenient when developing.
-        inherit (p) url sha256 fetchSubmodules;
+        inherit (p) url sha256 fetchSubmodules fetchLFS;
         # Use revisionExpr if it is a tag so we use the tag in the name of the nix derivation instead of the revision
         rev = if (p.revisionExpr != null && lib.hasPrefix "refs/tags/" p.revisionExpr) then p.revisionExpr else p.rev;
         deepClone = false;
@@ -165,6 +165,12 @@ let
       fetchSubmodules = mkOption {
         type = types.bool;
         default = false;
+        internal = true;
+      };
+
+      fetchLFS = mkOption {
+        type = types.bool;
+        default = true;
         internal = true;
       };
 

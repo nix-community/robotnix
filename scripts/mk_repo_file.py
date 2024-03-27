@@ -82,6 +82,7 @@ def make_repo_file(url: str, ref: str,
                    exclude_path: Optional[List[str]] = None,
                    callback: Optional[Callable[[Any], Any]] = None,
                    jobs: int = 1,
+                   fetch_lfs: bool = True,
                    ) -> Dict[str, ProjectInfoDict]:
     if local_manifests is None:
         local_manifests = []
@@ -195,9 +196,9 @@ def make_repo_file(url: str, ref: str,
             # Fetch information. Use revisionExpr if it is a tag so we use the
             # tag in the name of the nix derivation instead of the revision
             if p['revisionExpr'].startswith('refs/tags/'):
-                git_info = checkout_git(p_url, p['revisionExpr'], fetch_submodules)
+                git_info = checkout_git(p_url, p['revisionExpr'], fetch_submodules, fetch_lfs)
             else:
-                git_info = checkout_git(p_url, p['rev'], fetch_submodules)
+                git_info = checkout_git(p_url, p['rev'], fetch_submodules, fetch_lfs)
 
             p['dateTime'] = int(datetime.fromisoformat(git_info['date']).timestamp())
             p['sha256'] = git_info['sha256']
@@ -243,6 +244,7 @@ def main() -> None:
                         help="path to search for any existing repo json files to use for cached sha256s")
     parser.add_argument('--repo-prop', help="repo.prop file to use as source for project git revisions")
     parser.add_argument('--override-tag', help="tag to fetch for subrepos, ignoring revisions from manifest")
+    parser.add_argument('--disable-lfs', action="store_true", help="disables Git LFS support")
     parser.add_argument('--project-fetch-submodules', action="append", default=[],
                         help="fetch submodules for the specified project path")
     parser.add_argument('--include-prefix', action="append", default=[],
@@ -287,6 +289,7 @@ def main() -> None:
                    exclude_path=args.exclude_path,
                    callback=lambda dirs: save(filename, dirs),
                    jobs=args.jobs,
+                   fetch_lfs=not args.disable_lfs,
                    )
 
 
