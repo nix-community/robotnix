@@ -299,6 +299,10 @@ in
           inherit name;
           srcs = [];
 
+          # TODO: update in the future, might not be required.
+          # gets permissed denied if not set, in some of our deps
+          dontUpdateAutotoolsGnuConfigScripts = true;
+
           # TODO: Clean this stuff up. unshare / robotnix-build could probably be combined into a single utility.
           builder = pkgs.writeShellScript "builder.sh" ''
             export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
@@ -436,8 +440,8 @@ in
         name = "ota-tools";
         inherit src;
         sourceRoot = ".";
-        nativeBuildInputs = with pkgs; [ unzip pythonPackages.pytest ];
-        buildInputs = [ (pkgs.python.withPackages (p: [ p.protobuf ])) ];
+        nativeBuildInputs = with pkgs; [ unzip python3Packages.pytest ];
+        buildInputs = [ (pkgs.python3.withPackages (p: [ p.protobuf ])) ];
         postPatch = lib.optionalString (config.androidVersion == 11) ''
           cp bin/debugfs_static bin/debugfs
         '' + lib.optionalString (config.androidVersion <= 10) ''
@@ -513,6 +517,18 @@ in
         name = "robotnix-build";
         targetPkgs = pkgs: config.envPackages;
         multiPkgs = pkgs: with pkgs; [ zlib ];
+
+        # TODO might not be needed in the future, required now because
+        # Android works in mysterious ways. Wasn't needed in the past
+        # because these paths were already a part of LD_LIBRARY_PATH
+        # when using FHS.
+        #
+        # See here for issue when it was introduced https://github.com/NixOS/nixpkgs/issues/262775
+        # Inspiration taken from here https://github.com/NixOS/nixpkgs/pull/278361
+        # More information here as well https://github.com/NixOS/nixpkgs/issues/103648
+        profile = ''
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/lib32
+        '';
       };
     };
   }];
