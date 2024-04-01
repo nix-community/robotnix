@@ -306,6 +306,7 @@ in
 
             # Become a fake "root" in a new namespace so we can bind mount sources
             ${pkgs.toybox}/bin/cat << 'EOF' | ${pkgs.util-linux}/bin/unshare -m -r ${pkgs.runtimeShell}
+            set -e -o pipefail
             source $stdenv/setup
             genericBuild
             EOF
