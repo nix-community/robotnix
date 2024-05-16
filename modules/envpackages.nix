@@ -18,6 +18,7 @@ in
       lsof
       m4
       ncurses5
+      libxcrypt-legacy
       openssl # Used in avbtool
       psmisc # for "fuser", "pstree"
       rsync
