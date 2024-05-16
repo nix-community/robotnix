@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 { pkgs, callPackage, stdenv, stdenvNoCC, lib, fetchgit, fetchurl, fetchcipd, runCommand, symlinkJoin, writeScript, buildFHSUserEnv, autoPatchelfHook, buildPackages
-, python2, python3, ninja, llvmPackages_11, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
+, python2, python310, ninja, llvmPackages_11, nodejs, jre8, bison, gperf, pkg-config, protobuf, bsdiff
 , dbus, systemd, glibc, at-spi2-atk, atk, at-spi2-core, nspr, nss, pciutils, util-linux, libkrb5, gdk-pixbuf
 , glib, gtk3, alsa-lib, pulseaudio, xdg-utils, libXScrnSaver, libXcursor, libXtst, libXdamage
 , libdrm, libxkbcommon
@@ -142,6 +142,8 @@ let
       install -Dm755 gn $out/bin/gn
     '';
   };
+
+  python3 = python310;
 
 in stdenvNoCC.mkDerivation rec {
   pname = name;
