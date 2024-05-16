@@ -3,6 +3,14 @@ SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
 
+> [!IMPORTANT]
+> This project is *not* under active maintenance and arguably has not been for a couple of years.  
+> Development is sporadic and is not currently able to keep up with upstream development.
+
+At this point, Robotnix is not ready for daily use. Treat it as in-development alpha software.
+
+The [status section](#Status) contains more detailed information on which components are expected to work.
+
 # robotnix - Build Android (AOSP) using Nix
 
 Robotnix enables a user to easily and reliably build Android (AOSP) images using the Nix package manager / build tool.
@@ -61,6 +69,39 @@ This can build chromium+android in about an hour.
 ## Community
 The `#robotnix:nixos.org` channel on Matrix is available for a place to chat about the project, ask questions, and discuss robotnix development.
 You can easily join the channel using the Element web client via [this link](https://app.element.io/#/room/#robotnix:nixos.org).
+
+## Status
+
+This table documents the current status of Robotnix' components.
+
+Note that the "Maintained" column reflects whether there has been an effort to maintain the component in the past few years. "Maintained" components can be expected to work and not have fallen into disrepair but, until this project is under active maintenance again, no component can be expected to be reasonably up to date.
+
+This table primarily exists to show the opposite: which components cannot be expected to work or might even be removed in the future; to set the right expectations.
+
+| Component                 | Maintained | Subject to removal             | People knowledgeable |
+|---------------------------|------------|--------------------------------|----------------------|
+| Android versions          | Yes        | -                              | @Atemu               |
+| dependencies (Nixpkgs)    | Yes        | -                              | @Atemu @eyJhb        |
+| General code organisation | No         | -                              | @Atemu               |
+| lineageos                 | Yes        | No                             | @Atemu               |
+| vanilla                   | No         | @Atemu might pick it up        | -                    |
+| graphene                  | No         | @Atemu might pick it up        | -                    |
+| waydroid                  | No         | Maybe                          | -                    |
+| anbox                     | No         | Yes (upstream is dead)         | -                    |
+| lineageos updater         | Yes        | No                             | @Atemu               |
+| F-droid                   | Yes        | No                             | @Atemu @eyJhb        |
+| µG                        | Yes        | No                             | @Atemu               |
+| Webview                   | No         | No                             | -                    |
+| Kernels                   | No         | No                             | -                    |
+| Pixel vendor blobs        | No         | No                             | -                    |
+| Signing                   | No         | No                             | -                    |
+| Framework configuration   | No         | No                             | -                    |
+| Emulator                  | No         | No                             | -                    |
+| Hosts-file                | No         | No                             | -                    |
+| OTA Updater               | No         | Yes                            | -                    |
+| Seedvault                 | No         | Yes                            | -                    |
+| Auditor                   | No         | Yes                            | -                    |
+| Chromium source build     | No         | Yes (or replaced by prebuilts) | -                    |
 
 ## License information
 This project is available as open source under the terms of MIT license. However, for accurate information, please check individual files.
