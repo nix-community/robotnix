@@ -1,0 +1,40 @@
+From 333fc9d324640adb94e2ec7b51ab24268a3084d4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Janne=20He=C3=9F?= <janne@hess.ooo>
+Date: Sun, 27 Oct 2019 11:31:40 +0100
+Subject: [PATCH 03/16] nix: Retry 20 times if the http request fails
+
+---
+ subcmds/nix.py | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/subcmds/nix.py b/subcmds/nix.py
+index f113ede..fd7c188 100644
+--- a/subcmds/nix.py
++++ b/subcmds/nix.py
+@@ -53,6 +53,7 @@ except ImportError:
+   multiprocessing = None
+ 
+ from command import Command, MirrorSafeCommand
++from itertools import repeat
+ 
+ class Nix(Command, MirrorSafeCommand):
+   common = True
+@@ -93,8 +94,12 @@ class Nix(Command, MirrorSafeCommand):
+         oS += '    ref = "' + p.revisionExpr.split('/')[-1] + '";\n'
+       else:
+         oS += '    ref = "' + p.revisionExpr + '";\n'
+-      oS += '    rev = "' + p._LsRemote(p.revisionExpr).split('\t')[0] + '";\n'
++      while repeat(None, 20):
++        raw_rev = p._LsRemote(p.revisionExpr)
++        if raw_rev != None:
++          break
++      oS += '    rev = "' + raw_rev.split('\t')[0] + '";\n'
+       oS += '    name = "' + p.relpath.replace('/', '=') + '";\n'
+       oS += '  })\n'
+     oS += '];\n}'
+-    print(oS)
+\ No newline at end of file
++    print(oS)
+-- 
+2.44.0
+

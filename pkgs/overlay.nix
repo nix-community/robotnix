@@ -1,3 +1,4 @@
+{ inputs }:
 self: super: {
   android-emulator = super.callPackage ./android-emulator {};
 
@@ -32,6 +33,8 @@ self: super: {
     impureEnvVars = old.impureEnvVars or [ ] ++ [ "ROBOTNIX_GIT_MIRRORS" ];
   });
   nix-prefetch-git = super.callPackage ./fetchgit/nix-prefetch-git.nix {};
+
+  gitRepo = super.callPackage ./gitRepo { inherit inputs; };
 
   ###
 

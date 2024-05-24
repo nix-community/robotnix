@@ -1,0 +1,39 @@
+From 35c3b4c59382e7db182b4eedfacba55c762295e5 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Tue, 14 Apr 2020 19:47:47 -0400
+Subject: [PATCH 08/16] dumpjson: fix explicitly referencing a revision
+
+GrapheneOS does this as of QQ2A.200405.005.2020.04.13.21
+---
+ subcmds/dumpjson.py | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index a1da03c..8ca9d08 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -54,12 +54,19 @@ except ImportError:
+ 
+ import sys
+ import json
++import re
+ 
+ from command import Command, MirrorSafeCommand
+ 
+ def _fetch_revs(p, sem):
+-    with sem:
+-        p.rev = p._LsRemote(p.revisionExpr).split('\t')[0]
++    if re.match("[0-9a-f]{40}", p.revisionExpr):
++        # Use revisionExpr if it is already a SHA1 hash
++        p.rev = p.revisionExpr
++    else:
++        # Otherwise we need to grab the hash from the remote source
++        with sem:
++            p.rev = p._LsRemote(p.revisionExpr).split('\t')[0]
++            assert p.rev != ""
+ 
+ class Dumpjson(Command, MirrorSafeCommand):
+   common = True
+-- 
+2.44.0
+

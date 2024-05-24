@@ -1,0 +1,81 @@
+From dca531f6d6e9fdcf00aa9d18f0153bd66a2e32ea Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomek=20Ma=C5=84ko?= <tomek.manko@railgun-solutions.com>
+Date: Fri, 24 May 2024 21:35:57 +0200
+Subject: [PATCH 16/16] Remove python3 conditionals
+
+---
+ subcmds/dumpjson.py | 23 +++++------------------
+ subcmds/nix.py      | 23 +++++------------------
+ 2 files changed, 10 insertions(+), 36 deletions(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index 870e269..7dfc465 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -15,24 +15,11 @@
+ 
+ from __future__ import print_function
+ 
+-from pyversion import is_python3
+-if is_python3():
+-  import http.cookiejar as cookielib
+-  import urllib.error
+-  import urllib.parse
+-  import urllib.request
+-  import xmlrpc.client
+-else:
+-  import imp
+-  import urllib2
+-  import urlparse
+-  import xmlrpclib
+-  urllib = imp.new_module('urllib')
+-  urllib.error = urllib2
+-  urllib.parse = urlparse
+-  urllib.request = urllib2
+-  xmlrpc = imp.new_module('xmlrpc')
+-  xmlrpc.client = xmlrpclib
++import http.cookiejar as cookielib
++import urllib.error
++import urllib.parse
++import urllib.request
++import xmlrpc.client
+ 
+ try:
+   import threading as _threading
+diff --git a/subcmds/nix.py b/subcmds/nix.py
+index ad1f19f..51be288 100644
+--- a/subcmds/nix.py
++++ b/subcmds/nix.py
+@@ -15,24 +15,11 @@
+ 
+ from __future__ import print_function
+ 
+-from pyversion import is_python3
+-if is_python3():
+-  import http.cookiejar as cookielib
+-  import urllib.error
+-  import urllib.parse
+-  import urllib.request
+-  import xmlrpc.client
+-else:
+-  import imp
+-  import urllib2
+-  import urlparse
+-  import xmlrpclib
+-  urllib = imp.new_module('urllib')
+-  urllib.error = urllib2
+-  urllib.parse = urlparse
+-  urllib.request = urllib2
+-  xmlrpc = imp.new_module('xmlrpc')
+-  xmlrpc.client = xmlrpclib
++import http.cookiejar as cookielib
++import urllib.error
++import urllib.parse
++import urllib.request
++import xmlrpc.client
+ 
+ try:
+   import threading as _threading
+-- 
+2.44.0
+

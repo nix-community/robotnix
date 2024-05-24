@@ -1,0 +1,25 @@
+From 92f28fed56d9195cf723aef22b3ce00b47742ed1 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 8 Dec 2019 14:21:32 -0500
+Subject: [PATCH 07/16] dumpjson: Sort groups list
+
+---
+ subcmds/dumpjson.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index 18aca4c..a1da03c 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -86,7 +86,7 @@ class Dumpjson(Command, MirrorSafeCommand):
+         p.name: {
+             "url": p.remote.url,
+             "relpath": p.relpath,
+-            "groups": p.groups,
++            "groups": sorted(p.groups),
+             "revisionExpr": p.revisionExpr,
+             "rev": p.rev,
+             "linkfiles": [
+-- 
+2.44.0
+

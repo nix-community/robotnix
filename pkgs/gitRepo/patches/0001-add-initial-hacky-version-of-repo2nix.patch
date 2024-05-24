@@ -1,0 +1,137 @@
+From 8fe8a2efaa6bcd404c256a29d1dc5ed4ae241a08 Mon Sep 17 00:00:00 2001
+From: ajs124 <git@ajs124.de>
+Date: Tue, 26 Feb 2019 04:48:13 +0100
+Subject: [PATCH 01/16] add initial (hacky) version of "repo2nix"
+
+now with less impurities
+---
+ project.py     |   4 +-
+ subcmds/nix.py | 100 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 102 insertions(+), 2 deletions(-)
+ create mode 100644 subcmds/nix.py
+
+diff --git a/project.py b/project.py
+index 1f5e4c3..c3c3384 100644
+--- a/project.py
++++ b/project.py
+@@ -2887,8 +2887,8 @@ class Project:
+                 )
+ 
+     def _LsRemote(self, refs):
+-        cmd = ["ls-remote", self.remote.name, refs]
+-        p = GitCommand(self, cmd, capture_stdout=True)
++        cmd = ["ls-remote", self.remote.url, refs]
++        p = GitCommand(self, cmd, cwd="/", capture_stdout=True)
+         if p.Wait() == 0:
+             return p.stdout
+         return None
+diff --git a/subcmds/nix.py b/subcmds/nix.py
+new file mode 100644
+index 0000000..f113ede
+--- /dev/null
++++ b/subcmds/nix.py
+@@ -0,0 +1,100 @@
++#
++# Copyright (C) 2008 The Android Open Source Project
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#      http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++from __future__ import print_function
++
++from pyversion import is_python3
++if is_python3():
++  import http.cookiejar as cookielib
++  import urllib.error
++  import urllib.parse
++  import urllib.request
++  import xmlrpc.client
++else:
++  import imp
++  import urllib2
++  import urlparse
++  import xmlrpclib
++  urllib = imp.new_module('urllib')
++  urllib.error = urllib2
++  urllib.parse = urlparse
++  urllib.request = urllib2
++  xmlrpc = imp.new_module('xmlrpc')
++  xmlrpc.client = xmlrpclib
++
++try:
++  import threading as _threading
++except ImportError:
++  import dummy_threading as _threading
++
++try:
++  import resource
++  def _rlimit_nofile():
++    return resource.getrlimit(resource.RLIMIT_NOFILE)
++except ImportError:
++  def _rlimit_nofile():
++    return (256, 256)
++
++try:
++  import multiprocessing
++except ImportError:
++  multiprocessing = None
++
++from command import Command, MirrorSafeCommand
++
++class Nix(Command, MirrorSafeCommand):
++  common = True
++  helpSummary = "Export nix file with sources"
++  helpUsage = """
++%prog [<project>...]
++"""
++  helpDescription = """
++"""
++
++  def Execute(self, opt, args):
++    all_projects = self.GetProjects(args, missing_ok=True, submodules_ok=False)
++
++    oS = '{\n'
++    oS += "unpackPhase = ''\n" \
++    'echo "reassembling source tree from git source store paths"\n' \
++    'mkdir src; cd src\n' \
++    'for src in $srcs; do\n' \
++    " dest_folder=$(stripHash $src); dest_folder=''${dest_folder//=//}\n" \
++    ' echo "$src -> $dest_folder"\n' \
++    ' mkdir -p "$dest_folder"\n' \
++    ' cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links --recursive "$src/." "$dest_folder/"\n' \
++    ' chmod -R u+w "$dest_folder"\n' \
++    'done\n' \
++    'echo "creating symlinks and copies as specified in repo manifest(s)"\n'
++    for p in all_projects:
++      for f in p.linkfiles:
++        oS += 'ln -s ' + f.src_rel_to_dest + ' ' + f.dest + '\n'
++      for c in p.copyfiles:
++        oS += 'cp --reflink=auto ' + p.relpath + '/' + c.src + ' ' + c.dest + '\n'
++    oS += "'';\n"
++
++    oS += 'sources = [\n'
++    for p in all_projects:
++      oS += '  (builtins.fetchGit {\n'
++      oS += '    url = "' + p.remote.url + '";\n'
++      if 'refs/heads' in p.revisionExpr:
++        oS += '    ref = "' + p.revisionExpr.split('/')[-1] + '";\n'
++      else:
++        oS += '    ref = "' + p.revisionExpr + '";\n'
++      oS += '    rev = "' + p._LsRemote(p.revisionExpr).split('\t')[0] + '";\n'
++      oS += '    name = "' + p.relpath.replace('/', '=') + '";\n'
++      oS += '  })\n'
++    oS += '];\n}'
++    print(oS)
+\ No newline at end of file
+-- 
+2.44.0
+

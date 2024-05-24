@@ -1,0 +1,25 @@
+From 991502c597e3d3c9d5b25fcf08ecd216fdba107b Mon Sep 17 00:00:00 2001
+From: ajs124 <git@ajs124.de>
+Date: Tue, 3 Dec 2019 20:23:01 +0100
+Subject: [PATCH 04/16] fml
+
+---
+ subcmds/nix.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/subcmds/nix.py b/subcmds/nix.py
+index fd7c188..ad1f19f 100644
+--- a/subcmds/nix.py
++++ b/subcmds/nix.py
+@@ -98,7 +98,7 @@ class Nix(Command, MirrorSafeCommand):
+         raw_rev = p._LsRemote(p.revisionExpr)
+         if raw_rev != None:
+           break
+-      oS += '    rev = "' + raw_rev.split('\t')[0] + '";\n'
++      # oS += '    rev = "' + raw_rev.split('\t')[0] + '";\n'
+       oS += '    name = "' + p.relpath.replace('/', '=') + '";\n'
+       oS += '  })\n'
+     oS += '];\n}'
+-- 
+2.44.0
+
