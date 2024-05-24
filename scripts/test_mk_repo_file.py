@@ -13,11 +13,11 @@ from typing import Any, Optional
 import mk_repo_file
 
 
-def git_create(directory: str, tag: Optional[str] = "release") -> None:
+def git_create(directory: str, tag: Optional[str] = "release", initial_branch: str = "main") -> None:
     """Turn a directory into a git repo"""
     cwd = os.getcwd()
     os.chdir(directory)
-    subprocess.check_call(["git", "init", "--initial-branch=master"])
+    subprocess.check_call(["git", "init", f"--initial-branch={initial_branch}"])
     subprocess.check_call(["git", "config", "--local", "user.name", "testenv"])
     subprocess.check_call(["git", "config", "--local", "user.email", "testenv@example.com"])
     subprocess.check_call(["git", "add", "."])
