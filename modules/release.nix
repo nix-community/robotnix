@@ -12,7 +12,9 @@ let
     jre = if (config.androidVersion >= 11) then pkgs.jdk11_headless else pkgs.jre8_headless;
     deps = with pkgs;
       [ otaTools openssl jre zip unzip pkgs.getopt which toybox vboot_reference util-linux
-        python # ota_from_target_files invokes, brillo_update_payload which has "truncate_file" which invokes python
+        # ota_from_target_files invokes, brillo_update_payload which has "truncate_file" which invokes python
+        # c.f. https://android.googlesource.com/platform/system/update_engine/+/refs/heads/main/scripts/brillo_update_payload#338
+        python3
       ];
   in ''
     export PATH=${lib.makeBinPath deps}:$PATH
