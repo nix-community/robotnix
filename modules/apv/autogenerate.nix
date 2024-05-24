@@ -6,7 +6,7 @@
 let
   inherit (pkgs) lib;
   robotnix = configuration: import ../../default.nix { inherit configuration pkgs; };
-  devices = [ "crosshatch" "blueline" "bonito" "sargo" "coral" "flame" "sunfish" "bramble" "redfin" "barbet" "raven" "oriole" ];
+  devices = [ "crosshatch" "blueline" "bonito" "sargo" "coral" "flame" "sunfish" "bramble" "redfin" "barbet" "raven" "oriole" "cheetah" ];
 
   deviceAttrs =
     (device: let
