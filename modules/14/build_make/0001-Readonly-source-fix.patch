@@ -1,0 +1,98 @@
+From 8792b0028fe89540c95a5e66adc5557054a3e393 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 17 May 2020 00:42:48 -0400
+Subject: [PATCH] Readonly source fix
+
+Have CopyFile just always set u+w on copied files. Fixes a bunch of
+issues that would be too difficult to track down otherwise. HACK
+
+Change-Id: Ic905ab7c3c41f013fc70c92b375f5dc41d5cf586
+---
+ core/Makefile            | 3 +++
+ core/definitions.mk      | 4 ++++
+ tools/libhost/CopyFile.c | 4 ++--
+ 3 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/core/Makefile b/core/Makefile
+index c4d5530aa6..c96367a163 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -1222,6 +1222,7 @@ INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
+ ifeq ($(BOARD_AVB_ENABLE),true)
+ $(INSTALLED_BOOTIMAGE_TARGET): $(INTERNAL_PREBUILT_BOOTIMAGE) $(AVBTOOL) $(BOARD_AVB_BOOT_KEY_PATH)
+ 	cp $(INTERNAL_PREBUILT_BOOTIMAGE) $@
++	chmod u+w $@
+ 	$(AVBTOOL) add_hash_footer \
+ 	    --image $@ \
+ 	    $(call get-partition-size-argument,$(BOARD_BOOTIMAGE_PARTITION_SIZE)) \
+@@ -4007,6 +4008,7 @@ INSTALLED_DTBOIMAGE_TARGET := $(PRODUCT_OUT)/dtbo.img
+ ifeq ($(BOARD_AVB_ENABLE),true)
+ $(INSTALLED_DTBOIMAGE_TARGET): $(BOARD_PREBUILT_DTBOIMAGE) $(AVBTOOL) $(BOARD_AVB_DTBO_KEY_PATH)
+ 	cp $(BOARD_PREBUILT_DTBOIMAGE) $@
++	chmod u+w $@
+ 	$(AVBTOOL) add_hash_footer \
+ 	    --image $@ \
+ 	    $(call get-partition-size-argument,$(BOARD_DTBOIMG_PARTITION_SIZE)) \
+@@ -4020,6 +4022,7 @@ UNMOUNTED_NOTICE_VENDOR_DEPS+= $(INSTALLED_DTBOIMAGE_TARGET)
+ else
+ $(INSTALLED_DTBOIMAGE_TARGET): $(BOARD_PREBUILT_DTBOIMAGE)
+ 	cp $(BOARD_PREBUILT_DTBOIMAGE) $@
++	chmod u+w $@
+ endif
+ 
+ endif # BOARD_PREBUILT_DTBOIMAGE
+diff --git a/core/definitions.mk b/core/definitions.mk
+index ce1248e2e9..4c5c3d51f3 100644
+--- a/core/definitions.mk
++++ b/core/definitions.mk
+@@ -3262,6 +3262,7 @@ define copy-file-to-target
+ @mkdir -p $(dir $@)
+ $(hide) rm -f $@
+ $(hide) cp "$<" "$@"
++$(hide) chmod u+w "$@"
+ endef
+ 
+ # Same as copy-file-to-target, but assume file is a licenes metadata file,
+@@ -3281,6 +3282,7 @@ define copy-file-to-target-with-cp
+ @mkdir -p $(dir $@)
+ $(hide) rm -f $@
+ $(hide) cp -p "$<" "$@"
++$(hide) chmod u+w "$@"
+ endef
+ 
+ # The same as copy-file-to-target, but strip out "# comment"-style
+@@ -3297,6 +3299,7 @@ define copy-file-to-new-target
+ @mkdir -p $(dir $@)
+ $(hide) rm -f $@
+ $(hide) cp $< $@
++$(hide) chmod u+w "$@"
+ endef
+ 
+ # The same as copy-file-to-new-target, but use the local
+@@ -3305,6 +3308,7 @@ define copy-file-to-new-target-with-cp
+ @mkdir -p $(dir $@)
+ $(hide) rm -f $@
+ $(hide) cp $< $@
++$(hide) chmod u+w "$@"
+ endef
+ 
+ # The same as copy-file-to-new-target, but preserve symlinks. Symlinks are
+diff --git a/tools/libhost/CopyFile.c b/tools/libhost/CopyFile.c
+index f9bda86fd1..44b36e4bdf 100644
+--- a/tools/libhost/CopyFile.c
++++ b/tools/libhost/CopyFile.c
+@@ -180,9 +180,9 @@ static int setPermissions(const char* dst, const struct stat* pSrcStat, unsigned
+         /*
+          * Set the permissions.
+          */
+-        if (chmod(dst, pSrcStat->st_mode & ~(S_IFMT)) != 0) {
++        if (chmod(dst, (pSrcStat->st_mode | S_IWUSR) & ~(S_IFMT)) != 0) {
+             DBUG(("---   unable to set perms on '%s' to 0%o: %s\n",
+-                dst, pSrcStat->st_mode & ~(S_IFMT), strerror(errno)));
++                dst, (pSrcStat->st_mode | S_IWUSR) & ~(S_IFMT), strerror(errno)));
+         }
+ #ifndef _WIN32
+         /*
+-- 
+2.39.2
+

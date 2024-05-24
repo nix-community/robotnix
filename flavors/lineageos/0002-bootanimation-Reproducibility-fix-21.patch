@@ -1,0 +1,23 @@
+From 9b6e454e4a7b7c23a1fc4b44dcc07ff5bcd14191 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 10 May 2020 18:33:27 -0400
+Subject: [PATCH 2/3] bootanimation: Reproducibility fix
+
+---
+ bootanimation/Android.mk | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/bootanimation/Android.mk b/bootanimation/Android.mk
+index 97948f38..64f5aac9 100644
+--- a/bootanimation/Android.mk
++++ b/bootanimation/Android.mk
+@@ -35,6 +35,9 @@ $(TARGET_GENERATED_BOOTANIMATION): $(SOONG_ZIP)
+ 	IMAGEHEIGHT=$$(expr $$IMAGEWIDTH / 3); \
+ 	RESOLUTION="$$IMAGEWIDTH"x"$$IMAGEHEIGHT"; \
+ 	prebuilts/tools-lineage/${HOST_OS}-x86/bin/mogrify -resize $$RESOLUTION -colors 256 $(INTERMEDIATES)/*/*.png; \
++	for f in $(INTERMEDIATES)/*/*.png; do \
++	    @imagemagick@/bin/convert -strip "$$f" "$$f"; \
++	done; \
+ 	echo "$$IMAGESCALEWIDTH $$IMAGESCALEHEIGHT 60" > $(INTERMEDIATES)/desc.txt; \
+ 	cat vendor/lineage/bootanimation/desc.txt >> $(INTERMEDIATES)/desc.txt
+ 	$(hide) $(SOONG_ZIP) -L 0 -o $@ -C $(INTERMEDIATES) -D $(INTERMEDIATES)

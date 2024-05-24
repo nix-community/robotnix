@@ -233,6 +233,7 @@ in
       "11" = 30;
       "12" = 32;
       "13" = 33;
+      "14" = 34;
     }.${builtins.toString config.androidVersion} or 32;
 
     buildNumber = mkOptionDefault (formatSecondsSinceEpoch config.buildDateTime);
@@ -342,8 +343,15 @@ in
             mkdir -p $HOME
             export USER=foo
             ''}
+            ## loads bash functions for building, such as "breakfast" or "choosecombo"
             source build/envsetup.sh
-            choosecombo ${config.buildType} ${config.productName} ${config.variant}
+            ${lib.optionalString (config.androidVersion >= 14) ''
+              # breakfast ${config.productName}-ap1a-${config.variant}
+              breakfast ${config.device}
+            ''}
+            ${lib.optionalString (config.androidVersion < 14) ''
+              choosecombo ${config.buildType} ${config.productName} ${config.variant}
+            ''}
 
             # Fail early if the product was not selected properly
             test -n "$TARGET_PRODUCT" || exit 1

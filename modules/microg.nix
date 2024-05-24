@@ -32,7 +32,7 @@ in
 
   config = mkIf config.microg.enable {
     source.dirs = mkMerge [
-      (mkIf (config.androidVersion >= 12) {
+      (mkIf (config.androidVersion == 12 || config.androidVersion == 13) {
         # From: https://github.com/microg/GmsCore/pull/1586
         "frameworks/base".patches = lib.optionals (config.androidVersion == 12) [
           (pkgs.fetchpatch {

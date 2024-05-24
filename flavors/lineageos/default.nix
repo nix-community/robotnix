@@ -16,6 +16,7 @@ let
     "11" = "lineage-18.1";
     "12" = "lineage-19.1";
     "13" = "lineage-20.0";
+    "14" = "lineage-21.0";
   };
   lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
 
@@ -93,19 +94,25 @@ in mkIf (config.flavor == "lineageos")
 
     {
       "vendor/lineage".patches = [
-        (if lib.versionAtLeast (toString config.androidVersion) "13"
+        (if lib.versionAtLeast (toString config.androidVersion) "14"
+         then ./0001-Remove-LineageOS-keys-21.patch
+         else if lib.versionAtLeast (toString config.androidVersion) "13"
          then ./0001-Remove-LineageOS-keys-20.patch
          else ./0001-Remove-LineageOS-keys-19.patch)
 
         (pkgs.substituteAll {
-          src = ./0002-bootanimation-Reproducibility-fix.patch;
+          src = (if lib.versionAtLeast (toString config.androidVersion) "14"
+          then ./0002-bootanimation-Reproducibility-fix-21.patch else
+          ./0002-bootanimation-Reproducibility-fix-.patch);
           inherit (pkgs) imagemagick;
         })
 
-        (if lib.versionAtLeast (toString config.androidVersion) "13"
+        (if lib.versionAtLeast (toString config.androidVersion) "14"
+         then ./0003-kernel-Set-constant-kernel-timestamp-21.patch
+         else if lib.versionAtLeast (toString config.androidVersion) "13"
          then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
          else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
-        
+
       ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "13") [
         ./dont-run-repo-during-build.patch
       ];
@@ -135,10 +142,17 @@ in mkIf (config.flavor == "lineageos")
     relpaths = relpathWithDeps deviceRelpath;
     filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
 
-    # In LOS20, each device/ relpath has an associated vendor/ relpath.
+    # In LOS20/21, each device/ relpath has an associated vendor/ relpath.
     # Well, usually...
     deviceRelpaths = filter (path: hasPrefix "device/" path) relpaths;
-    vendorifiedRelpaths = map (replaceStrings [ "device/" ] [ "vendor/" ]) deviceRelpaths;
+    vendorifiedRelpaths = map (replaceStrings [ "device/" ] [ "vendor/" ])
+      (filter
+        (
+          deviceRelpath: !(builtins.hasAttr "noVendor" deviceDirs.${deviceRelpath})
+          || deviceDirs.${deviceRelpath}.noVendor == false
+        )
+        deviceRelpaths
+      );
 
     vendorRelpaths = if config.androidVersion >= 13 then (
       # LOS20 needs vendor/$vendor/$device and all the common dirs but with

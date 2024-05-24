@@ -71,6 +71,8 @@ def fetch_device_dirs(metadata: Any,
             vendor = 'askey'
         elif device == 'debx':
             vendor = 'asus'
+        elif device == 'ingot':
+            vendor = 'osom'
         else:
             vendor = data['vendor']
 
@@ -88,7 +90,17 @@ def fetch_device_dirs(metadata: Any,
     while len(dirs_to_fetch) > 0:
         relpath, url = dirs_to_fetch.pop()
         try:
-            dir_info = fetch_relpath(dirs, relpath, url, branch)
+            real_branch = branch
+            if 'googlesource.com' in url:
+                ## @TODO: Is this the original release?
+                # real_branch = 'android14-release'
+                ## This seems to be the latest to be guaranteed to be android 14 and stable
+                # real_branch = 'android-14.0.0_r45'
+                ## Is this the right one?
+                real_branch = 'main'
+            dir_info = fetch_relpath(dirs, relpath, url, real_branch)
+            if 'googlesource.com' in url or 'google_gs-common' in url:
+                dir_info['noVendor'] = True
         except ValueError:
             continue
 
@@ -99,9 +111,15 @@ def fetch_device_dirs(metadata: Any,
                 print(f'found deps {lineage_dependencies_filename}')
             lineage_dependencies = json.load(open(lineage_dependencies_filename))
 
+            # repository example: android_device_google_pantah
+            # target_path example: device/google/pantah
             for dep in lineage_dependencies:
                 if dep['target_path'] not in dirs_fetched:
-                    dirs_to_fetch.add((dep['target_path'], f"{url_base}/{dep['repository']}"))
+                    if 'remote' in dep and dep['remote'].startswith('aosp-'):
+                        url = f"https://android.googlesource.com/{dep['repository']}"
+                    else:
+                        url = f"{url_base}/{dep['repository']}"
+                    dirs_to_fetch.add((dep['target_path'], url))
 
             dir_info['deps'] = [dep['target_path'] for dep in lineage_dependencies]
         # If the path doesn't exist, there are two cases:
@@ -173,10 +191,20 @@ def fetch_vendor_dirs(metadata: Any,
                 for dep in deps:
                     if debug:
                         print(dep)
-                    excluded = vendor in [ 'nvidia', 'zuk' ] or any(dep.endswith(path) for path in [
+                    excluded = vendor in [ 'nvidia', 'zuk', 'google' ] or any(dep.endswith(path) for path in [
                         'motorola/sm6150-common',
                         'xiaomi/sm8350-common',
-                        'msm8953-common'
+                        'msm8953-common',
+                        'gs101'
+                        'gs201'
+                        'gs-common'
+                        '-kernel',
+                        'bluejay',
+                        'felix',
+                        'lynx',
+                        'pantah',
+                        'raviole',
+                        'tangorpro',
                     ])
                     # Nvidia and zuk don't follow this pattern (obviously...)
                     if dep.endswith('-common') and not excluded:
@@ -196,13 +224,18 @@ def fetch_vendor_dirs(metadata: Any,
     for vendor in required_vendor:
         relpath = f'vendor/{vendor}'
 
-        # Only some of google's devices are on gitlab...
-        gitlab_vendors = [ 'google/bluejay', 'google/cheetah', 'google/oriole', 'google/panther', 'google/raven', 'google/lynx', 'google/tangorpro' ]
-        # Two motorola devices are /not/ on gitlab! TODO perhaps invert this list, new devices seem to be added to github now
-        motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar', 'motorola/devon', 'motorola/rhode', 'motorola/hawao', 'motorola/sm8250-common', 'motorola/sm6225-common' ]
         real_url_base = url_base
-        if vendor == 'xiaomi' or (branch == 'lineage-20.0' and (motorola_gitlab or vendor in gitlab_vendors)):
-            real_url_base = "https://gitlab.com/the-muppets"
+        # @TODO: Where is this repo? Guess there is no vendor repo for this?
+        # if branch == 'lineage-21.0' and vendor == 'google/gs-common':
+        #     continue
+        # else:
+        if branch != 'lineage-21.0':
+            # Only some of google's devices are on gitlab...
+            gitlab_vendors = [ 'google/bluejay', 'google/cheetah', 'google/oriole', 'google/panther', 'google/raven', 'google/lynx', 'google/tangorpro' ]
+            # Two motorola devices are /not/ on gitlab! TODO perhaps invert this list, new devices seem to be added to github now
+            motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar', 'motorola/devon', 'motorola/rhode', 'motorola/hawao', 'motorola/sm8250-common', 'motorola/sm6225-common' ]
+            if vendor == 'xiaomi' or (branch == 'lineage-20.0' and (motorola_gitlab or vendor in gitlab_vendors)):
+                real_url_base = "https://gitlab.com/the-muppets"
 
         to_fetch = [ f"{real_url_base}/proprietary_{relpath.replace('/', '_')}" ];
 
@@ -242,7 +275,11 @@ def main() -> None:
             metadata[device] = {'vendor': vendor}
 
     # Really?
-    true_branch = 'lineage-20' if args.branch == 'lineage-20.0' else args.branch
+    true_branch = args.branch
+    if args.branch == 'lineage-20.0':
+        true_branch = 'lineage-20'
+    elif args.branch == 'lineage-21.0':
+        true_branch = 'lineage-21'
 
     device_dirs_fn = os.path.join(args.branch, 'device-dirs.json')
     if os.path.exists(device_dirs_fn):
