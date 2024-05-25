@@ -19,6 +19,7 @@ let
       version = "O9eXFyC5ZkcYvDfHRLKPO1g1Xwf7M33wT3cuJtyfc0sC";
       sha256 = "0bv8qx7snyyndk5879xjbj3ncsb5yxcgp8w0wwfrif3m22d1fn84";
     };
+    buildInputs = [ pkgs.libgcc ];
     nativeBuildInputs = [ pkgs.autoPatchelfHook ];
     installPhase = "mkdir -p $out/bin && cp aapt2 $out/bin/";
   } + "/bin/aapt2";

@@ -17,6 +17,9 @@ let
                     ++ (lib.optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
                     ++ (lib.optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
                     ++ (lib.optionals (config.androidVersion >= 12) [ "com.android.connectivity.resources" ])
+                    ++ (lib.optionals (config.androidVersion >= 13) [ "com.android.adservices.api" "com.android.safetycenter.resources"
+                                                                      "com.android.nearby.halfsheet" "com.android.uwb.resources"
+                                                                      "com.android.wifi.dialog"])
                     ++ (lib.optional config.signing.apex.enable config.signing.apex.packageNames)
                     ++ (lib.mapAttrsToList
                         (name: prebuilt: prebuilt.certificate)
@@ -182,6 +185,13 @@ in
         "packages/modules/Wifi/service/ServiceWifiResources/resources-certs/com.android.wifi.resources" = "com.android.wifi.resources";
         "packages/modules/Connectivity/service/ServiceConnectivityResources/resources-certs/com.android.connectivity.resources" = "com.android.connectivity.resources";
       }
+      // lib.optionalAttrs (config.androidVersion >= 13) {
+        "packages/modules/AdServices/adservices/apk/com.android.adservices.api" = "com.android.adservices.api";
+        "packages/modules/Permission/SafetyCenter/Resources/com.android.safetycenter.resources" = "com.android.safetycenter.resources";
+        "packages/modules/Connectivity/nearby/halfsheet/apk-certs/com.android.nearby.halfsheet" = "com.android.nearby.halfsheet";
+        "packages/modules/Uwb/service/ServiceUwbResources/resources-certs/com.android.uwb.resources" = "com.android.uwb.resources";
+        "packages/modules/Wifi/WifiDialog/certs/com.android.wifi.dialog" = "com.android.wifi.dialog";
+      }
       # App-specific keys
       // lib.mapAttrs'
         (name: prebuilt: lib.nameValuePair "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}" prebuilt.certificate)
@@ -209,7 +219,7 @@ in
           ${config.source.dirs."system/extras".src}/verity/generate_verity_key.c \
           ${config.source.dirs."system/core".src}/libcrypto_utils/android_pubkey.c${lib.optionalString (config.androidVersion >= 12) "pp"} \
           -I ${config.source.dirs."system/core".src}/libcrypto_utils/include/ \
-          -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
+          -I ${pkgs.boringssl.dev}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
 
         cp ${config.source.dirs."external/avb".src}/avbtool $out/bin/avbtool
 
