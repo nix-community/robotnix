@@ -4,7 +4,6 @@
 
 from typing import Any
 import json
-import urllib.request
 import os
 import pathlib
 

@@ -33,21 +33,21 @@ def save(filename: str, data: Any) -> None:
     )
 
 
-def get_store_path(path):
+def get_store_path(path_str: str) -> str:
     """Get actual path to a Nix store path; supports handling local remotes"""
-    prefix = os.getenv("NIX_REMOTE")
+    prefix_str = os.getenv("NIX_REMOTE")
 
-    if not prefix:
-        return path
+    if not prefix_str:
+        return path_str
 
-    prefix = Path(prefix)
+    prefix = Path(prefix_str)
 
     if not prefix.is_absolute():
         raise Exception(
             f"Must be run on a local Nix store. Current Nix store: {prefix}"
         )
 
-    path = Path(path).resolve()
+    path = Path(path_str).resolve()
     remote_path = prefix.resolve().joinpath(
         path.relative_to(f"{path.drive}{path.root}")
     )
