@@ -8,10 +8,10 @@ set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 args=(
-    --cache-search-path ../../
-    --ref-type branch
-    "https://github.com/pmanbox/platform_manifests"
-    "pmanbox" # static branch name
+  --cache-search-path ../../
+  --ref-type branch
+  "https://github.com/pmanbox/platform_manifests"
+  "pmanbox" # static branch name
 )
 
 export TMPDIR=/tmp

@@ -3,10 +3,22 @@
 
 # TODO: remove all the redfin exceptions
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
-  inherit (lib) mkIf mkOption mkOptionDefault mkMerge mkEnableOption types;
+  inherit (lib)
+    mkIf
+    mkOption
+    mkOptionDefault
+    mkMerge
+    mkEnableOption
+    types
+    ;
 
   cfg = config.kernel;
 in
@@ -33,7 +45,7 @@ in
       };
 
       patches = mkOption {
-        default = [];
+        default = [ ];
         type = types.listOf types.path;
         description = "List of patches to apply to kernel source";
       };
@@ -60,10 +72,12 @@ in
   };
 
   config = {
-    kernel.postPatch = lib.optionalString (config.signing.enable && (config.signing.avb.mode == "verity_only")) ''
-      rm -f verity_*.x509
-      openssl x509 -outform der -in ${config.signing.avb.verityCert} -out verity_user.der.x509
-    '';
+    kernel.postPatch =
+      lib.optionalString (config.signing.enable && (config.signing.avb.mode == "verity_only"))
+        ''
+          rm -f verity_*.x509
+          openssl x509 -outform der -in ${config.signing.avb.verityCert} -out verity_user.der.x509
+        '';
 
     # We have to replace files here, instead of just using the
     # config.build.kernel drv output in place of source.dirs.${cfg.relpath}.

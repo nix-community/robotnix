@@ -1,11 +1,16 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   inherit (lib) mkIf mkDefault;
 
-  flex = pkgs.callPackage ./flex-2.5.39.nix {};
+  flex = pkgs.callPackage ./flex-2.5.39.nix { };
 in
 mkIf (config.androidVersion == 9) {
   # Some android version-specific fixes:
