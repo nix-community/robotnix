@@ -76,8 +76,8 @@ in
   config = mkIf cfg.enable {
     apps.prebuilt."F-Droid" = {
       apk = pkgs.fetchurl {
-        url = "https://f-droid.org/repo/org.fdroid.fdroid_1017050.apk";
-        sha256 = "sha256-3Du4j2QZ7n3efRVHpBVpqgMoL+AODcQ84DXv18nSfXU=";
+        url = "https://f-droid.org/repo/org.fdroid.fdroid_1020050.apk";
+        sha256 = "sha256-wWd/so9s/Ahdp6WtFbp1sjfNlbt4pnmqqNsMGt1o8QQ=";
       };
 
       fingerprint = mkIf (!config.signing.enable) "7352DAE94B237866E7FB44FD94ADE44E8B6E05397E7D1FB45616A00E225063FF";
