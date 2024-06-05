@@ -34,6 +34,7 @@ let
     barbet = { family = "barbet"; name = "Pixel 5a (5G)"; };
     raven = { family = "raviole"; name = "Pixel 6 Pro"; };
     oriole = { family = "raviole"; name = "Pixel 6"; };
+    cheetah = { family = "pantah"; name = "Pixel 7 Pro"; };
   };
 
   # Make a uuid based on some string data

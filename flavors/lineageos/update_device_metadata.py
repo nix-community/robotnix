@@ -25,7 +25,6 @@ def fetch_metadata(
     # the device from the list.
     ignore = [ 'nx651j', 'm5_tab', 'odroidc4_tab', 'radxa0_tab' ]
 
-
     lineage_build_targets = open(f'{hudson_path}/{lineage_build_targets_path}').readlines()
     for line in lineage_build_targets:
         line = line.strip()
@@ -59,7 +58,9 @@ def fetch_metadata(
             'deadpool' : 'askey',
             # 10.or is apparently a vendor name. Why TF do you have to put dots in your name.
             # TODO check whether we can exclude this case by always fetching from vendor_device for LOS-20 devices
-            'G' : '10or'
+            'G' : '10or',
+            'dopinder': 'askey',
+            'ingot': 'osom',
         }
         device = data['model']
         vendor = workaround_map[device] if device in workaround_map else data['oem'].lower()

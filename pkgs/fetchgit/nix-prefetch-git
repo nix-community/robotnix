@@ -227,6 +227,10 @@ init_submodules(){
     done
 }
 
+fetch_lfs(){
+    clean_git lfs pull
+}
+
 clone(){
     local top=$PWD
     local dir="$1"
@@ -249,6 +253,11 @@ clone(){
     # Checkout linked sources.
     if test -n "$fetchSubmodules"; then
         init_submodules
+    fi
+
+    # Checkout linked sources.
+    if test -n "$fetchLFS"; then
+        fetch_lfs
     fi
 
     if [ -z "$builder" ] && [ -f .topdeps ]; then
@@ -310,10 +319,15 @@ clone_user_rev() {
     local rev="${3:-HEAD}"
 
     if [ -n "$fetchLFS" ]; then
-        tmpHomePath="$(mktemp -d -p nix-prefetch-git-tmp-home-XXXXXXXXXX)"
+        # tmpHomePath="$(mktemp -d -p nix-prefetch-git-tmp-home-XXXXXXXXXX)"
+        tmpHomePath="$(mktemp -d)"
         exit_handlers+=(remove_tmpHomePath)
         HOME="$tmpHomePath"
-        git lfs install
+        ## @TODO: this conflicts with read-only config created by home-manager at ~/.config/git/config
+        ## how to make sure git lfs is installed?
+        ## Perhaps do a check first to see if it's installed, and if not, check if config is readwrite.
+        ## If not, through an error, otherwise run install command
+        # git lfs install
     fi
 
     # Perform the checkout.

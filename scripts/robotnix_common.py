@@ -32,9 +32,11 @@ def save(filename: str, data: Any) -> None:
 def get_store_path(path):
     """Get actual path to a Nix store path; supports handling local remotes"""
     prefix = os.getenv('NIX_REMOTE');
-    if prefix and not prefix.startswith('/'):
-        raise Exception('Must be run on a local Nix store.')
-    return f"{prefix}/{path}"
+    if prefix:
+        if not prefix.startswith('/'):
+            raise Exception('Must be run on a local Nix store.')
+        return f"{prefix}/{path}"
+    return path
 
 class GitCheckoutInfoDict(TypedDict):
     """Container for output from nix-prefetch-git"""
@@ -43,6 +45,7 @@ class GitCheckoutInfoDict(TypedDict):
     date: str
     path: str
     sha256: str
+    fetchLfs: str
     fetchSubmodules: str
     deepClone: str
     leaveDotGit: str
@@ -51,6 +54,8 @@ class GitCheckoutInfoDict(TypedDict):
 def checkout_git(url: str, rev: str, fetch_submodules: bool = False) -> GitCheckoutInfoDict:
     print("Checking out %s %s" % (url, rev))
     args = ["nix-prefetch-git", "--url", url, "--rev", rev]
+    # always fetch lfs
+    args.append("--fetch-lfs")
     if fetch_submodules:
         args.append("--fetch-submodules")
     json_text = subprocess.check_output(args).decode()
