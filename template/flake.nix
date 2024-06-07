@@ -13,8 +13,13 @@
         { config, pkgs, ... }:
         {
           # These two are required options
-          device = "crosshatch";
+          device = "oriole";
           flavor = "vanilla"; # "grapheneos" is another option
+
+          # Currently the Chromium source builds don't work, so disable them
+          apps.chromium.enable = false;
+          webview.chromium.enable = false;
+          webview.chromium.availableByDefault = false;
 
           # buildDateTime is set by default by the flavor, and is updated when those flavors have new releases.
           # If you make new changes to your build that you want to be pushed by the OTA updater, you should set this yourself.
