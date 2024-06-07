@@ -1,0 +1,58 @@
+name: Nix Flake Actions
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  nix-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - id: set-matrix
+        name: Generate Nix Matrix
+        run: |
+          set -Eeu
+          matrix="$(nix eval --json '.#githubActions.matrix')"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  nix-flake-checks:
+    needs: nix-matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - uses: cachix/cachix-action@v15
+        with:
+          name: jaen-robotnix
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - run: nix build -L ".#${{ matrix.attr }}"
+
+  nix-flake-check-template:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - uses: cachix/cachix-action@v15
+        with:
+          name: jaen-robotnix
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: "Check the robotnix flake"
+        run: |
+          # Don't run checks here, the `nix-flake-checks` job takes care of it
+          nix flake check --no-build
+      - name: "Check the templated robotnix flake"
+        run: |
+          export ORIG_DIR="$PWD"
+          cd "$(mktemp -d)"
+
+          nix flake init -t "$ORIG_DIR"
+          nix flake check --override-input robotnix "$ORIG_DIR"

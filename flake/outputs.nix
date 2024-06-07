@@ -6,6 +6,7 @@
   flake-compat,
   treefmt,
   treefmt-nix,
+  nix-github-actions,
   ...
 }@inputs:
 let
@@ -89,4 +90,6 @@ in
       '';
     };
   };
+
+  githubActions = nix-github-actions.lib.mkGithubMatrix { inherit (self) checks; };
 }
