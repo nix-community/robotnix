@@ -1,0 +1,35 @@
+From 3edd5009f6f0d2b6aa64b81246ffeb1bfb7405d6 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sat, 11 Jul 2020 11:08:14 -0700
+Subject: [PATCH 13/16] dumpjson: use -j to set number of threads
+
+---
+ subcmds/dumpjson.py | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index 2105002..4648e10 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -77,12 +77,15 @@ class Dumpjson(Command, MirrorSafeCommand):
+   helpDescription = """
+ """
+ 
++  def _Options(self, p):
++    p.add_option('-j', '--jobs',
++                 dest='jobs', action='store', type='int', default=8,
++                 help="number of projects to check simultaneously")
++
+   def Execute(self, opt, args):
+     all_projects = self.GetProjects(args, missing_ok=True, submodules_ok=False)
+ 
+-    MAX_THREADS = 8
+-    sem = _threading.Semaphore(MAX_THREADS)
+-
++    sem = _threading.Semaphore(opt.jobs)
+     threads = [ _threading.Thread(target=_fetch_revs, args=(p, sem)) for p in all_projects ]
+     for t in threads:
+         t.start()
+-- 
+2.44.0
+

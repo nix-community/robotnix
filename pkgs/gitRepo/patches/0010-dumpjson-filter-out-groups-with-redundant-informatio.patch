@@ -1,0 +1,30 @@
+From 71a828d0123b6fe16c1ca5a869c49d55c8dc275b Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Wed, 15 Apr 2020 13:10:13 -0400
+Subject: [PATCH 10/16] dumpjson: filter out groups with redundant information
+
+---
+ subcmds/dumpjson.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index 726ccfd..0bd2708 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -89,11 +89,12 @@ class Dumpjson(Command, MirrorSafeCommand):
+     for t in threads:
+         t.join()
+ 
++    group_filter = lambda g: not (g == "all" or g.startswith("name:") or g.startswith("path:"))
+     data = {
+         p.name: {
+             "url": p.remote.url,
+             "relpath": p.relpath,
+-            "groups": sorted(p.groups),
++            "groups": sorted(filter(group_filter, p.groups)),
+             "revisionExpr": p.revisionExpr,
+             "rev": p.rev,
+             "linkfiles": [
+-- 
+2.44.0
+

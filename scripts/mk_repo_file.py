@@ -21,8 +21,6 @@ from robotnix_common import save, checkout_git, ls_remote, get_mirrored_url, che
 
 REPO_FLAGS = [
     "--quiet",
-    "--repo-url=https://github.com/danielfullmer/tools_repo",
-    "--repo-rev=9ecb9713ee5adba95120acbc0bfef1c77b02637f",
     "--no-repo-verify",
     "--depth=1",
 ]

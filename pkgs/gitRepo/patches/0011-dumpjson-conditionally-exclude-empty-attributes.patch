@@ -1,0 +1,55 @@
+From 0dde9323fa9480efcf68e2d5f0208e51a2e001c8 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Wed, 15 Apr 2020 13:16:05 -0400
+Subject: [PATCH 11/16] dumpjson: conditionally exclude empty attributes
+
+---
+ subcmds/dumpjson.py | 29 +++++++++++------------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index 0bd2708..176391c 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -89,27 +89,20 @@ class Dumpjson(Command, MirrorSafeCommand):
+     for t in threads:
+         t.join()
+ 
+-    group_filter = lambda g: not (g == "all" or g.startswith("name:") or g.startswith("path:"))
+-    data = {
+-        p.name: {
++    data = {}
++    for p in all_projects:
++        data[p.name] = {
+             "url": p.remote.url,
+             "relpath": p.relpath,
+-            "groups": sorted(filter(group_filter, p.groups)),
+             "revisionExpr": p.revisionExpr,
+             "rev": p.rev,
+-            "linkfiles": [
+-                { "src": l.src,
+-                 "dest": l.dest,
+-                 }
+-                for l in p.linkfiles
+-            ],
+-            "copyfiles": [
+-                { "src": c.src,
+-                 "dest": c.dest,
+-                 }
+-                for c in p.copyfiles
+-            ],
+         }
+-        for p in all_projects
+-    };
++        filtered_groups = filter(lambda g: not (g == "all" or g.startswith("name:") or g.startswith("path:")), p.groups)
++        if filtered_groups:
++            data[p.name]["groups"] = sorted(filtered_groups)
++        if p.linkfiles:
++            data[p.name]["linkfiles"] = [ { "src": l.src, "dest": l.dest } for l in p.linkfiles ]
++        if p.copyfiles:
++            data[p.name]["copyfiles"] = [ { "src": c.src, "dest": c.dest } for c in p.copyfiles ]
++
+     print(json.dumps(data, sort_keys=True))
+-- 
+2.44.0
+

@@ -1,0 +1,26 @@
+From 35c373392754b6e79f1ef20a395b97d6a736ba92 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Wed, 15 Apr 2020 13:05:14 -0400
+Subject: [PATCH 09/16] dumpjson: fix removed LinkFile attribute
+
+This unfortunately also changes the output schema for dumpjson.
+---
+ subcmds/dumpjson.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index 8ca9d08..726ccfd 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -97,7 +97,7 @@ class Dumpjson(Command, MirrorSafeCommand):
+             "revisionExpr": p.revisionExpr,
+             "rev": p.rev,
+             "linkfiles": [
+-                { "src_rel_to_dest": l.src_rel_to_dest,
++                { "src": l.src,
+                  "dest": l.dest,
+                  }
+                 for l in p.linkfiles
+-- 
+2.44.0
+

@@ -1,0 +1,22 @@
+From 07d83a29279874566234b2a3aed6fc270e5f9b8b Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Tue, 3 Dec 2019 16:56:27 -0500
+Subject: [PATCH 05/16] dumpjson: Sort json output by keys for reproducibility
+
+---
+ subcmds/dumpjson.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index a09885d..8997c27 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -89,4 +89,4 @@ class Dumpjson(Command, MirrorSafeCommand):
+         }
+         for p in all_projects
+     };
+-    print(json.dumps(data))
++    print(json.dumps(data, sort_keys=True))
+-- 
+2.44.0
+

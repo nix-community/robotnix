@@ -1,0 +1,57 @@
+From 40465bd1ec05fa648765a0bc5d3ed461ae8ce2e2 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sat, 7 Dec 2019 12:15:55 -0500
+Subject: [PATCH 06/16] dumpjson: parallelize
+
+---
+ subcmds/dumpjson.py | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/subcmds/dumpjson.py b/subcmds/dumpjson.py
+index 8997c27..18aca4c 100644
+--- a/subcmds/dumpjson.py
++++ b/subcmds/dumpjson.py
+@@ -52,8 +52,15 @@ try:
+ except ImportError:
+   multiprocessing = None
+ 
++import sys
++import json
++
+ from command import Command, MirrorSafeCommand
+ 
++def _fetch_revs(p, sem):
++    with sem:
++        p.rev = p._LsRemote(p.revisionExpr).split('\t')[0]
++
+ class Dumpjson(Command, MirrorSafeCommand):
+   common = True
+   helpSummary = "Export json file with sources"
+@@ -66,14 +73,22 @@ class Dumpjson(Command, MirrorSafeCommand):
+   def Execute(self, opt, args):
+     all_projects = self.GetProjects(args, missing_ok=True, submodules_ok=False)
+ 
+-    import json
++    MAX_THREADS = 8
++    sem = _threading.Semaphore(MAX_THREADS)
++
++    threads = [ _threading.Thread(target=_fetch_revs, args=(p, sem)) for p in all_projects ]
++    for t in threads:
++        t.start()
++    for t in threads:
++        t.join()
++
+     data = {
+         p.name: {
+             "url": p.remote.url,
+             "relpath": p.relpath,
+             "groups": p.groups,
+             "revisionExpr": p.revisionExpr,
+-            "rev": p._LsRemote(p.revisionExpr).split('\t')[0],
++            "rev": p.rev,
+             "linkfiles": [
+                 { "src_rel_to_dest": l.src_rel_to_dest,
+                  "dest": l.dest,
+-- 
+2.44.0
+
