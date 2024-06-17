@@ -1,21 +1,27 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ pkgs, callPackage, lib, substituteAll, makeWrapper, fetchFromGitHub, jdk17_headless, gradleGen,
+{
+  pkgs,
+  callPackage,
+  lib,
+  substituteAll,
+  makeWrapper,
+  fetchFromGitHub,
+  jdk17_headless,
+  gradleGen,
   listenHost ? "localhost",
   port ? 8080,
   applicationId ? "org.robotnix.auditor",
   domain ? "example.org",
   signatureFingerprint ? "",
   device ? "",
-  avbFingerprint ? ""
+  avbFingerprint ? "",
 }:
 let
   jdk = jdk17_headless;
   buildGradle = callPackage ./gradle-env.nix {
-    gradleGen = callPackage (pkgs.path + /pkgs/development/tools/build-managers/gradle) {
-      java = jdk;
-    };
+    gradleGen = callPackage (pkgs.path + /pkgs/development/tools/build-managers/gradle) { java = jdk; };
   };
   supportedDevices = import ../../apks/auditor/supported-devices.nix;
 in
@@ -33,11 +39,21 @@ buildGradle {
   };
 
   patches = [
-    (substituteAll ({
-      src = ./customized-attestation-server.patch;
-      inherit listenHost port domain applicationId signatureFingerprint;
-    }
-    // lib.genAttrs supportedDevices (d: if (device == d) then avbFingerprint else "DISABLED_CUSTOM_${d}")))
+    (substituteAll (
+      {
+        src = ./customized-attestation-server.patch;
+        inherit
+          listenHost
+          port
+          domain
+          applicationId
+          signatureFingerprint
+          ;
+      }
+      // lib.genAttrs supportedDevices (
+        d: if (device == d) then avbFingerprint else "DISABLED_CUSTOM_${d}"
+      )
+    ))
   ];
 
   postPatch = ''
@@ -49,7 +65,10 @@ buildGradle {
 
   JAVA_TOOL_OPTIONS = "-Dfile.encoding=UTF8";
 
-  outputs = [ "out" "static" ];
+  outputs = [
+    "out"
+    "static"
+  ];
 
   nativeBuildInputs = [ makeWrapper ];
 

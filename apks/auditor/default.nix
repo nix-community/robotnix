@@ -2,18 +2,34 @@
 # SPDX-License-Identifier: MIT
 
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
-{ callPackage, lib, stdenv, pkgs, substituteAll, fetchFromGitHub,
-  androidPkgs, jdk11_headless, gradle, gradleToNixPatchedFetchers,
+{
+  callPackage,
+  lib,
+  stdenv,
+  pkgs,
+  substituteAll,
+  fetchFromGitHub,
+  androidPkgs,
+  jdk11_headless,
+  gradle,
+  gradleToNixPatchedFetchers,
   domain ? "example.org",
   applicationName ? "Robotnix Auditor",
   applicationId ? "org.robotnix.auditor",
   signatureFingerprint ? "", # Signature that this app will be signed by.
   device ? "",
-  avbFingerprint ? ""
+  avbFingerprint ? "",
 }:
 let
-  androidsdk = androidPkgs.sdk (p: with p; [ cmdline-tools-latest platform-tools platforms-android-30 build-tools-30-0-3 ]);
-  buildGradle = callPackage ./gradle-env.nix {};
+  androidsdk = androidPkgs.sdk (
+    p: with p; [
+      cmdline-tools-latest
+      platform-tools
+      platforms-android-30
+      build-tools-30-0-3
+    ]
+  );
+  buildGradle = callPackage ./gradle-env.nix { };
   supportedDevices = import ./supported-devices.nix;
 in
 buildGradle rec {
@@ -31,12 +47,16 @@ buildGradle rec {
 
   patches = [
     # TODO: Enable support for passing multiple device fingerprints
-    (substituteAll ({
-      src = ./customized-auditor.patch;
-      inherit domain applicationName applicationId ;
-      signatureFingerprint = lib.toUpper signatureFingerprint;
-    }
-    // lib.genAttrs supportedDevices (d: if (device == d) then avbFingerprint else "DISABLED_CUSTOM_${d}")))
+    (substituteAll (
+      {
+        src = ./customized-auditor.patch;
+        inherit domain applicationName applicationId;
+        signatureFingerprint = lib.toUpper signatureFingerprint;
+      }
+      // lib.genAttrs supportedDevices (
+        d: if (device == d) then avbFingerprint else "DISABLED_CUSTOM_${d}"
+      )
+    ))
 
     # TODO: Ugly downgrades due to not being able to update to gradle 7.0.2, since its not working with gradle2nix
     ./build-hacks.patch

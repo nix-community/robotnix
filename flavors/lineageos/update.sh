@@ -9,10 +9,10 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 branch=$1
 
 args=(
-    --cache-search-path ../../
-    --ref-type branch
-    "https://github.com/LineageOS/android"
-    "$branch"
+  --cache-search-path ../../
+  --ref-type branch
+  "https://github.com/LineageOS/android"
+  "$branch"
 )
 
 export TMPDIR=/var/tmp
@@ -22,5 +22,5 @@ export TMPDIR=/var/tmp
 ./update_device_dirs.py --branch "$branch"
 
 endEpoch="$(date +%s)"
-echo "$endEpoch" > lastUpdated.epoch
+echo "$endEpoch" >lastUpdated.epoch
 echo Updated branch "$branch". End epoch: "$endEpoch"

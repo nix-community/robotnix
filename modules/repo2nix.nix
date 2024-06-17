@@ -1,14 +1,16 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 {
- pkgs ? import ../pkgs {},
- manifest, rev, sha256
-# Optional parameters:
-, repoRepoURL ? "https://github.com/danielfullmer/tools_repo"
-, repoRepoRev ? "master"
-, referenceDir ? ""
-, extraFlags ? "--no-repo-verify"
-, localManifests ? []
+  pkgs ? import ../pkgs { },
+  manifest,
+  rev,
+  sha256,
+  # Optional parameters:
+  repoRepoURL ? "https://github.com/danielfullmer/tools_repo",
+  repoRepoRev ? "master",
+  referenceDir ? "",
+  extraFlags ? "--no-repo-verify",
+  localManifests ? [ ],
 }:
 
 assert repoRepoRev != "" -> repoRepoURL != "";
@@ -30,8 +32,9 @@ let
     "--manifest-branch=${rev}"
     "--depth=1"
   ] ++ extraRepoInitFlags;
-in stdenvNoCC.mkDerivation {
-  name = "repo2json-${replaceStrings ["/"] ["="] rev}";
+in
+stdenvNoCC.mkDerivation {
+  name = "repo2json-${replaceStrings [ "/" ] [ "=" ] rev}";
 
   outputHashAlgo = "sha256";
   outputHash = sha256;
@@ -40,31 +43,37 @@ in stdenvNoCC.mkDerivation {
   enableParallelBuilding = true;
 
   impureEnvVars = fetchers.proxyImpureEnvVars ++ [
-    "GIT_PROXY_COMMAND" "SOCKS_SERVER"
+    "GIT_PROXY_COMMAND"
+    "SOCKS_SERVER"
   ];
 
-  nativeBuildInputs = [ gitRepo cacert ];
+  nativeBuildInputs = [
+    gitRepo
+    cacert
+  ];
 
   GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
-  buildCommand = ''
-    # Path must be absolute (e.g. for GnuPG: ~/.repoconfig/gnupg/pubring.kbx)
-    export HOME="$(pwd)"
+  buildCommand =
+    ''
+      # Path must be absolute (e.g. for GnuPG: ~/.repoconfig/gnupg/pubring.kbx)
+      export HOME="$(pwd)"
 
-    mkdir -p .repo/local_manifests
+      mkdir -p .repo/local_manifests
 
-  '' +
-    (concatMapStringsSep "\n"
-    (localManifest: "cp ${localManifest} .repo/local_manifests/$(stripHash ${localManifest}; echo $strippedName)")
-    localManifests)
-  + ''
+    ''
+    + (concatMapStringsSep "\n" (
+      localManifest:
+      "cp ${localManifest} .repo/local_manifests/$(stripHash ${localManifest}; echo $strippedName)"
+    ) localManifests)
+    + ''
 
-    # XXX: Hack since android.googlesource.com and recent curl version don't play nicely.
-    ${pkgs.git}/bin/git config --global http.version HTTP/1.1
+      # XXX: Hack since android.googlesource.com and recent curl version don't play nicely.
+      ${pkgs.git}/bin/git config --global http.version HTTP/1.1
 
-    repo init ${concatStringsSep " " repoInitFlags}
-    repo dumpjson > "$out"
+      repo init ${concatStringsSep " " repoInitFlags}
+      repo dumpjson > "$out"
 
-    rm -rf .repo*
-  '';
+      rm -rf .repo*
+    '';
 }

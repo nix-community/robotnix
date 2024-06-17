@@ -1,15 +1,39 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (lib)
-    optional optionals optionalString optionalAttrs
-    elem filter
-    mapAttrs mapAttrs' nameValuePair filterAttrs
-    attrNames getAttrs flatten remove
-    mkIf mkMerge mkDefault mkForce
-    importJSON toLower hasPrefix removePrefix hasSuffix replaceStrings;
+    optional
+    optionals
+    optionalString
+    optionalAttrs
+    elem
+    filter
+    mapAttrs
+    mapAttrs'
+    nameValuePair
+    filterAttrs
+    attrNames
+    getAttrs
+    flatten
+    remove
+    mkIf
+    mkMerge
+    mkDefault
+    mkForce
+    importJSON
+    toLower
+    hasPrefix
+    removePrefix
+    hasSuffix
+    replaceStrings
+    ;
 
   androidVersionToLineageBranch = {
     "10" = "lineage-17.1";
@@ -17,7 +41,9 @@ let
     "12" = "lineage-19.1";
     "13" = "lineage-20.0";
   };
-  lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
+  lineageBranchToAndroidVersion = mapAttrs' (
+    name: value: nameValuePair value name
+  ) androidVersionToLineageBranch;
 
   deviceMetadata = lib.importJSON ./device-metadata.json;
   LineageOSRelease = androidVersionToLineageBranch.${builtins.toString config.androidVersion};
@@ -31,7 +57,8 @@ let
       's/^DTB_OBJS := $(shell find \(.*\))$/DTB_OBJS := $(sort $(shell find \1))/' \
       arch/arm64/boot/Makefile
   '';
-  kernelsNeedFix = [ # Only verified marlin reproducibility is fixed by this, however these other repos have the same issue
+  kernelsNeedFix = [
+    # Only verified marlin reproducibility is fixed by this, however these other repos have the same issue
     "kernel/asus/sm8150"
     "kernel/bq/msm8953"
     "kernel/essential/msm8998"
@@ -56,24 +83,47 @@ let
     "kernel/zuk/msm8996"
   ];
   # Patch kernels
-  patchKernelDir = n: v: v // (optionalAttrs (hasPrefix "kernel/" n) {
-    patches = config.kernel.patches;
-    postPatch = config.kernel.postPatch
-      + optionalString (config.useReproducibilityFixes && (elem n kernelsNeedFix)) ("\n" + dtbReproducibilityFix);
-  });
+  patchKernelDir =
+    n: v:
+    v
+    // (optionalAttrs (hasPrefix "kernel/" n) {
+      patches = config.kernel.patches;
+      postPatch =
+        config.kernel.postPatch
+        + optionalString (config.useReproducibilityFixes && (elem n kernelsNeedFix)) (
+          "\n" + dtbReproducibilityFix
+        );
+    });
   deviceDirs = mapAttrs patchKernelDir _deviceDirs;
 
   supportedDevices = attrNames deviceMetadata;
 
   # TODO: Move this filtering into vanilla/graphene
-  filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "patches" "postPatch"]) dir;
+  filterDirAttrs =
+    dir:
+    filterAttrs (
+      n: v:
+      elem n [
+        "rev"
+        "sha256"
+        "url"
+        "patches"
+        "postPatch"
+      ]
+    ) dir;
   filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
-in mkIf (config.flavor == "lineageos")
-{
-  androidVersion = let
+in
+mkIf (config.flavor == "lineageos") {
+  androidVersion =
+    let
       defaultBranch = deviceMetadata.${config.device}.branch;
-    in mkIf (deviceMetadata ? ${config.device}) (mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch}));
-  flavorVersion = removePrefix "lineage-" androidVersionToLineageBranch.${toString config.androidVersion};
+    in
+    mkIf (deviceMetadata ? ${config.device}) (
+      mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch})
+    );
+  flavorVersion =
+    removePrefix "lineage-"
+      androidVersionToLineageBranch.${toString config.androidVersion};
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
@@ -82,76 +132,96 @@ in mkIf (config.flavor == "lineageos")
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
 
-  warnings = let
-    isUnsupportedDevice = config.device != null && !(elem config.device supportedDevices) && config.deviceFamily != "generic";
-    isUnmaintained = lib.versionOlder (toString config.androidVersion) "13";
-  in optional isUnsupportedDevice "${config.device} is not an officially-supported device for LineageOS"
-     ++ optional isUnmaintained "${LineageOSRelease} is unmaintained in robotnix and may break at any time";
+  warnings =
+    let
+      isUnsupportedDevice =
+        config.device != null && !(elem config.device supportedDevices) && config.deviceFamily != "generic";
+      isUnmaintained = lib.versionOlder (toString config.androidVersion) "13";
+    in
+    optional isUnsupportedDevice "${config.device} is not an officially-supported device for LineageOS"
+    ++ optional isUnmaintained "${LineageOSRelease} is unmaintained in robotnix and may break at any time";
 
-  source.dirs = mkMerge ([
-    repoDirs
+  source.dirs = mkMerge (
+    [
+      repoDirs
 
-    {
-      "vendor/lineage".patches = [
-        (if lib.versionAtLeast (toString config.androidVersion) "13"
-         then ./0001-Remove-LineageOS-keys-20.patch
-         else ./0001-Remove-LineageOS-keys-19.patch)
+      {
+        "vendor/lineage".patches =
+          [
+            (
+              if lib.versionAtLeast (toString config.androidVersion) "13" then
+                ./0001-Remove-LineageOS-keys-20.patch
+              else
+                ./0001-Remove-LineageOS-keys-19.patch
+            )
 
-        (pkgs.substituteAll {
-          src = ./0002-bootanimation-Reproducibility-fix.patch;
-          inherit (pkgs) imagemagick;
-        })
+            (pkgs.substituteAll {
+              src = ./0002-bootanimation-Reproducibility-fix.patch;
+              inherit (pkgs) imagemagick;
+            })
 
-        (if lib.versionAtLeast (toString config.androidVersion) "13"
-         then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
-         else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
-        
-      ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "13") [
-        ./dont-run-repo-during-build.patch
-      ];
-      "system/extras".patches = [
-        # pkgutil.get_data() not working, probably because we don't use their compiled python
-        (pkgs.fetchpatch {
-          url = "https://github.com/LineageOS/android_system_extras/commit/7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.patch";
-          sha256 = "0pv56lypdpsn66s7ffcps5ykyfx0hjkazml89flj7p1px12zjhy1";
-          revert = true;
-        })
-      ];
+            (
+              if lib.versionAtLeast (toString config.androidVersion) "13" then
+                ./0003-kernel-Set-constant-kernel-timestamp-20.patch
+              else
+                ./0003-kernel-Set-constant-kernel-timestamp-19.patch
+            )
 
-      # LineageOS will sometimes force-push to this repo, and the older revisions are garbage collected.
-      # So we'll just build chromium webview ourselves.
-      "external/chromium-webview".enable = false;
-    }
-  ] ++ optionals (deviceMetadata ? "${config.device}") (let
-    # Device-specific source dirs
-    vendor = toLower deviceMetadata.${config.device}.vendor;
-    deviceRelpath = "device/${vendor}/${config.device}";
+          ]
+          ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "13") [
+            ./dont-run-repo-during-build.patch
+          ];
+        "system/extras".patches = [
+          # pkgutil.get_data() not working, probably because we don't use their compiled python
+          (pkgs.fetchpatch {
+            url = "https://github.com/LineageOS/android_system_extras/commit/7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.patch";
+            sha256 = "0pv56lypdpsn66s7ffcps5ykyfx0hjkazml89flj7p1px12zjhy1";
+            revert = true;
+          })
+        ];
 
-    # Retuns a list of all relpaths for the device (including deps) recursively
-    relpathWithDeps = relpath: [ relpath ] ++ (
-      flatten (map (p: relpathWithDeps p) deviceDirs.${relpath}.deps)
-    );
-    # All relpaths required by the device
-    relpaths = relpathWithDeps deviceRelpath;
-    filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
+        # LineageOS will sometimes force-push to this repo, and the older revisions are garbage collected.
+        # So we'll just build chromium webview ourselves.
+        "external/chromium-webview".enable = false;
+      }
+    ]
+    ++ optionals (deviceMetadata ? "${config.device}") (
+      let
+        # Device-specific source dirs
+        vendor = toLower deviceMetadata.${config.device}.vendor;
+        deviceRelpath = "device/${vendor}/${config.device}";
 
-    # In LOS20, each device/ relpath has an associated vendor/ relpath.
-    # Well, usually...
-    deviceRelpaths = filter (path: hasPrefix "device/" path) relpaths;
-    vendorifiedRelpaths = map (replaceStrings [ "device/" ] [ "vendor/" ]) deviceRelpaths;
+        # Retuns a list of all relpaths for the device (including deps) recursively
+        relpathWithDeps =
+          relpath: [ relpath ] ++ (flatten (map (p: relpathWithDeps p) deviceDirs.${relpath}.deps));
+        # All relpaths required by the device
+        relpaths = relpathWithDeps deviceRelpath;
+        filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
 
-    vendorRelpaths = if config.androidVersion >= 13 then (
-      # LOS20 needs vendor/$vendor/$device and all the common dirs but with
-      # vendor/ prefix
-      vendorifiedRelpaths
-    ) else [
-      # Older LOS need this
-      "vendor/${vendor}"
-    ];
-  in [
-    (filterDirsAttrs (getAttrs (filteredRelpaths) deviceDirs))
-    (filterDirsAttrs (getAttrs (vendorRelpaths) vendorDirs))
-  ]));
+        # In LOS20, each device/ relpath has an associated vendor/ relpath.
+        # Well, usually...
+        deviceRelpaths = filter (path: hasPrefix "device/" path) relpaths;
+        vendorifiedRelpaths = map (replaceStrings [ "device/" ] [ "vendor/" ]) deviceRelpaths;
+
+        vendorRelpaths =
+          if config.androidVersion >= 13 then
+            (
+              # LOS20 needs vendor/$vendor/$device and all the common dirs but with
+              # vendor/ prefix
+              vendorifiedRelpaths
+            )
+          else
+            [
+              # Older LOS need this
+              "vendor/${vendor}"
+            ];
+      in
+      [
+        (filterDirsAttrs (getAttrs (filteredRelpaths) deviceDirs))
+        (filterDirsAttrs (getAttrs (vendorRelpaths) vendorDirs))
+      ]
+    )
+  );
 
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
@@ -163,7 +233,8 @@ in mkIf (config.flavor == "lineageos")
 
   # This is the prebuilt webview apk from LineageOS. Adding this here is only
   # for convenience if the end-user wants to set `webview.prebuilt.enable = true;`.
-  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
+  webview.prebuilt.apk =
+    config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
   removedProductPackages = [ "webview" ];
 
@@ -173,9 +244,14 @@ in mkIf (config.flavor == "lineageos")
   pixel.activeEdge.includedInFlavor = mkDefault true;
 
   # Needed by included kernel build for some devices (pioneer at least)
-  envPackages = [ pkgs.openssl.dev ] ++ optionals (config.androidVersion >= 11) [ pkgs.gcc.cc pkgs.glibc.dev ];
+  envPackages =
+    [ pkgs.openssl.dev ]
+    ++ optionals (config.androidVersion >= 11) [
+      pkgs.gcc.cc
+      pkgs.glibc.dev
+    ];
 
-  envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL";  # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
+  envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL"; # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
 
   # LineageOS flattens all APEX packages: https://review.lineageos.org/c/LineageOS/android_vendor_lineage/+/270212
   signing.apex.enable = false;

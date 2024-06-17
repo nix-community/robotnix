@@ -2,17 +2,18 @@
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
-  inherit (lib)
-    mkDefault
-    mkIf
-    mkMerge
-  ;
+  inherit (lib) mkDefault mkIf mkMerge;
   anboxBranch = "pmanbox";
   repoDirs = lib.importJSON (./. + "/repo-${anboxBranch}.json");
-in mkIf (config.flavor == "anbox")
-{
+in
+mkIf (config.flavor == "anbox") {
   androidVersion = mkDefault 7;
 
   # product names start with "anbox_"
@@ -25,19 +26,19 @@ in mkIf (config.flavor == "anbox")
 
   source.dirs = mkMerge ([
     repoDirs
-    {
-      "build".patches = [ ./webview-hack.patch ];
-    }
+    { "build".patches = [ ./webview-hack.patch ]; }
   ]);
 
   source.manifest.url = mkDefault "https://github.com/pmanbox/platform_manifests.git";
   source.manifest.rev = mkDefault "refs/heads/${anboxBranch}";
-  envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL";  # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
+  envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL"; # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
 
   build = {
     anbox = config.build.mkAndroid {
       name = "robotnix-${config.productName}-${config.buildNumber}";
-      makeTargets = [ /* default */ ];
+      makeTargets = [
+        # default
+      ];
       # How postmarketOS packages theirs:
       # https://gitlab.com/postmarketOS/anbox-image-make/
       # Which in turn calls `create-package.sh`
