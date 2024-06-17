@@ -47,6 +47,7 @@ def get_store_path(path):
 
     return str(remote_path)
 
+
 class GitCheckoutInfoDict(TypedDict):
     """Container for output from nix-prefetch-git"""
     url: str
@@ -59,11 +60,18 @@ class GitCheckoutInfoDict(TypedDict):
     leaveDotGit: str
 
 
-def checkout_git(url: str, rev: str, fetch_submodules: bool = False) -> GitCheckoutInfoDict:
+def checkout_git(
+    url: str,
+    rev: str,
+    fetch_submodules: bool = False,
+    fetch_lfs: bool = False,
+) -> GitCheckoutInfoDict:
     print("Checking out %s %s" % (url, rev))
     args = ["nix-prefetch-git", "--url", url, "--rev", rev]
     if fetch_submodules:
         args.append("--fetch-submodules")
+    if fetch_lfs:
+        args.append("--fetch-lfs")
     json_text = subprocess.check_output(args).decode()
     return cast(GitCheckoutInfoDict, json.loads(json_text))
 

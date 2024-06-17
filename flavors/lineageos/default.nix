@@ -163,7 +163,10 @@ in mkIf (config.flavor == "lineageos")
 
   # This is the prebuilt webview apk from LineageOS. Adding this here is only
   # for convenience if the end-user wants to set `webview.prebuilt.enable = true;`.
-  webview.prebuilt.apk = config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
+  webview.prebuilt.apk = if config.androidVersion >= 11 then
+    config.source.dirs."external/chromium-webview/prebuilt/${config.arch}".src + "/webview.apk"
+  else
+    config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
   removedProductPackages = [ "webview" ];
 
