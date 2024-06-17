@@ -1,7 +1,15 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ lib, stdenv, buildGoPackage, fetchgit, fetchhg, fetchbzr, fetchsvn }:
+{
+  lib,
+  stdenv,
+  buildGoPackage,
+  fetchgit,
+  fetchhg,
+  fetchbzr,
+  fetchsvn,
+}:
 
 buildGoPackage rec {
   name = "cipd-${version}";

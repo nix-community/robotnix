@@ -3,29 +3,39 @@
 
   inputs.robotnix.url = "github:danielfullmer/robotnix";
 
-  outputs = { self, robotnix }: {
-    # "dailydriver" is an arbitrary user-chosen name for this particular
-    # configuration.  Change it to something meaningful for you, perhaps just
-    # the device name if you only have one of this kind of device.
-    robotnixConfigurations."dailydriver" = robotnix.lib.robotnixSystem ({ config, pkgs, ... }: {
-      # These two are required options
-      device = "crosshatch";
-      flavor = "vanilla"; # "grapheneos" is another option
+  outputs =
+    { self, robotnix }:
+    {
+      # "dailydriver" is an arbitrary user-chosen name for this particular
+      # configuration.  Change it to something meaningful for you, perhaps just
+      # the device name if you only have one of this kind of device.
+      robotnixConfigurations."dailydriver" = robotnix.lib.robotnixSystem (
+        { config, pkgs, ... }:
+        {
+          # These two are required options
+          device = "oriole";
+          flavor = "vanilla"; # "grapheneos" is another option
 
-      # buildDateTime is set by default by the flavor, and is updated when those flavors have new releases.
-      # If you make new changes to your build that you want to be pushed by the OTA updater, you should set this yourself.
-      # buildDateTime = 1584398664; # Use `date "+%s"` to get the current time
+          # Currently the Chromium source builds don't work, so disable them
+          apps.chromium.enable = false;
+          webview.chromium.enable = false;
+          webview.chromium.availableByDefault = false;
 
-      # signing.enable = true;
-      # signing.keyStorePath = "/var/secrets/android-keys"; # A _string_ of the path for the key store.
+          # buildDateTime is set by default by the flavor, and is updated when those flavors have new releases.
+          # If you make new changes to your build that you want to be pushed by the OTA updater, you should set this yourself.
+          # buildDateTime = 1584398664; # Use `date "+%s"` to get the current time
 
-      # Build with ccache
-      # ccache.enable = true;
-    });
+          # signing.enable = true;
+          # signing.keyStorePath = "/var/secrets/android-keys"; # A _string_ of the path for the key store.
 
-    # This provides a convenient output which allows you to build the image by
-    # simply running "nix build" on this flake.
-    # Build other outputs with (for example): "nix build .#robotnixConfigurations.dailydriver.ota"
-    defaultPackage.x86_64-linux = self.robotnixConfigurations."dailydriver".img;
-  };
+          # Build with ccache
+          # ccache.enable = true;
+        }
+      );
+
+      # This provides a convenient output which allows you to build the image by
+      # simply running "nix build" on this flake.
+      # Build other outputs with (for example): "nix build .#robotnixConfigurations.dailydriver.ota"
+      defaultPackage.x86_64-linux = self.robotnixConfigurations."dailydriver".img;
+    };
 }

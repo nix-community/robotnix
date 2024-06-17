@@ -3,8 +3,10 @@
 
 name: "Basic Tests"
 on:
-  pull_request:
-  push:
+  workflow_dispatch: {}
+  # pull_request:
+  # push:
+
 jobs:
   nix-instantiate:
     runs-on: ubuntu-latest
@@ -15,19 +17,19 @@ jobs:
         extra_nix_config: |
           experimental-features = nix-command flakes
     - run: |
-        nix run github:nix-community/nix-eval-jobs/3f305f4538e056e6f6f775e1f75410b6d4d8d9aa -- --workers $(nproc) --option allow-import-from-derivation false --show-trace ./release.nix | tee eval.json
+        nix run github:nix-community/nix-eval-jobs/3f305f4538e056e6f6f775e1f75410b6d4d8d9aa -- --workers "$(nproc)" --option allow-import-from-derivation false --show-trace ./release.nix | tee eval.json
         jq -c 'select(.error)' eval.json | tee errors.json
-        if [[ "$(wc -l < errors.json)" > 0 ]]; then exit 1; fi
+        if [[ "$(wc -l < errors.json)" -gt 0 ]]; then exit 1; fi
   robotnix-eval-tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.3.5
     - uses: cachix/install-nix-action@v12
     - run: |
-        OUTPUT=$(nix-instantiate --eval --strict tests/eval.nix)
+        OUTPUT="$(nix-instantiate --eval --strict tests/eval.nix)"
         if [[ "$OUTPUT" != "[ ]" ]]; then
           echo "Instantiation tests failed:"
-          echo $OUTPUT
+          echo "$OUTPUT"
         fi
   nixos-tests:
     runs-on: ubuntu-latest
@@ -55,10 +57,10 @@ jobs:
           experimental-features = nix-command flakes
     - run: |
         nix flake check
-        export ORIG_DIR=$PWD
-        cd $(mktemp -d)
-        nix flake init -t $ORIG_DIR
-        nix flake check --override-input robotnix $ORIG_DIR
+        export ORIG_DIR="$PWD"
+        cd "$(mktemp -d)"
+        nix flake init -t "$ORIG_DIR"
+        nix flake check --override-input robotnix "$ORIG_DIR"
   checks:
     runs-on: ubuntu-latest
     steps:

@@ -1,6 +1,8 @@
 name: "Update GrapheneOS"
 
-on: { schedule: [{ cron: '0 0 * * 0' }], workflow_dispatch }
+on: 
+  workflow_dispatch: {}
+  # schedule: [{ cron: '0 0 * * 0' }]
 
 jobs:
   updates:
@@ -17,19 +19,19 @@ jobs:
          # buildNumber is the only quoted string inside upstream-params.nix so we can
          # just use grep to extract the first quoted string and use xargs to strip the
          # quotes
-         OLD_BUILD_NUMBER=$(grep -o -m 1 '"[^"]*"' ./flavors/grapheneos/upstream-params.nix | xargs)
-         echo "OLD_BUILD_NUMBER=$OLD_BUILD_NUMBER" | tee -a $GITHUB_ENV
+         OLD_BUILD_NUMBER="$(grep -o -m 1 '"[^"]*"' ./flavors/grapheneos/upstream-params.nix | xargs)"
+         echo "OLD_BUILD_NUMBER=$OLD_BUILD_NUMBER" | tee -a "$GITHUB_ENV"
 
          nix develop -c ./flavors/grapheneos/extract-upstream-params.sh
 
-         NEW_BUILD_NUMBER=$(grep -o -m 1 '"[^"]*"' ./flavors/grapheneos/upstream-params.nix | xargs)
-         echo "NEW_BUILD_NUMBER=$NEW_BUILD_NUMBER" | tee -a $GITHUB_ENV
+         NEW_BUILD_NUMBER="$(grep -o -m 1 '"[^"]*"' ./flavors/grapheneos/upstream-params.nix | xargs)"
+         echo "NEW_BUILD_NUMBER=$NEW_BUILD_NUMBER" | tee -a "$GITHUB_ENV"
     - name: "Update devices"
       if: env.OLD_BUILD_NUMBER != env.NEW_BUILD_NUMBER
       run: |
         for DEVICE in crosshatch sunfish oriole; do
-            METADATA=$(curl -sSfL "https://releases.grapheneos.org/$DEVICE-beta")
-            BUILD_PREFIX=$(echo "$METADATA" | cut -d" " -f3)
+            METADATA="(curl -sSfL "https://releases.grapheneos.org/$DEVICE-beta")"
+            BUILD_PREFIX="$(echo "$METADATA" | cut -d" " -f3)"
             git mv "./flavors/grapheneos/repo-$BUILD_PREFIX.$OLD_BUILD_NUMBER.json" \
                    "./flavors/grapheneos/repo-$BUILD_PREFIX.$NEW_BUILD_NUMBER.json"
             nix develop -c ./flavors/grapheneos/update.sh "$BUILD_PREFIX.$NEW_BUILD_NUMBER"

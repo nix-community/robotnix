@@ -4,7 +4,12 @@
 # This is an example configuration that I personally use for my device.
 # Please read the manual instead of simply copying this file for your own use.
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   myDomain = "daniel.fullmer.me";
@@ -37,7 +42,8 @@ in
   };
 
   # Custom hosts file
-  hosts = pkgs.fetchurl { # 2019-08-14
+  hosts = pkgs.fetchurl {
+    # 2019-08-14
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/449a0d7f613e6518ede4f3333e94f8071d3f1cd3/hosts";
     sha256 = "1mcn77l2m45qms7ynww2hzx0d6mja03bzj4di0s9j7spycp4540i";
   };

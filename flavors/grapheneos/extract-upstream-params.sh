@@ -17,7 +17,7 @@ METADATA=$(curl -sSfL https://releases.grapheneos.org/${DEVICE}-${CHANNEL})
 BUILD_NUMBER=$(echo "$METADATA" | cut -d" " -f1)
 BUILD_DATETIME=$(echo "$METADATA" | cut -d" " -f2)
 
-cat <<EOF > upstream-params.nix
+cat <<EOF >upstream-params.nix
 {
   buildNumber = "${BUILD_NUMBER}";
   buildDateTime = ${BUILD_DATETIME};

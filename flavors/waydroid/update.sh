@@ -14,13 +14,13 @@ wget -O - https://raw.githubusercontent.com/waydroid/android_vendor_waydroid/lin
 popd
 
 args=(
-    "https://github.com/LineageOS/android.git"
-    "lineage-17.1" # static branch name
-    --ref-type branch
+  "https://github.com/LineageOS/android.git"
+  "lineage-17.1" # static branch name
+  --ref-type branch
 )
 
 for manifest in "${repo_tmp}"/.repo/local_manifests/*.xml; do
-    args+=(--local-manifest "${manifest}")
+  args+=(--local-manifest "${manifest}")
 done
 
 export TMPDIR=/tmp

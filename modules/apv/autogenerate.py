@@ -15,23 +15,27 @@ from typing import List
 
 def main() -> None:
     def _replace_system_system(s: str) -> str:
-        if s.startswith('system/system/'):
-            return s[len('system/'):]
+        if s.startswith("system/system/"):
+            return s[len("system/") :]
         else:
             return s
 
     device_name = sys.argv[1]
     module_json = json.load(open(sys.argv[2]))
 
-    built_files = set(_replace_system_system(s) for s in open(sys.argv[3]).read().split('\n'))
-    upstream_files = set(_replace_system_system(s) for s in open(sys.argv[4]).read().split('\n'))
+    built_files = set(
+        _replace_system_system(s) for s in open(sys.argv[3]).read().split("\n")
+    )
+    upstream_files = set(
+        _replace_system_system(s) for s in open(sys.argv[4]).read().split("\n")
+    )
 
-    filename_prefix = f'out/target/product/{device_name}/'
+    filename_prefix = f"out/target/product/{device_name}/"
 
     file_module_lookup = {
         filename: modulename
         for modulename, data in module_json.items()
-        for filename in data['installed']
+        for filename in data["installed"]
         if filename.startswith(filename_prefix)
     }
 
@@ -43,24 +47,24 @@ def main() -> None:
             key = filename_prefix + filename
             if key in file_module_lookup:
                 # if filename.startswith('vendor/') or filename.startswith('system_ext/'):
-                if filename.startswith('vendor/'):
+                if filename.startswith("vendor/"):
                     needed_modules.add(file_module_lookup[key])
-                    if filename.startswith('vendor/lib64/'):
+                    if filename.startswith("vendor/lib64/"):
                         needed_modules_with_arch.add(file_module_lookup[key] + ":64")
                     else:
                         needed_modules_with_arch.add(file_module_lookup[key])
             else:
-                if not filename.startswith('vendor/lib/modules/'):
+                if not filename.startswith("vendor/lib/modules/"):
                     needed_files.add(filename)
 
     modules_files = set()
     for modulename in needed_modules:
-        for filename in module_json[modulename]['installed']:
+        for filename in module_json[modulename]["installed"]:
             if filename.startswith(filename_prefix):
-                modules_files.add(filename[len(filename_prefix):])
+                modules_files.add(filename[len(filename_prefix) :])
 
     def _is_bytecode(s: str) -> bool:
-        return s.endswith('.apk') or s.endswith('.jar')
+        return s.endswith(".apk") or s.endswith(".jar")
 
     DEP_DSOS: List[str] = [
         "vendor/lib/libadsprpc.so",
@@ -71,30 +75,40 @@ def main() -> None:
 
     SKIP_MODULES: List[str] = []
 
-    vendor_skip_files = set(filename[len('vendor/'):] for filename in modules_files
-                            if filename.startswith('vendor/')
-                            )
-    vendor_skip_files.update(filename[len('vendor/'):] for filename in built_files
-                             if filename in upstream_files and filename.startswith('vendor/')
-                             )
+    vendor_skip_files = set(
+        filename[len("vendor/") :]
+        for filename in modules_files
+        if filename.startswith("vendor/")
+    )
+    vendor_skip_files.update(
+        filename[len("vendor/") :]
+        for filename in built_files
+        if filename in upstream_files and filename.startswith("vendor/")
+    )
 
     # Manual addition. Might not be needed if we include the corresponding stuff in system_ext
-    vendor_skip_files.add('etc/vintf/manifest/manifest_wifi_ext.xml')
+    vendor_skip_files.add("etc/vintf/manifest/manifest_wifi_ext.xml")
 
     apv_config = {
         # 'new-modules': [],
-        'dep-dso': [
-            dso for dso in DEP_DSOS
-            if dso in needed_files
-        ],
+        "dep-dso": [dso for dso in DEP_DSOS if dso in needed_files],
         # 'rro-overlays': [],
-        'forced-modules': sorted(set(modulename for modulename in needed_modules_with_arch
-                                     if modulename not in SKIP_MODULES)),
-        'vendor-skip-files': sorted(vendor_skip_files),
-        'system-bytecode': sorted(
-            filename for filename in needed_files
-            if (filename.startswith('system/') and _is_bytecode(filename)
-                and not ('Google/' in filename or '/Google' in filename))
+        "forced-modules": sorted(
+            set(
+                modulename
+                for modulename in needed_modules_with_arch
+                if modulename not in SKIP_MODULES
+            )
+        ),
+        "vendor-skip-files": sorted(vendor_skip_files),
+        "system-bytecode": sorted(
+            filename
+            for filename in needed_files
+            if (
+                filename.startswith("system/")
+                and _is_bytecode(filename)
+                and not ("Google/" in filename or "/Google" in filename)
+            )
         ),
         # 'system-other': sorted(
         #     filename for filename in needed_files
@@ -122,7 +136,7 @@ def main() -> None:
         # ),
     }
 
-    print(json.dumps(apv_config, sort_keys=True, indent=2, separators=(',', ': ')))
+    print(json.dumps(apv_config, sort_keys=True, indent=2, separators=(",", ": ")))
 
 
 if __name__ == "__main__":
