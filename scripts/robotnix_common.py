@@ -64,7 +64,7 @@ def checkout_git(
     url: str,
     rev: str,
     fetch_submodules: bool = False,
-    fetch_lfs: bool = False,
+    fetch_lfs: bool = True,
 ) -> GitCheckoutInfoDict:
     print("Checking out %s %s" % (url, rev))
     args = ["nix-prefetch-git", "--url", url, "--rev", rev]
