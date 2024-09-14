@@ -35,6 +35,8 @@ rec {
 
   fdroid = callPackage ./fdroid { inherit gradleToNixPatchedFetchers; };
 
+  auroraservices = callPackage ./auroraservices { inherit gradleToNixPatchedFetchers; };
+
   seedvault_10 = callPackage ./seedvault_10 {}; # Old version that works with Android 10
 
   # Chromium-based browsers
