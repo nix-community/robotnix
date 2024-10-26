@@ -76,7 +76,14 @@ in
   config = mkIf cfg.enable {
     apps.prebuilt."F-Droid" = {
       apk = pkgs.fetchurl {
-        url = "https://f-droid.org/repo/org.fdroid.fdroid_1020050.apk";
+        urls =
+          let
+            version = "1020050";
+          in
+          [
+            "https://f-droid.org/repo/org.fdroid.fdroid_${version}.apk"
+            "https://f-droid.org/archive/org.fdroid.fdroid_${version}.apk"
+          ];
         sha256 = "sha256-wWd/so9s/Ahdp6WtFbp1sjfNlbt4pnmqqNsMGt1o8QQ=";
       };
 
