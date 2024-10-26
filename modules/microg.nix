@@ -6,11 +6,18 @@
 let
   inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
-  version = {
-    part1 = "0.2.29";
-    part2 = "233013";
-    part3 = "058";
+  versions = {
+    release = "v0.3.3.240913"; # The GH release name and git tag
+    GmsCore = {
+      buildNumber = "240913006"; # The build number of the artefact in the release
+      hash = "sha256-An2hil/5aQKKXGzvgHnmHrqZJmzlbGuBLQub17JSttA=";
+    };
+    FakeStore = {
+      buildNumber = "84022606"; # The build number of the artefact in the release
+      hash = "sha256-W/DmriunY7MsxePam9KQYuqKN4Qsif620EwBL47qlMk=";
+    };
   };
+
   verifyApk = apk: pkgs.robotnix.verifyApk {
     inherit apk;
     sha256 = "9bd06727e62796c0130eb6dab39b73157451582cbd138e86c468acc395d14165"; # O=NOGAPPS Project, C=DE
@@ -73,8 +80,8 @@ in
     apps.prebuilt = {
       GmsCore = {
         apk = verifyApk (pkgs.fetchurl {
-          url = "https://github.com/microg/GmsCore/releases/download/v${version.part1}.${version.part2}/com.google.android.gms-${version.part2}${version.part3}.apk";
-          sha256 = "sha256-92VGUL7z6t14qQO3XnErmOHMmdsi5ArC9IlGanlhxNA=";
+          url = "https://github.com/microg/GmsCore/releases/download/${versions.release}/com.google.android.gms-${versions.GmsCore.buildNumber}.apk";
+          inherit (versions.GmsCore) hash;
         });
         packageName = "com.google.android.gms";
         privileged = true;
@@ -94,6 +101,9 @@ in
 
           # New with v0.2.29.233013
           "RECEIVE_SMS"
+
+          # New with v0.3.1.240913
+          "START_ACTIVITIES_FROM_BACKGROUND"
         ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         usesLibraries = [ "com.android.location.provider" ];
@@ -112,8 +122,8 @@ in
 
       FakeStore = {
         apk = verifyApk (pkgs.fetchurl {
-          url = "https://github.com/microg/FakeStore/releases/download/v0.2.1/com.android.vending-83700037.apk";
-          sha256 = "sha256-qz5TlpVqgKGj68fBlT2gCNafaU8TO90MvJXg6OGezaA=";
+          url = "https://github.com/microg/GmsCore/releases/download/${versions.release}/com.android.vending-${versions.FakeStore.buildNumber}.apk";
+          inherit (versions.FakeStore) hash;
         });
         packageName = "com.android.vending";
         privileged = true;
@@ -122,6 +132,7 @@ in
           "CHECK_LICENSE"
         ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
+        usesOptionalLibraries = [ "androidx.window.extensions" "androidx.window.sidecar" ];
         certificate = "microg";
       };
     };
