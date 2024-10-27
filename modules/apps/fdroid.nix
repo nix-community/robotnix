@@ -78,13 +78,13 @@ in
       apk = pkgs.fetchurl {
         urls =
           let
-            version = "1020050";
+            version = "1021051";
           in
           [
             "https://f-droid.org/repo/org.fdroid.fdroid_${version}.apk"
             "https://f-droid.org/archive/org.fdroid.fdroid_${version}.apk"
           ];
-        sha256 = "sha256-wWd/so9s/Ahdp6WtFbp1sjfNlbt4pnmqqNsMGt1o8QQ=";
+        sha256 = "sha256-tkZRhJ7OtXRZBJ5wF+BDAI/OjxRqrR002Y8AJ9h+Tu8=";
       };
 
       fingerprint = mkIf (!config.signing.enable) "7352DAE94B237866E7FB44FD94ADE44E8B6E05397E7D1FB45616A00E225063FF";
