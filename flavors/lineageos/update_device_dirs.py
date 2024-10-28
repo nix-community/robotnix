@@ -141,8 +141,19 @@ def fetch_vendor_dirs(metadata: Any,
             if debug:
                 print(branch)
 
+            # Branches that we fetch vendor dirs for
+            #
+            # TODO this needs to be a lot more robust w.r.t. future versions.
+            # We should instead check whether there is a branch for each device
+            # rather than relying on metadata here because some devices are
+            # supported on many branches but metadata only includes the newest
+            # one which might also be newer than the newest we support.
+            #
+            # HACK Allow devices that are 21.0, eventhough some of them won't have a branch for 20.0.
+            supported_branches = [ 'lineage-20.0', 'lineage-21.0' ]
+
             if branch == 'lineage-20.0':
-                if 'branch' in data and data['branch'] == branch:
+                if 'branch' in data and data['branch'] in supported_branches:
                     required_vendor.add(os.path.join(vendor, device))
                 else:
                     print(f'SKIP: {device} is not available for {branch}')
