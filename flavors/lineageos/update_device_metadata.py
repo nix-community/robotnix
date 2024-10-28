@@ -34,7 +34,7 @@ def fetch_metadata(
 
         device, variant, branch, updatePeriod = line.split()
 
-        if device not in supported_devices['unsupported']:
+        if device in supported_devices['supported'] and not device in supported_devices['unsupported']:
             metadata[device] = {
                 'variant': variant,
                 'branch': branch,

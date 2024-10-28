@@ -1,6 +1,15 @@
-# Devices we can't support due to repo naming inconsistencies. If you care about
-# a certain device in this list, you can add a workaround and remove the device
-# from the list.
+# These are the devices someone working on robotnix has access to and can verify
+# to be working.
+supported = [
+  # @Atemu's devices
+  "FP4", # Daily driver
+  "cheeseburger",
+  "sunfish",
+]
+
+# Devices we can't support due to repo naming inconsistencies. If you care
+# about a certain device in this list, you can add a workaround and remove
+# the device from the list.
 unsupported = [
   'nx651j',
   'm5_tab',
