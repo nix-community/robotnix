@@ -103,7 +103,7 @@ in mkIf (config.flavor == "lineageos")
         (pkgs.substituteAll {
           src = (if lib.versionAtLeast (toString config.androidVersion) "14"
           then ./0002-bootanimation-Reproducibility-fix-21.patch else
-          ./0002-bootanimation-Reproducibility-fix-.patch);
+          ./0002-bootanimation-Reproducibility-fix.patch);
           inherit (pkgs) imagemagick;
         })
 
