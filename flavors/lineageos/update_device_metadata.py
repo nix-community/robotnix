@@ -7,6 +7,7 @@ import json
 import urllib.request
 import os
 import pathlib
+import tomllib
 
 from robotnix_common import save, get_store_path, checkout_git
 
@@ -20,11 +21,8 @@ def fetch_metadata(
 
     hudson_path = get_store_path(checkout_git(hudson_url, 'refs/heads/main')['path'])
 
-    # Devices we can't support due to repo naming inconsistencies. If you care
-    # about a certain device in this list, you can add a workaround and remove
-    # the device from the list.
-    ignore = [ 'nx651j', 'm5_tab', 'odroidc4_tab', 'radxa0_tab' ]
-
+    supported_devices_toml = os.path.join(os.path.dirname(__file__), 'supported_devices.toml')
+    supported_devices = tomllib.loads(open(supported_devices_toml).read())
 
     lineage_build_targets = open(f'{hudson_path}/{lineage_build_targets_path}').readlines()
     for line in lineage_build_targets:
@@ -36,7 +34,7 @@ def fetch_metadata(
 
         device, variant, branch, updatePeriod = line.split()
 
-        if device not in ignore:
+        if device in supported_devices['supported'] and not device in supported_devices['unsupported']:
             metadata[device] = {
                 'variant': variant,
                 'branch': branch,
