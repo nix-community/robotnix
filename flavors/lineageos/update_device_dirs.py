@@ -170,7 +170,7 @@ def fetch_vendor_dirs(metadata: Any,
             # HACK Allow devices that are 21.0, eventhough some of them won't have a branch for 20.0.
             supported_branches = [ 'lineage-20.0', 'lineage-21.0' ]
 
-            if branch == 'lineage-20.0':
+            if branch in supported_branches:
                 if 'branch' in data and data['branch'] in supported_branches:
                     required_vendor.add(os.path.join(vendor, device))
                 else:
