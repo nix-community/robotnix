@@ -62,7 +62,7 @@ let
   '';
   imgScript = { targetFiles, out }: ''img_from_target_files ${targetFiles} ${out}'';
   factoryImgScript = { targetFiles, img, out }: ''
-      ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
+      ln -s ${targetFiles} ${config.targetFilesName} || true
       ln -s ${img} ${config.device}-img-${config.buildNumber}.zip || true
 
       export DEVICE=${config.device}
@@ -121,7 +121,7 @@ in
     prevBuildNumber = let
         metadata = builtins.readFile (config.prevBuildDir + "/${config.device}-${config.channel}");
       in mkDefault (lib.head (lib.splitString " " metadata));
-    prevTargetFiles = mkDefault (config.prevBuildDir + "/${config.device}-target_files-${config.prevBuildNumber}.zip");
+    prevTargetFiles = mkDefault "${config.prevBuildDir}/${config.targetFilesName}";
 
     otaArgs =
       [ "--block" ]
@@ -130,7 +130,7 @@ in
 
   config.build = rec {
     # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
-    unsignedTargetFiles = config.build.android + "/${config.productName}-target_files-${config.buildNumber}.zip";
+    unsignedTargetFiles = "${config.build.android}/${config.targetFilesName}";
     signedTargetFiles = runWrappedCommand "signed_target_files" signedTargetFilesScript { targetFiles=unsignedTargetFiles;};
     targetFiles = if config.signing.enable then signedTargetFiles else unsignedTargetFiles;
     ota = runWrappedCommand "ota_update" otaScript { inherit targetFiles; };
@@ -179,7 +179,7 @@ in
     otaDir = pkgs.runCommand "${config.device}-otaDir" {} ''
       mkdir -p $out
       ln -s "${ota}" "$out/${ota.name}"
-      ln -s "${targetFiles}" "$out/${config.device}-target_files-${config.buildNumber}.zip"
+      ln -s "${targetFiles}" "$out/${config.targetFilesName}"
       ${lib.optionalString config.incremental ''ln -s ${incrementalOta} "$out/${incrementalOta.name}"''}
 
       ${writeOtaMetadata { otaFile = ota; path = placeholder "out"; }}
@@ -205,8 +205,8 @@ in
         echo Building incremental OTA zip
         ${otaScript {
           targetFiles=signedTargetFiles.name;
-          prevTargetFiles="${config.device}-target_files-$PREV_BUILDNUMBER.zip";
-          out="${config.device}-incremental-$PREV_BUILDNUMBER-${config.buildNumber}.zip";
+          prevTargetFiles="${config.device}-target_files" + lib.optionalString (config.androidVersion < 14) "-$PREV_BUILDNUMBER.zip";
+          out="${config.device}-incremental${lib.optionalString (config.androidVersion < 14) "-$PREV_BUILDNUMBER-${config.buildNumber}"}.zip";
         }}
       fi
       echo Building .img file

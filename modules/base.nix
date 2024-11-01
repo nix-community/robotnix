@@ -208,6 +208,16 @@ in
       description = "Apply additional fixes for reproducibility";
     };
 
+    targetFilesName = mkOption {
+      default =
+        let
+          # Android versions < 14 suffix the build number
+          suffix = lib.optionalString (config.androidVersion < 14) "-${config.buildNumber}";
+        in
+        "${config.productName}-target_files${suffix}.zip";
+      internal = true;
+    };
+
     # Random attrset to throw build products into
     build = mkOption {
       internal = true;
@@ -375,11 +385,12 @@ in
         name = "robotnix-${config.productName}-${config.buildNumber}";
         makeTargets = [ "target-files-package" "otatools-package" ];
         # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
-        installPhase = ''
-          mkdir -p $out
-          cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
-          cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.productName}-target_files-${config.buildNumber}.zip $out/
-        '';
+        installPhase =
+          ''
+            mkdir -p $out
+            cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
+            cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.targetFilesName} $out/
+          '';
       };
 
       checkAndroid = mkAndroid {
