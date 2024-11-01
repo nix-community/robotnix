@@ -32,20 +32,6 @@ in
 
   config = mkIf config.microg.enable {
     source.dirs = mkMerge [
-      (mkIf (config.androidVersion == 14) {
-        "frameworks/base".patches = [
-          (pkgs.fetchpatch2 {
-            url = "https://github.com/lineageos4microg/docker-lineage-cicd/raw/9d40027253708a89fcccce663019564fa059dca1/src/signature_spoofing_patches/android_frameworks_base-Android14.patch";
-            hash = "sha256-dUGgGQQH6l/AlKubpCROcOtzmQLQYUCz31BSZVinCuk=";
-          })
-        ];
-        "packages/modules/Permission".patches = [
-          (pkgs.fetchpatch2 {
-            url = "https://github.com/lineageos4microg/docker-lineage-cicd/raw/9d40027253708a89fcccce663019564fa059dca1/src/signature_spoofing_patches/packages_modules_Permission-Android14.patch";
-            hash = "sha256-Il3mOh+BdiJN++NZW5CAAyRoSEhMtXP1uw1I0Mx4tVE=";
-          })
-        ];
-      })
       (mkIf (config.androidVersion == 12 || config.androidVersion == 13) {
         # From: https://github.com/microg/GmsCore/pull/1586
         "frameworks/base".patches = lib.optionals (config.androidVersion == 12) [
