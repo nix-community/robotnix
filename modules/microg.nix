@@ -77,7 +77,13 @@ in
 
     # TODO: Preferably build this stuff ourself.
     # Used https://github.com/lineageos4microg/android_prebuilts_prebuiltapks as source for Android.mk options
-    apps.prebuilt = {
+    apps.prebuilt = let
+      # Currently LOS only allows µG to be signed with the upstream keys and
+      # that's the only supported method to get signature spoofing.
+      #
+      # FIXME patch that out and make it accept the signing key instead
+      certificate = if config.flavor == "lineageos" && config.androidVersion >= 13 then "PRESIGNED" else "microg";
+    in {
       GmsCore = {
         apk = verifyApk (pkgs.fetchurl {
           url = "https://github.com/microg/GmsCore/releases/download/${versions.release}/com.google.android.gms-${versions.GmsCore.buildNumber}.apk";
@@ -109,7 +115,7 @@ in
         usesLibraries = [ "com.android.location.provider" ];
         usesOptionalLibraries = [ "org.apache.http.legacy" "androidx.window.extensions" "androidx.window.sidecar" ];
         allowInPowerSave = true;
-        certificate = "microg";
+        inherit certificate;
       };
 
       GsfProxy = {
@@ -133,7 +139,7 @@ in
         ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         usesOptionalLibraries = [ "androidx.window.extensions" "androidx.window.sidecar" ];
-        certificate = "microg";
+        inherit certificate;
       };
     };
   };
