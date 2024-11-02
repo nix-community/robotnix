@@ -355,14 +355,11 @@ in
             ''}
             ## loads bash functions for building, such as "breakfast" or "choosecombo"
             source build/envsetup.sh
-            ${lib.optionalString (config.androidVersion >= 14) ''
-              # breakfast ${config.productName}-ap1a-${config.variant}
-              breakfast ${config.device}
-            ''}
-            ${lib.optionalString (config.androidVersion < 14) ''
+            '' + (if config.flavor == "lineageos" then ''
+              breakfast ${config.device} ${config.variant}
+            '' else ''
               choosecombo ${config.buildType} ${config.productName} ${config.variant}
-            ''}
-
+            '') + ''
             # Fail early if the product was not selected properly
             test -n "$TARGET_PRODUCT" || exit 1
 
