@@ -1,0 +1,26 @@
+From a0de58b8fdba9fd3725eb604dec0cdc92ccfb4a2 Mon Sep 17 00:00:00 2001
+From: Daniel Fullmer <danielrf12@gmail.com>
+Date: Sun, 10 May 2020 18:50:33 -0400
+Subject: [PATCH] kernel: Set constant kernel timestamp
+
+---
+ build/tasks/kernel.mk | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/build/tasks/kernel.mk b/build/tasks/kernel.mk
+index 0c2e179e..4c35eac9 100644
+--- a/build/tasks/kernel.mk
++++ b/build/tasks/kernel.mk
+@@ -275,7 +275,7 @@ endif
+ # $(1): output path (The value passed to O=)
+ # $(2): target to build (eg. defconfig, modules, dtbo.img)
+ define internal-make-kernel-target
+-$(PATH_OVERRIDE) $(KERNEL_MAKE_CMD) $(KERNEL_MAKE_FLAGS) -C $(KERNEL_SRC) O=$(KERNEL_BUILD_OUT_PREFIX)$(1) ARCH=$(KERNEL_ARCH) $(KERNEL_CROSS_COMPILE) $(KERNEL_CLANG_TRIPLE) $(KERNEL_CC) $(2)
++$(PATH_OVERRIDE) $(KERNEL_MAKE_CMD) $(KERNEL_MAKE_FLAGS) $(KERNEL_TIMESTAMP) -C $(KERNEL_SRC) O=$(KERNEL_BUILD_OUT_PREFIX)$(1) ARCH=$(KERNEL_ARCH) $(KERNEL_CROSS_COMPILE) $(KERNEL_CLANG_TRIPLE) $(KERNEL_CC) $(2)
+ endef
+
+ # Make an external module target
+diff --git a/build/tasks/kernel.mk b/build/tasks/kernel.mk
+index 9189864d..0c98a91d 100644
+--- a/build/tasks/kernel.mk
++++ b/build/tasks/kernel.mk
