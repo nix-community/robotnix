@@ -7,14 +7,14 @@ let
   inherit (lib) mkIf mkDefault mkEnableOption mkMerge;
 
   versions = {
-    release = "v0.3.3.240913"; # The GH release name and git tag
+    release = "v0.3.4.240913"; # The GH release name and git tag
     GmsCore = {
-      buildNumber = "240913006"; # The build number of the artefact in the release
-      hash = "sha256-An2hil/5aQKKXGzvgHnmHrqZJmzlbGuBLQub17JSttA=";
+      buildNumber = "240913008"; # The build number of the artefact in the release
+      hash = "sha256-M7ZbXJt+Sfv7mqV49FKnyF/gGSCXXIQy93DI9vBKQOM=";
     };
     FakeStore = {
-      buildNumber = "84022606"; # The build number of the artefact in the release
-      hash = "sha256-W/DmriunY7MsxePam9KQYuqKN4Qsif620EwBL47qlMk=";
+      buildNumber = "84022608"; # The build number of the artefact in the release
+      hash = "sha256-JDPzBs3eVQCwyRh4Dwj40AWJaU3z5eaILX2B5um1K6k=";
     };
   };
 
