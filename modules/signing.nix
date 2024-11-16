@@ -209,7 +209,7 @@ in
           ${config.source.dirs."system/extras".src}/verity/generate_verity_key.c \
           ${config.source.dirs."system/core".src}/libcrypto_utils/android_pubkey.c${lib.optionalString (config.androidVersion >= 12) "pp"} \
           -I ${config.source.dirs."system/core".src}/libcrypto_utils/include/ \
-          -I ${pkgs.boringssl}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
+          -I ${pkgs.boringssl.dev}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
 
         cp ${config.source.dirs."external/avb".src}/avbtool $out/bin/avbtool
 
