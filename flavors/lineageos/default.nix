@@ -106,7 +106,7 @@ in mkIf (config.flavor == "lineageos")
          then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
          else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
         
-      ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "13") [
+      ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "12") [
         ./dont-run-repo-during-build.patch
       ];
       "system/extras".patches = [
