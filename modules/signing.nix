@@ -139,6 +139,9 @@ in
         "vndk.current.on_vendor" "vndk.v30"
       ] ++ lib.optionals (config.androidVersion >= 13) [
         "adservices" "btservices" "ondevicepersonalization" "uwb"
+      ] ++ lib.optionals (config.androidVersion >= 14) [
+        "configinfrastructure" "devicelock" "healthfitness" "rkpd"
+        "hardware.cas"
       ]
     );
 
