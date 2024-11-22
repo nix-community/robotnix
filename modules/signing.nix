@@ -137,6 +137,8 @@ in
         "appsearch" "art" "art.debug" "art.host" "art.testing" "compos" "geotz"
         "scheduling" "support.apexer" "tethering.inprocess" "virt"
         "vndk.current.on_vendor" "vndk.v30"
+      ] ++ lib.optionals (config.androidVersion >= 13) [
+        "adservices" "btservices" "ondevicepersonalization" "uwb"
       ]
     );
 
