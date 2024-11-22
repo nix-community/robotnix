@@ -212,6 +212,16 @@ in
 
     build.generateKeysScript = let
       # Get a bunch of utilities to generate keys
+
+      # avbtool has been renamed to avbtool.py
+      # History about the change:
+      # * Android 10: There's only avbtool
+      # * Android 11: Adds a symlink avbtool.py, which points to avbtool
+      # * Android 12: Swaps the two above, now there's a symlink called avbtool
+      #               which points to avbtool.py
+      # * Android 14: Now there's only avbtool.py, the avbtool symlink has been
+      #               removed
+      avbtoolFilename = if config.androidVersion <= 10 then "avbtool" else "avbtool.py";
       keyTools = pkgs.runCommandCC "android-key-tools" { buildInputs = [ (if config.androidVersion >= 12 then pkgs.python3 else pkgs.python2) ]; } ''
         mkdir -p $out/bin
 
@@ -224,7 +234,7 @@ in
           -I ${config.source.dirs."system/core".src}/libcrypto_utils/include/ \
           -I ${pkgs.boringssl.dev}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
 
-        cp ${config.source.dirs."external/avb".src}/avbtool $out/bin/avbtool
+        cp ${config.source.dirs."external/avb".src}/${avbtoolFilename} $out/bin/avbtool
 
         patchShebangs $out/bin
       '';
