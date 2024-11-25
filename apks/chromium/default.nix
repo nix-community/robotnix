@@ -96,7 +96,10 @@ let
 
   deps = import (./vendor- + version + ".nix") {
     inherit fetchgit fetchcipd fetchurl runCommand symlinkJoin;
-    platform = "linux-amd64"; # TODO: Figure out mapping for cipd platform
+    platform = {
+      x86_64-linux = "linux-amd64";
+      aarch64-linux = "linux-arm64";
+    }.${stdenv.buildPlatform.system};
   } // depsOverrides;
 
   src = runCommand "chromium-${version}-src" {} # TODO: changed from mkDerivation since it needs passAsFile or else this can get too big for the derivation: nixos "while setting up the build environment" "argument list too long"

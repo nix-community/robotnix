@@ -81,8 +81,9 @@ let
     else lib.showWarnings eval.config.warnings eval.config;
 
 in {
-  inherit (eval) pkgs options;
+  inherit (eval) options;
   inherit config;
+  inherit (eval._module.args) pkgs;
 
   # Things that are nice to have at the top-level, since they might get moved
   # in the future:
