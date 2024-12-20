@@ -55,10 +55,32 @@ let
   )
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
+    targetFiles=targetFiles.zip
+    cp ${targetFiles} $targetFiles
+
+    unzip ${/Users/atemu/Downloads/Magisk-v28.1.apk}
+    chmod +x assets/boot_patch.sh
+    # This is not cross-friendly
+    chmod +x lib/x86_64/libmagiskboot.so
+    ln -s ../lib/x86_64/libmagiskboot.so assets/magiskboot
+    ln -s ../lib/arm64-v8a/libmagisk64.so assets/magisk64
+    ln -s ../lib/armeabi-v7a/libmagisk32.so assets/magisk32
+    ln -s ../lib/arm64-v8a/libmagiskinit.so assets/magiskinit
+
+    ln -s ../lib/x86_64/libmagisk.so assets/magisk
+    chmod +x lib/x86_64/libmagisk.so
+
+    unzip $targetFiles IMAGES/boot.img -d assets/
+
+    export BOOTMODE=true
+    PATH=${pkgs.writeShellScriptBin "getprop" "echo \"$@\""}/bin/:$PATH sh assets/boot_patch.sh IMAGES/boot.img
+
+    zip $targetFiles IMAGES/boot.img
+
     ota_from_target_files  \
       ${toString config.otaArgs} \
       ${lib.optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
-      ${targetFiles} ${out}
+      $targetFiles ${out}
   '';
   imgScript = { targetFiles, out }: ''img_from_target_files ${targetFiles} ${out}'';
   factoryImgScript = { targetFiles, img, out }: ''
