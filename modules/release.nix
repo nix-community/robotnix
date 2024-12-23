@@ -58,24 +58,30 @@ let
     targetFiles=targetFiles.zip
     cp ${targetFiles} $targetFiles
 
-    unzip ${/Users/atemu/Downloads/Magisk-v28.1.apk}
-    chmod +x assets/boot_patch.sh
-    # This is not cross-friendly
-    chmod +x lib/x86_64/libmagiskboot.so
-    ln -s ../lib/x86_64/libmagiskboot.so assets/magiskboot
-    ln -s ../lib/arm64-v8a/libmagisk64.so assets/magisk64
-    ln -s ../lib/armeabi-v7a/libmagisk32.so assets/magisk32
-    ln -s ../lib/arm64-v8a/libmagiskinit.so assets/magiskinit
+    (
+        mkdir magisk/
+        pushd magisk/
 
-    ln -s ../lib/x86_64/libmagisk.so assets/magisk
-    chmod +x lib/x86_64/libmagisk.so
+        # TODO
+        unzip ${/var/tmp/magisk-test/app-release.apk}
 
-    unzip $targetFiles IMAGES/boot.img -d assets/
+        # TODO is this correct?
+        pushd lib/x86_64/
+        for file in lib*.so ; do
+            dest="../../${file:3:-3}"
+            ln -srfn "$file" "$dest" && chmod +x "$file"
+        done
+        popd
+        ln -sr assets/*.sh .
+        ln -sr assets/stub.apk .
 
-    export BOOTMODE=true
-    PATH=${pkgs.writeShellScriptBin "getprop" "echo \"$@\""}/bin/:$PATH sh assets/boot_patch.sh IMAGES/boot.img
+        unzip $targetFiles IMAGES/boot.img -d assets/
 
-    zip $targetFiles IMAGES/boot.img
+        export BOOTMODE=true
+        PATH=${pkgs.writeShellScriptBin "getprop" "echo \"$@\""}/bin/:$PATH sh assets/boot_patch.sh IMAGES/boot.img
+
+        zip $targetFiles IMAGES/boot.img
+    )
 
     ota_from_target_files  \
       ${toString config.otaArgs} \
