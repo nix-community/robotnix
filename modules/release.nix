@@ -55,8 +55,9 @@ let
   )
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
-    targetFiles=targetFiles.zip
+    targetFiles="$(pwd)/targetFiles.zip"
     cp ${targetFiles} $targetFiles
+    chmod +w $targetFiles
 
     (
         mkdir magisk/
@@ -68,17 +69,17 @@ let
         # TODO is this correct?
         pushd lib/x86_64/
         for file in lib*.so ; do
-            dest="../../${file:3:-3}"
+            dest="../../''${file:3:-3}"
             ln -srfn "$file" "$dest" && chmod +x "$file"
         done
         popd
         ln -sr assets/*.sh .
         ln -sr assets/stub.apk .
 
-        unzip $targetFiles IMAGES/boot.img -d assets/
+        unzip $targetFiles IMAGES/boot.img
 
         export BOOTMODE=true
-        PATH=${pkgs.writeShellScriptBin "getprop" "echo \"$@\""}/bin/:$PATH sh assets/boot_patch.sh IMAGES/boot.img
+        PATH="$(pwd):${pkgs.writeShellScriptBin "getprop" "echo \"$@\""}/bin/:$PATH" bash boot_patch.sh IMAGES/boot.img
 
         zip $targetFiles IMAGES/boot.img
     )
