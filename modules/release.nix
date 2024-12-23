@@ -55,6 +55,12 @@ let
   )
   '';
   otaScript = { targetFiles, prevTargetFiles ? null, out }: ''
+    ota_from_target_files  \
+      ${toString config.otaArgs} \
+      ${lib.optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
+      ${targetFiles} ${out}
+  '';
+  imgScript = { targetFiles, out }: ''
     targetFiles="$(pwd)/targetFiles.zip"
     cp ${targetFiles} $targetFiles
     chmod +w $targetFiles
@@ -66,30 +72,28 @@ let
         # TODO
         unzip ${/var/tmp/magisk-test/app-release.apk}
 
-        # TODO is this correct?
-        pushd lib/x86_64/
-        for file in lib*.so ; do
-            dest="../../''${file:3:-3}"
-            ln -srfn "$file" "$dest" && chmod +x "$file"
-        done
-        popd
         ln -sr assets/*.sh .
         ln -sr assets/stub.apk .
+
+        # Take everything from host arch and magiskboot from build arch
+        # TODO actually take the arches from the buildPlatform and the device platform
+        for file in lib/arm64-v8a/lib*.so lib/x86_64/libmagiskboot.so ; do
+            name="$(basename "$file")"
+            dest="''${name:3:-3}"
+            ln -srfn "$file" "$dest" && chmod +x "$file"
+        done
 
         unzip $targetFiles IMAGES/boot.img
 
         export BOOTMODE=true
         PATH="$(pwd):${pkgs.writeShellScriptBin "getprop" "echo \"$@\""}/bin/:$PATH" bash boot_patch.sh IMAGES/boot.img
+        mv new-boot.img IMAGES/boot.img
 
         zip $targetFiles IMAGES/boot.img
     )
 
-    ota_from_target_files  \
-      ${toString config.otaArgs} \
-      ${lib.optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
-      $targetFiles ${out}
+    img_from_target_files $targetFiles ${out}
   '';
-  imgScript = { targetFiles, out }: ''img_from_target_files ${targetFiles} ${out}'';
   factoryImgScript = { targetFiles, img, out }: ''
       ln -s ${targetFiles} ${config.device}-target_files-${config.buildNumber}.zip || true
       ln -s ${img} ${config.device}-img-${config.buildNumber}.zip || true
