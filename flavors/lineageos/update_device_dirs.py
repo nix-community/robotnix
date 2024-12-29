@@ -152,7 +152,7 @@ def fetch_vendor_dirs(metadata: Any,
             # HACK Allow devices that are 21.0, eventhough some of them won't have a branch for 20.0.
             supported_branches = [ 'lineage-20.0', 'lineage-21.0' ]
 
-            if branch == 'lineage-20.0':
+            if branch in supported_branches:
                 if 'branch' in data and data['branch'] in supported_branches:
                     required_vendor.add(os.path.join(vendor, device))
                 else:
@@ -196,13 +196,14 @@ def fetch_vendor_dirs(metadata: Any,
     for vendor in required_vendor:
         relpath = f'vendor/{vendor}'
 
-        # Only some of google's devices are on gitlab...
-        gitlab_vendors = [ 'google/bluejay', 'google/cheetah', 'google/oriole', 'google/panther', 'google/raven', 'google/lynx', 'google/tangorpro' ]
-        # Two motorola devices are /not/ on gitlab! TODO perhaps invert this list, new devices seem to be added to github now
-        motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar', 'motorola/devon', 'motorola/rhode', 'motorola/hawao', 'motorola/sm8250-common', 'motorola/sm6225-common' ]
         real_url_base = url_base
-        if vendor == 'xiaomi' or (branch == 'lineage-20.0' and (motorola_gitlab or vendor in gitlab_vendors)):
-            real_url_base = "https://gitlab.com/the-muppets"
+        if branch != 'lineage-21.0':
+            # Only some of google's devices are on gitlab...
+            gitlab_vendors = [ 'google/bluejay', 'google/cheetah', 'google/oriole', 'google/panther', 'google/raven', 'google/lynx', 'google/tangorpro' ]
+            # Two motorola devices are /not/ on gitlab! TODO perhaps invert this list, new devices seem to be added to github now
+            motorola_gitlab = vendor.startswith('motorola/') and vendor not in [ 'motorola/nio', 'motorola/pstar', 'motorola/devon', 'motorola/rhode', 'motorola/hawao', 'motorola/sm8250-common', 'motorola/sm6225-common' ]
+            if vendor == 'xiaomi' or (branch == 'lineage-20.0' and (motorola_gitlab or vendor in gitlab_vendors)):
+                real_url_base = "https://gitlab.com/the-muppets"
 
         to_fetch = [ f"{real_url_base}/proprietary_{relpath.replace('/', '_')}" ];
 
@@ -242,7 +243,11 @@ def main() -> None:
             metadata[device] = {'vendor': vendor}
 
     # Really?
-    true_branch = 'lineage-20' if args.branch == 'lineage-20.0' else args.branch
+    true_branch = args.branch
+    if args.branch == 'lineage-20.0':
+        true_branch = 'lineage-20'
+    elif args.branch == 'lineage-21.0':
+        true_branch = 'lineage-21'
 
     device_dirs_fn = os.path.join(args.branch, 'device-dirs.json')
     if os.path.exists(device_dirs_fn):
