@@ -11,11 +11,12 @@
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, androidPkgs, flake-compat,  ... }@inputs: let
-    pkgs = import ./pkgs/default.nix { inherit inputs; };
+    getPkgs = system: import ./pkgs/default.nix { inherit inputs system; };
   in {
     # robotnixSystem evaluates a robotnix configuration
-    lib.robotnixSystem = configuration: import ./default.nix {
-      inherit configuration pkgs;
+    lib.robotnixSystem = system: configuration: import ./default.nix {
+      inherit configuration;
+      pkgs = getPkgs system;
     };
 
     defaultTemplate = {
@@ -26,12 +27,16 @@
     nixosModule = import ./nixos; # Contains all robotnix nixos modules
     nixosModules.attestation-server = import ./nixos/attestation-server/module.nix;
 
-    packages.x86_64-linux = {
+    packages.x86_64-linux = let
+      pkgs = getPkgs "x86_64-linux";
+    in {
       manual = (import ./docs { inherit pkgs; }).manual;
       gitRepo = pkgs.gitRepo;
     };
 
-    devShell.x86_64-linux = pkgs.mkShell {
+    devShell.x86_64-linux = let
+      pkgs = getPkgs "x86_64-linux";
+    in pkgs.mkShell {
       name = "robotnix-scripts";
       nativeBuildInputs = with pkgs; [
         # For android updater scripts

@@ -10,12 +10,11 @@ buildFHSUserEnv {
   targetPkgs = pkgs: with pkgs; [
     # Stuff verified to be needed in chromium
     jdk8
-    glibc_multi.dev # Needs unistd.h
     libkrb5.dev # Needs headers
     libkrb5
     ncurses5
     libxml2
-  ];
+  ] ++ lib.optional (buildPlatform.isx86) glibc_multi.dev;
   multiPkgs = pkgs: with pkgs; [
     zlib
     ncurses5

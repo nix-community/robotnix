@@ -3,7 +3,7 @@
 
 { stdenv, lib, fetchurl, runCommand, writeText, writeShellScript,
   autoPatchelfHook, makeWrapper, glibc, libGL, libpulseaudio, zlib, ncurses5,
-  nspr, fontconfig, nss, unzip, alsa-lib, libuuid, xlibs, dbus, xkeyboard_config,
+  nspr, fontconfig, nss, unzip, alsa-lib, libuuid, dbus, xkeyboard_config,
   xorg,
   androidPkgs
 }:
