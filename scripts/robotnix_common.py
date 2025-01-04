@@ -34,7 +34,7 @@ def get_store_path(path):
     """Get actual path to a Nix store path; supports handling local remotes"""
     prefix = os.getenv("NIX_REMOTE")
 
-    if not prefix:
+    if not prefix or prefix == "daemon":
         return path
 
     prefix = Path(prefix)
