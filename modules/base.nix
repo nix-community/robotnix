@@ -208,6 +208,16 @@ in
       description = "Apply additional fixes for reproducibility";
     };
 
+    targetFilesName = mkOption {
+      default =
+        let
+          # Android versions < 14 suffix the build number
+          suffix = lib.optionalString (config.androidVersion < 14) "-${config.buildNumber}";
+        in
+        "${config.productName}-target_files${suffix}.zip";
+      internal = true;
+    };
+
     # Random attrset to throw build products into
     build = mkOption {
       internal = true;
@@ -233,6 +243,7 @@ in
       "11" = 30;
       "12" = 32;
       "13" = 33;
+      "14" = 34;
     }.${builtins.toString config.androidVersion} or 32;
 
     buildNumber = mkOptionDefault (formatSecondsSinceEpoch config.buildDateTime);
@@ -342,9 +353,13 @@ in
             mkdir -p $HOME
             export USER=foo
             ''}
+            ## loads bash functions for building, such as "breakfast" or "choosecombo"
             source build/envsetup.sh
-            choosecombo ${config.buildType} ${config.productName} ${config.variant}
-
+            '' + (if config.flavor == "lineageos" then ''
+              breakfast ${config.device} ${config.variant}
+            '' else ''
+              choosecombo ${config.buildType} ${config.productName} ${config.variant}
+            '') + ''
             # Fail early if the product was not selected properly
             test -n "$TARGET_PRODUCT" || exit 1
 
@@ -367,11 +382,12 @@ in
         name = "robotnix-${config.productName}-${config.buildNumber}";
         makeTargets = [ "target-files-package" "otatools-package" ];
         # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
-        installPhase = ''
-          mkdir -p $out
-          cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
-          cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.productName}-target_files-${config.buildNumber}.zip $out/
-        '';
+        installPhase =
+          ''
+            mkdir -p $out
+            cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
+            cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.targetFilesName} $out/
+          '';
       };
 
       checkAndroid = mkAndroid {
