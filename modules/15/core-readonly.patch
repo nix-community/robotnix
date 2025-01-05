@@ -1,0 +1,13 @@
+diff --git a/rootdir/Android.bp b/rootdir/Android.bp
+index 3204a9f..1a4a639 100644
+--- a/rootdir/Android.bp
++++ b/rootdir/Android.bp
+@@ -169,7 +169,7 @@ genrule {
+     name: "init.environ.rc.gen",
+     srcs: ["init.environ.rc.in"],
+     out: ["init.environ.rc"],
+-    cmd: "cp -f $(in) $(out) && " +
++    cmd: "cp -f $(in) $(out) && chmod +w $(out) && " +
+         "echo '    " + EXPORT_GLOBAL_ASAN_OPTIONS + "' >> $(out) && " +
+         "echo '    " + EXPORT_GLOBAL_GCOV_OPTIONS + "' >> $(out) && " +
+         "echo '    " + EXPORT_GLOBAL_CLANG_COVERAGE_OPTIONS + "' >> $(out) && " +

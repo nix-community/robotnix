@@ -17,6 +17,7 @@ let
     "12" = "lineage-19.1";
     "13" = "lineage-20.0";
     "14" = "lineage-21.0";
+    "15" = "lineage-22.1";
   };
   lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
 
