@@ -163,18 +163,15 @@ in mkIf (config.flavor == "lineageos")
   source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
   source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
 
-  # Enable robotnix-built chromium / webview
-  apps.chromium.enable = mkDefault true;
-  webview.chromium.availableByDefault = mkDefault true;
-  webview.chromium.enable = mkDefault true;
-
-  # This is the prebuilt webview apk from LineageOS. Adding this here is only
-  # for convenience if the end-user wants to set `webview.prebuilt.enable = true;`.
+  # This is the prebuilt webview apk from LineageOS. This is the only working
+  # webview we have access to (robotnix' own are in disrepair), so this should
+  # be used by default unless the user provides another webview themselves.
   webview.prebuilt.apk = if config.androidVersion >= 11 then
     config.source.dirs."external/chromium-webview/prebuilt/${config.arch}".src + "/webview.apk"
   else
     config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
   webview.prebuilt.availableByDefault = mkDefault true;
+  webview.prebuilt.enable = mkDefault true;
   removedProductPackages = [ "webview" ];
 
   apps.updater.flavor = mkDefault "lineageos";
