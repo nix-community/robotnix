@@ -22,5 +22,5 @@ export TMPDIR=/var/tmp
 ./update_device_dirs.py --branch "$branch"
 
 endEpoch="$(date +%s)"
-echo "$endEpoch" > lastUpdated.epoch
+echo "$endEpoch" > $branch/lastUpdated.epoch
 echo Updated branch "$branch". End epoch: "$endEpoch"
