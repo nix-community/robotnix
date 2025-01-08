@@ -130,7 +130,8 @@ def fetch_vendor_dirs(metadata: Any,
     required_vendor = set()
     for device, data in metadata.items():
         if debug:
-            print(device, data)
+            print("DEVICE: ", device)
+            print("data: ", data)
         if 'vendor' in data:
             vendor = data['vendor']
 
@@ -139,7 +140,7 @@ def fetch_vendor_dirs(metadata: Any,
                 vendor = 'amlogic'
 
             if debug:
-                print(branch)
+                print("branch: ", branch)
 
             # Branches that we fetch vendor dirs for
             #
@@ -149,8 +150,8 @@ def fetch_vendor_dirs(metadata: Any,
             # supported on many branches but metadata only includes the newest
             # one which might also be newer than the newest we support.
             #
-            # HACK Allow devices that are 21.0, eventhough some of them won't have a branch for 20.0.
-            supported_branches = [ 'lineage-20.0', 'lineage-21.0' ]
+            # HACK Allow devices that are 21.0 and 22.1, eventhough some of them won't have a branch for 20.0.
+            supported_branches = [ 'lineage-20.0', 'lineage-21.0', 'lineage-22.1' ]
 
             if branch in supported_branches:
                 if 'branch' in data and data['branch'] in supported_branches:
@@ -172,15 +173,17 @@ def fetch_vendor_dirs(metadata: Any,
                     print(f'{device_dir_name} has deps: {deps}')
                 for dep in deps:
                     if debug:
-                        print(dep)
+                        print("DEPENDENCY: ", dep)
                     excluded = vendor in [ 'nvidia', 'zuk' ] or any(dep.endswith(path) for path in [
                         'motorola/sm6150-common',
                         'xiaomi/sm8350-common',
-                        'msm8953-common'
+                        'msm8953-common',
+                        'gs-common' # I could neither find the proprietary vendor repo for this device  on GitHub nor GitLab. Totally unsure whether I can just exclude it though.
                     ])
                     # Nvidia and zuk don't follow this pattern (obviously...)
                     if dep.endswith('-common') and not excluded:
                         relpath = dep.replace('device/', '')
+                        print("added vendor dep", relpath)
                         required_vendor.add(relpath)
 
 
@@ -191,8 +194,8 @@ def fetch_vendor_dirs(metadata: Any,
         dirs = {}
 
     if debug:
-        print(prev_data)
-        print(required_vendor)
+        print("previous data: ", prev_data)
+        print("required_vendor: ", required_vendor)
     for vendor in required_vendor:
         relpath = f'vendor/{vendor}'
 
@@ -208,6 +211,7 @@ def fetch_vendor_dirs(metadata: Any,
         to_fetch = [ f"{real_url_base}/proprietary_{relpath.replace('/', '_')}" ];
 
         for url in to_fetch:
+            print("trying git ls-remote ", url)
             refs = ls_remote(url)
             if f'refs/heads/{true_branch}' in refs:
                 fetch_relpath(dirs, relpath, url, true_branch)
@@ -215,6 +219,8 @@ def fetch_vendor_dirs(metadata: Any,
                     callback(dirs)
             else:
                 print(f'SKIP: {branch} branch does not exist for {url}')
+        print("")
+    print("\n\n\n\n")
 
     return dirs
 

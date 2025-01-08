@@ -59,7 +59,18 @@ in
     };
   };
 
-  config = mkIf (lib.any (m: m.enable) (lib.attrValues config.webview)) {
+  config = lib.mkMerge [
+    {
+      assertions = [
+        {
+          # If no webview is enabled with android 15, the webview updater service
+          # crashes which prevents the system from booting.
+          assertion = config.androidVersion >= 15 -> lib.any (w: w.enable) (lib.attrValues config.webview);
+          message = "You must enable a webview to be able to boot android 15 or later.";
+        }
+      ];
+    }
+    (mkIf (lib.any (m: m.enable) (lib.attrValues config.webview)) {
     assertions = [
       { assertion = lib.any (m: m.enable && m.availableByDefault) (lib.attrValues config.webview);
         message = "Webview module is enabled, but no webview has availableByDefault = true";
@@ -105,5 +116,6 @@ in
       '';
       destination = "/frameworks/base/core/res/res/xml/config_webview_packages.xml";
     };
-  };
+  })
+  ];
 }
