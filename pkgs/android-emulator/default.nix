@@ -51,9 +51,9 @@ let
     # sdcard.size=512M
 
     tag.id = "robotnix";
-    abi.type = "x86";
-    hw.cpu.arch = "x86";
-    image.sysdir."1" = "system-images/android/x86/";
+    abi.type = "x86_64";
+    hw.cpu.arch = "x86_64";
+    image.sysdir."1" = "system-images/android/x86_64/";
   };
 
   # Turn an attrset into AVD text
@@ -66,7 +66,7 @@ let
   bindImg = { img, avd ? {} }: let
     fakeSdkRoot = runCommand "fake-sdk" {} ''
       mkdir -p $out/system-images/android
-      ln -s ${img} $out/system-images/android/x86
+      ln -s ${img} $out/system-images/android/x86_64
 
       mkdir -p $out/platforms
       mkdir -p $out/platform-tools
