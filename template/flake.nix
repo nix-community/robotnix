@@ -7,7 +7,7 @@
     # "dailydriver" is an arbitrary user-chosen name for this particular
     # configuration.  Change it to something meaningful for you, perhaps just
     # the device name if you only have one of this kind of device.
-    robotnixConfigurations."dailydriver" = robotnix.lib.robotnixSystem ({ config, pkgs, ... }: {
+    robotnixConfigurations."dailydriver" = robotnix.lib.robotnixSystem "x86_64-linux" ({ config, pkgs, ... }: {
       # These two are required options
       device = "crosshatch";
       flavor = "vanilla"; # "grapheneos" is another option
