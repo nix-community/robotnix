@@ -1,11 +1,12 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ stdenv, lib, fetchurl, runCommand, writeText, writeShellScript,
-  autoPatchelfHook, makeWrapper, glibc, libGL, libpulseaudio, zlib, ncurses5,
-  nspr, fontconfig, nss, unzip, alsa-lib, libuuid, xlibs, dbus, xkeyboard_config,
-  xorg,
-  androidPkgs
+{
+  lib,
+  runCommand,
+  writeText,
+  writeShellScript,
+  androidPkgs,
 }:
 
 let
