@@ -42,7 +42,7 @@
 
         # For chromium updater script
         # python2
-        cipd git
+        # cipd git
 
         cachix
       ];
