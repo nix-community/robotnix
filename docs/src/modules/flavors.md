@@ -63,6 +63,22 @@ For devices with "boot-as-recovery", the typical LineageOS flashing process invo
 The `boot.img` and `ota` targets can be built using `nix-build ... -A bootImg` or `nix-build ... -A ota`, respectively.
 Check the upstream documentation for your particular device before following the above instructions.
 
+### Note on signing
+When you build a LineageOS image, the system image is cryptographically signed by default. There are three options concerning the keys the image can be signed with:
+
+- the official LineageOS keys (release-keys). We don't have access to them, so the only images signed with these keys are the official LineageOS builds. If you previously installed LineageOS from official sources, these are the keys you are currently using.
+- the test keys (test-keys). These keys are publicly available, and Robotnix uses them by default.
+- your own release keys. Please see [the relevant section in the Building page](../building.md#building-and-signing-releases).
+
+When you run LineageOS and install apps that save stuff to your phone, that data is "coupled" to the keys your LineageOS install was signed with. If you try to boot a LineageOS install with an image that was signed with different build keys than the ones your user data was coupled to, it will complain and not boot at best (or you'll loose all your data at worse).
+
+In that case, you have two options:
+
+- you can wipe your userdata partition and start over with the new keys
+- or you can migrate your userdata from the keys of your old install to your new install
+
+To do the latter, please see [the official documentation](https://wiki.lineageos.org/signing_builds#using-a-script).
+
 ## Anbox
 Anbox is a Free and open-source container-based approach at running Android on Linux systems.
 Anbox support may be enabled by setting `flavor = "anbox";`.
