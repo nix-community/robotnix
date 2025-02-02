@@ -4,9 +4,29 @@
 
 set -euo pipefail
 
-cd "$(dirname "${BASH_SOURCE[0]}")"
+SKIP_REPO_FILE=""
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --skip-mk-repo-file|-s)
+            SKIP_REPO_FILE=1
+            ;;
+        --)
+            shift
+            branch="$1"
+            break
+            ;;
+        -*)
+            echo "Unknown option: $1"
+            exit 1
+            ;;
+        *)
+            branch="$1"
+            ;;
+    esac
+    shift
+done
 
-branch=$1
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 args=(
     --cache-search-path ../../
@@ -18,7 +38,9 @@ args=(
 export TMPDIR=/var/tmp
 
 ./update_device_metadata.py
-../../scripts/mk_repo_file.py --out "${branch}/repo.json" "${args[@]}"
+if [[ -z "$SKIP_REPO_FILE" ]]; then
+  ../../scripts/mk_repo_file.py --out "${branch}/repo.json" "${args[@]}"
+fi
 ./update_device_dirs.py --branch "$branch"
 
 endEpoch="$(date +%s)"
