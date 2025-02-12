@@ -1,0 +1,11 @@
+diff --git a/setup.c b/setup.c
+--- a/setup.c
++++ b/setup.c
+@@ -1332,6 +1332,7 @@
+ void die_upon_dubious_ownership(const char *gitfile, const char *worktree,
+ 				const char *gitdir)
+ {
++  return; // Stubbed
+ 	struct strbuf report = STRBUF_INIT, quoted = STRBUF_INIT;
+ 	const char *path;
+ 
