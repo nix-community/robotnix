@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ configuration,
-  pkgs ? (import ./pkgs {}),
-  lib ? pkgs.lib
+{ configuration
+, pkgs ? (import ./pkgs { })
+, lib ? pkgs.lib
 }:
 
 let
@@ -13,20 +13,22 @@ let
     modules = [
       ({ config, ... }: {
         options.nixpkgs.overlays = mkOption {
-          default = [];
+          default = [ ];
           type = types.listOf types.unspecified;
           description = "Nixpkgs overlays to override the default packages used while building robotnix.";
         };
 
         config = {
-          _module.args = let
-            finalPkgs = pkgs.appendOverlays config.nixpkgs.overlays;
-            apks = import ./apks { pkgs = finalPkgs; };
-            robotnixlib = import ./lib lib;
-          in {
-            inherit apks lib robotnixlib;
-            pkgs = finalPkgs;
-          };
+          _module.args =
+            let
+              finalPkgs = pkgs.appendOverlays config.nixpkgs.overlays;
+              apks = import ./apks { pkgs = finalPkgs; };
+              robotnixlib = import ./lib lib;
+            in
+            {
+              inherit apks lib robotnixlib;
+              pkgs = finalPkgs;
+            };
         };
       })
       configuration
@@ -49,6 +51,7 @@ let
       ./modules/apps/auditor.nix
       ./modules/apps/chromium.nix
       ./modules/apps/fdroid.nix
+      ./modules/apps/aurora-services.nix
       ./modules/apps/prebuilt.nix
       ./modules/apps/seedvault.nix
       ./modules/apps/updater.nix
@@ -77,11 +80,13 @@ let
   # From nixpkgs/nixos/modules/system/activation/top-level.nix
   failedAssertions = map (x: x.message) (lib.filter (x: !x.assertion) eval.config.assertions);
 
-  config = if failedAssertions != []
+  config =
+    if failedAssertions != [ ]
     then throw "\nFailed assertions:\n${lib.concatStringsSep "\n" (map (x: "- ${x}") failedAssertions)}"
     else lib.showWarnings eval.config.warnings eval.config;
 
-in {
+in
+{
   inherit (eval) pkgs options;
   inherit config;
 
