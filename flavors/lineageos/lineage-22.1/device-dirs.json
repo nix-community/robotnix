@@ -29,6 +29,21 @@
     "sha256": "1k3wrdhc8m47srisggxmm6n5ciwawbybsvnjx8ddfv53xyr0284w",
     "url": "https://github.com/LineageOS/android_device_oneplus_cheeseburger"
   },
+  "device/oneplus/dumpling": {
+    "date": "2025-01-16T17:50:35+01:00",
+    "deepClone": false,
+    "deps": [
+      "device/oneplus/msm8998-common"
+    ],
+    "fetchLFS": true,
+    "fetchSubmodules": false,
+    "hash": "sha256-Y2O/7rQSCXMYB0KdF6/pLdY0QKjvTuGlkvELGldAFsU=",
+    "leaveDotGit": false,
+    "path": "/nix/store/hmqa46sdly00g8wcxz2468ks44zjy9jz-android_device_oneplus_dumpling",
+    "rev": "f283936c0aecbf26f6692fa5bfbca3671912df29",
+    "sha256": "1i8n81bil2zijajy2kpgm1039midx6pig7a20wc7628jnkpbyqv3",
+    "url": "https://github.com/LineageOS/android_device_oneplus_dumpling"
+  },
   "device/oneplus/instantnoodlep": {
     "date": "2025-01-02T01:12:59+02:00",
     "deepClone": false,
@@ -45,7 +60,7 @@
     "url": "https://github.com/LineageOS/android_device_oneplus_instantnoodlep"
   },
   "device/oneplus/msm8998-common": {
-    "date": "2025-02-03T07:59:24Z",
+    "date": "2025-02-10T20:36:58+01:00",
     "deepClone": false,
     "deps": [
       "hardware/oneplus",
@@ -53,15 +68,15 @@
     ],
     "fetchLFS": true,
     "fetchSubmodules": false,
-    "hash": "sha256-I3YODzialSegw7IEizb3pPA6xTGMd4GX8+B6sSWCvnI=",
+    "hash": "sha256-mJzX4QdYO57gByaqg81+sv6etiq7ASYRjm72mQ7Zm/8=",
     "leaveDotGit": false,
-    "path": "/nix/store/hc57qjwiwapb9f4cxb2r8anp3y1xzkfx-android_device_oneplus_msm8998-common",
-    "rev": "6448f54c39cb95567934aff3a3fd35a58e1ee9c9",
-    "sha256": "0wmyh8jv2yp0yfbq2xwc672kmw54ywv8n15jqfh2g5cs707hwxi3",
+    "path": "/nix/store/ykrmdlkwmlmm2944nac5s3kardz21wpi-android_device_oneplus_msm8998-common",
+    "rev": "b1c52a82f8d442d7561231f7e94d1ef9d296d15a",
+    "sha256": "1zwvv479kxkfiq8jc0dv5av9xzmjgv6q7ai60zh9wfsq0zhxg74q",
     "url": "https://github.com/LineageOS/android_device_oneplus_msm8998-common"
   },
   "device/oneplus/sm8250-common": {
-    "date": "2025-02-08T12:46:49+01:00",
+    "date": "2025-02-10T21:06:34+01:00",
     "deepClone": false,
     "deps": [
       "hardware/oplus",
@@ -69,50 +84,50 @@
     ],
     "fetchLFS": true,
     "fetchSubmodules": false,
-    "hash": "sha256-/q199vyiTJUBcwPoUt9bNqbPz+epJDZDsip5Vl4iopE=",
+    "hash": "sha256-9fwxXOze1BQ4tCwUeIvIVuly+JAyOVkF3nCw/qE7F1I=",
     "leaveDotGit": false,
-    "path": "/nix/store/rvjg07pydxzqmyi4xxl8l833ag234sri-android_device_oneplus_sm8250-common",
-    "rev": "3eec758c43db046d82870bf9011f42418e583694",
-    "sha256": "14d249g5cy9an91kc959wz7wz9inbggm5s03fc0rak52zkv7vbgy",
+    "path": "/nix/store/aikjl8gs27aqij9jdxdgw1ahvdqxqkga-android_device_oneplus_sm8250-common",
+    "rev": "a2cd4cf8e390794075a3c17226a7121a33740cef",
+    "sha256": "0lhp7fhzxc3hvq2mjf9jj3w75sanr25ph51cnhw19m6yxif33z7m",
     "url": "https://github.com/LineageOS/android_device_oneplus_sm8250-common"
   },
   "hardware/oneplus": {
-    "date": "2025-02-01T14:28:34Z",
+    "date": "2025-02-15T15:47:19+00:00",
     "deepClone": false,
     "deps": [],
     "fetchLFS": true,
     "fetchSubmodules": false,
-    "hash": "sha256-SnVsKsKhCZHknQNKX+734nkZkU06yq5moLBcD3p/4oc=",
+    "hash": "sha256-pNE+K0LoI4iDpyXjneiZNy56wDZBk4rpysSMSZBpSZ4=",
     "leaveDotGit": false,
-    "path": "/nix/store/y7vicp684pg1jk56nvrfdnhmzl7macmq-android_hardware_oneplus",
-    "rev": "8473f4a862e3641f65cc86ba66afab1938a765df",
-    "sha256": "11z2gxx0yp5hl1kaxjis9n8ijyg2yzp5yjh3kpj922d1q8m6qxaa",
+    "path": "/nix/store/rqsgvawrm2jz7lcmg5flzfy4njf7qwqv-android_hardware_oneplus",
+    "rev": "970dbcd36add4adaa75aaf919c572ff8bb2c22b7",
+    "sha256": "17j9d684k364rblqm4s16v07lbipk7l9vqr5ly1qh8z888mkxld4",
     "url": "https://github.com/LineageOS/android_hardware_oneplus"
   },
   "hardware/oplus": {
-    "date": "2025-02-08T23:25:14Z",
+    "date": "2025-02-16T17:17:57+00:00",
     "deepClone": false,
     "deps": [],
     "fetchLFS": true,
     "fetchSubmodules": false,
-    "hash": "sha256-96WFKhEifjA3wKVdALx+8k0kFhl4r2MdcARPA5F0t0I=",
+    "hash": "sha256-cdDXQcP+/UzQF2QJ61y3J8Vurg+iqBD8r7P820D8G7s=",
     "leaveDotGit": false,
-    "path": "/nix/store/hzvbkp9bxxr6jfcczvk1lpcgihw22gvd-android_hardware_oplus",
-    "rev": "331acdbd343a5f5cbe7f69a3b61c1ad8a2040f8c",
-    "sha256": "0hmpfj8h6kq4f0fn7bvq34b28kgjgsy00pd5q0vk0zi224m8b9gp",
+    "path": "/nix/store/pabi87jvsbadrybf7i9a7mkspx4gb6ri-android_hardware_oplus",
+    "rev": "1177faa26d75f7638d2953c1229544dda5cdb188",
+    "sha256": "1fqvzi0dpz5kmzy11a521yp6xi97nxffn2b42z84rzgyqd0xgl3i",
     "url": "https://github.com/LineageOS/android_hardware_oplus"
   },
   "kernel/fairphone/sm7225": {
-    "date": "2025-02-06T17:46:59+02:00",
+    "date": "2025-02-14T14:08:12+02:00",
     "deepClone": false,
     "deps": [],
     "fetchLFS": true,
     "fetchSubmodules": false,
-    "hash": "sha256-ICoxAfDZE2Ht/8eC35uC4luQLsKQCMM0+wWeMIlgzO0=",
+    "hash": "sha256-j+MYL8mHwho53MFyuKKDELswqfxgT/uw1l298A8YPr4=",
     "leaveDotGit": false,
-    "path": "/nix/store/0rmn285a0qkbq246f67dpyw5d1mjxw61-android_kernel_fairphone_sm7225",
-    "rev": "d6893f09cf4845602083d25be9f0c2e058a1d9ba",
-    "sha256": "1vfcc24k17h5zcsc624hq8p90nz2hadxz0n7zznn24yry00k2ai0",
+    "path": "/nix/store/wvb8qc0dvl957ra545588yc8s580akcz-android_kernel_fairphone_sm7225",
+    "rev": "d6a1cc51cb6494bbc64bc61e844d7840dc812afd",
+    "sha256": "1giy307z1gaxssqgnkv0zjlk1fqhhfibhwn1vhwimhl7r4piiqwg",
     "url": "https://github.com/LineageOS/android_kernel_fairphone_sm7225"
   },
   "kernel/oneplus/msm8998": {
@@ -129,16 +144,16 @@
     "url": "https://github.com/LineageOS/android_kernel_oneplus_msm8998"
   },
   "kernel/oneplus/sm8250": {
-    "date": "2025-02-06T17:48:14+02:00",
+    "date": "2025-02-14T14:11:20+02:00",
     "deepClone": false,
     "deps": [],
     "fetchLFS": true,
     "fetchSubmodules": false,
-    "hash": "sha256-en9q4lxSlQ0VXjy9o7L20OLuMg95V6w+sOMvMlK7axM=",
+    "hash": "sha256-zMGU78s/ybgfSCAsy1TVBLHxWD6I9ZFpWJ8a6/Bie9o=",
     "leaveDotGit": false,
-    "path": "/nix/store/wsfg6s1sy3irf5hjf3bh3qd0pscdnanz-android_kernel_oneplus_sm8250",
-    "rev": "21e14d4cf038639d89001affbb8e40f8e9e39ce8",
-    "sha256": "04vbpd934bz3n0zaqmvr1wrfxqnhysra7g9wbqahv5ajbki6lzvs",
+    "path": "/nix/store/lzbbglmb53wvc3nhyijgid3bjj6r56lg-android_kernel_oneplus_sm8250",
+    "rev": "aac6d4b77dbb2180395bea2ec4c0ce2fdcc7432e",
+    "sha256": "1nkvcbqfn6lzb1lr3xc87rcg3c84smacnb1090gvij9zrgpr9hfc",
     "url": "https://github.com/LineageOS/android_kernel_oneplus_sm8250"
   }
 }
