@@ -142,6 +142,8 @@ in
       ] ++ lib.optionals (config.androidVersion >= 14) [
         "configinfrastructure" "devicelock" "healthfitness" "rkpd"
         "hardware.cas"
+      ] ++ lib.optionals (config.androidVersion >= 15) [
+        "nfcservices" "profiling"
       ]
     );
 
