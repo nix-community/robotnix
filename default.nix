@@ -34,6 +34,7 @@ let
       ./flavors/grapheneos
       ./flavors/grapheneos/kernel.nix
       ./flavors/lineageos
+      ./flavors/twrp
       ./flavors/vanilla
       ./flavors/vanilla/10
       ./flavors/vanilla/11
