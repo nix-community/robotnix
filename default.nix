@@ -9,6 +9,8 @@
 let
   inherit (lib) mkOption types;
 
+  finalPkgs = pkgs.appendOverlays config.nixpkgs.overlays;
+
   eval = (lib.evalModules {
     modules = [
       ({ config, ... }: {
@@ -20,7 +22,6 @@ let
 
         config = {
           _module.args = let
-            finalPkgs = pkgs.appendOverlays config.nixpkgs.overlays;
             apks = import ./apks { pkgs = finalPkgs; };
             robotnixlib = import ./lib lib;
           in {
@@ -82,7 +83,8 @@ let
     else lib.showWarnings eval.config.warnings eval.config;
 
 in {
-  inherit (eval) pkgs options;
+  inherit (eval) options;
+  inherit finalPkgs;
   inherit config;
 
   # Things that are nice to have at the top-level, since they might get moved
