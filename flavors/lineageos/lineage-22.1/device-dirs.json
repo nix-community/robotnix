@@ -1,4 +1,19 @@
 {
+  "device/fairphone/FP3": {
+    "date": "2025-03-17T08:25:42+05:30",
+    "deepClone": false,
+    "deps": [
+      "kernel/fairphone/sdm632"
+    ],
+    "fetchLFS": true,
+    "fetchSubmodules": false,
+    "hash": "sha256-unuKOwOmHreuxyq4c7Hg4XUkg7uUnatA7ivW6I3LVeA=",
+    "leaveDotGit": false,
+    "path": "/nix/store/k0sqqcap67vrl47caxb166h7mscfdmv5-android_device_fairphone_FP3",
+    "rev": "598baac30d6b62ac26a5da55e569bb316f33e3f3",
+    "sha256": "1q2mrf6yimibxr0ap7clpf1j8xg1w2qp7f1aqypbf7m60cxqlyxs",
+    "url": "https://github.com/LineageOS/android_device_fairphone_FP3"
+  },
   "device/fairphone/FP4": {
     "date": "2025-02-20T05:34:09+02:00",
     "deepClone": false,
@@ -116,6 +131,19 @@
     "rev": "1177faa26d75f7638d2953c1229544dda5cdb188",
     "sha256": "1fqvzi0dpz5kmzy11a521yp6xi97nxffn2b42z84rzgyqd0xgl3i",
     "url": "https://github.com/LineageOS/android_hardware_oplus"
+  },
+  "kernel/fairphone/sdm632": {
+    "date": "2025-01-05T19:31:47+05:30",
+    "deepClone": false,
+    "deps": [],
+    "fetchLFS": true,
+    "fetchSubmodules": false,
+    "hash": "sha256-4uTVXOE/EdmDovK333BgE+qivstTjPDvMYvczUL4R3w=",
+    "leaveDotGit": false,
+    "path": "/nix/store/s080b4byn91w7bskz287rd8k16xd1nis-android_kernel_fairphone_sdm632",
+    "rev": "a01b0cf5d1ff62310747d2c81e7381d2201e3a8e",
+    "sha256": "0z27z11cvp4b67pz132krfza5shkc1qdzdzjla1xj49zw5fdbr72",
+    "url": "https://github.com/LineageOS/android_kernel_fairphone_sdm632"
   },
   "kernel/fairphone/sm7225": {
     "date": "2025-03-13T02:28:31+02:00",
