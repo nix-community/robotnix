@@ -35,6 +35,7 @@ lib.listToAttrs (builtins.map (c: lib.nameValuePair "${c.flavor}-${c.device}" c)
 
   { device="marlin";     flavor="lineageos"; }
   { device="pioneer";    flavor="lineageos"; }
+  { device="FP4";        flavor="lineageos"; }
 
   # { device="x86_64";     flavor="anbox"; }
   # { device="arm64";      flavor="anbox"; }
