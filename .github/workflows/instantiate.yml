@@ -55,11 +55,11 @@ jobs:
         extra_nix_config: |
           experimental-features = nix-command flakes
     - run: |
-        nix flake check
+        nix flake check --show-trace
         export ORIG_DIR=$PWD
         cd $(mktemp -d)
         nix flake init -t $ORIG_DIR
-        nix flake check --override-input robotnix $ORIG_DIR
+        nix flake check --override-input robotnix $ORIG_DIR --show-trace
   checks:
     runs-on: ubuntu-latest
     # FIXME python-based updaters don't pass the checks
