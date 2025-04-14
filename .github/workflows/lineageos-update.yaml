@@ -12,7 +12,7 @@ jobs:
       with:
         extra_nix_config: "experimental-features = nix-command flakes"
     - name: "Set OLD_BUILD_NUMBER variable"
-      run: echo "OLD_BUILD_NUMBER=$(nix eval -f . --arg configuration "{flavor = \"lineageos\";}" --raw config.buildNumber)" >> $GITHUB_ENV
+      run: echo "OLD_BUILD_NUMBER=$(nix eval -f . --arg configuration '{ flavor = "lineageos"; device = "foo"; androidVersion = 15; }' --raw config.buildNumber)" >> $GITHUB_ENV
     # - name: "Fetch latest lineage-18.1 changes"
     #   run: nix develop -c ./flavors/lineageos/update.sh lineage-18.1
     # - name: "Fetch latest lineage-17.1 changes"
