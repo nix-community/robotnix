@@ -6,22 +6,23 @@ self: super: {
 
   bundletool = super.callPackage ./bundletool {};
 
-  diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {
-    patches = attrs.patches ++ [
-      ./diffoscope/0001-comparators-android-Support-sparse-android-images.patch
-    ];
-    pythonPath = attrs.pythonPath ++ [ super.simg2img super.zip ];
-    doCheck = false;
-    doInstallCheck = false;
-  })).override {
-    python3Packages = super.python3Packages.override {
-      overrides = pythonSelf: pythonSuper: {
-        guestfs = pythonSuper.guestfs.override { libguestfs = super.libguestfs-with-appliance; };
-      };
-    };
-    binutils-unwrapped = super.pkgsCross.aarch64-multiplatform.buildPackages.binutils-unwrapped;
-    enableBloat = true;
-  };
+  # FIXME: Broken by upstream changes, not sure if it's still necessary?
+  # diffoscope = (super.diffoscope.overrideAttrs (attrs: rec {
+  #   patches = attrs.patches ++ [
+  #     ./diffoscope/0001-comparators-android-Support-sparse-android-images.patch
+  #   ];
+  #   pythonPath = attrs.pythonPath ++ [ super.simg2img super.zip ];
+  #   doCheck = false;
+  #   doInstallCheck = false;
+  # })).override {
+  #   python3Packages = super.python3Packages.override {
+  #     overrides = pythonSelf: pythonSuper: {
+  #       guestfs = pythonSuper.guestfs.override { libguestfs = super.libguestfs-with-appliance; };
+  #     };
+  #   };
+  #   binutils-unwrapped = super.pkgsCross.aarch64-multiplatform.buildPackages.binutils-unwrapped;
+  #   enableBloat = true;
+  # };
 
   cipd = super.callPackage ./cipd {};
   fetchcipd = super.callPackage ./cipd/fetchcipd.nix {};
