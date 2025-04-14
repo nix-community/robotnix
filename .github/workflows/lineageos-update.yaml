@@ -20,7 +20,7 @@ jobs:
     - name: "Update buildDateTime"
       run: date +%s > flavors/lineageos/lineage-22.1/lastUpdated.epoch
     - name: "Set NEW_BUILD_DATE_TIME variable"
-      run: echo "NEW_BUILD_NUMBER=$(nix eval -f . --arg configuration "{flavor = \"lineageos\";}" --raw config.buildNumber)" >> $GITHUB_ENV
+      run: echo "NEW_BUILD_NUMBER=$(nix eval -f . --arg configuration '{ flavor = "lineageos"; device = "foo"; androidVersion = 15; }' --raw config.buildNumber)" >> $GITHUB_ENV
     - name: "Create Pull Request"
       id: cpr
       uses: peter-evans/create-pull-request@v3.10.1
