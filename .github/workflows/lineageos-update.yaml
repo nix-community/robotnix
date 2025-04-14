@@ -14,12 +14,12 @@ jobs:
         extra_nix_config: "experimental-features = nix-command flakes"
     - name: "Set OLD_BUILD_NUMBER variable"
       run: echo "OLD_BUILD_NUMBER=$(nix eval -f . --arg configuration "{flavor = \"lineageos\";}" --raw config.buildNumber)" >> $GITHUB_ENV
-    - name: "Fetch latest lineage-18.1 changes"
-      run: nix develop -c ./flavors/lineageos/update.sh lineage-18.1
-    - name: "Fetch latest lineage-17.1 changes"
-      run: nix develop -c ./flavors/lineageos/update.sh lineage-17.1
+    # - name: "Fetch latest lineage-18.1 changes"
+    #   run: nix develop -c ./flavors/lineageos/update.sh lineage-18.1
+    # - name: "Fetch latest lineage-17.1 changes"
+    #   run: nix develop -c ./flavors/lineageos/update.sh lineage-17.1
     - name: "Update buildDateTime"
-      run: sed -i "s/buildDateTime = mkDefault .*/buildDateTime = mkDefault $(date +%s);/" flavors/lineageos/default.nix
+      run: date +%s > flavors/lineageos/lineage-22.1/lastUpdated.epoch
     - name: "Set NEW_BUILD_DATE_TIME variable"
       run: echo "NEW_BUILD_NUMBER=$(nix eval -f . --arg configuration "{flavor = \"lineageos\";}" --raw config.buildNumber)" >> $GITHUB_ENV
     - name: "Create Pull Request"
