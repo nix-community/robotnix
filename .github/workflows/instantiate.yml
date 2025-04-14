@@ -31,6 +31,8 @@ jobs:
         fi
   nixos-tests:
     runs-on: ubuntu-latest
+    # attestation server is broken
+    if: false
     steps:
     - uses: actions/checkout@v2.3.5
     - uses: cachix/install-nix-action@v31.1.0
