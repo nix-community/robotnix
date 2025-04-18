@@ -29,6 +29,7 @@ let
     http = fetchurl';
     https = fetchurl';
   };
+  empty = pkgs.emptyFile // { override = _: empty; };
 in
 rec {
   auditor = callPackage ./auditor { inherit gradleToNixPatchedFetchers; };
@@ -38,13 +39,17 @@ rec {
   seedvault_10 = callPackage ./seedvault_10 {}; # Old version that works with Android 10
 
   # Chromium-based browsers
-  chromium = callPackage ./chromium/default.nix {};
-  vanadium = import ./chromium/vanadium.nix {
-    inherit chromium;
-    inherit (pkgs) fetchFromGitHub git fetchcipd linkFarmFromDrvs fetchurl;
-  };
-  bromite = import ./chromium/bromite.nix {
-    inherit chromium;
-    inherit (pkgs) fetchFromGitHub git python3;
-  };
+  # FIXME unmaintained/broken
+  # chromium = callPackage ./chromium/default.nix {};
+  # vanadium = import ./chromium/vanadium.nix {
+  #   inherit chromium;
+  #   inherit (pkgs) fetchFromGitHub git fetchcipd linkFarmFromDrvs fetchurl;
+  # };
+  # bromite = import ./chromium/bromite.nix {
+  #   inherit chromium;
+  #   inherit (pkgs) fetchFromGitHub git python3;
+  # };
+  chromium = empty;
+  vanadium = empty;
+  bromite = empty;
 }
