@@ -74,7 +74,14 @@ in mkIf (config.flavor == "lineageos")
 {
   androidVersion = let
       defaultBranch = deviceMetadata.${config.device}.branch;
-    in mkIf (deviceMetadata ? ${config.device}) (mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch}));
+      # The version to use when the device has no default version assigned.
+      # Bump this when adding support for a new version.
+      fallback = 15;
+    in
+    if deviceMetadata ? ${config.device} then
+      mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch})
+    else
+      fallback;
   flavorVersion = removePrefix "lineage-" androidVersionToLineageBranch.${toString config.androidVersion};
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
