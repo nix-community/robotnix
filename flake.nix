@@ -2,7 +2,7 @@
   description = "Build Android (AOSP) using Nix";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
 
