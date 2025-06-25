@@ -40,6 +40,9 @@
         shellcheck
         wget
 
+        # Rust
+        cargo rustc
+
         # For chromium updater script
         # python2
         # cipd git
