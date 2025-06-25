@@ -33,7 +33,6 @@ self: super: {
   fetchgit = args: ((super.lib.makeOverridable super.fetchgit) args).overrideAttrs (old: {
     impureEnvVars = old.impureEnvVars or [ ] ++ [ "ROBOTNIX_GIT_MIRRORS" ];
   });
-  nix-prefetch-git = super.callPackage ./fetchgit/nix-prefetch-git.nix {};
 
   gitRepo = super.callPackage ./gitRepo {
     inherit (super) gitRepo;

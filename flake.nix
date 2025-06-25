@@ -35,7 +35,7 @@
       nativeBuildInputs = with pkgs; [
         # For android updater scripts
         (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
-        gitRepo nix-prefetch-git
+        gitRepo (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix {})
         curl pup jq
         shellcheck
         wget
