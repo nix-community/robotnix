@@ -1,5 +1,5 @@
-mod xml;
-mod resolver;
+pub mod xml;
+pub mod resolver;
 
 #[cfg(test)]
 mod tests {
