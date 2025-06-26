@@ -33,10 +33,26 @@ pub enum UpdateLockError {
     CommitMismatch(String),
 }
 
+pub fn is_commit_id(commit_id: &str) -> bool {
+    if commit_id.as_bytes().len() == 40 {
+        if commit_id.as_bytes().iter().all(|x| x.is_ascii_hexdigit()) {
+            true
+        } else {
+            false
+        }
+    } else {
+        false
+    }
+}
+
 pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock, UpdateLockError> {
-    let current_commit = git_ls_remote(project.repo_ref.repo_url.as_str(), &project.repo_ref.revision)
-        .await
-        .map_err(UpdateLockError::GitLsRemote)?;
+    let current_commit = if is_commit_id(&project.repo_ref.revision) {
+        project.repo_ref.revision.clone()
+    } else {
+        git_ls_remote(project.repo_ref.repo_url.as_str(), &project.repo_ref.revision)
+            .await
+            .map_err(UpdateLockError::GitLsRemote)?
+    };
 
     let refetch = match lock {
         None => true,
