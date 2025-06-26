@@ -40,7 +40,7 @@ pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock,
                 .await
                 .map_err(UpdateLockError::GitLsRemote)?;
 
-            (l.commit == current_commit, Some(current_commit))
+            (l.commit != current_commit, Some(current_commit))
         },
         None => (true, None),
     };

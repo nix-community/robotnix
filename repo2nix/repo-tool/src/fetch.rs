@@ -50,6 +50,7 @@ pub enum NixPrefetchGitError {
 }
 
 pub async fn nix_prefetch_git(repo_ref: &GitRepoRef) -> Result<NixPrefetchGitOutput, NixPrefetchGitError> {
+    eprintln!("Prefetching `{}`...", repo_ref.repo_url);
     let mut flag_args = vec![];
     if repo_ref.fetch_lfs {
         flag_args.push("--fetch-lfs")
