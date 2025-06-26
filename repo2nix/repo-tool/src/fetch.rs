@@ -1,5 +1,6 @@
 use std::io;
 use std::path::PathBuf;
+use url::Url;
 use thiserror::Error;
 use serde::Deserialize;
 use serde_json;
@@ -49,20 +50,20 @@ pub enum NixPrefetchGitError {
     Parse(#[from] serde_json::Error),
 }
 
-pub async fn nix_prefetch_git(repo_ref: &GitRepoRef) -> Result<NixPrefetchGitOutput, NixPrefetchGitError> {
-    eprintln!("Prefetching `{}`...", repo_ref.repo_url);
+pub async fn nix_prefetch_git(repo_url: &Url, revision: &str, fetch_lfs: bool, fetch_submodules: bool) -> Result<NixPrefetchGitOutput, NixPrefetchGitError> {
+    eprintln!("Prefetching `{}`...", repo_url);
     let mut flag_args = vec![];
-    if repo_ref.fetch_lfs {
+    if fetch_lfs {
         flag_args.push("--fetch-lfs")
     }
-    if repo_ref.fetch_submodules {
+    if fetch_submodules {
         flag_args.push("--fetch-submodules")
     }
     let output = Command::new("nix-prefetch-git")
         .arg("--url")
-        .arg(repo_ref.repo_url.as_str())
+        .arg(repo_url.as_str())
         .arg("--rev")
-        .arg(&repo_ref.revision)
+        .arg(&revision)
         .args(&flag_args)
         .output()
         .await

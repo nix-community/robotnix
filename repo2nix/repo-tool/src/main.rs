@@ -35,12 +35,12 @@ async fn main() {
     match args {
         Args::Fetch { manifest_url, lockfile_path, branch } => {
             let url = Url::parse(&manifest_url).unwrap();
-            let manifest_fetch = nix_prefetch_git(&GitRepoRef {
-                repo_url: url.clone(),
-                revision: format!("refs/heads/{branch}"),
-                fetch_lfs: false,
-                fetch_submodules: false,
-            }).await.unwrap();
+            let manifest_fetch = nix_prefetch_git(
+                &url,
+                &format!("refs/heads/{branch}"),
+                false,
+                false,
+            ).await.unwrap();
 
             let manifest_xml = recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml")).await.unwrap();
             let manifest = resolve_manifest(&manifest_xml, &url).unwrap();

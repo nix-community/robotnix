@@ -34,26 +34,27 @@ pub enum UpdateLockError {
 }
 
 pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock, UpdateLockError> {
-    let (refetch, current_commit) = match lock {
-        Some(l) => {
-            let current_commit = git_ls_remote(project.repo_ref.repo_url.as_str(), &project.repo_ref.revision)
-                .await
-                .map_err(UpdateLockError::GitLsRemote)?;
+    let current_commit = git_ls_remote(project.repo_ref.repo_url.as_str(), &project.repo_ref.revision)
+        .await
+        .map_err(UpdateLockError::GitLsRemote)?;
 
-            (l.commit != current_commit, Some(current_commit))
-        },
-        None => (true, None),
+    let refetch = match lock {
+        None => true,
+        Some(l) => l.commit != current_commit,
     };
 
     if refetch {
-        let fetch_output = nix_prefetch_git(&project.repo_ref)
+        let fetch_output = nix_prefetch_git(
+            &project.repo_ref.repo_url,
+            &current_commit,
+            project.repo_ref.fetch_lfs,
+            project.repo_ref.fetch_submodules,
+        )
             .await
             .map_err(UpdateLockError::NixPrefetchGit)?;
 
-        if let Some(c) = current_commit {
-            if c != fetch_output.rev {
-                return Err(UpdateLockError::CommitMismatch(project.repo_ref.revision.clone()));
-            }
+        if current_commit != fetch_output.rev {
+            return Err(UpdateLockError::CommitMismatch(project.repo_ref.revision.clone()));
         }
 
         Ok(Lock {
