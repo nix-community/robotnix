@@ -86,13 +86,13 @@ pub enum GitLsRemoteError {
     ProcessSpawn(#[from] io::Error),
     #[error("`git ls-remote` did not return successfully ({0:?}), stderr:\n{1}")]
     NonzeroExitStatus(Option<i32>, String),
-    #[error("error parsing `nix-prefetch-git-output` (shown below):\n{0}")]
-    Parse(String),
+    #[error("`git ls-remote` returned invalid UTF-8")]
+    Utf8(std::str::Utf8Error),
     #[error("rev `{0}` not found at remote")]
     RevNotFound(String),
 }
 
-pub async fn git_ls_remote(url: &str, git_ref: &String) -> Result<String, GitLsRemoteError> {
+pub async fn git_ls_remote(url: &str, git_ref: &str) -> Result<String, GitLsRemoteError> {
     let output = Command::new("git")
         .arg("ls-remote")
         .arg(url)
@@ -107,19 +107,11 @@ pub async fn git_ls_remote(url: &str, git_ref: &String) -> Result<String, GitLsR
         ));
     }
 
-    let output_str = String::from_utf8_lossy(&output.stdout);
-    let mut revs = vec![];
+    let output_str = std::str::from_utf8(&output.stdout).map_err(GitLsRemoteError::Utf8)?;
     for line in output_str.split("\n") {
-        if line != "" {
-            let commit = line.split("\t").nth(0).ok_or(GitLsRemoteError::Parse(output_str.to_string()))?;
-            let revname = line.split("\t").nth(1).ok_or(GitLsRemoteError::Parse(output_str.to_string()))?;
-            revs.push((commit, revname));
-        }
-    }
-
-    for (commit, revname) in revs {
-        if revname == git_ref || revname == format!("refs/heads/{git_ref}") || revname == format!("refs/tags/{git_ref}") {
-            return Ok(commit.to_string())
+        if line.ends_with(git_ref) {
+            let commit = line.split("\t").next().unwrap();
+            return Ok(commit.to_string());
         }
     }
 
