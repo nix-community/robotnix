@@ -8,14 +8,15 @@ mod tests {
     use quick_xml;
     use std::path::{Path, PathBuf};
     use url::Url;
+    use tokio;
 
-    #[test]
+    #[tokio::test]
     fn basic_parsing() {
         let manifest_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("test/android");
         let manifest_xml = recursively_read_manifest_files(&manifest_path, &Path::new("default.xml")).unwrap();
     }
 
-    #[test]
+    #[tokio::test]
     fn basic_resolving() {
         let manifest_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("test/android");
         let manifest_xml = recursively_read_manifest_files(&manifest_path, &Path::new("default.xml")).unwrap();

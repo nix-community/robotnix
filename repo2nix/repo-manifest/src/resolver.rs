@@ -1,16 +1,25 @@
 use std::path::{Path, PathBuf};
 use std::collections::HashMap;
+use serde::{Serialize, Deserialize};
 use url::{Url, ParseError};
 use thiserror::Error;
 use crate::xml::{self, read_manifest_file};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct GitRepoRef {
     pub repo_url: Url,
     pub revision: String,
+    pub fetch_lfs: bool,
+    pub fetch_submodules: bool,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+pub enum Category {
+    Default,
+    DeviceSpecific(String),
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct Project {
     pub name: String,
     pub path: PathBuf,
@@ -18,6 +27,7 @@ pub struct Project {
     pub linkfiles: Vec<xml::LinkCopyFile>,
     pub copyfiles: Vec<xml::LinkCopyFile>,
     pub repo_ref: GitRepoRef,
+    pub category: Category,
 }
 
 #[derive(Debug)]
@@ -53,15 +63,16 @@ pub enum RecursivelyReadManifestFilesError {
     DuplicateContactinfo,
 }
 
-pub fn recursively_read_manifest_files(root_path: &Path, manifest_file: &Path) -> Result<xml::Manifest, RecursivelyReadManifestFilesError> {
+pub async fn recursively_read_manifest_files(root_path: &Path, manifest_file: &Path) -> Result<xml::Manifest, RecursivelyReadManifestFilesError> {
     let mut manifest = read_manifest_file(&root_path.join(manifest_file))
+        .await
         .map_err(|e| RecursivelyReadManifestFilesError::ManifestReadFileError {
             path: root_path.to_path_buf(),
             inner_error: e,
         })?;
 
     for include in manifest.includes.iter() {
-        let submanifest = recursively_read_manifest_files(root_path, &include.name)?;
+        let submanifest = Box::pin(recursively_read_manifest_files(root_path, &include.name)).await?;
         if let Some(default_remote) = submanifest.default {
             match manifest.default {
                 None => manifest.default = Some(default_remote),
@@ -191,7 +202,10 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                     .or(remote.revision.as_ref())
                     .ok_or(ResolveManifestError::MissingRevision(name.clone()))
                     .cloned()?,
+                fetch_lfs: true,
+                fetch_submodules: false,
             },
+            category: Category::Default,
         };
         manifest.projects.insert(project.path.clone(), project);
     }

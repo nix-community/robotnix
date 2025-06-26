@@ -1,6 +1,6 @@
-use serde::Deserialize;
-use std::fs::File;
-use std::io::{self, BufReader};
+use serde::{Serialize, Deserialize};
+use tokio::fs;
+use std::io;
 use std::path::{Path, PathBuf};
 use std::vec::Vec;
 use thiserror::Error;
@@ -80,7 +80,7 @@ pub struct Project {
     // unsupported attrs: upstream, sync-c, annotation
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct LinkCopyFile {
     #[serde(rename = "@src")]
     pub src: PathBuf,
@@ -126,15 +126,13 @@ pub struct Manifest {
 #[derive(Debug, Error)]
 pub enum ManifestReadFileError {
     #[error("error reading file")]
-    IOError(#[from] io::Error),
+    IO(#[from] io::Error),
 
     #[error("malformed XML")]
-    MalformedXMLError(#[from] quick_xml::errors::serialize::DeError),
+    MalformedXML(#[from] quick_xml::errors::serialize::DeError),
 }
 
-pub fn read_manifest_file(path: &Path) -> Result<Manifest, ManifestReadFileError> {
-    let f = File::open(path).map_err(ManifestReadFileError::IOError)?;
-    let mut reader = BufReader::new(f);
-
-    quick_xml::de::from_reader(&mut reader).map_err(ManifestReadFileError::MalformedXMLError)
+pub async fn read_manifest_file(path: &Path) -> Result<Manifest, ManifestReadFileError> {
+    let json = fs::read(path).await.map_err(ManifestReadFileError::IO)?;
+    quick_xml::de::from_reader(json.as_slice()).map_err(ManifestReadFileError::MalformedXML)
 }

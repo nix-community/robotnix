@@ -4,21 +4,37 @@ use thiserror::Error;
 use serde::Deserialize;
 use serde_json;
 use tokio::process::Command;
+use repo_manifest::resolver::GitRepoRef;
 
 #[derive(Debug, Deserialize)]
 pub struct NixPrefetchGitOutput {
+    #[allow(dead_code)]
     pub url: String,
+
     pub rev: String,
+
     pub date: u64,
+
     pub path: PathBuf,
+
+    #[allow(dead_code)]
     pub sha256: String,
+
     pub hash: String,
+
+    #[allow(dead_code)]
     #[serde(rename = "fetchLFS")]
     pub fetch_lfs: bool,
-    #[serde(rename = "fetch_submodules")]
+
+    #[allow(dead_code)]
+    #[serde(rename = "fetchSubmodules")]
     pub fetch_submodules: bool,
+
+    #[allow(dead_code)]
     #[serde(rename = "deepClone")]
     pub deep_clone: bool,
+
+    #[allow(dead_code)]
     #[serde(rename = "leaveDotGit")]
     pub leave_dot_git: bool,
 }
@@ -33,19 +49,19 @@ pub enum NixPrefetchGitError {
     Parse(#[from] serde_json::Error),
 }
 
-pub async fn nix_prefetch_git(url: &str, revision: &str, fetch_lfs: bool, fetch_submodules: bool) -> Result<NixPrefetchGitOutput, NixPrefetchGitError> {
+pub async fn nix_prefetch_git(repo_ref: &GitRepoRef) -> Result<NixPrefetchGitOutput, NixPrefetchGitError> {
     let mut flag_args = vec![];
-    if fetch_lfs {
+    if repo_ref.fetch_lfs {
         flag_args.push("--fetch-lfs")
     }
-    if fetch_submodules {
+    if repo_ref.fetch_submodules {
         flag_args.push("--fetch-submodules")
     }
     let output = Command::new("nix-prefetch-git")
         .arg("--url")
-        .arg(url)
+        .arg(repo_ref.repo_url.as_str())
         .arg("--rev")
-        .arg(revision)
+        .arg(&repo_ref.revision)
         .args(&flag_args)
         .output()
         .await
