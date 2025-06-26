@@ -6,7 +6,6 @@ use tokio;
 use repo_manifest::resolver::{
     recursively_read_manifest_files,
     resolve_manifest,
-    GitRepoRef,
 };
 use crate::fetch::nix_prefetch_git;
 use crate::lock::{

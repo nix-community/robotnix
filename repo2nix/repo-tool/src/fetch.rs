@@ -5,7 +5,6 @@ use thiserror::Error;
 use serde::Deserialize;
 use serde_json;
 use tokio::process::Command;
-use repo_manifest::resolver::GitRepoRef;
 
 #[derive(Debug, Deserialize)]
 pub struct NixPrefetchGitOutput {
