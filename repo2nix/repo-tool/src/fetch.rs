@@ -118,7 +118,7 @@ pub async fn git_ls_remote(url: &str, git_ref: &String) -> Result<String, GitLsR
     }
 
     for (commit, revname) in revs {
-        if revname == git_ref {
+        if revname == git_ref || revname == format!("refs/heads/{git_ref}") || revname == format!("refs/tags/{git_ref}") {
             return Ok(commit.to_string())
         }
     }
