@@ -15,6 +15,7 @@ use crate::lock::{
 
 mod fetch;
 mod lock;
+mod lineage;
 
 #[derive(Parser)]
 enum Args {
@@ -25,6 +26,7 @@ enum Args {
         #[arg(long, short)]
         branch: String
     },
+    GetLineageDevices,
 }
 
 #[tokio::main]
@@ -62,6 +64,9 @@ async fn main() {
             };
 
             lockfile.update(Some(&lockfile_path)).await.unwrap();
+        },
+        Args::GetLineageDevices => {
+            let devices = lineage::get_devices().await.unwrap();
         },
     }
 }

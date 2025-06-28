@@ -27,7 +27,7 @@ pub struct Project {
     pub linkfiles: Vec<xml::LinkCopyFile>,
     pub copyfiles: Vec<xml::LinkCopyFile>,
     pub repo_ref: GitRepoRef,
-    pub category: Category,
+    pub categories: Vec<Category>,
 }
 
 #[derive(Debug)]
@@ -205,7 +205,7 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                 fetch_lfs: true,
                 fetch_submodules: false,
             },
-            category: Category::Default,
+            categories: vec![Category::Default],
         };
         manifest.projects.insert(project.path.clone(), project);
     }

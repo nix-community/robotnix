@@ -40,8 +40,8 @@
         shellcheck
         wget
 
-        # Rust
-        cargo rustc
+        # repo2nix
+        cargo rustc pkg-config openssl
 
         # For chromium updater script
         # python2
