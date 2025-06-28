@@ -90,6 +90,8 @@ pub enum GitLsRemoteError {
     Utf8(std::str::Utf8Error),
     #[error("rev `{0}` not found at remote")]
     RevNotFound(String),
+    #[error("error parsing output")]
+    Parse,
 }
 
 pub async fn git_ls_remote(url: &str, git_ref: &str) -> Result<String, GitLsRemoteError> {

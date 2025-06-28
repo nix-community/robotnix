@@ -1,4 +1,5 @@
 use std::path::{Path, PathBuf};
+use std::fs;
 use std::io::ErrorKind;
 use clap::Parser;
 use url::Url;
@@ -26,7 +27,9 @@ enum Args {
         #[arg(long, short)]
         branch: String
     },
-    GetLineageDevices,
+    GetLineageDevices {
+        device_metadata_file: PathBuf,
+    },
 }
 
 #[tokio::main]
@@ -65,8 +68,9 @@ async fn main() {
 
             lockfile.update(Some(&lockfile_path)).await.unwrap();
         },
-        Args::GetLineageDevices => {
+        Args::GetLineageDevices { device_metadata_file }=> {
             let devices = lineage::get_devices().await.unwrap();
+            fs::write(&device_metadata_file, serde_json::to_vec_pretty(&devices).unwrap()).unwrap();
         },
     }
 }
