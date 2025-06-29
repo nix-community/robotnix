@@ -49,7 +49,7 @@ pub struct Project {
     pub name: String,
 
     #[serde(rename = "@path")]
-    pub path: PathBuf,
+    pub path: Option<PathBuf>,
 
     #[serde(rename = "@remote")]
     pub remote: Option<String>,

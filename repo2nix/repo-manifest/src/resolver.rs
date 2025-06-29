@@ -53,12 +53,14 @@ pub enum RecursivelyReadManifestFilesError {
         #[source]
         inner_error: xml::ManifestReadFileError
     },
+    #[error("missing `path` attribute for `{0}`")]
+    MissingPath(String),
     #[error("duplicate default remote tag")]
     DuplicateDefaultRemote, 
     #[error("duplicate remote `{0}`")]
     DuplicateRemote(String),
     #[error("duplicate project path `{0}`")]
-    DuplicateProject(PathBuf),
+    DuplicatePath(PathBuf),
     #[error("duplicate contactinfo")]
     DuplicateContactinfo,
 }
@@ -70,6 +72,12 @@ pub async fn recursively_read_manifest_files(root_path: &Path, manifest_file: &P
             path: root_path.to_path_buf(),
             inner_error: e,
         })?;
+
+    for project in manifest.projects.iter() {
+        if project.path.is_none() {
+            return Err(RecursivelyReadManifestFilesError::MissingPath(project.name.clone()));
+        }
+    }
 
     for include in manifest.includes.iter() {
         let submanifest = Box::pin(recursively_read_manifest_files(root_path, &include.name)).await?;
@@ -88,8 +96,8 @@ pub async fn recursively_read_manifest_files(root_path: &Path, manifest_file: &P
         }
 
         for project in submanifest.projects.iter() {
-            if manifest.projects.iter().any(|p| p.path == project.path) {
-                return Err(RecursivelyReadManifestFilesError::DuplicateProject(project.path.to_path_buf()));
+            if manifest.projects.iter().any(|p| p.path.as_ref().unwrap() == project.path.as_ref().unwrap()) {
+                return Err(RecursivelyReadManifestFilesError::DuplicatePath(project.path.as_ref().unwrap().to_path_buf()));
             }
             manifest.projects.push(project.clone());
         }
@@ -123,6 +131,8 @@ pub enum ResolveManifestError {
     MissingRemote(String),
     #[error("no revision set for project `{0}`")]
     MissingRevision(String),
+    #[error("no path set for project `{0}`")]
+    MissingPath(String),
 }
 
 pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<Manifest, ResolveManifestError> {
@@ -175,7 +185,7 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
         };
         let project = Project {
             name: name.clone(),
-            path: project_xml.path.clone(),
+            path: project_xml.path.clone().ok_or(ResolveManifestError::MissingPath(project_xml.name.clone()))?,
             groups: project_xml
                 .groups
                 .as_ref()

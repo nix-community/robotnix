@@ -16,7 +16,7 @@ use crate::lock::{
 
 mod fetch;
 mod lock;
-mod lineage;
+mod lineage_devices;
 
 #[derive(Parser)]
 enum Args {
@@ -69,7 +69,7 @@ async fn main() {
             lockfile.update(Some(&lockfile_path)).await.unwrap();
         },
         Args::GetLineageDevices { device_metadata_file }=> {
-            let devices = lineage::get_devices().await.unwrap();
+            let devices = lineage_devices::get_devices().await.unwrap();
             fs::write(&device_metadata_file, serde_json::to_vec_pretty(&devices).unwrap()).unwrap();
         },
     }

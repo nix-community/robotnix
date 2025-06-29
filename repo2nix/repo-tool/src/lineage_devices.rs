@@ -5,10 +5,14 @@ use serde::{Serialize, Deserialize};
 use url::Url;
 use tokio::fs;
 use tokio::process::Command;
-use reqwest::{self, StatusCode};
-use serde_json::{self, Value};
 use thiserror::Error;
-use repo_manifest::resolver::GitRepoRef;
+use repo_manifest::xml::{
+    read_manifest_file,
+    ManifestReadFileError,
+};
+use repo_manifest::resolver::{
+    GitRepoRef,
+};
 use crate::fetch::{
     nix_prefetch_git,
     NixPrefetchGitError,
@@ -70,80 +74,50 @@ pub async fn fetch_hudson_devices() -> Result<HashMap<String, HudsonDeviceInfo>,
 }
 
 #[derive(Debug, Error)]
-pub enum GithubAPIError {
-    #[error("error calling GitHub API")]
-    HTTP(#[from] reqwest::Error),
-    #[error("GitHub API returned non-2xx status code `{0}`, body {1}")]
-    UnsuccessfulRequest(StatusCode, String),
-    #[error("error parsing JSON")]
-    Parse(#[from] serde_json::Error),
-    #[error("invalid API response")]
-    InvalidResponse,
+pub enum GetDeviceReposError {
+    #[error("fetching github:LineageOS/mirror failed")]
+    Fetch(NixPrefetchGitError),
+    #[error("reading mirror manifest failed")]
+    ReadMirrorManifest(ManifestReadFileError),
 }
 
-pub async fn list_device_repos(client: &mut reqwest::Client) -> Result<Vec<(String, String)>, GithubAPIError> {
+pub async fn get_device_repos() -> Result<Vec<(String, String)>, GetDeviceReposError> {
+    let mirror_fetch = nix_prefetch_git(
+        &Url::parse("https://github.com/LineageOS/mirror").unwrap(),
+        "refs/heads/main",
+        false,
+        false,
+    )
+        .await
+        .map_err(GetDeviceReposError::Fetch)?;
+
+    let mirror_manifest = read_manifest_file(
+        &mirror_fetch.path.join("default.xml"),
+    )
+        .await
+        .map_err(GetDeviceReposError::ReadMirrorManifest)?;
+
     let mut devices = vec![];
-    let mut page = 1;
-    loop {
-        println!("Fetching LineageOS repo list (page {})...", &page);
-        let res = client
-            .get(format!("https://api.github.com/orgs/LineageOS/repos?per_page=100&page={}", page))
-            .header("User-Agent", "repo2nix (reqwest)")
-            .send()
-            .await
-            .map_err(GithubAPIError::HTTP)?;
-
-        let status = res.status();
-        let body = res.bytes().await.map_err(GithubAPIError::HTTP)?;
-
-        if !status.is_success() {
-            return Err(GithubAPIError::UnsuccessfulRequest(status, String::from_utf8_lossy(&body).to_string()));
-        }
-        
-        let data: Value = serde_json::from_slice(&body)
-            .map_err(GithubAPIError::Parse)?;
-
-        match data {
-            Value::Array(entries) => {
-                if entries.len() == 0 {
-                    break;
+    for project in mirror_manifest.projects {
+        if project.name.starts_with("LineageOS/android_device_") {
+            let suffix = project.name.strip_prefix("LineageOS/android_device_").unwrap();
+            let mut fields = suffix.splitn(2, "_");
+            if let Some(vendor) = fields.next() {
+                if let Some(device) = fields.next() {
+                    devices.push((vendor.to_string(), device.to_string()));
+                } else {
+                    continue;
                 }
-
-                for entry in entries {
-                    let repo_name = match entry {
-                        Value::Object(vals) => {
-                            match vals.get("name") {
-                                Some(Value::String(name)) => name.clone(),
-                                _ => return Err(GithubAPIError::InvalidResponse),
-                            }
-                        },
-                        _ => return Err(GithubAPIError::InvalidResponse),
-                    };
-                    if repo_name.starts_with("android_device") {
-                        let mut fields = repo_name.splitn(4, "_").skip(2);
-                        let vendor = match fields.next() {
-                            Some(s) => s,
-                            None => continue,
-                        };
-                        let product = match fields.next() {
-                            Some(s) => s,
-                            None => continue,
-                        };
-
-                        devices.push((vendor.to_string(), product.to_string()));
-                    }
-                }
-
-                page += 1;
-            },
-            _ => return Err(GithubAPIError::InvalidResponse),
+            } else {
+                continue;
+            }
         }
     }
 
     Ok(devices)
 }
 
-pub async fn get_repo_branches(client: &mut reqwest::Client, repo: &str) -> Result<Vec<String>, GitLsRemoteError> {
+pub async fn get_repo_branches(repo: &str) -> Result<Vec<String>, GitLsRemoteError> {
     println!("`git ls-remote`-ing {repo}...");
     let output = Command::new("git")
         .arg("ls-remote")
@@ -187,16 +161,14 @@ pub struct DeviceInfo {
 pub enum GetDevicesError {
     #[error("error getting device defaults from hudson")]
     Hudson(#[from] FetchHudsonDevicesError),
-    #[error("error getting device repo list from GitHub API")]
-    RepoList(#[source] GithubAPIError),
-    #[error("error fetching device repo branch list from GitHub API")]
+    #[error("error getting device repo list from LineageOS mirror manifest")]
+    RepoList(#[source] GetDeviceReposError),
+    #[error("error fetching device repo branch list")]
     RepoBranches(#[source] GitLsRemoteError),
     #[error("device repository for `{0}` not found in LineageOS GitHub org")]
     DeviceRepoNotFound(String),
-    #[error("multiple possible device repos found for device `{0}`: `{1:?}`")]
-    DuplicateDeviceRepo(String, Vec<String>),
-    #[error("hudson-provided default branch `{0}` not present in device repo for `{1}`")]
-    DefaultBranchNotFound(String, String),
+    #[error("multiple possible device repos found for device `{0}`")]
+    DuplicateDeviceRepo(String),
     #[error("invalid device repo url")]
     Url(#[from] url::ParseError),
 }
@@ -209,9 +181,8 @@ fn hudson_to_device_repo_branch(branch: &str) -> String {
 }
 
 pub async fn get_devices() -> Result<BTreeMap<String, DeviceInfo>, GetDevicesError> {
-    let mut client = reqwest::Client::new();
     let mut devices = BTreeMap::new();
-    let device_repos = list_device_repos(&mut client, )
+    let device_repos = get_device_repos()
         .await
         .map_err(GetDevicesError::RepoList)?;
     let hudson_devices = fetch_hudson_devices()
@@ -223,8 +194,9 @@ pub async fn get_devices() -> Result<BTreeMap<String, DeviceInfo>, GetDevicesErr
     for name in hudson_keys.iter() {
         let hudson_data = hudson_devices.get(name).unwrap();
         let possible_vendors: Vec<_> = device_repos.iter().filter(|x| x.1 == *name).map(|x| x.0.clone()).collect();
+        let mut found = false;
         for vendor in possible_vendors {
-            let branches = get_repo_branches(&mut client, &format!("LineageOS/android_device_{vendor}_{name}"))
+            let branches = get_repo_branches(&format!("LineageOS/android_device_{vendor}_{name}"))
                 .await
                 .map_err(GetDevicesError::RepoBranches)?;
 
@@ -239,6 +211,9 @@ pub async fn get_devices() -> Result<BTreeMap<String, DeviceInfo>, GetDevicesErr
                     });
                 }
 
+                if devices.contains_key(name) {
+                    return Err(GetDevicesError::DuplicateDeviceRepo(name.clone()));
+                }
                 devices.insert(name.clone(), DeviceInfo {
                     name: name.clone(),
                     vendor: vendor.clone(),
@@ -247,8 +222,12 @@ pub async fn get_devices() -> Result<BTreeMap<String, DeviceInfo>, GetDevicesErr
                     default_branch: hudson_data.branch.clone(),
                     period: hudson_data.period.clone(),
                 });
+                found = true;
                 break;
             }
+        }
+        if !found {
+            return Err(GetDevicesError::DeviceRepoNotFound(name.clone()));
         }
     }
 
