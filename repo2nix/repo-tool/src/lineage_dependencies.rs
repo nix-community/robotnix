@@ -64,10 +64,8 @@ pub enum ResolveLineageDepsError {
     UnknownRemote(String, PathBuf, PathBuf),
     #[error("missing remote for dep `{0}` in repo `{1}`, and no default remote was set in manifest")]
     MissingRemote(PathBuf, PathBuf),
-    #[error("no default remote was set in manifest from which we could infer the branch for `{0}`")]
-    MissingDefaultRemote(PathBuf),
     #[error("default remote in manifest has no revision set, can't infer branch of dependency `{0}` in repo `{1}`")]
-    DefaultRemoteMissingRevision(PathBuf, PathBuf),
+    RemoteMissingRevision(PathBuf, PathBuf),
 }
 
 
@@ -93,8 +91,7 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, path: &Path, lineage_de
         let revision = match &dep.branch {
             Some(b) => format!("refs/heads/{}", b),
             None => {
-                let default_remote = manifest.default_remote.as_ref().ok_or(ResolveLineageDepsError::MissingDefaultRemote(dep.target_path.clone()))?;
-                let rev = default_remote.revision.as_ref().ok_or(ResolveLineageDepsError::DefaultRemoteMissingRevision(
+                let rev = remote.revision.as_ref().ok_or(ResolveLineageDepsError::RemoteMissingRevision(
                         dep.target_path.clone(),
                         path.to_path_buf(),
                 ))?;
