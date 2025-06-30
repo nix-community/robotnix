@@ -180,7 +180,7 @@ pub fn hudson_to_device_repo_branch(branch: &str) -> String {
     }.to_string()
 }
 
-pub async fn get_devices() -> Result<BTreeMap<String, DeviceInfo>, GetDevicesError> {
+pub async fn get_devices(allowlist: &Option<Vec<String>>, blocklist: &Option<Vec<String>>) -> Result<BTreeMap<String, DeviceInfo>, GetDevicesError> {
     let mut devices = BTreeMap::new();
     let device_repos = get_device_repos()
         .await
@@ -192,42 +192,44 @@ pub async fn get_devices() -> Result<BTreeMap<String, DeviceInfo>, GetDevicesErr
     hudson_keys.sort();
 
     for name in hudson_keys.iter() {
-        let hudson_data = hudson_devices.get(name).unwrap();
-        let possible_vendors: Vec<_> = device_repos.iter().filter(|x| x.1 == *name).map(|x| x.0.clone()).collect();
-        let mut found = false;
-        for vendor in possible_vendors {
-            let branches = get_repo_branches(&format!("LineageOS/android_device_{vendor}_{name}"))
-                .await
-                .map_err(GetDevicesError::RepoBranches)?;
+        if allowlist.as_ref().map(|x| x.contains(name)).unwrap_or(true) && blocklist.as_ref().map(|x| !x.contains(name)).unwrap_or(true) {
+            let hudson_data = hudson_devices.get(name).unwrap();
+            let possible_vendors: Vec<_> = device_repos.iter().filter(|x| x.1 == *name).map(|x| x.0.clone()).collect();
+            let mut found = false;
+            for vendor in possible_vendors {
+                let branches = get_repo_branches(&format!("LineageOS/android_device_{vendor}_{name}"))
+                    .await
+                    .map_err(GetDevicesError::RepoBranches)?;
 
-            if branches.iter().any(|x| *x == hudson_to_device_repo_branch(&hudson_data.branch)) {
-                let mut branch_repos = BTreeMap::new();
-                for branch in branches {
-                    branch_repos.insert(branch.clone(), GitRepoRef {
-                        repo_url: Url::parse(&format!("https://github.com/LineageOS/android_device_{vendor}_{name}")).map_err(GetDevicesError::Url)?,
-                        revision: format!("refs/heads/{}", hudson_to_device_repo_branch(&branch)),
-                        fetch_lfs: false,
-                        fetch_submodules: false,
+                if branches.iter().any(|x| *x == hudson_to_device_repo_branch(&hudson_data.branch)) {
+                    let mut branch_repos = BTreeMap::new();
+                    for branch in branches {
+                        branch_repos.insert(branch.clone(), GitRepoRef {
+                            repo_url: Url::parse(&format!("https://github.com/LineageOS/android_device_{vendor}_{name}")).map_err(GetDevicesError::Url)?,
+                            revision: format!("refs/heads/{}", hudson_to_device_repo_branch(&branch)),
+                            fetch_lfs: false,
+                            fetch_submodules: false,
+                        });
+                    }
+
+                    if devices.contains_key(name) {
+                        return Err(GetDevicesError::DuplicateDeviceRepo(name.clone()));
+                    }
+                    devices.insert(name.clone(), DeviceInfo {
+                        name: name.clone(),
+                        vendor: vendor.clone(),
+                        build_type: hudson_data.build_type.clone(),
+                        branches: branch_repos,
+                        default_branch: hudson_data.branch.clone(),
+                        period: hudson_data.period.clone(),
                     });
+                    found = true;
+                    break;
                 }
-
-                if devices.contains_key(name) {
-                    return Err(GetDevicesError::DuplicateDeviceRepo(name.clone()));
-                }
-                devices.insert(name.clone(), DeviceInfo {
-                    name: name.clone(),
-                    vendor: vendor.clone(),
-                    build_type: hudson_data.build_type.clone(),
-                    branches: branch_repos,
-                    default_branch: hudson_data.branch.clone(),
-                    period: hudson_data.period.clone(),
-                });
-                found = true;
-                break;
             }
-        }
-        if !found {
-            return Err(GetDevicesError::DeviceRepoNotFound(name.clone()));
+            if !found {
+                return Err(GetDevicesError::DeviceRepoNotFound(name.clone()));
+            }
         }
     }
 

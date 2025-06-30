@@ -40,6 +40,14 @@ enum Args {
     },
     GetLineageDevices {
         device_metadata_file: PathBuf,
+
+        /// Only include these device(s).
+        #[arg(long, short)]
+        allow: Option<Vec<String>>,
+
+        /// Do not include these device(s).
+        #[arg(long, short)]
+        block: Option<Vec<String>>,
     },
 }
 
@@ -88,8 +96,8 @@ async fn main() {
 
             lockfile.update(Some(&lockfile_path)).await.unwrap();
         },
-        Args::GetLineageDevices { device_metadata_file }=> {
-            let devices = lineage_devices::get_devices().await.unwrap();
+        Args::GetLineageDevices { device_metadata_file, allow, block }=> {
+            let devices = lineage_devices::get_devices(&allow, &block).await.unwrap();
             fs::write(&device_metadata_file, serde_json::to_vec_pretty(&devices).unwrap()).unwrap();
         },
     }
