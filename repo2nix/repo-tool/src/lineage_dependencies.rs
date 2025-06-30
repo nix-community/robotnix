@@ -144,7 +144,7 @@ pub async fn prefetch_lineage_dependencies(manifest: &mut Manifest) -> Result<()
         let mut projects_to_add = vec![];
         let current_paths: Vec<_> = manifest.projects.keys().map(|x| x.clone()).collect();
         for path in current_paths.iter() {
-            let mut project_deps = {
+            let project_deps = {
                 let project = manifest.projects.get(path).unwrap();
                 if let Some(None) = project.lineage_deps {
                     done = false;
@@ -157,23 +157,31 @@ pub async fn prefetch_lineage_dependencies(manifest: &mut Manifest) -> Result<()
                         .await
                         .map_err(PrefetchLineageDepsError::Fetch)?;
 
-                    let lineage_deps: Vec<LineageDep> = serde_json::from_slice(
-                        &fs::read(&fetch.path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)?
-                    )
-                        .map_err(PrefetchLineageDepsError::Parse)?;
+                    if !fs::try_exists(&fetch.path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)? {
+                        None
+                    } else {
+                        let lineage_deps: Vec<LineageDep> = serde_json::from_slice(
+                            &fs::read(&fetch.path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)?
+                        )
+                            .map_err(PrefetchLineageDepsError::Parse)?;
 
-                    resolve_lineage_dependencies(manifest, path, &lineage_deps, &project.categories)
-                        .map_err(PrefetchLineageDepsError::Resolve)?
+                        Some(resolve_lineage_dependencies(manifest, path, &lineage_deps, &project.categories)
+                            .map_err(PrefetchLineageDepsError::Resolve)?)
+                    }
                 } else {
                     continue;
                 }
             };
 
             let project = manifest.projects.get_mut(path).unwrap();
-            project.lineage_deps = Some(Some(
-                project_deps.iter().map(|x| x.path.clone()).collect()
-            ));
-            projects_to_add.append(&mut project_deps);
+            if let Some(mut project_deps) = project_deps {
+                project.lineage_deps = Some(Some(
+                    project_deps.iter().map(|x| x.path.clone()).collect()
+                ));
+                projects_to_add.append(&mut project_deps);
+            } else {
+                project.lineage_deps = None;
+            }
         }
         if done {
             break;
