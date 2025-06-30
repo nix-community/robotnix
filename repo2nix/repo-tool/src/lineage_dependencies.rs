@@ -139,6 +139,7 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, path: &Path, lineage_de
 }
 
 pub async fn prefetch_lineage_dependencies(manifest: &mut Manifest) -> Result<(), PrefetchLineageDepsError> {
+    eprintln!("Building LineageOS-specific dependency tree...");
     loop {
         let mut done = true;
         let mut projects_to_add = vec![];
@@ -208,5 +209,6 @@ pub async fn prefetch_lineage_dependencies(manifest: &mut Manifest) -> Result<()
         }
     }
 
+    eprintln!("Done building LineageOS-specific dependency tree.");
     Ok(())
 }
