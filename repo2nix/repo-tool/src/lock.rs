@@ -95,7 +95,7 @@ pub struct LockfileEntry {
 pub struct Lockfile {
     // BTreeMap because we want the ordering in the serialized lockfile to be consistent across
     // runs
-    entries: BTreeMap<PathBuf, LockfileEntry>,
+    pub entries: BTreeMap<PathBuf, LockfileEntry>,
 }
 
 #[derive(Debug, Error)]
@@ -131,7 +131,7 @@ impl Lockfile {
         }
     }
 
-    pub fn set_projects(&mut self, new_projects: &HashMap<PathBuf, Project>) -> (u64, u64, u64) {
+    pub fn set_projects(&mut self, new_projects: &HashMap<PathBuf, Project>) {
         let mut added = 0;
         let mut modified = 0;
         let mut removed = 0;
@@ -144,6 +144,7 @@ impl Lockfile {
                             entry.lock = None;
                         }
                         entry.project = project.clone();
+                        eprintln!("Updated project {}.", project.path.display());
                         modified += 1;
                     }
                 },
@@ -152,6 +153,7 @@ impl Lockfile {
                         project: project.clone(),
                         lock: None
                     });
+                    eprintln!("Added project {}.", project.path.display());
                     added += 1
                 },
             }
@@ -161,11 +163,17 @@ impl Lockfile {
         for path in paths {
             if !new_projects.iter().any(|(_, x)| x.path == path) {
                 self.entries.remove(&path).unwrap();
+                eprintln!("Removed project {}.", path.display());
                 removed += 1;
             }
         }
 
-        (added, modified, removed)
+        eprintln!(
+            "Added {} projects, updated {} projects and removed {} projects.",
+            added,
+            modified,
+            removed,
+        );
     }
 
     pub async fn read_from_file(path: &Path) -> Result<Self, ReadWriteLockfileError> {

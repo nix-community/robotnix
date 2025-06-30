@@ -1,9 +1,11 @@
 use std::path::{Path, PathBuf};
 use std::fs;
+use std::collections::BTreeMap;
 use std::io::ErrorKind;
 use clap::Parser;
 use url::Url;
 use tokio;
+use serde_json;
 use repo_manifest::resolver::{
     recursively_read_manifest_files,
     resolve_manifest,
@@ -13,10 +15,16 @@ use crate::lock::{
     Lockfile,
     ReadWriteLockfileError,
 };
+use crate::lineage_devices::DeviceInfo;
+use crate::lineage_dependencies::{
+    add_lineage_devices,
+    prefetch_lineage_dependencies,
+};
 
 mod fetch;
 mod lock;
 mod lineage_devices;
+mod lineage_dependencies;
 
 #[derive(Parser)]
 enum Args {
@@ -25,7 +33,10 @@ enum Args {
         lockfile_path: PathBuf,
 
         #[arg(long, short)]
-        branch: String
+        branch: String,
+
+        #[arg(long, short)]
+        lineage_device_file: Vec<PathBuf>,
     },
     GetLineageDevices {
         device_metadata_file: PathBuf,
@@ -37,7 +48,7 @@ async fn main() {
     let args = Args::parse();
 
     match args {
-        Args::Fetch { manifest_url, lockfile_path, branch } => {
+        Args::Fetch { manifest_url, lockfile_path, branch, lineage_device_file } => {
             let url = Url::parse(&manifest_url).unwrap();
             let manifest_fetch = nix_prefetch_git(
                 &url,
@@ -47,7 +58,16 @@ async fn main() {
             ).await.unwrap();
 
             let manifest_xml = recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml")).await.unwrap();
-            let manifest = resolve_manifest(&manifest_xml, &url).unwrap();
+            let mut manifest = resolve_manifest(&manifest_xml, &url).unwrap();
+
+            for ldf in lineage_device_file {
+                let devices: BTreeMap<String, DeviceInfo> = serde_json::from_slice(
+                    &fs::read(&ldf).unwrap()
+                ).unwrap();
+                add_lineage_devices(&mut manifest, &devices, &branch);
+            }
+            prefetch_lineage_dependencies(&mut manifest).await.unwrap();
+
 
             let mut lockfile = match Lockfile::read_from_file(&lockfile_path).await {
                 Ok(mut lf) => {

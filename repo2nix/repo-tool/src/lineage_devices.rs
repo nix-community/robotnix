@@ -173,7 +173,7 @@ pub enum GetDevicesError {
     Url(#[from] url::ParseError),
 }
 
-fn hudson_to_device_repo_branch(branch: &str) -> String {
+pub fn hudson_to_device_repo_branch(branch: &str) -> String {
     match branch {
         "lineage-21.0" => "lineage-21",
         x => x,

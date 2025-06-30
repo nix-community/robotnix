@@ -21,13 +21,13 @@ pub enum Category {
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct Project {
-    pub name: String,
     pub path: PathBuf,
     pub groups: Vec<String>,
     pub linkfiles: Vec<xml::LinkCopyFile>,
     pub copyfiles: Vec<xml::LinkCopyFile>,
     pub repo_ref: GitRepoRef,
     pub categories: Vec<Category>,
+    pub lineage_deps: Option<Option<Vec<PathBuf>>>,
 }
 
 #[derive(Debug)]
@@ -115,6 +115,16 @@ pub async fn recursively_read_manifest_files(root_path: &Path, manifest_file: &P
     Ok(manifest)
 }
 
+pub fn join_repo_url(base_url: &Url, repo_name: &str) -> Url {
+    let base_path = &Path::new(base_url.path());
+    let path = base_path.join(&repo_name);
+    let mut url = base_url.clone();
+    // This unwrap should be safe, as repo_name is guaranteed to be valid UTF-8.
+    url.set_path(path.to_str().unwrap());
+
+    url
+}
+
 #[derive(Debug, Error)]
 pub enum ResolveManifestError {
     #[error("couldn't parse URL")]
@@ -184,7 +194,6 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
             None => manifest.default_remote.as_ref().ok_or(ResolveManifestError::MissingRemote(name.clone()))?,
         };
         let project = Project {
-            name: name.clone(),
             path: project_xml.path.clone().ok_or(ResolveManifestError::MissingPath(project_xml.name.clone()))?,
             groups: project_xml
                 .groups
@@ -198,14 +207,7 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
             linkfiles: project_xml.linkfiles.clone(),
             copyfiles: project_xml.copyfiles.clone(),
             repo_ref: GitRepoRef {
-                repo_url: {
-                    let base_path = &Path::new(remote.url.path());
-                    let path = base_path.join(&name);
-                    let mut url = remote.url.clone();
-                    url.set_path(path.to_str().ok_or(ResolveManifestError::InvalidUTF8(path.clone()))?);
-                    
-                    url
-                },
+                repo_url: join_repo_url(&remote.url, &project_xml.name),
                 revision: project_xml
                     .revision
                     .as_ref()
@@ -216,6 +218,7 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                 fetch_submodules: false,
             },
             categories: vec![Category::Default],
+            lineage_deps: None,
         };
         manifest.projects.insert(project.path.clone(), project);
     }
