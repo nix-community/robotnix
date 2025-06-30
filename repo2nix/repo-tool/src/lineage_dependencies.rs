@@ -104,13 +104,28 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, path: &Path, lineage_de
                 }
             },
         };
+
+        // The upstream mechanism for choosing whether to prepend `LineageOS/` to the repo name
+        // defined in the `repository` field is pretty broken: it just checks whether the remote
+        // name starts with `aosp-`, and prepends `LineageOS/` to the repo name and sets the remote
+        // to `github` if it isn't. This breaks once you add in remotes other than `github` and the
+        // `aosp-*` ones. It's probably for the best to not try to fix this behaviour and to just
+        // consistently replicate it.
+        //
+        // Source:
+        // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L183)
+        let repo_name = if remote.name == "github" {
+            format!("LineageOS/{}", dep.repository)
+        } else {
+            dep.repository.clone()
+        };
         project_deps.push(Project {
             path: dep.target_path.clone(),
             groups: vec![],
             linkfiles: vec![],
             copyfiles: vec![],
             repo_ref: GitRepoRef {
-                repo_url: join_repo_url(&remote.url, &dep.repository),
+                repo_url: join_repo_url(&remote.url, &repo_name),
                 revision: revision,
                 fetch_lfs: false,
                 fetch_submodules: false,
@@ -127,7 +142,7 @@ pub async fn prefetch_lineage_dependencies(manifest: &mut Manifest) -> Result<()
     loop {
         let mut done = true;
         let mut projects_to_add = vec![];
-        let mut current_paths: Vec<_> = manifest.projects.keys().map(|x| x.clone()).collect();
+        let current_paths: Vec<_> = manifest.projects.keys().map(|x| x.clone()).collect();
         for path in current_paths.iter() {
             let mut project_deps = {
                 let project = manifest.projects.get(path).unwrap();
