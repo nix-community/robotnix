@@ -27,7 +27,6 @@ pub struct Project {
     pub copyfiles: Vec<xml::LinkCopyFile>,
     pub repo_ref: GitRepoRef,
     pub categories: Vec<Category>,
-    pub lineage_deps: Option<Option<Vec<PathBuf>>>,
 }
 
 #[derive(Debug)]
@@ -218,7 +217,6 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                 fetch_submodules: false,
             },
             categories: vec![Category::Default],
-            lineage_deps: None,
         };
         manifest.projects.insert(project.path.clone(), project);
     }

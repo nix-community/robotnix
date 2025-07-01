@@ -7,6 +7,8 @@ use url::Url;
 use tokio;
 use serde_json;
 use repo_manifest::resolver::{
+    Project,
+    Category,
     recursively_read_manifest_files,
     resolve_manifest,
 };
@@ -17,7 +19,8 @@ use crate::lock::{
 };
 use crate::lineage_devices::DeviceInfo;
 use crate::lineage_dependencies::{
-    add_lineage_devices,
+    LineageDeps,
+    merge_lineage_devices,
     prefetch_lineage_dependencies,
 };
 
@@ -37,6 +40,9 @@ enum Args {
 
         #[arg(long, short)]
         lineage_device_file: Vec<PathBuf>,
+
+        #[arg(long, short)]
+        missing_dep_devs_file: Option<PathBuf>,
     },
     GetLineageDevices {
         device_metadata_file: PathBuf,
@@ -56,7 +62,7 @@ async fn main() {
     let args = Args::parse();
 
     match args {
-        Args::Fetch { manifest_url, lockfile_path, branch, lineage_device_file } => {
+        Args::Fetch { manifest_url, lockfile_path, branch, lineage_device_file, missing_dep_devs_file } => {
             let url = Url::parse(&manifest_url).unwrap();
             let manifest_fetch = nix_prefetch_git(
                 &url,
@@ -68,13 +74,39 @@ async fn main() {
             let manifest_xml = recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml")).await.unwrap();
             let mut manifest = resolve_manifest(&manifest_xml, &url).unwrap();
 
-            for ldf in lineage_device_file {
-                let devices: BTreeMap<String, DeviceInfo> = serde_json::from_slice(
-                    &fs::read(&ldf).unwrap()
-                ).unwrap();
-                add_lineage_devices(&mut manifest, &devices, &branch);
+            if lineage_device_file.len() > 0 {
+                assert!(
+                    missing_dep_devs_file.is_some(),
+                    "In case of LineageOS-specific device fetching, you need to specify a file to write a list of devices with missing dependencies to with --missing-dep-devs-file"
+                );
+                let mut all_devices = BTreeMap::new();
+                for ldf in lineage_device_file {
+                    let devices: BTreeMap<String, DeviceInfo> = serde_json::from_slice(
+                        &fs::read(&ldf).unwrap()
+                    ).unwrap();
+                    merge_lineage_devices(&mut all_devices, devices).unwrap();
+                }
+                let projects = prefetch_lineage_dependencies(&all_devices, &manifest, &branch).await.unwrap();
+                println!("{:?}", projects);
+
+                let broken_devices: Vec<_> = all_devices
+                    .keys()
+                    .filter(|x| !projects.iter().any(|p| p.devices.contains(x) && *p.lineage_deps.as_ref().unwrap() == LineageDeps::MissingBranch))
+                    .collect();
+
+                println!("Devices with missing dependencies: {broken_devices:?}");
+
+                for project in projects {
+                    manifest.projects.insert(project.path.clone(), Project {
+                        path: project.path,
+                        groups: vec![],
+                        linkfiles: vec![],
+                        copyfiles: vec![],
+                        repo_ref: project.repo_ref,
+                        categories: project.devices.into_iter().map(|x| Category::DeviceSpecific(x)).collect(),
+                    });
+                }
             }
-            prefetch_lineage_dependencies(&mut manifest).await.unwrap();
 
 
             let mut lockfile = match Lockfile::read_from_file(&lockfile_path).await {
