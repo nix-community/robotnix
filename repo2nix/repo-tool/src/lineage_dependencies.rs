@@ -111,7 +111,7 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, path: &Path, lineage_de
         //
         // Source:
         // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L183)
-        let repo_name = if remote.name == "github" {
+        let repo_name = if !remote.name.starts_with("aosp-") {
             format!("LineageOS/{}", dep.repository)
         } else {
             dep.repository.clone()
