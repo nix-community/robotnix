@@ -89,12 +89,16 @@ async fn main() {
                 let projects = prefetch_lineage_dependencies(&all_devices, &manifest, &branch).await.unwrap();
                 println!("{:?}", projects);
 
-                let broken_devices: Vec<_> = all_devices
+                let missing_dep_devices: Vec<_> = all_devices
                     .keys()
-                    .filter(|x| !projects.iter().any(|p| p.devices.contains(x) && *p.lineage_deps.as_ref().unwrap() == LineageDeps::MissingBranch))
+                    .filter(|x| projects.iter().any(|p| p.devices.contains(x) && *p.lineage_deps.as_ref().unwrap() == LineageDeps::MissingBranch))
                     .collect();
 
-                println!("Devices with missing dependencies: {broken_devices:?}");
+                println!("Devices with missing dependencies: {missing_dep_devices:?}");
+                fs::write(
+                    missing_dep_devs_file.unwrap(),
+                    serde_json::to_vec_pretty(&missing_dep_devices).unwrap()
+                ).unwrap();
 
                 for project in projects {
                     manifest.projects.insert(project.path.clone(), Project {
