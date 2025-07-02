@@ -97,7 +97,7 @@ async fn main() {
                 let muppets_manifest_xml = read_manifest_file(&muppets_fetch.path.join("muppets.xml")).await.unwrap();
                 merge_manifests(&mut manifest_xml, &muppets_manifest_xml).unwrap();
             }
-            let mut manifest = resolve_manifest(&manifest_xml, &url).unwrap();
+            let manifest = resolve_manifest(&manifest_xml, &url).unwrap();
 
             let mut lockfile = match Lockfile::read_from_file(&lockfile_path).await {
                 Ok(mut lf) => {
