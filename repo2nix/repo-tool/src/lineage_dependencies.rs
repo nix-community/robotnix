@@ -259,6 +259,4 @@ pub fn cleanup_failed_lineage_deps(lockfile: &mut Lockfile) {
     for path in paths_to_cleanup {
         lockfile.entries.remove(&path);
     }
-
-    lockfile.write();
 }
