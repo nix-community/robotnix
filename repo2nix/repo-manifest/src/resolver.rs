@@ -35,6 +35,7 @@ pub struct Project {
     pub repo_ref: GitRepoRef,
     pub categories: Vec<Category>,
     pub lineage_deps: Option<LineageDeps>,
+    pub active: bool,
 }
 
 #[derive(Debug)]
@@ -226,6 +227,7 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
             },
             categories: vec![Category::Default],
             lineage_deps: Some(LineageDeps::NoLineageDependenciesFile),
+            active: true,
         };
         manifest.projects.insert(project.path.clone(), project);
     }

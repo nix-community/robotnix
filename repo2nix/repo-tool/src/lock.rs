@@ -137,21 +137,49 @@ impl Lockfile {
         }
     }
 
-    pub fn add_project(&mut self, project: Project, allow_modify: bool) -> Result<(), UpdateLockfileError> {
+    pub fn deactivate_all(&mut self) {
+        for (_, entry) in self.entries.iter_mut() {
+            entry.project.active = false;
+        }
+    }
+
+    pub fn add_project(&mut self, mut project: Project) -> Result<(), UpdateLockfileError> {
         match self.entries.get_mut(&project.path) {
             Some(ref mut entry) => {
-                if entry.project.repo_ref != project.repo_ref {
-                    if allow_modify {
-                    entry.lock = None;
-                        entry.project.repo_ref = project.repo_ref;
+                if entry.project.active {
+                    if entry.project.repo_ref != project.repo_ref {
+                        return Err(UpdateLockfileError::DuplicateProject(project.path.clone()));
+                    }
+
+                    if entry.project.groups.len() == 0 || project.groups.len() == 0 {
+                        entry.project.groups.append(&mut project.groups);
                     } else {
                         return Err(UpdateLockfileError::DuplicateProject(project.path.clone()));
                     }
-                }
-                for cat in project.categories {
-                    if !entry.project.categories.contains(&cat) {
-                        entry.project.categories.push(cat);
+
+                    if entry.project.linkfiles.len() == 0 || project.linkfiles.len() == 0 {
+                        entry.project.linkfiles.append(&mut project.linkfiles);
+                    } else {
+                        return Err(UpdateLockfileError::DuplicateProject(project.path.clone()));
                     }
+
+                    if entry.project.copyfiles.len() == 0 || project.copyfiles.len() == 0 {
+                        entry.project.copyfiles.append(&mut project.copyfiles);
+                    } else {
+                        return Err(UpdateLockfileError::DuplicateProject(project.path.clone()));
+                    }
+
+                    for cat in project.categories {
+                        if !entry.project.categories.contains(&cat) {
+                            entry.project.categories.push(cat);
+                        }
+                    }
+                    entry.project.active = true;
+                } else {
+                    if entry.project.repo_ref != project.repo_ref {
+                        entry.lock = None;
+                    }
+                    entry.project = project;
                 }
             },
             None => {
@@ -201,9 +229,11 @@ impl Lockfile {
         let mut paths: Vec<_> = self.entries.keys().cloned().collect();
         paths.sort();
         for (i, path) in paths.iter().enumerate() {
-            eprintln!("Updating lock for `{}` ({}/{})", path.display(), i+1, paths.len());
-            self.update(path).await?;
-            self.write().await.map_err(UpdateLockfileError::WriteLockfile)?;
+            if self.entries.get(path).unwrap().project.active {
+                eprintln!("Updating lock for `{}` ({}/{})", path.display(), i+1, paths.len());
+                self.update(path).await?;
+                self.write().await.map_err(UpdateLockfileError::WriteLockfile)?;
+            }
         }
         Ok(())
     }

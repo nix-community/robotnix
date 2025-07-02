@@ -75,8 +75,9 @@ async fn main() {
 
             let mut lockfile = match Lockfile::read_from_file(&lockfile_path).await {
                 Ok(mut lf) => {
+                    lf.deactivate_all();
                     for project in manifest.projects.values() {
-                        lf.add_project(project.clone(), true).unwrap();
+                        lf.add_project(project.clone()).unwrap();
                     }
                     lf
                 },

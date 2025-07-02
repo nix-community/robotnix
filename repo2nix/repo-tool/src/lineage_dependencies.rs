@@ -153,6 +153,7 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
             },
             categories: categories.to_vec(),
             lineage_deps: None,
+            active: true,
         });
     }
 
@@ -175,7 +176,8 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
                     repo_ref: repo_ref.clone(),
                     categories: vec![Category::DeviceSpecific(device.name.clone())],
                     lineage_deps: None,
-                }, false).map_err(PrefetchLineageDepsError::Lock)?;
+                    active: true,
+                }).map_err(PrefetchLineageDepsError::Lock)?;
                 fetch_queue.push(path);
             },
             None => (),
@@ -236,7 +238,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
                 if !fetch_queue.contains(&new_project.path) {
                     fetch_queue.push(new_project.path.clone());
                 }
-                lockfile.add_project(new_project, false).map_err(PrefetchLineageDepsError::Lock)?;
+                lockfile.add_project(new_project).map_err(PrefetchLineageDepsError::Lock)?;
             }
         }
         i += 1;
