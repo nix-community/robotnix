@@ -188,6 +188,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
             Some(p) => p.clone(),
             None => break,
         };
+        eprintln!("Fetching LineageOS dependencies for {}...", path.display());
         let categories = {
             let project = &lockfile.entries.get(&path).unwrap().project;
             project.categories.clone()

@@ -140,21 +140,13 @@ impl Lockfile {
     pub fn add_project(&mut self, project: Project, allow_modify: bool) -> Result<(), UpdateLockfileError> {
         match self.entries.get_mut(&project.path) {
             Some(ref mut entry) => {
-                if entry.project.repo_ref != project.repo_ref ||
-                    entry.project.groups != project.groups ||
-                    entry.project.linkfiles != project.linkfiles ||
-                    entry.project.copyfiles != project.copyfiles {
-                        if allow_modify {
-                            if entry.project.repo_ref != project.repo_ref {
-                                entry.lock = None;
-                            }
-                            entry.project.repo_ref = project.repo_ref;
-                            entry.project.groups = project.groups;
-                            entry.project.linkfiles = project.linkfiles;
-                            entry.project.copyfiles = project.copyfiles;
-                        } else {
-                            return Err(UpdateLockfileError::DuplicateProject(project.path.clone()));
-                        }
+                if entry.project.repo_ref != project.repo_ref {
+                    if allow_modify {
+                    entry.lock = None;
+                        entry.project.repo_ref = project.repo_ref;
+                    } else {
+                        return Err(UpdateLockfileError::DuplicateProject(project.path.clone()));
+                    }
                 }
                 for cat in project.categories {
                     if !entry.project.categories.contains(&cat) {
