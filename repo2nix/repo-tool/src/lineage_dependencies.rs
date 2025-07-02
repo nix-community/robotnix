@@ -247,3 +247,18 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
     eprintln!("Done building LineageOS-specific dependency tree.");
     Ok(())
 }
+
+pub fn cleanup_failed_lineage_deps(lockfile: &mut Lockfile) {
+    let paths_to_cleanup: Vec<_> = lockfile
+        .entries
+        .iter()
+        .filter(|(_, x)| x.project.lineage_deps == Some(LineageDeps::MissingBranch))
+        .map(|(path, _)| path.clone())
+        .collect();
+
+    for path in paths_to_cleanup {
+        lockfile.entries.remove(&path);
+    }
+
+    lockfile.write();
+}

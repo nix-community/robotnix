@@ -21,6 +21,7 @@ use crate::lineage_devices::DeviceInfo;
 use crate::lineage_dependencies::{
     merge_lineage_devices,
     prefetch_lineage_dependencies,
+    cleanup_failed_lineage_deps,
 };
 
 mod fetch;
@@ -120,6 +121,9 @@ async fn main() {
                     missing_dep_devs_file.unwrap(),
                     serde_json::to_vec_pretty(&missing_dep_devices).unwrap()
                 ).unwrap();
+
+                cleanup_failed_lineage_deps(&mut lockfile);
+                lockfile.write().await.unwrap();
             }
 
             lockfile.update_all().await.unwrap();
