@@ -4,7 +4,7 @@ use repo_manifest::resolver::{
 use crate::lock::Lockfile;
 
 pub fn tag_device_by_group(lockfile: &mut Lockfile, group_prefix: &str) {
-    for (path, entry) in lockfile.entries.iter_mut() {
+    for (_path, entry) in lockfile.entries.iter_mut() {
         let project = &mut entry.project;
         let device_cats: Vec<_> = project
             .groups
