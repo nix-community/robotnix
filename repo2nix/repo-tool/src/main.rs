@@ -6,11 +6,13 @@ use clap::Parser;
 use url::Url;
 use tokio;
 use serde_json;
+use repo_manifest::xml::read_manifest_file;
 use repo_manifest::resolver::{
     LineageDeps,
     Category,
     recursively_read_manifest_files,
     resolve_manifest,
+    merge_manifests,
 };
 use crate::fetch::nix_prefetch_git;
 use crate::lock::{
@@ -23,11 +25,13 @@ use crate::lineage_dependencies::{
     prefetch_lineage_dependencies,
     cleanup_failed_lineage_deps,
 };
+use crate::utils::tag_device_by_group;
 
 mod fetch;
 mod lock;
 mod lineage_devices;
 mod lineage_dependencies;
+mod utils;
 
 #[derive(Parser)]
 enum Args {
@@ -43,6 +47,9 @@ enum Args {
 
         #[arg(long, short)]
         missing_dep_devs_file: Option<PathBuf>,
+
+        #[arg(long)]
+        muppets: bool,
     },
     GetLineageDevices {
         device_metadata_file: PathBuf,
@@ -62,7 +69,14 @@ async fn main() {
     let args = Args::parse();
 
     match args {
-        Args::Fetch { manifest_url, lockfile_path, branch, lineage_device_file, missing_dep_devs_file } => {
+        Args::Fetch {
+            manifest_url,
+            lockfile_path,
+            branch,
+            lineage_device_file,
+            missing_dep_devs_file,
+            muppets,
+        } => {
             let url = Url::parse(&manifest_url).unwrap();
             let manifest_fetch = nix_prefetch_git(
                 &url,
@@ -71,7 +85,18 @@ async fn main() {
                 false,
             ).await.unwrap();
 
-            let manifest_xml = recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml")).await.unwrap();
+            let mut manifest_xml = recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml")).await.unwrap();
+            if muppets {
+                let muppets_fetch = nix_prefetch_git(
+                    &Url::parse("https://github.com/TheMuppets/manifests").unwrap(),
+                    &format!("refs/heads/{branch}"),
+                    false,
+                    false,
+                ).await.unwrap();
+
+                let muppets_manifest_xml = read_manifest_file(&muppets_fetch.path.join("muppets.xml")).await.unwrap();
+                merge_manifests(&mut manifest_xml, &muppets_manifest_xml).unwrap();
+            }
             let mut manifest = resolve_manifest(&manifest_xml, &url).unwrap();
 
             let mut lockfile = match Lockfile::read_from_file(&lockfile_path).await {
@@ -93,6 +118,7 @@ async fn main() {
                 },
                 Err(e) => panic!("{e:?}"),
             };
+            tag_device_by_group(&mut lockfile, "muppets_");
 
 
             if lineage_device_file.len() > 0 {

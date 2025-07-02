@@ -73,6 +73,38 @@ pub enum RecursivelyReadManifestFilesError {
     DuplicateContactinfo,
 }
 
+pub fn merge_manifests(manifest: &mut xml::Manifest, submanifest: &xml::Manifest) -> Result<(), RecursivelyReadManifestFilesError> {
+    if let Some(default_remote) = &submanifest.default {
+        match manifest.default {
+            None => manifest.default = Some(default_remote.clone()),
+            Some(_) => return Err(RecursivelyReadManifestFilesError::DuplicateDefaultRemote),
+        }
+    }
+
+    for remote in submanifest.remotes.iter() {
+        if manifest.remotes.iter().any(|r| r.name == remote.name) {
+            return Err(RecursivelyReadManifestFilesError::DuplicateRemote(remote.name.to_string()));
+        }
+        manifest.remotes.push(remote.clone());
+    }
+
+    for project in submanifest.projects.iter() {
+        if manifest.projects.iter().any(|p| p.path.as_ref().unwrap() == project.path.as_ref().unwrap()) {
+            return Err(RecursivelyReadManifestFilesError::DuplicatePath(project.path.as_ref().unwrap().to_path_buf()));
+        }
+        manifest.projects.push(project.clone());
+    }
+
+    if let Some(contactinfo) = &submanifest.contactinfo {
+        match manifest.contactinfo {
+            None => manifest.contactinfo = Some(contactinfo.clone()),
+            Some(_) => return Err(RecursivelyReadManifestFilesError::DuplicateContactinfo),
+        }
+    }
+
+    Ok(())
+}
+
 pub async fn recursively_read_manifest_files(root_path: &Path, manifest_file: &Path) -> Result<xml::Manifest, RecursivelyReadManifestFilesError> {
     let mut manifest = read_manifest_file(&root_path.join(manifest_file))
         .await
@@ -87,35 +119,10 @@ pub async fn recursively_read_manifest_files(root_path: &Path, manifest_file: &P
         }
     }
 
-    for include in manifest.includes.iter() {
-        let submanifest = Box::pin(recursively_read_manifest_files(root_path, &include.name)).await?;
-        if let Some(default_remote) = submanifest.default {
-            match manifest.default {
-                None => manifest.default = Some(default_remote),
-                Some(_) => return Err(RecursivelyReadManifestFilesError::DuplicateDefaultRemote),
-            }
-        }
-
-        for remote in submanifest.remotes.iter() {
-            if manifest.remotes.iter().any(|r| r.name == remote.name) {
-                return Err(RecursivelyReadManifestFilesError::DuplicateRemote(remote.name.to_string()));
-            }
-            manifest.remotes.push(remote.clone());
-        }
-
-        for project in submanifest.projects.iter() {
-            if manifest.projects.iter().any(|p| p.path.as_ref().unwrap() == project.path.as_ref().unwrap()) {
-                return Err(RecursivelyReadManifestFilesError::DuplicatePath(project.path.as_ref().unwrap().to_path_buf()));
-            }
-            manifest.projects.push(project.clone());
-        }
-
-        if let Some(contactinfo) = submanifest.contactinfo {
-            match manifest.contactinfo {
-                None => manifest.contactinfo = Some(contactinfo),
-                Some(_) => return Err(RecursivelyReadManifestFilesError::DuplicateContactinfo),
-            }
-        }
+    let include_files: Vec<_> = manifest.includes.iter().map(|x| x.name.clone()).collect();
+    for include in include_files.iter() {
+        let submanifest = Box::pin(recursively_read_manifest_files(root_path, &include)).await?;
+        merge_manifests(&mut manifest, &submanifest)?;
     }
 
     manifest.includes.clear();
