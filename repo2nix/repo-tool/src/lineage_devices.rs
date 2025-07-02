@@ -207,7 +207,7 @@ pub async fn get_devices(allowlist: &Option<Vec<String>>, blocklist: &Option<Vec
                         branch_repos.insert(branch.clone(), GitRepoRef {
                             repo_url: Url::parse(&format!("https://github.com/LineageOS/android_device_{vendor}_{name}")).map_err(GetDevicesError::Url)?,
                             revision: format!("refs/heads/{}", hudson_to_device_repo_branch(&branch)),
-                            fetch_lfs: false,
+                            fetch_lfs: true,
                             fetch_submodules: false,
                         });
                     }

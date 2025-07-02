@@ -148,7 +148,7 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
             repo_ref: GitRepoRef {
                 repo_url: join_repo_url(&remote.url, &repo_name),
                 revision: revision,
-                fetch_lfs: false,
+                fetch_lfs: true,
                 fetch_submodules: false,
             },
             categories: categories.to_vec(),
