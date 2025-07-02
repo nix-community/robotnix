@@ -233,7 +233,9 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
 
         if let Some(new_projects) = new_projects {
             for new_project in new_projects {
-                fetch_queue.push(new_project.path.clone());
+                if !fetch_queue.contains(&new_project.path) {
+                    fetch_queue.push(new_project.path.clone());
+                }
                 lockfile.add_project(new_project, false).map_err(PrefetchLineageDepsError::Lock)?;
             }
         }
