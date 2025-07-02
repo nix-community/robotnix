@@ -96,6 +96,7 @@ pub struct Lockfile {
     // BTreeMap because we want the ordering in the serialized lockfile to be consistent across
     // runs
     pub entries: BTreeMap<PathBuf, LockfileEntry>,
+    pub path: PathBuf,
 }
 
 #[derive(Debug, Error)]
@@ -106,6 +107,10 @@ pub enum UpdateLockfileError {
         error: UpdateLockError,
         project_path: PathBuf,
     },
+    #[error("project `{0}` already present in lockfile")]
+    DuplicateProject(PathBuf),
+    #[error("path not found")]
+    PathNotFound,
     #[error("failed to write lockfile")]
     WriteLockfile(ReadWriteLockfileError),
 }
@@ -119,7 +124,7 @@ pub enum ReadWriteLockfileError {
 }
 
 impl Lockfile {
-    pub fn new(projects: &HashMap<PathBuf, Project>) -> Self {
+    pub fn new(projects: &HashMap<PathBuf, Project>, path: &Path) -> Self {
         Lockfile {
             entries: projects
                 .iter()
@@ -128,87 +133,85 @@ impl Lockfile {
                     lock: None
                 }))
                 .collect(),
+            path: path.to_path_buf(),
         }
     }
 
-    pub fn set_projects(&mut self, new_projects: &HashMap<PathBuf, Project>) {
-        let mut added = 0;
-        let mut modified = 0;
-        let mut removed = 0;
-
-        for (_, project) in new_projects.iter() {
-            match self.entries.get_mut(&project.path) {
-                Some(ref mut entry) => {
-                    if entry.project != *project {
-                        if entry.project.repo_ref != project.repo_ref {
-                            entry.lock = None;
+    pub fn add_project(&mut self, project: Project, allow_modify: bool) -> Result<(), UpdateLockfileError> {
+        match self.entries.get_mut(&project.path) {
+            Some(ref mut entry) => {
+                if entry.project.repo_ref != project.repo_ref ||
+                    entry.project.groups != project.groups ||
+                    entry.project.linkfiles != project.linkfiles ||
+                    entry.project.copyfiles != project.copyfiles {
+                        if allow_modify {
+                            if entry.project.repo_ref != project.repo_ref {
+                                entry.lock = None;
+                            }
+                            entry.project.repo_ref = project.repo_ref;
+                            entry.project.groups = project.groups;
+                            entry.project.linkfiles = project.linkfiles;
+                            entry.project.copyfiles = project.copyfiles;
+                        } else {
+                            return Err(UpdateLockfileError::DuplicateProject(project.path.clone()));
                         }
-                        entry.project = project.clone();
-                        eprintln!("Updated project {}.", project.path.display());
-                        modified += 1;
+                }
+                for cat in project.categories {
+                    if !entry.project.categories.contains(&cat) {
+                        entry.project.categories.push(cat);
                     }
-                },
-                None => {
-                    self.entries.insert(project.path.clone(), LockfileEntry {
-                        project: project.clone(),
-                        lock: None
-                    });
-                    eprintln!("Added project {}.", project.path.display());
-                    added += 1
-                },
-            }
+                }
+            },
+            None => {
+                self.entries.insert(project.path.clone(), LockfileEntry {
+                    project: project,
+                    lock: None,
+                });
+            },
         }
 
-        let paths: Vec<_> = self.entries.keys().map(|x| x.clone()).collect();
-        for path in paths {
-            if !new_projects.iter().any(|(_, x)| x.path == path) {
-                self.entries.remove(&path).unwrap();
-                eprintln!("Removed project {}.", path.display());
-                removed += 1;
-            }
-        }
-
-        eprintln!(
-            "Added {} projects, updated {} projects and removed {} projects.",
-            added,
-            modified,
-            removed,
-        );
+        Ok(())
     }
 
     pub async fn read_from_file(path: &Path) -> Result<Self, ReadWriteLockfileError> {
         let json = fs::read(path).await.map_err(ReadWriteLockfileError::IO)?;
-        serde_json::from_reader(json.as_slice()).map_err(ReadWriteLockfileError::Parse)
+        Ok(Lockfile {
+            entries: serde_json::from_reader(json.as_slice()).map_err(ReadWriteLockfileError::Parse)?,
+            path: path.to_path_buf(),
+        })
     }
 
-    pub async fn write_to_file(&self, path: &Path) -> Result<(), ReadWriteLockfileError> {
-        let json = serde_json::to_vec_pretty(self).map_err(ReadWriteLockfileError::Parse)?;
-        fs::write(path, json.as_slice()).await.map_err(ReadWriteLockfileError::IO)
+    pub async fn write(&self) -> Result<(), ReadWriteLockfileError> {
+        let json = serde_json::to_vec_pretty(&self.entries).map_err(ReadWriteLockfileError::Parse)?;
+        fs::write(&self.path, json.as_slice()).await.map_err(ReadWriteLockfileError::IO)
     }
 
-    pub async fn update(&mut self, lockfile_path: Option<&Path>) -> Result<(), UpdateLockfileError> {
-        let mut paths: Vec<_> = self.entries.keys().map(|x| x.clone()).collect();
+    pub async fn update(&mut self, project_path: &Path) -> Result<(), UpdateLockfileError> {
+        let entry = self.entries.get_mut(project_path).ok_or(UpdateLockfileError::PathNotFound)?;
+        entry.lock = Some(
+            update_lock(
+                &entry.project,
+                &entry.lock
+            )
+            .await
+            .map_err(|e| UpdateLockfileError::UpdateLock {
+                project_path: project_path.to_path_buf(),
+                error: e,
+            })?
+        );
+
+        self.write().await.map_err(UpdateLockfileError::WriteLockfile)?;
+
+        Ok(())
+    }
+
+    pub async fn update_all(&mut self) -> Result<(), UpdateLockfileError> {
+        let mut paths: Vec<_> = self.entries.keys().cloned().collect();
         paths.sort();
         for (i, path) in paths.iter().enumerate() {
-            {
-                let entry = self.entries.get_mut(path).unwrap();
-                eprintln!("Updating lock for `{}`... ({}/{})", path.display(), i, paths.len());
-                entry.lock = Some(
-                    update_lock(
-                        &entry.project,
-                        &entry.lock
-                    )
-                    .await
-                    .map_err(|e| UpdateLockfileError::UpdateLock {
-                        project_path: path.to_path_buf(),
-                        error: e,
-                    })?
-                );
-            }
-
-            if let Some(p) = lockfile_path {
-                self.write_to_file(p).await.map_err(UpdateLockfileError::WriteLockfile)?;
-            }
+            eprintln!("Updating lock for `{}` ({}/{})", path.display(), i+1, paths.len());
+            self.update(path).await?;
+            self.write().await.map_err(UpdateLockfileError::WriteLockfile)?;
         }
         Ok(())
     }

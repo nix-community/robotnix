@@ -6,35 +6,25 @@ use serde::{Serialize, Deserialize};
 use serde_json;
 use thiserror::Error;
 use repo_manifest::resolver::{
+    Project,
     Manifest,
+    Category,
+    LineageDeps,
     GitRepoRef,
     join_repo_url,
 };
 use crate::fetch::{
-    nix_prefetch_git,
-    NixPrefetchGitError,
-    git_ls_remote,
     GitLsRemoteError,
 };
 use crate::lineage_devices::{
     hudson_to_device_repo_branch,
     DeviceInfo,
 };
-
-#[derive(Debug, PartialEq, Eq)]
-pub enum LineageDeps {
-    MissingBranch,
-    NoLineageDependenciesFile,
-    Some(Vec<PathBuf>),
-}
-
-#[derive(Debug, PartialEq)]
-pub struct LineageProject {
-    pub repo_ref: GitRepoRef,
-    pub path: PathBuf,
-    pub devices: Vec<String>,
-    pub lineage_deps: Option<LineageDeps>,
-}
+use crate::lock::{
+    Lockfile,
+    UpdateLockError,
+    UpdateLockfileError,
+};
 
 #[derive(Debug, Error)]
 pub enum MergeLineageDevicesError {
@@ -82,18 +72,14 @@ pub struct LineageDep {
 
 #[derive(Debug, Error)]
 pub enum PrefetchLineageDepsError {
-    #[error("`git ls-remote` failed")]
-    LsRemote(GitLsRemoteError),
-    #[error("`nix-prefetch-git` failed")]
-    Fetch(NixPrefetchGitError),
+    #[error("updating lock failed")]
+    Lock(#[source] UpdateLockfileError),
     #[error("failed reading `lineage.dependencies` from device repo")]
     IO(#[from] io::Error),
     #[error("failed to parse")]
     Parse(#[from] serde_json::Error),
     #[error("failed to resolve deps of repo {0}")]
     Resolve(PathBuf, #[source] ResolveLineageDepsError),
-    #[error("project `{0}` appeared in multiple `lineage.dependencies` files with conflicting repo names and branches")]
-    ConflictingEntries(PathBuf),
 }
 
 #[derive(Debug, Error)]
@@ -107,7 +93,7 @@ pub enum ResolveLineageDepsError {
 }
 
 
-pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[LineageDep], devices: &[String]) -> Result<Vec<LineageProject>, ResolveLineageDepsError> {
+pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[LineageDep], categories: &[Category]) -> Result<Vec<Project>, ResolveLineageDepsError> {
     let mut project_deps = vec![];
     for dep in lineage_deps {
         let remote = match &dep.remote {
@@ -154,15 +140,18 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
         } else {
             dep.repository.clone()
         };
-        project_deps.push(LineageProject {
+        project_deps.push(Project {
             path: dep.target_path.clone(),
+            groups: vec![],
+            linkfiles: vec![],
+            copyfiles: vec![],
             repo_ref: GitRepoRef {
                 repo_url: join_repo_url(&remote.url, &repo_name),
                 revision: revision,
                 fetch_lfs: false,
                 fetch_submodules: false,
             },
-            devices: devices.iter().cloned().collect(),
+            categories: categories.to_vec(),
             lineage_deps: None,
         });
     }
@@ -170,83 +159,86 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
     Ok(project_deps)
 }
 
-pub async fn prefetch_lineage_dependencies(devices: &BTreeMap<String, DeviceInfo>, manifest: &Manifest, branch: &str) -> Result<Vec<LineageProject>, PrefetchLineageDepsError> {
+pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BTreeMap<String, DeviceInfo>, manifest: &Manifest, branch: &str) -> Result<(), PrefetchLineageDepsError> {
     eprintln!("Building LineageOS-specific dependency tree...");
-    let mut projects: Vec<LineageProject> = devices
-        .iter()
-        .filter(|(_, x)| x.branches.contains_key(branch))
-        .map(|(k, v)| LineageProject {
-            repo_ref: v.branches.get(branch).unwrap().clone(),
-            path: Path::new("device").join(&v.vendor).join(&v.name),
-            devices: vec![k.clone()],
-            lineage_deps: None,
-        })
-        .collect();
+
+    let mut fetch_queue = vec![];
+    for (_name, device) in devices.iter() {
+        match device.branches.get(branch) {
+            Some(repo_ref) => {
+                let path = Path::new("device").join(&device.vendor).join(&device.name); 
+                lockfile.add_project(Project {
+                    path: path.clone(),
+                    groups: vec![],
+                    linkfiles: vec![],
+                    copyfiles: vec![],
+                    repo_ref: repo_ref.clone(),
+                    categories: vec![Category::DeviceSpecific(device.name.clone())],
+                    lineage_deps: None,
+                }, false).map_err(PrefetchLineageDepsError::Lock)?;
+                fetch_queue.push(path);
+            },
+            None => (),
+        }
+    }
 
     let mut i = 0;
     loop {
-        let (dep_paths, deps) = {
-            let project = match projects.get(i) {
-                Some(p) => p,
-                None => break,
-            };
-
-            match git_ls_remote(
-                &project.repo_ref.repo_url.as_str(),
-                &project.repo_ref.revision
-            ).await {
-                Ok(commit) => {
-                    let fetch = nix_prefetch_git(
-                        &project.repo_ref.repo_url,
-                        &commit,
-                        project.repo_ref.fetch_lfs,
-                        project.repo_ref.fetch_submodules,
-                    )
-                        .await
-                        .map_err(PrefetchLineageDepsError::Fetch)?;
-
-                    if !fs::try_exists(&fetch.path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)? {
-                        (LineageDeps::NoLineageDependenciesFile, None)
-                    } else {
-                        let lineage_deps: Vec<LineageDep> = serde_json::from_slice(
-                            &fs::read(&fetch.path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)?
-                        )
-                            .map_err(PrefetchLineageDepsError::Parse)?;
-
-                        let ldeps = resolve_lineage_dependencies(manifest, &lineage_deps, &project.devices)
-                            .map_err(|e| PrefetchLineageDepsError::Resolve(project.path.clone(), e))?;
-                        (LineageDeps::Some(ldeps.iter().map(|x| x.path.clone()).collect()), Some(ldeps))
-                    }
-                },
-                Err(GitLsRemoteError::RevNotFound) => (LineageDeps::MissingBranch, None),
-                Err(e) => return Err(PrefetchLineageDepsError::LsRemote(e)),
-            }
+        let path = match fetch_queue.get(i) {
+            Some(p) => p.clone(),
+            None => break,
         };
-        projects[i].lineage_deps = Some(dep_paths);
+        let categories = {
+            let project = &lockfile.entries.get(&path).unwrap().project;
+            project.categories.clone()
+        };
 
-        if let Some(deps) = deps {
-            for dep in deps {
-                match projects.iter_mut().find(|x| x.path == dep.path) {
-                    Some(old_project) => {
-                        if old_project.repo_ref != dep.repo_ref {
-                            return Err(PrefetchLineageDepsError::ConflictingEntries(dep.path.clone()));
-                        } else {
-                            for device in dep.devices {
-                                if !old_project.devices.contains(&device) {
-                                    old_project.devices.push(device);
-                                }
-                            }
-                        }
-                    },
-                    None => {
-                        projects.push(dep);
-                    },
+        let (new_deps, new_projects) = match lockfile.update(&path).await {
+            Ok(()) => {
+                let store_path = &lockfile
+                    .entries
+                    .get(&path)
+                    .as_ref()
+                    .unwrap()
+                    .lock
+                    .as_ref()
+                    .unwrap()
+                    .path;
+
+                if !fs::try_exists(&store_path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)? {
+                    (LineageDeps::NoLineageDependenciesFile, None)
+                } else {
+                    let lineage_deps: Vec<LineageDep> = serde_json::from_slice(
+                        &fs::read(&store_path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)?
+                    )
+                        .map_err(PrefetchLineageDepsError::Parse)?;
+
+                    let ldeps = resolve_lineage_dependencies(manifest, &lineage_deps, &categories)
+                        .map_err(|e| PrefetchLineageDepsError::Resolve(path.clone(), e))?;
+                    (LineageDeps::Some(ldeps.iter().map(|x| x.path.clone()).collect()), Some(ldeps))
                 }
+            },
+            Err(UpdateLockfileError::UpdateLock {
+                project_path: _,
+                error: UpdateLockError::GitLsRemote(GitLsRemoteError::RevNotFound),
+            }) => (LineageDeps::MissingBranch, None),
+            Err(e) => return Err(PrefetchLineageDepsError::Lock(e)),
+        };
+
+        {
+            let project = &mut lockfile.entries.get_mut(&path).unwrap().project;
+            project.lineage_deps = Some(new_deps);
+        }
+
+        if let Some(new_projects) = new_projects {
+            for new_project in new_projects {
+                fetch_queue.push(new_project.path.clone());
+                lockfile.add_project(new_project, false).map_err(PrefetchLineageDepsError::Lock)?;
             }
         }
         i += 1;
     }
 
     eprintln!("Done building LineageOS-specific dependency tree.");
-    Ok(projects)
+    Ok(())
 }

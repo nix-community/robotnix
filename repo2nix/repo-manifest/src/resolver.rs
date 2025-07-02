@@ -20,6 +20,13 @@ pub enum Category {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+pub enum LineageDeps {
+    MissingBranch,
+    NoLineageDependenciesFile,
+    Some(Vec<PathBuf>),
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct Project {
     pub path: PathBuf,
     pub groups: Vec<String>,
@@ -27,6 +34,7 @@ pub struct Project {
     pub copyfiles: Vec<xml::LinkCopyFile>,
     pub repo_ref: GitRepoRef,
     pub categories: Vec<Category>,
+    pub lineage_deps: Option<LineageDeps>,
 }
 
 #[derive(Debug)]
@@ -217,6 +225,7 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                 fetch_submodules: false,
             },
             categories: vec![Category::Default],
+            lineage_deps: Some(LineageDeps::NoLineageDependenciesFile),
         };
         manifest.projects.insert(project.path.clone(), project);
     }
