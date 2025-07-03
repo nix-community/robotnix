@@ -114,7 +114,7 @@ let
         default = [];
       };
 
-      timestamp = mkOption {
+      date = mkOption {
         type = types.nullOr types.int;
         default = null;
       };
@@ -220,7 +220,7 @@ in
             fetchSubmodules = entry.project.repo_ref.fetch_submodules;
           };
           inherit (entry.project) groups linkfiles copyfiles;
-          # TODO set timestamp
+          inherit (entry.lock) date;
         }) filteredEntries;
       in
         dirs

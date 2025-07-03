@@ -120,7 +120,7 @@ in
         e.g. output of `date +%s`
         '';
       example = 1565645583;
-      default = with lib; foldl' max 1 (mapAttrsToList (n: v: if v.enable then v.dateTime else 1) config.source.dirs);
+      default = with lib; foldl' max 1 (mapAttrsToList (_: v: v.date) (lib.filterAttrs (_: v: v.enable && v.date != null) config.source.dirs));
       defaultText = "*maximum of source.dirs.<name>.dateTime*";
     };
 
