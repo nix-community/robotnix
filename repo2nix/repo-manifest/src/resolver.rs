@@ -77,8 +77,6 @@ pub enum RecursivelyReadManifestFilesError {
         #[source]
         inner_error: xml::ManifestReadFileError
     },
-    #[error("missing `path` attribute for `{0}`")]
-    MissingPath(String),
     #[error("duplicate default remote tag")]
     DuplicateDefaultRemote, 
     #[error("duplicate remote `{0}`")]
@@ -128,12 +126,6 @@ pub async fn recursively_read_manifest_files(root_path: &Path, manifest_file: &P
             path: root_path.to_path_buf(),
             inner_error: e,
         })?;
-
-    for project in manifest.projects.iter() {
-        if project.path.is_none() {
-            return Err(RecursivelyReadManifestFilesError::MissingPath(project.name.clone()));
-        }
-    }
 
     let include_files: Vec<_> = manifest.includes.iter().map(|x| x.name.clone()).collect();
     for include in include_files.iter() {
