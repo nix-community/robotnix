@@ -46,34 +46,34 @@ pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock,
             .map_err(UpdateLockError::GitLsRemote)?
     };
 
-    let refetch = match lock {
-        None => true,
-        Some(l) => l.commit != current_commit,
+    let up_to_date = match lock {
+        None => false,
+        Some(l) => l.commit == current_commit,
     };
 
-    if refetch {
-        let fetch_output = nix_prefetch_git(
-            &project.repo_ref.repo_url,
-            &current_commit,
-            project.repo_ref.fetch_lfs,
-            project.repo_ref.fetch_submodules,
-        )
-            .await
-            .map_err(UpdateLockError::NixPrefetchGit)?;
-
-        if current_commit != fetch_output.rev {
-            return Err(UpdateLockError::CommitMismatch(project.repo_ref.revision.clone()));
-        }
-
-        Ok(Lock {
-            commit: fetch_output.rev,
-            nix_hash: fetch_output.hash,
-            path: fetch_output.path,
-            date: fetch_output.date,
-        })
-    } else {
-        Ok(lock.clone().unwrap())
+    if up_to_date {
+        return Ok(lock.clone().unwrap());
     }
+
+    let fetch_output = nix_prefetch_git(
+        &project.repo_ref.repo_url,
+        &current_commit,
+        project.repo_ref.fetch_lfs,
+        project.repo_ref.fetch_submodules,
+    )
+        .await
+        .map_err(UpdateLockError::NixPrefetchGit)?;
+
+    if current_commit != fetch_output.rev {
+        return Err(UpdateLockError::CommitMismatch(project.repo_ref.revision.clone()));
+    }
+
+    Ok(Lock {
+        commit: fetch_output.rev,
+        nix_hash: fetch_output.hash,
+        path: fetch_output.path,
+        date: fetch_output.date,
+    })
 }
 
 
