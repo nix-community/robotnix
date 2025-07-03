@@ -142,12 +142,12 @@ in mkIf (config.flavor == "lineageos")
   # This is the prebuilt webview apk from LineageOS. This is the only working
   # webview we have access to (robotnix' own are in disrepair), so this should
   # be used by default unless the user provides another webview themselves.
-  webview.prebuilt.apk = if config.androidVersion >= 11 then
-    config.source.dirs."external/chromium-webview/prebuilt/${config.arch}".src + "/webview.apk"
-  else
-    config.source.dirs."external/chromium-webview".src + "/prebuilt/${config.arch}/webview.apk";
-  webview.prebuilt.availableByDefault = mkDefault true;
-  webview.prebuilt.enable = mkDefault true;
+  webview.prebuilt = {
+    enable = mkDefault true;
+    apk = config.source.dirs."external/chromium-webview/prebuilt/${config.arch}".src + "/webview.apk";
+    availableByDefault = mkDefault true;
+  };
+  apps.prebuilt.prebuiltwebview.usesOptionalLibraries = lib.mkIf (lib.versionAtLeast config.flavorVersion "22.2") (lib.mkAfter [ "com.android.extensions.xr" ]);
   removedProductPackages = [ "webview" ];
 
   apps.updater.flavor = mkDefault "lineageos";
