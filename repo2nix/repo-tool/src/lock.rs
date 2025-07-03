@@ -24,15 +24,8 @@ pub struct Lock {
 }
 
 pub fn is_commit_id(commit_id: &str) -> bool {
-    if commit_id.as_bytes().len() == 40 {
-        if commit_id.as_bytes().iter().all(|x| x.is_ascii_hexdigit()) {
-            true
-        } else {
-            false
-        }
-    } else {
-        false
-    }
+    commit_id.as_bytes().len() == 40 &&
+        commit_id.as_bytes().iter().all(|x| x.is_ascii_hexdigit())
 }
 
 #[derive(Debug, Error)]
