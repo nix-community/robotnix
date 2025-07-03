@@ -26,12 +26,28 @@ pub enum LineageDeps {
     Some(Vec<PathBuf>),
 }
 
+// Needed because of the different serialization settings
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+pub struct LinkCopyFile {
+    pub src: PathBuf,
+    pub dest: PathBuf,
+}
+
+impl LinkCopyFile {
+    pub fn from_xml(lcf: xml::LinkCopyFile) -> Self {
+        LinkCopyFile {
+            src: lcf.src,
+            dest: lcf.dest,
+        }
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct Project {
     pub path: PathBuf,
     pub groups: Vec<String>,
-    pub linkfiles: Vec<xml::LinkCopyFile>,
-    pub copyfiles: Vec<xml::LinkCopyFile>,
+    pub linkfiles: Vec<LinkCopyFile>,
+    pub copyfiles: Vec<LinkCopyFile>,
     pub repo_ref: GitRepoRef,
     pub categories: Vec<Category>,
     pub lineage_deps: Option<LineageDeps>,
@@ -219,8 +235,8 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                     .collect()
                 )
                 .unwrap_or(vec![]),
-            linkfiles: project_xml.linkfiles.clone(),
-            copyfiles: project_xml.copyfiles.clone(),
+            linkfiles: project_xml.linkfiles.iter().cloned().map(LinkCopyFile::from_xml).collect(),
+            copyfiles: project_xml.copyfiles.iter().cloned().map(LinkCopyFile::from_xml).collect(),
             repo_ref: GitRepoRef {
                 repo_url: join_repo_url(&remote.url, &project_xml.name),
                 revision: project_xml

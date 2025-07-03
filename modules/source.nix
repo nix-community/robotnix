@@ -211,7 +211,6 @@ in
       let
         entries = lib.importJSON config.source.manifest.lockfile;
         filteredEntries = lib.filterAttrs (path: entry: (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)) entries;
-        uglyLCFWorkaround = lcf: { src = lcf."@src"; dest = lcf."@dest"; };
         dirs = lib.mapAttrs (path: entry: {
           src = pkgs.fetchgit {
             url = entry.project.repo_ref.repo_url;
@@ -220,9 +219,7 @@ in
             fetchLFS = entry.project.repo_ref.fetch_lfs;
             fetchSubmodules = entry.project.repo_ref.fetch_submodules;
           };
-          inherit (entry.project) groups;
-          linkfiles = map uglyLCFWorkaround entry.project.linkfiles;
-          copyfiles = map uglyLCFWorkaround entry.project.copyfiles;
+          inherit (entry.project) groups linkfiles copyfiles;
           # TODO set timestamp
         }) filteredEntries;
       in

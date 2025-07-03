@@ -283,12 +283,12 @@
       ],
       "linkfiles": [
         {
-          "@src": "bazel.WORKSPACE",
-          "@dest": "WORKSPACE"
+          "src": "bazel.WORKSPACE",
+          "dest": "WORKSPACE"
         },
         {
-          "@src": "bazel.BUILD",
-          "@dest": "BUILD"
+          "src": "bazel.BUILD",
+          "dest": "BUILD"
         }
       ],
       "copyfiles": [],
@@ -375,28 +375,28 @@
       ],
       "linkfiles": [
         {
-          "@src": "CleanSpec.mk",
-          "@dest": "build/CleanSpec.mk"
+          "src": "CleanSpec.mk",
+          "dest": "build/CleanSpec.mk"
         },
         {
-          "@src": "buildspec.mk.default",
-          "@dest": "build/buildspec.mk.default"
+          "src": "buildspec.mk.default",
+          "dest": "build/buildspec.mk.default"
         },
         {
-          "@src": "core",
-          "@dest": "build/core"
+          "src": "core",
+          "dest": "build/core"
         },
         {
-          "@src": "envsetup.sh",
-          "@dest": "build/envsetup.sh"
+          "src": "envsetup.sh",
+          "dest": "build/envsetup.sh"
         },
         {
-          "@src": "target",
-          "@dest": "build/target"
+          "src": "target",
+          "dest": "build/target"
         },
         {
-          "@src": "tools",
-          "@dest": "build/tools"
+          "src": "tools",
+          "dest": "build/tools"
         }
       ],
       "copyfiles": [],
@@ -485,12 +485,12 @@
       ],
       "linkfiles": [
         {
-          "@src": "root.bp",
-          "@dest": "Android.bp"
+          "src": "root.bp",
+          "dest": "Android.bp"
         },
         {
-          "@src": "bootstrap.bash",
-          "@dest": "bootstrap.bash"
+          "src": "bootstrap.bash",
+          "dest": "bootstrap.bash"
         }
       ],
       "copyfiles": [],
@@ -14223,12 +14223,12 @@
       ],
       "linkfiles": [
         {
-          "@src": "os_pickup.bp",
-          "@dest": "external/chromium-webview/Android.bp"
+          "src": "os_pickup.bp",
+          "dest": "external/chromium-webview/Android.bp"
         },
         {
-          "@src": "README",
-          "@dest": "external/chromium-webview/README"
+          "src": "README",
+          "dest": "external/chromium-webview/README"
         }
       ],
       "copyfiles": [],
@@ -30459,12 +30459,12 @@
       ],
       "linkfiles": [
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom/sdm845/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom/sdm845/Android.mk"
         },
         {
-          "@src": "os_pickup.bp",
-          "@dest": "hardware/qcom/sdm845/Android.bp"
+          "src": "os_pickup.bp",
+          "dest": "hardware/qcom/sdm845/Android.bp"
         }
       ],
       "copyfiles": [],
@@ -30524,12 +30524,12 @@
       ],
       "linkfiles": [
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom/sm7250/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom/sm7250/Android.mk"
         },
         {
-          "@src": "os_pickup.bp",
-          "@dest": "hardware/qcom/sm7250/Android.bp"
+          "src": "os_pickup.bp",
+          "dest": "hardware/qcom/sm7250/Android.bp"
         }
       ],
       "copyfiles": [],
@@ -30589,12 +30589,12 @@
       ],
       "linkfiles": [
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom/sm8150/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom/sm8150/Android.mk"
         },
         {
-          "@src": "os_pickup.bp",
-          "@dest": "hardware/qcom/sm8150/Android.bp"
+          "src": "os_pickup.bp",
+          "dest": "hardware/qcom/sm8150/Android.bp"
         }
       ],
       "copyfiles": [],
@@ -30710,100 +30710,100 @@
       ],
       "linkfiles": [
         {
-          "@src": "os_pickup_aosp.mk",
-          "@dest": "hardware/qcom/Android.mk"
+          "src": "os_pickup_aosp.mk",
+          "dest": "hardware/qcom/Android.mk"
         },
         {
-          "@src": "os_pickup_sepolicy_vndr.mk",
-          "@dest": "device/qcom/sepolicy_vndr/SEPolicy.mk"
+          "src": "os_pickup_sepolicy_vndr.mk",
+          "dest": "device/qcom/sepolicy_vndr/SEPolicy.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/msm8953/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/msm8953/Android.bp"
         },
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom-caf/msm8953/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom-caf/msm8953/Android.mk"
         },
         {
-          "@src": "os_pickup.bp",
-          "@dest": "hardware/qcom-caf/msm8996/Android.bp"
+          "src": "os_pickup.bp",
+          "dest": "hardware/qcom-caf/msm8996/Android.bp"
         },
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom-caf/msm8996/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom-caf/msm8996/Android.mk"
         },
         {
-          "@src": "os_pickup.bp",
-          "@dest": "hardware/qcom-caf/msm8998/Android.bp"
+          "src": "os_pickup.bp",
+          "dest": "hardware/qcom-caf/msm8998/Android.bp"
         },
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom-caf/msm8998/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom-caf/msm8998/Android.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/sdm660/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/sdm660/Android.bp"
         },
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom-caf/sdm660/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom-caf/sdm660/Android.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/sdm845/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/sdm845/Android.bp"
         },
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom-caf/sdm845/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom-caf/sdm845/Android.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/sm8150/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/sm8150/Android.bp"
         },
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom-caf/sm8150/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom-caf/sm8150/Android.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/sm8250/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/sm8250/Android.bp"
         },
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom-caf/sm8250/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom-caf/sm8250/Android.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/sm8350/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/sm8350/Android.bp"
         },
         {
-          "@src": "os_pickup.mk",
-          "@dest": "hardware/qcom-caf/sm8350/Android.mk"
+          "src": "os_pickup.mk",
+          "dest": "hardware/qcom-caf/sm8350/Android.mk"
         },
         {
-          "@src": "os_pickup_audio-ar.mk",
-          "@dest": "hardware/qcom-caf/sm8450/audio/Android.mk"
+          "src": "os_pickup_audio-ar.mk",
+          "dest": "hardware/qcom-caf/sm8450/audio/Android.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/sm8450/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/sm8450/Android.bp"
         },
         {
-          "@src": "os_pickup_audio-ar.mk",
-          "@dest": "hardware/qcom-caf/sm8550/audio/Android.mk"
+          "src": "os_pickup_audio-ar.mk",
+          "dest": "hardware/qcom-caf/sm8550/audio/Android.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/sm8550/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/sm8550/Android.bp"
         },
         {
-          "@src": "os_pickup_audio-ar.mk",
-          "@dest": "hardware/qcom-caf/sm8650/audio/Android.mk"
+          "src": "os_pickup_audio-ar.mk",
+          "dest": "hardware/qcom-caf/sm8650/audio/Android.mk"
         },
         {
-          "@src": "os_pickup_qssi.bp",
-          "@dest": "hardware/qcom-caf/sm8650/Android.bp"
+          "src": "os_pickup_qssi.bp",
+          "dest": "hardware/qcom-caf/sm8650/Android.bp"
         }
       ],
       "copyfiles": [],
@@ -46985,12 +46985,12 @@
       ],
       "linkfiles": [
         {
-          "@src": "bazel/WORKSPACE.bazel",
-          "@dest": "trusty/WORKSPACE.bazel"
+          "src": "bazel/WORKSPACE.bazel",
+          "dest": "trusty/WORKSPACE.bazel"
         },
         {
-          "@src": "bazel/bazelrc",
-          "@dest": "trusty/.bazelrc"
+          "src": "bazel/bazelrc",
+          "dest": "trusty/.bazelrc"
         }
       ],
       "copyfiles": [],
@@ -47359,8 +47359,8 @@
       "linkfiles": [],
       "copyfiles": [
         {
-          "@src": "lk_inc.mk",
-          "@dest": "lk_inc.mk"
+          "src": "lk_inc.mk",
+          "dest": "lk_inc.mk"
         }
       ],
       "repo_ref": {
