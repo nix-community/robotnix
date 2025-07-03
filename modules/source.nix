@@ -210,7 +210,7 @@ in
     dirs = mkIf config.source.manifest.enable (
       let
         entries = lib.importJSON config.source.manifest.lockfile;
-        filteredEntries = lib.filterAttrs (path: entry: (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)) entries;
+        filteredEntries = lib.filterAttrs (path: entry: entry.project.active && (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)) entries;
         dirs = lib.mapAttrs (path: entry: {
           src = pkgs.fetchgit {
             url = entry.project.repo_ref.repo_url;
