@@ -23,16 +23,6 @@ pub struct Lock {
     pub date: u64,
 }
 
-#[derive(Debug, Error)]
-pub enum UpdateLockError {
-    #[error("error running `git ls-remote`")]
-    GitLsRemote(#[from] GitLsRemoteError),
-    #[error("error running `nix-prefetch-git`")]
-    NixPrefetchGit(#[from] NixPrefetchGitError),
-    #[error("commit ids returned by `git ls-remote` and `nix-prefetch-git` for rev `{0}` do not match")]
-    CommitMismatch(String),
-}
-
 pub fn is_commit_id(commit_id: &str) -> bool {
     if commit_id.as_bytes().len() == 40 {
         if commit_id.as_bytes().iter().all(|x| x.is_ascii_hexdigit()) {
@@ -45,6 +35,15 @@ pub fn is_commit_id(commit_id: &str) -> bool {
     }
 }
 
+#[derive(Debug, Error)]
+pub enum UpdateLockError {
+    #[error("error running `git ls-remote`")]
+    GitLsRemote(#[from] GitLsRemoteError),
+    #[error("error running `nix-prefetch-git`")]
+    NixPrefetchGit(#[from] NixPrefetchGitError),
+    #[error("commit ids returned by `git ls-remote` and `nix-prefetch-git` for rev `{0}` do not match")]
+    CommitMismatch(String),
+}
 pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock, UpdateLockError> {
     let current_commit = if is_commit_id(&project.repo_ref.revision) {
         project.repo_ref.revision.clone()
