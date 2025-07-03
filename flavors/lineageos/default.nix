@@ -17,11 +17,11 @@ let
     "12" = "lineage-19.1";
     "13" = "lineage-20.0";
     "14" = "lineage-21.0";
-    "15" = "lineage-22.1";
+    "15" = "lineage-22.2";
   };
   lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
 
-  deviceMetadata = lib.importJSON ./device-metadata.json;
+  deviceMetadata = lib.importJSON ./devices.json;
   LineageOSRelease = androidVersionToLineageBranch.${builtins.toString config.androidVersion};
   repoDirs = lib.importJSON (./. + "/${LineageOSRelease}/repo.json");
   _deviceDirs = importJSON (./. + "/${LineageOSRelease}/device-dirs.json");
@@ -73,7 +73,7 @@ let
 in mkIf (config.flavor == "lineageos")
 {
   androidVersion = let
-      defaultBranch = deviceMetadata.${config.device}.branch;
+      defaultBranch = deviceMetadata.${config.device}.default_branch;
       # The version to use when the device has no default version assigned.
       # Bump this when adding support for a new version.
       fallback = 15;
@@ -86,8 +86,6 @@ in mkIf (config.flavor == "lineageos")
 
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
-  buildDateTime = mkDefault (import (./. + "/${LineageOSRelease}/lastUpdated.epoch"));
-
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
 
@@ -97,79 +95,49 @@ in mkIf (config.flavor == "lineageos")
   in optional isUnsupportedDevice "${config.device} is not an officially-supported device for LineageOS"
      ++ optional isUnmaintained "${LineageOSRelease} is unmaintained in robotnix and may break at any time";
 
-  source.dirs = mkMerge ([
-    repoDirs
+  source.manifest = {
+    enable = true;
+    lockfile = ./. + "/${LineageOSRelease}/repo.lock";
+    categories = [ { DeviceSpecific = config.device; } ];
+  };
 
-    {
-      "vendor/lineage".patches = [
-        (if lib.versionAtLeast (toString config.androidVersion) "14"
-         then ./0001-Remove-LineageOS-keys-21.patch
-         else if lib.versionAtLeast (toString config.androidVersion) "13"
-         then ./0001-Remove-LineageOS-keys-20.patch
-         else ./0001-Remove-LineageOS-keys-19.patch)
+  source.dirs = {
+    "vendor/lineage".patches = [
+      (if lib.versionAtLeast (toString config.androidVersion) "14"
+       then ./0001-Remove-LineageOS-keys-21.patch
+       else if lib.versionAtLeast (toString config.androidVersion) "13"
+       then ./0001-Remove-LineageOS-keys-20.patch
+       else ./0001-Remove-LineageOS-keys-19.patch)
 
-        (pkgs.substituteAll {
-          src = (if lib.versionAtLeast (toString config.androidVersion) "14"
-          then ./0002-bootanimation-Reproducibility-fix-21.patch else
-          ./0002-bootanimation-Reproducibility-fix.patch);
-          inherit (pkgs) imagemagick;
-        })
+      (pkgs.substituteAll {
+        src = (if lib.versionAtLeast (toString config.androidVersion) "14"
+        then ./0002-bootanimation-Reproducibility-fix-21.patch else
+        ./0002-bootanimation-Reproducibility-fix.patch);
+        inherit (pkgs) imagemagick;
+      })
 
-        (if lib.versionAtLeast (toString config.androidVersion) "14"
-         then ./0003-kernel-Set-constant-kernel-timestamp-21.patch
-         else if lib.versionAtLeast (toString config.androidVersion) "13"
-         then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
-         else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
-        
-      ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "12") [
-        ./dont-run-repo-during-build.patch
-      ];
-      "system/extras".patches = [
-        # pkgutil.get_data() not working, probably because we don't use their compiled python
-        (pkgs.fetchpatch {
-          url = "https://github.com/LineageOS/android_system_extras/commit/7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.patch";
-          sha256 = "0pv56lypdpsn66s7ffcps5ykyfx0hjkazml89flj7p1px12zjhy1";
-          revert = true;
-        })
-      ];
-
-      # LineageOS will sometimes force-push to this repo, and the older revisions are garbage collected.
-      # So we'll just build chromium webview ourselves.
-      "external/chromium-webview".enable = false;
-    }
-  ] ++ optionals (deviceMetadata ? "${config.device}") (let
-    # Device-specific source dirs
-    vendor = toLower deviceMetadata.${config.device}.vendor;
-    deviceRelpath = "device/${vendor}/${config.device}";
-
-    # Retuns a list of all relpaths for the device (including deps) recursively
-    relpathWithDeps = relpath: [ relpath ] ++ (
-      flatten (map (p: relpathWithDeps p) deviceDirs.${relpath}.deps)
-    );
-    # All relpaths required by the device
-    relpaths = relpathWithDeps deviceRelpath;
-    filteredRelpaths = remove (attrNames repoDirs) relpaths; # Remove any repos that we're already including from repo json
-
-    # In LOS20, each device/ relpath has an associated vendor/ relpath.
-    # Well, usually...
-    deviceRelpaths = filter (path: hasPrefix "device/" path) relpaths;
-    vendorifiedRelpaths = map (replaceStrings [ "device/" ] [ "vendor/" ]) deviceRelpaths;
-
-    vendorRelpaths = if config.androidVersion >= 13 then (
-      # LOS20 needs vendor/$vendor/$device and all the common dirs but with
-      # vendor/ prefix
-      vendorifiedRelpaths
-    ) else [
-      # Older LOS need this
-      "vendor/${vendor}"
+      (if lib.versionAtLeast (toString config.androidVersion) "14"
+       then ./0003-kernel-Set-constant-kernel-timestamp-21.patch
+       else if lib.versionAtLeast (toString config.androidVersion) "13"
+       then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
+       else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
+      
+    ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "12") [
+      ./dont-run-repo-during-build.patch
     ];
-  in [
-    (filterDirsAttrs (getAttrs (filteredRelpaths) deviceDirs))
-    (filterDirsAttrs (getAttrs (vendorRelpaths) vendorDirs))
-  ]));
+    "system/extras".patches = [
+      # pkgutil.get_data() not working, probably because we don't use their compiled python
+      (pkgs.fetchpatch {
+        url = "https://github.com/LineageOS/android_system_extras/commit/7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.patch";
+        sha256 = "0pv56lypdpsn66s7ffcps5ykyfx0hjkazml89flj7p1px12zjhy1";
+        revert = true;
+      })
+    ];
 
-  source.manifest.url = mkDefault "https://github.com/LineageOS/android.git";
-  source.manifest.rev = mkDefault "refs/heads/${LineageOSRelease}";
+    # LineageOS will sometimes force-push to this repo, and the older revisions are garbage collected.
+    # So we'll just build chromium webview ourselves.
+    "external/chromium-webview".enable = false;
+  };
 
   # This is the prebuilt webview apk from LineageOS. This is the only working
   # webview we have access to (robotnix' own are in disrepair), so this should
