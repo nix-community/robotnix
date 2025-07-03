@@ -25,7 +25,10 @@ use crate::lineage_dependencies::{
     prefetch_lineage_dependencies,
     cleanup_failed_lineage_deps,
 };
-use crate::utils::tag_device_by_group;
+use crate::utils::{
+    tag_device_by_group,
+    cleanup_broken_projects,
+};
 
 mod fetch;
 mod lock;
@@ -77,6 +80,13 @@ async fn main() {
             missing_dep_devs_file,
             muppets,
         } => {
+            if muppets || lineage_device_file.len() > 0 {
+                assert!(
+                    missing_dep_devs_file.is_some(),
+                    "In case of LineageOS-specific or muppets repo fetching, you need to specify a file to write a list of devices with missing dependencies to with --missing-dep-devs-file"
+                );
+            }
+
             let url = Url::parse(&manifest_url).unwrap();
             let manifest_fetch = nix_prefetch_git(
                 &url,
@@ -118,14 +128,31 @@ async fn main() {
                 },
                 Err(e) => panic!("{e:?}"),
             };
-            tag_device_by_group(&mut lockfile, "muppets_");
+
+            let muppets_broken_devices = if muppets {
+                tag_device_by_group(&mut lockfile, "muppets_");
+                let broken_muppets_entries = cleanup_broken_projects(
+                    &mut lockfile,
+                    Some("muppets")
+                ).await.unwrap();
+                let mut muppets_broken_devices = vec![];
+                for entry in broken_muppets_entries {
+                    for cat in entry.project.categories {
+                        if let Category::DeviceSpecific(device) = cat {
+                            if !muppets_broken_devices.contains(&device) {
+                                muppets_broken_devices.push(device);
+                            }
+                        }
+                    }
+                }
+                eprintln!("Devices with broken muppets dependencies: {muppets_broken_devices:?}");
+                muppets_broken_devices
+            } else {
+                vec![]
+            };
 
 
             if lineage_device_file.len() > 0 {
-                assert!(
-                    missing_dep_devs_file.is_some(),
-                    "In case of LineageOS-specific device fetching, you need to specify a file to write a list of devices with missing dependencies to with --missing-dep-devs-file"
-                );
                 let mut all_devices = BTreeMap::new();
                 for ldf in lineage_device_file {
                     let devices: BTreeMap<String, DeviceInfo> = serde_json::from_slice(
@@ -140,12 +167,19 @@ async fn main() {
                     .filter(|x| lockfile.entries.iter().any(|(_, entry)| {
                         entry.project.categories.contains(&Category::DeviceSpecific(x.to_string())) && entry.project.lineage_deps == Some(LineageDeps::MissingBranch)
                     }))
+                    .cloned()
                     .collect();
 
-                println!("Devices with missing dependencies: {missing_dep_devices:?}");
+                println!("Devices with broken LineageOS dependencies: {missing_dep_devices:?}");
+                let mut all_broken_devices = missing_dep_devices.clone();
+                for device in muppets_broken_devices {
+                    if !all_broken_devices.contains(&device) {
+                        all_broken_devices.push(device);
+                    }
+                }
                 fs::write(
                     missing_dep_devs_file.unwrap(),
-                    serde_json::to_vec_pretty(&missing_dep_devices).unwrap()
+                    serde_json::to_vec_pretty(&all_broken_devices).unwrap()
                 ).unwrap();
 
                 cleanup_failed_lineage_deps(&mut lockfile);
