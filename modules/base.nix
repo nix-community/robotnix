@@ -529,8 +529,8 @@ in
               '';
             });
           });
-        buildFHSUserEnv = if (config.androidVersion >= 12) then patchedPkgs.buildFHSUserEnv else pkgs.buildFHSUserEnv;
-      in buildFHSUserEnv {
+        buildFHSEnv = if (config.androidVersion >= 12) then patchedPkgs.buildFHSEnv else pkgs.buildFHSEnv;
+      in buildFHSEnv {
         name = "robotnix-build";
         targetPkgs = pkgs: config.envPackages;
         multiPkgs = pkgs: with pkgs; [ zlib ];
