@@ -8,96 +8,46 @@ let
     elem filter
     mapAttrs mapAttrs' nameValuePair filterAttrs
     attrNames getAttrs flatten remove
-    mkIf mkMerge mkDefault mkForce
+    mkOption mkIf mkMerge mkDefault mkForce types
     importJSON toLower hasPrefix removePrefix hasSuffix replaceStrings;
 
-  androidVersionToLineageBranch = {
-    "10" = "lineage-17.1";
-    "11" = "lineage-18.1";
-    "12" = "lineage-19.1";
-    "13" = "lineage-20.0";
-    "14" = "lineage-21.0";
-    "15" = "lineage-22.2";
+  lineageBranchToAndroidVersion = {
+    "19.0" = 12;
+    "19.1" = 12;
+    "20.0" = 13;
+    "21.0" = 14;
+    "22.0" = 15;
+    "22.1" = 15;
+    "22.2" = 15;
   };
-  lineageBranchToAndroidVersion = mapAttrs' (name: value: nameValuePair value name) androidVersionToLineageBranch;
-
   deviceMetadata = lib.importJSON ./devices.json;
-  LineageOSRelease = androidVersionToLineageBranch.${builtins.toString config.androidVersion};
-  repoDirs = lib.importJSON (./. + "/${LineageOSRelease}/repo.json");
-  _deviceDirs = importJSON (./. + "/${LineageOSRelease}/device-dirs.json");
-  vendorDirs = importJSON (./. + "/${LineageOSRelease}/vendor-dirs.json");
-
-  # TODO: Condition on soc name?
-  dtbReproducibilityFix = ''
-    sed -i \
-      's/^DTB_OBJS := $(shell find \(.*\))$/DTB_OBJS := $(sort $(shell find \1))/' \
-      arch/arm64/boot/Makefile
-  '';
-  kernelsNeedFix = [ # Only verified marlin reproducibility is fixed by this, however these other repos have the same issue
-    "kernel/asus/sm8150"
-    "kernel/bq/msm8953"
-    "kernel/essential/msm8998"
-    "kernel/google/marlin"
-    "kernel/leeco/msm8996"
-    "kernel/lge/msm8996"
-    "kernel/motorola/msm8996"
-    "kernel/motorola/msm8998"
-    "kernel/motorola/sdm632"
-    "kernel/nubia/msm8998"
-    "kernel/oneplus/msm8996"
-    "kernel/oneplus/sdm845"
-    "kernel/oneplus/sm8150"
-    "kernel/razer/msm8998"
-    "kernel/samsung/sdm670"
-    "kernel/sony/sdm660"
-    "kernel/xiaomi/jason"
-    "kernel/xiaomi/msm8998"
-    "kernel/xiaomi/sdm660"
-    "kernel/xiaomi/sdm845"
-    "kernel/yandex/sdm660"
-    "kernel/zuk/msm8996"
-  ];
-  # Patch kernels
-  patchKernelDir = n: v: v // (optionalAttrs (hasPrefix "kernel/" n) {
-    patches = config.kernel.patches;
-    postPatch = config.kernel.postPatch
-      + optionalString (config.useReproducibilityFixes && (elem n kernelsNeedFix)) ("\n" + dtbReproducibilityFix);
-  });
-  deviceDirs = mapAttrs patchKernelDir _deviceDirs;
-
   supportedDevices = attrNames deviceMetadata;
+  missingDepDevices = lib.importJSON (./. + "/lineage-${config.flavorVersion}/missing_dep_devices.json");
+in mkIf (config.flavor == "lineageos") {
+  assertions = [
+    {
+      assertion = config.flavorVersion != null;
+      message = "The `flavorVersion` config option needs to be set to the LineageOS branch, e.g. `flavorVersion = \"22.2\"`";
+    }
+    {
+      assertion = builtins.hasAttr config.flavorVersion lineageBranchToAndroidVersion;
+      message = "Unknown LineageOS branch `${config.flavorVersion}`. Perhaps robotnix doesn't support it yet.";
+    }
+    {
+      assertion = !(builtins.elem config.device missingDepDevices);
+      message = "Device `${config.device}` is missing LineageOS device-specific dependencies on branch `${config.flavorVersion}`. This is an upstream issue - most likely, this branch isn't officially supported on this device.";
+    }
+  ];
 
-  # TODO: Move this filtering into vanilla/graphene
-  filterDirAttrs = dir: filterAttrs (n: v: elem n ["rev" "sha256" "url" "patches" "postPatch"]) dir;
-  filterDirsAttrs = dirs: mapAttrs (n: v: filterDirAttrs v) dirs;
-in mkIf (config.flavor == "lineageos")
-{
-  androidVersion = let
-      defaultBranch = deviceMetadata.${config.device}.default_branch;
-      # The version to use when the device has no default version assigned.
-      # Bump this when adding support for a new version.
-      fallback = 15;
-    in
-    if deviceMetadata ? ${config.device} then
-      mkDefault (lib.toInt lineageBranchToAndroidVersion.${defaultBranch})
-    else
-      fallback;
-  flavorVersion = removePrefix "lineage-" androidVersionToLineageBranch.${toString config.androidVersion};
-
+  androidVersion = lineageBranchToAndroidVersion.${config.flavorVersion};
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
   # LineageOS uses this by default. If your device supports it, I recommend using variant = "user"
   variant = mkDefault "userdebug";
 
-  warnings = let
-    isUnsupportedDevice = config.device != null && !(elem config.device supportedDevices) && config.deviceFamily != "generic";
-    isUnmaintained = lib.versionOlder (toString config.androidVersion) "13";
-  in optional isUnsupportedDevice "${config.device} is not an officially-supported device for LineageOS"
-     ++ optional isUnmaintained "${LineageOSRelease} is unmaintained in robotnix and may break at any time";
-
   source.manifest = {
     enable = true;
-    lockfile = ./. + "/${LineageOSRelease}/repo.lock";
+    lockfile = ./. + "/lineage-${config.flavorVersion}/repo.lock";
     categories = [ { DeviceSpecific = config.device; } ];
   };
 
