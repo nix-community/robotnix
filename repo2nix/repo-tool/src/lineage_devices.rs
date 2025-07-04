@@ -100,22 +100,22 @@ pub async fn get_device_repos() -> Result<Vec<(String, String)>, GetDeviceReposE
         .await
         .map_err(GetDeviceReposError::ReadMirrorManifest)?;
 
-    let mut devices = vec![];
-    for project in mirror_manifest.projects {
-        if project.name.starts_with("LineageOS/android_device_") {
-            let suffix = project.name.strip_prefix("LineageOS/android_device_").unwrap();
-            let mut fields = suffix.splitn(2, "_");
-            if let Some(vendor) = fields.next() {
-                if let Some(device) = fields.next() {
-                    devices.push((vendor.to_string(), device.to_string()));
-                } else {
-                    continue;
-                }
-            } else {
-                continue;
-            }
-        }
-    }
+    let devices = mirror_manifest
+        .projects
+        .iter()
+        .filter_map(|project| {
+            project
+                .name
+                .strip_prefix("LineageOS/android_device_")
+                .and_then(|suffix| {
+                    let fields: Vec<_> = suffix.splitn(2, "_").collect();
+                    match fields.as_slice() {
+                        [vendor, device] => Some((vendor.to_string(), device.to_string())),
+                        _ => None,
+                    }
+                })
+        })
+        .collect();
 
     Ok(devices)
 }
