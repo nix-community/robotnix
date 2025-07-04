@@ -218,8 +218,7 @@ impl Lockfile {
     }
 
     pub async fn update_all(&mut self) -> Result<(), UpdateLockfileError> {
-        let mut paths: Vec<_> = self.entries.keys().cloned().collect();
-        paths.sort();
+        let paths: Vec<_> = self.entries.keys().cloned().collect();
         for (i, path) in paths.iter().enumerate() {
             if self.entries.get(path).unwrap().project.active {
                 eprintln!("Updating lock for `{}` ({}/{})", path.display(), i+1, paths.len());
