@@ -55,19 +55,22 @@ pub async fn fetch_hudson_devices() -> Result<HashMap<String, HudsonDeviceInfo>,
 
     let mut devices = HashMap::new();
     for line in text.split("\n") {
-        let line = line.trim_end();
-        if line != "" && !line.starts_with("#") {
-            let mut fields = line.split(" ");
-            let name = fields.next().ok_or(FetchHudsonDevicesError::ParseLine(line.to_string()))?;
-            let build_type = fields.next().ok_or(FetchHudsonDevicesError::ParseLine(line.to_string()))?;
-            let branch = fields.next().ok_or(FetchHudsonDevicesError::ParseLine(line.to_string()))?;
-            let period = fields.next().ok_or(FetchHudsonDevicesError::ParseLine(line.to_string()))?;
-            devices.insert(name.to_string(), HudsonDeviceInfo {
-                build_type: build_type.to_string(),
-                branch: branch.to_string(),
-                period: period.to_string(),
-            });
+        let line = line.trim();
+        if line == "" || line.starts_with("#") {
+            continue;
         }
+        let fields: Vec<_> = line.split(" ").collect();
+        match fields.as_slice() {
+            [name, build_type, branch, period] => {
+                devices.insert(name.to_string(), HudsonDeviceInfo {
+                    build_type: build_type.to_string(),
+                    branch: branch.to_string(),
+                    period: period.to_string(),
+                });
+
+            },
+            _ => return Err(FetchHudsonDevicesError::ParseLine(line.to_owned())),
+        };
     }
 
     Ok(devices)
