@@ -171,12 +171,15 @@ fn recursively_propagate_categories(lockfile: &mut Lockfile, path: &Path) {
 
     if let Some(deps) = deps {
         for dep in deps {
-            let project = &mut lockfile.entries.get_mut(&dep).unwrap().project;
-            for cat in cats.iter() {
-                if !project.categories.contains(cat) {
-                    project.categories.push(cat.clone());
+            {
+                let project = &mut lockfile.entries.get_mut(&dep).unwrap().project;
+                for cat in cats.iter() {
+                    if !project.categories.contains(cat) {
+                        project.categories.push(cat.clone());
+                    }
                 }
             }
+            recursively_propagate_categories(lockfile, &dep);
         }
     }
 }
