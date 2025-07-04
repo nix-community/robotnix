@@ -93,7 +93,7 @@ pub enum ResolveLineageDepsError {
 }
 
 
-pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[LineageDep], categories: &[Category]) -> Result<Vec<Project>, ResolveLineageDepsError> {
+pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[LineageDep]) -> Result<Vec<Project>, ResolveLineageDepsError> {
     let mut project_deps = vec![];
     for dep in lineage_deps {
         let remote = match &dep.remote {
@@ -151,13 +151,34 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
                 fetch_lfs: true,
                 fetch_submodules: false,
             },
-            categories: categories.to_vec(),
+            categories: vec![],
             lineage_deps: None,
             active: true,
         });
     }
 
     Ok(project_deps)
+}
+
+fn recursively_propagate_categories(lockfile: &mut Lockfile, path: &Path) {
+    let (deps, cats) = {
+        let project = &lockfile.entries.get(path).unwrap().project;
+        match &project.lineage_deps {
+            Some(LineageDeps::Some(deps)) => (Some(deps.clone()), project.categories.clone()),
+            _ => (None, project.categories.clone()),
+        }
+    };
+
+    if let Some(deps) = deps {
+        for dep in deps {
+            let project = &mut lockfile.entries.get_mut(&dep).unwrap().project;
+            for cat in cats.iter() {
+                if !project.categories.contains(cat) {
+                    project.categories.push(cat.clone());
+                }
+            }
+        }
+    }
 }
 
 pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BTreeMap<String, DeviceInfo>, manifest: &Manifest, branch: &str) -> Result<(), PrefetchLineageDepsError> {
@@ -183,6 +204,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
             None => (),
         }
     }
+    let device_repos = fetch_queue.clone();
 
     let mut i = 0;
     loop {
@@ -191,10 +213,6 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
             None => break,
         };
         eprintln!("Fetching LineageOS dependencies for {}...", path.display());
-        let categories = {
-            let project = &lockfile.entries.get(&path).unwrap().project;
-            project.categories.clone()
-        };
 
         let (new_deps, new_projects) = match lockfile.update(&path).await {
             Ok(()) => {
@@ -216,7 +234,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
                     )
                         .map_err(PrefetchLineageDepsError::Parse)?;
 
-                    let ldeps = resolve_lineage_dependencies(manifest, &lineage_deps, &categories)
+                    let ldeps = resolve_lineage_dependencies(manifest, &lineage_deps)
                         .map_err(|e| PrefetchLineageDepsError::Resolve(path.clone(), e))?;
                     (LineageDeps::Some(ldeps.iter().map(|x| x.path.clone()).collect()), Some(ldeps))
                 }
@@ -242,6 +260,11 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
             }
         }
         i += 1;
+    }
+
+    // Propagate device categories upwards through the dependency tree
+    for device_repo in device_repos {
+        recursively_propagate_categories(lockfile, &device_repo);
     }
 
     eprintln!("Done building LineageOS-specific dependency tree.");
