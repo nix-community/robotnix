@@ -35,6 +35,7 @@ mod lock;
 mod lineage_devices;
 mod lineage_dependencies;
 mod utils;
+mod graphene;
 
 #[derive(Parser)]
 enum Args {
@@ -44,6 +45,10 @@ enum Args {
 
         #[arg(long, short)]
         branch: String,
+
+        // Interpret the `branch` argument as a git tag instead of a git branch.
+        #[arg(long, short)]
+        tag: bool,
 
         #[arg(long, short)]
         lineage_device_file: Vec<PathBuf>,
@@ -65,6 +70,13 @@ enum Args {
         #[arg(long, short)]
         block: Option<Vec<String>>,
     },
+    GetGrapheneDevices {
+        supported_devices_file: PathBuf,
+        channel_info_file: PathBuf,
+
+        #[arg(long, short)]
+        channels: Vec<String>,
+    },
 }
 
 #[tokio::main]
@@ -76,6 +88,7 @@ async fn main() {
             manifest_url,
             lockfile_path,
             branch,
+            tag,
             lineage_device_file,
             missing_dep_devs_file,
             muppets,
@@ -88,9 +101,14 @@ async fn main() {
             }
 
             let url = Url::parse(&manifest_url).unwrap();
+            let git_ref = if tag {
+                format!("refs/tags/{branch}")
+            } else {
+                format!("refs/heads/{branch}")
+            };
             let manifest_fetch = nix_prefetch_git(
                 &url,
-                &format!("refs/heads/{branch}"),
+                &git_ref,
                 false,
                 false,
             ).await.unwrap();
@@ -188,9 +206,22 @@ async fn main() {
 
             lockfile.update_all().await.unwrap();
         },
-        Args::GetLineageDevices { device_metadata_file, allow, block }=> {
+
+        Args::GetLineageDevices { device_metadata_file, allow, block } => {
             let devices = lineage_devices::get_devices(&allow, &block).await.unwrap();
             fs::write(&device_metadata_file, serde_json::to_vec_pretty(&devices).unwrap()).unwrap();
+        },
+
+        Args::GetGrapheneDevices { supported_devices_file, channel_info_file, channels } => {
+            let supported_devices_json = fs::read(&supported_devices_file).unwrap();
+            let supported_devices: Vec<String> = serde_json::from_slice(&supported_devices_json).unwrap();
+            let mut device_info = BTreeMap::new();
+            for channel in channels {
+                device_info.insert(channel.clone(), graphene::get_device_info(&supported_devices, &channel).await.unwrap());
+            }
+            let channel_info = graphene::to_channel_info(device_info);
+
+            fs::write(&channel_info_file, serde_json::to_vec_pretty(&channel_info).unwrap()).unwrap();
         },
     }
 }

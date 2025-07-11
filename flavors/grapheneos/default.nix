@@ -12,7 +12,7 @@ let
 
   phoneDeviceFamilies = [ "crosshatch" "bonito" "coral" "sunfish" "redfin" "barbet" ];
   supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
-
+  activeReleaseTags = lib.importJSON ./active-release-tags.json;
 in mkIf (config.flavor == "grapheneos") (mkMerge [
 {
   buildNumber = mkDefault upstreamParams.buildNumber;
