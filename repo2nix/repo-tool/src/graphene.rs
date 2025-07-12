@@ -28,7 +28,7 @@ pub enum GetDeviceInfoError {
 pub async fn get_device_info(devices: &[String], channel: &str) -> Result<BTreeMap<String, DeviceInfo>, GetDeviceInfoError> {
     let mut device_info = BTreeMap::new();
     for device in devices.iter() {
-        eprintln!("Fetching device info for {device}...");
+        eprintln!("Fetching device info for {device} (channel {channel})...");
         let text = reqwest::get(&format!(
                 "https://releases.grapheneos.org/{}-{}",
                 device,
