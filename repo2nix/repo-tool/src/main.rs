@@ -17,6 +17,7 @@ use repo_manifest::resolver::{
 use crate::fetch::nix_prefetch_git;
 use crate::lock::{
     Lockfile,
+    LockfileEntry,
     ReadWriteLockfileError,
 };
 use crate::lineage_devices::DeviceInfo;
@@ -77,6 +78,12 @@ enum Args {
         #[arg(long, short)]
         channels: Vec<String>,
     },
+    GetBuildID {
+        out_file: PathBuf,
+
+        #[arg(short)]
+        lockfiles: Vec<PathBuf>,
+    }
 }
 
 #[tokio::main]
@@ -222,6 +229,40 @@ async fn main() {
             let channel_info = graphene::to_channel_info(device_info);
 
             fs::write(&channel_info_file, serde_json::to_vec_pretty(&channel_info).unwrap()).unwrap();
+        },
+
+        Args::GetBuildID { out_file, lockfiles } => {
+            let build_ids: BTreeMap<PathBuf, String> = lockfiles
+                .iter()
+                .map(|lockfile_path| {
+                    let bytes = fs::read(&lockfile_path).unwrap();
+                    let lockfile_entries: BTreeMap<PathBuf, LockfileEntry> = serde_json::from_slice(&bytes).unwrap();
+
+                    let platform_build_path = &lockfile_entries
+                        .get(Path::new("build/make"))
+                        .unwrap()
+                        .lock
+                        .as_ref()
+                        .unwrap()
+                        .path;
+
+                    let build_id_mk_text = fs::read(
+                        platform_build_path.join("core/build_id.mk")
+                    ).unwrap();
+                    let build_id_mk_text = std::str::from_utf8(&build_id_mk_text).unwrap();
+                    let lines: Vec<String> = build_id_mk_text
+                        .split('\n')
+                        .filter_map(|x| x.strip_prefix("BUILD_ID=").map(|x| x.to_string()))
+                        .collect();
+
+                    match lines.as_slice() {
+                        [ build_id, ] => (lockfile_path.clone(), build_id.clone()),
+                        _ => panic!("Failed to parse lockfile"),
+                    }
+                })
+                .collect();
+
+            fs::write(&out_file, serde_json::to_vec_pretty(&build_ids).unwrap()).unwrap();
         },
     }
 }
