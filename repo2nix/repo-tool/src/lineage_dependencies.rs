@@ -73,7 +73,7 @@ pub struct LineageDep {
 #[derive(Debug, Error)]
 pub enum PrefetchLineageDepsError {
     #[error("updating lock failed")]
-    Lock(#[source] UpdateLockfileError),
+    Lock(#[from] UpdateLockfileError),
     #[error("failed reading `lineage.dependencies` from device repo")]
     IO(#[from] io::Error),
     #[error("failed to parse")]
@@ -201,7 +201,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
                     categories: vec![Category::DeviceSpecific(device.name.clone())],
                     lineage_deps: None,
                     active: true,
-                }).map_err(PrefetchLineageDepsError::Lock)?;
+                })?;
                 fetch_queue.push(path);
             },
             None => (),
@@ -229,13 +229,12 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
                     .unwrap()
                     .path;
 
-                if !fs::try_exists(&store_path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)? {
+                if !fs::try_exists(&store_path.join("lineage.dependencies")).await? {
                     (LineageDeps::NoLineageDependenciesFile, None)
                 } else {
                     let lineage_deps: Vec<LineageDep> = serde_json::from_slice(
-                        &fs::read(&store_path.join("lineage.dependencies")).await.map_err(PrefetchLineageDepsError::IO)?
-                    )
-                        .map_err(PrefetchLineageDepsError::Parse)?;
+                        &fs::read(&store_path.join("lineage.dependencies")).await?
+                    )?;
 
                     let ldeps = resolve_lineage_dependencies(manifest, &lineage_deps)
                         .map_err(|e| PrefetchLineageDepsError::Resolve(path.clone(), e))?;
@@ -259,7 +258,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
                 if !fetch_queue.contains(&new_project.path) {
                     fetch_queue.push(new_project.path.clone());
                 }
-                lockfile.add_project(new_project).map_err(PrefetchLineageDepsError::Lock)?;
+                lockfile.add_project(new_project)?;
             }
         }
         i += 1;

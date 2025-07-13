@@ -65,8 +65,7 @@ pub async fn nix_prefetch_git(repo_url: &Url, revision: &str, fetch_lfs: bool, f
         .arg(&revision)
         .args(&flag_args)
         .output()
-        .await
-        .map_err(NixPrefetchGitError::ProcessSpawn)?;
+        .await?;
 
     if !output.status.success() {
         return Err(NixPrefetchGitError::NonzeroExitStatus(
@@ -75,8 +74,7 @@ pub async fn nix_prefetch_git(repo_url: &Url, revision: &str, fetch_lfs: bool, f
         ));
     }
 
-    serde_json::from_slice(&output.stdout)
-        .map_err(NixPrefetchGitError::Parse)
+    Ok(serde_json::from_slice(&output.stdout)?)
 }
 
 
@@ -99,8 +97,7 @@ pub async fn git_ls_remote(url: &str, git_ref: &str) -> Result<String, GitLsRemo
         .arg("ls-remote")
         .arg(url)
         .output()
-        .await
-        .map_err(GitLsRemoteError::ProcessSpawn)?;
+        .await?;
 
     if !output.status.success() {
         return Err(GitLsRemoteError::NonzeroExitStatus(

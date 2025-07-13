@@ -42,8 +42,7 @@ pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock,
         project.repo_ref.revision.clone()
     } else {
         git_ls_remote(project.repo_ref.repo_url.as_str(), &project.repo_ref.revision)
-            .await
-            .map_err(UpdateLockError::GitLsRemote)?
+            .await?
     };
 
     let up_to_date = match lock {
@@ -61,8 +60,7 @@ pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock,
         project.repo_ref.fetch_lfs,
         project.repo_ref.fetch_submodules,
     )
-        .await
-        .map_err(UpdateLockError::NixPrefetchGit)?;
+        .await?;
 
     if current_commit != fetch_output.rev {
         return Err(UpdateLockError::CommitMismatch(project.repo_ref.revision.clone()));

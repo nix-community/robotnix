@@ -44,7 +44,7 @@ pub async fn fetch_hudson_devices() -> Result<HashMap<String, HudsonDeviceInfo>,
         "refs/heads/main",
         false,
         false,
-    ).await.map_err(FetchHudsonDevicesError::Fetch)?;
+    ).await?;
 
     let bytes = fs::read(&hudson_fetch.path.join("lineage-build-targets"))
         .await
@@ -79,9 +79,9 @@ pub async fn fetch_hudson_devices() -> Result<HashMap<String, HudsonDeviceInfo>,
 #[derive(Debug, Error)]
 pub enum GetDeviceReposError {
     #[error("fetching github:LineageOS/mirror failed")]
-    Fetch(NixPrefetchGitError),
+    Fetch(#[from] NixPrefetchGitError),
     #[error("reading mirror manifest failed")]
-    ReadMirrorManifest(ManifestReadFileError),
+    ReadMirrorManifest(#[from] ManifestReadFileError),
 }
 
 pub async fn get_device_repos() -> Result<Vec<(String, String)>, GetDeviceReposError> {
@@ -91,14 +91,12 @@ pub async fn get_device_repos() -> Result<Vec<(String, String)>, GetDeviceReposE
         false,
         false,
     )
-        .await
-        .map_err(GetDeviceReposError::Fetch)?;
+        .await?;
 
     let mirror_manifest = read_manifest_file(
         &mirror_fetch.path.join("default.xml"),
     )
-        .await
-        .map_err(GetDeviceReposError::ReadMirrorManifest)?;
+        .await?;
 
     let devices = mirror_manifest
         .projects

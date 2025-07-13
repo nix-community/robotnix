@@ -34,11 +34,9 @@ pub async fn get_device_info(devices: &[String], channel: &str) -> Result<BTreeM
                 device,
                 channel,
             ))
-            .await
-            .map_err(GetDeviceInfoError::HTTP)?
+            .await?
             .text()
-            .await
-            .map_err(GetDeviceInfoError::HTTP)?;
+            .await?;
 
         match text.trim_end().split(" ").collect::<Vec<_>>().as_slice() {
             [git_tag, build_time, _, _] => {
