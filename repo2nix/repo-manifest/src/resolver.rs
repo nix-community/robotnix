@@ -164,8 +164,6 @@ pub enum ResolveManifestError {
     MissingRemote(String),
     #[error("no revision set for project `{0}`")]
     MissingRevision(String),
-    #[error("no path set for project `{0}`")]
-    MissingPath(String),
 }
 
 pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<Manifest, ResolveManifestError> {
@@ -216,8 +214,12 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                 .ok_or(ResolveManifestError::RemoteNotFound(name.clone(), remote_name.clone()))?,
             None => manifest.default_remote.as_ref().ok_or(ResolveManifestError::MissingRemote(name.clone()))?,
         };
+        let path = match project_xml.path.clone() {
+            Some(p) => p,
+            None => continue,
+        };
         let project = Project {
-            path: project_xml.path.clone().ok_or(ResolveManifestError::MissingPath(project_xml.name.clone()))?,
+            path: path,
             groups: project_xml
                 .groups
                 .as_ref()
