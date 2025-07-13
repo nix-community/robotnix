@@ -40,7 +40,8 @@
         shellcheck
         wget
 
-        # repo2nix
+        (callPackage ./repo2nix/package.nix {})
+        # repo2nix dev stuff
         cargo rustc pkg-config openssl
 
         # For chromium updater script

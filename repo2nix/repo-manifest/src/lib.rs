@@ -11,15 +11,15 @@ mod tests {
     use tokio;
 
     #[tokio::test]
-    fn basic_parsing() {
+    async fn basic_parsing() {
         let manifest_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("test/android");
-        let manifest_xml = recursively_read_manifest_files(&manifest_path, &Path::new("default.xml")).unwrap();
+        let manifest_xml = recursively_read_manifest_files(&manifest_path, &Path::new("default.xml")).await.unwrap();
     }
 
     #[tokio::test]
-    fn basic_resolving() {
+    async fn basic_resolving() {
         let manifest_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("test/android");
-        let manifest_xml = recursively_read_manifest_files(&manifest_path, &Path::new("default.xml")).unwrap();
+        let manifest_xml = recursively_read_manifest_files(&manifest_path, &Path::new("default.xml")).await.unwrap();
         let manifest = resolve_manifest(
             &manifest_xml,
             &Url::parse("https://github.com/LineageOS/android/").unwrap()
@@ -32,7 +32,7 @@ mod tests {
         println!("{:?}", manifest.default_remote);
 
         for project in manifest.projects.values() {
-            println!("{} {}", project.name, project.repo_ref.repo_url);
+            println!("{}", project.repo_ref.repo_url);
         }
     }
 }
