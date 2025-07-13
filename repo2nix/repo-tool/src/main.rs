@@ -30,6 +30,7 @@ use crate::utils::{
     tag_device_by_group,
     cleanup_broken_projects,
 };
+use main_error::MainError;
 
 mod fetch;
 mod lock;
@@ -85,7 +86,7 @@ enum Args {
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), MainError> {
     let args = Args::parse();
 
     match args {
@@ -105,7 +106,7 @@ async fn main() {
                 );
             }
 
-            let url = Url::parse(&manifest_url).unwrap();
+            let url = Url::parse(&manifest_url)?;
             let git_ref = if tag {
                 format!("refs/tags/{branch}")
             } else {
@@ -116,34 +117,34 @@ async fn main() {
                 &git_ref,
                 false,
                 false,
-            ).await.unwrap();
+            ).await?;
 
-            let mut manifest_xml = recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml")).await.unwrap();
+            let mut manifest_xml = recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml")).await?;
             if muppets {
                 let muppets_fetch = nix_prefetch_git(
-                    &Url::parse("https://github.com/TheMuppets/manifests").unwrap(),
+                    &Url::parse("https://github.com/TheMuppets/manifests")?,
                     &format!("refs/heads/{branch}"),
                     false,
                     false,
-                ).await.unwrap();
+                ).await?;
 
-                let muppets_manifest_xml = read_manifest_file(&muppets_fetch.path.join("muppets.xml")).await.unwrap();
-                merge_manifests(&mut manifest_xml, &muppets_manifest_xml).unwrap();
+                let muppets_manifest_xml = read_manifest_file(&muppets_fetch.path.join("muppets.xml")).await?;
+                merge_manifests(&mut manifest_xml, &muppets_manifest_xml)?;
             }
-            let manifest = resolve_manifest(&manifest_xml, &url).unwrap();
+            let manifest = resolve_manifest(&manifest_xml, &url)?;
 
             let mut lockfile = match Lockfile::read_from_file(&lockfile_path).await {
                 Ok(mut lf) => {
                     lf.deactivate_all();
                     for project in manifest.projects.values() {
-                        lf.add_project(project.clone()).unwrap();
+                        lf.add_project(project.clone())?;
                     }
                     lf
                 },
                 Err(ReadWriteLockfileError::IO(e)) => {
                     if e.kind() == ErrorKind::NotFound {
                         let lf = Lockfile::new(&manifest.projects, &lockfile_path);
-                        lf.write().await.unwrap();
+                        lf.write().await?;
                         lf
                     } else {
                         panic!("error opening file: {e:?}");
@@ -157,7 +158,7 @@ async fn main() {
                 let broken_muppets_entries = cleanup_broken_projects(
                     &mut lockfile,
                     Some("muppets")
-                ).await.unwrap();
+                ).await?;
                 let mut muppets_broken_devices = vec![];
                 for entry in broken_muppets_entries {
                     for cat in entry.project.categories {
@@ -179,11 +180,11 @@ async fn main() {
                 let mut all_devices = BTreeMap::new();
                 for ldf in lineage_device_file {
                     let devices: BTreeMap<String, DeviceInfo> = serde_json::from_slice(
-                        &fs::read(&ldf).unwrap()
-                    ).unwrap();
-                    merge_lineage_devices(&mut all_devices, devices).unwrap();
+                        &fs::read(&ldf)?
+                    )?;
+                    merge_lineage_devices(&mut all_devices, devices)?;
                 }
-                prefetch_lineage_dependencies(&mut lockfile, &all_devices, &manifest, &branch).await.unwrap();
+                prefetch_lineage_dependencies(&mut lockfile, &all_devices, &manifest, &branch).await?;
 
                 let missing_dep_devices: Vec<_> = all_devices
                     .keys()
@@ -202,65 +203,67 @@ async fn main() {
                 }
                 fs::write(
                     missing_dep_devs_file.unwrap(),
-                    serde_json::to_vec_pretty(&all_broken_devices).unwrap()
-                ).unwrap();
+                    serde_json::to_vec_pretty(&all_broken_devices)?
+                )?;
 
                 cleanup_failed_lineage_deps(&mut lockfile);
-                lockfile.write().await.unwrap();
+                lockfile.write().await?;
             }
 
-            lockfile.update_all().await.unwrap();
+            lockfile.update_all().await?;
         },
 
         Args::GetLineageDevices { device_metadata_file, allow, block } => {
-            let devices = lineage_devices::get_devices(&allow, &block).await.unwrap();
-            fs::write(&device_metadata_file, serde_json::to_vec_pretty(&devices).unwrap()).unwrap();
+            let devices = lineage_devices::get_devices(&allow, &block).await?;
+            fs::write(&device_metadata_file, serde_json::to_vec_pretty(&devices)?)?;
         },
 
         Args::GetGrapheneDevices { supported_devices_file, channel_info_file, channels } => {
-            let supported_devices_json = fs::read(&supported_devices_file).unwrap();
-            let supported_devices: Vec<String> = serde_json::from_slice(&supported_devices_json).unwrap();
+            let supported_devices_json = fs::read(&supported_devices_file)?;
+            let supported_devices: Vec<String> = serde_json::from_slice(&supported_devices_json)?;
             let mut device_info = BTreeMap::new();
             for channel in channels {
-                device_info.insert(channel.clone(), graphene::get_device_info(&supported_devices, &channel).await.unwrap());
+                device_info.insert(channel.clone(), graphene::get_device_info(&supported_devices, &channel).await?);
             }
             let channel_info = graphene::to_channel_info(device_info);
 
-            fs::write(&channel_info_file, serde_json::to_vec_pretty(&channel_info).unwrap()).unwrap();
+            fs::write(&channel_info_file, serde_json::to_vec_pretty(&channel_info)?)?;
         },
 
         Args::GetBuildID { out_file, lockfiles } => {
-            let build_ids: BTreeMap<PathBuf, String> = lockfiles
-                .iter()
-                .map(|lockfile_path| {
-                    let bytes = fs::read(&lockfile_path).unwrap();
-                    let lockfile_entries: BTreeMap<PathBuf, LockfileEntry> = serde_json::from_slice(&bytes).unwrap();
+            let mut build_ids: BTreeMap<PathBuf, String> = BTreeMap::new();
+            for lockfile_path in lockfiles.iter() {
+                let bytes = fs::read(&lockfile_path)?;
+                let lockfile_entries: BTreeMap<PathBuf, LockfileEntry> = serde_json::from_slice(&bytes)?;
 
-                    let platform_build_path = &lockfile_entries
-                        .get(Path::new("build/make"))
-                        .unwrap()
-                        .lock
-                        .as_ref()
-                        .unwrap()
-                        .path;
+                let platform_build_path = &lockfile_entries
+                    .get(Path::new("build/make"))
+                    .expect("path `build/make` not found in lockfile {lockfile_path}")
+                    .lock
+                    .as_ref()
+                    .expect("path `build/make` is not locked yet in lockfile {lockfile_path}")
+                    .path;
 
-                    let build_id_mk_text = fs::read(
-                        platform_build_path.join("core/build_id.mk")
-                    ).unwrap();
-                    let build_id_mk_text = std::str::from_utf8(&build_id_mk_text).unwrap();
-                    let lines: Vec<String> = build_id_mk_text
-                        .split('\n')
-                        .filter_map(|x| x.strip_prefix("BUILD_ID=").map(|x| x.to_string()))
-                        .collect();
+                let build_id_mk_text = fs::read(
+                    platform_build_path.join("core/build_id.mk")
+                )?;
+                let build_id_mk_text = std::str::from_utf8(&build_id_mk_text)?;
+                let lines: Vec<String> = build_id_mk_text
+                    .split('\n')
+                    .filter_map(|x| x.strip_prefix("BUILD_ID=").map(|x| x.to_string()))
+                    .collect();
 
-                    match lines.as_slice() {
-                        [ build_id, ] => (lockfile_path.clone(), build_id.clone()),
-                        _ => panic!("Failed to parse lockfile"),
-                    }
-                })
-                .collect();
+                match lines.as_slice() {
+                    [ build_id, ] => {
+                        build_ids.insert(lockfile_path.clone(), build_id.clone());
+                    },
+                    _ => panic!("Failed to parse build_id.mk"),
+                }
+            }
 
-            fs::write(&out_file, serde_json::to_vec_pretty(&build_ids).unwrap()).unwrap();
+            fs::write(&out_file, serde_json::to_vec_pretty(&build_ids)?)?;
         },
     }
+
+    Ok(())
 }
