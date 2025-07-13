@@ -80,8 +80,6 @@ enum Args {
     },
     GetBuildID {
         out_file: PathBuf,
-
-        #[arg(short)]
         lockfiles: Vec<PathBuf>,
     }
 }
