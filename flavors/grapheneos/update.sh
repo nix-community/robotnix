@@ -3,9 +3,9 @@
 set -e
 set -o pipefail
 
-repo-tool get-graphene-devices -c stable -c beta -c alpha devices.json channel-info.json
-tags=$(jq -r .git_tags[] channel-info.json | sort -r)
-latest_tag=$(jq -r .git_tags[-1] channel-info.json)
+repo-tool get-graphene-devices -c stable -c beta -c alpha devices.json channel_info.json
+tags=$(jq -r .git_tags[] channel_info.json | sort -r)
+latest_tag=$(jq -r .git_tags[-1] channel_info.json)
 
 for tag in $tags; do
   if [ ! -e $tag.lock ]; then
