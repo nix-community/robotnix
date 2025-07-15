@@ -19,20 +19,21 @@
         optional optionalString optionalAttrs elem
         mkIf mkMerge mkDefault mkForce;
 
-      grapheneOSRelease = "${config.apv.buildID}.${upstreamParams.buildNumber}";
-
       phoneDeviceFamilies = lib.importJSON ./devices.json;
-      supportedDeviceFamilies = phoneDeviceFamilies ++ [ "generic" ];
-      channelInfo = lib.importJSON ./channel-info.json;
+      supportedDevices = phoneDeviceFamilies ++ [ "generic" ];
+      channelInfo = lib.importJSON ./channel_info.json;
+      buildIDs = lib.importJSON ./build_ids.json;
     in mkIf (config.flavor == "grapheneos") (mkMerge [
-      (mkIf (config.grapheneos.channel != null) && (config.device != null) && (builtins.hasAttr config.device channelInfo) (
-      let
-        deviceInfo = channelInfo.device_info."${config.device}";
-      in {
-      buildNumber = mkDefault deviceInfo.git_tag;
+      (mkIf ((config.grapheneos.channel != null) && (config.device != null) && (builtins.hasAttr config.device channelInfo.device_info."${config.grapheneos.channel}")) (
+    let
+      deviceInfo = channelInfo.device_info.${config.grapheneos.channel}.${config.device};
+    in {
+      grapheneos.release = mkDefault deviceInfo.git_tag;
       buildDateTime = mkDefault deviceInfo.build_time;
+      apv.buildID = mkDefault buildIDs."${deviceInfo.git_tag}.lock";
     }))
     {
+      buildNumber = mkDefault config.grapheneos.release;
       productNamePrefix = mkDefault "";
 
       # Match upstream user/hostname
@@ -42,20 +43,15 @@
       };
 
       apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
-      apv.buildID = mkDefault (
-        if (elem config.device [ "crosshatch" "blueline" ]) then "SP1A.210812.016.C1"
-        else "SP2A.220405.003"
-      );
 
       source.manifest = {
         enable = true;
-        lockfile = mkDefault ./. + "/${deviceInfo.git_tag}.lock";
+        lockfile = mkDefault (./. + "/${config.grapheneos.release}.lock");
       };
 
-      warnings = (optional ((config.device != null) && !(elem config.deviceFamily supportedDeviceFamilies))
+      warnings = (optional ((config.device != null) && !(elem config.device supportedDevices))
         "${config.device} is not a supported device for GrapheneOS")
-        ++ (optional (!(elem config.androidVersion [ 12 ])) "Unsupported androidVersion (!= 12) for GrapheneOS")
-        ++ (optional (config.deviceFamily == "crosshatch") "crosshatch/blueline are considered legacy devices and receive only extended support updates from GrapheneOS and no longer receive vendor updates from Google");
+        ++ (optional (!(elem config.androidVersion [ 16 ])) "Unsupported androidVersion (!= 16) for GrapheneOS");
     }
     {
       # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
