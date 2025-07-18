@@ -63,17 +63,6 @@
         })
       ];
 
-      # No need to include kernel sources in Android source trees since we build separately
-      source.dirs."kernel/google/marlin".enable = false;
-      source.dirs."kernel/google/wahoo".enable = false;
-      source.dirs."kernel/google/crosshatch".enable = false;
-      source.dirs."kernel/google/bonito".enable = false;
-      source.dirs."kernel/google/coral".enable = false;
-      source.dirs."kernel/google/sunfish".enable = false;
-      source.dirs."kernel/google/redbull".enable = false;
-      source.dirs."kernel/google/barbet".enable = false;
-
-      kernel.enable = mkDefault (elem config.deviceFamily phoneDeviceFamilies);
 
       # Enable Vanadium (GraphaneOS's chromium fork).
       apps.vanadium.enable = mkDefault true;
