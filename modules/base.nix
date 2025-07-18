@@ -61,12 +61,6 @@ in
       example = "Pixel XL";
     };
 
-    deviceFamily = mkOption {
-      default = null;
-      type = types.nullOr types.str;
-      internal = true;
-    };
-
     arch = mkOption {
       default = "arm64";
       type = types.enum [ "arm64" "arm" "x86_64" "x86" ];
@@ -230,7 +224,6 @@ in
   (mkIf (lib.elem config.device ["arm64" "arm" "x86" "x86_64"]) {
     # If this is a generic build for an arch, just set the arch as well
     arch = mkDefault config.device;
-    deviceFamily = mkDefault "generic";
   })
   {
     apiLevel = {

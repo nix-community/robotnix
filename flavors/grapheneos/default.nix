@@ -19,8 +19,8 @@
         optional optionalString optionalAttrs elem
         mkIf mkMerge mkDefault mkForce;
 
-      phoneDeviceFamilies = lib.importJSON ./devices.json;
-      supportedDevices = phoneDeviceFamilies ++ [ "generic" ];
+      phoneDevices = lib.importJSON ./devices.json;
+      supportedDevices = phoneDevices ++ [ "generic" ];
       channelInfo = lib.importJSON ./channel_info.json;
       buildIDs = lib.importJSON ./build_ids.json;
     in mkIf (config.flavor == "grapheneos") (mkMerge [
@@ -42,7 +42,7 @@
         BUILD_HOSTNAME = "grapheneos";
       };
 
-      apv.enable = mkIf (elem config.deviceFamily phoneDeviceFamilies) (mkDefault true);
+      apv.enable = mkIf (elem config.device phoneDevices) (mkDefault true);
 
       source.manifest = {
         enable = true;
