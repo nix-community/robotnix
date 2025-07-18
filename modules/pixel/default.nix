@@ -34,6 +34,20 @@ let
     barbet = { name = "Pixel 5a (5G)"; };
     raven = { name = "Pixel 6 Pro"; };
     oriole = { name = "Pixel 6"; };
+    bluejay = { name = "Pixel 6a"; };
+    panther = { name = "Pixel 7"; };
+    cheetah = { name = "Pixel 7 Pro"; };
+    lynx = { name = "Pixel 7a"; };
+    tangorpro = { name = "Pixel Tablet"; };
+    felix = { name = "Pixel Fold"; };
+    shiba = { name = "Pixel 8"; };
+    husky = { name = "Pixel 8 Pro"; };
+    akita = { name = "Pixel 8a"; };
+    tokay = { name = "Pixel 9"; };
+    caiman = { name = "Pixel 9 Pro"; };
+    komodo = { name = "Pixel 9 Pro XL"; };
+    comet = { name = "Pixel 9 Pro Fold"; };
+    tegu = { name = "Pixel 9a"; };
   };
 
   # Make a uuid based on some string data
