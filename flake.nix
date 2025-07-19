@@ -11,7 +11,7 @@
 
   outputs = { self, nixpkgs, androidPkgs, flake-compat,  ... }@inputs: let
     pkgs = import ./pkgs/default.nix { inherit inputs; };
-  in {
+  in rec {
     # robotnixSystem evaluates a robotnix configuration
     lib.robotnixSystem = configuration: import ./default.nix {
       inherit configuration pkgs;
@@ -52,5 +52,9 @@
       ];
       PYTHONPATH=./scripts;
     };
+
+    examples = nixpkgs.lib.genAttrs
+      [ "lineageos" "grapheneos" ]
+      (name: lib.robotnixSystem (./. + "/examples/${name}.nix"));
   };
 }
