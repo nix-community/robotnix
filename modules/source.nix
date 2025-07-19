@@ -4,7 +4,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkDefault mkOption types;
+  inherit (lib) mkIf mkDefault mkMerge mkOption types;
 
   # A tree (attrset containing attrsets) which matches the source directories relpath filesystem structure.
   # e.g.
@@ -184,6 +184,14 @@ in
         '';
       };
 
+      overlayfsDirs = mkOption {
+        default = [];
+        type = types.listOf types.str;
+        description = ''
+          Directories to make read-writeable via an overlayfs duing the build.
+        '';
+      };
+
       excludeGroups = mkOption {
         default = [ "darwin" "mips" ];
         type = types.listOf types.str;
@@ -204,13 +212,25 @@ in
     };
   };
 
-  config.source = {
+  config.source = let
+    existingOverlayfsDirs = (builtins.filter (path: builtins.hasAttr path config.source.dirs) config.source.overlayfsDirs);
+  in {
     manifest.categories = [ "Default" ];
-    unpackScript = lib.concatMapStringsSep "\n" (d: d.unpackScript) (lib.attrValues config.source.dirs);
-    dirs = mkIf config.source.manifest.enable (
+    unpackScript = lib.concatStringsSep "\n" (
+      (map (d: d.unpackScript) (lib.attrValues config.source.dirs) ++
+      (map (path: ''
+        mkdir -p .overlays_work/${path}
+        mkdir -p .overlays_rw/${path}
+        mkdir -p ${path}
+        ${pkgs.util-linux}/bin/mount -t overlay overlay -olowerdir=.overlays_ro/${path},upperdir=.overlays_rw/${path},workdir=.overlays_work/${path} ${path}
+      '') config.source.overlayfsDirs)
+    ));
+    dirs = mkMerge [ (mkIf config.source.manifest.enable (
       let
         entries = lib.importJSON config.source.manifest.lockfile;
-        filteredEntries = lib.filterAttrs (path: entry: entry.project.active && (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)) entries;
+        filteredEntries = lib.filterAttrs (
+          path: entry: entry.project.active && (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)
+        ) entries;
         dirs = lib.mapAttrs (path: entry: {
           src = pkgs.fetchgit {
             url = entry.project.repo_ref.repo_url;
@@ -224,7 +244,11 @@ in
         }) filteredEntries;
       in
         dirs
-    );
+      )) (
+        lib.genAttrs existingOverlayfsDirs (path: {
+          relpath = ".overlays_ro/${path}";
+        }
+      )) ];
   };
 
   config.build = {
