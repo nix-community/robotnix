@@ -54,17 +54,8 @@
         ++ (optional (!(elem config.androidVersion [ 16 ])) "Unsupported androidVersion (!= 16) for GrapheneOS");
     }
     {
-      # Enable Vanadium (GraphaneOS's chromium fork).
-      apps.vanadium.enable = mkDefault true;
-      webview.vanadium.enable = mkDefault true;
-      webview.vanadium.availableByDefault = mkDefault true;
-
       apps.seedvault.includedInFlavor = mkDefault true;
       apps.updater.includedInFlavor = mkDefault true;
-
-      # Remove upstream prebuilt versions from build. We build from source ourselves.
-      removedProductPackages = [ "TrichromeWebView" "TrichromeChrome" "webview" ];
-      source.dirs."external/vanadium".enable = false;
 
       # Override included android-prepare-vendor, with the exact version from
       # GrapheneOS. Unfortunately, Doing it this way means we don't cache apv
