@@ -1,4 +1,7 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  cfg = config.adevtool;
+in {
   options.adevtool = {
     enable = lib.mkEnableOption "the adevtool module";
     buildID = lib.mkOption {
@@ -11,5 +14,9 @@
     ota = lib.mkOption {
       type = lib.types.str;
     };
+  };
+
+  config = lib.mkIf cfg.enable {
+    source.overlayfsDirs = [ "vendor/adevtool" ];
   };
 }
