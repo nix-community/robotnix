@@ -212,9 +212,7 @@ in
     };
   };
 
-  config.source = let
-    existingOverlayfsDirs = (builtins.filter (path: builtins.hasAttr path config.source.dirs) config.source.overlayfsDirs);
-  in {
+  config.source = {
     manifest.categories = [ "Default" ];
     unpackScript = lib.concatStringsSep "\n" (
       (map (d: d.unpackScript) (lib.attrValues config.source.dirs) ++
@@ -245,7 +243,7 @@ in
       in
         dirs
       )) (
-        lib.genAttrs existingOverlayfsDirs (path: {
+        lib.genAttrs config.source.overlayfsDirs (path: {
           relpath = ".overlays_ro/${path}";
         }
       )) ];
