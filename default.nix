@@ -46,6 +46,7 @@ let
       ./modules/13
       ./modules/15
       ./modules/9
+      ./modules/adevtool
       ./modules/apps/auditor.nix
       ./modules/apps/chromium.nix
       ./modules/apps/fdroid.nix

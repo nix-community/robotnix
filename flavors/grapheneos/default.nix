@@ -30,7 +30,7 @@
     in {
       grapheneos.release = mkDefault deviceInfo.git_tag;
       buildDateTime = mkDefault deviceInfo.build_time;
-      apv.buildID = mkDefault buildIDs."${deviceInfo.git_tag}.lock";
+      adevtool.buildID = mkDefault buildIDs."${deviceInfo.git_tag}.lock";
     }))
     {
       buildNumber = mkDefault config.grapheneos.release;
@@ -42,7 +42,7 @@
         BUILD_HOSTNAME = "grapheneos";
       };
 
-      apv.enable = mkIf (elem config.device phoneDevices) (mkDefault true);
+      adevtool.enable = mkIf (elem config.device phoneDevices) (mkDefault true);
 
       source.manifest = {
         enable = true;

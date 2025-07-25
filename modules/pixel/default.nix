@@ -10,7 +10,7 @@ let
   otaList = lib.importJSON ./pixel-otas.json;
   fetchItem = json: let
     matchingItem = lib.findSingle
-      (v: (v.device == config.device) && (lib.hasInfix "(${config.apv.buildID}," v.version)) # Look for left paren + upstream buildNumber + ","
+      (v: (v.device == config.device) && (lib.hasInfix "(${config.adevtool.buildID}," v.version)) # Look for left paren + upstream buildNumber + ","
       (throw "no items found for vendor img/ota")
       (throw "multiple items found for vendor img/ota")
       json;
@@ -65,8 +65,8 @@ mkMerge [
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
 
-    apv.img = mkDefault (fetchItem imgList);
-    apv.ota = mkDefault (fetchItem otaList);
+    adevtool.img = mkDefault (fetchItem imgList);
+    adevtool.ota = mkDefault (fetchItem otaList);
 
     signing.avb.enable = mkDefault true;
   })
