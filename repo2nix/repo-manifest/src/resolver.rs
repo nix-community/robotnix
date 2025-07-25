@@ -214,10 +214,7 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                 .ok_or(ResolveManifestError::RemoteNotFound(name.clone(), remote_name.clone()))?,
             None => manifest.default_remote.as_ref().ok_or(ResolveManifestError::MissingRemote(name.clone()))?,
         };
-        let path = match project_xml.path.clone() {
-            Some(p) => p,
-            None => continue,
-        };
+        let path = project_xml.path.clone().unwrap_or(PathBuf::from(&project_xml.name));
         let project = Project {
             path: path,
             groups: project_xml
