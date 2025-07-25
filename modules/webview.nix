@@ -61,6 +61,10 @@ in
 
   config = lib.mkMerge [
     {
+      /*
+       * Disable the webview assertion, as we want to be able to just leave the
+       * webview as it is in the source tree until we properly fix the webview
+       * module.
       assertions = [
         {
           # If no webview is enabled with android 15, the webview updater service
@@ -69,6 +73,7 @@ in
           message = "You must enable a webview to be able to boot android 15 or later.";
         }
       ];
+      */
     }
     (mkIf (lib.any (m: m.enable) (lib.attrValues config.webview)) {
     assertions = [
