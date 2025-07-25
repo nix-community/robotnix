@@ -24,6 +24,7 @@ in
       rsync
       unzip
       zip
+      util-linux # for `chrt`
 
       # Things not in build/soong/ui/build/paths/config.go
       nettools # Needed for "hostname" in build/soong/ui/build/sandbox_linux.go

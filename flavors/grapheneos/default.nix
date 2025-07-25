@@ -54,16 +54,6 @@
         ++ (optional (!(elem config.androidVersion [ 16 ])) "Unsupported androidVersion (!= 16) for GrapheneOS");
     }
     {
-      # Disable setting SCHED_BATCH in soong. Brings in a new dependency and the nix-daemon could do that anyway.
-      source.dirs."build/soong".patches = [
-        (pkgs.fetchpatch {
-          url = "https://github.com/GrapheneOS/platform_build_soong/commit/76723b5745f08e88efa99295fbb53ed60e80af92.patch";
-          sha256 = "0vvairss3h3f9ybfgxihp5i8yk0rsnyhpvkm473g6dc49lv90ggq";
-          revert = true;
-        })
-      ];
-
-
       # Enable Vanadium (GraphaneOS's chromium fork).
       apps.vanadium.enable = mkDefault true;
       webview.vanadium.enable = mkDefault true;
