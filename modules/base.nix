@@ -39,10 +39,9 @@ in
   options = {
     flavor = mkOption {
       default = null;
-      type = types.nullOr types.str;
+      type = types.nullOr (types.enum [ "lineageos" "grapheneos" ]);
       description = ''
         Set to one of robotnix's supported flavors.
-        Current options are `vanilla`, `grapheneos`, and `lineageos`.
       '';
       example = "vanilla";
     };
