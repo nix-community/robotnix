@@ -57,25 +57,6 @@
       apps.seedvault.includedInFlavor = mkDefault true;
       apps.updater.includedInFlavor = mkDefault true;
 
-      # Override included android-prepare-vendor, with the exact version from
-      # GrapheneOS. Unfortunately, Doing it this way means we don't cache apv
-      # output across vanilla/grapheneos, even if they are otherwise identical.
-      source.dirs."vendor/android-prepare-vendor".enable = false;
-      nixpkgs.overlays = [ (self: super: {
-        android-prepare-vendor = super.android-prepare-vendor.overrideAttrs (_: {
-          src = config.source.dirs."vendor/android-prepare-vendor".src;
-          patches = [
-            ./apv/0001-Just-write-proprietary-blobs.txt-to-current-dir.patch
-            ./apv/0002-Allow-for-externally-set-config-file.patch
-            ./apv/0003-Add-option-to-use-externally-provided-carrier_list.p.patch
-          ];
-          passthru.evalTimeSrc = builtins.fetchTarball {
-            url = "https://github.com/GrapheneOS/android-prepare-vendor/archive/${config.source.dirs."vendor/android-prepare-vendor".rev}.tar.gz";
-            inherit (config.source.dirs."vendor/android-prepare-vendor") sha256;
-          };
-        });
-      }) ];
-
       # GrapheneOS just disables apex updating wholesale
       signing.apex.enable = false;
 

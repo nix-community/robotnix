@@ -2,8 +2,6 @@
 self: super: {
   android-emulator = super.callPackage ./android-emulator {};
 
-  android-prepare-vendor = super.callPackage ./android-prepare-vendor {};
-
   bundletool = super.callPackage ./bundletool {};
 
   # FIXME: Broken by upstream changes, not sure if it's still necessary?
