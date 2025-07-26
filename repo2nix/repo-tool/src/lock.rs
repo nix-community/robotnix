@@ -37,7 +37,7 @@ pub enum UpdateLockError {
     #[error("commit ids returned by `git ls-remote` and `nix-prefetch-git` for rev `{0}` do not match")]
     CommitMismatch(String),
 }
-pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock, UpdateLockError> {
+pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<(Lock, bool), UpdateLockError> {
     let current_commit = if is_commit_id(&project.repo_ref.revision) {
         project.repo_ref.revision.clone()
     } else {
@@ -51,7 +51,7 @@ pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock,
     };
 
     if up_to_date {
-        return Ok(lock.clone().unwrap());
+        return Ok((lock.clone().unwrap(), false));
     }
 
     let fetch_output = nix_prefetch_git(
@@ -66,12 +66,12 @@ pub async fn update_lock(project: &Project, lock: &Option<Lock>) -> Result<Lock,
         return Err(UpdateLockError::CommitMismatch(project.repo_ref.revision.clone()));
     }
 
-    Ok(Lock {
+    Ok((Lock {
         commit: fetch_output.rev,
         nix_hash: fetch_output.hash,
         path: fetch_output.path,
         date: fetch_output.date,
-    })
+    }, true))
 }
 
 
@@ -198,7 +198,7 @@ impl Lockfile {
 
     pub async fn update(&mut self, project_path: &Path) -> Result<(), UpdateLockfileError> {
         let entry = self.entries.get_mut(project_path).ok_or(UpdateLockfileError::PathNotFound)?;
-        entry.lock = Some(
+        let (new_lock, updated) =
             update_lock(
                 &entry.project,
                 &entry.lock
@@ -207,10 +207,13 @@ impl Lockfile {
             .map_err(|e| UpdateLockfileError::UpdateLock {
                 project_path: project_path.to_path_buf(),
                 error: e,
-            })?
-        );
+            })?;
 
-        self.write().await.map_err(UpdateLockfileError::WriteLockfile)?;
+        entry.lock = Some(new_lock);
+
+        if updated {
+            self.write().await.map_err(UpdateLockfileError::WriteLockfile)?;
+        }
 
         Ok(())
     }
