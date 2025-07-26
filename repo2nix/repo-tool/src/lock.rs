@@ -113,6 +113,18 @@ pub enum ReadWriteLockfileError {
     Parse(serde_json::Error),
 }
 
+#[derive(Debug, Error)]
+pub enum EnsureStorePathError {
+    #[error("project {0} not found in lockfile")]
+    PathNotFound(PathBuf),
+    #[error("project {0} not locked yet")]
+    ProjectNotLocked(PathBuf),
+    #[error("error checking whether store path {0} exists")]
+    StorePathIO(#[from] io::Error),
+    #[error("error running nix-prefetch-git")]
+    NixPrefetchGit(#[from] NixPrefetchGitError),
+}
+
 impl Lockfile {
     pub fn new(projects: &HashMap<PathBuf, Project>, path: &Path) -> Self {
         Lockfile {
@@ -227,6 +239,23 @@ impl Lockfile {
                 self.write().await.map_err(UpdateLockfileError::WriteLockfile)?;
             }
         }
+        Ok(())
+    }
+
+    pub async fn ensure_store_path(&self, project_path: &Path) -> Result<(), EnsureStorePathError> {
+        let entry = self.entries.get(project_path).ok_or(EnsureStorePathError::PathNotFound(project_path.to_path_buf()))?;
+        let repo_ref = &entry.project.repo_ref;
+        let lock = &entry.lock.as_ref().ok_or(EnsureStorePathError::ProjectNotLocked(project_path.to_path_buf()))?;
+
+        if !fs::try_exists(&lock.path).await? {
+            nix_prefetch_git(
+                &repo_ref.repo_url,
+                &lock.commit,
+                repo_ref.fetch_lfs,
+                repo_ref.fetch_submodules,
+            ).await?;
+        }
+
         Ok(())
     }
 }

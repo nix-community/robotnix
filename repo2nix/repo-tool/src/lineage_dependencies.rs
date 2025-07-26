@@ -24,6 +24,7 @@ use crate::lock::{
     Lockfile,
     UpdateLockError,
     UpdateLockfileError,
+    EnsureStorePathError,
 };
 
 #[derive(Debug, Error)]
@@ -74,6 +75,8 @@ pub struct LineageDep {
 pub enum PrefetchLineageDepsError {
     #[error("updating lock failed")]
     Lock(#[from] UpdateLockfileError),
+    #[error("error ensuring that the Nix store path exists")]
+    EnsureStorePath(#[from] EnsureStorePathError),
     #[error("failed reading `lineage.dependencies` from device repo")]
     IO(#[from] io::Error),
     #[error("failed to parse")]
@@ -219,6 +222,8 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
 
         let (new_deps, new_projects) = match lockfile.update(&path).await {
             Ok(()) => {
+                lockfile.ensure_store_path(&path).await?;
+
                 let store_path = &lockfile
                     .entries
                     .get(&path)

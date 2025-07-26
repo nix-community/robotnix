@@ -17,7 +17,6 @@ use repo_manifest::resolver::{
 use crate::fetch::nix_prefetch_git;
 use crate::lock::{
     Lockfile,
-    LockfileEntry,
     ReadWriteLockfileError,
 };
 use crate::lineage_devices::DeviceInfo;
@@ -233,16 +232,17 @@ async fn main() -> Result<(), MainError> {
         Args::GetBuildID { out_file, lockfiles } => {
             let mut build_ids: BTreeMap<PathBuf, String> = BTreeMap::new();
             for lockfile_path in lockfiles.iter() {
-                let bytes = fs::read(&lockfile_path)?;
-                let lockfile_entries: BTreeMap<PathBuf, LockfileEntry> = serde_json::from_slice(&bytes)?;
-
-                let platform_build_path = &lockfile_entries
-                    .get(Path::new("build/make"))
+                let lockfile = Lockfile::read_from_file(lockfile_path).await?;
+                let build_make_path = Path::new("build/make");
+                let platform_build_path = &lockfile.entries
+                    .get(build_make_path)
                     .expect("path `build/make` not found in lockfile {lockfile_path}")
                     .lock
                     .as_ref()
                     .expect("path `build/make` is not locked yet in lockfile {lockfile_path}")
                     .path;
+
+                lockfile.ensure_store_path(build_make_path).await?;
 
                 let build_id_mk_text = fs::read(
                     platform_build_path.join("core/build_id.mk")
