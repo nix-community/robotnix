@@ -36,7 +36,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_bionic",
-        "revision": "b4a852978a9585eb797058330976a88c2ec8e832",
+        "revision": "1acfb0fc4fbd3e5a562d1e27116e9df2dad458df",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -47,10 +47,10 @@
       "active": true
     },
     "lock": {
-      "commit": "b4a852978a9585eb797058330976a88c2ec8e832",
-      "nix_hash": "sha256-RvRELS3quLMTcvsQVzlxGEAmVGn40/0oPjJjwTddiqQ=",
-      "path": "/nix/store/465xj3g4mj1dy93plb2cbpjmkdcdyxnf-platform_bionic-b4a8529",
-      "date": 1751343881
+      "commit": "1acfb0fc4fbd3e5a562d1e27116e9df2dad458df",
+      "nix_hash": "sha256-gVFHDdF9F3DYdziDUm2mIzJ0fCFeazagqAabqOcBM9Y=",
+      "path": "/nix/store/q443x09rd2yjdwpq0n526a2940682mdi-platform_bionic-1acfb0f",
+      "date": 1752418040
     }
   },
   "bootable/deprecated-ota": {
@@ -133,6 +133,31 @@
       "nix_hash": "sha256-5ni5fQ4WRGxCFWOt0GGpqqeaBvgZZvTgT4Xmy66WNuE=",
       "path": "/nix/store/szv1vb8jmkgpc2p4qgpm81sh267jjbdb-platform_bootable_recovery-18fdc64",
       "date": 1749680785
+    }
+  },
+  "branding": {
+    "project": {
+      "path": "branding",
+      "groups": [],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://github.com/GrapheneOS/branding",
+        "revision": "7149017888121bcba543f57b41e032a8c45fca62",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "7149017888121bcba543f57b41e032a8c45fca62",
+      "nix_hash": "sha256-/WgEZicfR0PbbTLYCvJHuS5pn6Wnznn9UjY44rjYKoI=",
+      "path": "/nix/store/gjngslpw5pnxdhqqrr7swfp3rr4fazk4-branding-7149017",
+      "date": 1643710599
     }
   },
   "build/bazel": {
@@ -262,7 +287,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_build",
-        "revision": "ba112d9fdaad5c87ca2a7526a73dbd0017d256ee",
+        "revision": "63e7727e7a40717922c55c287451e14185628718",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -273,10 +298,10 @@
       "active": true
     },
     "lock": {
-      "commit": "ba112d9fdaad5c87ca2a7526a73dbd0017d256ee",
-      "nix_hash": "sha256-Q6Z/z+ZUw5IiOaT2TnIHjNt+poo6Eyr0ymSy4anAC2A=",
-      "path": "/nix/store/p1i0pa6kv9r7viiv3ag06va1z1wjxnxj-platform_build-ba112d9",
-      "date": 1751830518
+      "commit": "63e7727e7a40717922c55c287451e14185628718",
+      "nix_hash": "sha256-AIKV+MyjLZKGd0VvMdsOoH2dSWQv2KKt6IXzksNuOfc=",
+      "path": "/nix/store/lygmyxq33isq9bva0azlnfq1dp0as12v-platform_build-63e7727",
+      "date": 1752429519
     }
   },
   "build/pesto": {
@@ -318,7 +343,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_build_release",
-        "revision": "bbbb867bb64e6e4ee2c91698a42fd2e88f7cbe63",
+        "revision": "9310c2e2978c71e58f6ab53c01ff697ceea52c41",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -329,10 +354,10 @@
       "active": true
     },
     "lock": {
-      "commit": "bbbb867bb64e6e4ee2c91698a42fd2e88f7cbe63",
-      "nix_hash": "sha256-7cOJyDTPexTGAvdDwbenSkxKImxR3EZFPkkPWCLU1/c=",
-      "path": "/nix/store/dnxail8p54j7742c468k40hmgvcfjiq1-platform_build_release-bbbb867",
-      "date": 1751923360
+      "commit": "9310c2e2978c71e58f6ab53c01ff697ceea52c41",
+      "nix_hash": "sha256-HakwDMlhFz2R44xZKa9n/iZgN2WGZKy2F6y2nWhPlcA=",
+      "path": "/nix/store/318rcf8g9lkxcaj5ywpr25v98mb35n55-platform_build_release-9310c2e",
+      "date": 1752782177
     }
   },
   "build/soong": {
@@ -515,6 +540,64 @@
       "date": 1749680785
     }
   },
+  "device/amlogic/yukawa": {
+    "project": {
+      "path": "device/amlogic/yukawa",
+      "groups": [
+        "device",
+        "yukawa",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/amlogic/yukawa",
+        "revision": "5fe01e6ad613362394a8d23a9a04e30eb4f2550a",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "5fe01e6ad613362394a8d23a9a04e30eb4f2550a",
+      "nix_hash": "sha256-xV8fSE7Lck5TcKsgQzi1Xo7urnRiwE2gGEiECIJ3w10=",
+      "path": "/nix/store/d1hdbybn00wigb50iz7wf6nq23w6674m-yukawa-5fe01e6",
+      "date": 1736568098
+    }
+  },
+  "device/amlogic/yukawa-kernel": {
+    "project": {
+      "path": "device/amlogic/yukawa-kernel",
+      "groups": [
+        "device",
+        "yukawa",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/amlogic/yukawa-kernel",
+        "revision": "ff822d1ec33dc9a8225d34a1c576f8af26fdb0fd",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "ff822d1ec33dc9a8225d34a1c576f8af26fdb0fd",
+      "nix_hash": "sha256-GLadKnjjV9WuCGP6bO5HIVSsLwo+aVvWBGCni87iLRI=",
+      "path": "/nix/store/n90ag135xngib5mlxlx5qvih40my2qwk-yukawa-kernel-ff822d1",
+      "date": 1673994930
+    }
+  },
   "device/common": {
     "project": {
       "path": "device/common",
@@ -543,6 +626,141 @@
       "date": 1749680766
     }
   },
+  "device/generic/arm64": {
+    "project": {
+      "path": "device/generic/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/arm64",
+        "revision": "71380158d818de918338e34a9cb72316fe3cfa4e",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "71380158d818de918338e34a9cb72316fe3cfa4e",
+      "nix_hash": "sha256-L9VtFF42AkC8g2Brka9G4z4PQxYIg5n1NmlLJda+NpQ=",
+      "path": "/nix/store/i608jpmi6vxhp6fqqjaqxzjc5hl3p7x6-arm64-7138015",
+      "date": 1682470249
+    }
+  },
+  "device/generic/armv7-a-neon": {
+    "project": {
+      "path": "device/generic/armv7-a-neon",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/armv7-a-neon",
+        "revision": "5be6c1b1d84a1f046329176d5da3368cb6547703",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "5be6c1b1d84a1f046329176d5da3368cb6547703",
+      "nix_hash": "sha256-7wnWC0nqmOdppYoj+xPLFC/Kdj4Pvn8zlz/ojl+sy/w=",
+      "path": "/nix/store/zmcxg481h18sb1x4k6wv58skyb54wzh6-armv7-a-neon-5be6c1b",
+      "date": 1714095728
+    }
+  },
+  "device/generic/art": {
+    "project": {
+      "path": "device/generic/art",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/art",
+        "revision": "d9c26558defdcdf2907c2abde9a9320dd404a7a9",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "d9c26558defdcdf2907c2abde9a9320dd404a7a9",
+      "nix_hash": "sha256-IuwNfVWC9OT0weMLOKkVzn440MqNuYwee3BoJIxVJ6k=",
+      "path": "/nix/store/xzj5x6g5ys4yj39mxi8a3ximmmh4k494-art-d9c2655",
+      "date": 1722844398
+    }
+  },
+  "device/generic/car": {
+    "project": {
+      "path": "device/generic/car",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/car",
+        "revision": "50d86956839c419d468c78a49d75f43728481bbe",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "50d86956839c419d468c78a49d75f43728481bbe",
+      "nix_hash": "sha256-w3Q8DAf9lQ7gSWKJ/YtB8WZaE3Xw1fF9DsypX41Grhg=",
+      "path": "/nix/store/snbi0a0asvhlfhy3c3ga66gz2zjjaqnr-car-50d8695",
+      "date": 1744760440
+    }
+  },
+  "device/generic/common": {
+    "project": {
+      "path": "device/generic/common",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/common",
+        "revision": "a9fd974aeafeafed6ac58816574d01a7927ad8c8",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "a9fd974aeafeafed6ac58816574d01a7927ad8c8",
+      "nix_hash": "sha256-RL452SHj/yPv2wvLp2qOc/8whVs4QqJ1IF8LFeogvFA=",
+      "path": "/nix/store/sdcj0sib1f109bamcac805227mk244xs-common-a9fd974",
+      "date": 1740442011
+    }
+  },
   "device/generic/goldfish": {
     "project": {
       "path": "device/generic/goldfish",
@@ -568,6 +786,114 @@
       "nix_hash": "sha256-xdxmWb2YIIN6VvfN993qc4FmUezFdA94CPJglwYrwiY=",
       "path": "/nix/store/krr3wq2gpxc9h3xk6s0x4n2lfbminlbx-device_generic_goldfish-86aa521",
       "date": 1749739055
+    }
+  },
+  "device/generic/goldfish-opengl": {
+    "project": {
+      "path": "device/generic/goldfish-opengl",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/goldfish-opengl",
+        "revision": "ad6692caa5eeda26fb0dde1a6ca44494f07712d5",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "ad6692caa5eeda26fb0dde1a6ca44494f07712d5",
+      "nix_hash": "sha256-3fxRYFtL4l7uPbaaKm7xvQnLTT59V6IZRVibBeJKQCo=",
+      "path": "/nix/store/cng9ahzgybd5ygx252rbwqj624y8zq2j-goldfish-opengl-ad6692c",
+      "date": 1742612765
+    }
+  },
+  "device/generic/trusty": {
+    "project": {
+      "path": "device/generic/trusty",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/trusty",
+        "revision": "014cad9b0c1474f7494dcd200bb9bea600b24c78",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "014cad9b0c1474f7494dcd200bb9bea600b24c78",
+      "nix_hash": "sha256-OM1+lzxq8CyCmd1tlquJI7iq/2KYdwkOuIk+rc+7zb0=",
+      "path": "/nix/store/spbsw0jqj7gz3ixhmdzk464zwjzv9qw6-trusty-014cad9",
+      "date": 1741906991
+    }
+  },
+  "device/generic/x86": {
+    "project": {
+      "path": "device/generic/x86",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/x86",
+        "revision": "4394cdf90094161d5caf4f7237c883ab2862c2f2",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "4394cdf90094161d5caf4f7237c883ab2862c2f2",
+      "nix_hash": "sha256-v7lmlYYUkXok3Bl6oHEfr00vR9ukuzvhPlIr9FjMW9c=",
+      "path": "/nix/store/3kf5i98i5idyxirb2bqd47fr86si05ks-x86-4394cdf",
+      "date": 1588705083
+    }
+  },
+  "device/generic/x86_64": {
+    "project": {
+      "path": "device/generic/x86_64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/generic/x86_64",
+        "revision": "43ed01aceb08b2ab661b4fb50b9a5fe145012d4b",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "43ed01aceb08b2ab661b4fb50b9a5fe145012d4b",
+      "nix_hash": "sha256-lQ/GiAN8fI8KbvbaNOnNCbWKPlZ3ffI6+by8rSZDq8s=",
+      "path": "/nix/store/1xprcf7kkjm81q7rp09jvsvh4kcll2rk-x86_64-43ed01a",
+      "date": 1682470247
     }
   },
   "device/google/akita": {
@@ -609,7 +935,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_akita-kernels_6.1",
-        "revision": "3c455cbee51c49a0c9aed46c9d2edfb7b557c190",
+        "revision": "136e74f08e18a3f58f8537721ccc3e46a464fa96",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -620,10 +946,10 @@
       "active": true
     },
     "lock": {
-      "commit": "3c455cbee51c49a0c9aed46c9d2edfb7b557c190",
-      "nix_hash": "sha256-wfNMPlLiOmSwCGV6LuCwuiUFdCQ8qiq/tWjgIUK8xc4=",
-      "path": "/nix/store/0yjj5afl3dx720lch392nph5p0jn7gfr-device_google_akita-kernels_6.1-3c455cb",
-      "date": 1751560915
+      "commit": "136e74f08e18a3f58f8537721ccc3e46a464fa96",
+      "nix_hash": "sha256-B81nnLQg/XJJK9tOhl2m0Uhi4WX9rU8YwpU1AigfU2I=",
+      "path": "/nix/store/vzr9zw523kxaf8icjhwg7icisgw1kfmp-device_google_akita-kernels_6.1-136e74f",
+      "date": 1752878008
     }
   },
   "device/google/akita-sepolicy": {
@@ -652,6 +978,36 @@
       "nix_hash": "sha256-E3VATsKZY98t9KpJDodFBc5KPsAlxR+9cDURv/SASUM=",
       "path": "/nix/store/9n4njajh8z6x0whdpdplmzghy33qvxbq-device_google_akita-sepolicy-7eddf97",
       "date": 1731628934
+    }
+  },
+  "device/google/atv": {
+    "project": {
+      "path": "device/google/atv",
+      "groups": [
+        "device",
+        "broadcom_pdk",
+        "generic_fs",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/google/atv",
+        "revision": "28ec82d1e4f13072eb978f3e74335195aa7dfcc4",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "28ec82d1e4f13072eb978f3e74335195aa7dfcc4",
+      "nix_hash": "sha256-n+QYWqi07tcQNsmnfE14XJ1UUtN/T37glDv0RzpF1B0=",
+      "path": "/nix/store/cqvyhpcv0vsvcv4rh2f0siz78cr3qc67-atv-28ec82d",
+      "date": 1744487166
     }
   },
   "device/google/bluejay": {
@@ -693,7 +1049,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_bluejay-kernels_6.1",
-        "revision": "1e73a8a9ff3b3185bbed8ceaaec9c1a53c08a78a",
+        "revision": "15768a9361457d158564d1d5e0415d506249ffb0",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -704,10 +1060,10 @@
       "active": true
     },
     "lock": {
-      "commit": "1e73a8a9ff3b3185bbed8ceaaec9c1a53c08a78a",
-      "nix_hash": "sha256-RWTMY/WEFvBG7Nb6I7WLfRuyOBMROACxW8mWoD9N20A=",
-      "path": "/nix/store/msiiixr0nqh9nj592hsx61jrmf25i1r1-device_google_bluejay-kernels_6.1-1e73a8a",
-      "date": 1751560917
+      "commit": "15768a9361457d158564d1d5e0415d506249ffb0",
+      "nix_hash": "sha256-3pjcWlfyMhWxHJxUtp4eGYWWnIPIFe7cHy5TaOy+ip4=",
+      "path": "/nix/store/w9489iw652gjq7k4bjbyba9s75mv7sqd-device_google_bluejay-kernels_6.1-15768a9",
+      "date": 1752876112
     }
   },
   "device/google/bluejay-sepolicy": {
@@ -777,7 +1133,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_caimito-kernels_6.1",
-        "revision": "a6b3291b3fe51a8cf2c06e1c1569fd72c1f51d10",
+        "revision": "ec749173e7e757fc60aeddc3fe3fd5780c622077",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -788,10 +1144,10 @@
       "active": true
     },
     "lock": {
-      "commit": "a6b3291b3fe51a8cf2c06e1c1569fd72c1f51d10",
-      "nix_hash": "sha256-neGFsX3s0JfnxuIKqmtNW6E6ETZ5zNbhQIK99d/755U=",
-      "path": "/nix/store/5b5x78hfdmsb50m7a1gm605781s2gmj0-device_google_caimito-kernels_6.1-a6b3291",
-      "date": 1751560918
+      "commit": "ec749173e7e757fc60aeddc3fe3fd5780c622077",
+      "nix_hash": "sha256-N5LojYU1njbizdQQFBzyiYMQRbcg+8M21MPRd/EGKT8=",
+      "path": "/nix/store/nb7jfw7qd3qwnh00znnm1xv2b1q5xl2v-device_google_caimito-kernels_6.1-ec74917",
+      "date": 1752879199
     }
   },
   "device/google/caimito-sepolicy": {
@@ -861,7 +1217,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_comet-kernels_6.1",
-        "revision": "82ee88679cd2325f749f7d811c63598dae6b565b",
+        "revision": "cd9312319b66ec8df6c8be2179f1ef91bf5b02c0",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -872,10 +1228,10 @@
       "active": true
     },
     "lock": {
-      "commit": "82ee88679cd2325f749f7d811c63598dae6b565b",
-      "nix_hash": "sha256-9pBqpV75sbmppEP6zO6EXYdSVXoHRHL2+5IlyP2zrvs=",
-      "path": "/nix/store/nrcfw9p5pm3giyrb8ydjrlp0xiawsvlj-device_google_comet-kernels_6.1-82ee886",
-      "date": 1751560919
+      "commit": "cd9312319b66ec8df6c8be2179f1ef91bf5b02c0",
+      "nix_hash": "sha256-1d02QJYUiSzg6t0dtf8Ak7NV5+FCslIhypzfOU9Keaw=",
+      "path": "/nix/store/vpwfqfszn9wqksdazw7hadnvrj2avb42-device_google_comet-kernels_6.1-cd93123",
+      "date": 1752879197
     }
   },
   "device/google/comet-sepolicy": {
@@ -904,6 +1260,145 @@
       "nix_hash": "sha256-hIs77uiEr34YJ85e+UMCPCtjdEHdatf+pAVw30+1IXk=",
       "path": "/nix/store/sp7hwlwl9dd13vrdnbbvvbiw83h9mj0q-device_google_comet-sepolicy-e9914b0",
       "date": 1751205666
+    }
+  },
+  "device/google/common/etm": {
+    "project": {
+      "path": "device/google/common/etm",
+      "groups": [
+        "device"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/google/common/etm",
+        "revision": "6fc3df5ded96c29f79d50b4b0957946adc086c87",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "6fc3df5ded96c29f79d50b4b0957946adc086c87",
+      "nix_hash": "sha256-AkjIQlCmYi2OQ5xbYbLZzZ0Ulv54OnRTuulgzNty/pA=",
+      "path": "/nix/store/43b6c4wx5ndr414m0shn5djsdri1jm2f-etm-6fc3df5",
+      "date": 1732406546
+    }
+  },
+  "device/google/contexthub": {
+    "project": {
+      "path": "device/google/contexthub",
+      "groups": [
+        "device",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/google/contexthub",
+        "revision": "9d3e6b16c35f0292746af195e3a9e38dd60ba465",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "9d3e6b16c35f0292746af195e3a9e38dd60ba465",
+      "nix_hash": "sha256-H6q79BUpxhP9F10vA7CrkwFzdFCq1t6t4ZgHq56XNe0=",
+      "path": "/nix/store/v6wvn2kyk7q3fhv47pbp84hjasj67i79-contexthub-9d3e6b1",
+      "date": 1740189778
+    }
+  },
+  "device/google/cuttlefish": {
+    "project": {
+      "path": "device/google/cuttlefish",
+      "groups": [
+        "device",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/google/cuttlefish",
+        "revision": "c6a8b05c38d88e8d19b83fd8d47f75c0686f2e69",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "c6a8b05c38d88e8d19b83fd8d47f75c0686f2e69",
+      "nix_hash": "sha256-cvSYAMTmFhjSJ01E5yj25F9thqqdd/XQBzAPJS12Z40=",
+      "path": "/nix/store/7wivsvph9ny8acjvwdrg8bz8j88p2634-cuttlefish-c6a8b05",
+      "date": 1742866191
+    }
+  },
+  "device/google/cuttlefish_prebuilts": {
+    "project": {
+      "path": "device/google/cuttlefish_prebuilts",
+      "groups": [
+        "device",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/google/cuttlefish_prebuilts",
+        "revision": "6c982533d4ace697390b116d3013397b64af412d",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "6c982533d4ace697390b116d3013397b64af412d",
+      "nix_hash": "sha256-R7io3NJLRUJkOMZpPXyGUvv7g63NPvqrhQ5pIbrOZyU=",
+      "path": "/nix/store/qqgslj26w06646p2r2bf452bxp88c9pw-cuttlefish_prebuilts-6c98253",
+      "date": 1741820759
+    }
+  },
+  "device/google/cuttlefish_vmm": {
+    "project": {
+      "path": "device/google/cuttlefish_vmm",
+      "groups": [
+        "device",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/google/cuttlefish_vmm",
+        "revision": "dec73328fd2c93e4eda26d565faa1f295ddbffd0",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "dec73328fd2c93e4eda26d565faa1f295ddbffd0",
+      "nix_hash": "sha256-OHjSg0Qe0u3tV/5u0AHFQcVx7waS41o3T771oUclft0=",
+      "path": "/nix/store/9qfxz8znsq6y82h4wl0g6gffk7acwisy-cuttlefish_vmm-dec7332",
+      "date": 1742427036
     }
   },
   "device/google/felix": {
@@ -945,7 +1440,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_felix-kernels_6.1",
-        "revision": "f6b41912dcf9eebc5d3d6d8a946b1364ffa9316c",
+        "revision": "2b7330414cd726b5444972625bec5ee13e69dd6d",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -956,10 +1451,10 @@
       "active": true
     },
     "lock": {
-      "commit": "f6b41912dcf9eebc5d3d6d8a946b1364ffa9316c",
-      "nix_hash": "sha256-VTP3P9IHd/BURL6+OgwgeXbsylVHFQcFK4CBWIsqWKo=",
-      "path": "/nix/store/s7bw3f75a269vpcbah4hxbgqc5wgiw0x-device_google_felix-kernels_6.1-f6b4191",
-      "date": 1751560920
+      "commit": "2b7330414cd726b5444972625bec5ee13e69dd6d",
+      "nix_hash": "sha256-nTRj8VttkOwiqOqOELC6zG3OBSp2sDVQ6moFaikw+a0=",
+      "path": "/nix/store/ga7vvpl0azvgfh0iyz0g1kz2sn1d63q3-device_google_felix-kernels_6.1-2b73304",
+      "date": 1752877404
     }
   },
   "device/google/felix-sepolicy": {
@@ -1006,7 +1501,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_gs-common",
-        "revision": "ac30de789a01d7c9194fc37c966c9fc2b80d4029",
+        "revision": "e9c42ffd716e2cfa1e3746ba37f68377c2d3a5e9",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1017,10 +1512,10 @@
       "active": true
     },
     "lock": {
-      "commit": "ac30de789a01d7c9194fc37c966c9fc2b80d4029",
-      "nix_hash": "sha256-2jrtoMlasEvlh/XP7KqJUJei6UbWShqf8MD786FDv3o=",
-      "path": "/nix/store/ij06ym6jrxpqk98azdgxk9pk7rx1czax-device_google_gs-common-ac30de7",
-      "date": 1751686887
+      "commit": "e9c42ffd716e2cfa1e3746ba37f68377c2d3a5e9",
+      "nix_hash": "sha256-vLGogfEpQkvTI0g2oohQBiy8VPCg42XT3ti4Puf4Axo=",
+      "path": "/nix/store/af25mrw2f2aygk6zh98xdjqyw9p41kas-device_google_gs-common-e9c42ff",
+      "date": 1752066740
     }
   },
   "device/google/gs101": {
@@ -1036,7 +1531,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_gs101",
-        "revision": "a5ff443f09a2494c67045dedb96bf998a9db448e",
+        "revision": "c7e5d9f7c0e531fb7b1aa5f34e2265c8d740e4f9",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1047,10 +1542,10 @@
       "active": true
     },
     "lock": {
-      "commit": "a5ff443f09a2494c67045dedb96bf998a9db448e",
-      "nix_hash": "sha256-9AQaYwT0qLFNxAYeFigFW3BeIJZYlcgKMS5x6Y4JvUY=",
-      "path": "/nix/store/4s6pfbaz5npi9qvgp8fbpcy6ib1k6970-device_google_gs101-a5ff443",
-      "date": 1751818972
+      "commit": "c7e5d9f7c0e531fb7b1aa5f34e2265c8d740e4f9",
+      "nix_hash": "sha256-/PxxQyoaWdRdi362MppFSRFsACFGq1h/BuRmf51cs6c=",
+      "path": "/nix/store/21n0drk7fwz462blav0i321m3i05p9jd-device_google_gs101-c7e5d9f",
+      "date": 1752327838
     }
   },
   "device/google/gs101-sepolicy": {
@@ -1095,7 +1590,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_gs201",
-        "revision": "62ec8c4d924fe425acfc75f8ae92fe5a293e8e22",
+        "revision": "b6144adc53f58b4d19000eebdf5689a170307f64",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1106,10 +1601,10 @@
       "active": true
     },
     "lock": {
-      "commit": "62ec8c4d924fe425acfc75f8ae92fe5a293e8e22",
-      "nix_hash": "sha256-MZKaewKvXgwwtozzU6DtFbjd+L6U3SdtMAzEgU2Nw50=",
-      "path": "/nix/store/52s9d4dgyf350vckjpnp0g0qhkb8yclh-device_google_gs201-62ec8c4",
-      "date": 1751810547
+      "commit": "b6144adc53f58b4d19000eebdf5689a170307f64",
+      "nix_hash": "sha256-JlI2REAXel6YKPOv3mxPuwvaDqd11l8uoLZKtSmlR6M=",
+      "path": "/nix/store/8zmaaxkpbkil06662k40w884jcwn896y-device_google_gs201-b6144ad",
+      "date": 1752327897
     }
   },
   "device/google/gs201-sepolicy": {
@@ -1180,7 +1675,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_lynx-kernels_6.1",
-        "revision": "4470526852c9b6c65b543fac8f66768b920d2cca",
+        "revision": "da66643a034cc5369b1ebdc912d18f14778e80f1",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1191,10 +1686,10 @@
       "active": true
     },
     "lock": {
-      "commit": "4470526852c9b6c65b543fac8f66768b920d2cca",
-      "nix_hash": "sha256-fbkeEM+J/vXmd/XBBvq0i/VdKCnezOJZIUiwiSapSJo=",
-      "path": "/nix/store/r8gh0ii0plv0ad82gj5iy4hvfiqh50cs-device_google_lynx-kernels_6.1-4470526",
-      "date": 1751560922
+      "commit": "da66643a034cc5369b1ebdc912d18f14778e80f1",
+      "nix_hash": "sha256-qAQqE149ABXXsLB5oBOvI5tAik/74wD3oVZesyKh9OY=",
+      "path": "/nix/store/8nmbq7likdxwcxn9kkfnw13y0m0inr39-device_google_lynx-kernels_6.1-da66643",
+      "date": 1752877400
     }
   },
   "device/google/lynx-sepolicy": {
@@ -1265,7 +1760,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_pantah-kernels_6.1",
-        "revision": "b4137bf79117f39b0fd737860ca04e4b9abb06e4",
+        "revision": "3777de8b56c34780e55f45c53d353e6ff111f224",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1276,10 +1771,10 @@
       "active": true
     },
     "lock": {
-      "commit": "b4137bf79117f39b0fd737860ca04e4b9abb06e4",
-      "nix_hash": "sha256-vDELfl16G5529M/ivuUDJy+zHFTI0c9M0pnvUKWaNbk=",
-      "path": "/nix/store/864jh1xlxpklvrznh9vkf3ay5yc6lhb5-device_google_pantah-kernels_6.1-b4137bf",
-      "date": 1751560923
+      "commit": "3777de8b56c34780e55f45c53d353e6ff111f224",
+      "nix_hash": "sha256-RHELUeqvXnTwRCn3NUkS+h9fKTe7pknfUnumz7LgIvE=",
+      "path": "/nix/store/3n9bbaqa1bvs1g8hzvdhd0s290g0vk5v-device_google_pantah-kernels_6.1-3777de8",
+      "date": 1752877397
     }
   },
   "device/google/pantah-sepolicy": {
@@ -1351,7 +1846,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_raviole-kernels_6.1",
-        "revision": "1e76f181db377c667af89cbc6d2ad8502b2154d5",
+        "revision": "f0307037c8a4b32e9696a9fb9ab7c22610360706",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1362,10 +1857,10 @@
       "active": true
     },
     "lock": {
-      "commit": "1e76f181db377c667af89cbc6d2ad8502b2154d5",
-      "nix_hash": "sha256-pB/RRG9JR1J37TFW/uggDEw6RNZYTlet725qfDH2guU=",
-      "path": "/nix/store/ik158w7g8nd3a5w2dhawvizngy5qsrcv-device_google_raviole-kernels_6.1-1e76f18",
-      "date": 1751560924
+      "commit": "f0307037c8a4b32e9696a9fb9ab7c22610360706",
+      "nix_hash": "sha256-U+lkvH1qWCPSKGqc+L/t2MEc63Cj37Tii8Ejog16YNw=",
+      "path": "/nix/store/qava6y8a8jzznmqlj9ab00f8fkbcxy0s-device_google_raviole-kernels_6.1-f030703",
+      "date": 1752876109
     }
   },
   "device/google/shusky": {
@@ -1408,7 +1903,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_shusky-kernels_6.1",
-        "revision": "626fd50178d36c47a5ef0f1bfd33c4bebbc3bcbb",
+        "revision": "032090e798fb333deee32d4c49551fdb0451518c",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1419,10 +1914,10 @@
       "active": true
     },
     "lock": {
-      "commit": "626fd50178d36c47a5ef0f1bfd33c4bebbc3bcbb",
-      "nix_hash": "sha256-69SBWgN4CkuzUd3U6pGCZgVHOZrxkWEhP68XllwChM8=",
-      "path": "/nix/store/2vs32kxv7397cfpd5kcnnl7j8sv7pvl6-device_google_shusky-kernels_6.1-626fd50",
-      "date": 1751560925
+      "commit": "032090e798fb333deee32d4c49551fdb0451518c",
+      "nix_hash": "sha256-Po7/pBhkzI95ISKBmVejjzSDOcF2Vsd+esJwBa8mTmA=",
+      "path": "/nix/store/4flbc91182iryddqlvsr36ibjyflb7ss-device_google_shusky-kernels_6.1-032090e",
+      "date": 1752878007
     }
   },
   "device/google/shusky-sepolicy": {
@@ -1493,7 +1988,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_tangorpro-kernels_6.1",
-        "revision": "03822a76cfa8afe2f2109e02caf0fe143b9a7752",
+        "revision": "9a5f01d9d37147c1535cc4c0e0ce26085da724cb",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1504,10 +1999,10 @@
       "active": true
     },
     "lock": {
-      "commit": "03822a76cfa8afe2f2109e02caf0fe143b9a7752",
-      "nix_hash": "sha256-7Yb7m64t6x4/7J7w8nnTevl36iVQb6XrKYmzEG+CrIA=",
-      "path": "/nix/store/yx3zrv7x2m8bh5nq5nvqr69xfliy8n8f-device_google_tangorpro-kernels_6.1-03822a7",
-      "date": 1751560926
+      "commit": "9a5f01d9d37147c1535cc4c0e0ce26085da724cb",
+      "nix_hash": "sha256-NOApHAgQqO8l2wgwWyY8WzANCGb2raG7FD19G/bi6Ls=",
+      "path": "/nix/store/nx56c1mrj2mnnmsr472rfkckrq1byj1n-device_google_tangorpro-kernels_6.1-9a5f01d",
+      "date": 1752877433
     }
   },
   "device/google/tangorpro-sepolicy": {
@@ -1577,7 +2072,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_tegu-kernels_6.1",
-        "revision": "bd2287684f541406343cb1b80a5401b8dd9a6d76",
+        "revision": "df91a4be25732a99793cfeb830c149fb68ed6553",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1588,10 +2083,10 @@
       "active": true
     },
     "lock": {
-      "commit": "bd2287684f541406343cb1b80a5401b8dd9a6d76",
-      "nix_hash": "sha256-zoAofCXcYB87e/pIqfVdA+eKcdR3gDm45plIXOvKl9Q=",
-      "path": "/nix/store/z7j60qcv6vav8716n037xa53sg0zyzjn-device_google_tegu-kernels_6.1-bd22876",
-      "date": 1751560927
+      "commit": "df91a4be25732a99793cfeb830c149fb68ed6553",
+      "nix_hash": "sha256-RHzIfB8OY1BNNT/2+7uIbgq4xTcbOo5XAuKKMz2Zhf4=",
+      "path": "/nix/store/xmdz2pdrm37pdrnmin5gwppksh16mi6a-device_google_tegu-kernels_6.1-df91a4b",
+      "date": 1752876116
     }
   },
   "device/google/tegu-sepolicy": {
@@ -1622,6 +2117,34 @@
       "date": 1728353098
     }
   },
+  "device/google/trout": {
+    "project": {
+      "path": "device/google/trout",
+      "groups": [
+        "device",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/google/trout",
+        "revision": "75e5877d4fb905ab5d9f79ae1b7d274b9a246699",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "75e5877d4fb905ab5d9f79ae1b7d274b9a246699",
+      "nix_hash": "sha256-pz82Es38FSQIl/dl3fMnpUOB9tkHnqj8vCbMqbuXQmI=",
+      "path": "/nix/store/j7lc76zgb10lalir2fyggqi7j4x9gqwa-trout-75e5877",
+      "date": 1741907175
+    }
+  },
   "device/google/zuma": {
     "project": {
       "path": "device/google/zuma",
@@ -1634,7 +2157,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_zuma",
-        "revision": "86c2cf8610706754478de267a68144396d2fdec7",
+        "revision": "7958d5062c45fbb8ff3c3bc444ca6bffe1baa7ee",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1645,10 +2168,10 @@
       "active": true
     },
     "lock": {
-      "commit": "86c2cf8610706754478de267a68144396d2fdec7",
-      "nix_hash": "sha256-+9TGOQPIPflgSSHb2AxAbthb2v6IO0FU+RwZvMLtLqI=",
-      "path": "/nix/store/i74g9srpg0bkj3apsvl0ixhid9a7fzyw-device_google_zuma-86c2cf8",
-      "date": 1751811293
+      "commit": "7958d5062c45fbb8ff3c3bc444ca6bffe1baa7ee",
+      "nix_hash": "sha256-AVtr+PEkoQA24b3pIwsn7KqZPzSvb8PfwhCat51gZoQ=",
+      "path": "/nix/store/pi6zn9y9gf08vy0364c4h36lfwjrs6iq-device_google_zuma-7958d50",
+      "date": 1752327934
     }
   },
   "device/google/zuma-sepolicy": {
@@ -1691,7 +2214,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/device_google_zumapro",
-        "revision": "9ee62b13d9aac4a046e26e3ffb7eff44f8dc0329",
+        "revision": "a2ba77a46ce7326ab80e6ef47ca9655371a22032",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1702,10 +2225,10 @@
       "active": true
     },
     "lock": {
-      "commit": "9ee62b13d9aac4a046e26e3ffb7eff44f8dc0329",
-      "nix_hash": "sha256-gERHETsGiJm2FMDJFJtjRlDsWuQWXtJpdUcjHD61QT8=",
-      "path": "/nix/store/gl10lsbmvrvq1a0nrjq1r5swvgpykgcy-device_google_zumapro-9ee62b1",
-      "date": 1751811534
+      "commit": "a2ba77a46ce7326ab80e6ef47ca9655371a22032",
+      "nix_hash": "sha256-3zbamAzFZ8oDsURHXxS5Fnvtx/ctV9ZMpIZvD3VOXJI=",
+      "path": "/nix/store/lncxwb6a8pvfwylps1lf51cbb23gb110-device_google_zumapro-a2ba77a",
+      "date": 1752327981
     }
   },
   "device/google/zumapro-sepolicy": {
@@ -1734,6 +2257,176 @@
       "nix_hash": "sha256-C48svlg3GJWYQVrCba+f6vKnIvZEpOcSHp3EGVyXi6A=",
       "path": "/nix/store/w13pkq175a5l0015pr9ngh8nar5ix22d-device_google_zumapro-sepolicy-8541205",
       "date": 1751205680
+    }
+  },
+  "device/google_car": {
+    "project": {
+      "path": "device/google_car",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/google_car",
+        "revision": "f7f3b09a300df48a63a6148f64047771a047e2ad",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "f7f3b09a300df48a63a6148f64047771a047e2ad",
+      "nix_hash": "sha256-W3yMfjzV0kh6xw0tAzCzN30cS0O02XZ3QA7KOcK+Izs=",
+      "path": "/nix/store/djhm4zqbkry0h40m7rn21ckqhq8i0sp2-google_car-f7f3b09",
+      "date": 1741820765
+    }
+  },
+  "device/linaro/dragonboard": {
+    "project": {
+      "path": "device/linaro/dragonboard",
+      "groups": [
+        "device",
+        "dragonboard",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/linaro/dragonboard",
+        "revision": "8c551353e5c8ed3d71020177fc5c56f77de56d13",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "8c551353e5c8ed3d71020177fc5c56f77de56d13",
+      "nix_hash": "sha256-seA0VQ/VVBMEV8hdKUP53K34iANc7EyLE+Z2xVG7rY4=",
+      "path": "/nix/store/f3zyp7x0icypj3dx9xrzin1lmhnbgl44-dragonboard-8c55135",
+      "date": 1742612962
+    }
+  },
+  "device/linaro/dragonboard-kernel": {
+    "project": {
+      "path": "device/linaro/dragonboard-kernel",
+      "groups": [
+        "device",
+        "dragonboard",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/linaro/dragonboard-kernel",
+        "revision": "8c2626c7b0ea0459e49e908712645e4c0c56e4f2",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "8c2626c7b0ea0459e49e908712645e4c0c56e4f2",
+      "nix_hash": "sha256-aP3YgdT67QvIUgl9F+M6ka70Gq916zqCQNzJ5BsQzxs=",
+      "path": "/nix/store/9mq03a5y7w0hgvsczzgsx09ra8zsbfgs-dragonboard-kernel-8c2626c",
+      "date": 1734653068
+    }
+  },
+  "device/linaro/hikey": {
+    "project": {
+      "path": "device/linaro/hikey",
+      "groups": [
+        "device",
+        "hikey",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/linaro/hikey",
+        "revision": "16239731b3526c9bdda274e8526fde1eb6d2f8c6",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "16239731b3526c9bdda274e8526fde1eb6d2f8c6",
+      "nix_hash": "sha256-Y/fWkAwW4FWR6m0QGURjwNU3+MdEtoh+YIqotngnNnQ=",
+      "path": "/nix/store/dcc0y8s73p6azdf2q2a9f2yzxirkk60w-hikey-1623973",
+      "date": 1742000825
+    }
+  },
+  "device/linaro/hikey-kernel": {
+    "project": {
+      "path": "device/linaro/hikey-kernel",
+      "groups": [
+        "device",
+        "hikey",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/linaro/hikey-kernel",
+        "revision": "f836f3465d48dbb69412e22d5cb1ac3f69808971",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "f836f3465d48dbb69412e22d5cb1ac3f69808971",
+      "nix_hash": "sha256-h4giLGKOiE0KvaIlBJpDy8JrtncAyXqQtYWxnshUmEc=",
+      "path": "/nix/store/69kqnzp9lqki53fjsc3hm2h7dxrq58dp-hikey-kernel-f836f34",
+      "date": 1702335444
+    }
+  },
+  "device/sample": {
+    "project": {
+      "path": "device/sample",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/device/sample",
+        "revision": "56dfdc7cbc9b3d9fb576b4201ad79554a45a7a91",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "56dfdc7cbc9b3d9fb576b4201ad79554a45a7a91",
+      "nix_hash": "sha256-KZ+1icdaN/2XzaLpPYb7ujXtn30xzPqZt73O7V4MsPc=",
+      "path": "/nix/store/53ihg7hb00pp1wzfr5nm96x67hrk0cgs-sample-56dfdc7",
+      "date": 1742866250
     }
   },
   "external/AFLplusplus": {
@@ -1957,7 +2650,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_external_GmsCompatConfig",
-        "revision": "1d36227998e18ee929ebddc6cd7c675d12eb86ad",
+        "revision": "a2bdfe08831b02dfbdf542fd825b9fba63d4b1db",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -1968,10 +2661,10 @@
       "active": true
     },
     "lock": {
-      "commit": "1d36227998e18ee929ebddc6cd7c675d12eb86ad",
-      "nix_hash": "sha256-KSUvmly2ZyhoPY1zMaJ1bfy6bepIHtaWmx2bWMQm6cM=",
-      "path": "/nix/store/250hc2hjlfby6v98iqdr4mjgz5lc15gw-platform_external_GmsCompatConfig-1d36227",
-      "date": 1746114137
+      "commit": "a2bdfe08831b02dfbdf542fd825b9fba63d4b1db",
+      "nix_hash": "sha256-vG+Lka4PIGQSDdD95j9szg+J7GJnsqashhpGndDQ3so=",
+      "path": "/nix/store/qkpwsnxzjn3sgkq9ghjyvzh09qmy0wkm-platform_external_GmsCompatConfig-a2bdfe0",
+      "date": 1752860424
     }
   },
   "external/Info": {
@@ -15304,7 +15997,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://gitlab.com/grapheneos/platform_external_vanadium.git",
-        "revision": "b3ac823d08cb5ce29529ec6fd41d04c5e5d61f64",
+        "revision": "713e11198d557bd4769eb3bc6fba9f72cc9866f5",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -15315,10 +16008,10 @@
       "active": true
     },
     "lock": {
-      "commit": "b3ac823d08cb5ce29529ec6fd41d04c5e5d61f64",
-      "nix_hash": "sha256-cZ9/TJl4o0f5oMpEueuaJdfLGPVLhS5w+lWx4u29OVQ=",
-      "path": "/nix/store/2r6jjj4fxn67ryy7b36fjjn874qkznsv-platform_external_vanadium-b3ac823",
-      "date": 1751344513
+      "commit": "713e11198d557bd4769eb3bc6fba9f72cc9866f5",
+      "nix_hash": "sha256-X4B0dvV6FGQGWWGH5Wg5nR2bPLrn7xbXd3fwXRssulk=",
+      "path": "/nix/store/nw48zsfzsv35v8c4whcpgfki4yjbvz7l-platform_external_vanadium-713e111",
+      "date": 1752779714
     }
   },
   "external/vboot_reference": {
@@ -16067,7 +16760,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_frameworks_base",
-        "revision": "2fb9063be373a53b0499090ce2afeb3e910ecdc0",
+        "revision": "ffa0e74f9a87008bbfcfd942a2622b1bd737be89",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -16078,10 +16771,10 @@
       "active": true
     },
     "lock": {
-      "commit": "2fb9063be373a53b0499090ce2afeb3e910ecdc0",
-      "nix_hash": "sha256-9bepkUSSrieu/tJm5utlqqkUo7ouvnZiYVRUwjzFYsQ=",
-      "path": "/nix/store/d7z44f191dx55fs73g0bqmrvabir0g5l-platform_frameworks_base-2fb9063",
-      "date": 1751914979
+      "commit": "ffa0e74f9a87008bbfcfd942a2622b1bd737be89",
+      "nix_hash": "sha256-HaDPuj58PbXvzX8AF0V9qkB8c4p+gcV/ulaDJu1zgSY=",
+      "path": "/nix/store/wbfzr3bkdrfws7wix1bn2azx51k2scz1-platform_frameworks_base-ffa0e74",
+      "date": 1752346522
     }
   },
   "frameworks/compile/libbcc": {
@@ -17764,6 +18457,61 @@
       "date": 1613844457
     }
   },
+  "kernel/configs": {
+    "project": {
+      "path": "kernel/configs",
+      "groups": [
+        "vts",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/configs",
+        "revision": "e90ea709c3c2ec34bcfd7dca2ebec0bae287c91f",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "e90ea709c3c2ec34bcfd7dca2ebec0bae287c91f",
+      "nix_hash": "sha256-AnvzP7mV6GDjdmmQzCN15Vga9ewGte1tIJi2Q8PXET0=",
+      "path": "/nix/store/jhdxc5p2mf68asb1af218v5bipgzbhrm-configs-e90ea70",
+      "date": 1742866896
+    }
+  },
+  "kernel/prebuilts/6.1/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/6.1/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/6.1/arm64",
+        "revision": "45f90b2e34f6cbc8a6c0c87c292e0b9d8873d20d",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "45f90b2e34f6cbc8a6c0c87c292e0b9d8873d20d",
+      "nix_hash": "sha256-EBqW32NBxVZc0LoIoeIdTO15H4f3xCGBY20GJJMqr9g=",
+      "path": "/nix/store/imak92p4gh58pfjlkpz3vvv7q7cir95d-arm64-45f90b2",
+      "date": 1721661652
+    }
+  },
   "kernel/prebuilts/6.1/x86_64": {
     "project": {
       "path": "kernel/prebuilts/6.1/x86_64",
@@ -17789,6 +18537,33 @@
       "nix_hash": "sha256-1tRGQkszBuD1Q50LeQkvYcc5y9QEZsPu9mOXYYdtb7M=",
       "path": "/nix/store/yq3631pdmclnqhxp9n4agnrjma9f6866-x86-64-4d8767b",
       "date": 1721661652
+    }
+  },
+  "kernel/prebuilts/6.12/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/6.12/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/6.12/arm64",
+        "revision": "0af99653adede9524c7dbb36ba901d22e6266404",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "0af99653adede9524c7dbb36ba901d22e6266404",
+      "nix_hash": "sha256-saJ1a6pOmIEFyzwRGdxr+ofsUN7/nCjaytxep+2IZpo=",
+      "path": "/nix/store/7z3yn01sr9m6rw8hlda4npjag3wckn4a-arm64-0af9965",
+      "date": 1742866900
     }
   },
   "kernel/prebuilts/6.12/x86_64": {
@@ -17818,6 +18593,33 @@
       "date": 1742866901
     }
   },
+  "kernel/prebuilts/6.6/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/6.6/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/6.6/arm64",
+        "revision": "810308806a7a4677f8e4a0d37daa707a0832bbea",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "810308806a7a4677f8e4a0d37daa707a0832bbea",
+      "nix_hash": "sha256-utPK9jl/Y3S9b1x6KpETu5BGeAK8iEMUIkX7yWveQYY=",
+      "path": "/nix/store/akci6wg3jn9f2iiwmxqy347pfdlvk16a-arm64-8103088",
+      "date": 1738628248
+    }
+  },
   "kernel/prebuilts/6.6/x86_64": {
     "project": {
       "path": "kernel/prebuilts/6.6/x86_64",
@@ -17845,6 +18647,303 @@
       "date": 1738628249
     }
   },
+  "kernel/prebuilts/common-modules/trusty/6.12/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/trusty/6.12/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/trusty/6.12/arm64",
+        "revision": "0343e6f68d1c3a48907397712a87b2aaa5b4a58a",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "0343e6f68d1c3a48907397712a87b2aaa5b4a58a",
+      "nix_hash": "sha256-uLwBkuARR7T4kmUZa4C8ZdNGOFriiUOTDCGxxC2Wrr0=",
+      "path": "/nix/store/spkm59z8jrwr3l9pif78mipp4pp4m77y-arm64-0343e6f",
+      "date": 1741821467
+    }
+  },
+  "kernel/prebuilts/common-modules/trusty/6.6/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/trusty/6.6/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/trusty/6.6/arm64",
+        "revision": "60e4a7e769835268ae3c3087eec4d9e640677d82",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "60e4a7e769835268ae3c3087eec4d9e640677d82",
+      "nix_hash": "sha256-eccxyNZyJJtAkT/ICT1ofPJ4KQQgkQ1Mx3nA68wHue0=",
+      "path": "/nix/store/8r1nic5n6znhqd1csl9v5akks0hsxniv-arm64-60e4a7e",
+      "date": 1729379980
+    }
+  },
+  "kernel/prebuilts/common-modules/virtual-device/6.1/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/virtual-device/6.1/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/virtual-device/6.1/arm64",
+        "revision": "4d32a499bdb0a3001eb61ead83c35a012c445575",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "4d32a499bdb0a3001eb61ead83c35a012c445575",
+      "nix_hash": "sha256-3UETeU93uc7OBwWGMgfAH4H5klMFMiyvbUjFoaNhZPg=",
+      "path": "/nix/store/1zfs5f0zr6yf5xpzqv6vzj6s7xh0dp5p-arm64-4d32a49",
+      "date": 1721661652
+    }
+  },
+  "kernel/prebuilts/common-modules/virtual-device/6.1/x86-64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/virtual-device/6.1/x86-64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/virtual-device/6.1/x86-64",
+        "revision": "8da1ee160e47b498220626b3af0fdfe8f73adac8",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "8da1ee160e47b498220626b3af0fdfe8f73adac8",
+      "nix_hash": "sha256-JBGYg5v52sMnP1SKnLRC7GDhc2xh+rY+HlVz8nONAx0=",
+      "path": "/nix/store/ad81cxf3i20mnv3npsyv003azpm9bs5g-x86-64-8da1ee1",
+      "date": 1721661652
+    }
+  },
+  "kernel/prebuilts/common-modules/virtual-device/6.12/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/virtual-device/6.12/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/virtual-device/6.12/arm64",
+        "revision": "999ed1c5f8e4a8c0858a549e1d95dc64d69c5876",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "999ed1c5f8e4a8c0858a549e1d95dc64d69c5876",
+      "nix_hash": "sha256-2973WEpPr6kfBtpNaDKkED0mmWJhwRgh+0vsFz4cdFo=",
+      "path": "/nix/store/mqc3zph2xnxza7f10wxigfz9g9bi8rif-arm64-999ed1c",
+      "date": 1742866910
+    }
+  },
+  "kernel/prebuilts/common-modules/virtual-device/6.12/x86-64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/virtual-device/6.12/x86-64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/virtual-device/6.12/x86-64",
+        "revision": "6f3058f79e9f2b54954b7c870cc8efedf0304d24",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "6f3058f79e9f2b54954b7c870cc8efedf0304d24",
+      "nix_hash": "sha256-4k+1CoKSoOhy6/X9vguBIKy3Yn6vluLQw/r/WL1Y9Yw=",
+      "path": "/nix/store/ha6hspfdzfirxq7qhk5jqqhrhmzzzgs8-x86-64-6f3058f",
+      "date": 1742866911
+    }
+  },
+  "kernel/prebuilts/common-modules/virtual-device/6.6/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/virtual-device/6.6/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/virtual-device/6.6/arm64",
+        "revision": "359e60ac443fdad5440296728485540c4f3ab40f",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "359e60ac443fdad5440296728485540c4f3ab40f",
+      "nix_hash": "sha256-zM6ZYqrbZvPV13h4PopmP1ptkXor4SbAaHuUvHUvhJA=",
+      "path": "/nix/store/353lsfbscsnx07kczpydfjlax763lwfd-arm64-359e60a",
+      "date": 1738628257
+    }
+  },
+  "kernel/prebuilts/common-modules/virtual-device/6.6/x86-64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/virtual-device/6.6/x86-64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/virtual-device/6.6/x86-64",
+        "revision": "b29a09b359db4d9a8dc3f739dfe8eb1828f3714d",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "b29a09b359db4d9a8dc3f739dfe8eb1828f3714d",
+      "nix_hash": "sha256-Jp2ljX8xunqi3x9o/eAFEekxrquAMukxINxiivc+IDI=",
+      "path": "/nix/store/fn7472k58m11z1wxw45bqiy35hml7x7m-x86-64-b29a09b",
+      "date": 1738628258
+    }
+  },
+  "kernel/prebuilts/common-modules/virtual-device/mainline/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/virtual-device/mainline/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/virtual-device/mainline/arm64",
+        "revision": "c1b6f17450d64bb1c368b48aae97055563e5043e",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "c1b6f17450d64bb1c368b48aae97055563e5043e",
+      "nix_hash": "sha256-nfbwVslYLDqyoke7Mi3PU2bQH8+/fHm0f8SDFq2732M=",
+      "path": "/nix/store/mrhlx20yzzrdz56hzn2j98s9j37l33ip-arm64-c1b6f17",
+      "date": 1689402133
+    }
+  },
+  "kernel/prebuilts/common-modules/virtual-device/mainline/x86-64": {
+    "project": {
+      "path": "kernel/prebuilts/common-modules/virtual-device/mainline/x86-64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/common-modules/virtual-device/mainline/x86-64",
+        "revision": "8686f19c255c36095c0dcf087901a5a8f7a00750",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "8686f19c255c36095c0dcf087901a5a8f7a00750",
+      "nix_hash": "sha256-SeAvVEA/s5If2VmDFoDNnVOXOYmjJtgATdgnARzn6RA=",
+      "path": "/nix/store/jk10lgvqz0s9g1czgqjgbymvyxgxys1g-x86-64-8686f19",
+      "date": 1651937850
+    }
+  },
+  "kernel/prebuilts/mainline/arm64": {
+    "project": {
+      "path": "kernel/prebuilts/mainline/arm64",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/prebuilts/mainline/arm64",
+        "revision": "49cdfc22db6be7a55ae951e522d5ecadf6293a90",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "49cdfc22db6be7a55ae951e522d5ecadf6293a90",
+      "nix_hash": "sha256-QTe9Njt+nRP6PStegCw0kiPX0BjH57dC4i9v1jRy+uc=",
+      "path": "/nix/store/5hncx5sakgwspspv1k61iv8pmi6s5mja-arm64-49cdfc2",
+      "date": 1693043846
+    }
+  },
   "kernel/prebuilts/mainline/x86_64": {
     "project": {
       "path": "kernel/prebuilts/mainline/x86_64",
@@ -17870,6 +18969,34 @@
       "nix_hash": "sha256-coa0U4lzPiQNvbBHttUKpVmPSbXSuSaXRn4U7EKyN7w=",
       "path": "/nix/store/47j96798v3s8mcy4fh3l099d0218w8iq-x86-64-51a4241",
       "date": 1651937851
+    }
+  },
+  "kernel/tests": {
+    "project": {
+      "path": "kernel/tests",
+      "groups": [
+        "vts",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/kernel/tests",
+        "revision": "eaed0c28338311e71c6e983b39c9ddea7413f871",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "eaed0c28338311e71c6e983b39c9ddea7413f871",
+      "nix_hash": "sha256-1MhXlM6yaxztAidsba4+TFnCZkvrW1WY+BG/Ad4v3G4=",
+      "path": "/nix/store/12l8j51wq1svgli3fd2lzpw14c9f4npp-tests-eaed0c2",
+      "date": 1742347085
     }
   },
   "libcore": {
@@ -17936,7 +19063,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_packages_apps_AppCompatConfig",
-        "revision": "35c3f0c7925955350ee070d1ae0f9e608fdef2c4",
+        "revision": "ca0cb547534699c1fdd0089f3dd01935ddce9333",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -17947,10 +19074,10 @@
       "active": true
     },
     "lock": {
-      "commit": "35c3f0c7925955350ee070d1ae0f9e608fdef2c4",
-      "nix_hash": "sha256-KXTl3VxSHUHG3fGr8C/nPAMXIU+KO3AaeErPjU8XSaI=",
-      "path": "/nix/store/iblzphibq22v0q1gvwb9raj6khdwy9rp-platform_packages_apps_AppCompatConfig-35c3f0c",
-      "date": 1749436502
+      "commit": "ca0cb547534699c1fdd0089f3dd01935ddce9333",
+      "nix_hash": "sha256-9qpPwdP0btKxS85oTOD3o+uNGGKkiW3Gjkl+GYlcp8s=",
+      "path": "/nix/store/fnmwl7q68vjs64dkwina89h57ln0w124-platform_packages_apps_AppCompatConfig-ca0cb54",
+      "date": 1752852093
     }
   },
   "packages/apps/AvatarPicker": {
@@ -18944,7 +20071,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_packages_apps_Dialer",
-        "revision": "1f562bfc080ff967d465d5af995965e56ea980e4",
+        "revision": "f6afe06bdc10f1d5c8a04afd4543671d42754c43",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -18955,10 +20082,10 @@
       "active": true
     },
     "lock": {
-      "commit": "1f562bfc080ff967d465d5af995965e56ea980e4",
-      "nix_hash": "sha256-OW8fFu1hAmqCVOWoNtGVyZ+ZNK8kBdJ6iw7P5b2EhjI=",
-      "path": "/nix/store/24dcaz8qzl9zfgvzhhg0kr4v246x7c3l-platform_packages_apps_Dialer-1f562bf",
-      "date": 1749680852
+      "commit": "f6afe06bdc10f1d5c8a04afd4543671d42754c43",
+      "nix_hash": "sha256-xNaKzTWMQ0LrdI3k25o+pvAd/B4q9v4F6kbS9xI0FFk=",
+      "path": "/nix/store/3yi88n9fb32v7bk45251k4jn47kfb4iw-platform_packages_apps_Dialer-f6afe06",
+      "date": 1752760026
     }
   },
   "packages/apps/DocumentsUI": {
@@ -19078,7 +20205,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_packages_apps_GmsCompat",
-        "revision": "06c256dc4e354d6314fca128e500abe7a69c983b",
+        "revision": "545cc206dd52738f8a240ef5b316260595532404",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -19089,10 +20216,10 @@
       "active": true
     },
     "lock": {
-      "commit": "06c256dc4e354d6314fca128e500abe7a69c983b",
-      "nix_hash": "sha256-aYTW0plBaS9SyrAyatW2KkkLNNT6adp2q/F6DmjF++o=",
-      "path": "/nix/store/6gks0q76qh36sgg71d4kiqljz1dii2kw-platform_packages_apps_GmsCompat-06c256d",
-      "date": 1749436380
+      "commit": "545cc206dd52738f8a240ef5b316260595532404",
+      "nix_hash": "sha256-/f/BHhpXu3UO6q+RcMhI2Fnf72K2bddXZGAsL8sgzH8=",
+      "path": "/nix/store/ksqxzvc4xp8pz28d84v6blraa58av2rg-platform_packages_apps_GmsCompat-545cc20",
+      "date": 1752851377
     }
   },
   "packages/apps/HTMLViewer": {
@@ -19350,7 +20477,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_packages_apps_NetworkLocation",
-        "revision": "21e4fa3786a05656b59cbe87cd9b3d7af06e2550",
+        "revision": "9514bbac91bea80f53b5044ef2152e32a2e04d3c",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -19361,10 +20488,10 @@
       "active": true
     },
     "lock": {
-      "commit": "21e4fa3786a05656b59cbe87cd9b3d7af06e2550",
-      "nix_hash": "sha256-C2M0PbMtUxB6mPrLFSjXt2idt8OEGjs0y2+RgvMb4uA=",
-      "path": "/nix/store/xm97ngflqqy4bipkpnwfy9m20q90kxpv-platform_packages_apps_NetworkLocation-21e4fa3",
-      "date": 1749410918
+      "commit": "9514bbac91bea80f53b5044ef2152e32a2e04d3c",
+      "nix_hash": "sha256-9eyCwP3VIwluAxC8eRrz7J+i/rzYrwjS+feywHGH90E=",
+      "path": "/nix/store/wlpkmar6rk6bd409j4x61pxidqx4zdn1-platform_packages_apps_NetworkLocation-9514bba",
+      "date": 1752777292
     }
   },
   "packages/apps/OnDeviceAppPrediction": {
@@ -19621,7 +20748,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_packages_apps_Seedvault",
-        "revision": "d993560c3ce2a68708a1912f5ded46ffcd225b3d",
+        "revision": "e37d10775716bb62d48db2ef857f8e4dcae8df5a",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -19632,10 +20759,10 @@
       "active": true
     },
     "lock": {
-      "commit": "d993560c3ce2a68708a1912f5ded46ffcd225b3d",
-      "nix_hash": "sha256-Nn5aJ2L93XLUlYzPoAeoMZZxx6u8kAyGjYWcM/XCoB4=",
-      "path": "/nix/store/df18n57w23iwb2j0lc52a8xszimnqgfr-platform_packages_apps_Seedvault-d993560",
-      "date": 1744207310
+      "commit": "e37d10775716bb62d48db2ef857f8e4dcae8df5a",
+      "nix_hash": "sha256-q91OlWxKZQK0MBH9rMHnkPEPFOynsiUEzygytnFnafE=",
+      "path": "/nix/store/h83ra8ykl7lk57706ivxdqbwgifjwzcm-platform_packages_apps_Seedvault-e37d107",
+      "date": 1752881013
     }
   },
   "packages/apps/Settings": {
@@ -19650,7 +20777,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_packages_apps_Settings",
-        "revision": "e3d08eca71c14170030807ac4533c70e4de32765",
+        "revision": "4a7145a43e9285244cecbd75277ab7a16ab5bf58",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -19661,10 +20788,10 @@
       "active": true
     },
     "lock": {
-      "commit": "e3d08eca71c14170030807ac4533c70e4de32765",
-      "nix_hash": "sha256-YQAZKHPDsTfiXZ3ZoKr8S6g/eEtUj5fz2T4LIAfqKCM=",
-      "path": "/nix/store/36f9zpj81qkmcicbf145rr84av37y1nj-platform_packages_apps_Settings-e3d08ec",
-      "date": 1751292319
+      "commit": "4a7145a43e9285244cecbd75277ab7a16ab5bf58",
+      "nix_hash": "sha256-IAiXbu7iZJ7L1FafxVX6vDLl85MkEHJ9g6O5Z88tWVg=",
+      "path": "/nix/store/6j9l349c8ngvk8slfwpx7zqz734hs75q-platform_packages_apps_Settings-4a7145a",
+      "date": 1752777281
     }
   },
   "packages/apps/SettingsIntelligence": {
@@ -20800,7 +21927,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_packages_modules_Nfc",
-        "revision": "d72e2fe1356fe2aab33d83a4917369ad59307bba",
+        "revision": "ce1625169a9b60f69e290726d84739513c71a259",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -20811,10 +21938,10 @@
       "active": true
     },
     "lock": {
-      "commit": "d72e2fe1356fe2aab33d83a4917369ad59307bba",
-      "nix_hash": "sha256-N1n5eFmdEdT/fYMu5LnnT/z0cPGauWYIoX8njqMKFB0=",
-      "path": "/nix/store/drfp295zzrd7p7j9n0cgb29nqswmgd1f-platform_packages_modules_Nfc-d72e2fe",
-      "date": 1749745322
+      "commit": "ce1625169a9b60f69e290726d84739513c71a259",
+      "nix_hash": "sha256-wxjQ1IofpRiR+iu27ENwIvHIfbOjnu9GMZ4AcLgAG2M=",
+      "path": "/nix/store/qvmcjpqdrwaw0lc0rgh3dpp44wbzz8rg-platform_packages_modules_Nfc-ce16251",
+      "date": 1752000373
     }
   },
   "packages/modules/OnDevicePersonalization": {
@@ -21162,7 +22289,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_packages_modules_Virtualization",
-        "revision": "26f044c4f91caae1cc3e2f61ce2528b4a92e5ef3",
+        "revision": "1fdf5656ba13ed0970d29b5c9200a55557bde397",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -21173,10 +22300,10 @@
       "active": true
     },
     "lock": {
-      "commit": "26f044c4f91caae1cc3e2f61ce2528b4a92e5ef3",
-      "nix_hash": "sha256-F0pt2ZcFffBIDT/OS+jAOKXmzbVLMK+7M7zikU1Zjhc=",
-      "path": "/nix/store/kkqqnllvw3ddlzhj7hc3jfrhs8vqr562-platform_packages_modules_Virtualization-26f044c",
-      "date": 1751676860
+      "commit": "1fdf5656ba13ed0970d29b5c9200a55557bde397",
+      "nix_hash": "sha256-iWWvVzXcuvZos4QrllfZpLPGTHFXjGgbzDcn2EJxkIQ=",
+      "path": "/nix/store/r93s36npfi8gfnzhagcq0dn3ljqcbmmz-platform_packages_modules_Virtualization-1fdf565",
+      "date": 1752870027
     }
   },
   "packages/modules/Wifi": {
@@ -23420,7 +24547,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_prebuilts_qemu-kernel",
-        "revision": "e62ba1279b3c104160a3ceb8b869807ca5d4189b",
+        "revision": "baed8196fc6a68d65e519ccdc8ee91c4e5e1ef27",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -23431,10 +24558,10 @@
       "active": true
     },
     "lock": {
-      "commit": "e62ba1279b3c104160a3ceb8b869807ca5d4189b",
-      "nix_hash": "sha256-FI24ov6kJy0Q5ZoF9k6PUk94Ui+J7VLd0Jw9qSDDXaU=",
-      "path": "/nix/store/ir9xp0wmhyy34zlaj0bymddh1ddlx2yw-platform_prebuilts_qemu-kernel-e62ba12",
-      "date": 1751665918
+      "commit": "baed8196fc6a68d65e519ccdc8ee91c4e5e1ef27",
+      "nix_hash": "sha256-QYH6V+CpkwlrasiPiklfWOLVP3OVv9HTdGs+PdRbjiI=",
+      "path": "/nix/store/qx3594n0azmilwnwqjjl706cmxrsj7gr-platform_prebuilts_qemu-kernel-baed819",
+      "date": 1752876086
     }
   },
   "prebuilts/r8": {
@@ -23736,6 +24863,31 @@
       "nix_hash": "sha256-krjOCeu40k8n1Q3OMHE3aYT81wz51GJ9MnBs2cok3oY=",
       "path": "/nix/store/p1s3dmxrysy5y1v9xz6bb4n1y6l50vpv-v34-c8a125b",
       "date": 1711462421
+    }
+  },
+  "script": {
+    "project": {
+      "path": "script",
+      "groups": [],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://github.com/GrapheneOS/script",
+        "revision": "0f28ca8a658d419773ccb1e8c993a8b4710342b5",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "0f28ca8a658d419773ccb1e8c993a8b4710342b5",
+      "nix_hash": "sha256-faDXrt97PuxiHJ+Cd1DAMqx0FMQiDqf12dPANmNXuZI=",
+      "path": "/nix/store/dvj275wr0y2dwbm2093ggkwra279nzc4-script-0f28ca8",
+      "date": 1751941860
     }
   },
   "sdk": {
@@ -25884,6 +27036,33 @@
       "date": 1740867976
     }
   },
+  "toolchain/pgo-profiles": {
+    "project": {
+      "path": "toolchain/pgo-profiles",
+      "groups": [
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/toolchain/pgo-profiles",
+        "revision": "17fc8d37e16aaf065334058cc02a82f0df195340",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "17fc8d37e16aaf065334058cc02a82f0df195340",
+      "nix_hash": "sha256-MDFnVlwVUPb6HpQ+uBfEGlETNgytamHErGsYrpyl65g=",
+      "path": "/nix/store/49ncizkqm9rrz9sc7y95qsnyldjxgcb2-pgo-profiles-17fc8d3",
+      "date": 1743828528
+    }
+  },
   "tools/aadevtools": {
     "project": {
       "path": "tools/aadevtools",
@@ -26036,7 +27215,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/platform_tools_arsclib",
-        "revision": "16d5644ba50e86c3ccccc5c76b9a39e033613fd0",
+        "revision": "fbafcdd480de9d17e20d6c28fcf52368abdda92c",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -26047,10 +27226,10 @@
       "active": true
     },
     "lock": {
-      "commit": "16d5644ba50e86c3ccccc5c76b9a39e033613fd0",
-      "nix_hash": "sha256-uuG6/YcQtpsD0qJ9Yk2tv5ns90keoq1PO+Nlokqy0qU=",
-      "path": "/nix/store/7a6k9sa0gz3akwnwbwn7hc01v9pz0qs8-platform_tools_arsclib-16d5644",
-      "date": 1751765252
+      "commit": "fbafcdd480de9d17e20d6c28fcf52368abdda92c",
+      "nix_hash": "sha256-sJ60M34B0/JbrSXISY5AApr+d6y3M2koh1MxikefUms=",
+      "path": "/nix/store/qsjnwr6wqfhw3npybbx95v5pxcm9h4sc-platform_tools_arsclib-fbafcdd",
+      "date": 1752346493
     }
   },
   "tools/asuite": {
@@ -26413,6 +27592,36 @@
       "date": 1742614012
     }
   },
+  "tools/platform-compat": {
+    "project": {
+      "path": "tools/platform-compat",
+      "groups": [
+        "pdk-cw-fs",
+        "pdk-fs",
+        "pdk",
+        "sysui-studio"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/tools/platform-compat",
+        "revision": "db0de6104d8527114a7ae441b0a9c35f885d2876",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "db0de6104d8527114a7ae441b0a9c35f885d2876",
+      "nix_hash": "sha256-w4HjY2meJ4XwYlfQ9Phtjh1YOaqeL2c4EliaiHc9E2E=",
+      "path": "/nix/store/gij6cyny6idglnmgfwvr93fchjv8za5r-platform-compat-db0de61",
+      "date": 1741735617
+    }
+  },
   "tools/repohooks": {
     "project": {
       "path": "tools/repohooks",
@@ -26726,6 +27935,175 @@
       "date": 1740529791
     }
   },
+  "trusty/device/arm/generic-arm64": {
+    "project": {
+      "path": "trusty/device/arm/generic-arm64",
+      "groups": [
+        "trusty",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/trusty/device/arm/generic-arm64",
+        "revision": "cbd6c1f5dd5c515959ddbc7b058e66ff9ac3eaa2",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "cbd6c1f5dd5c515959ddbc7b058e66ff9ac3eaa2",
+      "nix_hash": "sha256-4/l7ouTBM9GM33CaJ3XK/0Kp39Hvj8Gxso1MHKFhm7U=",
+      "path": "/nix/store/nxv6043lb41byvm97gvybd4r5n5bjq90-generic-arm64-cbd6c1f",
+      "date": 1742867246
+    }
+  },
+  "trusty/device/arm/vexpress-a15": {
+    "project": {
+      "path": "trusty/device/arm/vexpress-a15",
+      "groups": [
+        "trusty",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/trusty/device/arm/vexpress-a15",
+        "revision": "303ea92e4d6e24dc9225029a0e5130c2eeaf4f9a",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "303ea92e4d6e24dc9225029a0e5130c2eeaf4f9a",
+      "nix_hash": "sha256-jh34Afs6aAy+qM9AGrnW8x8c0WrJxrgvzEb3fbPiiYc=",
+      "path": "/nix/store/wxmyhjl03dzph09hjm0ykrvpy69ngyxs-vexpress-a15-303ea92",
+      "date": 1675468782
+    }
+  },
+  "trusty/device/common": {
+    "project": {
+      "path": "trusty/device/common",
+      "groups": [
+        "trusty",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/trusty/device/common",
+        "revision": "4d127ab6d6602502e2212f7986656748d0cb31b9",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "4d127ab6d6602502e2212f7986656748d0cb31b9",
+      "nix_hash": "sha256-6YYS6cHK5K2pNEtg0NRZRg/WjWjB/cV8y9guMqTi9mQ=",
+      "path": "/nix/store/rv4wkmq0dssx0agpg630v91acxp9nkfj-common-4d127ab",
+      "date": 1738985198
+    }
+  },
+  "trusty/device/desktop": {
+    "project": {
+      "path": "trusty/device/desktop",
+      "groups": [
+        "android-desktop",
+        "pdk",
+        "trusty"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/trusty/device/desktop",
+        "revision": "770482c0a37b602d336f7371c36f2bde76927505",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "770482c0a37b602d336f7371c36f2bde76927505",
+      "nix_hash": "sha256-gklZ8I7rRVeC3QHArC+O80PrKOWgM5qqbat6Bv0MTeE=",
+      "path": "/nix/store/m5ba3f8nslds4g58z4r98j8v49v383k1-desktop-770482c",
+      "date": 1740190992
+    }
+  },
+  "trusty/device/nxp/imx7d": {
+    "project": {
+      "path": "trusty/device/nxp/imx7d",
+      "groups": [
+        "trusty",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/trusty/device/nxp/imx7d",
+        "revision": "b22c680157cb8b0bc688b19609144ebc0fe55a19",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "b22c680157cb8b0bc688b19609144ebc0fe55a19",
+      "nix_hash": "sha256-rHWGw/Wgf2kHLiDJ+5Coik8o9w0UJn0eO8Q82maiEts=",
+      "path": "/nix/store/2fm0k1k4rm9m4iaq3viys1803glv6nw9-imx7d-b22c680",
+      "date": 1675468776
+    }
+  },
+  "trusty/device/x86/generic-x86_64": {
+    "project": {
+      "path": "trusty/device/x86/generic-x86_64",
+      "groups": [
+        "trusty",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/trusty/device/x86/generic-x86_64",
+        "revision": "aeef4b5dd20e4748c1446fb4e6d9dd97d73d7e41",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "aeef4b5dd20e4748c1446fb4e6d9dd97d73d7e41",
+      "nix_hash": "sha256-mEYNKw1LaHNiJ68s5YvEoqTwlml5AQs91nX/m6PtGi0=",
+      "path": "/nix/store/hz8h44g779jdnr8x721ayh0kasfg0laz-generic-x86_64-aeef4b5",
+      "date": 1742614032
+    }
+  },
   "trusty/hardware/nxp": {
     "project": {
       "path": "trusty/hardware/nxp",
@@ -26752,6 +28130,43 @@
       "nix_hash": "sha256-65zile2t1CJZpzN0FR8Nqrae/BIPDL3gbZDkm0Lv/uo=",
       "path": "/nix/store/9ih48jn95qgcmp1slhfy4g2ygilmbn67-nxp-b7edfed",
       "date": 1710850762
+    }
+  },
+  "trusty/host/common": {
+    "project": {
+      "path": "trusty/host/common",
+      "groups": [
+        "trusty",
+        "pdk"
+      ],
+      "linkfiles": [
+        {
+          "src": "bazel/WORKSPACE.bazel",
+          "dest": "trusty/WORKSPACE.bazel"
+        },
+        {
+          "src": "bazel/bazelrc",
+          "dest": "trusty/.bazelrc"
+        }
+      ],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/trusty/host/common",
+        "revision": "6949df5b55fd07de23c4624e915d65e70b7e94c8",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "6949df5b55fd07de23c4624e915d65e70b7e94c8",
+      "nix_hash": "sha256-/Oh177zUjN+zgzxsjqyblHiqww5GtDb5JDVC965OgI4=",
+      "path": "/nix/store/zsj0yl23g2dzhsfvn5dw20bz44sx98va-common-6949df5",
+      "date": 1741134311
     }
   },
   "trusty/kernel": {
@@ -27090,15 +28505,19 @@
       "date": 1742867265
     }
   },
-  "vendor/adevtool": {
+  "trusty/user/desktop": {
     "project": {
-      "path": "vendor/adevtool",
-      "groups": [],
+      "path": "trusty/user/desktop",
+      "groups": [
+        "android-desktop",
+        "pdk",
+        "trusty"
+      ],
       "linkfiles": [],
       "copyfiles": [],
       "repo_ref": {
-        "repo_url": "https://github.com/GrapheneOS/adevtool",
-        "revision": "ecb505d87e2b2e59be0fbc0bc1a3ba2e0e1595de",
+        "repo_url": "https://android.googlesource.com/trusty/user/desktop",
+        "revision": "2a72a18f19f145a0d2841e445271b8ba0aa6338a",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -27109,10 +28528,68 @@
       "active": true
     },
     "lock": {
-      "commit": "ecb505d87e2b2e59be0fbc0bc1a3ba2e0e1595de",
-      "nix_hash": "sha256-smppNO8I0xfPjExp3rwpMH9lyTBMJ9ZwlTzBMyYSKLg=",
-      "path": "/nix/store/3f4jc0f9z044h6yyffm2xq57dl9shn9i-adevtool-ecb505d",
-      "date": 1751913576
+      "commit": "2a72a18f19f145a0d2841e445271b8ba0aa6338a",
+      "nix_hash": "sha256-Zrh0Tlu0K9VdU/unHHzUnVTe7I5DowOVakUEKyozuOk=",
+      "path": "/nix/store/03ngrpybas28w2zxjyhvn2x4m9ny2jyz-desktop-2a72a18",
+      "date": 1742347436
+    }
+  },
+  "trusty/vendor/google/aosp": {
+    "project": {
+      "path": "trusty/vendor/google/aosp",
+      "groups": [
+        "trusty",
+        "pdk"
+      ],
+      "linkfiles": [],
+      "copyfiles": [
+        {
+          "src": "lk_inc.mk",
+          "dest": "lk_inc.mk"
+        }
+      ],
+      "repo_ref": {
+        "repo_url": "https://android.googlesource.com/trusty/vendor/google/aosp",
+        "revision": "a21859e452c614de890ea8949faee561650f2a6d",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "a21859e452c614de890ea8949faee561650f2a6d",
+      "nix_hash": "sha256-LXLWuQUs/QRWr8GCvfpXqduijl2AckubctJvAEO3uog=",
+      "path": "/nix/store/vhngd4wxb8lbysxsl04fimrhzr1ksda7-aosp-a21859e",
+      "date": 1742513961
+    }
+  },
+  "vendor/adevtool": {
+    "project": {
+      "path": "vendor/adevtool",
+      "groups": [],
+      "linkfiles": [],
+      "copyfiles": [],
+      "repo_ref": {
+        "repo_url": "https://github.com/GrapheneOS/adevtool",
+        "revision": "bb6d89cb1c5c87dd4646baef5347dc96572a9663",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "categories": [
+        "Default"
+      ],
+      "lineage_deps": "NoLineageDependenciesFile",
+      "active": true
+    },
+    "lock": {
+      "commit": "bb6d89cb1c5c87dd4646baef5347dc96572a9663",
+      "nix_hash": "sha256-qAAHYbNYBGKMJ3zIaeKMkM01BCSYO9tYQenjyayNPv4=",
+      "path": "/nix/store/3199v670shrfkg798hg38khdg0n1k4ck-adevtool-bb6d89c",
+      "date": 1752429149
     }
   },
   "vendor/state": {
@@ -27123,7 +28600,7 @@
       "copyfiles": [],
       "repo_ref": {
         "repo_url": "https://github.com/GrapheneOS/vendor_state",
-        "revision": "f85ef2b0fbd7405d038e5c16ab35985cfd6a2426",
+        "revision": "0c4b719bbbd8a0923fcca3c0e08d613c2de0a733",
         "fetch_lfs": true,
         "fetch_submodules": false
       },
@@ -27134,10 +28611,10 @@
       "active": true
     },
     "lock": {
-      "commit": "f85ef2b0fbd7405d038e5c16ab35985cfd6a2426",
-      "nix_hash": "sha256-zD3qtHuBdXsArBVstI6Xz1QeLCCc4Rxy56vbm7VOiyI=",
-      "path": "/nix/store/qh8q324c2amn0s38c1awlr4mlkqrkm3j-vendor_state-f85ef2b",
-      "date": 1751831915
+      "commit": "0c4b719bbbd8a0923fcca3c0e08d613c2de0a733",
+      "nix_hash": "sha256-/tJ05hMBgbi0AIXPOE7OQ/KveatS7LlpeqJumtTmdik=",
+      "path": "/nix/store/jvj00glfjifxv2ygalwwwfdyxfjwd3z0-vendor_state-0c4b719",
+      "date": 1752593556
     }
   }
 }
