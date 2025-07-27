@@ -18,5 +18,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     source.overlayfsDirs = [ "vendor/adevtool" ];
+    envPackages = with pkgs; [ nodejs yarn ];
   };
 }

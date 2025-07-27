@@ -41,6 +41,7 @@
         wget
 
         (callPackage ./repo2nix/package.nix {})
+        prefetch-yarn-deps
         # repo2nix dev stuff
         cargo rustc pkg-config openssl
 
