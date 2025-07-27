@@ -683,6 +683,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": {
@@ -726,6 +729,9 @@
         },
         {
           "DeviceSpecific": "radxa0_tab"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": {
@@ -791,6 +797,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -938,7 +947,12 @@
           "DeviceSpecific": "wade"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/amlogic/g12-common",
+          "kernel/amlogic/kernel-modules/dhd-driver"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -996,7 +1010,11 @@
           "DeviceSpecific": "sake"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/asus/sm8350"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2772,7 +2790,12 @@
           "DeviceSpecific": "sailfish"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/sony/timekeep",
+          "kernel/google/marlin"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3730,7 +3753,11 @@
           "DeviceSpecific": "heart"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/lenovo/sm8150-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3765,7 +3792,7 @@
           "kernel/lenovo/sm8150"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "e07c8cda9f3fe1ac5725a5648d13234a9a0b0f12",
@@ -3791,7 +3818,11 @@
           "DeviceSpecific": "zippo"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/lenovo/sm8150-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -4316,7 +4347,11 @@
           "DeviceSpecific": "bangkk"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sm7325-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -4343,7 +4378,11 @@
           "DeviceSpecific": "beckham"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -4680,7 +4719,11 @@
           "DeviceSpecific": "evert"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -4755,7 +4798,11 @@
           "DeviceSpecific": "fogos"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sm7325-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -4937,7 +4984,11 @@
           "DeviceSpecific": "lake"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -4964,7 +5015,11 @@
           "DeviceSpecific": "messi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -4991,7 +5046,11 @@
           "DeviceSpecific": "miami"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sm7325-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -5040,7 +5099,7 @@
           "hardware/motorola"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "d212d172a8d87aa62256b4958f05dac74c639709",
@@ -5097,7 +5156,11 @@
           "DeviceSpecific": "nash"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -5186,7 +5249,11 @@
           "DeviceSpecific": "payton"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -5306,7 +5373,11 @@
           "DeviceSpecific": "rhodep"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sm7325-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -5522,6 +5593,9 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "bangkk"
+        },
+        {
           "DeviceSpecific": "berlin"
         },
         {
@@ -5529,6 +5603,18 @@
         },
         {
           "DeviceSpecific": "dubai"
+        },
+        {
+          "DeviceSpecific": "fogos"
+        },
+        {
+          "DeviceSpecific": "miami"
+        },
+        {
+          "DeviceSpecific": "rhodep"
+        },
+        {
+          "DeviceSpecific": "tundra"
         },
         {
           "DeviceSpecific": "xpeng"
@@ -5705,7 +5791,11 @@
           "DeviceSpecific": "tundra"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sm7325-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -5766,7 +5856,26 @@
           "DeviceSpecific": "nx_tab"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nvidia/t210-common",
+          "hardware/nintendo/arm-trusted-firmware",
+          "hardware/nintendo/joycond",
+          "kernel/nvidia/cypress-fmac-upstream",
+          "kernel/nvidia/exfat",
+          "kernel/nvidia/kernel-4.9-nx",
+          "kernel/nvidia/nvidia-nx",
+          "kernel/nvidia/nvgpu",
+          "kernel/nvidia/wireguard",
+          "hardware/intel/sensors-iio",
+          "hardware/nvidia/interfaces",
+          "hardware/nvidia/light",
+          "hardware/nvidia/platform/t210/nx",
+          "hardware/nvidia/power",
+          "hardware/nvidia/thermal",
+          "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu-9.3"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -5824,7 +5933,11 @@
           "DeviceSpecific": "NB1"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nokia/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -5887,7 +6000,7 @@
           "kernel/nokia/msm8998"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "45bda10d1751ce96de1e459a2f69190d996d36dc",
@@ -5976,7 +6089,11 @@
           "DeviceSpecific": "TP1803"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/nubia/sm8150"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -6113,7 +6230,28 @@
           "DeviceSpecific": "sif"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nvidia/shield-common",
+          "device/nvidia/t210-common",
+          "kernel/nvidia/cypress-fmac",
+          "kernel/nvidia/exfat",
+          "kernel/nvidia/kernel-4.9",
+          "kernel/nvidia/nvidia",
+          "kernel/nvidia/nvgpu",
+          "hardware/nvidia/hdmi-cec",
+          "hardware/nvidia/interfaces",
+          "hardware/nvidia/light",
+          "hardware/nvidia/memtrack",
+          "hardware/nvidia/platform/t210/foster",
+          "hardware/nvidia/platform/t210/jetson",
+          "hardware/nvidia/platform/t210b01/darcy",
+          "hardware/nvidia/platform/t210b01/sif",
+          "hardware/nvidia/power",
+          "hardware/nvidia/thermal",
+          "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu-9.3"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -6323,14 +6461,32 @@
           "DeviceSpecific": "foster"
         },
         {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
           "DeviceSpecific": "nx"
         },
         {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
+        },
+        {
+          "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "b706e235bcf72915de178933b549f0e70e96bbfe",
@@ -6353,10 +6509,25 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -6451,7 +6622,22 @@
           "DeviceSpecific": "foster"
         },
         {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -6459,7 +6645,7 @@
           "device/nvidia/tegra-common"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "61eb05dacfbe563eac940f0f0a323ba307f6d4bd",
@@ -6482,13 +6668,39 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nvidia/sepolicy",
+          "hardware/dolby/interfaces"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -6546,7 +6758,12 @@
           "DeviceSpecific": "dre"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/oplus",
+          "kernel/oneplus/sm4350"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -6728,7 +6945,11 @@
           "DeviceSpecific": "gunnar"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/sm6375-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -7131,7 +7352,11 @@
           "DeviceSpecific": "salami"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/sm8550-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -7190,6 +7415,9 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "gunnar"
+        },
+        {
           "DeviceSpecific": "larry"
         },
         {
@@ -7237,7 +7465,12 @@
           "DeviceSpecific": "hotdogb"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/oplus",
+          "kernel/oneplus/sm8150"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -7311,7 +7544,12 @@
           "DeviceSpecific": "martini"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/oplus",
+          "kernel/oneplus/sm8350"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -7346,7 +7584,7 @@
           "kernel/oneplus/sm8550-modules"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "5cb940f3e437551409ee2ff2b6a24fc8b0c86f42",
@@ -8493,7 +8731,12 @@
           "DeviceSpecific": "gta4lwifi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/samsung",
+          "kernel/samsung/sm6115"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -8658,7 +8901,12 @@
           "DeviceSpecific": "gtowifi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/samsung",
+          "kernel/samsung/sdm429"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -8782,7 +9030,11 @@
           "DeviceSpecific": "gts7lwifi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/samsung/sm8250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -8919,7 +9171,7 @@
           "hardware/samsung"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "1afa52f7d244a073ae6ae634363eb7ef416bd8d8",
@@ -9399,7 +9651,11 @@
           "DeviceSpecific": "pdx225"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/sm6375-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -9457,7 +9713,11 @@
           "DeviceSpecific": "pdx235"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/sm6375-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -9555,7 +9815,7 @@
           "kernel/sony/sm6375"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "84948d08bab8986701a35adb8744f578284817eb",
@@ -9791,7 +10051,11 @@
           "DeviceSpecific": "Mi8937"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/mithorium-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -9818,7 +10082,11 @@
           "DeviceSpecific": "alioth"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm8250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -9845,7 +10113,11 @@
           "DeviceSpecific": "apollon"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm8250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -9872,7 +10144,11 @@
           "DeviceSpecific": "beryllium"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -9930,7 +10206,11 @@
           "DeviceSpecific": "cmi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm8250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -9957,7 +10237,11 @@
           "DeviceSpecific": "davinci"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm6150-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -9984,7 +10268,11 @@
           "DeviceSpecific": "dipper"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10045,7 +10333,11 @@
           "DeviceSpecific": "equuleus"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10104,7 +10396,11 @@
           "DeviceSpecific": "gemini"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/msm8996-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10224,7 +10520,11 @@
           "DeviceSpecific": "lmi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm8250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10287,7 +10587,7 @@
           "kernel/xiaomi/msm8937"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "b7c06119dcd1c1618564306e5e65b54a7e2c3b30",
@@ -10322,7 +10622,7 @@
           "kernel/xiaomi/msm8996"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "5bd111e6931eb27bf19258e12bf3b777f5476c9e",
@@ -10383,7 +10683,11 @@
           "DeviceSpecific": "munch"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm8250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10410,7 +10714,11 @@
           "DeviceSpecific": "natrium"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/msm8996-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10437,7 +10745,11 @@
           "DeviceSpecific": "perseus"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10464,7 +10776,11 @@
           "DeviceSpecific": "polaris"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10590,7 +10906,12 @@
           "DeviceSpecific": "vela"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/xiaomi",
+          "kernel/xiaomi/sdm710"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10638,7 +10959,7 @@
           "kernel/xiaomi/sdm845"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "b193dea89f1a5f3acf73d3c9bd12da017a35b8df",
@@ -10664,7 +10985,12 @@
           "DeviceSpecific": "shark"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/xiaomi",
+          "kernel/xiaomi/shark"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10688,7 +11014,13 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "davinci"
+        },
+        {
           "DeviceSpecific": "sweet"
+        },
+        {
+          "DeviceSpecific": "violet"
         }
       ],
       "lineage_deps": {
@@ -10780,7 +11112,7 @@
           "kernel/xiaomi/sm8250"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "0b1755b8751b8a9b4c9fd93739f6f88c0b628a80",
@@ -10844,7 +11176,14 @@
           "DeviceSpecific": "socrates"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/xiaomi",
+          "kernel/xiaomi/sm8550",
+          "kernel/xiaomi/sm8550-devicetrees",
+          "kernel/xiaomi/sm8550-modules"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10871,7 +11210,12 @@
           "DeviceSpecific": "surya"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/xiaomi",
+          "kernel/xiaomi/surya"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10929,7 +11273,11 @@
           "DeviceSpecific": "thyme"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm8250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10956,7 +11304,11 @@
           "DeviceSpecific": "umi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm8250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -10983,7 +11335,11 @@
           "DeviceSpecific": "ursa"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -11041,7 +11397,11 @@
           "DeviceSpecific": "violet"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm6150-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -12899,10 +13259,28 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "beckham"
+        },
+        {
           "DeviceSpecific": "channel"
         },
         {
+          "DeviceSpecific": "evert"
+        },
+        {
+          "DeviceSpecific": "lake"
+        },
+        {
+          "DeviceSpecific": "messi"
+        },
+        {
+          "DeviceSpecific": "nash"
+        },
+        {
           "DeviceSpecific": "ocean"
+        },
+        {
+          "DeviceSpecific": "payton"
         },
         {
           "DeviceSpecific": "river"
@@ -17977,10 +18355,13 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "f682fec3f87725f422b9bf8f10b685ec31450b16",
@@ -36352,6 +36733,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -36409,6 +36793,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -36466,6 +36853,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -36550,14 +36940,32 @@
           "DeviceSpecific": "foster"
         },
         {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
           "DeviceSpecific": "nx"
         },
         {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
+        },
+        {
+          "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "99115c6bf81462ace349d889b49b564cbbb32a37",
@@ -36968,10 +37376,13 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "84c48290bf4fdf1e8f6fd62348a63f8ead902789",
@@ -37278,6 +37689,12 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "bangkk"
+        },
+        {
+          "DeviceSpecific": "beckham"
+        },
+        {
           "DeviceSpecific": "berlin"
         },
         {
@@ -37308,6 +37725,12 @@
           "DeviceSpecific": "eqs"
         },
         {
+          "DeviceSpecific": "evert"
+        },
+        {
+          "DeviceSpecific": "fogos"
+        },
+        {
           "DeviceSpecific": "guam"
         },
         {
@@ -37323,13 +37746,28 @@
           "DeviceSpecific": "kiev"
         },
         {
+          "DeviceSpecific": "lake"
+        },
+        {
+          "DeviceSpecific": "messi"
+        },
+        {
+          "DeviceSpecific": "miami"
+        },
+        {
           "DeviceSpecific": "nairo"
+        },
+        {
+          "DeviceSpecific": "nash"
         },
         {
           "DeviceSpecific": "nio"
         },
         {
           "DeviceSpecific": "ocean"
+        },
+        {
+          "DeviceSpecific": "payton"
         },
         {
           "DeviceSpecific": "pstar"
@@ -37341,6 +37779,9 @@
           "DeviceSpecific": "rhode"
         },
         {
+          "DeviceSpecific": "rhodep"
+        },
+        {
           "DeviceSpecific": "river"
         },
         {
@@ -37348,6 +37789,9 @@
         },
         {
           "DeviceSpecific": "troika"
+        },
+        {
+          "DeviceSpecific": "tundra"
         },
         {
           "DeviceSpecific": "xpeng"
@@ -37382,10 +37826,13 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "85081cab2050051ea6e93206ef0f80bc0676e613",
@@ -37409,6 +37856,9 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": {
@@ -37416,7 +37866,7 @@
           "external/libevdev"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "374b503d0ab66bfa389b7a8b7b1e17236fcbc432",
@@ -37526,10 +37976,25 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -37586,10 +38051,31 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -37616,10 +38102,31 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -37646,10 +38153,25 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -37826,10 +38348,22 @@
           "DeviceSpecific": "foster"
         },
         {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
           "DeviceSpecific": "nx"
         },
         {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
           "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -37838,7 +38372,7 @@
           "hardware/nvidia/soc/t210"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "66dbf4e2fd9689217c94e713b2cec004a02af759",
@@ -37862,6 +38396,18 @@
       "categories": [
         {
           "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -37872,7 +38418,7 @@
           "hardware/nvidia/soc/t210"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "95bbc4de796df02eb823afb9b72da74cfb387888",
@@ -37896,6 +38442,18 @@
       "categories": [
         {
           "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -37906,7 +38464,7 @@
           "hardware/nvidia/soc/t210"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "f1e227e28463a4a29f70f1ebe7105c8c64e22cb0",
@@ -37930,6 +38488,9 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": {
@@ -37940,7 +38501,7 @@
           "hardware/nvidia/soc/t210"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "9b2bd63b90abfff7dcf05f75da454b0454032742",
@@ -37969,7 +38530,14 @@
           "DeviceSpecific": "porg_tab"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "hardware/nvidia/platform/tegra/common",
+          "hardware/nvidia/soc/tegra",
+          "hardware/nvidia/platform/t210/common",
+          "hardware/nvidia/soc/t210"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -37994,10 +38562,22 @@
       "categories": [
         {
           "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "1d45312676c56456081f742968bf2c462deca060",
@@ -38021,6 +38601,18 @@
       "categories": [
         {
           "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -38033,7 +38625,7 @@
           "hardware/nvidia/platform/t210b01/ers"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "39f7b753052092489b3a72a1e75894527dc566d2",
@@ -38057,6 +38649,18 @@
       "categories": [
         {
           "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -38068,7 +38672,7 @@
           "hardware/nvidia/platform/t210b01/common"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "54fa9ad03578a6ef086f21d79fd653459a8d2175",
@@ -38092,6 +38696,18 @@
       "categories": [
         {
           "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -38104,7 +38720,7 @@
           "hardware/nvidia/platform/t210b01/ers"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "4aea15d56c70f813f457b4c837abacb2bec4929d",
@@ -38127,6 +38743,18 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
           "DeviceSpecific": "porg"
         },
         {
@@ -38137,6 +38765,9 @@
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -38167,10 +38798,31 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -38231,10 +38883,25 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
           "DeviceSpecific": "porg"
         },
         {
           "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": {
@@ -38265,6 +38932,18 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
           "DeviceSpecific": "porg"
         },
         {
@@ -38275,6 +38954,9 @@
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -38301,10 +38983,31 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -38500,6 +39203,24 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "dre"
+        },
+        {
+          "DeviceSpecific": "guacamole"
+        },
+        {
+          "DeviceSpecific": "guacamoleb"
+        },
+        {
+          "DeviceSpecific": "gunnar"
+        },
+        {
+          "DeviceSpecific": "hotdog"
+        },
+        {
+          "DeviceSpecific": "hotdogb"
+        },
+        {
           "DeviceSpecific": "instantnoodle"
         },
         {
@@ -38512,16 +39233,28 @@
           "DeviceSpecific": "larry"
         },
         {
+          "DeviceSpecific": "lemonade"
+        },
+        {
+          "DeviceSpecific": "lemonadep"
+        },
+        {
           "DeviceSpecific": "lemonades"
         },
         {
           "DeviceSpecific": "luigi"
         },
         {
+          "DeviceSpecific": "martini"
+        },
+        {
           "DeviceSpecific": "oscar"
         },
         {
           "DeviceSpecific": "oscaro"
+        },
+        {
+          "DeviceSpecific": "salami"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -40312,16 +41045,28 @@
           "DeviceSpecific": "f62"
         },
         {
+          "DeviceSpecific": "gta4l"
+        },
+        {
+          "DeviceSpecific": "gta4lwifi"
+        },
+        {
           "DeviceSpecific": "gta4xl"
         },
         {
           "DeviceSpecific": "gta4xlwifi"
         },
         {
+          "DeviceSpecific": "gtowifi"
+        },
+        {
           "DeviceSpecific": "gts4lv"
         },
         {
           "DeviceSpecific": "gts4lvwifi"
+        },
+        {
+          "DeviceSpecific": "gts7lwifi"
         },
         {
           "DeviceSpecific": "kane"
@@ -40963,7 +41708,13 @@
           "DeviceSpecific": "pdx215"
         },
         {
+          "DeviceSpecific": "pdx225"
+        },
+        {
           "DeviceSpecific": "pdx234"
+        },
+        {
+          "DeviceSpecific": "pdx235"
         },
         {
           "DeviceSpecific": "pdx237"
@@ -41134,10 +41885,16 @@
           "DeviceSpecific": "l01k"
         },
         {
+          "DeviceSpecific": "marlin"
+        },
+        {
           "DeviceSpecific": "mata"
         },
         {
           "DeviceSpecific": "miatoll"
+        },
+        {
+          "DeviceSpecific": "sailfish"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -41299,13 +42056,40 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "alioth"
+        },
+        {
+          "DeviceSpecific": "apollon"
+        },
+        {
+          "DeviceSpecific": "beryllium"
+        },
+        {
           "DeviceSpecific": "chiron"
+        },
+        {
+          "DeviceSpecific": "cmi"
+        },
+        {
+          "DeviceSpecific": "davinci"
+        },
+        {
+          "DeviceSpecific": "dipper"
         },
         {
           "DeviceSpecific": "earth"
         },
         {
+          "DeviceSpecific": "equuleus"
+        },
+        {
           "DeviceSpecific": "gauguin"
+        },
+        {
+          "DeviceSpecific": "gemini"
+        },
+        {
+          "DeviceSpecific": "grus"
         },
         {
           "DeviceSpecific": "haydn"
@@ -41314,7 +42098,25 @@
           "DeviceSpecific": "lisa"
         },
         {
+          "DeviceSpecific": "lmi"
+        },
+        {
           "DeviceSpecific": "miatoll"
+        },
+        {
+          "DeviceSpecific": "munch"
+        },
+        {
+          "DeviceSpecific": "natrium"
+        },
+        {
+          "DeviceSpecific": "perseus"
+        },
+        {
+          "DeviceSpecific": "polaris"
+        },
+        {
+          "DeviceSpecific": "pyxis"
         },
         {
           "DeviceSpecific": "renoir"
@@ -41323,7 +42125,31 @@
           "DeviceSpecific": "sagit"
         },
         {
+          "DeviceSpecific": "shark"
+        },
+        {
+          "DeviceSpecific": "socrates"
+        },
+        {
+          "DeviceSpecific": "surya"
+        },
+        {
           "DeviceSpecific": "sweet"
+        },
+        {
+          "DeviceSpecific": "thyme"
+        },
+        {
+          "DeviceSpecific": "umi"
+        },
+        {
+          "DeviceSpecific": "ursa"
+        },
+        {
+          "DeviceSpecific": "vela"
+        },
+        {
+          "DeviceSpecific": "violet"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -41366,6 +42192,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -41423,6 +42252,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -41480,6 +42312,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -41537,6 +42372,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -41657,6 +42495,9 @@
         },
         {
           "DeviceSpecific": "sabrina"
+        },
+        {
+          "DeviceSpecific": "wade"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -41901,10 +42742,13 @@
       "categories": [
         {
           "DeviceSpecific": "marlin"
+        },
+        {
+          "DeviceSpecific": "sailfish"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "041fb32de2e5d5804e05a4c59a2e90256823ff94",
@@ -42066,7 +42910,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "1011bf9ad84598facd122fd91b8fdae67e92987c",
@@ -42207,7 +43051,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "f759f36c9e84e36a6f26127c61aa06955a0b448e",
@@ -42344,6 +43188,9 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "bangkk"
+        },
+        {
           "DeviceSpecific": "berlin"
         },
         {
@@ -42351,6 +43198,18 @@
         },
         {
           "DeviceSpecific": "dubai"
+        },
+        {
+          "DeviceSpecific": "fogos"
+        },
+        {
+          "DeviceSpecific": "miami"
+        },
+        {
+          "DeviceSpecific": "rhodep"
+        },
+        {
+          "DeviceSpecific": "tundra"
         },
         {
           "DeviceSpecific": "xpeng"
@@ -42585,7 +43444,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "8f19d2b5a9ea1857eeb0af95464fc6e545dc70a2",
@@ -42696,13 +43555,13 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
-      "commit": "67397d36daf95fa919cd789bfa7d424c73ac50fb",
-      "nix_hash": "sha256-MvZrShlXpZkax2Z6nha9q8feIrcw1ryXF8pgqSDGYHE=",
-      "path": "/nix/store/fvn3b6431smf2mj21kfl5xwxnl95jbh1-android_kernel_nubia_sm8150-67397d3",
-      "date": 1751308365
+      "commit": "4f59142c94b7ff1a9a38709bf0fea876cc66bff7",
+      "nix_hash": "sha256-z8894WzjKArKVsJKkSBMDlXGLSb0ENyx2UJ8+X7SszI=",
+      "path": "/nix/store/jns366862bf6ng003lwqczdic3jgflcc-android_kernel_nubia_sm8150-4f59142",
+      "date": 1753216353
     }
   },
   "kernel/nvidia/cypress-fmac": {
@@ -42720,10 +43579,22 @@
       "categories": [
         {
           "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "fe7aab41df71a7b5a613d529e78edecb2b32c7d3",
@@ -42747,10 +43618,13 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "1a271c606011f815f94ad9e6258614d143adf955",
@@ -42773,10 +43647,31 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -42803,10 +43698,25 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -42834,10 +43744,13 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "00ef92f5f78e1b0efb7f2f206f9157400a9768dc",
@@ -42860,10 +43773,31 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -42890,10 +43824,25 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -42921,10 +43870,13 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "ca59ab615dee187d6b1d4f146b321f1e842c72ff",
@@ -42948,10 +43900,13 @@
       "categories": [
         {
           "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "ce7f8856d9eb67a0d27254ec5646c26a22253821",
@@ -43038,7 +43993,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "6c08d794507d84f15a3781f84fcc3148fc8e0f21",
@@ -43060,6 +44015,9 @@
         "fetch_submodules": false
       },
       "categories": [
+        {
+          "DeviceSpecific": "gunnar"
+        },
         {
           "DeviceSpecific": "larry"
         },
@@ -43104,7 +44062,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "f192c5f09745f886bc56525da5e1d8bb08bc69d5",
@@ -43173,7 +44131,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "9a66aeb6759eb5f306067e9f7ff45a9a14c6d5af",
@@ -43200,7 +44158,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "4cd5d265e75e8b22e0928559aae4b2c166ed514d",
@@ -43227,7 +44185,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "665eac2e3e3c11dbedaa1f0e9e0f7a8478a136c8",
@@ -43254,7 +44212,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "99ef39173e68fd1a6d7d5d3e31e01856d5055510",
@@ -43905,7 +44863,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "3e073cc4b22556c729b842552bc49be3c430617a",
@@ -43965,7 +44923,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "590efdce4125601b8133f9d9080ac7da76ab8353",
@@ -44055,7 +45013,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "de8d88c597ca52fd1cc053bd62d34d220de6cf01",
@@ -44187,7 +45145,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "ef2780c86fdef9aa301354cc99dbf155788e0920",
@@ -44449,7 +45407,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "e6276f1260f73c77561d831689c93cac55d5feb5",
@@ -44512,7 +45470,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "41895bd4f685abc095beb1d139d72312baf8f1a6",
@@ -44554,7 +45512,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "88606771eef343b0a2158de455a9537fba17b2f2",
@@ -44581,7 +45539,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "2f34382c3629be304bc80557dec57f8c965e2ec6",
@@ -44604,7 +45562,13 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "davinci"
+        },
+        {
           "DeviceSpecific": "sweet"
+        },
+        {
+          "DeviceSpecific": "violet"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -44680,7 +45644,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "fcedce48bf028184666db9e6c8d35c45cfb44053",
@@ -44740,7 +45704,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "6a7121f4fbf2df776228a694717444f134c9c0b7",
@@ -44767,7 +45731,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "52ed248b24291569d0d7b313d9523192bd65aee5",
@@ -44794,7 +45758,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "04e7a8245e151ca9a53b96179999ad35726b0e05",
@@ -44821,7 +45785,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "faa4b83905885960103ca2475fd7c45c3bdff0bd",
@@ -44986,10 +45950,10 @@
       "active": true
     },
     "lock": {
-      "commit": "bdc18674c720aeca1e52913171b980cc93fb4535",
-      "nix_hash": "sha256-hTPNKZIhz5reyQE0dhw9omY/is9PEoTEGdvNw7mJMhs=",
-      "path": "/nix/store/p7g1m9z7a0f18i7q2li7mc4ghqb3l0g2-hudson-bdc1867",
-      "date": 1752374250
+      "commit": "96ade600813086465394711073ba3e3e9733c9b4",
+      "nix_hash": "sha256-1FFq2ruezzNKPhq+cNbxXK5aVGTUA88e9rt/0L2OTCo=",
+      "path": "/nix/store/fa7apzsfaykx87m71zmrpxk7xmbldanr-hudson-96ade60",
+      "date": 1753302285
     }
   },
   "lineage/mirror": {
@@ -45013,10 +45977,10 @@
       "active": true
     },
     "lock": {
-      "commit": "477c6dd1cf13f4e1d59f35f29c3ae987b9152d9a",
-      "nix_hash": "sha256-u/kyBrji0CNyxg7N9Q7fNxeTGhEIRiPgeHq2F5aI3zw=",
-      "path": "/nix/store/g36yifigq1garwjlpr4n73m01rajz7rv-mirror-477c6dd",
-      "date": 1752271287
+      "commit": "86ff047764f32ed5f1adc66792ae60e60f787464",
+      "nix_hash": "sha256-BsOm4haLP+NxOXZreFicA8o7Diu5x1fMYLrPiQ4qVB0=",
+      "path": "/nix/store/zycadh68gxhdzi33nvygzfh3b33jv2rg-mirror-86ff047",
+      "date": 1753135291
     }
   },
   "lineage/scripts": {
@@ -45067,10 +46031,10 @@
       "active": true
     },
     "lock": {
-      "commit": "18eb74b0a1560b594905c70e60a953b861c29e19",
-      "nix_hash": "sha256-fbrL2QGKc17XLI9KyHPxIwgbb65RgRpLXLGkGraF2/E=",
-      "path": "/nix/store/rifjqaqbbzh16jzh8gbpa5kw5vbm0rzm-www-18eb74b",
-      "date": 1745779527
+      "commit": "cff40b5789ff3a8ead37b5b449e86a7548320d0d",
+      "nix_hash": "sha256-rejVEA9zojYk33wgaMDt+VNxgJ49eUydHD0AOMZLyCg=",
+      "path": "/nix/store/jjazgm3558rwfgci2cq8h5lzkd6v2lnz-www-cff40b5",
+      "date": 1752919202
     }
   },
   "lineage/wiki": {
@@ -50055,10 +51019,31 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "nx"
+        },
+        {
+          "DeviceSpecific": "nx_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
+        },
+        {
           "DeviceSpecific": "quill"
         },
         {
           "DeviceSpecific": "quill_tab"
+        },
+        {
+          "DeviceSpecific": "sif"
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
@@ -52617,6 +53602,12 @@
       },
       "categories": [
         {
+          "DeviceSpecific": "bangkk"
+        },
+        {
+          "DeviceSpecific": "beckham"
+        },
+        {
           "DeviceSpecific": "berlin"
         },
         {
@@ -52647,6 +53638,12 @@
           "DeviceSpecific": "eqs"
         },
         {
+          "DeviceSpecific": "evert"
+        },
+        {
+          "DeviceSpecific": "fogos"
+        },
+        {
           "DeviceSpecific": "guam"
         },
         {
@@ -52662,13 +53659,28 @@
           "DeviceSpecific": "kiev"
         },
         {
+          "DeviceSpecific": "lake"
+        },
+        {
+          "DeviceSpecific": "messi"
+        },
+        {
+          "DeviceSpecific": "miami"
+        },
+        {
           "DeviceSpecific": "nairo"
+        },
+        {
+          "DeviceSpecific": "nash"
         },
         {
           "DeviceSpecific": "nio"
         },
         {
           "DeviceSpecific": "ocean"
+        },
+        {
+          "DeviceSpecific": "payton"
         },
         {
           "DeviceSpecific": "pstar"
@@ -52680,6 +53692,9 @@
           "DeviceSpecific": "rhode"
         },
         {
+          "DeviceSpecific": "rhodep"
+        },
+        {
           "DeviceSpecific": "river"
         },
         {
@@ -52687,6 +53702,9 @@
         },
         {
           "DeviceSpecific": "troika"
+        },
+        {
+          "DeviceSpecific": "tundra"
         },
         {
           "DeviceSpecific": "xpeng"

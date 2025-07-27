@@ -99,7 +99,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "4e19b1344467e2c163f68e46f0125c843265cb27",
@@ -136,7 +136,7 @@
           "hardware/nvidia/hwinc"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "ad70f1551128e1afa3c5dbaff71ec7f867eeaf54",
@@ -166,7 +166,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "83e8aa2e22a475a33ebe2aeeafb79f17b7e9c7dd",
@@ -196,7 +196,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "07b8ec27b258b176f4246c3a64b7c75d20db495d",
@@ -513,7 +513,11 @@
           "DeviceSpecific": "Z01R"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/asus/sdm845"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -568,7 +572,12 @@
           "DeviceSpecific": "mata"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/essential/msm8998",
+          "packages/resources/devicesettings"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -595,7 +604,13 @@
           "DeviceSpecific": "FP3"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/fairphone/sdm632",
+          "external/bson",
+          "system/qcom"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -622,7 +637,11 @@
           "DeviceSpecific": "pro1"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/fxtec/msm8998"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1085,7 +1104,11 @@
           "DeviceSpecific": "blueline"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/google/crosshatch"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1110,9 +1133,16 @@
       "categories": [
         {
           "DeviceSpecific": "bonito"
+        },
+        {
+          "DeviceSpecific": "sargo"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/google/msm-4.9"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1166,9 +1196,16 @@
       "categories": [
         {
           "DeviceSpecific": "coral"
+        },
+        {
+          "DeviceSpecific": "flame"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/google/coral"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1193,9 +1230,16 @@
       "categories": [
         {
           "DeviceSpecific": "crosshatch"
+        },
+        {
+          "DeviceSpecific": "blueline"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/google/msm-4.9"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1222,7 +1266,11 @@
           "DeviceSpecific": "flame"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/google/coral"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1247,9 +1295,16 @@
       "categories": [
         {
           "DeviceSpecific": "marlin"
+        },
+        {
+          "DeviceSpecific": "sailfish"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/google/marlin"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1281,7 +1336,7 @@
           "device/google/wahoo"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "132aeebb9399acd2f96fb4dd30a37e0ff9c1f2fb",
@@ -1307,7 +1362,11 @@
           "DeviceSpecific": "sailfish"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/google/marlin"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1334,7 +1393,11 @@
           "DeviceSpecific": "sargo"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/google/bonito"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1388,7 +1451,11 @@
           "DeviceSpecific": "taimen"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/google/wahoo"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1423,7 +1490,7 @@
           "kernel/google/wahoo"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "61c442070a405d91f9b583c5baf48da788120f69",
@@ -1449,7 +1516,11 @@
           "DeviceSpecific": "walleye"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/google/muskie"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1526,7 +1597,11 @@
           "DeviceSpecific": "beckham"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sdm660-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1553,7 +1628,11 @@
           "DeviceSpecific": "channel"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sdm632-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1580,7 +1659,11 @@
           "DeviceSpecific": "evert"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sdm660-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1620,7 +1703,7 @@
           "kernel/motorola/exynos9610"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "407ebf3aec6769947410f7d7a01063953c511a3c",
@@ -1646,7 +1729,11 @@
           "DeviceSpecific": "kane"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/exynos9610-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1673,7 +1760,11 @@
           "DeviceSpecific": "lake"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sdm660-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1700,7 +1791,14 @@
           "DeviceSpecific": "nash"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/motorola/msm8998",
+          "external/bson",
+          "hardware/motorola",
+          "system/qcom"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1727,7 +1825,11 @@
           "DeviceSpecific": "ocean"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sdm632-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1754,7 +1856,11 @@
           "DeviceSpecific": "payton"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sdm660-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1781,7 +1887,11 @@
           "DeviceSpecific": "racer"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sm7250-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1808,7 +1918,11 @@
           "DeviceSpecific": "river"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/sdm632-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1849,7 +1963,7 @@
           "system/qcom"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "c5bfdb55f4c8a3a4c84f199daee950dd56dfa63c",
@@ -1892,7 +2006,7 @@
           "system/qcom"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "fe99587e0bff81f2ccd5803628471e81be99752b",
@@ -1924,7 +2038,7 @@
           "hardware/motorola"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "249006dc31a0e7c8c2065a4ec36346491fb1a79a",
@@ -1950,7 +2064,11 @@
           "DeviceSpecific": "troika"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/motorola/exynos9610-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -1977,7 +2095,11 @@
           "DeviceSpecific": "PL2"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nokia/sdm660-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2009,7 +2131,7 @@
           "kernel/nokia/sdm660"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "3af6ffe0a374756dca7c436ec88eff60ddd68cb9",
@@ -2040,7 +2162,7 @@
           "kernel/nubia/msm8998"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "252ddc2a0b5569c97c30f2e1ac639a9af6254320",
@@ -2066,7 +2188,11 @@
           "DeviceSpecific": "nx563j"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nubia/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2091,9 +2217,30 @@
       "categories": [
         {
           "DeviceSpecific": "foster"
+        },
+        {
+          "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nvidia/shield-common",
+          "device/nvidia/t210-common",
+          "kernel/nvidia/cypress-fmac",
+          "kernel/nvidia/linux-4.9/kernel/kernel-4.9",
+          "kernel/nvidia/wireguard",
+          "hardware/nvidia/interfaces",
+          "hardware/nvidia/light",
+          "hardware/nvidia/power",
+          "hardware/nvidia/thermal"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2118,9 +2265,16 @@
       "categories": [
         {
           "DeviceSpecific": "foster_tab"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nvidia/foster"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2145,9 +2299,16 @@
       "categories": [
         {
           "DeviceSpecific": "porg"
+        },
+        {
+          "DeviceSpecific": "porg_tab"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nvidia/foster"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2174,7 +2335,12 @@
           "DeviceSpecific": "porg_tab"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nvidia/foster_tab",
+          "device/nvidia/porg"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2199,9 +2365,25 @@
       "categories": [
         {
           "DeviceSpecific": "quill"
+        },
+        {
+          "DeviceSpecific": "quill_tab"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "bootable/cboot/lk",
+          "device/nvidia/shield-common",
+          "device/nvidia/t186-common",
+          "kernel/nvidia/linux-4.9/kernel/kernel-4.9",
+          "kernel/nvidia/wireguard",
+          "hardware/nvidia/boot_control",
+          "hardware/nvidia/interfaces",
+          "hardware/nvidia/light",
+          "hardware/nvidia/power",
+          "hardware/nvidia/thermal"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2228,7 +2410,11 @@
           "DeviceSpecific": "quill_tab"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/nvidia/quill"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2271,7 +2457,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "1e39409d3de2adc4f53b9c8d73ca980c99f7d906",
@@ -2313,7 +2499,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "d6e312841e0aef3ecb597a9d24776fb549f270e6",
@@ -2347,7 +2533,7 @@
           "device/nvidia/tegra-common"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "d669d78f717c884b45fa4eef9bb3fdb0ccc330e5",
@@ -2387,7 +2573,7 @@
           "device/nvidia/tegra-common"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "aeffd4d9dac1274c3c531b00f1e1453b565fc43b",
@@ -2433,7 +2619,7 @@
           "device/nvidia/sepolicy"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "030cede4f1c262978327f94def7e11c927b941b1",
@@ -2459,7 +2645,11 @@
           "DeviceSpecific": "billie"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/oneplus/sm6350"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2486,7 +2676,11 @@
           "DeviceSpecific": "cheeseburger"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2523,7 +2717,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "48bb855b0a9e9240fb7d78fb60251e7b87606012",
@@ -2549,7 +2743,11 @@
           "DeviceSpecific": "dumpling"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2576,7 +2774,11 @@
           "DeviceSpecific": "enchilada"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2603,7 +2805,12 @@
           "DeviceSpecific": "fajita"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/common",
+          "device/oneplus/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2630,7 +2837,11 @@
           "DeviceSpecific": "guacamole"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/sm8150-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2657,7 +2868,11 @@
           "DeviceSpecific": "guacamoleb"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/sm8150-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2684,7 +2899,11 @@
           "DeviceSpecific": "hotdog"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/oneplus/sm8150-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2720,7 +2939,7 @@
           "kernel/oneplus/msm8998"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "9676f8322afb874994a5e58567d0a545d28317f9",
@@ -2754,7 +2973,7 @@
           "kernel/oneplus/sdm845"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "52051e2c7bae4fbd18ac64e8bc9af49f1f72e0b6",
@@ -2792,7 +3011,7 @@
           "device/oneplus/common"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "17285c8e158af6c5ba39b5513911d569cda000d7",
@@ -2822,7 +3041,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "f5f2ce95663487ae8810dd85d54794d3a42760de",
@@ -2932,7 +3151,12 @@
           "DeviceSpecific": "aura"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/xiaomi/sdm845",
+          "packages/resources/devicesettings"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -2959,7 +3183,11 @@
           "DeviceSpecific": "cheryl"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/razer/msm8998"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3023,7 +3251,7 @@
           "kernel/samsung/gta4xl"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "7256dfa8a7acfdfd7d906e3c978cceecd735023d",
@@ -3049,7 +3277,11 @@
           "DeviceSpecific": "gta4xlwifi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/samsung/gta4xl-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3076,7 +3308,11 @@
           "DeviceSpecific": "gts4lv"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/samsung/gts4lv-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3112,7 +3348,7 @@
           "kernel/samsung/sdm670"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "958ff820a13b688fc8a51f1ea8fdf73b638b6e5a",
@@ -3138,7 +3374,11 @@
           "DeviceSpecific": "gts4lvwifi"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/samsung/gts4lv-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3173,7 +3413,7 @@
           "hardware/samsung"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "3f56559a5436fd7be36fc6b7010ed3506ebe6e08",
@@ -3200,7 +3440,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "a7b5eb66618991c94fc76999844883ec13cbe339",
@@ -3226,7 +3466,11 @@
           "DeviceSpecific": "akari"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/tama-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3253,7 +3497,11 @@
           "DeviceSpecific": "discovery"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/nile-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3280,7 +3528,11 @@
           "DeviceSpecific": "kirin"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/nile-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3307,7 +3559,11 @@
           "DeviceSpecific": "mermaid"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/nile-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3354,7 +3610,7 @@
           "hardware/sony/SonyOpenTelephony"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "910b0f16f8823e3b28758b86238f65385cb58d34",
@@ -3380,7 +3636,11 @@
           "DeviceSpecific": "pioneer"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/nile-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3415,7 +3675,7 @@
           "kernel/sony/sdm845"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "3145e05d70e15561c98a722eb5bb6e8cec0a9763",
@@ -3441,7 +3701,11 @@
           "DeviceSpecific": "voyager"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/nile-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3468,7 +3732,11 @@
           "DeviceSpecific": "xz2c"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/sony/tama-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3495,7 +3763,11 @@
           "DeviceSpecific": "beryllium"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3522,7 +3794,11 @@
           "DeviceSpecific": "chiron"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3549,7 +3825,11 @@
           "DeviceSpecific": "davinci"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm6150-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3576,7 +3856,11 @@
           "DeviceSpecific": "dipper"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3603,7 +3887,11 @@
           "DeviceSpecific": "equuleus"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3630,7 +3918,11 @@
           "DeviceSpecific": "gemini"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/msm8996-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3657,7 +3949,11 @@
           "DeviceSpecific": "ginkgo"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sm6125-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3693,7 +3989,7 @@
           "kernel/xiaomi/msm8996"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "67b7bb602853e86e3c8a8608b52e3634417ec416",
@@ -3727,7 +4023,7 @@
           "kernel/xiaomi/msm8998"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "7fadd431ed9cb488e6b86639044ec6105a0445dc",
@@ -3753,7 +4049,11 @@
           "DeviceSpecific": "natrium"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/msm8996-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3780,7 +4080,11 @@
           "DeviceSpecific": "onclite"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "kernel/xiaomi/onclite"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3807,7 +4111,11 @@
           "DeviceSpecific": "perseus"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3834,7 +4142,11 @@
           "DeviceSpecific": "polaris"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3861,7 +4173,11 @@
           "DeviceSpecific": "sagit"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/msm8998-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -3909,7 +4225,7 @@
           "kernel/xiaomi/sdm845"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "3799a382f3b383f71b495f6973ab36970d18e7f7",
@@ -3940,7 +4256,7 @@
           "kernel/xiaomi/sm6125"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "a639c7d01941866aa507722a10cd8042331dba8a",
@@ -3972,7 +4288,7 @@
           "kernel/xiaomi/sm6150"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "981a5797c56e954f53d1d9be4882d9827aefe40f",
@@ -3998,7 +4314,11 @@
           "DeviceSpecific": "ursa"
         }
       ],
-      "lineage_deps": "NoLineageDependenciesFile",
+      "lineage_deps": {
+        "Some": [
+          "device/xiaomi/sdm845-common"
+        ]
+      },
       "active": true
     },
     "lock": {
@@ -4935,7 +5255,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "ec09ff2859b4f2b1d5591b2e595d3b586c391f59",
@@ -15043,7 +15363,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "f237fab243c1548a23efbf686a7d8f858716b83b",
@@ -15073,7 +15393,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "6c7d49f5aeb4cea7bf356b287f730f5c0564a012",
@@ -15103,7 +15423,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "c3b8830de0daba3cc3c430a0284d85e0a451bf14",
@@ -15145,7 +15465,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "a9d032e359c5dd1f1ba7d622f736537491a7efdd",
@@ -15187,7 +15507,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "3c2f1442dd007bd118a1894600e508b31beacaf6",
@@ -15229,7 +15549,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "9fe22c30822417679f19134bece4c3e7ac4c011e",
@@ -15271,7 +15591,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "7ad8cc419f64fa9ac8db080285b660330ba30364",
@@ -17240,7 +17560,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "a935d59760761f3798917f1fe8f0273fb6740684",
@@ -17270,7 +17590,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "1f85f60a7dfa6dd455b81fac47e777e93e237dbe",
@@ -17303,7 +17623,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "f63a27ddba458a81db739f2adbd42abf075b9c18",
@@ -17336,7 +17656,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "3e1ad74581c84cd4cb58968698e7f097ff2b3e43",
@@ -17369,7 +17689,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "a7c11d41b9f7e7832ed203592ebd68c4ce8f9a0c",
@@ -17408,7 +17728,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "76cb8b68c1cf8fcc7a0cbc832167c82a370b379a",
@@ -17447,7 +17767,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "d2871b2041790f6d291e207bec8b0ef34029ef59",
@@ -17486,7 +17806,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "0f40dea301d470510d9a33afe53b4e46c18407a7",
@@ -17618,7 +17938,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "7ef308ad4ac49db9bbe048aa411613452db62b08",
@@ -17645,7 +17965,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "896ffad21e9ab711e651e02dc023cf64c8edd7af",
@@ -17725,7 +18045,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "0efa857f461db771577301c631401d135bac9530",
@@ -17752,7 +18072,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "8d11a84a567518798769e6804a9e9a83bfdd96fe",
@@ -17779,7 +18099,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "8461f768a8e2a028ff94cd90055805004163842b",
@@ -17809,7 +18129,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "cc9e31a9dbb9e6694fe409fe5f0a1f9c2bb6f911",
@@ -17839,7 +18159,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "64d054883d446cada37c0b5de109394d4d1b852c",
@@ -17875,7 +18195,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "1d0f250e86e9b782eb252225eb346ae8535bce02",
@@ -17905,7 +18225,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "53c17eb6d84851deb84b8eb27dd03149fd3115e3",
@@ -17935,7 +18255,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "a4e4e47a3ece5b657a148f2a5624595898fd7dab",
@@ -17974,7 +18294,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "fb8eba734eb86dccb516cab6981eb32fd4e6ef1e",
@@ -18007,7 +18327,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "39d1dbc72e3d50cb7898aae8b37e6fdaa55c4ca7",
@@ -18034,7 +18354,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "ec4f029ace286f803f52e26ee7c2d7da8db48202",
@@ -18061,7 +18381,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "e10b63ea0688741e730109600154c9e21676c532",
@@ -18088,7 +18408,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "c51835027b1aee9f41fbbce0dd14c30ca210ecf8",
@@ -18124,7 +18444,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "7179fcf5344b43f4096aa575ff1d4bcba34759d7",
@@ -18166,7 +18486,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "226a67a372135b885c2dd25b60f23b008181f6d9",
@@ -18208,7 +18528,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "ef1360c671880d74dfdb0b2022eb2183084049e7",
@@ -18250,7 +18570,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "cc4cab1af26a4e95a02d9f925e53b7020412fd45",
@@ -18292,7 +18612,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "e88e0ae5d25a91472a8b903972de8cadeb41aaac",
@@ -18334,7 +18654,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "940fa7c9e76e9efabf421434f0cc9ec7ce1b69ff",
@@ -18376,7 +18696,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "deb838b0311bcd4a0a8d1adb267c144af0ee0dd1",
@@ -18418,7 +18738,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "e4bd19c95912607a7b9c873e23c70792bddf0215",
@@ -18460,7 +18780,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "3a8744ba2253adad58d56f2afb4a3b2a0b625d40",
@@ -18502,7 +18822,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "846ce66ee941b49ff32bc721e4c8cc99eea2e979",
@@ -18544,7 +18864,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "ca3a0014a928b4b53038fff9befee6c378c49b92",
@@ -18586,7 +18906,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "58ed45827fa3d36a6a67c86188b9ccc9233080b2",
@@ -18628,7 +18948,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "6aaa285651639dce007114eefd36e383efc3cb87",
@@ -18670,7 +18990,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "4998675b1d6222b9e6e4586c8b05ad0764008d96",
@@ -18712,7 +19032,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "59a41c245194b97459f4af8b20949427e6e6c47b",
@@ -18754,7 +19074,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "d1f7c3fb8108bd2492634ad1fd02a2a9b11584b5",
@@ -18796,7 +19116,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "45ffece283ceb224c51e3706258e8ad197ebcdc1",
@@ -18838,7 +19158,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "097446a9f7950816a2e7cca6ad96e3bd214a5a3d",
@@ -18880,7 +19200,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "1677f40a0b1bfa7c7273143b0f4944de28b73444",
@@ -18922,7 +19242,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "bd31a3ac52141cabebe90f6ac22370b7600464ca",
@@ -18964,7 +19284,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "b952c57eb3fb9d48d39c646b364291a007631eba",
@@ -19006,7 +19326,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "b56ffafc1fab797f687961abf7e79477be75b59c",
@@ -19048,7 +19368,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "d2692b96d3a89e26d3bad94eb7e6bc4caccbdbdb",
@@ -19118,7 +19438,7 @@
           "prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu-6.4.1"
         ]
       },
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "929f123da07cc9f73af2861eccf5a01591794e52",
@@ -19160,7 +19480,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "7bf2833f340f87ea643d3ef66b0e4c22ffb1e891",
@@ -19202,7 +19522,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "fce8aaec080411aba1f2dfdb0b76999f547414dd",
@@ -19244,7 +19564,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "6e36d328018f8b525b0de0649453f222035ad1d8",
@@ -19274,7 +19594,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "9e0d18071aa29c5c4f6a8a040f2df6b0ae3c7e1e",
@@ -19304,7 +19624,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "fd7b2c5f4652a45797c826beff53234af46a1036",
@@ -19331,7 +19651,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "eeb8cae9da4b54590d42c115d31e9f984d34faf5",
@@ -19364,7 +19684,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "77a0c0f8a59c868236c495373d98b03a819c0108",
@@ -19391,7 +19711,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "deb58080b9b10603c91180f04a33ea51f26e800b",
@@ -19418,7 +19738,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "529ce003e74d835822c09abbc2c5ea4fe5b546d7",
@@ -19448,7 +19768,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "6e84213ef82f278416e1be4c2111386433e807d8",
@@ -19487,7 +19807,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "f0aab432673c3d239512541acff0907c7cc0bd51",
@@ -19517,7 +19837,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "d74565965e5294d993cd9144e9fff43bffcd204d",
@@ -19575,7 +19895,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "24821698656fd30e35a0b4b02a03d448b6933143",
@@ -19605,7 +19925,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "bbde09bf45f5fecb11cdef533d16e9c62f287aed",
@@ -19632,7 +19952,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "6e33592c1ba8134611521a8d02a89fbdbb7e27fc",
@@ -19677,7 +19997,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "adbb39e2b28e776556323d8530a396cc27db8edb",
@@ -19704,7 +20024,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "558c05e191cba18da6dbf1e0003bc3f5b6ac4782",
@@ -19731,7 +20051,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "d263581e554a563c1d9e1ca5891ca3fb16b15847",
@@ -19950,10 +20270,10 @@
       "active": true
     },
     "lock": {
-      "commit": "bdc18674c720aeca1e52913171b980cc93fb4535",
-      "nix_hash": "sha256-hTPNKZIhz5reyQE0dhw9omY/is9PEoTEGdvNw7mJMhs=",
-      "path": "/nix/store/p7g1m9z7a0f18i7q2li7mc4ghqb3l0g2-hudson-bdc1867",
-      "date": 1752374250
+      "commit": "96ade600813086465394711073ba3e3e9733c9b4",
+      "nix_hash": "sha256-1FFq2ruezzNKPhq+cNbxXK5aVGTUA88e9rt/0L2OTCo=",
+      "path": "/nix/store/fa7apzsfaykx87m71zmrpxk7xmbldanr-hudson-96ade60",
+      "date": 1753302285
     }
   },
   "lineage/mirror": {
@@ -19977,10 +20297,10 @@
       "active": true
     },
     "lock": {
-      "commit": "477c6dd1cf13f4e1d59f35f29c3ae987b9152d9a",
-      "nix_hash": "sha256-u/kyBrji0CNyxg7N9Q7fNxeTGhEIRiPgeHq2F5aI3zw=",
-      "path": "/nix/store/g36yifigq1garwjlpr4n73m01rajz7rv-mirror-477c6dd",
-      "date": 1752271287
+      "commit": "86ff047764f32ed5f1adc66792ae60e60f787464",
+      "nix_hash": "sha256-BsOm4haLP+NxOXZreFicA8o7Diu5x1fMYLrPiQ4qVB0=",
+      "path": "/nix/store/zycadh68gxhdzi33nvygzfh3b33jv2rg-mirror-86ff047",
+      "date": 1753135291
     }
   },
   "lineage/scripts": {
@@ -20058,10 +20378,10 @@
       "active": true
     },
     "lock": {
-      "commit": "18eb74b0a1560b594905c70e60a953b861c29e19",
-      "nix_hash": "sha256-fbrL2QGKc17XLI9KyHPxIwgbb65RgRpLXLGkGraF2/E=",
-      "path": "/nix/store/rifjqaqbbzh16jzh8gbpa5kw5vbm0rzm-www-18eb74b",
-      "date": 1745779527
+      "commit": "cff40b5789ff3a8ead37b5b449e86a7548320d0d",
+      "nix_hash": "sha256-rejVEA9zojYk33wgaMDt+VNxgJ49eUydHD0AOMZLyCg=",
+      "path": "/nix/store/jjazgm3558rwfgci2cq8h5lzkd6v2lnz-www-cff40b5",
+      "date": 1752919202
     }
   },
   "lineage/wiki": {
@@ -22727,7 +23047,13 @@
         "fetch_submodules": false
       },
       "categories": [
-        "Default"
+        "Default",
+        {
+          "DeviceSpecific": "aura"
+        },
+        {
+          "DeviceSpecific": "mata"
+        }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
       "active": true
@@ -23573,7 +23899,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "16f73337b3616cfe640b0130629a9569b30482ca",
@@ -25135,7 +25461,7 @@
         }
       ],
       "lineage_deps": "NoLineageDependenciesFile",
-      "active": false
+      "active": true
     },
     "lock": {
       "commit": "60417f306f30016adda29f5bf180e73c7584a7a8",
