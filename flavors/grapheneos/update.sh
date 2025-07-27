@@ -37,3 +37,20 @@ for lockfile in $(ls *.lock); do
 		rm "$lockfile"
 	fi
 done
+
+echo Prefetching yarn deps for vendor/adevtool...
+echo "{" > yarn_hashes.json.part
+first=1
+for lockfile in $(ls *lock); do
+	if [ $first -eq 1 ]; then
+		first=0
+	else
+		echo "," >> yarn_hashes.json.part
+	fi
+	adevtool_path=$(jq -r '.["vendor/adevtool"].lock.path' $lockfile)
+	echo $lockfile: Prefetching $adevtool_path/yarn.lock
+	hash=$(prefetch-yarn-deps $adevtool_path/yarn.lock)
+	echo -n "	\"$lockfile\": \"$hash\"" >> yarn_hashes.json.part
+done
+echo "}" >> yarn_hashes.json.part
+mv yarn_hashes.json.part yarn_hashes.json
