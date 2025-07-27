@@ -48,9 +48,12 @@ for lockfile in $(ls *lock); do
 		echo "," >> yarn_hashes.json.part
 	fi
 	adevtool_path=$(jq -r '.["vendor/adevtool"].lock.path' $lockfile)
+	echo Ensuring that $adevtool_path is present in the Nix store...
+	repo-tool ensure-store-paths $lockfile vendor/adevtool
 	echo $lockfile: Prefetching $adevtool_path/yarn.lock
 	hash=$(prefetch-yarn-deps $adevtool_path/yarn.lock)
 	echo -n "	\"$lockfile\": \"$hash\"" >> yarn_hashes.json.part
 done
+echo >> yarn_hashes.json.part
 echo "}" >> yarn_hashes.json.part
 mv yarn_hashes.json.part yarn_hashes.json
