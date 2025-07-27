@@ -81,7 +81,11 @@ enum Args {
     GetBuildID {
         out_file: PathBuf,
         lockfiles: Vec<PathBuf>,
-    }
+    },
+    EnsureStorePaths {
+        lockfile_path: PathBuf,
+        store_paths: Option<Vec<PathBuf>>,
+    },
 }
 
 #[tokio::main]
@@ -262,6 +266,17 @@ async fn main() -> Result<(), MainError> {
             }
 
             fs::write(&out_file, serde_json::to_vec_pretty(&build_ids)?)?;
+        },
+
+        Args::EnsureStorePaths { lockfile_path, store_paths } => {
+            let lockfile = Lockfile::read_from_file(&lockfile_path).await?;
+            let mut paths = match store_paths {
+                Some(paths) => paths,
+                None => lockfile.entries.keys().cloned().collect(),
+            };
+            for path in paths {
+                lockfile.ensure_store_path(&path).await?;
+            }
         },
     }
 
