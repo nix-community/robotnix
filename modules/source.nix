@@ -56,13 +56,20 @@ let
         description = "Relative path under android source tree to place this directory. Defaults to attribute name.";
       };
 
+      manifestSrc = mkOption {
+        type = types.nullOr types.path;
+        description = "The original directory source as specified in the repo manifest lockfile.";
+        internal = true;
+        default = null;
+      };
+
       src = mkOption {
         type = types.path;
         description = "Source to use for this android source directory.";
         default = pkgs.runCommand "empty" {} "mkdir -p $out";
         apply = src: # Maybe replace with with pkgs.applyPatches? Need patchFlags though...
           if (config.patches != [] || config.postPatch != "")
-          then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" {} ''
+          then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" { inherit (config) nativeBuildInputs; } ''
             cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${src} $out/
             chmod u+w -R $out
             ${lib.concatMapStringsSep "\n" (p: "echo Applying ${p} && patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
@@ -92,6 +99,12 @@ let
         default = "";
         type = types.lines;
         description = "Additional commands to run after patching source directory.";
+      };
+
+      nativeBuildInputs = mkOption {
+        default = [];
+        type = types.listOf types.package;
+        description = "nativeBuildInputs to be made available during the execution of postPatch";
       };
 
       unpackScript = mkOption {
@@ -145,6 +158,8 @@ let
         mkdir -p $(dirname ${c.dest})
         ln -sf --relative ${config.relpath}/${c.src} ${c.dest}
       '') config.linkfiles);
+
+      src = lib.mkIf (config.manifestSrc != null) (lib.mkDefault config.manifestSrc);
     };
   });
 in
@@ -230,7 +245,7 @@ in
           path: entry: entry.project.active && (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)
         ) entries;
         dirs = lib.mapAttrs (path: entry: {
-          src = pkgs.fetchgit {
+          manifestSrc = pkgs.fetchgit {
             url = entry.project.repo_ref.repo_url;
             rev = entry.lock.commit;
             hash = entry.lock.nix_hash;

@@ -42,7 +42,10 @@
         BUILD_HOSTNAME = "grapheneos";
       };
 
-      adevtool.enable = mkIf (elem config.device phoneDevices) (mkDefault true);
+      adevtool = mkIf (elem config.device phoneDevices) {
+        enable = true;
+        yarnHash = (lib.importJSON ./yarn_hashes.json)."${config.grapheneos.release}.lock";
+      };
 
       source.manifest = {
         enable = true;
