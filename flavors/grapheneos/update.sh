@@ -41,7 +41,7 @@ done
 echo Prefetching yarn deps for vendor/adevtool...
 echo "{" > yarn_hashes.json.part
 first=1
-for lockfile in $(ls *lock); do
+for lockfile in $(ls *.lock); do
 	if [ $first -eq 1 ]; then
 		first=0
 	else
@@ -57,3 +57,13 @@ done
 echo >> yarn_hashes.json.part
 echo "}" >> yarn_hashes.json.part
 mv yarn_hashes.json.part yarn_hashes.json
+
+
+echo "Extracting vendor image build IDs..."
+for lockfile in $(ls *.lock); do
+	git_tag=$(basename -s .lock $lockfile)
+	devices=$(jq -r ".device_info.stable | map_values(select(.git_tag == \"$git_tag\")) | keys | .[]" channel_info.json)
+	repo-tool ensure-store-paths $lockfile vendor/adevtool
+	adevtool_path=$(jq -r '.["vendor/adevtool"].lock.path' $lockfile)
+	repo-tool get-graphene-vendor-img-metadata $adevtool_path vendor_img_metadata_$git_tag.json $devices
+done

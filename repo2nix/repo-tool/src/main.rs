@@ -37,6 +37,7 @@ mod lineage_devices;
 mod lineage_dependencies;
 mod utils;
 mod graphene;
+mod graphene_vendor;
 
 #[derive(Parser)]
 enum Args {
@@ -77,6 +78,11 @@ enum Args {
 
         #[arg(long, short)]
         channels: Vec<String>,
+    },
+    GetGrapheneVendorImgMetadata {
+        adevtool_path: PathBuf,
+        vendor_img_metadata_path: PathBuf,
+        devices: Vec<String>,
     },
     GetBuildID {
         out_file: PathBuf,
@@ -231,6 +237,12 @@ async fn main() -> Result<(), MainError> {
             let channel_info = graphene::to_channel_info(device_info);
 
             fs::write(&channel_info_file, serde_json::to_vec_pretty(&channel_info)?)?;
+        },
+
+        Args::GetGrapheneVendorImgMetadata { adevtool_path, devices, vendor_img_metadata_path } => {
+            let metadata = graphene_vendor::get_vendor_img_metadata(&adevtool_path, &devices).await?;
+            fs::write(&vendor_img_metadata_path, serde_json::to_vec_pretty(&metadata)?)?;
+
         },
 
         Args::GetBuildID { out_file, lockfiles } => {
