@@ -33,8 +33,8 @@
       adevtool.buildID = mkDefault buildIDs."${deviceInfo.git_tag}.lock";
     }))
     {
+      release = "cur";
       buildNumber = mkDefault config.grapheneos.release;
-      productNamePrefix = mkDefault "";
 
       # Match upstream user/hostname
       envVars = {

@@ -78,7 +78,7 @@ in
 
     productName = mkOption {
       type = types.str;
-      description = "Product name for choosecombo/lunch";
+      description = "Product name for lunch";
       defaultText = "\${productNamePrefix}\${device}";
       example = "aosp_crosshatch";
     };
@@ -86,13 +86,12 @@ in
     productNamePrefix = mkOption {
       default = "aosp_";
       type = types.str;
-      description = "Prefix for product name used with choosecombo/lunch";
+      description = "Prefix for product name used with lunch";
     };
 
-    buildType = mkOption {
-      default = "release";
-      type = types.enum [ "release" "debug" ];
-      description = "one of \"release\", \"debug\"";
+    release = mkOption {
+      type = types.str;
+      description = "The TARGET_RELEASE argument used with lunch";
     };
 
     buildNumber = mkOption {
@@ -347,12 +346,12 @@ in
             mkdir -p $HOME
             export USER=foo
             ''}
-            ## loads bash functions for building, such as "breakfast" or "choosecombo"
+            ## loads bash functions for building, such as "breakfast" or "lunch"
             source build/envsetup.sh
             '' + (if config.flavor == "lineageos" then ''
               breakfast ${config.device} ${config.variant}
             '' else ''
-              choosecombo ${config.buildType} ${config.productName} ${config.variant}
+              lunch ${config.productName} ${config.release} ${config.variant}
             '') + ''
             # Fail early if the product was not selected properly
             test -n "$TARGET_PRODUCT" || exit 1
@@ -375,7 +374,7 @@ in
       android = mkAndroid {
         name = "robotnix-${config.productName}-${config.buildNumber}";
         makeTargets = [ "target-files-package" "otatools-package" ];
-        # Note that $ANDROID_PRODUCT_OUT is set by choosecombo above
+        # Note that $ANDROID_PRODUCT_OUT is set by lunch above
         installPhase =
           ''
             mkdir -p $out
