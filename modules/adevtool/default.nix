@@ -30,27 +30,34 @@ in {
     ];
     source = {
       overlayfsDirs = [ "vendor/adevtool" ];
-      dirs."vendor/adevtool" = {
-        nativeBuildInputs = with pkgs; [ nodejs yarnConfigHook ];
-        patches = [
-          ./adevtool-ignore-EINVAL-upon-chown.patch
-        ];
-        postPatch = let
-          yarnOfflineCache = pkgs.fetchYarnDeps {
-            yarnLock = config.source.dirs."vendor/adevtool".manifestSrc + "/yarn.lock";
-            sha256 = cfg.yarnHash;
-          };
-        in ''
-          yarnOfflineCache=${yarnOfflineCache}
-          yarnConfigHook
-          mkdir -p dl
-          ln -s ${cfg.img} dl/${cfg.imgFilename}
-        '';
+      dirs = {
+        "vendor/adevtool" = {
+          nativeBuildInputs = with pkgs; [ nodejs yarnConfigHook ];
+          patches = [
+            ./adevtool-ignore-EINVAL-upon-chown.patch
+          ];
+          postPatch = let
+            yarnOfflineCache = pkgs.fetchYarnDeps {
+              yarnLock = config.source.dirs."vendor/adevtool".manifestSrc + "/yarn.lock";
+              sha256 = cfg.yarnHash;
+            };
+          in ''
+            yarnOfflineCache=${yarnOfflineCache}
+            yarnConfigHook
+            mkdir -p dl
+            ln -s ${cfg.img} dl/${cfg.imgFilename}
+          '';
+        };
+
+        "vendor/google_devices" = {
+          src = config.build.vendor_google_devices;
+        };
       };
     };
 
     build.vendor_google_devices = config.build.mkAndroid {
       name = "vendor_google_devices-${config.device}";
+      excludedDirs = [ "vendor/google_devices" ];
       makeTargets = [ "arsclib" ];
       postBuild = ''
         mkdir -p /tmp/vendor_imgs

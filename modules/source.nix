@@ -218,26 +218,11 @@ in
         type = types.listOf types.str;
         description = "Project groups to include in source tree (overrides `excludeGroups`)";
       };
-
-      unpackScript = mkOption {
-        default = "";
-        internal = true;
-        type = types.lines;
-      };
     };
   };
 
   config.source = {
     manifest.categories = [ "Default" ];
-    unpackScript = lib.concatStringsSep "\n" (
-      (map (d: d.unpackScript) (lib.attrValues config.source.dirs) ++
-      (map (path: ''
-        mkdir -p .overlays_work/${path}
-        mkdir -p .overlays_rw/${path}
-        mkdir -p ${path}
-        ${pkgs.util-linux}/bin/mount -t overlay overlay -olowerdir=.overlays_ro/${path},upperdir=.overlays_rw/${path},workdir=.overlays_work/${path} ${path}
-      '') config.source.overlayfsDirs)
-    ));
     dirs = mkMerge [ (mkIf config.source.manifest.enable (
       let
         entries = lib.importJSON config.source.manifest.lockfile;
@@ -265,8 +250,6 @@ in
   };
 
   config.build = {
-    unpackScript = pkgs.writeShellScript "unpack.sh" config.source.unpackScript;
-
     # Extract only files under robotnix/ (for debugging with an external AOSP build)
     debugUnpackScript = pkgs.writeShellScript "debug-unpack.sh" (''
       rm -rf robotnix
