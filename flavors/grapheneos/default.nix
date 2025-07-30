@@ -42,9 +42,20 @@
         BUILD_HOSTNAME = "grapheneos";
       };
 
-      adevtool = mkIf (elem config.device phoneDevices) {
+      adevtool = let
+        vendorImgMetadata = lib.importJSON (./. + "/vendor_img_metadata_${config.grapheneos.release}.json");
+        vendorBuildID = vendorImgMetadata.vendor_build_id;
+        imgFields = lib.splitString " " vendorImgMetadata."${config.device}".build_index_props.factory;
+        imgSha256 = builtins.elemAt imgFields 0;
+        imgFilename = builtins.elemAt imgFields 1;
+      in mkIf (elem config.device phoneDevices) {
         enable = true;
         yarnHash = (lib.importJSON ./yarn_hashes.json)."${config.grapheneos.release}.lock";
+        img = pkgs.fetchurl {
+          url = "https://dl.google.com/dl/android/aosp/${imgFilename}";
+          sha256 = imgSha256;
+        };
+        inherit imgFilename;
       };
 
       source.manifest = {

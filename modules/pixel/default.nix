@@ -65,9 +65,6 @@ mkMerge [
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
 
-    adevtool.img = mkDefault (fetchItem imgList);
-    adevtool.ota = mkDefault (fetchItem otaList);
-
     signing.avb.enable = mkDefault true;
   })
 

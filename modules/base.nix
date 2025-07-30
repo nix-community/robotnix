@@ -297,7 +297,7 @@ in
 
     build = rec {
       mkAndroid =
-        { name, makeTargets, installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
+        { name, makeTargets, preBuild ? "", postBuild ? "", installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
         # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
         pkgs.stdenvNoCC.mkDerivation ({
           inherit name;
@@ -357,7 +357,9 @@ in
             test -n "$TARGET_PRODUCT" || exit 1
 
             export NINJA_ARGS="-j$NIX_BUILD_CORES ${toString ninjaArgs}"
-            m ${toString makeTargets} | cat
+            ${preBuild}
+            ${lib.optionalString (makeTargets != []) "m ${toString makeTargets} | cat"}
+            ${postBuild}
             echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
 
             EOF2
