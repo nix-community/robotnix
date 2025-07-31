@@ -42,15 +42,6 @@
         BUILD_HOSTNAME = "grapheneos";
       };
 
-      source.dirs = {
-        "external/avb".patches = [
-          # Somewhere in the build process, the prebuild microdroid kernel
-          # image is copied out of the Nix store with read-only permissions
-          # preserved.
-          ./avbtool-set-perms.patch
-        ];
-      };
-
       adevtool = let
         vendorImgMetadata = lib.importJSON (./. + "/vendor_img_metadata_${config.grapheneos.release}.json");
         vendorBuildID = vendorImgMetadata.vendor_build_id;

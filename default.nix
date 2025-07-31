@@ -45,6 +45,7 @@ let
       ./modules/12
       ./modules/13
       ./modules/15
+      ./modules/16
       ./modules/9
       ./modules/adevtool
       ./modules/apps/auditor.nix
