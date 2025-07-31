@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025 cyclopentane and robotnix contributors
+# SPDX-License-Identifier: MIT
+
 { config, lib, pkgs, ... }:
 let
   cfg = config.adevtool;
