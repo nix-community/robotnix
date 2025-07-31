@@ -367,6 +367,13 @@ in
             test -n "$TARGET_PRODUCT" || exit 1
 
             export NINJA_ARGS="-j$NIX_BUILD_CORES ${toString ninjaArgs}"
+            ${lib.optionalString config.adevtool.enable ''
+              m arsclib
+              mkdir -p /tmp/vendor_imgs
+              export ADEVTOOL_IMG_DOWNLOAD_DIR=/tmp/vendor_imgs
+              ln -s ${config.adevtool.img} /tmp/vendor_imgs/${config.adevtool.imgFilename}
+              vendor/adevtool/bin/run generate-all -d ${config.device}
+            ''}
             ${preBuild}
             ${lib.optionalString (makeTargets != []) "m ${toString makeTargets} | cat"}
             ${postBuild}

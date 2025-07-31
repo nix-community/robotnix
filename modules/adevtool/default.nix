@@ -48,26 +48,9 @@ in {
             ln -s ${cfg.img} dl/${cfg.imgFilename}
           '';
         };
-
-        "vendor/google_devices" = {
-          src = config.build.vendor_google_devices;
-        };
       };
     };
 
-    build.vendor_google_devices = config.build.mkAndroid {
-      name = "vendor_google_devices-${config.device}";
-      excludedDirs = [ "vendor/google_devices" ];
-      makeTargets = [ "arsclib" ];
-      postBuild = ''
-        mkdir -p /tmp/vendor_imgs
-        export ADEVTOOL_IMG_DOWNLOAD_DIR=/tmp/vendor_imgs
-        ln -s ${cfg.img} /tmp/vendor_imgs/${cfg.imgFilename}
-        vendor/adevtool/bin/run generate-all -d ${config.device}
-      '';
-      installPhase = ''
-        cp -r vendor/google_devices $out
-      '';
-    };
+    # The adevtool invocation is located in modules/base.nix, within the mkAndroid definition.
   };
 }
