@@ -39,7 +39,6 @@ in {
     envPackages = with pkgs; [
       # Needed for running adevtool.
       nodejs
-      yarn
 
       # adevtool uses e2fsprogs `debugfs` to extract the vendor ext4 images.
       e2fsprogs
