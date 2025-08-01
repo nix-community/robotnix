@@ -30,28 +30,34 @@
       gitRepo = pkgs.gitRepo;
     };
 
-    devShell.x86_64-linux = pkgs.mkShell {
-      name = "robotnix-scripts";
-      nativeBuildInputs = with pkgs; [
-        # For android updater scripts
-        (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
-        gitRepo (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix {})
-        curl pup jq
-        shellcheck
-        wget
+    devShells.x86_64-linux = rec {
+      default = pkgs.mkShell {
+        name = "robotnix-scripts";
+        nativeBuildInputs = with pkgs; [
+          # For android updater scripts
+          (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
+          gitRepo (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix {})
+          curl pup jq
+          shellcheck
+          wget
 
-        (callPackage ./repo2nix/package.nix {})
-        prefetch-yarn-deps
-        # repo2nix dev stuff
-        cargo rustc pkg-config openssl
+          (callPackage ./repo2nix/package.nix {})
+          prefetch-yarn-deps
 
-        # For chromium updater script
-        # python2
-        # cipd git
+          # For chromium updater script
+          # python2
+          # cipd git
 
-        cachix
-      ];
-      PYTHONPATH=./scripts;
+          cachix
+        ];
+        PYTHONPATH=./scripts;
+      };
+      repo2nix = pkgs.mkShell {
+        name = "repo2nix";
+        nativeBuildInputs = with pkgs; [
+          cargo rustc pkg-config openssl
+        ];
+      };
     };
 
     examples = nixpkgs.lib.genAttrs
