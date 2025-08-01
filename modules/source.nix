@@ -257,29 +257,37 @@ in
       )) ];
   };
 
-  config.build = {
-    # Extract only files under robotnix/ (for debugging with an external AOSP build)
-    debugUnpackScript = pkgs.writeShellScript "debug-unpack.sh" (''
-      rm -rf robotnix
-      '' +
-      (lib.concatStringsSep "" (map (d: lib.optionalString (d.enable && (lib.hasPrefix "robotnix/" d.relpath)) ''
-        mkdir -p $(dirname ${d.relpath})
-        echo "${d.src} -> ${d.relpath}"
-        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.src} ${d.relpath}/
-      '') (lib.attrValues config.source.dirs))) + ''
-      chmod -R u+w robotnix/
-    '');
+  config = {
+    assertions = [
+      {
+        assertion = config.source.manifest.enable -> (lib.importJSON config.source.manifest.lockfile).fetch_completed;
+        message = "The git-repo lockfile set via `source.manifest.lockfile` is marked as incomplete. Try rerunning `repo fetch` on it.";
+      }
+    ];
+    build = {
+      # Extract only files under robotnix/ (for debugging with an external AOSP build)
+      debugUnpackScript = pkgs.writeShellScript "debug-unpack.sh" (''
+        rm -rf robotnix
+        '' +
+        (lib.concatStringsSep "" (map (d: lib.optionalString (d.enable && (lib.hasPrefix "robotnix/" d.relpath)) ''
+          mkdir -p $(dirname ${d.relpath})
+          echo "${d.src} -> ${d.relpath}"
+          cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.src} ${d.relpath}/
+        '') (lib.attrValues config.source.dirs))) + ''
+        chmod -R u+w robotnix/
+      '');
 
-    # Patch files in other sources besides robotnix/*
-    debugPatchScript = pkgs.writeShellScript "debug-patch.sh"
-      (lib.concatStringsSep "\n" (map (d: ''
-        ${lib.concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
-        ${lib.optionalString (d.postPatch != "") ''
-        pushd ${d.relpath} >/dev/null
-        ${d.postPatch}
-        popd >/dev/null
-        ''}
-      '')
-      (lib.filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (lib.attrValues config.source.dirs))));
+      # Patch files in other sources besides robotnix/*
+      debugPatchScript = pkgs.writeShellScript "debug-patch.sh"
+        (lib.concatStringsSep "\n" (map (d: ''
+          ${lib.concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
+          ${lib.optionalString (d.postPatch != "") ''
+          pushd ${d.relpath} >/dev/null
+          ${d.postPatch}
+          popd >/dev/null
+          ''}
+        '')
+        (lib.filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (lib.attrValues config.source.dirs))));
+    };
   };
 }
