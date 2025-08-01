@@ -55,7 +55,7 @@
       repo2nix = pkgs.mkShell {
         name = "repo2nix";
         nativeBuildInputs = with pkgs; [
-          cargo rustc pkg-config openssl
+          cargo rustc pkg-config openssl (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix {})
         ];
       };
     };
