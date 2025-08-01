@@ -27,6 +27,16 @@
         optional optionalString optionalAttrs elem
         mkIf mkMerge mkDefault mkForce;
 
+      # The first letter of the build ID represents the Android platform release, see
+      # https://source.android.com/docs/setup/reference/build-numbers
+      buildIDCodenameInitialToPlatformRelease = {
+        "S" = 12;
+        "T" = 13;
+        "U" = 14;
+        "A" = 15;
+        "B" = 16;
+      };
+
       phoneDevices = lib.importJSON ./devices.json;
       supportedDevices = phoneDevices ++ [ "generic" ];
       channelInfo = lib.importJSON ./channel_info.json;
@@ -35,10 +45,12 @@
       (mkIf ((config.grapheneos.channel != null) && (config.device != null) && (builtins.hasAttr config.device channelInfo.device_info."${config.grapheneos.channel}")) (
     let
       deviceInfo = channelInfo.device_info.${config.grapheneos.channel}.${config.device};
+      buildID = buildIDs."${deviceInfo.git_tag}.lock";
     in {
       grapheneos.release = mkDefault deviceInfo.git_tag;
       buildDateTime = mkDefault deviceInfo.build_time;
-      adevtool.buildID = mkDefault buildIDs."${deviceInfo.git_tag}.lock";
+      adevtool.buildID = mkDefault buildID;
+      androidVersion = mkDefault buildIDCodenameInitialToPlatformRelease.${builtins.substring 0 1 buildID};
     }))
     {
       release = "cur";
