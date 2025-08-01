@@ -131,10 +131,10 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
 
         // The upstream mechanism for choosing whether to prepend `LineageOS/` to the repo name
         // defined in the `repository` field is pretty broken: it just checks whether the remote
-        // name starts with `aosp-`, and prepends `LineageOS/` to the repo name and sets the remote
-        // to `github` if it isn't. This breaks once you add in remotes other than `github` and the
-        // `aosp-*` ones. It's probably for the best to not try to fix this behaviour and to just
-        // consistently replicate it.
+        // name starts with `aosp-`, and if it does't, it prepends `LineageOS/` to the repo name
+        // and then changes the remote to `github` from whatever it else was previously. This
+        // breaks once you add in remotes other than `github` and the `aosp-*` ones. It's probably
+        // for the best to not try to fix this behaviour and to just consistently replicate it.
         //
         // Source:
         // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L183
