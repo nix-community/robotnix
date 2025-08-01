@@ -115,21 +115,29 @@ let
       groups = mkOption {
         type = types.listOf types.str;
         default = [];
+        internal = true;
       };
 
       linkfiles = mkOption {
         type = types.listOf fileModule;
         default = [];
+        description = ''
+          Symlinks into this source dir to create in the source tree, i.e. the robotnix implementation of the git-repo `linkfile` tag.
+        '';
       };
 
       copyfiles = mkOption {
         type = types.listOf fileModule;
         default = [];
+        description  = ''
+          Files to copy from this source dir elsewhere into the source tree, i.e. the robotnix implementation of the git-repo `copyfile` tag.
+        '';
       };
 
       date = mkOption {
         type = types.nullOr types.int;
         default = null;
+        internal = true;
       };
     };
 

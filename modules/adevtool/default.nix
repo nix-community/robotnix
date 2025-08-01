@@ -7,18 +7,31 @@ let
 in {
   options.adevtool = {
     enable = lib.mkEnableOption "the adevtool module";
-    buildID = lib.mkOption {
-      type = lib.types.str;
-      default = "The build ID as specified in `build/make/core/build_id.mk` in the AOSP source tree.";
-    };
     yarnHash = lib.mkOption {
       type = lib.types.str;
+      description = ''
+        The yarn hash of the `yarn.lock` file inside the `vendor/adevtool` repo
+        in the source tree, as required by `fetchYarnDeps`.
+      '';
+    };
+    buildID = lib.mkOption {
+      type = lib.types.str;
+      description = ''
+        The build ID as specified in `build/make/core/build_id.mk` in the AOSP
+        source tree.
+      '';
     };
     img = lib.mkOption {
       type = lib.types.path;
+      description = ''
+        The vendor image to extract the vendor blobs from.
+      '';
     };
     imgFilename = lib.mkOption {
       type = lib.types.str;
+      description = ''
+        The filename of the vendor image.
+      '';
     };
   };
 

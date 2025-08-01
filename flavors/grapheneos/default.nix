@@ -6,10 +6,18 @@
   options.grapheneos = {
     channel = lib.mkOption {
       type = with lib.types; nullOr (enum [ "alpha" "beta" "stable" ]);
+      description = ''
+        The GrapheneOS channel to use.
+      '';
     };
 
     release = lib.mkOption {
       type = with lib.types; nullOr str;
+      description = ''
+        The GrapheneOS release tag to build. Set this if you're building a for
+        a non-phone target, or if you didn't select a channel.
+      '';
+      example = "2025073000";
     };
   };
 
