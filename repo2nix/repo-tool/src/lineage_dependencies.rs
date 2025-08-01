@@ -1,6 +1,6 @@
 use std::io;
 use std::path::{Path, PathBuf};
-use std::collections::BTreeMap;
+use std::collections::{BTreeSet, BTreeMap};
 use tokio::fs;
 use serde::{Serialize, Deserialize};
 use serde_json;
@@ -154,7 +154,7 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
                 fetch_lfs: true,
                 fetch_submodules: false,
             },
-            categories: vec![],
+            categories: BTreeSet::new(),
             lineage_deps: None,
             active: true,
         });
@@ -177,9 +177,7 @@ fn recursively_propagate_categories(lockfile: &mut Lockset, path: &Path) {
             {
                 let project = &mut lockfile.entries.get_mut(&dep).unwrap().project;
                 for cat in cats.iter() {
-                    if !project.categories.contains(cat) {
-                        project.categories.push(cat.clone());
-                    }
+                    project.categories.insert(cat.clone());
                 }
             }
             recursively_propagate_categories(lockfile, &dep);
@@ -201,7 +199,11 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockset, devices: &BTr
                     linkfiles: vec![],
                     copyfiles: vec![],
                     repo_ref: repo_ref.clone(),
-                    categories: vec![Category::DeviceSpecific(device.name.clone())],
+                    categories: {
+                        let mut cats = BTreeSet::new();
+                        cats.insert(Category::DeviceSpecific(device.name.clone()));
+                        cats
+                    },
                     lineage_deps: None,
                     active: true,
                 })?;

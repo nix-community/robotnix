@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 use std::io;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::io::ErrorKind;
 use clap::Parser;
 use url::Url;
@@ -244,20 +244,18 @@ async fn fetch(
         )
             .await
             .map_err(FetchError::CleanupBrokenMuppetsDevices)?;
-        let mut muppets_broken_devices = vec![];
+        let mut muppets_broken_devices = BTreeSet::new();
         for entry in broken_muppets_entries {
-            for cat in entry.project.categories {
+            for cat in entry.project.categories.iter() {
                 if let Category::DeviceSpecific(device) = cat {
-                    if !muppets_broken_devices.contains(&device) {
-                        muppets_broken_devices.push(device);
-                    }
+                    muppets_broken_devices.insert(device.clone());
                 }
             }
         }
         eprintln!("Devices with broken muppets dependencies: {muppets_broken_devices:?}");
         muppets_broken_devices
     } else {
-        vec![]
+        BTreeSet::new()
     };
 
 
@@ -281,7 +279,7 @@ async fn fetch(
             .await
             .map_err(FetchError::PrefetchLineageDeps)?;
 
-        let missing_dep_devices: Vec<_> = all_devices
+        let missing_dep_devices: BTreeSet<_> = all_devices
             .keys()
             .filter(|x| lockfile.entries.iter().any(|(_, entry)| {
                 entry.project.categories.contains(&Category::DeviceSpecific(x.to_string())) && entry.project.lineage_deps == Some(LineageDeps::MissingBranch)
@@ -292,9 +290,7 @@ async fn fetch(
         println!("Devices with broken LineageOS dependencies: {missing_dep_devices:?}");
         let mut all_broken_devices = missing_dep_devices.clone();
         for device in muppets_broken_devices {
-            if !all_broken_devices.contains(&device) {
-                all_broken_devices.push(device);
-            }
+            all_broken_devices.insert(device);
         }
         fs::write(
             missing_dep_devs_file.unwrap(),

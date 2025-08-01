@@ -1,5 +1,5 @@
 use std::path::{Path, PathBuf};
-use std::collections::HashMap;
+use std::collections::{HashMap, BTreeSet};
 use serde::{Serialize, Deserialize};
 use url::{Url, ParseError};
 use thiserror::Error;
@@ -13,7 +13,7 @@ pub struct GitRepoRef {
     pub fetch_submodules: bool,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Ord, PartialOrd)]
 pub enum Category {
     Default,
     DeviceSpecific(String),
@@ -49,7 +49,7 @@ pub struct Project {
     pub linkfiles: Vec<LinkCopyFile>,
     pub copyfiles: Vec<LinkCopyFile>,
     pub repo_ref: GitRepoRef,
-    pub categories: Vec<Category>,
+    pub categories: BTreeSet<Category>,
     pub lineage_deps: Option<LineageDeps>,
     pub active: bool,
 }
@@ -239,7 +239,11 @@ pub fn resolve_manifest(manifest_xml: &xml::Manifest, base_url: &Url) -> Result<
                 fetch_lfs: true,
                 fetch_submodules: false,
             },
-            categories: vec![Category::Default],
+            categories: {
+                let mut cats = BTreeSet::new();
+                cats.insert(Category::Default);
+                cats
+            },
             lineage_deps: Some(LineageDeps::NoLineageDependenciesFile),
             active: true,
         };

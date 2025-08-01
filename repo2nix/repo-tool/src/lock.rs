@@ -177,10 +177,8 @@ impl Lockset {
                         return Err(UpdateLocksetError::DuplicateProject(project.path.clone()));
                     }
 
-                    for cat in project.categories {
-                        if !entry.project.categories.contains(&cat) {
-                            entry.project.categories.push(cat);
-                        }
+                    for cat in project.categories.iter() {
+                        entry.project.categories.insert(cat.clone());
                     }
                     entry.project.active = true;
                 } else {

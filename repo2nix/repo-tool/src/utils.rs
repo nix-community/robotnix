@@ -1,3 +1,4 @@
+use std::collections::BTreeSet;
 use repo_manifest::resolver::{
     Category,
 };
@@ -13,7 +14,7 @@ use crate::fetch::{
 pub fn tag_device_by_group(lockfile: &mut Lockset, group_prefix: &str) {
     for (_path, entry) in lockfile.entries.iter_mut() {
         let project = &mut entry.project;
-        let device_cats: Vec<_> = project
+        let device_cats: BTreeSet<_> = project
             .groups
             .iter()
             .filter(|x| x.starts_with(group_prefix))
