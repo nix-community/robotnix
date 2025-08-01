@@ -10,5 +10,9 @@
     "build/make".patches = [
       ./0001-Readonly-source-fix.patch
     ];
+
+    "external/avb".patches = [
+      ./avbtool-set-perms.patch
+    ];
   };
 }

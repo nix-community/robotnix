@@ -1,0 +1,20 @@
+diff --git a/avbtool.py b/avbtool.py
+index 595936c..5caa71f 100755
+--- a/avbtool.py
++++ b/avbtool.py
+@@ -31,6 +31,7 @@ import hashlib
+ import json
+ import math
+ import os
++import stat
+ import struct
+ import subprocess
+ import sys
+@@ -786,6 +787,7 @@ class ImageHandler(object):
+     if self._read_only:
+       self._image = open(self.filename, 'rb')
+     else:
++      os.chmod(self.filename, stat.S_IRWXU | stat.S_IRWXG | stat.S_IROTH)
+       self._image = open(self.filename, 'r+b')
+     self._image.seek(0, os.SEEK_END)
+     self.image_size = self._image.tell()
