@@ -108,15 +108,15 @@ pub enum UpdateLocksetError {
     #[error("path not found")]
     PathNotFound,
     #[error("failed to write lockfile")]
-    WriteLockset(ReadWriteLockfileError),
+    WriteLockset(#[from] ReadWriteLockfileError),
 }
 
 #[derive(Debug, Error)]
 pub enum ReadWriteLockfileError {
     #[error("input/output error")]
-    IO(io::Error),
+    IO(#[from] io::Error),
     #[error("error parsing file")]
-    Parse(serde_json::Error),
+    Parse(#[from] serde_json::Error),
 }
 
 #[derive(Debug, Error)]
@@ -215,7 +215,10 @@ impl Lockset {
             entries: self.entries.clone(),
             fetch_completed: fetch_completed,
         }).map_err(ReadWriteLockfileError::Parse)?;
-        fs::write(&self.path, json.as_slice()).await.map_err(ReadWriteLockfileError::IO)
+        let tmp_path = self.path.with_extension(".tmp");
+        fs::write(&tmp_path, json.as_slice()).await?;
+        fs::rename(&tmp_path, &self.path).await?;
+        Ok(())
     }
 
     pub async fn update(&mut self, project_path: &Path) -> Result<(), UpdateLocksetError> {
@@ -234,7 +237,7 @@ impl Lockset {
         entry.lock = Some(new_lock);
 
         if updated {
-            self.write(false).await.map_err(UpdateLocksetError::WriteLockset)?;
+            self.write(false).await?;
         }
 
         Ok(())
