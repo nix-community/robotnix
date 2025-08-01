@@ -233,7 +233,7 @@ in
     manifest.categories = [ "Default" ];
     dirs = mkMerge [ (mkIf config.source.manifest.enable (
       let
-        entries = lib.importJSON config.source.manifest.lockfile;
+        entries = (lib.importJSON config.source.manifest.lockfile).entries;
         filteredEntries = lib.filterAttrs (
           path: entry: entry.project.active && (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)
         ) entries;

@@ -21,9 +21,9 @@ use crate::lineage_devices::{
     DeviceInfo,
 };
 use crate::lock::{
-    Lockfile,
+    Lockset,
     UpdateLockError,
-    UpdateLockfileError,
+    UpdateLocksetError,
     EnsureStorePathError,
 };
 
@@ -74,7 +74,7 @@ pub struct LineageDep {
 #[derive(Debug, Error)]
 pub enum PrefetchLineageDepsError {
     #[error("updating lock failed")]
-    Lock(#[from] UpdateLockfileError),
+    Lock(#[from] UpdateLocksetError),
     #[error("error ensuring that the Nix store path exists")]
     EnsureStorePath(#[from] EnsureStorePathError),
     #[error("failed reading `lineage.dependencies` from device repo")]
@@ -163,7 +163,7 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
     Ok(project_deps)
 }
 
-fn recursively_propagate_categories(lockfile: &mut Lockfile, path: &Path) {
+fn recursively_propagate_categories(lockfile: &mut Lockset, path: &Path) {
     let (deps, cats) = {
         let project = &lockfile.entries.get(path).unwrap().project;
         match &project.lineage_deps {
@@ -187,7 +187,7 @@ fn recursively_propagate_categories(lockfile: &mut Lockfile, path: &Path) {
     }
 }
 
-pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BTreeMap<String, DeviceInfo>, manifest: &Manifest, branch: &str) -> Result<(), PrefetchLineageDepsError> {
+pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockset, devices: &BTreeMap<String, DeviceInfo>, manifest: &Manifest, branch: &str) -> Result<(), PrefetchLineageDepsError> {
     eprintln!("Building LineageOS-specific dependency tree...");
 
     let mut fetch_queue = vec![];
@@ -246,7 +246,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
                     (LineageDeps::Some(ldeps.iter().map(|x| x.path.clone()).collect()), Some(ldeps))
                 }
             },
-            Err(UpdateLockfileError::UpdateLock {
+            Err(UpdateLocksetError::UpdateLock {
                 project_path: _,
                 error: UpdateLockError::GitLsRemote(GitLsRemoteError::RevNotFound),
             }) => (LineageDeps::MissingBranch, None),
@@ -278,7 +278,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockfile, devices: &BT
     Ok(())
 }
 
-pub fn cleanup_failed_lineage_deps(lockfile: &mut Lockfile) {
+pub fn cleanup_failed_lineage_deps(lockfile: &mut Lockset) {
     let paths_to_cleanup: Vec<_> = lockfile
         .entries
         .iter()

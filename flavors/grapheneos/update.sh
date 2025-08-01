@@ -47,10 +47,10 @@ for lockfile in $(ls *.lock); do
 	else
 		echo "," >> yarn_hashes.json.part
 	fi
-	adevtool_path=$(jq -r '.["vendor/adevtool"].lock.path' $lockfile)
+	adevtool_path=$(jq -r '.entries.["vendor/adevtool"].lock.path' $lockfile)
 	echo Ensuring that $adevtool_path is present in the Nix store...
 	repo-tool ensure-store-paths $lockfile vendor/adevtool
-	echo $lockfile: Prefetching $adevtool_path/yarn.lock
+	echo $lockfile: Prefetching yarn deps in $adevtool_path/yarn.lock
 	hash=$(prefetch-yarn-deps $adevtool_path/yarn.lock)
 	echo -n "	\"$lockfile\": \"$hash\"" >> yarn_hashes.json.part
 done
@@ -64,6 +64,6 @@ for lockfile in $(ls *.lock); do
 	git_tag=$(basename -s .lock $lockfile)
 	devices=$(jq -r ".device_info.stable | map_values(select(.git_tag == \"$git_tag\")) | keys | .[]" channel_info.json)
 	repo-tool ensure-store-paths $lockfile vendor/adevtool
-	adevtool_path=$(jq -r '.["vendor/adevtool"].lock.path' $lockfile)
+	adevtool_path=$(jq -r '.entries.["vendor/adevtool"].lock.path' $lockfile)
 	repo-tool get-graphene-vendor-img-metadata $adevtool_path vendor_img_metadata_$git_tag.json $devices
 done

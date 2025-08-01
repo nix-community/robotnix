@@ -25,9 +25,9 @@ use crate::fetch::{
     GitLsRemoteError,
 };
 use crate::lock::{
-    Lockfile,
+    Lockset,
     ReadWriteLockfileError,
-    UpdateLockfileError,
+    UpdateLocksetError,
     EnsureStorePathError,
 };
 use crate::lineage_devices::DeviceInfo;
@@ -129,13 +129,13 @@ enum FetchError {
     ResolveManifest(#[from] ResolveManifestError),
 
     #[error("error adding project `{0}` to lockfile")]
-    AddProjectToLockfile(PathBuf, #[source] UpdateLockfileError),
+    AddProjectToLockset(PathBuf, #[source] UpdateLocksetError),
 
     #[error("error reading pre-existing lockfile")]
-    ReadLockfile(#[source] ReadWriteLockfileError),
+    ReadLockset(#[source] ReadWriteLockfileError),
 
     #[error("error writing lockfile")]
-    WriteLockfile(#[source] ReadWriteLockfileError),
+    WriteLockset(#[source] ReadWriteLockfileError),
 
     #[error("error checking whether the selected branch is present in all Muppets repositories")]
     CleanupBrokenMuppetsDevices(#[source] GitLsRemoteError),
@@ -159,7 +159,7 @@ enum FetchError {
     WriteBrokenDevices(#[source] io::Error),
 
     #[error("error updating lockfile")]
-    UpdateLockfile(#[source] UpdateLockfileError),
+    UpdateLockset(#[source] UpdateLocksetError),
 }
 
 async fn fetch(
@@ -213,27 +213,27 @@ async fn fetch(
     }
     let manifest = resolve_manifest(&manifest_xml, &url)?;
 
-    let mut lockfile = match Lockfile::read_from_file(&lockfile_path).await {
+    let mut lockfile = match Lockset::read_from_file(&lockfile_path).await {
         Ok(mut lf) => {
             lf.deactivate_all();
             for project in manifest.projects.values() {
                 lf.add_project(project.clone())
-                    .map_err(|e| FetchError::AddProjectToLockfile(project.path.clone(), e))?;
+                    .map_err(|e| FetchError::AddProjectToLockset(project.path.clone(), e))?;
             }
             lf
         },
         Err(ReadWriteLockfileError::IO(e)) => {
             if e.kind() == ErrorKind::NotFound {
-                let lf = Lockfile::new(&manifest.projects, &lockfile_path);
-                lf.write()
+                let lf = Lockset::new(&manifest.projects, &lockfile_path);
+                lf.write(false)
                     .await
-                    .map_err(FetchError::WriteLockfile)?;
+                    .map_err(FetchError::WriteLockset)?;
                 lf
             } else {
                 panic!("error opening file: {e:?}");
             }
         },
-        Err(e) => return Err(FetchError::ReadLockfile(e)),
+        Err(e) => return Err(FetchError::ReadLockset(e)),
     };
 
     let muppets_broken_devices = if muppets {
@@ -305,10 +305,11 @@ async fn fetch(
             .map_err(FetchError::WriteBrokenDevices)?;
 
         cleanup_failed_lineage_deps(&mut lockfile);
-        lockfile.write().await.map_err(FetchError::WriteLockfile)?;
+        lockfile.write(false).await.map_err(FetchError::WriteLockset)?;
     }
 
-    lockfile.update_all().await.map_err(FetchError::UpdateLockfile)?;
+    lockfile.update_all().await.map_err(FetchError::UpdateLockset)?;
+    lockfile.write(true).await.map_err(FetchError::WriteLockset)?;
 
     Ok(())
 }
@@ -409,7 +410,7 @@ async fn get_graphene_vendor_img_metadata(
 #[derive(Debug, Error)]
 enum GetBuildIDError {
     #[error("error reading lockfile")]
-    ReadLockfile(#[from] ReadWriteLockfileError),
+    ReadLockset(#[from] ReadWriteLockfileError),
 
     #[error("error ensuring that `build/make` is present in the Nix store")]
     EnsureBuildMake(#[from] EnsureStorePathError),
@@ -433,7 +434,7 @@ enum GetBuildIDError {
 async fn get_build_ids(out_file: PathBuf, lockfiles: Vec<PathBuf>) -> Result<(), GetBuildIDError> {
     let mut build_ids: BTreeMap<PathBuf, String> = BTreeMap::new();
     for lockfile_path in lockfiles.iter() {
-        let lockfile = Lockfile::read_from_file(lockfile_path).await?;
+        let lockfile = Lockset::read_from_file(lockfile_path).await?;
         let build_make_path = Path::new("build/make");
         let platform_build_path = &lockfile.entries
             .get(build_make_path)
@@ -475,14 +476,14 @@ async fn get_build_ids(out_file: PathBuf, lockfiles: Vec<PathBuf>) -> Result<(),
 #[derive(Debug, Error)]
 enum EnsureStorePathsError {
     #[error("error reading lockfile")]
-    ReadLockfile(#[from] ReadWriteLockfileError),
+    ReadLockset(#[from] ReadWriteLockfileError),
 
     #[error("error ensuring that `{0}` is present in the Nix store")]
     EnsurePath(#[from] EnsureStorePathError),
 }
 
 async fn ensure_store_paths(lockfile_path: PathBuf, store_paths: Option<Vec<PathBuf>>) -> Result<(), EnsureStorePathsError> {
-    let lockfile = Lockfile::read_from_file(&lockfile_path).await?;
+    let lockfile = Lockset::read_from_file(&lockfile_path).await?;
     let paths = match store_paths {
         Some(paths) => paths,
         None => lockfile.entries.keys().cloned().collect(),

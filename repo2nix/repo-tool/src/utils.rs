@@ -2,15 +2,15 @@ use repo_manifest::resolver::{
     Category,
 };
 use crate::lock::{
-    LockfileEntry,
-    Lockfile
+    LocksetEntry,
+    Lockset
 };
 use crate::fetch::{
     git_ls_remote,
     GitLsRemoteError,
 };
 
-pub fn tag_device_by_group(lockfile: &mut Lockfile, group_prefix: &str) {
+pub fn tag_device_by_group(lockfile: &mut Lockset, group_prefix: &str) {
     for (_path, entry) in lockfile.entries.iter_mut() {
         let project = &mut entry.project;
         let device_cats: Vec<_> = project
@@ -27,7 +27,7 @@ pub fn tag_device_by_group(lockfile: &mut Lockfile, group_prefix: &str) {
     }
 }
 
-pub async fn cleanup_broken_projects(lockfile: &mut Lockfile, group: Option<&str>) -> Result<Vec<LockfileEntry>, GitLsRemoteError> {
+pub async fn cleanup_broken_projects(lockfile: &mut Lockset, group: Option<&str>) -> Result<Vec<LocksetEntry>, GitLsRemoteError> {
     let paths: Vec<_> = lockfile.entries.keys().cloned().collect();
     let mut paths_to_remove = vec![];
     for path in paths {
