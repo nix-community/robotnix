@@ -2,7 +2,7 @@
 
 set -e
 
-#repo-tool get-lineage-devices devices.json
+repo-tool get-lineage-devices devices.json
 
 for version in 22.2 22.1 21.0 20.0 19.1 18.1 17.1; do
   mkdir -p lineage-$version
