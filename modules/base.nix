@@ -380,6 +380,8 @@ in
               for rroBP in $rroBPs; do
                 ${pkgs.gnused}/bin/sed -i s/auto_generated_rro/auto_generated_vendor_rro/g $rroBP
               done
+              # ...and the makefile in which they are being added to PRODUCT_PACKAGES:
+              ${pkgs.gnused}/bin/sed -i s/auto_generated_rro/auto_generated_vendor_rro/g vendor/google_devices/${config.device}/proprietary/device-vendor.mk
             ''}
 
             '' + (if config.flavor == "lineageos" then ''
