@@ -110,7 +110,7 @@ mkMerge [
   (mkIf (config.device == "sunfish" && config.androidVersion >= 12) {
     signing.apex.packageNames = [ "com.android.vibrator.sunfish" ];
   })
-  (mkIf (lib.elem config.deviceFamily [ "bonito" "sargo" "sunfish" "redfin" "bramble" "barbet" ] && config.androidVersion >= 12) {
+  (mkIf (lib.elem config.device [ "bonito" "sargo" "sunfish" "redfin" "bramble" "barbet" ] && config.androidVersion >= 12) {
     signing.apex.packageNames = [ "com.android.vibrator.drv2624" ];
   })
 ]
