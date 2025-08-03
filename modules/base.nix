@@ -358,6 +358,21 @@ in
             ''}
             ## loads bash functions for building, such as "breakfast" or "lunch"
             source build/envsetup.sh
+
+            # in GrapheneOS, <product name> and aosp_<product name> are two
+            # separate targets - the former has its product makefiles located in
+            # device/google, and the latter in vendor/google_devices. Therefore,
+            # we need to extract the vendor blobs *before* running `lunch` with
+            # our actual phone target.
+            ${lib.optionalString config.adevtool.enable ''
+              lunch sdk_phone64_x86_64 cur user
+              m arsclib
+              mkdir -p /tmp/vendor_imgs
+              export ADEVTOOL_IMG_DOWNLOAD_DIR=/tmp/vendor_imgs
+              ln -s ${config.adevtool.img} /tmp/vendor_imgs/${config.adevtool.imgFilename}
+              vendor/adevtool/bin/run generate-all -d ${config.device}
+            ''}
+
             '' + (if config.flavor == "lineageos" then ''
               breakfast ${config.device} ${config.variant}
             '' else ''
@@ -367,13 +382,6 @@ in
             test -n "$TARGET_PRODUCT" || exit 1
 
             export NINJA_ARGS="-j$NIX_BUILD_CORES ${toString ninjaArgs}"
-            ${lib.optionalString config.adevtool.enable ''
-              m arsclib
-              mkdir -p /tmp/vendor_imgs
-              export ADEVTOOL_IMG_DOWNLOAD_DIR=/tmp/vendor_imgs
-              ln -s ${config.adevtool.img} /tmp/vendor_imgs/${config.adevtool.imgFilename}
-              vendor/adevtool/bin/run generate-all -d ${config.device}
-            ''}
             ${preBuild}
             ${lib.optionalString (makeTargets != []) "m ${toString makeTargets} | cat"}
             ${postBuild}

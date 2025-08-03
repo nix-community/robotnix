@@ -54,6 +54,7 @@
     }))
     {
       release = "cur";
+      productNamePrefix = "";
       buildNumber = mkDefault config.grapheneos.release;
 
       # Match upstream user/hostname
