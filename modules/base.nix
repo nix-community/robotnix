@@ -35,15 +35,9 @@ let
       pad = s: if builtins.stringLength s < 2 then "0" + s else s;
     in "${toString y'}${pad (toString m)}${pad (toString d)}${pad (toString hours)}";
 
-  generateUnpackScript = dirs: overlayfsDirs: excludedDirs: pkgs.writeShellScript "unpack.sh" (lib.concatStringsSep "\n" (
-    (map (d: d.unpackScript) (lib.attrValues (lib.filterAttrs (x: _: !(builtins.elem x excludedDirs)) dirs)) ++
-    (map (path: ''
-      mkdir -p .overlays_work/${path}
-      mkdir -p .overlays_rw/${path}
-      mkdir -p ${path}
-      ${pkgs.util-linux}/bin/mount -t overlay overlay -olowerdir=.overlays_ro/${path},upperdir=.overlays_rw/${path},workdir=.overlays_work/${path} ${path}
-    '') (builtins.filter (x: (!builtins.elem x excludedDirs)) overlayfsDirs))
-  )));
+  generateUnpackScript = dirs: excludedDirs: pkgs.writeShellScript "unpack.sh" (lib.concatStringsSep "\n" (
+    (map (d: d.unpackScript) (lib.attrValues (lib.filterAttrs (x: _: !(builtins.elem x excludedDirs)) dirs)))
+  ));
 in
 {
   options = {
@@ -338,7 +332,7 @@ in
 
           unpackPhase = ''
             export rootDir=$PWD
-            source ${generateUnpackScript config.source.dirs config.source.overlayfsDirs excludedDirs}
+            source ${generateUnpackScript config.source.dirs excludedDirs}
           '';
 
           dontConfigure = true;
@@ -530,7 +524,7 @@ in
         export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
         ${pkgs.util-linux}/bin/unshare -m -r ${pkgs.writeShellScript "debug-enter-env2.sh" ''
         export rootDir=$PWD
-        source ${generateUnpackScript config.source.dirs config.source.overlayfsDirs []}
+        source ${generateUnpackScript config.source.dirs []}
         ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}
 
         # Become the original user--not fake root. Enter an FHS user namespace

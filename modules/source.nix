@@ -207,14 +207,6 @@ in
         '';
       };
 
-      overlayfsDirs = mkOption {
-        default = [];
-        type = types.listOf types.str;
-        description = ''
-          Directories to make read-writeable via an overlayfs duing the build.
-        '';
-      };
-
       excludeGroups = mkOption {
         default = [ "darwin" "mips" ];
         type = types.listOf types.str;
@@ -231,7 +223,7 @@ in
 
   config.source = {
     manifest.categories = [ "Default" ];
-    dirs = mkMerge [ (mkIf config.source.manifest.enable (
+    dirs = mkIf config.source.manifest.enable (
       let
         entries = (lib.importJSON config.source.manifest.lockfile).entries;
         filteredEntries = lib.filterAttrs (
@@ -248,13 +240,7 @@ in
           inherit (entry.project) groups linkfiles copyfiles;
           inherit (entry.lock) date;
         }) filteredEntries;
-      in
-        dirs
-      )) (
-        lib.genAttrs config.source.overlayfsDirs (path: {
-          relpath = ".overlays_ro/${path}";
-        }
-      )) ];
+      in dirs);
   };
 
   config = {

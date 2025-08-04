@@ -44,7 +44,6 @@ in {
       e2fsprogs
     ];
     source = {
-      overlayfsDirs = [ "vendor/adevtool" ];
       dirs = {
         "vendor/adevtool" = {
           nativeBuildInputs = with pkgs; [ nodejs yarnConfigHook ];
