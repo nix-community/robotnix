@@ -19,6 +19,8 @@
       '';
       example = "2025073000";
     };
+
+    officialBuild = lib.mkEnableOption "the OFFICIAL_BUILD=true env var (to include the updater)";
   };
 
   config = 
@@ -47,6 +49,20 @@
       deviceInfo = channelInfo.device_info.${config.grapheneos.channel}.${config.device};
       buildID = buildIDs."${deviceInfo.git_tag}.lock";
     in {
+      assertions = [
+        {
+          assertion = config.grapheneos.officialBuild -> config.apps.updater.enable;
+          message = ''
+            If you enable the updater app via the OFFICIAL_BUILD=true env var,
+            you must use the Robotnix updater app module to set a custom
+            updater URL, or, to quote the official GrapheneOS docs, you will
+            "essentially perform a denial of service attack on our update
+            service" - presumably because the updater app keeps querying for
+            updates if the signatures don't match.
+          '';
+        }
+      ];
+
       grapheneos.release = mkDefault deviceInfo.git_tag;
       buildDateTime = mkDefault deviceInfo.build_time;
       adevtool.buildID = mkDefault buildID;
@@ -61,6 +77,7 @@
       envVars = {
         BUILD_USERNAME = "grapheneos";
         BUILD_HOSTNAME = "grapheneos";
+        OFFICIAL_BUILD = if config.grapheneos.officialBuild then "true" else "false";
       };
 
       adevtool = let
