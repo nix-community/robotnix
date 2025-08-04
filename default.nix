@@ -56,6 +56,7 @@ let
       ./modules/apps/updater.nix
       ./modules/assertions.nix
       ./modules/base.nix
+      ./modules/bootanimation.nix
       ./modules/emulator.nix
       ./modules/envpackages.nix
       ./modules/etc.nix
