@@ -35,8 +35,8 @@ let
       pad = s: if builtins.stringLength s < 2 then "0" + s else s;
     in "${toString y'}${pad (toString m)}${pad (toString d)}${pad (toString hours)}";
 
-  generateUnpackScript = dirs: excludedDirs: pkgs.writeShellScript "unpack.sh" (lib.concatStringsSep "\n" (
-    (map (d: d.unpackScript) (lib.attrValues (lib.filterAttrs (x: _: !(builtins.elem x excludedDirs)) dirs)))
+  generateUnpackScript = dirs: pkgs.writeShellScript "unpack.sh" (lib.concatStringsSep "\n" (
+    map (d: d.unpackScript) (lib.attrValues dirs)
   ));
 in
 {
@@ -301,7 +301,7 @@ in
 
     build = rec {
       mkAndroid =
-        { name, excludedDirs ? [], makeTargets, preBuild ? "", postBuild ? "", installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
+        { name, makeTargets, preBuild ? "", postBuild ? "", installPhase, outputs ? [ "out" ], ninjaArgs ? "" }:
         # Use NoCC here so we don't get extra environment variables that might conflict with AOSP build stuff. Like CC, NM, etc.
         pkgs.stdenvNoCC.mkDerivation ({
           inherit name;
@@ -332,7 +332,7 @@ in
 
           unpackPhase = ''
             export rootDir=$PWD
-            source ${generateUnpackScript config.source.dirs excludedDirs}
+            source ${generateUnpackScript config.source.dirs}
           '';
 
           dontConfigure = true;
@@ -524,7 +524,7 @@ in
         export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
         ${pkgs.util-linux}/bin/unshare -m -r ${pkgs.writeShellScript "debug-enter-env2.sh" ''
         export rootDir=$PWD
-        source ${generateUnpackScript config.source.dirs []}
+        source ${generateUnpackScript config.source.dirs}
         ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") config.envVars)}
 
         # Become the original user--not fake root. Enter an FHS user namespace
