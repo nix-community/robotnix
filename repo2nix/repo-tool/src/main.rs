@@ -60,9 +60,9 @@ enum Args {
         lockfile_path: PathBuf,
 
         #[arg(long, short)]
-        branch: String,
+        revision: String,
 
-        // Interpret the `branch` argument as a git tag instead of a git branch.
+        // Interpret the `revision` argument as a git tag instead of a git branch.
         #[arg(long, short)]
         tag: bool,
 
@@ -165,7 +165,7 @@ enum FetchError {
 async fn fetch(
     manifest_url: String,
     lockfile_path: PathBuf,
-    branch: String,
+    revision: String,
     tag: bool,
     lineage_device_file: Vec<PathBuf>,
     missing_dep_devs_file: Option<PathBuf>,
@@ -180,9 +180,9 @@ async fn fetch(
 
     let url = Url::parse(&manifest_url)?;
     let git_ref = if tag {
-        format!("refs/tags/{branch}")
+        format!("refs/tags/{revision}")
     } else {
-        format!("refs/heads/{branch}")
+        format!("refs/heads/{revision}")
     };
     let manifest_fetch = nix_prefetch_git(
         &url,
@@ -200,7 +200,7 @@ async fn fetch(
     if muppets {
         let muppets_fetch = nix_prefetch_git(
             &Url::parse("https://github.com/TheMuppets/manifests")?,
-            &format!("refs/heads/{branch}"),
+            &format!("refs/heads/{revision}"),
             false,
             false,
         ).await?;
@@ -274,7 +274,7 @@ async fn fetch(
             &mut lockfile,
             &all_devices,
             &manifest,
-            &branch
+            &revision
         )
             .await
             .map_err(FetchError::PrefetchLineageDeps)?;
@@ -499,7 +499,7 @@ async fn main() -> Result<(), MainError> {
         Args::Fetch {
             manifest_url,
             lockfile_path,
-            branch,
+            revision,
             tag,
             lineage_device_file,
             missing_dep_devs_file,
@@ -508,7 +508,7 @@ async fn main() -> Result<(), MainError> {
             fetch(
                 manifest_url,
                 lockfile_path,
-                branch,
+                revision,
                 tag,
                 lineage_device_file,
                 missing_dep_devs_file,
