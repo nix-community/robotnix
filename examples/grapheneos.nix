@@ -1,6 +1,6 @@
 { config, ... }: {
   flavor = "grapheneos";
-  device = "tokay";
+  device = "tegu";
 
   grapheneos = {
     # This setting determines which GrapheneOS release tag will be built -
@@ -9,7 +9,9 @@
   };
 
   apps.fdroid.enable = true;
-  microg.enable = true;
 
   ccache.enable = true;
+
+  # Not tested yet.
+  signing.enable = false;
 }

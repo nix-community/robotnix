@@ -126,3 +126,7 @@ Example:
 $ git clone https://github.com/GrapheneOS/adevtool
 $ repo-tool get-graphene-vendor-img-metadata ./adevtool/ vendor_img_metadata.json tegu tokay komodo caiman
 ```
+
+## License
+
+GPLv3. See LICENSE.md for details.
