@@ -1,6 +1,6 @@
 # LineageOS
 
-Robotnix should support [all devices that are officially supported by LineageOS too](https://wiki.lineageos.org/devices/).
+Robotnix should support [all devices that are officially supported by LineageOS too](https://wiki.lineageos.org/devices/), although only `FP4` is tested right now.
 
 Example config:
 ```nix
