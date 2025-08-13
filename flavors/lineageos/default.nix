@@ -39,6 +39,8 @@ in mkIf (config.flavor == "lineageos") {
     }
   ];
 
+  flavorVersion = mkIf (builtins.elem config.device supportedDevices) (mkDefault (lib.removePrefix "lineage-" deviceMetadata.${config.device}.default_branch));
+
   androidVersion = lineageBranchToAndroidVersion.${config.flavorVersion};
   productNamePrefix = "lineage_"; # product names start with "lineage_"
 
