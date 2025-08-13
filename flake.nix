@@ -17,9 +17,9 @@
       inherit configuration pkgs;
     };
 
-    defaultTemplate = {
+    templates.default = {
       path = ./template;
-      description = "A basic robotnix configuration";
+      description = "A basic robotnix configuration flake";
     };
 
     nixosModule = import ./nixos; # Contains all robotnix nixos modules
@@ -62,6 +62,6 @@
 
     examples = nixpkgs.lib.genAttrs
       [ "lineageos" "grapheneos" ]
-      (name: lib.robotnixSystem (./. + "/examples/${name}.nix"));
+      (name: lib.robotnixSystem (./. + "/template/${name}.nix"));
   };
 }
