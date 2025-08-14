@@ -1,0 +1,11 @@
+[package]
+name = "repo-manifest"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+quick-xml.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+url.workspace = true
+tokio.workspace = true

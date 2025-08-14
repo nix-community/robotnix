@@ -2,8 +2,6 @@
 self: super: {
   android-emulator = super.callPackage ./android-emulator {};
 
-  android-prepare-vendor = super.callPackage ./android-prepare-vendor {};
-
   bundletool = super.callPackage ./bundletool {};
 
   # FIXME: Broken by upstream changes, not sure if it's still necessary?
@@ -33,7 +31,6 @@ self: super: {
   fetchgit = args: ((super.lib.makeOverridable super.fetchgit) args).overrideAttrs (old: {
     impureEnvVars = old.impureEnvVars or [ ] ++ [ "ROBOTNIX_GIT_MIRRORS" ];
   });
-  nix-prefetch-git = super.callPackage ./fetchgit/nix-prefetch-git.nix {};
 
   gitRepo = super.callPackage ./gitRepo {
     inherit (super) gitRepo;

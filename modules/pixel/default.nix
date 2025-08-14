@@ -10,7 +10,7 @@ let
   otaList = lib.importJSON ./pixel-otas.json;
   fetchItem = json: let
     matchingItem = lib.findSingle
-      (v: (v.device == config.device) && (lib.hasInfix "(${config.apv.buildID}," v.version)) # Look for left paren + upstream buildNumber + ","
+      (v: (v.device == config.device) && (lib.hasInfix "(${config.adevtool.buildID}," v.version)) # Look for left paren + upstream buildNumber + ","
       (throw "no items found for vendor img/ota")
       (throw "multiple items found for vendor img/ota")
       json;
@@ -18,22 +18,36 @@ let
     pkgs.fetchurl (lib.filterAttrs (n: v: (n == "url" || n == "sha256")) matchingItem);
 
   deviceMap = {
-    marlin = { family = "marlin"; name = "Pixel XL"; };
-    sailfish = { family = "marlin"; name = "Pixel"; };
-    taimen = { family = "taimen"; name = "Pixel 2 XL"; };
-    walleye = { family = "muskie"; name = "Pixel 2"; };
-    crosshatch = { family = "crosshatch"; name = "Pixel 3 XL"; };
-    blueline = { family = "crosshatch"; name = "Pixel 3"; };
-    bonito = { family = "bonito"; name = "Pixel 3a XL"; };
-    sargo = { family = "bonito"; name = "Pixel 3a"; };
-    coral = { family = "coral"; name = "Pixel 4 XL"; };
-    flame = { family = "coral"; name = "Pixel 4"; };
-    sunfish = { family = "sunfish"; name = "Pixel 4a"; };
-    bramble = { family = "redfin"; name = "Pixel 4a (5G)"; };
-    redfin = { family = "redfin"; name = "Pixel 5"; };
-    barbet = { family = "barbet"; name = "Pixel 5a (5G)"; };
-    raven = { family = "raviole"; name = "Pixel 6 Pro"; };
-    oriole = { family = "raviole"; name = "Pixel 6"; };
+    marlin = { name = "Pixel XL"; };
+    sailfish = { name = "Pixel"; };
+    taimen = { name = "Pixel 2 XL"; };
+    walleye = { name = "Pixel 2"; };
+    crosshatch = { name = "Pixel 3 XL"; };
+    blueline = { name = "Pixel 3"; };
+    bonito = { name = "Pixel 3a XL"; };
+    sargo = { name = "Pixel 3a"; };
+    coral = { name = "Pixel 4 XL"; };
+    flame = { name = "Pixel 4"; };
+    sunfish = { name = "Pixel 4a"; };
+    bramble = { name = "Pixel 4a (5G)"; };
+    redfin = { name = "Pixel 5"; };
+    barbet = { name = "Pixel 5a (5G)"; };
+    raven = { name = "Pixel 6 Pro"; };
+    oriole = { name = "Pixel 6"; };
+    bluejay = { name = "Pixel 6a"; };
+    panther = { name = "Pixel 7"; };
+    cheetah = { name = "Pixel 7 Pro"; };
+    lynx = { name = "Pixel 7a"; };
+    tangorpro = { name = "Pixel Tablet"; };
+    felix = { name = "Pixel Fold"; };
+    shiba = { name = "Pixel 8"; };
+    husky = { name = "Pixel 8 Pro"; };
+    akita = { name = "Pixel 8a"; };
+    tokay = { name = "Pixel 9"; };
+    caiman = { name = "Pixel 9 Pro"; };
+    komodo = { name = "Pixel 9 Pro XL"; };
+    comet = { name = "Pixel 9 Pro Fold"; };
+    tegu = { name = "Pixel 9a"; };
   };
 
   # Make a uuid based on some string data
@@ -48,30 +62,21 @@ let
 in
 mkMerge [
   (mkIf ((lib.elem config.flavor [ "vanilla" "grapheneos" ]) && (config.device != null) && (lib.hasAttr config.device deviceMap)) { # Default settings that apply to all devices unless overridden. TODO: Make conditional
-    deviceFamily = mkDefault (deviceMap.${config.device}.family or config.device);
     deviceDisplayName = mkDefault (deviceMap.${config.device}.name or config.device);
     arch = mkDefault "arm64";
-
-    apv.img = mkDefault (fetchItem imgList);
-    apv.ota = mkDefault (fetchItem otaList);
-
-    # Exclude all devices by default
-    source.excludeGroups = mkDefault (lib.attrNames deviceMap);
-    # But include names related to our device
-    source.includeGroups = mkDefault [ config.device config.deviceFamily ];
 
     signing.avb.enable = mkDefault true;
   })
 
   # Device-specific overrides
-  (mkIf (config.deviceFamily == "marlin") {
+  (mkIf (builtins.elem config.device [ "marlin" "sailfish" ]) {
     signing.avb.mode = "verity_only";
     signing.apex.enable = false; # Upstream forces "TARGET_FLATTEN_APEX := false" anyway
   })
-  (mkIf (lib.elem config.deviceFamily [ "taimen" "muskie" ]) {
+  (mkIf (lib.elem config.device [ "taimen" "muskie" ]) {
     signing.avb.mode = "vbmeta_simple";
   })
-  (mkIf (config.deviceFamily == "crosshatch") {
+  (mkIf (builtins.elem config.device [ "crosshatch" "blueline" ]) {
     signing.avb.mode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
 
@@ -85,7 +90,7 @@ mkMerge [
       })
     ];
   })
-  (mkIf (config.deviceFamily == "bonito") {
+  (mkIf (builtins.elem config.device [ "bonito" "sargo" ]) {
     signing.avb.mode = "vbmeta_chained";
     retrofit = mkIf (config.androidVersion >= 10) (mkDefault true);
 
@@ -99,13 +104,13 @@ mkMerge [
       })
     ];
   })
-  (mkIf (lib.elem config.deviceFamily [ "coral" "sunfish" "redfin" "barbet" ]) {
+  (mkIf (lib.elem config.device [ "coral" "flame" "sunfish" "redfin" "bramble" "barbet" ]) {
     signing.avb.mode = "vbmeta_chained_v2";
   })
-  (mkIf (config.deviceFamily == "sunfish" && config.androidVersion >= 12) {
+  (mkIf (config.device == "sunfish" && config.androidVersion >= 12) {
     signing.apex.packageNames = [ "com.android.vibrator.sunfish" ];
   })
-  (mkIf (lib.elem config.deviceFamily [ "bonito" "sunfish" "redfin" "barbet" ] && config.androidVersion >= 12) {
+  (mkIf (lib.elem config.device [ "bonito" "sargo" "sunfish" "redfin" "bramble" "barbet" ] && config.androidVersion >= 12) {
     signing.apex.packageNames = [ "com.android.vibrator.drv2624" ];
   })
 ]

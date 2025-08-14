@@ -5,7 +5,7 @@
 with pkgs;
 # TODO: Hack to workaround some android-related prebuilts that need to be fixup'd
 # See 32-bit dependencies in src/build/install-build-deps-android
-buildFHSUserEnv {
+buildFHSEnv {
   name = "chromium-fhs";
   targetPkgs = pkgs: with pkgs; [
     # Stuff verified to be needed in chromium

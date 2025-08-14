@@ -1,0 +1,16 @@
+[package]
+name = "repo-tool"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+repo-manifest = { path = "../repo-manifest" }
+url.workspace = true
+clap.workspace = true
+thiserror.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+reqwest.workspace = true
+main_error.workspace = true
+serde_yml.workspace = true

@@ -4,27 +4,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkIf mkDefault mkOption types;
-
-  projectSource = p:
-    let
-      ref = if lib.strings.hasInfix "refs/heads" p.revisionExpr then lib.last (lib.splitString "/" p.revisionExpr) else p.revisionExpr;
-      name = builtins.replaceStrings ["/"] ["="] p.relpath;
-    in
-    if config.source.evalTimeFetching
-    then
-      builtins.fetchGit { # Evaluation-time source fetching. Uses nix's git cache, but any nix-instantiate will require fetching sources.
-        inherit (p) url rev;
-        inherit ref name;
-      }
-    else
-      pkgs.fetchgit { # Build-time source fetching. This should be preferred, but is slightly less convenient when developing.
-        inherit (p) url sha256 fetchSubmodules fetchLFS;
-        # Use revisionExpr if it is a tag so we use the tag in the name of the nix derivation instead of the revision
-        rev = if (p.revisionExpr != null && lib.hasPrefix "refs/tags/" p.revisionExpr) then p.revisionExpr else p.rev;
-        deepClone = false;
-      };
-
+  inherit (lib) mkIf mkDefault mkMerge mkOption types;
 
   # A tree (attrset containing attrsets) which matches the source directories relpath filesystem structure.
   # e.g.
@@ -76,13 +56,20 @@ let
         description = "Relative path under android source tree to place this directory. Defaults to attribute name.";
       };
 
+      manifestSrc = mkOption {
+        type = types.nullOr types.path;
+        description = "The original directory source as specified in the repo manifest lockfile.";
+        internal = true;
+        default = null;
+      };
+
       src = mkOption {
         type = types.path;
         description = "Source to use for this android source directory.";
         default = pkgs.runCommand "empty" {} "mkdir -p $out";
         apply = src: # Maybe replace with with pkgs.applyPatches? Need patchFlags though...
           if (config.patches != [] || config.postPatch != "")
-          then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" {} ''
+          then (pkgs.runCommand "${builtins.replaceStrings ["/"] ["="] config.relpath}-patched" { inherit (config) nativeBuildInputs; } ''
             cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${src} $out/
             chmod u+w -R $out
             ${lib.concatMapStringsSep "\n" (p: "echo Applying ${p} && patch -p1 --no-backup-if-mismatch -d $out < ${p}") config.patches}
@@ -114,75 +101,42 @@ let
         description = "Additional commands to run after patching source directory.";
       };
 
+      nativeBuildInputs = mkOption {
+        default = [];
+        type = types.listOf types.package;
+        description = "nativeBuildInputs to be made available during the execution of postPatch";
+      };
+
       unpackScript = mkOption {
         type = types.str;
         internal = true;
       };
 
-      # These remaining options should be set by json output of mk-vendor-file.py
-      url = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        internal = true;
-      };
-
-      rev = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        internal = true;
-      };
-
-      revisionExpr = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        internal = true;
-      };
-
-      tree = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        internal = true;
-      };
-
       groups = mkOption {
-        default = [];
         type = types.listOf types.str;
-        internal = true;
-      };
-
-      dateTime = mkOption {
-        default = 1;
-        type = types.int;
-        internal = true;
-      };
-
-      sha256 = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        internal = true;
-      };
-
-      fetchSubmodules = mkOption {
-        type = types.bool;
-        default = false;
-        internal = true;
-      };
-
-      fetchLFS = mkOption {
-        type = types.bool;
-        default = true;
+        default = [];
         internal = true;
       };
 
       linkfiles = mkOption {
-        default = [];
         type = types.listOf fileModule;
-        internal = true;
+        default = [];
+        description = ''
+          Symlinks into this source dir to create in the source tree, i.e. the robotnix implementation of the git-repo `linkfile` tag.
+        '';
       };
 
       copyfiles = mkOption {
-        default = [];
         type = types.listOf fileModule;
+        default = [];
+        description  = ''
+          Files to copy from this source dir elsewhere into the source tree, i.e. the robotnix implementation of the git-repo `copyfile` tag.
+        '';
+      };
+
+      date = mkOption {
+        type = types.nullOr types.int;
+        default = null;
         internal = true;
       };
     };
@@ -192,10 +146,6 @@ let
         (lib.any (g: lib.elem g config.groups) _config.source.includeGroups)
         || (!(lib.any (g: lib.elem g config.groups) _config.source.excludeGroups))
       );
-
-      src =
-        mkIf ((config.url != null) && (config.rev != null) && (config.sha256 != null))
-        (mkDefault (projectSource config));
 
       postPatch = let
         # Check if we need to make mountpoints in this directory for other repos to be mounted inside it.
@@ -216,46 +166,44 @@ let
         mkdir -p $(dirname ${c.dest})
         ln -sf --relative ${config.relpath}/${c.src} ${c.dest}
       '') config.linkfiles);
+
+      src = lib.mkIf (config.manifestSrc != null) (lib.mkDefault config.manifestSrc);
     };
   });
 in
 {
   options = {
     source = {
-      # End-user should either set source.manifest.* or source.dirs
       manifest = {
-        url = mkOption {
-          type = types.str;
-          description = "URL to repo manifest repository. Not necessary to set if using `source.dirs` directly.";
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = ''
+            Whether to import the source dirs from a git-repo lockfile.
+          '';
         };
 
-        rev = mkOption {
-          type = types.str;
-          description = "Revision/tag to use from repo manifest repository.";
+        lockfile = mkOption {
+          type = types.nullOr types.path;
+          default = null;
+          description = ''
+            git-repo manifest lockfile as generated by `repo2nix fetch`.
+          '';
         };
 
-        sha256 = mkOption {
-          type = types.str;
-          description = "Nix sha256 hash of repo manifest repository.";
+        categories = mkOption {
+          type = types.listOf (types.either types.str (types.attrsOf types.str));
+          description = ''
+            `repo2nix` project categories to include from the manifest.
+          '';
         };
-      };
-
-      evalTimeFetching = mkOption {
-        default = false;
-        description = ''
-          Set config.source.dirs automatically using IFD with information from `source.manifest`.
-          Also enables use of `builtins.fetchGit` instead of `pkgs.fetchgit` if not all sha256 hashes are available.
-          (Can be useful for development, but not recommended normally)
-        '';
       };
 
       dirs = mkOption {
         default = {};
         type = types.attrsOf dirModule;
         description = ''
-          Directories to include in Android build process.
-          Normally set by the output of `mk_repo_file.py`.
-          However, additional source directories can be added to the build here using this option as well.
+          Directories to include in Android build process. Normally set by the entries of the lockfile specificed by `source.repoLockfile`, but can also be used to add additional directories.
         '';
       };
 
@@ -270,49 +218,62 @@ in
         type = types.listOf types.str;
         description = "Project groups to include in source tree (overrides `excludeGroups`)";
       };
-
-      unpackScript = mkOption {
-        default = "";
-        internal = true;
-        type = types.lines;
-      };
     };
   };
 
   config.source = {
-    dirs = mkIf config.source.evalTimeFetching (import ./repo2nix.nix {
-      manifest = config.source.manifest.url;
-      inherit (config.source.manifest) rev sha256;
-    });
-
-    unpackScript = lib.concatMapStringsSep "\n" (d: d.unpackScript) (lib.attrValues config.source.dirs);
+    manifest.categories = [ "Default" ];
+    dirs = mkIf config.source.manifest.enable (
+      let
+        entries = (lib.importJSON config.source.manifest.lockfile).entries;
+        filteredEntries = lib.filterAttrs (
+          path: entry: entry.project.active && (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)
+        ) entries;
+        dirs = lib.mapAttrs (path: entry: {
+          manifestSrc = pkgs.fetchgit {
+            url = entry.project.repo_ref.repo_url;
+            rev = entry.lock.commit;
+            hash = entry.lock.nix_hash;
+            fetchLFS = entry.project.repo_ref.fetch_lfs;
+            fetchSubmodules = entry.project.repo_ref.fetch_submodules;
+          };
+          inherit (entry.project) groups linkfiles copyfiles;
+          inherit (entry.lock) date;
+        }) filteredEntries;
+      in dirs);
   };
 
-  config.build = {
-    unpackScript = pkgs.writeShellScript "unpack.sh" config.source.unpackScript;
+  config = {
+    assertions = [
+      {
+        assertion = config.source.manifest.enable -> (lib.importJSON config.source.manifest.lockfile).fetch_completed;
+        message = "The git-repo lockfile set via `source.manifest.lockfile` is marked as incomplete. Try rerunning `repo fetch` on it.";
+      }
+    ];
+    build = {
+      # Extract only files under robotnix/ (for debugging with an external AOSP build)
+      debugUnpackScript = pkgs.writeShellScript "debug-unpack.sh" (''
+        rm -rf robotnix
+        '' +
+        (lib.concatStringsSep "" (map (d: lib.optionalString (d.enable && (lib.hasPrefix "robotnix/" d.relpath)) ''
+          mkdir -p $(dirname ${d.relpath})
+          echo "${d.src} -> ${d.relpath}"
+          cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.src} ${d.relpath}/
+        '') (lib.attrValues config.source.dirs))) + ''
+        chmod -R u+w robotnix/
+      '');
 
-    # Extract only files under robotnix/ (for debugging with an external AOSP build)
-    debugUnpackScript = pkgs.writeShellScript "debug-unpack.sh" (''
-      rm -rf robotnix
-      '' +
-      (lib.concatStringsSep "" (map (d: lib.optionalString (d.enable && (lib.hasPrefix "robotnix/" d.relpath)) ''
-        mkdir -p $(dirname ${d.relpath})
-        echo "${d.src} -> ${d.relpath}"
-        cp --reflink=auto --no-preserve=ownership --no-dereference --preserve=links -r ${d.src} ${d.relpath}/
-      '') (lib.attrValues config.source.dirs))) + ''
-      chmod -R u+w robotnix/
-    '');
-
-    # Patch files in other sources besides robotnix/*
-    debugPatchScript = pkgs.writeShellScript "debug-patch.sh"
-      (lib.concatStringsSep "\n" (map (d: ''
-        ${lib.concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
-        ${lib.optionalString (d.postPatch != "") ''
-        pushd ${d.relpath} >/dev/null
-        ${d.postPatch}
-        popd >/dev/null
-        ''}
-      '')
-      (lib.filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (lib.attrValues config.source.dirs))));
+      # Patch files in other sources besides robotnix/*
+      debugPatchScript = pkgs.writeShellScript "debug-patch.sh"
+        (lib.concatStringsSep "\n" (map (d: ''
+          ${lib.concatMapStringsSep "\n" (p: "patch -p1 --no-backup-if-mismatch -d ${d.relpath} < ${p}") d.patches}
+          ${lib.optionalString (d.postPatch != "") ''
+          pushd ${d.relpath} >/dev/null
+          ${d.postPatch}
+          popd >/dev/null
+          ''}
+        '')
+        (lib.filter (d: d.enable && ((d.patches != []) || (d.postPatch != ""))) (lib.attrValues config.source.dirs))));
+    };
   };
 }

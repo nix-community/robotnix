@@ -25,7 +25,7 @@ GIT_SSL_CAINFO=${NIX_GIT_SSL_CAINFO:-$NIX_SSL_CERT_FILE}
 fullRev=
 humanReadableRev=
 commitDate=
-commitDateStrict8601=
+commitDateUnix=
 
 if test -n "$deepClone"; then
     deepClone=true
@@ -327,7 +327,7 @@ clone_user_rev() {
     fullRev=$( (git rev-parse "$rev" 2>/dev/null || git rev-parse "refs/heads/$branchName") | tail -n1)
     humanReadableRev=$(git describe "$fullRev" 2> /dev/null || git describe --tags "$fullRev" 2> /dev/null || echo -- none --)
     commitDate=$(git show -1 --no-patch --pretty=%ci "$fullRev")
-    commitDateStrict8601=$(git show -1 --no-patch --pretty=%cI "$fullRev")
+    commitDateUnix=$(git show -1 --no-patch --pretty=%ct "$fullRev")
     popd >/dev/null
 
     # Allow doing additional processing before .git removal
@@ -399,7 +399,7 @@ print_results() {
 {
   "url": "$(json_escape "$url")",
   "rev": "$(json_escape "$fullRev")",
-  "date": "$(json_escape "$commitDateStrict8601")",
+  "date": $(json_escape "$commitDateUnix"),
   "path": "$(json_escape "$finalPath")",
   "$(json_escape "$hashType")": "$(json_escape "$hash")",
   "hash": "$(nix-hash --to-sri --type $hashType $hash)",

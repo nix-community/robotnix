@@ -2,7 +2,7 @@
   description = "Build Android (AOSP) using Nix";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
 
@@ -11,15 +11,15 @@
 
   outputs = { self, nixpkgs, androidPkgs, flake-compat,  ... }@inputs: let
     pkgs = import ./pkgs/default.nix { inherit inputs; };
-  in {
+  in rec {
     # robotnixSystem evaluates a robotnix configuration
     lib.robotnixSystem = configuration: import ./default.nix {
       inherit configuration pkgs;
     };
 
-    defaultTemplate = {
+    templates.default = {
       path = ./template;
-      description = "A basic robotnix configuration";
+      description = "A basic robotnix configuration flake";
     };
 
     nixosModule = import ./nixos; # Contains all robotnix nixos modules
@@ -30,23 +30,38 @@
       gitRepo = pkgs.gitRepo;
     };
 
-    devShell.x86_64-linux = pkgs.mkShell {
-      name = "robotnix-scripts";
-      nativeBuildInputs = with pkgs; [
-        # For android updater scripts
-        (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
-        gitRepo nix-prefetch-git
-        curl pup jq
-        shellcheck
-        wget
+    devShells.x86_64-linux = rec {
+      default = pkgs.mkShell {
+        name = "robotnix-scripts";
+        nativeBuildInputs = with pkgs; [
+          # For android updater scripts
+          (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
+          gitRepo (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix {})
+          curl pup jq
+          shellcheck
+          wget
 
-        # For chromium updater script
-        # python2
-        # cipd git
+          (callPackage ./repo2nix/package.nix {})
+          prefetch-yarn-deps
 
-        cachix
-      ];
-      PYTHONPATH=./scripts;
+          # For chromium updater script
+          # python2
+          # cipd git
+
+          cachix
+        ];
+        PYTHONPATH=./scripts;
+      };
+      repo2nix = pkgs.mkShell {
+        name = "repo2nix";
+        nativeBuildInputs = with pkgs; [
+          cargo rustc pkg-config openssl (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix {})
+        ];
+      };
     };
+
+    examples = nixpkgs.lib.genAttrs
+      [ "lineageos" "grapheneos" ]
+      (name: lib.robotnixSystem (./. + "/template/${name}.nix"));
   };
 }
