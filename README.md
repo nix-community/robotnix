@@ -25,6 +25,32 @@ $ nix-build "https://github.com/nix-community/robotnix/archive/master.tar.gz" \
 The command above will build an image signed with publicly known `test-keys`, so definitely don't use this for anything intended to be secure.
 To flash the result to your device, run `fastboot update -w <img.zip>`.
 
+Robotnix also provides a flake interface that can be used via the `lib.robotnixSystem` attribute similar to `lib.nixosSystem`:
+```nix
+{
+    inputs.robotnix.url = "github:nix-community/robotnix";
+
+    outputs = { self, robotnix }: {
+        exampleSystem = robotnix.lib.robotnixSystem {
+            flavor = "lineageos";
+            device = "FP4";
+
+            apps.fdroid.enable = true;
+            microg.enable = true;
+
+            # Enables ccache for the build process. Remember to add /var/cache/ccache as
+            # an additional sandbox path to your Nix config.
+            ccache.enable = true;
+        };
+    };
+}
+```
+
+You can then build the image with:
+```console
+$ nix build .#exampleSystem.img
+```
+
 ## Motivation
 Android projects often contain long and complicated build instructions requiring a variety of tools for fetching source code and executing the build.
 This applies not only to Android itself, but also to projects included in the Android build, such as the Linux kernel, Chromium webview, MicroG, other external/prebuilt privileged apps, etc.

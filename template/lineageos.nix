@@ -14,5 +14,7 @@
   apps.fdroid.enable = true;
   microg.enable = true;
 
+  # Enables ccache for the build process. Remember to add /var/cache/ccache as
+  # an additional sandbox path to your Nix config.
   ccache.enable = true;
 }
