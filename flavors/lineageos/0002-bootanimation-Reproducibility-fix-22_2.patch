@@ -1,0 +1,26 @@
+From 435946b267a994bcea15c7659faf352a1d7cb222 Mon Sep 17 00:00:00 2001
+From: cyclopentane <cyclopentane@aidoskyneen.eu>
+Date: Fri, 22 Aug 2025 00:00:30 +0200
+Subject: [PATCH] bootanimation: reproducibility fix
+
+---
+ bootanimation/gen-bootanimation.sh | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/bootanimation/gen-bootanimation.sh b/bootanimation/gen-bootanimation.sh
+index 8c2ba50e..c1dedbc7 100755
+--- a/bootanimation/gen-bootanimation.sh
++++ b/bootanimation/gen-bootanimation.sh
+@@ -49,6 +49,9 @@ IMAGEHEIGHT=$(expr $IMAGEWIDTH / 3);
+ RESOLUTION="$IMAGEWIDTH"x"$IMAGEHEIGHT";
+ 
+ $PARAM_MOGRIFY -resize $RESOLUTION -colors 256 $INTERMEDIATES/*/*.png;
++for f in $INTERMEDIATES/*/*.png; do
++    @imagemagick@/bin/convert -strip "$f" "$f"
++done
+ 
+ echo "$IMAGESCALEWIDTH $IMAGESCALEHEIGHT 60" > $INTERMEDIATES/desc.txt;
+ cat $PARAM_DESC_TXT >> $INTERMEDIATES/desc.txt
+-- 
+2.50.1
+

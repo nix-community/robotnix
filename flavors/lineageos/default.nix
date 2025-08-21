@@ -62,7 +62,9 @@ in mkIf (config.flavor == "lineageos") {
        else ./0001-Remove-LineageOS-keys-19.patch)
 
       (pkgs.substituteAll {
-        src = (if lib.versionAtLeast (toString config.androidVersion) "14"
+        src = (if lib.versionAtLeast config.flavorVersion "22.2"
+        then ./0002-bootanimation-Reproducibility-fix-22_2.patch
+        else if lib.versionAtLeast config.flavorVersion "21.1"
         then ./0002-bootanimation-Reproducibility-fix-21.patch else
         ./0002-bootanimation-Reproducibility-fix.patch);
         inherit (pkgs) imagemagick;
