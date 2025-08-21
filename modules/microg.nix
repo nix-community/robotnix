@@ -110,6 +110,8 @@ in
 
           # New with v0.3.1.240913
           "START_ACTIVITIES_FROM_BACKGROUND"
+
+          "INTERACT_ACROSS_USERS"
         ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         usesLibraries = [ "com.android.location.provider" ];
@@ -136,6 +138,9 @@ in
         privappPermissions = [
           "FAKE_PACKAGE_SIGNATURE"
           "CHECK_LICENSE"
+          "DELETE_PACKAGES"
+          "INTERACT_ACROSS_USERS"
+          "INSTALL_PACKAGES"
         ];
         defaultPermissions = [ "FAKE_PACKAGE_SIGNATURE" ];
         usesOptionalLibraries = [ "androidx.window.extensions" "androidx.window.sidecar" ];
