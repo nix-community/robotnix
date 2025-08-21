@@ -76,8 +76,10 @@ in mkIf (config.flavor == "lineageos") {
        then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
        else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
       
-    ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "12") [
-      ./dont-run-repo-during-build.patch
+    ] ++ lib.optionals (lib.versionAtLeast config.flavorVersion "19.0") [
+      (if lib.versionAtLeast config.flavorVersion "22.2"
+      then ./0004-dont-run-repo-during-build-22_2.patch
+      else ./0004-dont-run-repo-during-build.patch)
     ];
     "system/extras".patches = [
       # pkgutil.get_data() not working, probably because we don't use their compiled python

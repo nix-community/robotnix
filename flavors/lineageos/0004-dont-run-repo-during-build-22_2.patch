@@ -1,0 +1,30 @@
+From ed2c103ce0bde2d46fc105f40a0481a9faf65907 Mon Sep 17 00:00:00 2001
+From: cyclopentane <cyclopentane@aidoskyneen.eu>
+Date: Fri, 22 Aug 2025 00:41:12 +0200
+Subject: [PATCH] don't run repo during the build
+
+---
+ build/tools/gen_build-manifest.sh     | 1 -
+ prebuilt/generated/build-manifest.xml | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ create mode 100644 prebuilt/generated/build-manifest.xml
+
+diff --git a/build/tools/gen_build-manifest.sh b/build/tools/gen_build-manifest.sh
+index 43ef3360..7713bfd0 100755
+--- a/build/tools/gen_build-manifest.sh
++++ b/build/tools/gen_build-manifest.sh
+@@ -6,4 +6,3 @@
+ 
+ echo "- Generating vendor/lineage/prebuilt/generated/build-manifest.xml"
+ if [ "$MANIFEST_EXCLUDES" ]; then MANIFEST_EXCLUDES="|${MANIFEST_EXCLUDES}"; fi
+-python3 .repo/repo/repo manifest -o - -r | grep -Ev "proprietary_${MANIFEST_EXCLUDES}" > vendor/lineage/prebuilt/generated/build-manifest.xml
+diff --git a/prebuilt/generated/build-manifest.xml b/prebuilt/generated/build-manifest.xml
+new file mode 100644
+index 00000000..f97e860c
+--- /dev/null
++++ b/prebuilt/generated/build-manifest.xml
+@@ -0,0 +1 @@
++stubbed
+-- 
+2.50.1
+
