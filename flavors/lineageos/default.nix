@@ -62,7 +62,9 @@ in mkIf (config.flavor == "lineageos") {
        else ./0001-Remove-LineageOS-keys-19.patch)
 
       (pkgs.substituteAll {
-        src = (if lib.versionAtLeast (toString config.androidVersion) "14"
+        src = (if lib.versionAtLeast config.flavorVersion "22.2"
+        then ./0002-bootanimation-Reproducibility-fix-22_2.patch
+        else if lib.versionAtLeast config.flavorVersion "21.1"
         then ./0002-bootanimation-Reproducibility-fix-21.patch else
         ./0002-bootanimation-Reproducibility-fix.patch);
         inherit (pkgs) imagemagick;
@@ -74,8 +76,10 @@ in mkIf (config.flavor == "lineageos") {
        then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
        else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
       
-    ] ++ lib.optionals (lib.versionAtLeast (toString config.androidVersion) "12") [
-      ./dont-run-repo-during-build.patch
+    ] ++ lib.optionals (lib.versionAtLeast config.flavorVersion "19.0") [
+      (if lib.versionAtLeast config.flavorVersion "22.2"
+      then ./0004-dont-run-repo-during-build-22_2.patch
+      else ./0004-dont-run-repo-during-build.patch)
     ];
     "system/extras".patches = [
       # pkgutil.get_data() not working, probably because we don't use their compiled python
