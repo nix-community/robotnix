@@ -83,8 +83,7 @@ mkMerge [
     # Reproducibility fix for persist.img.
     # TODO: Generate uuid based on fingerprint
     source.dirs."device/google/crosshatch".patches = [
-      (pkgs.substituteAll {
-        src = ./crosshatch-persist-img-reproducible.patch;
+      (pkgs.replaceVars ./crosshatch-persist-img-reproducible.patch {
         inherit uuid hashSeed;
         inherit (config) buildDateTime;
       })
@@ -97,8 +96,7 @@ mkMerge [
     # Reproducibility fix for persist.img.
     # TODO: Generate uuid based on fingerprint
     source.dirs."device/google/bonito".patches = [
-      (pkgs.substituteAll {
-        src = ./bonito-persist-img-reproducible.patch;
+      (pkgs.replaceVars ./bonito-persist-img-reproducible.patch {
         inherit uuid hashSeed;
         inherit (config) buildDateTime;
       })

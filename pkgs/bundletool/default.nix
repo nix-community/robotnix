@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer
 # SPDX-License-Identifier: MIT
 
-#{ callPackage, substituteAll, fetchFromGitHub, buildGradle, jdk, gradle }:
+#{ callPackage, fetchFromGitHub, buildGradle, jdk, gradle }:
 #
 # TODO: Issues with gradle + protoc
 #buildGradle rec {

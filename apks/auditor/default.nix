@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 # https://www.reddit.com/r/GrapheneOS/comments/bpcttk/avb_key_auditor_app/
-{ callPackage, lib, stdenv, pkgs, substituteAll, fetchFromGitHub,
+{ callPackage, lib, stdenv, pkgs, replaceVars, fetchFromGitHub,
   androidPkgs, jdk11_headless, gradle, gradleToNixPatchedFetchers,
   domain ? "example.org",
   applicationName ? "Robotnix Auditor",
@@ -31,8 +31,7 @@ buildGradle rec {
 
   patches = [
     # TODO: Enable support for passing multiple device fingerprints
-    (substituteAll ({
-      src = ./customized-auditor.patch;
+    (replaceVars ./customized-auditor.patch ({
       inherit domain applicationName applicationId ;
       signatureFingerprint = lib.toUpper signatureFingerprint;
     }
