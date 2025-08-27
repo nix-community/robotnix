@@ -7,7 +7,7 @@
 , glib, gtk3, alsa-lib, pulseaudio, xdg-utils, libXScrnSaver, libXcursor, libXtst, libXdamage
 , libdrm, libxkbcommon
 , zlib, ncurses5, libxml2, binutils, perl
-, substituteAll, fetchgerritpatchset
+, fetchgerritpatchset
 
 , name ? "chromium"
 , displayName ? "Chromium"

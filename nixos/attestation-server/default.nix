@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ pkgs, callPackage, lib, substituteAll, makeWrapper, fetchFromGitHub, jdk17_headless, gradleGen,
+{ pkgs, callPackage, lib, replaceVars, makeWrapper, fetchFromGitHub, jdk17_headless, gradleGen,
   listenHost ? "localhost",
   port ? 8080,
   applicationId ? "org.robotnix.auditor",
@@ -33,8 +33,7 @@ buildGradle {
   };
 
   patches = [
-    (substituteAll ({
-      src = ./customized-attestation-server.patch;
+    (replaceVars ./customized-attestation-server.patch ({
       inherit listenHost port domain applicationId signatureFingerprint;
     }
     // lib.genAttrs supportedDevices (d: if (device == d) then avbFingerprint else "DISABLED_CUSTOM_${d}")))

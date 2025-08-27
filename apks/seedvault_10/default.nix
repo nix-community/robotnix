@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ callPackage, lib, substituteAll, fetchFromGitHub, androidPkgs, jdk, gradle }:
+{ callPackage, lib, fetchFromGitHub, androidPkgs, jdk, gradle }:
 let
   androidsdk = androidPkgs.sdk (p: with p; [ cmdline-tools-latest platforms-android-29 build-tools-29-0-2 ]);
   buildGradle = callPackage ./gradle-env.nix {};

@@ -15,8 +15,7 @@ mkIf (config.androidVersion == 11) (mkMerge [
   source.dirs."build/make".patches = [
     ./build_make/0001-Readonly-source-fix.patch
   ] ++ (lib.optional (!(lib.elem config.flavor [ "grapheneos" "lineageos" ]))
-    (pkgs.substituteAll {
-      src = ./build_make/0002-Partition-size-fix.patch;
+    (pkgs.replaceVars ./build_make/0002-Partition-size-fix.patch {
       inherit (pkgs) coreutils;
     })
   );
@@ -32,8 +31,7 @@ mkIf (config.androidVersion == 11) (mkMerge [
 (mkIf config.useReproducibilityFixes {
   source.dirs."build/make" = {
     patches = [
-      (pkgs.substituteAll {
-        src = ./build_make/0003-Set-uuid-and-hash_seed-for-userdata-and-cache.patch;
+      (pkgs.replaceVars ./build_make/0003-Set-uuid-and-hash_seed-for-userdata-and-cache.patch {
         inherit hash;
       })
       ./build_make/0004-Add-marker-to-insert-AVB-salt-flags.patch

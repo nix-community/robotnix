@@ -61,12 +61,11 @@ in mkIf (config.flavor == "lineageos") {
        then ./0001-Remove-LineageOS-keys-20.patch
        else ./0001-Remove-LineageOS-keys-19.patch)
 
-      (pkgs.substituteAll {
-        src = (if lib.versionAtLeast config.flavorVersion "22.2"
+      (pkgs.replaceVars (if lib.versionAtLeast config.flavorVersion "22.2"
         then ./0002-bootanimation-Reproducibility-fix-22_2.patch
         else if lib.versionAtLeast config.flavorVersion "21.1"
         then ./0002-bootanimation-Reproducibility-fix-21.patch else
-        ./0002-bootanimation-Reproducibility-fix.patch);
+        ./0002-bootanimation-Reproducibility-fix.patch) {
         inherit (pkgs) imagemagick;
       })
 

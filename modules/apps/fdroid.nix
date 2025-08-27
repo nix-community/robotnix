@@ -95,8 +95,7 @@ in
     source.dirs."robotnix/apps/F-DroidPrivilegedExtension" = {
       src = privext;
       patches = [
-        (pkgs.substituteAll {
-          src = ./fdroid-privext.patch;
+        (pkgs.replaceVars ./fdroid-privext.patch {
           fingerprint = lib.toLower config.apps.prebuilt."F-Droid".fingerprint;
         })
       ];
