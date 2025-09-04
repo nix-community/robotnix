@@ -101,6 +101,10 @@
         lockfile = mkDefault (./. + "/${config.grapheneos.release}.lock");
       };
 
+      source.dirs."vendor/adevtool".patches = lib.optional (!lib.versionAtLeast config.grapheneos.release "2025090300") (
+        ./adevtool-ignore-EINVAL-upon-chown.patch
+      );
+
       warnings = (optional ((config.device != null) && !(elem config.device supportedDevices))
         "${config.device} is not a supported device for GrapheneOS")
         ++ (optional (!(elem config.androidVersion [ 16 ])) "Unsupported androidVersion (!= 16) for GrapheneOS");

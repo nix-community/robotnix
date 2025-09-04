@@ -47,9 +47,6 @@ in {
       dirs = {
         "vendor/adevtool" = {
           nativeBuildInputs = with pkgs; [ nodejs yarnConfigHook ];
-          patches = [
-            ./adevtool-ignore-EINVAL-upon-chown.patch
-          ];
           postPatch = let
             yarnOfflineCache = pkgs.fetchYarnDeps {
               yarnLock = config.source.dirs."vendor/adevtool".manifestSrc + "/yarn.lock";
