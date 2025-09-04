@@ -1,30 +1,20 @@
-From ed2c103ce0bde2d46fc105f40a0481a9faf65907 Mon Sep 17 00:00:00 2001
+From 008f23a0e3df2fa4ff5afe063cbaa3c12c29ec4f Mon Sep 17 00:00:00 2001
 From: cyclopentane <cyclopentane@aidoskyneen.eu>
-Date: Fri, 22 Aug 2025 00:41:12 +0200
-Subject: [PATCH] don't run repo during the build
+Date: Thu, 4 Sep 2025 13:19:06 +0200
+Subject: [PATCH] Don't run repo during build
 
 ---
- build/tools/gen_build-manifest.sh     | 1 -
- prebuilt/generated/build-manifest.xml | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
- create mode 100644 prebuilt/generated/build-manifest.xml
+ build/core/default_installed_modules.mk | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/build/tools/gen_build-manifest.sh b/build/tools/gen_build-manifest.sh
-index 43ef3360..7713bfd0 100755
---- a/build/tools/gen_build-manifest.sh
-+++ b/build/tools/gen_build-manifest.sh
-@@ -6,4 +6,3 @@
- 
- echo "- Generating vendor/lineage/prebuilt/generated/build-manifest.xml"
- if [ "$MANIFEST_EXCLUDES" ]; then MANIFEST_EXCLUDES="|${MANIFEST_EXCLUDES}"; fi
--python3 .repo/repo/repo manifest -o - -r | grep -Ev "proprietary_${MANIFEST_EXCLUDES}" > vendor/lineage/prebuilt/generated/build-manifest.xml
-diff --git a/prebuilt/generated/build-manifest.xml b/prebuilt/generated/build-manifest.xml
-new file mode 100644
-index 00000000..f97e860c
---- /dev/null
-+++ b/prebuilt/generated/build-manifest.xml
-@@ -0,0 +1 @@
-+stubbed
+diff --git a/build/core/default_installed_modules.mk b/build/core/default_installed_modules.mk
+index 1f5ba40c..195a89c7 100644
+--- a/build/core/default_installed_modules.mk
++++ b/build/core/default_installed_modules.mk
+@@ -1,3 +1,2 @@
+ # build-manifest.xml
+ INSTALLED_BUILD_MANIFEST_XML_TARGET := $(TARGET_OUT_PRODUCT)/etc/build-manifest.xml
+-ALL_DEFAULT_INSTALLED_MODULES += $(INSTALLED_BUILD_MANIFEST_XML_TARGET)
 -- 
 2.50.1
 
