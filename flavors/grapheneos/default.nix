@@ -101,9 +101,13 @@
         lockfile = mkDefault (./. + "/${config.grapheneos.release}.lock");
       };
 
-      source.dirs."vendor/adevtool".patches = lib.optional (!lib.versionAtLeast config.grapheneos.release "2025090300") (
+      source.dirs."vendor/adevtool".patches = if (!lib.versionAtLeast config.grapheneos.release "2025090300") then [
         ./adevtool-ignore-EINVAL-upon-chown.patch
-      );
+      ] else [
+        (pkgs.replaceVars ./adevtool-static-git-rev.patch {
+          adevtoolRevision = (lib.importJSON (./. + "/${config.grapheneos.release}.lock")).entries."vendor/adevtool".lock.commit;
+        })
+      ];
 
       warnings = (optional ((config.device != null) && !(elem config.device supportedDevices))
         "${config.device} is not a supported device for GrapheneOS")
