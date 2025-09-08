@@ -47,7 +47,7 @@
       (mkIf ((config.grapheneos.channel != null) && (config.device != null) && (builtins.hasAttr config.device channelInfo.device_info."${config.grapheneos.channel}")) (
     let
       deviceInfo = channelInfo.device_info.${config.grapheneos.channel}.${config.device};
-      buildID = buildIDs."${deviceInfo.git_tag}.lock";
+      buildID = buildIDs."${deviceInfo.git_tag}/repo.lock";
     in {
       assertions = [
         {
@@ -81,14 +81,14 @@
       };
 
       adevtool = let
-        vendorImgMetadata = lib.importJSON (./. + "/vendor_img_metadata_${config.grapheneos.release}.json");
+        vendorImgMetadata = lib.importJSON (./. + "/${config.grapheneos.release}/vendor_img_metadata.json");
         vendorBuildID = vendorImgMetadata.vendor_build_id;
         imgFields = lib.splitString " " vendorImgMetadata."${config.device}".build_index_props.factory;
         imgSha256 = builtins.elemAt imgFields 0;
         imgFilename = builtins.elemAt imgFields 1;
       in mkIf (elem config.device phoneDevices) {
         enable = true;
-        yarnHash = (lib.importJSON ./yarn_hashes.json)."${config.grapheneos.release}.lock";
+        yarnHash = (lib.importJSON ./yarn_hashes.json).${config.grapheneos.release};
         img = pkgs.fetchurl {
           url = "https://dl.google.com/dl/android/aosp/${imgFilename}";
           sha256 = imgSha256;
@@ -98,14 +98,14 @@
 
       source.manifest = {
         enable = true;
-        lockfile = mkDefault (./. + "/${config.grapheneos.release}.lock");
+        lockfile = mkDefault (./. + "/${config.grapheneos.release}/repo.lock");
       };
 
       source.dirs."vendor/adevtool".patches = if (!lib.versionAtLeast config.grapheneos.release "2025090300") then [
         ./adevtool-ignore-EINVAL-upon-chown.patch
       ] else [
         (pkgs.replaceVars ./adevtool-static-git-rev.patch {
-          adevtoolRevision = (lib.importJSON (./. + "/${config.grapheneos.release}.lock")).entries."vendor/adevtool".lock.commit;
+          adevtoolRevision = (lib.importJSON (./. + "/${config.grapheneos.release}/repo.lock")).entries."vendor/adevtool".lock.commit;
         })
       ];
 
