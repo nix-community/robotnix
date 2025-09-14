@@ -80,6 +80,13 @@ let
           else src;
       };
 
+      rev = mkOption {
+        type = types.nullOr types.str;
+        description = "The git commit hash of the source as specified in the repo manifest lockfile.";
+        internal = true;
+        default = null;
+      };
+
       patches = mkOption {
         default = [];
         type = types.listOf types.path;
@@ -241,6 +248,7 @@ in
           };
           inherit (entry.project) groups linkfiles copyfiles;
           inherit (entry.lock) date;
+          rev = entry.lock.commit;
         }) filteredEntries;
       in dirs);
   };

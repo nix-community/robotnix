@@ -14,23 +14,38 @@ in {
         in the source tree, as required by `fetchYarnDeps`.
       '';
     };
-    buildID = lib.mkOption {
-      type = lib.types.str;
+    devices = lib.mkOption {
+      type = with lib.types; listOf str;
       description = ''
-        The build ID as specified in `build/make/core/build_id.mk` in the AOSP
-        source tree.
+        The device codenames to extract the vendor blobs for.
       '';
     };
-    img = lib.mkOption {
-      type = lib.types.path;
+    vendorImgs = lib.mkOption {
+      type = with lib.types; listOf (submodule {
+        options = {
+          fileName = lib.mkOption {
+            type = str;
+            description = ''
+              The file name of the image.
+            '';
+          };
+          url = lib.mkOption {
+            type = str;
+            description = ''
+              The download URL of the image.
+            '';
+          };
+          sha256 = lib.mkOption {
+            type = str;
+            description = ''
+              The SHA256 sum of the image.
+            '';
+          };
+        };
+      });
+      default = [];
       description = ''
-        The vendor image to extract the vendor blobs from.
-      '';
-    };
-    imgFilename = lib.mkOption {
-      type = lib.types.str;
-      description = ''
-        The filename of the vendor image.
+        The vendor images to be prefetched and made available to adevtool during the build.
       '';
     };
   };
@@ -55,8 +70,6 @@ in {
           in ''
             yarnOfflineCache=${yarnOfflineCache}
             yarnConfigHook
-            mkdir -p dl
-            ln -s ${cfg.img} dl/${cfg.imgFilename}
           '';
         };
       };

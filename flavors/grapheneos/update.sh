@@ -59,11 +59,24 @@ echo >> yarn_hashes.json.part
 echo "}" >> yarn_hashes.json.part
 mv yarn_hashes.json.part yarn_hashes.json
 
-
-echo "Extracting vendor image build IDs..."
 for tag in $tags; do
-	devices=$(jq -r ".device_info.stable | map_values(select(.git_tag == \"$tag\")) | keys | .[]" channel_info.json)
-	repo-tool ensure-store-paths $tag/repo.lock vendor/adevtool
-	adevtool_path=$(jq -r '.entries.["vendor/adevtool"].lock.path' $tag/repo.lock)
-	repo-tool get-graphene-vendor-img-metadata $adevtool_path $tag/vendor_img_metadata.json $devices
+	mkdir -p $tag/vendor_imgs/
+	nix build --impure --expr "import ./adevtool-show-metadata-json.nix \"$tag\"" --out-link result-adevtool
+	devices=$(jq -r ".[]" devices.json)
+	orig_dir=$(pwd)
+	cd result-adevtool
+	for device in $devices; do
+		found=0
+		for channel in stable beta alpha; do
+			if [ $tag = $(jq -r .device_info.$channel.$device.git_tag $orig_dir/channel_info.json) ]; then
+				found=1
+				break
+			fi
+		done
+		if [ $found -eq 1 ]; then
+			echo "Extracting vendor image metadata for $tag $device..."
+			vendor/adevtool/bin/run generate-all -d $device > $orig_dir/$tag/vendor_imgs/$device.json
+		fi
+	done
+	cd $orig_dir
 done
