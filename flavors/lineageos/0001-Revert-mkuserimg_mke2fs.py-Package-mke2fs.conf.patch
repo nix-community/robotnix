@@ -1,0 +1,98 @@
+From 188559cddce0034956cf4c9523b073313149114a Mon Sep 17 00:00:00 2001
+From: Mio <mio@mio19.uk>
+Date: Sun, 14 Sep 2025 12:35:29 +1000
+Subject: [PATCH] Revert "mkuserimg_mke2fs.py: Package mke2fs.conf"
+
+This reverts commit 7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.
+---
+ ext4_utils/Android.bp          |  4 ----
+ ext4_utils/mkuserimg_mke2fs.py | 25 +++++++++----------------
+ 2 files changed, 9 insertions(+), 20 deletions(-)
+
+diff --git a/ext4_utils/Android.bp b/ext4_utils/Android.bp
+index 7195a855..798dc4a4 100644
+--- a/ext4_utils/Android.bp
++++ b/ext4_utils/Android.bp
+@@ -64,18 +64,14 @@ cc_library {
+ 
+ python_binary_host {
+     name: "mkuserimg_mke2fs",
+     srcs: [
+         "mkuserimg_mke2fs.py",
+     ],
+ 
+-    data: [
+-        "mke2fs.conf",
+-    ],
+-
+     required: [
+         "mke2fs",
+         "e2fsdroid",
+     ],
+ }
+ 
+ prebuilt_etc {
+diff --git a/ext4_utils/mkuserimg_mke2fs.py b/ext4_utils/mkuserimg_mke2fs.py
+index 41ae8cd7..794a9611 100644
+--- a/ext4_utils/mkuserimg_mke2fs.py
++++ b/ext4_utils/mkuserimg_mke2fs.py
+@@ -13,18 +13,16 @@
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+ import argparse
+ import logging
+ import os
+-import pkgutil
+ import subprocess
+ import sys
+-import tempfile
+ 
+ 
+ def RunCommand(cmd, env):
+   """Runs the given command.
+ 
+   Args:
+     cmd: the command represented as a list of strings.
+@@ -227,28 +225,23 @@ def main(argv):
+   mke2fs_cmd, e2fsdroid_cmd = ConstructE2fsCommands(args)
+ 
+   # truncate output file since mke2fs will keep verity section in existing file
+   with open(args.output_file, 'w') as output:
+     output.truncate()
+ 
+   # run mke2fs
+-  with tempfile.NamedTemporaryFile() as conf_file:
+-    conf_data = pkgutil.get_data('mkuserimg_mke2fs', 'mke2fs.conf')
+-    conf_file.write(conf_data)
+-    conf_file.flush()
+-    mke2fs_env = {"MKE2FS_CONFIG" : conf_file.name}
+-
+-    if args.timestamp:
+-      mke2fs_env["E2FSPROGS_FAKE_TIME"] = args.timestamp
+-
+-    output, ret = RunCommand(mke2fs_cmd, mke2fs_env)
+-    print(output)
+-    if ret != 0:
+-      logging.error("Failed to run mke2fs: " + output)
+-      sys.exit(4)
++  mke2fs_env = {"MKE2FS_CONFIG" : "./system/extras/ext4_utils/mke2fs.conf"}
++  if args.timestamp:
++    mke2fs_env["E2FSPROGS_FAKE_TIME"] = args.timestamp
++
++  output, ret = RunCommand(mke2fs_cmd, mke2fs_env)
++  print(output)
++  if ret != 0:
++    logging.error("Failed to run mke2fs: " + output)
++    sys.exit(4)
+ 
+   # run e2fsdroid
+   e2fsdroid_env = {}
+   if args.timestamp:
+     e2fsdroid_env["E2FSPROGS_FAKE_TIME"] = args.timestamp
+ 
+   output, ret = RunCommand(e2fsdroid_cmd, e2fsdroid_env)
+-- 
+2.51.0
+
