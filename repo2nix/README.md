@@ -115,18 +115,6 @@ $ cat graphene_devices.json
 $ repo-tool get-graphene-devices graphene_devices.json channel_info.json
 ```
 
-### `repo-tool get-graphene-vendor-img-metadata`
-
-Extracts the metadata of the upstream Google Pixel vendor images for the given
-devices from a given checkout of the GrapheneOS `adevtool` repository.
-
-Example:
-
-```console
-$ git clone https://github.com/GrapheneOS/adevtool
-$ repo-tool get-graphene-vendor-img-metadata ./adevtool/ vendor_img_metadata.json tegu tokay komodo caiman
-```
-
 ## License
 
 GPLv3. See LICENSE.md for details.
