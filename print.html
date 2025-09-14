@@ -1071,10 +1071,9 @@ the {option}<code>nixpkgs.pkgs</code> option.</li>
 <p><em>Type</em>: lazy attribute set of raw value</p>
 <p><em>Declared by</em>:
 lib/modules.nix</p>
-<h3 id="adevtoolbuildid"><a class="header" href="#adevtoolbuildid"><code>adevtool.buildID</code></a></h3>
-<p>The build ID as specified in <code>build/make/core/build_id.mk</code> in the AOSP
-source tree.</p>
-<p><em>Type</em>: string</p>
+<h3 id="adevtooldevices"><a class="header" href="#adevtooldevices"><code>adevtool.devices</code></a></h3>
+<p>The device codenames to extract the vendor blobs for.</p>
+<p><em>Type</em>: list of string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
 <h3 id="adevtoolenable"><a class="header" href="#adevtoolenable"><code>adevtool.enable</code></a></h3>
@@ -1084,13 +1083,24 @@ source tree.</p>
 <p><em>Type</em>: boolean</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
-<h3 id="adevtoolimg"><a class="header" href="#adevtoolimg"><code>adevtool.img</code></a></h3>
-<p>The vendor image to extract the vendor blobs from.</p>
-<p><em>Type</em>: absolute path</p>
+<h3 id="adevtoolvendorimgs"><a class="header" href="#adevtoolvendorimgs"><code>adevtool.vendorImgs</code></a></h3>
+<p>The vendor images to be prefetched and made available to adevtool during the build.</p>
+<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "[ ]"; }</code></p>
+<p><em>Type</em>: list of (submodule)</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
-<h3 id="adevtoolimgfilename"><a class="header" href="#adevtoolimgfilename"><code>adevtool.imgFilename</code></a></h3>
-<p>The filename of the vendor image.</p>
+<h3 id="adevtoolvendorimgsfilename"><a class="header" href="#adevtoolvendorimgsfilename"><code>adevtool.vendorImgs.*.fileName</code></a></h3>
+<p>The file name of the image.</p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
+<h3 id="adevtoolvendorimgssha256"><a class="header" href="#adevtoolvendorimgssha256"><code>adevtool.vendorImgs.*.sha256</code></a></h3>
+<p>The SHA256 sum of the image.</p>
+<p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
+<h3 id="adevtoolvendorimgsurl"><a class="header" href="#adevtoolvendorimgsurl"><code>adevtool.vendorImgs.*.url</code></a></h3>
+<p>The download URL of the image.</p>
 <p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
