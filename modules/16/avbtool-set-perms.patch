@@ -1,5 +1,5 @@
 diff --git a/avbtool.py b/avbtool.py
-index 595936c..5caa71f 100755
+index aceb97f..1686867 100755
 --- a/avbtool.py
 +++ b/avbtool.py
 @@ -31,6 +31,7 @@ import hashlib
@@ -7,10 +7,10 @@ index 595936c..5caa71f 100755
  import math
  import os
 +import stat
+ import random
+ import signal
  import struct
- import subprocess
- import sys
-@@ -786,6 +787,7 @@ class ImageHandler(object):
+@@ -804,6 +805,7 @@ class ImageHandler(object):
      if self._read_only:
        self._image = open(self.filename, 'rb')
      else:
