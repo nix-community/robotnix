@@ -65,7 +65,6 @@
 
       grapheneos.release = mkDefault deviceInfo.git_tag;
       buildDateTime = mkDefault deviceInfo.build_time;
-      adevtool.buildID = mkDefault buildID;
       androidVersion = mkDefault buildIDCodenameInitialToPlatformRelease.${builtins.substring 0 1 buildID};
     }))
     {
@@ -89,11 +88,8 @@
       in mkIf (elem config.device phoneDevices) {
         enable = true;
         yarnHash = (lib.importJSON ./yarn_hashes.json).${config.grapheneos.release};
-        img = pkgs.fetchurl {
-          url = "https://dl.google.com/dl/android/aosp/${imgFilename}";
-          sha256 = imgSha256;
-        };
-        inherit imgFilename;
+        devices = [ config.device ];
+        vendorImgs = lib.importJSON ./${config.grapheneos.release}/vendor_imgs/${config.device}.json;
       };
 
       source.manifest = {
@@ -101,13 +97,9 @@
         lockfile = mkDefault (./. + "/${config.grapheneos.release}/repo.lock");
       };
 
-      source.dirs."vendor/adevtool".patches = if (!lib.versionAtLeast config.grapheneos.release "2025090300") then [
+      source.dirs."vendor/adevtool".patches = lib.optional (!lib.versionAtLeast config.grapheneos.release "2025090300") (
         ./adevtool-ignore-EINVAL-upon-chown.patch
-      ] else [
-        (pkgs.replaceVars ./adevtool-static-git-rev.patch {
-          adevtoolRevision = (lib.importJSON (./. + "/${config.grapheneos.release}/repo.lock")).entries."vendor/adevtool".lock.commit;
-        })
-      ];
+      );
 
       warnings = (optional ((config.device != null) && !(elem config.device supportedDevices))
         "${config.device} is not a supported device for GrapheneOS")

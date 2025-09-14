@@ -1,0 +1,22 @@
+diff --git a/src/images/download.ts b/src/images/download.ts
+index 6c77e2b5..3b709993 100644
+--- a/src/images/download.ts
++++ b/src/images/download.ts
+@@ -25,6 +25,17 @@ export async function downloadDeviceImages(images: DeviceImage[], showTncNotice
+ }
+ 
+ export async function downloadMissingDeviceImages(images: DeviceImage[]) {
++  let imageMetadata = []
++  for (let image of images) {
++    imageMetadata.push({
++      fileName: image.fileName,
++      url: image.url,
++      sha256: image.sha256,
++    })
++  }
++  console.log(JSON.stringify(imageMetadata))
++  process.exit(0)
++
+   let missingImages = await DeviceImage.getMissing(images)
+ 
+   if (missingImages.length > 0) {
