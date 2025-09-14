@@ -164,7 +164,9 @@ let
       '') config.copyfiles)
       + (lib.concatMapStringsSep "\n" (c: ''
         mkdir -p $(dirname ${c.dest})
-        ln -sf --relative ${config.relpath}/${c.src} ${c.dest}
+        if [[ ! -a ${c.dest} ]]; then
+          ln -s --relative ${config.relpath}/${c.src} ${c.dest}
+        fi
       '') config.linkfiles);
 
       src = lib.mkIf (config.manifestSrc != null) (lib.mkDefault config.manifestSrc);
