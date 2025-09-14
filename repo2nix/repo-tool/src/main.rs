@@ -51,7 +51,6 @@ mod lineage_devices;
 mod lineage_dependencies;
 mod utils;
 mod graphene;
-mod graphene_vendor;
 
 #[derive(Parser)]
 enum Args {
@@ -381,29 +380,6 @@ async fn get_graphene_devices(
 }
 
 #[derive(Debug, Error)]
-enum GetGrapheneVendorImgMetadataError {
-    #[error("error extracting graphene vendor image metadata")]
-    ExtractMetadata(#[from] graphene_vendor::ReadAdevtoolConfigError),
-
-    #[error("error serializing graphene vendor image metadata to JSON")]
-    SerializeMetadata(#[from] serde_json::Error),
-
-    #[error("error saving graphene vendor image metadata to file")]
-    WriteMetadata(#[from] io::Error),
-}
-
-async fn get_graphene_vendor_img_metadata(
-    adevtool_path: PathBuf,
-    devices: Vec<String>,
-    vendor_img_metadata_path: PathBuf,
-) -> Result<(), GetGrapheneVendorImgMetadataError> {
-    let metadata = graphene_vendor::get_vendor_img_metadata(&adevtool_path, &devices).await?;
-    fs::write(&vendor_img_metadata_path, serde_json::to_vec_pretty(&metadata)?).await?;
-
-    Ok(())
-}
-
-#[derive(Debug, Error)]
 enum GetBuildIDError {
     #[error("error reading lockfile")]
     ReadLockset(#[from] ReadWriteLockfileError),
@@ -531,15 +507,6 @@ async fn main() -> Result<(), MainError> {
                 supported_devices_file,
                 channel_info_file,
                 channels
-            )
-                .await?;
-        },
-
-        Args::GetGrapheneVendorImgMetadata { adevtool_path, devices, vendor_img_metadata_path } => {
-            get_graphene_vendor_img_metadata(
-                adevtool_path,
-                devices,
-                vendor_img_metadata_path,
             )
                 .await?;
         },
