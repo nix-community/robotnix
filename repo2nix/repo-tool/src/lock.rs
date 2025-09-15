@@ -246,7 +246,7 @@ impl Lockset {
         for (i, path) in paths.iter().enumerate() {
             if self.entries.get(path).unwrap().project.active {
                 eprintln!("Updating lock for `{}` ({}/{})", path.display(), i+1, paths.len());
-                self.update(path).await?;
+                self.update(path).await;
             }
         }
         Ok(())
