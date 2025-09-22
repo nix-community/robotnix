@@ -92,11 +92,6 @@ enum Args {
         #[arg(long, short)]
         channels: Vec<String>,
     },
-    GetGrapheneVendorImgMetadata {
-        adevtool_path: PathBuf,
-        vendor_img_metadata_path: PathBuf,
-        devices: Vec<String>,
-    },
     GetBuildID {
         out_file: PathBuf,
         lockfiles: Vec<PathBuf>,
