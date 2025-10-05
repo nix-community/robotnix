@@ -16,7 +16,7 @@ index 8c2ba50e..c1dedbc7 100755
  
  $PARAM_MOGRIFY -resize $RESOLUTION -colors 256 $INTERMEDIATES/*/*.png;
 +for f in $INTERMEDIATES/*/*.png; do
-+    @imagemagick@/bin/convert -strip "$f" "$f"
++    @imagemagick@/bin/magick "$f" -strip "$f"
 +done
  
  echo "$IMAGESCALEWIDTH $IMAGESCALEHEIGHT 60" > $INTERMEDIATES/desc.txt;
