@@ -102,7 +102,6 @@ in mkIf (config.flavor == "lineageos") {
     apk = config.source.dirs."external/chromium-webview/prebuilt/${config.arch}".src + "/webview.apk";
     availableByDefault = mkDefault true;
   };
-  apps.prebuilt.prebuiltwebview.usesOptionalLibraries = lib.mkIf (lib.versionAtLeast config.flavorVersion "22.2") (lib.mkAfter [ "com.android.extensions.xr" ]);
   removedProductPackages = [ "webview" ];
 
   apps.updater.flavor = mkDefault "lineageos";
