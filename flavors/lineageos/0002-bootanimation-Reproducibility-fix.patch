@@ -16,7 +16,7 @@ index 2bc78ceb..d61a6fb4 100644
  	done; \
  	prebuilts/tools-lineage/${HOST_OS}-x86/bin/mogrify -resize $$RESOLUTION -colors 250 $(INTERMEDIATES)/*/*.png; \
 +	for f in $(INTERMEDIATES)/*/*.png; do \
-+	    @imagemagick@/bin/convert -strip "$$f" "$$f"; \
++	    @imagemagick@/bin/convert "$$f" -strip "$$f"; \
 +	done; \
  	echo "$$IMAGESCALEWIDTH $$IMAGESCALEHEIGHT 60" > $(INTERMEDIATES)/desc.txt; \
  	cat vendor/lineage/bootanimation/desc.txt >> $(INTERMEDIATES)/desc.txt
