@@ -109,6 +109,10 @@
       apps.seedvault.includedInFlavor = mkDefault true;
       apps.updater.includedInFlavor = mkDefault true;
 
+      source.dirs."packages/apps/Updater".patches = [
+        ./dont-show-security-preview-channel-notification.patch
+      ];
+
       # GrapheneOS just disables apex updating wholesale
       signing.apex.enable = false;
 
