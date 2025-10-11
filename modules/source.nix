@@ -239,13 +239,13 @@ in
           path: entry: entry.project.active && (builtins.any (cat: builtins.elem cat entry.project.categories) config.source.manifest.categories)
         ) entries;
         dirs = lib.mapAttrs (path: entry: {
-          manifestSrc = pkgs.fetchgit {
+          manifestSrc = lib.mkIf (entry.lock != null) (pkgs.fetchgit {
             url = entry.project.repo_ref.repo_url;
             rev = entry.lock.commit;
             hash = entry.lock.nix_hash;
             fetchLFS = entry.project.repo_ref.fetch_lfs;
             fetchSubmodules = entry.project.repo_ref.fetch_submodules;
-          };
+          });
           inherit (entry.project) groups linkfiles copyfiles;
           inherit (entry.lock) date;
           rev = entry.lock.commit;
