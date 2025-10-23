@@ -84,7 +84,7 @@ in mkIf (config.flavor == "lineageos") {
     "system/extras".patches = [
       # pkgutil.get_data() not working, probably because we don't use their compiled python
       (if lib.versionAtLeast config.flavorVersion "23.0"
-      then ./0001-Revert-mkuserimg_mke2fs.py-Package-mke2fs.conf.patch
+      then ./0005-Revert-mkuserimg_mke2fs.py-Package-mke2fs.conf.patch
       else (pkgs.fetchpatch {
         url = "https://github.com/LineageOS/android_system_extras/commit/7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.patch";
         sha256 = "0pv56lypdpsn66s7ffcps5ykyfx0hjkazml89flj7p1px12zjhy1";
