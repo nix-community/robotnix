@@ -1,16 +1,17 @@
 diff --git a/avbtool.py b/avbtool.py
-index 595936c..5caa71f 100755
+index aceb97fb..583ec29c 100755
 --- a/avbtool.py
 +++ b/avbtool.py
-@@ -31,6 +31,7 @@ import hashlib
- import json
- import math
- import os
+@@ -39,6 +39,8 @@ import sys
+ import tempfile
+ import time
+ 
 +import stat
- import struct
- import subprocess
- import sys
-@@ -786,6 +787,7 @@ class ImageHandler(object):
++
+ # Keep in sync with libavb/avb_version.h.
+ AVB_VERSION_MAJOR = 1
+ AVB_VERSION_MINOR = 3
+@@ -804,6 +806,7 @@ class ImageHandler(object):
      if self._read_only:
        self._image = open(self.filename, 'rb')
      else:
