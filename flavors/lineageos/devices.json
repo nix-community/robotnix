@@ -1271,6 +1271,27 @@
     "default_branch": "lineage-22.2",
     "period": "W"
   },
+  "avalon": {
+    "name": "avalon",
+    "vendor": "oneplus",
+    "build_type": "userdebug",
+    "branches": {
+      "lineage-22.2": {
+        "repo_url": "https://github.com/LineageOS/android_device_oneplus_avalon",
+        "revision": "refs/heads/lineage-22.2",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "lineage-23.0": {
+        "repo_url": "https://github.com/LineageOS/android_device_oneplus_avalon",
+        "revision": "refs/heads/lineage-23.0",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      }
+    },
+    "default_branch": "lineage-23.0",
+    "period": "W"
+  },
   "axolotl": {
     "name": "axolotl",
     "vendor": "shift",
@@ -2280,6 +2301,27 @@
       }
     },
     "default_branch": "lineage-22.2",
+    "period": "W"
+  },
+  "caihong": {
+    "name": "caihong",
+    "vendor": "oneplus",
+    "build_type": "userdebug",
+    "branches": {
+      "lineage-22.2": {
+        "repo_url": "https://github.com/LineageOS/android_device_oneplus_caihong",
+        "revision": "refs/heads/lineage-22.2",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      },
+      "lineage-23.0": {
+        "repo_url": "https://github.com/LineageOS/android_device_oneplus_caihong",
+        "revision": "refs/heads/lineage-23.0",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      }
+    },
+    "default_branch": "lineage-23.0",
     "period": "W"
   },
   "caiman": {
@@ -11528,6 +11570,21 @@
     "default_branch": "lineage-22.2",
     "period": "W"
   },
+  "vermeer": {
+    "name": "vermeer",
+    "vendor": "xiaomi",
+    "build_type": "userdebug",
+    "branches": {
+      "lineage-23.0": {
+        "repo_url": "https://github.com/LineageOS/android_device_xiaomi_vermeer",
+        "revision": "refs/heads/lineage-23.0",
+        "fetch_lfs": true,
+        "fetch_submodules": false
+      }
+    },
+    "default_branch": "lineage-23.0",
+    "period": "W"
+  },
   "violet": {
     "name": "violet",
     "vendor": "xiaomi",
@@ -11711,7 +11768,7 @@
         "fetch_submodules": false
       }
     },
-    "default_branch": "lineage-22.2",
+    "default_branch": "lineage-23.0",
     "period": "W"
   },
   "walleye": {
