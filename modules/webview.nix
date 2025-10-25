@@ -91,7 +91,7 @@ in
       # Don't generate a cert if it's the prebuilt version from upstream
       certificate = if (name != "prebuilt") then "${name}webview" else "PRESIGNED";
 
-      usesOptionalLibraries = [ "androidx.window.extensions" ];
+      usesOptionalLibraries = [ "android.test.base" "androidx.window.extensions" ];
 
       # Extra stuff from the Android.mk from the example webview module in AOSP. Unsure if these are needed.
       extraConfig = ''
