@@ -9,7 +9,7 @@
   # You can check the supported branches for your device under
   # https://wiki.lineageos.org/devices/<device codename>
   # Leave out to choose the official default branch for the device.
-  flavorVersion = "22.2";
+  flavorVersion = "23.0";
 
   apps.fdroid.enable = true;
   microg.enable = true;
