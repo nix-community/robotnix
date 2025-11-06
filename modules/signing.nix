@@ -25,6 +25,8 @@ let
                         (name: prebuilt: prebuilt.certificate)
                         (lib.filterAttrs (name: prebuilt: prebuilt.enable && prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
                     ));
+
+  algorithm = "SHA256_RSA${builtins.toString cfg.avb.size}";
 in
 {
   options = {
@@ -69,6 +71,12 @@ in
         verityCert = mkOption {
           type = types.path;
           description = "Verity certificate for AVB. e.g. in x509 DER format.x509.pem. Only needed if signing.avb.mode = \"verity_only\"";
+        };
+
+        size = mkOption {
+          type = types.number;
+          default = 2048;
+          description = "Size of the SHA256 RSA keys";
         };
       };
 
@@ -155,21 +163,21 @@ in
           "--replace_verity_keyid $KEYSDIR/${config.device}/verity.x509.pem"
         ];
         vbmeta_simple = [
-          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
+          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm ${algorithm}"
         ];
         vbmeta_chained = [
-          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
-          "--avb_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_system_algorithm SHA256_RSA2048"
+          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm ${algorithm}"
+          "--avb_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_system_algorithm ${algorithm}"
         ];
         vbmeta_chained_v2 = [
-          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm SHA256_RSA2048"
-          "--avb_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_system_algorithm SHA256_RSA2048"
-          "--avb_vbmeta_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_system_algorithm SHA256_RSA2048"
+          "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_algorithm ${algorithm}"
+          "--avb_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_system_algorithm ${algorithm}"
+          "--avb_vbmeta_system_key $KEYSDIR/${config.device}/avb.pem" "--avb_vbmeta_system_algorithm ${algorithm}"
         ];
       }.${cfg.avb.mode}
       ++ lib.optionals ((config.androidVersion >= 10) && (cfg.avb.mode != "verity_only")) [
         "--avb_system_other_key $KEYSDIR/${config.device}/avb.pem"
-        "--avb_system_other_algorithm SHA256_RSA2048"
+        "--avb_system_other_algorithm ${algorithm}"
       ];
       keyMappings = {
          # Default key mappings from sign_target_files_apks.py
@@ -292,9 +300,8 @@ in
 
       ${lib.optionalString (config.signing.avb.mode != "verity_only") ''
       if [[ ! -e "${config.device}/avb.pem" ]]; then
-        # TODO: Maybe switch to 4096 bit avb key to match apex? Any device-specific problems with doing that?
         echo "Generating Device AVB key"
-        openssl genrsa -out ${config.device}/avb.pem 2048
+        openssl genrsa -out ${config.device}/avb.pem ${cfg.avb.size}
         avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
       else
         echo "Skipping generating device AVB key since it is already exists"
