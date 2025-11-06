@@ -152,6 +152,10 @@ in
         "hardware.cas"
       ] ++ lib.optionals (config.androidVersion >= 15) [
         "nfcservices" "profiling"
+      ] ++ lib.optionals (config.androidVersion >= 16) [
+        "bt" "crashrecovery" "uprobestats"
+        "hardware.biometrics.face.virtual"
+        "hardware.biometrics.fingerprint.virtual"
       ]
     );
 
