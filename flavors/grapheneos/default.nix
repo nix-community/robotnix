@@ -113,8 +113,11 @@
         ./dont-show-security-preview-channel-notification.patch
       ];
 
-      # GrapheneOS just disables apex updating wholesale
-      signing.apex.enable = false;
+      # GrapheneOS used to disable APEX completely.
+      # It was enabled for all devices sometime during Android 13.
+      # https://grapheneos.org/releases#2023051600
+      # https://github.com/GrapheneOS/script/blob/6072d9d75c3a22f6cbc33c9ba85129513306ca00/release.sh#L68
+      signing.apex.enable = config.androidVersion >= 13;
 
       # Extra packages that should use releasekey
       signing.signTargetFilesArgs = [ "--extra_apks OsuLogin.apk,ServiceWifiResources.apk=$KEYSDIR/${config.device}/releasekey" ];
