@@ -11,22 +11,8 @@ let
   # TODO: Find a better way to do this?
   putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 
-  keysToGenerate = lib.unique (lib.flatten (
-                    map (key: "${config.device}/${key}") [ "releasekey" "platform" "shared" "media" ]
-                    ++ (lib.optional (config.signing.avb.mode == "verity_only") "${config.device}/verity")
-                    ++ (lib.optionals (config.androidVersion >= 10) [ "${config.device}/networkstack" ])
-                    ++ (lib.optionals (config.androidVersion >= 11) [ "com.android.hotspot2.osulogin" "com.android.wifi.resources" ])
-                    ++ (lib.optionals (config.androidVersion >= 12) [ "com.android.connectivity.resources" ])
-                    ++ (lib.optionals (config.androidVersion >= 13)
-                        [ "com.android.adservices.api" "com.android.safetycenter.resources" "com.android.nearby.halfsheet"
-                          "com.android.uwb.resources" "com.android.wifi.dialog" ])
-                    ++ (lib.optional config.signing.apex.enable config.signing.apex.packageNames)
-                    ++ (lib.mapAttrsToList
-                        (name: prebuilt: prebuilt.certificate)
-                        (lib.filterAttrs (name: prebuilt: prebuilt.enable && prebuilt.certificate != "PRESIGNED") config.apps.prebuilt))
-                    ));
-
   algorithm = "SHA256_RSA${builtins.toString cfg.avb.size}";
+  keysToGenerate = lib.unique ((builtins.attrValues cfg.keyMappings) ++ cfg.apex.packageNames);
 in
 {
   options = {
@@ -35,6 +21,34 @@ in
         default = false;
         type = types.bool;
         description = "Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.";
+      };
+
+      avbFlags = mkOption {
+        default = [];
+        type = types.listOf types.str;
+        internal = true;
+      };
+
+      keyMappings = mkOption {
+        default = {};
+        type = types.attrsOf types.str;
+        internal = true;
+      };
+
+      apkFlags = mkOption {
+        default = [];
+        type = types.listOf types.str;
+        internal = true;
+      };
+
+      apexFlags = mkOption {
+        default = [];
+        type = types.listOf types.str;
+      };
+
+      extraFlags = mkOption {
+        default = [];
+        type = types.listOf types.str;
       };
 
       signTargetFilesArgs = mkOption {
@@ -159,7 +173,7 @@ in
       ]
     );
 
-    signing.signTargetFilesArgs = let
+    signing = {
       avbFlags = {
         verity_only = [
           "--replace_verity_public_key $KEYSDIR/${config.device}/verity_key.pub"
@@ -183,6 +197,7 @@ in
         "--avb_system_other_key $KEYSDIR/${config.device}/avb.pem"
         "--avb_system_other_algorithm ${algorithm}"
       ];
+
       keyMappings = {
          # Default key mappings from sign_target_files_apks.py
         "build/make/target/product/security/devkey" = "${config.device}/releasekey";
@@ -211,16 +226,21 @@ in
         "packages/modules/Uwb/service/ServiceUwbResources/resources-certs/com.android.uwb.resources" = "com.android.uwb.resources";
         "packages/modules/Wifi/WifiDialog/certs/com.android.wifi.dialog" = "com.android.wifi.dialog";
       }
-
       # App-specific keys
       // lib.mapAttrs'
         (name: prebuilt: lib.nameValuePair "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}" prebuilt.certificate)
-        config.apps.prebuilt;
-    in
-      lib.mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") keyMappings
-      ++ lib.optionals cfg.avb.enable avbFlags
-      ++ lib.optionals cfg.apex.enable (map (k: "--extra_apks ${k}.apex=$KEYSDIR/${k} --extra_apex_payload_key ${k}.apex=$KEYSDIR/${k}.pem") cfg.apex.packageNames)
-      ++ lib.optionals (builtins.length cfg.prebuiltImages != 0) (map (image: "--prebuilt_image ${image}") cfg.prebuiltImages);
+        (lib.filterAttrs (_: acfg: acfg.enable && acfg.certificate != "PRESIGNED") config.apps.prebuilt);
+
+      apkFlags = lib.mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") cfg.keyMappings;
+      apexFlags = lib.flatten (map (apexName: [
+        "--extra_apks ${apexName}.apex=$KEYSDIR/${apexName}"
+        "--extra_apex_payload_key ${apexName}.apex=$KEYSDIR/${apexName}.pem"
+      ]) cfg.apex.packageNames);
+
+      extraFlags = map (image: "--prebuilt_image ${image}") cfg.prebuiltImages;
+
+      signTargetFilesArgs = cfg.apkFlags ++ cfg.apexFlags ++ cfg.extraFlags;
+    };
 
     otaArgs =
       if config.signing.enable
