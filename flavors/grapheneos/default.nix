@@ -117,10 +117,18 @@
       # It was enabled for all devices sometime during Android 13.
       # https://grapheneos.org/releases#2023051600
       # https://github.com/GrapheneOS/script/blob/6072d9d75c3a22f6cbc33c9ba85129513306ca00/release.sh#L68
-      signing.apex.enable = config.androidVersion >= 13;
+      signing = {
+        apex.enable = config.androidVersion >= 13;
 
-      # Extra packages that should use releasekey
-      signing.signTargetFilesArgs = [ "--extra_apks OsuLogin.apk,ServiceWifiResources.apk=$KEYSDIR/${config.device}/releasekey" ];
+        # Key for GmsCompatLib.apk
+        # https://grapheneos.org/releases#2025102300
+        keyMappings = lib.mkIf (lib.versionAtLeast config.grapheneos.release "2025102300") {
+          "build/make/target/product/security/gmscompat_lib" = "${config.device}/gmscompat_lib";
+        };
+
+        # Extra packages that should use releasekey
+        signTargetFilesArgs = [ "--extra_apks OsuLogin.apk,ServiceWifiResources.apk=$KEYSDIR/${config.device}/releasekey" ];
+      };
 
       # Leave the existing auditor in the build--just in case the user wants to
       # audit devices running the official upstream build
