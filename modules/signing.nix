@@ -305,7 +305,7 @@ in
       ${lib.optionalString (config.signing.avb.mode != "verity_only") ''
       if [[ ! -e "${config.device}/avb.pem" ]]; then
         echo "Generating Device AVB key"
-        openssl genrsa -out ${config.device}/avb.pem ${cfg.avb.size}
+        openssl genrsa -out ${config.device}/avb.pem ${builtins.toString cfg.avb.size}
         avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
       else
         echo "Skipping generating device AVB key since it is already exists"
