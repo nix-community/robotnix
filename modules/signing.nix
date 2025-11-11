@@ -239,7 +239,7 @@ in
 
       extraFlags = map (image: "--prebuilt_image ${image}") cfg.prebuiltImages;
 
-      signTargetFilesArgs = cfg.apkFlags ++ cfg.apexFlags ++ cfg.extraFlags;
+      signTargetFilesArgs = cfg.avbFlags ++ cfg.apkFlags ++ cfg.apexFlags ++ cfg.extraFlags;
     };
 
     otaArgs =
