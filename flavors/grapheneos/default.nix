@@ -127,7 +127,10 @@
         };
 
         # Extra packages that should use releasekey
-        signTargetFilesArgs = [ "--extra_apks OsuLogin.apk,ServiceWifiResources.apk=$KEYSDIR/${config.device}/releasekey" ];
+        extraApks = {
+          "OsuLogin.apk" = "${config.device}/releasekey";
+          "ServiceWifiResources.apk" = "${config.device}/releasekey";
+        };
       };
 
       # Leave the existing auditor in the build--just in case the user wants to

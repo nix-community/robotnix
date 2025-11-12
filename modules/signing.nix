@@ -12,7 +12,7 @@ let
   putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 
   algorithm = "SHA256_RSA${builtins.toString cfg.avb.size}";
-  keysToGenerate = lib.unique ((builtins.attrValues cfg.keyMappings) ++ cfg.apex.packageNames);
+  keysToGenerate = lib.unique ((builtins.attrValues cfg.keyMappings) ++ (builtins.attrValues cfg.extraApks));
 in
 {
   options = {
@@ -30,6 +30,18 @@ in
       };
 
       keyMappings = mkOption {
+        default = {};
+        type = types.attrsOf types.str;
+        internal = true;
+      };
+
+      extraApks = mkOption {
+        default = {};
+        type = types.attrsOf types.str;
+        internal = true;
+      };
+
+      extraApexPayloadKeys = mkOption {
         default = {};
         type = types.attrsOf types.str;
         internal = true;
@@ -231,11 +243,19 @@ in
         (name: prebuilt: lib.nameValuePair "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}" prebuilt.certificate)
         (lib.filterAttrs (_: acfg: acfg.enable && acfg.certificate != "PRESIGNED") config.apps.prebuilt);
 
-      apkFlags = lib.mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") cfg.keyMappings;
-      apexFlags = lib.flatten (map (apexName: [
-        "--extra_apks ${apexName}.apex=$KEYSDIR/${apexName}"
-        "--extra_apex_payload_key ${apexName}.apex=$KEYSDIR/${apexName}.pem"
-      ]) cfg.apex.packageNames);
+      extraApks = builtins.listToAttrs (map (name: {
+        name = "${name}.apex";
+        value = name;
+      }) cfg.apex.packageNames);
+      extraApexPayloadKeys = builtins.listToAttrs (map (name: {
+        name = "${name}.apex";
+        value = "${name}.pem";
+      }) cfg.apex.packageNames);
+
+      apkFlags =
+        (lib.mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") cfg.keyMappings)
+        ++ (lib.mapAttrsToList (apk: key: "--extra_apks ${apk}=$KEYSDIR/${key}") cfg.extraApks);
+      apexFlags = lib.mapAttrsToList (apex: key: "--extra_apex_payload_key ${apex}=$KEYSDIR/${key}") cfg.extraApexPayloadKeys;
 
       extraFlags = map (image: "--prebuilt_image ${image}") cfg.prebuiltImages;
 
