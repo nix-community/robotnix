@@ -40,6 +40,7 @@
           curl pup jq
           shellcheck
           wget
+          signing-validator
 
           (callPackage ./repo2nix/package.nix {})
           prefetch-yarn-deps nodejs

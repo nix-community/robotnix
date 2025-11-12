@@ -1,0 +1,9 @@
+[package]
+name = "signing-validator"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0"
+zip = "6.0.0"
+clap = { version = "4.5.51", features = [ "derive" ] }

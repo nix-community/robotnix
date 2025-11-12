@@ -40,4 +40,6 @@ self: super: {
 
   # Robotnix helper derivations
   robotnix = super.callPackage ./robotnix {};
+
+  signing-validator = super.callPackage ./signing-validator {};
 }
