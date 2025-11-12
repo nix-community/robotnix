@@ -126,7 +126,7 @@ This table documents the current status of Robotnix' components.
 | Webview                                      | ❌ No          | No                                        | -                       |
 | Kernels                                      | ❌ No          | No                                        | -                       |
 | Pixel vendor blobs (android-prepare-vendor)  | ❌ No          | Yes (not used by GrapheneOS anymore)      | @cyclic-pentane         |
-| Signing                                      | ❌ No          | @cylic-pentane is currently picking it up | @cyclic-pentane somewhat|
+| Signing                                      | ✅ Yes         | No                                        | @cyclic-pentane         |
 | Framework configuration                      | ✅ Yes         | No                                        | @cyclic-pentane somewhat|
 | Emulator                                     | ❌ No          | No                                        | -                       |
 | Hosts-file                                   | ❌ No          | No                                        | -                       |

@@ -4,11 +4,6 @@ Robotnix supports the current, up-to-date releases of GrapheneOS for each
 device supported by the GrapheneOS upstream, although only `tegu` is tested
 right now.
 
-Signing builds with up-to-date Android versions via robotnix is not tested yet
-due to a lack of development devices. If you wish to sign your builds, you can
-use the official GrapheneOS signing scripts with the target files built with
-the `config.build.android` target.
-
 Example config:
 ```nix
 {
