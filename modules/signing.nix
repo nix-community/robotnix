@@ -27,46 +27,70 @@ in
         default = [];
         type = types.listOf types.str;
         internal = true;
+        description = ''
+          The AVB-related flags to pass to sign_target_files_apks.
+        '';
       };
 
       keyMappings = mkOption {
         default = {};
         type = types.attrsOf types.str;
         internal = true;
+        description = ''
+          The --key_mapping options to pass to sign_target_files_apks.
+        '';
       };
 
       extraApks = mkOption {
         default = {};
         type = types.attrsOf types.str;
         internal = true;
+        description = ''
+          The --extra_apks options to pass to sign_target_files_apks.
+        '';
       };
 
       extraApexPayloadKeys = mkOption {
         default = {};
         type = types.attrsOf types.str;
         internal = true;
+        description = ''
+          The --extra_apex_payload_key options to pass to sign_target_files_apks.
+        '';
       };
 
       apkFlags = mkOption {
         default = [];
         type = types.listOf types.str;
         internal = true;
+        description = ''
+          The APK-related flags to pass to sign_target_files_apks.
+        '';
       };
 
       apexFlags = mkOption {
         default = [];
         type = types.listOf types.str;
+        description = ''
+          The APEX-related flags to pass to sign_target_files_apks.
+        '';
       };
 
       extraFlags = mkOption {
         default = [];
         type = types.listOf types.str;
+        description = ''
+          Additional non-APK-nor-APEX-related flags to pass to sign_target_files_apks.
+        '';
       };
 
       signTargetFilesArgs = mkOption {
         default = [];
         type = types.listOf types.str;
         internal = true;
+        description = ''
+          The arguments to pass to sign_target_files_apks.
+        '';
       };
 
       prebuiltImages = mkOption {
