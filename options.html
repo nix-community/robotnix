@@ -721,6 +721,12 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p><em>Type</em>: list of string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3 id="signingapexflags"><a class="header" href="#signingapexflags"><code>signing.apexFlags</code></a></h3>
+<p>The APEX-related flags to pass to sign_target_files_apks.</p>
+<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "[ ]"; }</code></p>
+<p><em>Type</em>: list of string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingavbenable"><a class="header" href="#signingavbenable"><code>signing.avb.enable</code></a></h3>
 <p>Whether to enable AVB signing.</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "false"; }</code></p>
@@ -739,6 +745,12 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p><em>Type</em>: one of "verity_only", "vbmeta_simple", "vbmeta_chained", "vbmeta_chained_v2"</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3 id="signingavbsize"><a class="header" href="#signingavbsize"><code>signing.avb.size</code></a></h3>
+<p>Size of the SHA256 RSA keys</p>
+<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "2048"; }</code></p>
+<p><em>Type</em>: signed integer or floating point number</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingavbveritycert"><a class="header" href="#signingavbveritycert"><code>signing.avb.verityCert</code></a></h3>
 <p>Verity certificate for AVB. e.g. in x509 DER format.x509.pem. Only needed if signing.avb.mode = "verity_only"</p>
 <p><em>Type</em>: absolute path</p>
@@ -753,6 +765,12 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p>Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "false"; }</code></p>
 <p><em>Type</em>: boolean</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
+<h3 id="signingextraflags"><a class="header" href="#signingextraflags"><code>signing.extraFlags</code></a></h3>
+<p>Additional non-APK-nor-APEX-related flags to pass to sign_target_files_apks.</p>
+<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "[ ]"; }</code></p>
+<p><em>Type</em>: list of string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingkeystorepath"><a class="header" href="#signingkeystorepath"><code>signing.keyStorePath</code></a></h3>
