@@ -87,7 +87,8 @@ in
         sha256 = "sha256-HfzkJpCBaT8QNQ26vSaZGlnXwruB+HDeVOWxE/R4W3o=";
       };
 
-      fingerprint = mkIf (!config.signing.enable) "7352DAE94B237866E7FB44FD94ADE44E8B6E05397E7D1FB45616A00E225063FF";
+      certificate = "PRESIGNED";
+      fingerprint = "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB";
       usesOptionalLibraries = [ "androidx.window.extensions" "androidx.window.sidecar" ];
     };
 
