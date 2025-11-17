@@ -64,7 +64,7 @@ in mkIf (config.flavor == "lineageos") {
 
       (pkgs.replaceVars (if lib.versionAtLeast config.flavorVersion "22.2"
         then ./0002-bootanimation-Reproducibility-fix-22_2.patch
-        else if lib.versionAtLeast config.flavorVersion "21.1"
+        else if lib.versionAtLeast config.flavorVersion "21.0"
         then ./0002-bootanimation-Reproducibility-fix-21.patch else
         ./0002-bootanimation-Reproducibility-fix.patch) {
         inherit (pkgs) imagemagick;
