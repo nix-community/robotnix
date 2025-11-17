@@ -64,22 +64,5 @@ in
       rm -f verity_*.x509
       openssl x509 -outform der -in ${config.signing.avb.verityCert} -out verity_user.der.x509
     '';
-
-    # We have to replace files here, instead of just using the
-    # config.build.kernel drv output in place of source.dirs.${cfg.relpath}.
-    # This is because there are some additional things in the prebuilt kernel
-    # output directory like kernel headers for sunfish under device/google/sunfish-kernel/sm7150
-    source = mkIf cfg.enable {
-      dirs.${cfg.relpath}.postPatch = ''
-        # Warn if we have prebuilt files that we aren't replacing
-        for filename in *; do
-          if [[ -f "$filename" && ! -f "${config.build.kernel}/$filename" ]]; then
-            echo "WARNING: Not replacing $filename"
-          fi
-        done
-
-        cp -f ${config.build.kernel}/* .
-      '';
-    };
   };
 }
