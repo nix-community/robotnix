@@ -367,12 +367,9 @@ in
               m arsclib
               mkdir -p /tmp/vendor_imgs
               export ADEVTOOL_IMG_DOWNLOAD_DIR=/tmp/vendor_imgs
-              ${lib.concatStringsSep "\n" (builtins.map (imgMetadata: let
-                img = pkgs.fetchurl {
-                  inherit (imgMetadata) url sha256;
-                };
-              in ''
-                ln -s ${img} /tmp/vendor_imgs/${imgMetadata.fileName}
+              ${lib.concatStringsSep "\n" (lib.mapAttrsToList (filename: img:
+              ''
+                ln -s ${img} /tmp/vendor_imgs/${filename}
               '') config.adevtool.vendorImgs)}
               PATH=${fakeGit config.source.dirs."vendor/adevtool".rev}/bin:$PATH vendor/adevtool/bin/run generate-all -d ${lib.concatStringsSep " " config.adevtool.devices}
 
