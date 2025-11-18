@@ -20,7 +20,7 @@ in {
         The device codenames to extract the vendor blobs for.
       '';
     };
-    vendorImgs = lib.mkOption {
+    vendorImgMetadata = lib.mkOption {
       type = with lib.types; listOf (submodule {
         options = {
           fileName = lib.mkOption {
@@ -45,7 +45,18 @@ in {
       });
       default = [];
       description = ''
-        The vendor images to be prefetched and made available to adevtool during the build.
+        The metadata of the vendor images to be prefetched and made available
+        to adevtool during the build. The adevtool module will add the
+        corresponding instances of `pkgs.fetchurl` to `adevtool.vendorImgs`.
+      '';
+    };
+
+    vendorImgs = lib.mkOption {
+      type = lib.types.attrsOf lib.types.path;
+      default = {};
+      description = ''
+        The vendor images to be prefetched and made available to adevtool
+        during the build.
       '';
     };
   };
@@ -74,6 +85,15 @@ in {
         };
       };
     };
+
+    adevtool.vendorImgs = builtins.listToAttrs (builtins.map (metadata: {
+      name = metadata.fileName;
+      value = pkgs.fetchurl {
+        inherit (metadata) url sha256;
+      };
+    }) config.adevtool.vendorImgMetadata);
+
+    build.vendorImgDir = pkgs.linkFarm "vendor-imgs" config.adevtool.vendorImgs;
 
     # The adevtool invocation is located in modules/base.nix, within the mkAndroid definition.
   };

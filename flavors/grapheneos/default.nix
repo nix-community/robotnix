@@ -89,7 +89,7 @@
         enable = true;
         yarnHash = (lib.importJSON ./yarn_hashes.json).${config.grapheneos.release};
         devices = [ config.device ];
-        vendorImgs = lib.importJSON ./${config.grapheneos.release}/vendor_imgs/${config.device}.json;
+        vendorImgMetadata = lib.importJSON ./${config.grapheneos.release}/vendor_imgs/${config.device}.json;
       };
 
       source.manifest = {
