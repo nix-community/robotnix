@@ -20,7 +20,7 @@ tag: let
     cp -r ${adevtool} $out/vendor/adevtool
     chmod -R u+w $out
     cd $out/vendor/adevtool
-    patch -p1 < ${./adevtool-show-metadata-json.patch}
+    patch -p1 < ${if lib.versionAtLeast tag "2025111800" then ./adevtool-show-metadata-json-after-2025111800.patch else ./adevtool-show-metadata-json.patch}
     yarnOfflineCache=${yarnOfflineCache}
     yarnConfigHook
   '';

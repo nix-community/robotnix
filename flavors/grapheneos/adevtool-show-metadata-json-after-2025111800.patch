@@ -1,0 +1,29 @@
+diff --git a/src/frontend/source.ts b/src/frontend/source.ts
+index a5c8c1d1..153cc702 100644
+--- a/src/frontend/source.ts
++++ b/src/frontend/source.ts
+@@ -71,6 +71,24 @@ export async function prepareDeviceImages(
+     }
+   }
+ 
++  let imageMetadata = []
++  for (let images of imagesMap.values()) {
++    let imageToUnpack: DeviceImage | null = null
++    if (images.factoryImage !== undefined && !images.factoryImage.isGrapheneOsImage()) {
++      imageToUnpack = images.factoryImage
++    } else if (images.otaImage !== undefined) {
++      imageToUnpack = images.otaImage
++    }
++
++    imageMetadata.push({
++      fileName: imageToUnpack.fileName,
++      url: imageToUnpack.url,
++      sha256: imageToUnpack.sha256,
++    })
++  }
++  console.log(JSON.stringify(imageMetadata))
++  process.exit(0)
++
+   let jobs = Array.from(imagesMap.values()).map(images =>
+     (async () => {
+       let imageToUnpack: DeviceImage | null = null
