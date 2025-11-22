@@ -381,7 +381,7 @@ in
                 ${pkgs.gnused}/bin/sed -i s/auto_generated_rro/auto_generated_vendor_rro/g $rroBP
               done
               # ...and the makefile in which they are being added to PRODUCT_PACKAGES:
-              ${pkgs.gnused}/bin/sed -i s/auto_generated_rro/auto_generated_vendor_rro/g vendor/google_devices/${config.device}/proprietary/device-vendor.mk
+              ${pkgs.gnused}/bin/sed -i s/auto_generated_rro/auto_generated_vendor_rro/g vendor/google_devices/${config.device}/${config.device}.mk
             ''}
 
             '' + (if config.flavor == "lineageos" then ''
