@@ -370,7 +370,7 @@ in
               ''
                 ln -s ${img} /tmp/vendor_imgs/${filename}
               '') config.adevtool.vendorImgs)}
-              PATH=${fakeGit config.source.dirs."vendor/adevtool".rev}/bin:$PATH vendor/adevtool/bin/run generate-all -d ${lib.concatStringsSep " " config.adevtool.devices}
+              PATH=${fakeGit config.source.dirs."vendor/adevtool".rev}/bin:$PATH vendor/adevtool/bin/run generate-all --noVerify -d ${lib.concatStringsSep " " config.adevtool.devices}
 
               # Rename the vendor RROs. This is necessary such that they don't
               # conflict with our own RROs (such as the one automatically
