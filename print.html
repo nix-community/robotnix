@@ -1083,25 +1083,34 @@ lib/modules.nix</p>
 <p><em>Type</em>: boolean</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
-<h3 id="adevtoolvendorimgs"><a class="header" href="#adevtoolvendorimgs"><code>adevtool.vendorImgs</code></a></h3>
-<p>The vendor images to be prefetched and made available to adevtool during the build.</p>
+<h3 id="adevtoolvendorimgmetadata"><a class="header" href="#adevtoolvendorimgmetadata"><code>adevtool.vendorImgMetadata</code></a></h3>
+<p>The metadata of the vendor images to be prefetched and made available
+to adevtool during the build. The adevtool module will add the
+corresponding instances of <code>pkgs.fetchurl</code> to <code>adevtool.vendorImgs</code>.</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "[ ]"; }</code></p>
 <p><em>Type</em>: list of (submodule)</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
-<h3 id="adevtoolvendorimgsfilename"><a class="header" href="#adevtoolvendorimgsfilename"><code>adevtool.vendorImgs.*.fileName</code></a></h3>
+<h3 id="adevtoolvendorimgmetadatafilename"><a class="header" href="#adevtoolvendorimgmetadatafilename"><code>adevtool.vendorImgMetadata.*.fileName</code></a></h3>
 <p>The file name of the image.</p>
 <p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
-<h3 id="adevtoolvendorimgssha256"><a class="header" href="#adevtoolvendorimgssha256"><code>adevtool.vendorImgs.*.sha256</code></a></h3>
+<h3 id="adevtoolvendorimgmetadatasha256"><a class="header" href="#adevtoolvendorimgmetadatasha256"><code>adevtool.vendorImgMetadata.*.sha256</code></a></h3>
 <p>The SHA256 sum of the image.</p>
 <p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
-<h3 id="adevtoolvendorimgsurl"><a class="header" href="#adevtoolvendorimgsurl"><code>adevtool.vendorImgs.*.url</code></a></h3>
+<h3 id="adevtoolvendorimgmetadataurl"><a class="header" href="#adevtoolvendorimgmetadataurl"><code>adevtool.vendorImgMetadata.*.url</code></a></h3>
 <p>The download URL of the image.</p>
 <p><em>Type</em>: string</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
+<h3 id="adevtoolvendorimgs"><a class="header" href="#adevtoolvendorimgs"><code>adevtool.vendorImgs</code></a></h3>
+<p>The vendor images to be prefetched and made available to adevtool
+during the build.</p>
+<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "{ }"; }</code></p>
+<p><em>Type</em>: attribute set of absolute path</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/adevtool">modules/adevtool</a></p>
 <h3 id="adevtoolyarnhash"><a class="header" href="#adevtoolyarnhash"><code>adevtool.yarnHash</code></a></h3>
