@@ -364,7 +364,6 @@ in
             # our actual phone target.
             ${lib.optionalString config.adevtool.enable ''
               lunch sdk_phone64_x86_64 cur user
-              m arsclib
               mkdir -p /tmp/vendor_imgs
               export ADEVTOOL_IMG_DOWNLOAD_DIR=/tmp/vendor_imgs
               ${lib.concatStringsSep "\n" (lib.mapAttrsToList (filename: img:
