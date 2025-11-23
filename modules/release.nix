@@ -148,7 +148,7 @@ in
     # BUILDID_PLACEHOLDER below was originally config.apv.buildID, but we don't want to have to depend on setting a buildID generally.
     otaMetadata = (rec {
       grapheneos = pkgs.writeText "${config.device}-${config.channel}" ''
-        ${config.buildNumber} ${toString config.buildDateTime} BUILDID_PLACEHOLDER ${config.channel}
+        ${config.buildNumber} ${toString config.buildDateTime} ${config.device} ${config.channel}
       '';
       lineageos = pkgs.writeText "lineageos-${config.device}.json" (
         # https://github.com/LineageOS/android_packages_apps_Updater#server-requirements
