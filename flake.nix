@@ -31,28 +31,7 @@
     };
 
     devShells.x86_64-linux = rec {
-      default = pkgs.mkShell {
-        name = "robotnix-scripts";
-        nativeBuildInputs = with pkgs; [
-          # For android updater scripts
-          (python3.withPackages (p: with p; [ mypy flake8 pytest ]))
-          gitRepo (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix {})
-          curl pup jq
-          shellcheck
-          wget
-          signing-validator
-
-          (callPackage ./repo2nix/package.nix {})
-          prefetch-yarn-deps nodejs
-
-          # For chromium updater script
-          # python2
-          # cipd git
-
-          cachix
-        ];
-        PYTHONPATH=./scripts;
-      };
+      default = pkgs.callPackage ./develop.nix { };
       repo2nix = pkgs.mkShell {
         name = "repo2nix";
         nativeBuildInputs = with pkgs; [
