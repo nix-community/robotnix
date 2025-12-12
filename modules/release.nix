@@ -81,7 +81,7 @@ let
 
       export PATH=${lib.getBin pkgs.zip}/bin:${lib.getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
-      mv *-factory-*.zip ${out}
+      mv $PRODUCT-factory-$VERSION.zip ${out}
   '';
 in
 {
