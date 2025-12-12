@@ -206,6 +206,7 @@ in
         "bt" "crashrecovery" "uprobestats"
         "hardware.biometrics.face.virtual"
         "hardware.biometrics.fingerprint.virtual"
+        "telephonycore"
       ]
     );
 
