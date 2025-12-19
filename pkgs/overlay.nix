@@ -41,5 +41,7 @@ self: super: {
   # Robotnix helper derivations
   robotnix = super.callPackage ./robotnix {};
 
+  repo2nix = super.callPackage ./repo2nix {};
+
   signing-validator = super.callPackage ./signing-validator {};
 }

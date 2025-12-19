@@ -10,6 +10,7 @@
   wget,
   prefetch-yarn-deps,
   cachix,
+  repo2nix,
   signing-validator,
 }:
 
@@ -32,7 +33,7 @@ mkShell {
     shellcheck
     wget
 
-    (callPackage ./repo2nix/package.nix { })
+    repo2nix
     prefetch-yarn-deps
     signing-validator
 
