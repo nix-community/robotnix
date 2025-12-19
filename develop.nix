@@ -2,6 +2,7 @@
   mkShell,
   python3,
   gitRepo,
+  nix-prefetch-git-patched,
   callPackage,
   curl,
   pup,
@@ -26,7 +27,7 @@ mkShell {
       ]
     ))
     gitRepo
-    (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix { })
+    nix-prefetch-git-patched
     curl
     pup
     jq

@@ -22,6 +22,8 @@ self: super: {
   #   enableBloat = true;
   # };
 
+  nix-prefetch-git-patched = super.callPackage ./fetchgit/nix-prefetch-git.nix {};
+
   cipd = super.callPackage ./cipd {};
   fetchcipd = super.callPackage ./cipd/fetchcipd.nix {};
 
