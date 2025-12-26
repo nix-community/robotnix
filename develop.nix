@@ -11,6 +11,7 @@
   wget,
   prefetch-yarn-deps,
   cachix,
+  nodejs,
   repo2nix,
   signing-validator,
 }:
@@ -35,6 +36,7 @@ mkShell {
     wget
 
     repo2nix
+    nodejs
     prefetch-yarn-deps
     signing-validator
 
