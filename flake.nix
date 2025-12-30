@@ -29,7 +29,7 @@
         programs = {
           nixfmt.enable = true;
           shfmt.enable = true;
-          # shellcheck.enable = true; TODO: fix scripts
+          shellcheck.enable = true;
           ruff-format.enable = true;
           # ruff-check.enable = true; TODO: fix scripts
           rustfmt.enable = true;
