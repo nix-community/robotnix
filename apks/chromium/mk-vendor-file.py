@@ -5,11 +5,9 @@
 from __future__ import print_function
 
 import argparse
-import json
 import os
 import re
 import shutil
-import string
 import subprocess
 import sys
 
@@ -32,7 +30,7 @@ def hash_path(path):
         .decode()
         .strip()
     )
-    if re.match(r"[0-9a-z]{52}", sha256) == None:
+    if re.match(r"[0-9a-z]{52}", sha256) is None:
         raise ValueError("bad hash %s" % sha256)
     return sha256
 
@@ -228,7 +226,7 @@ def make_vendor_file(chromium_version, target_os):
             ):
                 continue
 
-            if not path in deps:
+            if path not in deps:
                 if fields["dep_type"] == "git":
                     url, rev = fields["url"].split("@")
                     wholepath = os.path.join(topdir, path)

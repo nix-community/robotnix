@@ -31,7 +31,7 @@
           shfmt.enable = true;
           shellcheck.enable = true;
           ruff-format.enable = true;
-          # ruff-check.enable = true; TODO: fix scripts
+          ruff-check.enable = true;
           rustfmt.enable = true;
         };
       };
