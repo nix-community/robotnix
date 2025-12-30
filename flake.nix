@@ -7,10 +7,26 @@
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
 
     flake-compat.url = "github:nix-community/flake-compat";
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, androidPkgs, flake-compat,  ... }@inputs: let
     pkgs = import ./pkgs/default.nix { inherit inputs; };
+    treefmtModule = inputs.treefmt-nix.lib.evalModule pkgs {
+      projectRootFile = "flake.nix";
+      programs = {
+        nixfmt.enable = true;
+        shfmt.enable = true;
+        # shellcheck.enable = true; TODO: fix scripts
+        ruff-format.enable = true;
+        # ruff-check.enable = true; TODO: fix scripts
+        rustfmt.enable = true;
+      };
+    };
   in rec {
     # robotnixSystem evaluates a robotnix configuration
     lib.robotnixSystem = configuration: import ./default.nix {
@@ -43,5 +59,11 @@
     examples = nixpkgs.lib.genAttrs
       [ "lineageos" "grapheneos" ]
       (name: lib.robotnixSystem (./. + "/template/${name}.nix"));
+
+    formatter.x86_64-linux = treefmtModule.config.build.wrapper;
+
+    checks.x86_64-linux = {
+      formatting = treefmtModule.config.build.check self;
+    };
   };
 }
