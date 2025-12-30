@@ -1,31 +1,16 @@
+use crate::fetch::GitLsRemoteError;
+use crate::lineage_devices::{DeviceInfo, hudson_to_device_repo_branch};
+use crate::lock::{EnsureStorePathError, Lockset, UpdateLockError, UpdateLocksetError};
+use repo_manifest::resolver::{
+    Category, GitRepoRef, LineageDeps, Manifest, Project, join_repo_url,
+};
+use serde::{Deserialize, Serialize};
+use serde_json;
+use std::collections::{BTreeMap, BTreeSet};
 use std::io;
 use std::path::{Path, PathBuf};
-use std::collections::{BTreeSet, BTreeMap};
-use tokio::fs;
-use serde::{Serialize, Deserialize};
-use serde_json;
 use thiserror::Error;
-use repo_manifest::resolver::{
-    Project,
-    Manifest,
-    Category,
-    LineageDeps,
-    GitRepoRef,
-    join_repo_url,
-};
-use crate::fetch::{
-    GitLsRemoteError,
-};
-use crate::lineage_devices::{
-    hudson_to_device_repo_branch,
-    DeviceInfo,
-};
-use crate::lock::{
-    Lockset,
-    UpdateLockError,
-    UpdateLocksetError,
-    EnsureStorePathError,
-};
+use tokio::fs;
 
 #[derive(Debug, Error)]
 pub enum MergeLineageDevicesError {
@@ -35,19 +20,23 @@ pub enum MergeLineageDevicesError {
     DuplicateBranch(String, String),
 }
 
-pub fn merge_lineage_devices(devices: &mut BTreeMap<String, DeviceInfo>, new_devices: BTreeMap<String, DeviceInfo>) -> Result<(), MergeLineageDevicesError> {
+pub fn merge_lineage_devices(
+    devices: &mut BTreeMap<String, DeviceInfo>,
+    new_devices: BTreeMap<String, DeviceInfo>,
+) -> Result<(), MergeLineageDevicesError> {
     for (name, new_device) in new_devices {
         match devices.get_mut(&name) {
             None => {
                 devices.insert(name, new_device);
-            },
+            }
             Some(device) => {
-                if device.name != new_device.name ||
-                    device.vendor != new_device.vendor ||
-                    device.build_type != new_device.build_type ||
-                    device.default_branch != new_device.default_branch ||
-                    device.period != new_device.period {
-                        return Err(MergeLineageDevicesError::InconsistentDeviceInfo(name));
+                if device.name != new_device.name
+                    || device.vendor != new_device.vendor
+                    || device.build_type != new_device.build_type
+                    || device.default_branch != new_device.default_branch
+                    || device.period != new_device.period
+                {
+                    return Err(MergeLineageDevicesError::InconsistentDeviceInfo(name));
                 } else {
                     for (branch, dev_repo) in new_device.branches {
                         if !device.branches.contains_key(&branch) {
@@ -57,7 +46,7 @@ pub fn merge_lineage_devices(devices: &mut BTreeMap<String, DeviceInfo>, new_dev
                         }
                     }
                 }
-            },
+            }
         }
     }
     Ok(())
@@ -91,23 +80,30 @@ pub enum ResolveLineageDepsError {
     UnknownRemote(String, PathBuf),
     #[error("missing remote for dep `{0}`, and no default remote was set in manifest")]
     MissingRemote(PathBuf),
-    #[error("default remote in manifest has no revision set, can't infer branch of dependency `{0}`")]
+    #[error(
+        "default remote in manifest has no revision set, can't infer branch of dependency `{0}`"
+    )]
     RemoteMissingRevision(PathBuf),
 }
 
-
-pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[LineageDep]) -> Result<Vec<Project>, ResolveLineageDepsError> {
+pub fn resolve_lineage_dependencies(
+    manifest: &Manifest,
+    lineage_deps: &[LineageDep],
+) -> Result<Vec<Project>, ResolveLineageDepsError> {
     let mut project_deps = vec![];
     for dep in lineage_deps {
-        let remote = match &dep.remote {
-            Some(remote_name) => manifest.remotes.get(remote_name).ok_or(ResolveLineageDepsError::UnknownRemote(
-                    remote_name.to_string(),
-                    dep.target_path.clone(),
-            ))?,
-            None => &manifest.default_remote.as_ref().ok_or(ResolveLineageDepsError::MissingRemote(
-                    dep.target_path.clone(),
-            ))?,
-        };
+        let remote =
+            match &dep.remote {
+                Some(remote_name) => manifest.remotes.get(remote_name).ok_or(
+                    ResolveLineageDepsError::UnknownRemote(
+                        remote_name.to_string(),
+                        dep.target_path.clone(),
+                    ),
+                )?,
+                None => &manifest.default_remote.as_ref().ok_or(
+                    ResolveLineageDepsError::MissingRemote(dep.target_path.clone()),
+                )?,
+            };
 
         // This behaviour is highly dubious - we should check the default branch of the
         // remote of the dependency in question, and not the default branch of the default
@@ -119,14 +115,14 @@ pub fn resolve_lineage_dependencies(manifest: &Manifest, lineage_deps: &[Lineage
         let revision = match &dep.branch {
             Some(b) => format!("refs/heads/{}", b),
             None => {
-                let rev = remote.revision.as_ref().ok_or(ResolveLineageDepsError::RemoteMissingRevision(
-                        dep.target_path.clone(),
-                ))?;
+                let rev = remote.revision.as_ref().ok_or(
+                    ResolveLineageDepsError::RemoteMissingRevision(dep.target_path.clone()),
+                )?;
                 match rev.strip_prefix("refs/heads/") {
                     Some(branch) => format!("refs/heads/{}", hudson_to_device_repo_branch(branch)),
                     None => rev.clone(),
                 }
-            },
+            }
         };
 
         // The upstream mechanism for choosing whether to prepend `LineageOS/` to the repo name
@@ -185,14 +181,19 @@ fn recursively_propagate_categories(lockfile: &mut Lockset, path: &Path) {
     }
 }
 
-pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockset, devices: &BTreeMap<String, DeviceInfo>, manifest: &Manifest, branch: &str) -> Result<(), PrefetchLineageDepsError> {
+pub async fn prefetch_lineage_dependencies(
+    lockfile: &mut Lockset,
+    devices: &BTreeMap<String, DeviceInfo>,
+    manifest: &Manifest,
+    branch: &str,
+) -> Result<(), PrefetchLineageDepsError> {
     eprintln!("Building LineageOS-specific dependency tree...");
 
     let mut fetch_queue = vec![];
     for (_name, device) in devices.iter() {
         match device.branches.get(branch) {
             Some(repo_ref) => {
-                let path = Path::new("device").join(&device.vendor).join(&device.name); 
+                let path = Path::new("device").join(&device.vendor).join(&device.name);
                 lockfile.add_project(Project {
                     path: path.clone(),
                     groups: vec![],
@@ -208,7 +209,7 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockset, devices: &BTr
                     active: true,
                 })?;
                 fetch_queue.push(path);
-            },
+            }
             None => (),
         }
     }
@@ -240,14 +241,17 @@ pub async fn prefetch_lineage_dependencies(lockfile: &mut Lockset, devices: &BTr
                     (LineageDeps::NoLineageDependenciesFile, None)
                 } else {
                     let lineage_deps: Vec<LineageDep> = serde_json::from_slice(
-                        &fs::read(&store_path.join("lineage.dependencies")).await?
+                        &fs::read(&store_path.join("lineage.dependencies")).await?,
                     )?;
 
                     let ldeps = resolve_lineage_dependencies(manifest, &lineage_deps)
                         .map_err(|e| PrefetchLineageDepsError::Resolve(path.clone(), e))?;
-                    (LineageDeps::Some(ldeps.iter().map(|x| x.path.clone()).collect()), Some(ldeps))
+                    (
+                        LineageDeps::Some(ldeps.iter().map(|x| x.path.clone()).collect()),
+                        Some(ldeps),
+                    )
                 }
-            },
+            }
             Err(UpdateLocksetError::UpdateLock {
                 project_path: _,
                 error: UpdateLockError::GitLsRemote(GitLsRemoteError::RevNotFound),

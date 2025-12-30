@@ -1,7 +1,7 @@
+use reqwest;
+use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet};
 use std::str::FromStr;
-use serde::Serialize;
-use reqwest;
 use thiserror::Error;
 
 #[derive(Debug, Serialize)]
@@ -25,29 +25,34 @@ pub enum GetDeviceInfoError {
     Parse(String),
 }
 
-pub async fn get_device_info(devices: &[String], channel: &str) -> Result<BTreeMap<String, DeviceInfo>, GetDeviceInfoError> {
+pub async fn get_device_info(
+    devices: &[String],
+    channel: &str,
+) -> Result<BTreeMap<String, DeviceInfo>, GetDeviceInfoError> {
     let mut device_info = BTreeMap::new();
     for device in devices.iter() {
         eprintln!("Fetching device info for {device} (channel {channel})...");
         let text = reqwest::get(&format!(
-                "https://releases.grapheneos.org/{}-{}",
-                device,
-                channel,
-            ))
-            .await?
-            .text()
-            .await?;
+            "https://releases.grapheneos.org/{}-{}",
+            device, channel,
+        ))
+        .await?
+        .text()
+        .await?;
 
         match text.trim_end().split(" ").collect::<Vec<_>>().as_slice() {
             [git_tag, build_time, _, _] => {
                 let build_time = u64::from_str(build_time)
                     .map_err(|_| GetDeviceInfoError::Parse(text.clone()))?;
 
-                device_info.insert(device.clone(), DeviceInfo {
-                    git_tag: git_tag.to_string(),
-                    build_time: build_time,
-                });
-            },
+                device_info.insert(
+                    device.clone(),
+                    DeviceInfo {
+                        git_tag: git_tag.to_string(),
+                        build_time: build_time,
+                    },
+                );
+            }
             _ => return Err(GetDeviceInfoError::Parse(text.clone())),
         }
     }
@@ -58,11 +63,7 @@ pub async fn get_device_info(devices: &[String], channel: &str) -> Result<BTreeM
 pub fn to_channel_info(device_info: BTreeMap<String, BTreeMap<String, DeviceInfo>>) -> ChannelInfo {
     let git_tags: BTreeSet<String> = device_info
         .iter()
-        .map(|(_, x)|
-            x
-            .iter()
-            .map(|(_, y)| y.git_tag.clone())
-        )
+        .map(|(_, x)| x.iter().map(|(_, y)| y.git_tag.clone()))
         .flatten()
         .collect();
 

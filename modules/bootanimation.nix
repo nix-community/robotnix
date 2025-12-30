@@ -4,7 +4,8 @@
 { config, lib, ... }:
 let
   cfg = config.bootanimation;
-in {
+in
+{
   options.bootanimation = {
     enable = lib.mkEnableOption "the custom bootanimation module";
     logoMask = lib.mkOption {

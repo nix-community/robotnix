@@ -1,56 +1,33 @@
-use std::path::{Path, PathBuf};
-use std::io;
-use std::collections::{BTreeMap, BTreeSet};
-use std::io::ErrorKind;
-use clap::Parser;
-use url::Url;
-use tokio::{self, fs};
-use serde_json;
-use repo_manifest::xml::{
-    read_manifest_file,
-    ManifestReadFileError
-};
-use repo_manifest::resolver::{
-    LineageDeps,
-    Category,
-    recursively_read_manifest_files,
-    RecursivelyReadManifestFilesError,
-    resolve_manifest,
-    ResolveManifestError,
-    merge_manifests,
-};
-use crate::fetch::{
-    nix_prefetch_git,
-    NixPrefetchGitError,
-    GitLsRemoteError,
-};
-use crate::lock::{
-    Lockset,
-    ReadWriteLockfileError,
-    UpdateLocksetError,
-    EnsureStorePathError,
+use crate::fetch::{GitLsRemoteError, NixPrefetchGitError, nix_prefetch_git};
+use crate::lineage_dependencies::{
+    MergeLineageDevicesError, PrefetchLineageDepsError, cleanup_failed_lineage_deps,
+    merge_lineage_devices, prefetch_lineage_dependencies,
 };
 use crate::lineage_devices::DeviceInfo;
-use crate::lineage_dependencies::{
-    merge_lineage_devices,
-    MergeLineageDevicesError,
-    prefetch_lineage_dependencies,
-    PrefetchLineageDepsError,
-    cleanup_failed_lineage_deps,
-};
-use crate::utils::{
-    tag_device_by_group,
-    cleanup_broken_projects,
-};
-use thiserror::Error;
+use crate::lock::{EnsureStorePathError, Lockset, ReadWriteLockfileError, UpdateLocksetError};
+use crate::utils::{cleanup_broken_projects, tag_device_by_group};
+use clap::Parser;
 use main_error::MainError;
+use repo_manifest::resolver::{
+    Category, LineageDeps, RecursivelyReadManifestFilesError, ResolveManifestError,
+    merge_manifests, recursively_read_manifest_files, resolve_manifest,
+};
+use repo_manifest::xml::{ManifestReadFileError, read_manifest_file};
+use serde_json;
+use std::collections::{BTreeMap, BTreeSet};
+use std::io;
+use std::io::ErrorKind;
+use std::path::{Path, PathBuf};
+use thiserror::Error;
+use tokio::{self, fs};
+use url::Url;
 
 mod fetch;
-mod lock;
-mod lineage_devices;
-mod lineage_dependencies;
-mod utils;
 mod graphene;
+mod lineage_dependencies;
+mod lineage_devices;
+mod lock;
+mod utils;
 
 #[derive(Parser)]
 enum Args {
@@ -178,18 +155,12 @@ async fn fetch(
     } else {
         format!("refs/heads/{revision}")
     };
-    let manifest_fetch = nix_prefetch_git(
-        &url,
-        &git_ref,
-        false,
-        false,
-    ).await?;
+    let manifest_fetch = nix_prefetch_git(&url, &git_ref, false, false).await?;
 
-    let mut manifest_xml = recursively_read_manifest_files(
-        &manifest_fetch.path, Path::new("default.xml")
-    )
-        .await
-        .map_err(FetchError::ReadManifest)?;
+    let mut manifest_xml =
+        recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml"))
+            .await
+            .map_err(FetchError::ReadManifest)?;
 
     if muppets {
         let muppets_fetch = nix_prefetch_git(
@@ -197,7 +168,8 @@ async fn fetch(
             &format!("refs/heads/{revision}"),
             false,
             false,
-        ).await?;
+        )
+        .await?;
 
         let muppets_manifest_xml = read_manifest_file(&muppets_fetch.path.join("muppets.xml"))
             .await
@@ -215,27 +187,22 @@ async fn fetch(
                     .map_err(|e| FetchError::AddProjectToLockset(project.path.clone(), e))?;
             }
             lf
-        },
+        }
         Err(ReadWriteLockfileError::IO(e)) => {
             if e.kind() == ErrorKind::NotFound {
                 let lf = Lockset::new(&manifest.projects, &lockfile_path);
-                lf.write(false)
-                    .await
-                    .map_err(FetchError::WriteLockset)?;
+                lf.write(false).await.map_err(FetchError::WriteLockset)?;
                 lf
             } else {
                 panic!("error opening file: {e:?}");
             }
-        },
+        }
         Err(e) => return Err(FetchError::ReadLockset(e)),
     };
 
     let muppets_broken_devices = if muppets {
         tag_device_by_group(&mut lockfile, "muppets_");
-        let broken_muppets_entries = cleanup_broken_projects(
-            &mut lockfile,
-            Some("muppets")
-        )
+        let broken_muppets_entries = cleanup_broken_projects(&mut lockfile, Some("muppets"))
             .await
             .map_err(FetchError::CleanupBrokenMuppetsDevices)?;
         let mut muppets_broken_devices = BTreeSet::new();
@@ -252,32 +219,33 @@ async fn fetch(
         BTreeSet::new()
     };
 
-
     if lineage_device_file.len() > 0 {
         let mut all_devices = BTreeMap::new();
         for ldf in lineage_device_file {
             let devices: BTreeMap<String, DeviceInfo> = serde_json::from_slice(
                 &fs::read(&ldf)
                     .await
-                    .map_err(FetchError::ReadLineageDevicesFile)?
-            ).map_err(FetchError::ParseLineageDevicesFile)?;
+                    .map_err(FetchError::ReadLineageDevicesFile)?,
+            )
+            .map_err(FetchError::ParseLineageDevicesFile)?;
             merge_lineage_devices(&mut all_devices, devices)
                 .map_err(|e| FetchError::MergeLineageDevices(ldf, e))?;
         }
-        prefetch_lineage_dependencies(
-            &mut lockfile,
-            &all_devices,
-            &manifest,
-            &revision
-        )
+        prefetch_lineage_dependencies(&mut lockfile, &all_devices, &manifest, &revision)
             .await
             .map_err(FetchError::PrefetchLineageDeps)?;
 
         let missing_dep_devices: BTreeSet<_> = all_devices
             .keys()
-            .filter(|x| lockfile.entries.iter().any(|(_, entry)| {
-                entry.project.categories.contains(&Category::DeviceSpecific(x.to_string())) && entry.project.lineage_deps == Some(LineageDeps::MissingBranch)
-        }))
+            .filter(|x| {
+                lockfile.entries.iter().any(|(_, entry)| {
+                    entry
+                        .project
+                        .categories
+                        .contains(&Category::DeviceSpecific(x.to_string()))
+                        && entry.project.lineage_deps == Some(LineageDeps::MissingBranch)
+                })
+            })
             .cloned()
             .collect();
 
@@ -289,17 +257,26 @@ async fn fetch(
         fs::write(
             missing_dep_devs_file.unwrap(),
             serde_json::to_vec_pretty(&all_broken_devices)
-                .map_err(FetchError::SerializeBrokenDevices)?
+                .map_err(FetchError::SerializeBrokenDevices)?,
         )
-            .await
-            .map_err(FetchError::WriteBrokenDevices)?;
+        .await
+        .map_err(FetchError::WriteBrokenDevices)?;
 
         cleanup_failed_lineage_deps(&mut lockfile);
-        lockfile.write(false).await.map_err(FetchError::WriteLockset)?;
+        lockfile
+            .write(false)
+            .await
+            .map_err(FetchError::WriteLockset)?;
     }
 
-    lockfile.update_all().await.map_err(FetchError::UpdateLockset)?;
-    lockfile.write(true).await.map_err(FetchError::WriteLockset)?;
+    lockfile
+        .update_all()
+        .await
+        .map_err(FetchError::UpdateLockset)?;
+    lockfile
+        .write(true)
+        .await
+        .map_err(FetchError::WriteLockset)?;
 
     Ok(())
 }
@@ -316,9 +293,12 @@ enum GetLineageDevicesError {
     Write(#[from] io::Error),
 }
 
-async fn get_lineage_devices(device_metadata_file: PathBuf, allow: Option<Vec<String>>, block: Option<Vec<String>>) -> Result<(), GetLineageDevicesError> {
-    let devices = lineage_devices::get_devices(&allow, &block)
-        .await?;
+async fn get_lineage_devices(
+    device_metadata_file: PathBuf,
+    allow: Option<Vec<String>>,
+    block: Option<Vec<String>>,
+) -> Result<(), GetLineageDevicesError> {
+    let devices = lineage_devices::get_devices(&allow, &block).await?;
     fs::write(&device_metadata_file, serde_json::to_vec_pretty(&devices)?).await?;
 
     Ok(())
@@ -354,22 +334,22 @@ async fn get_graphene_devices(
         .map_err(GetGrapheneDevicesError::ParseSupportedDevices)?;
     let mut device_info = BTreeMap::new();
     for channel in channels {
-        device_info.insert(channel.clone(), graphene::get_device_info(
-                &supported_devices,
-                &channel
-        )
-            .await
-            .map_err(|e| GetGrapheneDevicesError::GetChannelInfo(channel, e))?
+        device_info.insert(
+            channel.clone(),
+            graphene::get_device_info(&supported_devices, &channel)
+                .await
+                .map_err(|e| GetGrapheneDevicesError::GetChannelInfo(channel, e))?,
         );
     }
     let channel_info = graphene::to_channel_info(device_info);
 
     fs::write(
-        &channel_info_file, serde_json::to_vec_pretty(&channel_info)
-        .map_err(GetGrapheneDevicesError::SerializeChannelInfo)?
+        &channel_info_file,
+        serde_json::to_vec_pretty(&channel_info)
+            .map_err(GetGrapheneDevicesError::SerializeChannelInfo)?,
     )
-        .await
-        .map_err(GetGrapheneDevicesError::WriteChannelInfo)?;
+    .await
+    .map_err(GetGrapheneDevicesError::WriteChannelInfo)?;
 
     Ok(())
 }
@@ -403,7 +383,8 @@ async fn get_build_ids(out_file: PathBuf, lockfiles: Vec<PathBuf>) -> Result<(),
     for lockfile_path in lockfiles.iter() {
         let lockfile = Lockset::read_from_file(lockfile_path).await?;
         let build_make_path = Path::new("build/make");
-        let platform_build_path = &lockfile.entries
+        let platform_build_path = &lockfile
+            .entries
             .get(build_make_path)
             .expect("path `build/make` not found in lockfile {lockfile_path}")
             .lock
@@ -411,12 +392,9 @@ async fn get_build_ids(out_file: PathBuf, lockfiles: Vec<PathBuf>) -> Result<(),
             .expect("path `build/make` is not locked yet in lockfile {lockfile_path}")
             .path;
 
-        lockfile.ensure_store_path(build_make_path)
-            .await?;
+        lockfile.ensure_store_path(build_make_path).await?;
 
-        let build_id_mk_text = fs::read(
-            platform_build_path.join("core/build_id.mk")
-        )
+        let build_id_mk_text = fs::read(platform_build_path.join("core/build_id.mk"))
             .await
             .map_err(GetBuildIDError::ReadBuildIdMk)?;
         let build_id_mk_text = std::str::from_utf8(&build_id_mk_text)?;
@@ -426,9 +404,9 @@ async fn get_build_ids(out_file: PathBuf, lockfiles: Vec<PathBuf>) -> Result<(),
             .collect();
 
         match lines.as_slice() {
-            [ build_id, ] => {
+            [build_id] => {
                 build_ids.insert(lockfile_path.clone(), build_id.clone());
-            },
+            }
             _ => return Err(GetBuildIDError::ParseBuildIdMk),
         }
     }
@@ -449,7 +427,10 @@ enum EnsureStorePathsError {
     EnsurePath(#[from] EnsureStorePathError),
 }
 
-async fn ensure_store_paths(lockfile_path: PathBuf, store_paths: Option<Vec<PathBuf>>) -> Result<(), EnsureStorePathsError> {
+async fn ensure_store_paths(
+    lockfile_path: PathBuf,
+    store_paths: Option<Vec<PathBuf>>,
+) -> Result<(), EnsureStorePathsError> {
     let lockfile = Lockset::read_from_file(&lockfile_path).await?;
     let paths = match store_paths {
         Some(paths) => paths,
@@ -485,38 +466,38 @@ async fn main() -> Result<(), MainError> {
                 missing_dep_devs_file,
                 muppets,
             )
-                .await?;
-        },
+            .await?;
+        }
 
-        Args::GetLineageDevices { device_metadata_file, allow, block } => {
-            get_lineage_devices(
-                device_metadata_file,
-                allow,
-                block
-            )
-                .await?;
-        },
+        Args::GetLineageDevices {
+            device_metadata_file,
+            allow,
+            block,
+        } => {
+            get_lineage_devices(device_metadata_file, allow, block).await?;
+        }
 
-        Args::GetGrapheneDevices { supported_devices_file, channel_info_file, channels } => {
-            get_graphene_devices(
-                supported_devices_file,
-                channel_info_file,
-                channels
-            )
-                .await?;
-        },
+        Args::GetGrapheneDevices {
+            supported_devices_file,
+            channel_info_file,
+            channels,
+        } => {
+            get_graphene_devices(supported_devices_file, channel_info_file, channels).await?;
+        }
 
-        Args::GetBuildID { out_file, lockfiles } => {
-            get_build_ids(
-                out_file,
-                lockfiles
-            )
-                .await?;
-        },
+        Args::GetBuildID {
+            out_file,
+            lockfiles,
+        } => {
+            get_build_ids(out_file, lockfiles).await?;
+        }
 
-        Args::EnsureStorePaths { lockfile_path, store_paths } => {
+        Args::EnsureStorePaths {
+            lockfile_path,
+            store_paths,
+        } => {
             ensure_store_paths(lockfile_path, store_paths).await?;
-        },
+        }
     }
 
     Ok(())
