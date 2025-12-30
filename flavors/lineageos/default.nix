@@ -1,15 +1,41 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (lib)
-    optional optionals optionalString optionalAttrs
-    elem filter
-    mapAttrs mapAttrs' nameValuePair filterAttrs
-    attrNames getAttrs flatten remove
-    mkOption mkIf mkMerge mkDefault mkForce types
-    importJSON toLower hasPrefix removePrefix hasSuffix replaceStrings;
+    optional
+    optionals
+    optionalString
+    optionalAttrs
+    elem
+    filter
+    mapAttrs
+    mapAttrs'
+    nameValuePair
+    filterAttrs
+    attrNames
+    getAttrs
+    flatten
+    remove
+    mkOption
+    mkIf
+    mkMerge
+    mkDefault
+    mkForce
+    types
+    importJSON
+    toLower
+    hasPrefix
+    removePrefix
+    hasSuffix
+    replaceStrings
+    ;
 
   lineageBranchToAndroidVersion = {
     "19.0" = 12;
@@ -23,8 +49,11 @@ let
   };
   deviceMetadata = lib.importJSON ./devices.json;
   supportedDevices = attrNames deviceMetadata;
-  missingDepDevices = lib.importJSON (./. + "/lineage-${config.flavorVersion}/missing_dep_devices.json");
-in mkIf (config.flavor == "lineageos") {
+  missingDepDevices = lib.importJSON (
+    ./. + "/lineage-${config.flavorVersion}/missing_dep_devices.json"
+  );
+in
+mkIf (config.flavor == "lineageos") {
   assertions = [
     {
       assertion = config.flavorVersion != null;
@@ -40,7 +69,9 @@ in mkIf (config.flavor == "lineageos") {
     }
   ];
 
-  flavorVersion = mkIf (builtins.elem config.device supportedDevices) (mkDefault (lib.removePrefix "lineage-" deviceMetadata.${config.device}.default_branch));
+  flavorVersion = mkIf (builtins.elem config.device supportedDevices) (
+    mkDefault (lib.removePrefix "lineage-" deviceMetadata.${config.device}.default_branch)
+  );
 
   androidVersion = lineageBranchToAndroidVersion.${config.flavorVersion};
   productNamePrefix = "lineage_"; # product names start with "lineage_"
@@ -55,41 +86,61 @@ in mkIf (config.flavor == "lineageos") {
   };
 
   source.dirs = {
-    "vendor/lineage".patches = [
-      (if lib.versionAtLeast (toString config.androidVersion) "14"
-       then ./0001-Remove-LineageOS-keys-21.patch
-       else if lib.versionAtLeast (toString config.androidVersion) "13"
-       then ./0001-Remove-LineageOS-keys-20.patch
-       else ./0001-Remove-LineageOS-keys-19.patch)
+    "vendor/lineage".patches =
+      [
+        (
+          if lib.versionAtLeast (toString config.androidVersion) "14" then
+            ./0001-Remove-LineageOS-keys-21.patch
+          else if lib.versionAtLeast (toString config.androidVersion) "13" then
+            ./0001-Remove-LineageOS-keys-20.patch
+          else
+            ./0001-Remove-LineageOS-keys-19.patch
+        )
 
-      (pkgs.replaceVars (if lib.versionAtLeast config.flavorVersion "22.2"
-        then ./0002-bootanimation-Reproducibility-fix-22_2.patch
-        else if lib.versionAtLeast config.flavorVersion "21.1"
-        then ./0002-bootanimation-Reproducibility-fix-21.patch else
-        ./0002-bootanimation-Reproducibility-fix.patch) {
-        inherit (pkgs) imagemagick;
-      })
+        (pkgs.replaceVars
+          (
+            if lib.versionAtLeast config.flavorVersion "22.2" then
+              ./0002-bootanimation-Reproducibility-fix-22_2.patch
+            else if lib.versionAtLeast config.flavorVersion "21.1" then
+              ./0002-bootanimation-Reproducibility-fix-21.patch
+            else
+              ./0002-bootanimation-Reproducibility-fix.patch
+          )
+          {
+            inherit (pkgs) imagemagick;
+          }
+        )
 
-      (if lib.versionAtLeast (toString config.androidVersion) "14"
-       then ./0003-kernel-Set-constant-kernel-timestamp-21.patch
-       else if lib.versionAtLeast (toString config.androidVersion) "13"
-       then ./0003-kernel-Set-constant-kernel-timestamp-20.patch
-       else ./0003-kernel-Set-constant-kernel-timestamp-19.patch)
-      
-    ] ++ lib.optionals (lib.versionAtLeast config.flavorVersion "19.0") [
-      (if lib.versionAtLeast config.flavorVersion "22.2"
-      then ./0004-dont-run-repo-during-build-22_2.patch
-      else ./0004-dont-run-repo-during-build.patch)
-    ];
+        (
+          if lib.versionAtLeast (toString config.androidVersion) "14" then
+            ./0003-kernel-Set-constant-kernel-timestamp-21.patch
+          else if lib.versionAtLeast (toString config.androidVersion) "13" then
+            ./0003-kernel-Set-constant-kernel-timestamp-20.patch
+          else
+            ./0003-kernel-Set-constant-kernel-timestamp-19.patch
+        )
+
+      ]
+      ++ lib.optionals (lib.versionAtLeast config.flavorVersion "19.0") [
+        (
+          if lib.versionAtLeast config.flavorVersion "22.2" then
+            ./0004-dont-run-repo-during-build-22_2.patch
+          else
+            ./0004-dont-run-repo-during-build.patch
+        )
+      ];
     "system/extras".patches = [
       # pkgutil.get_data() not working, probably because we don't use their compiled python
-      (if lib.versionAtLeast config.flavorVersion "23.0"
-      then ./0005-Revert-mkuserimg_mke2fs.py-Package-mke2fs.conf.patch
-      else (pkgs.fetchpatch {
-        url = "https://github.com/LineageOS/android_system_extras/commit/7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.patch";
-        sha256 = "0pv56lypdpsn66s7ffcps5ykyfx0hjkazml89flj7p1px12zjhy1";
-        revert = true;
-      }))
+      (
+        if lib.versionAtLeast config.flavorVersion "23.0" then
+          ./0005-Revert-mkuserimg_mke2fs.py-Package-mke2fs.conf.patch
+        else
+          (pkgs.fetchpatch {
+            url = "https://github.com/LineageOS/android_system_extras/commit/7da4b29321eb7ebce9eb9a43d0fbd85d0aa1e870.patch";
+            sha256 = "0pv56lypdpsn66s7ffcps5ykyfx0hjkazml89flj7p1px12zjhy1";
+            revert = true;
+          })
+      )
     ];
 
     # LineageOS will sometimes force-push to this repo, and the older revisions are garbage collected.
@@ -113,9 +164,14 @@ in mkIf (config.flavor == "lineageos") {
   pixel.activeEdge.includedInFlavor = mkDefault true;
 
   # Needed by included kernel build for some devices (pioneer at least)
-  envPackages = [ pkgs.openssl.dev ] ++ optionals (config.androidVersion >= 11) [ pkgs.gcc.cc pkgs.glibc.dev ];
+  envPackages =
+    [ pkgs.openssl.dev ]
+    ++ optionals (config.androidVersion >= 11) [
+      pkgs.gcc.cc
+      pkgs.glibc.dev
+    ];
 
-  envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL";  # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
+  envVars.RELEASE_TYPE = mkDefault "EXPERIMENTAL"; # Other options are RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL
 
   # LineageOS flattens all APEX packages: https://review.lineageos.org/c/LineageOS/android_vendor_lineage/+/270212
   # However, the APEX flattening feature has been removed in LineageOS 21 / Android 14:

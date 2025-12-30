@@ -1,34 +1,51 @@
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ pkgs ? (import ./pkgs {}) }:
+{
+  pkgs ? (import ./pkgs { }),
+}:
 
 let
   lib = pkgs.lib;
   robotnix = configuration: import ./default.nix { inherit configuration pkgs; };
   configs = import ./configs.nix { inherit lib; };
   builtConfigs = lib.mapAttrs (name: c: robotnix c) configs;
-  defaultBuild = robotnix { device="arm64"; flavor="lineageos"; androidVersion = 15; };
-
-  tests = {
-    attestation-server = (import ./nixos/attestation-server/test.nix { inherit pkgs; }) {};
-
-    generateKeys = let
-      inherit ((robotnix { device="crosshatch"; flavor="vanilla"; }))
-        generateKeysScript verifyKeysScript;
-    in pkgs.runCommand "test-generate-keys" { nativeBuildInputs = [ pkgs.shellcheck ]; } ''
-      mkdir -p $out
-      cd $out
-      shellcheck ${generateKeysScript}
-      shellcheck ${verifyKeysScript}
-
-      ${verifyKeysScript} $PWD && exit 1 || true # verifyKeysScript should fail if we haven't generated keys yet
-      ${generateKeysScript} $PWD
-      ${verifyKeysScript} $PWD
-    '';
+  defaultBuild = robotnix {
+    device = "arm64";
+    flavor = "lineageos";
+    androidVersion = 15;
   };
 
-in {
+  tests = {
+    attestation-server = (import ./nixos/attestation-server/test.nix { inherit pkgs; }) { };
+
+    generateKeys =
+      let
+        inherit
+          (
+            (robotnix {
+              device = "crosshatch";
+              flavor = "vanilla";
+            })
+          )
+          generateKeysScript
+          verifyKeysScript
+          ;
+      in
+      pkgs.runCommand "test-generate-keys" { nativeBuildInputs = [ pkgs.shellcheck ]; } ''
+        mkdir -p $out
+        cd $out
+        shellcheck ${generateKeysScript}
+        shellcheck ${verifyKeysScript}
+
+        ${verifyKeysScript} $PWD && exit 1 || true # verifyKeysScript should fail if we haven't generated keys yet
+        ${generateKeysScript} $PWD
+        ${verifyKeysScript} $PWD
+      '';
+  };
+
+in
+{
   inherit (pkgs) diffoscope;
 
   imgs = lib.recurseIntoAttrs (lib.mapAttrs (name: c: c.img) builtConfigs);
@@ -36,8 +53,13 @@ in {
   # For testing instantiation
   lineageos-arm64 = lib.recurseIntoAttrs {
     inherit (defaultBuild)
-      ota img factoryImg bootImg otaDir
-      releaseScript;
+      ota
+      img
+      factoryImg
+      bootImg
+      otaDir
+      releaseScript
+      ;
   };
 
   # sdk = import ./sdk;

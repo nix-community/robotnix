@@ -1,4 +1,15 @@
-{ stdenv, fetchgit, runCommand, python3, libarchive, file, e2fsprogs, simg2img, lz4, cpio }:
+{
+  stdenv,
+  fetchgit,
+  runCommand,
+  python3,
+  libarchive,
+  file,
+  e2fsprogs,
+  simg2img,
+  lz4,
+  cpio,
+}:
 let
   unpack_bootimg = stdenv.mkDerivation {
     pname = "unpack-bootimg";
@@ -36,13 +47,27 @@ let
     '';
   };
 
-  unpackImg = img: runCommand "unpacked-img" {
-    nativeBuildInputs = [ libarchive file e2fsprogs simg2img lz4 cpio unpack_bootimg avbtool ];
-  } ''
-    mkdir -p $out
-    bash ${./unpack-images.sh} ${img} $out
-  '';
-in {
+  unpackImg =
+    img:
+    runCommand "unpacked-img"
+      {
+        nativeBuildInputs = [
+          libarchive
+          file
+          e2fsprogs
+          simg2img
+          lz4
+          cpio
+          unpack_bootimg
+          avbtool
+        ];
+      }
+      ''
+        mkdir -p $out
+        bash ${./unpack-images.sh} ${img} $out
+      '';
+in
+{
   inherit unpackImg;
 
   inherit unpack_bootimg avbtool;

@@ -1,7 +1,12 @@
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   inherit (lib) mkIf;

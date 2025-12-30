@@ -27,7 +27,13 @@
 #}
 
 # TODO: Make a wrapper script for this?
-{ stdenv, makeWrapper, fetchurl, jre8_headless, androidPkgs }:
+{
+  stdenv,
+  makeWrapper,
+  fetchurl,
+  jre8_headless,
+  androidPkgs,
+}:
 
 stdenv.mkDerivation rec {
   pname = "bundletool";

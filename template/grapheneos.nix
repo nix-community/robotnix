@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   flavor = "grapheneos";
   device = "tegu";
 

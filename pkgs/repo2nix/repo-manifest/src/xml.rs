@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
-use tokio::fs;
+use serde::{Deserialize, Serialize};
 use std::io;
 use std::path::{Path, PathBuf};
 use std::vec::Vec;
 use thiserror::Error;
+use tokio::fs;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Remote {

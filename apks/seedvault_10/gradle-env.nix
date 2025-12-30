@@ -19,142 +19,196 @@
 #         '';
 #       }
 
-{ stdenv, lib, buildEnv, fetchurl, gradleGen, writeText, writeTextDir, runCommandCC, unzip, zip, autoPatchelfHook }:
+{
+  stdenv,
+  lib,
+  buildEnv,
+  fetchurl,
+  gradleGen,
+  writeText,
+  writeTextDir,
+  runCommandCC,
+  unzip,
+  zip,
+  autoPatchelfHook,
+}:
 
-{ envSpec
-, pname ? null
-, version ? null
-, enableParallelBuilding ? true
-, gradleFlags ? [ "build" ]
-, gradlePackage ? null
-, enableDebug ? false
-, ... } @ args:
+{
+  envSpec,
+  pname ? null,
+  version ? null,
+  enableParallelBuilding ? true,
+  gradleFlags ? [ "build" ],
+  gradlePackage ? null,
+  enableDebug ? false,
+  ...
+}@args:
 
 let
-  patchJar = jar: stdenv.mkDerivation {
-    name = "patched.jar";
-    src = jar;
+  patchJar =
+    jar:
+    stdenv.mkDerivation {
+      name = "patched.jar";
+      src = jar;
 
-    phases = "unpackPhase buildPhase installPhase";
+      phases = "unpackPhase buildPhase installPhase";
 
-    nativeBuildInputs = [ unzip zip autoPatchelfHook ];
+      nativeBuildInputs = [
+        unzip
+        zip
+        autoPatchelfHook
+      ];
 
-    unpackPhase = "unzip $src";
-    buildPhase = "autoPatchelf .";
-    installPhase = "zip -r $out *";
-  };
+      unpackPhase = "unzip $src";
+      buildPhase = "autoPatchelf .";
+      installPhase = "zip -r $out *";
+    };
 
   inherit (builtins)
-    filter sort replaceStrings attrValues match fromJSON
-    concatStringsSep;
+    filter
+    sort
+    replaceStrings
+    attrValues
+    match
+    fromJSON
+    concatStringsSep
+    ;
 
   inherit (lib)
-    versionOlder unique mapAttrs last concatMapStringsSep removeSuffix
-    optionalString groupBy' readFile hasSuffix;
+    versionOlder
+    unique
+    mapAttrs
+    last
+    concatMapStringsSep
+    removeSuffix
+    optionalString
+    groupBy'
+    readFile
+    hasSuffix
+    ;
 
-  mkDep = depSpec: stdenv.mkDerivation {
-    inherit (depSpec) name;
+  mkDep =
+    depSpec:
+    stdenv.mkDerivation {
+      inherit (depSpec) name;
 
-    src = let
-        file = fetchurl {
-        inherit (depSpec) urls sha256;
-      };
-    # Special case for aapt2-...-linux.jar, which contains a jar with an executable that will need to be patched
-    in if (lib.hasSuffix "-linux.jar" depSpec.name) then patchJar file else file;
+      src =
+        let
+          file = fetchurl {
+            inherit (depSpec) urls sha256;
+          };
+          # Special case for aapt2-...-linux.jar, which contains a jar with an executable that will need to be patched
+        in
+        if (lib.hasSuffix "-linux.jar" depSpec.name) then patchJar file else file;
 
-    phases = "installPhase";
+      phases = "installPhase";
 
-    installPhase = ''
-      mkdir -p $out/${depSpec.path}
-      ln -s $src $out/${depSpec.path}/${depSpec.name}
-    '';
-  };
+      installPhase = ''
+        mkdir -p $out/${depSpec.path}
+        ln -s $src $out/${depSpec.path}/${depSpec.name}
+      '';
+    };
 
-  mkModuleMetadata = deps:
+  mkModuleMetadata =
+    deps:
     let
-      ids = filter
-        (id: id.type == "pom")
-        (map (dep: dep.id) deps);
+      ids = filter (id: id.type == "pom") (map (dep: dep.id) deps);
 
-      modules = groupBy'
-        (meta: id:
-          let
-            isNewer = versionOlder meta.latest id.version;
-            isNewerRelease =
-              !(hasSuffix "-SNAPSHOT" id.version) &&
-              versionOlder meta.release id.version;
-          in {
-            groupId = id.group;
-            artifactId = id.name;
-            latest = if isNewer then id.version else meta.latest;
-            release = if isNewerRelease then id.version else meta.release;
-            versions = meta.versions ++ [id.version];
+      modules =
+        groupBy'
+          (
+            meta: id:
+            let
+              isNewer = versionOlder meta.latest id.version;
+              isNewerRelease = !(hasSuffix "-SNAPSHOT" id.version) && versionOlder meta.release id.version;
+            in
+            {
+              groupId = id.group;
+              artifactId = id.name;
+              latest = if isNewer then id.version else meta.latest;
+              release = if isNewerRelease then id.version else meta.release;
+              versions = meta.versions ++ [ id.version ];
+            }
+          )
+          {
+            latest = "";
+            release = "";
+            versions = [ ];
           }
-        )
-        {
-          latest = "";
-          release = "";
-          versions = [];
-        }
-        (id: "${replaceStrings ["."] ["/"] id.group}/${id.name}/maven-metadata.xml")
-        ids;
+          (id: "${replaceStrings [ "." ] [ "/" ] id.group}/${id.name}/maven-metadata.xml")
+          ids;
 
     in
-      attrValues (mapAttrs (path: meta:
+    attrValues (
+      mapAttrs (
+        path: meta:
         let
           versions' = sort versionOlder (unique meta.versions);
         in
-          with meta; writeTextDir path ''
-            <?xml version="1.0" encoding="UTF-8"?>
-            <metadata modelVersion="1.1">
-              <groupId>${groupId}</groupId>
-              <artifactId>${artifactId}</artifactId>
-              <versioning>
-                ${optionalString (latest != "") "<latest>${latest}</latest>"}
-                ${optionalString (release != "") "<release>${release}</release>"}
-                <versions>
-                  ${concatMapStringsSep "\n    " (v: "<version>${v}</version>") versions'}
-                </versions>
-              </versioning>
-            </metadata>
-          ''
-      ) modules);
+        with meta;
+        writeTextDir path ''
+          <?xml version="1.0" encoding="UTF-8"?>
+          <metadata modelVersion="1.1">
+            <groupId>${groupId}</groupId>
+            <artifactId>${artifactId}</artifactId>
+            <versioning>
+              ${optionalString (latest != "") "<latest>${latest}</latest>"}
+              ${optionalString (release != "") "<release>${release}</release>"}
+              <versions>
+                ${concatMapStringsSep "\n    " (v: "<version>${v}</version>") versions'}
+              </versions>
+            </versioning>
+          </metadata>
+        ''
+      ) modules
+    );
 
-  mkSnapshotMetadata = deps:
+  mkSnapshotMetadata =
+    deps:
     let
       snapshotDeps = filter (dep: dep ? build && dep ? timestamp) deps;
 
-      modules = groupBy'
-        (meta: dep:
-          let
-            id = dep.id;
-            isNewer = dep.build > meta.buildNumber;
-            # Timestamp values can be bogus, e.g. jitpack.io
-            updated = if (match "[0-9]{8}\.[0-9]{6}" dep.timestamp) != null
-                      then replaceStrings ["."] [""] dep.timestamp
-                      else "";
-          in {
-            groupId = id.group;
-            artifactId = id.name;
-            version = id.version;
-            timestamp = if isNewer then dep.timestamp else meta.timestamp;
-            buildNumber = if isNewer then dep.build else meta.buildNumber;
-            lastUpdated = if isNewer then updated else meta.lastUpdated;
-            versions = meta.versions or [] ++ [{
-              classifier = id.classifier or "";
-              extension = id.extension;
-              value = "${removeSuffix "-SNAPSHOT" id.version}-${dep.timestamp}-${toString dep.build}";
-              updated = updated;
-            }];
+      modules =
+        groupBy'
+          (
+            meta: dep:
+            let
+              id = dep.id;
+              isNewer = dep.build > meta.buildNumber;
+              # Timestamp values can be bogus, e.g. jitpack.io
+              updated =
+                if (match "[0-9]{8}\.[0-9]{6}" dep.timestamp) != null then
+                  replaceStrings [ "." ] [ "" ] dep.timestamp
+                else
+                  "";
+            in
+            {
+              groupId = id.group;
+              artifactId = id.name;
+              version = id.version;
+              timestamp = if isNewer then dep.timestamp else meta.timestamp;
+              buildNumber = if isNewer then dep.build else meta.buildNumber;
+              lastUpdated = if isNewer then updated else meta.lastUpdated;
+              versions = meta.versions or [ ] ++ [
+                {
+                  classifier = id.classifier or "";
+                  extension = id.extension;
+                  value = "${removeSuffix "-SNAPSHOT" id.version}-${dep.timestamp}-${toString dep.build}";
+                  updated = updated;
+                }
+              ];
+            }
+          )
+          {
+            timestamp = "";
+            buildNumber = -1;
+            lastUpdated = "";
           }
-        )
-        {
-          timestamp = "";
-          buildNumber = -1;
-          lastUpdated = "";
-        }
-        (dep: "${replaceStrings ["."] ["/"] dep.id.group}/${dep.id.name}/${dep.id.version}/maven-metadata.xml")
-        snapshotDeps;
+          (
+            dep:
+            "${replaceStrings [ "." ] [ "/" ] dep.id.group}/${dep.id.name}/${dep.id.version}/maven-metadata.xml"
+          )
+          snapshotDeps;
 
       mkSnapshotVersion = version: ''
         <snapshotVersion>
@@ -166,8 +220,11 @@ let
       '';
 
     in
-      attrValues (mapAttrs (path: meta:
-        with meta; writeTextDir path ''
+    attrValues (
+      mapAttrs (
+        path: meta:
+        with meta;
+        writeTextDir path ''
           <?xml version="1.0" encoding="UTF-8"?>
           <metadata modelVersion="1.1">
             <groupId>${groupId}</groupId>
@@ -185,56 +242,61 @@ let
             </versioning>
           </metadata>
         ''
-      ) modules);
+      ) modules
+    );
 
-  mkRepo = project: type: deps: buildEnv {
-    name = "${project}-gradle-${type}-env";
-    paths = map mkDep deps ++ mkModuleMetadata deps ++ mkSnapshotMetadata deps;
-  };
+  mkRepo =
+    project: type: deps:
+    buildEnv {
+      name = "${project}-gradle-${type}-env";
+      paths = map mkDep deps ++ mkModuleMetadata deps ++ mkSnapshotMetadata deps;
+    };
 
-  mkInitScript = projectSpec:
+  mkInitScript =
+    projectSpec:
     let
       repos = mapAttrs (mkRepo projectSpec.name) projectSpec.dependencies;
     in
-      writeText "init.gradle" ''
-        static def offlineRepo(RepositoryHandler repositories, String env, String path) {
-            repositories.clear()
-            repositories.maven {
-                name "Nix''${env.capitalize()}MavenOffline"
-                url path
-                metadataSources {
-                    it.gradleMetadata()
-                    it.mavenPom()
-                    it.artifact()
-                }
-            }
-            repositories.ivy {
-                name "Nix''${env.capitalize()}IvyOffline"
-                url path
-                layout "maven"
-                metadataSources {
-                    it.gradleMetadata()
-                    it.ivyDescriptor()
-                    it.artifact()
-                }
-            }
-        }
+    writeText "init.gradle" ''
+      static def offlineRepo(RepositoryHandler repositories, String env, String path) {
+          repositories.clear()
+          repositories.maven {
+              name "Nix''${env.capitalize()}MavenOffline"
+              url path
+              metadataSources {
+                  it.gradleMetadata()
+                  it.mavenPom()
+                  it.artifact()
+              }
+          }
+          repositories.ivy {
+              name "Nix''${env.capitalize()}IvyOffline"
+              url path
+              layout "maven"
+              metadataSources {
+                  it.gradleMetadata()
+                  it.ivyDescriptor()
+                  it.artifact()
+              }
+          }
+      }
 
-        gradle.settingsEvaluated {
-            offlineRepo(it.pluginManagement.repositories, "plugin", "${repos.plugin}")
-        }
+      gradle.settingsEvaluated {
+          offlineRepo(it.pluginManagement.repositories, "plugin", "${repos.plugin}")
+      }
 
-        gradle.projectsLoaded {
-            allprojects {
-                buildscript {
-                    offlineRepo(repositories, "buildscript", "${repos.buildscript}")
-                }
-                offlineRepo(repositories, "project", "${repos.project}")
-            }
-        }
-      '';
+      gradle.projectsLoaded {
+          allprojects {
+              buildscript {
+                  offlineRepo(repositories, "buildscript", "${repos.buildscript}")
+              }
+              offlineRepo(repositories, "project", "${repos.project}")
+          }
+      }
+    '';
 
-  mkGradle = gradleSpec:
+  mkGradle =
+    gradleSpec:
     gradleGen.gradleGen {
       inherit (gradleSpec) nativeVersion version sha256;
     };
@@ -245,37 +307,40 @@ let
     gradle = args.gradlePackage or mkGradle projectSpec.gradle;
   };
 
-  gradleEnv = mapAttrs
-    (_: p: mkProjectEnv p)
-    (fromJSON (readFile envSpec));
+  gradleEnv = mapAttrs (_: p: mkProjectEnv p) (fromJSON (readFile envSpec));
 
   projectEnv = gradleEnv."";
   pname = args.pname or projectEnv.name;
   version = args.version or projectEnv.version;
 
-in stdenv.mkDerivation (args // {
+in
+stdenv.mkDerivation (
+  args
+  // {
 
-  inherit pname version;
+    inherit pname version;
 
-  nativeBuildInputs = (args.nativeBuildInputs or []) ++ [ projectEnv.gradle ];
+    nativeBuildInputs = (args.nativeBuildInputs or [ ]) ++ [ projectEnv.gradle ];
 
-  buildPhase = args.buildPhase or ''
-    runHook preBuild
+    buildPhase =
+      args.buildPhase or ''
+        runHook preBuild
 
-    (
-    set -x
-    env \
-      "GRADLE_USER_HOME=$(mktemp -d)" \
-      gradle --offline --no-daemon --no-build-cache \
-        --info --full-stacktrace --warning-mode=all \
-        ${optionalString enableParallelBuilding "--parallel"} \
-        ${optionalString enableDebug "-Dorg.gradle.debug=true"} \
-        --init-script ${projectEnv.initScript} \
-        ${concatStringsSep " " gradleFlags}
-    )
+        (
+        set -x
+        env \
+          "GRADLE_USER_HOME=$(mktemp -d)" \
+          gradle --offline --no-daemon --no-build-cache \
+            --info --full-stacktrace --warning-mode=all \
+            ${optionalString enableParallelBuilding "--parallel"} \
+            ${optionalString enableDebug "-Dorg.gradle.debug=true"} \
+            --init-script ${projectEnv.initScript} \
+            ${concatStringsSep " " gradleFlags}
+        )
 
-    runHook postBuild
-  '';
+        runHook postBuild
+      '';
 
-  dontStrip = true;
-})
+    dontStrip = true;
+  }
+)

@@ -1,10 +1,10 @@
-use std::io;
-use std::path::PathBuf;
-use url::Url;
-use thiserror::Error;
 use serde::Deserialize;
 use serde_json;
+use std::io;
+use std::path::PathBuf;
+use thiserror::Error;
 use tokio::process::Command;
+use url::Url;
 
 #[derive(Debug, Deserialize)]
 pub struct NixPrefetchGitOutput {
@@ -49,7 +49,12 @@ pub enum NixPrefetchGitError {
     Parse(#[from] serde_json::Error),
 }
 
-pub async fn nix_prefetch_git(repo_url: &Url, revision: &str, fetch_lfs: bool, fetch_submodules: bool) -> Result<NixPrefetchGitOutput, NixPrefetchGitError> {
+pub async fn nix_prefetch_git(
+    repo_url: &Url,
+    revision: &str,
+    fetch_lfs: bool,
+    fetch_submodules: bool,
+) -> Result<NixPrefetchGitOutput, NixPrefetchGitError> {
     eprintln!("Prefetching `{}`, revision {}...", repo_url, revision);
     let mut flag_args = vec![];
     if fetch_lfs {
@@ -69,14 +74,13 @@ pub async fn nix_prefetch_git(repo_url: &Url, revision: &str, fetch_lfs: bool, f
 
     if !output.status.success() {
         return Err(NixPrefetchGitError::NonzeroExitStatus(
-                output.status.code(),
-                String::from_utf8_lossy(&output.stderr).to_string()
+            output.status.code(),
+            String::from_utf8_lossy(&output.stderr).to_string(),
         ));
     }
 
     Ok(serde_json::from_slice(&output.stdout)?)
 }
-
 
 #[derive(Debug, Error)]
 pub enum GitLsRemoteError {
@@ -101,8 +105,8 @@ pub async fn git_ls_remote(url: &str, git_ref: &str) -> Result<String, GitLsRemo
 
     if !output.status.success() {
         return Err(GitLsRemoteError::NonzeroExitStatus(
-                output.status.code(),
-                String::from_utf8_lossy(&output.stderr).to_string()
+            output.status.code(),
+            String::from_utf8_lossy(&output.stderr).to_string(),
         ));
     }
 
@@ -116,4 +120,3 @@ pub async fn git_ls_remote(url: &str, git_ref: &str) -> Result<String, GitLsRemo
 
     Err(GitLsRemoteError::RevNotFound)
 }
-

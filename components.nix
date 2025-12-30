@@ -1,7 +1,9 @@
 # SPDX-FileCopyrightText: 2021 Daniel Fullmer
 # SPDX-License-Identifier: MIT
 
-{ pkgs ? import ./pkgs {} }:
+{
+  pkgs ? import ./pkgs { },
+}:
 
 # Easier entrypoint to build android components individually
 # The components.json list is just used as a convenient list of components.
@@ -9,9 +11,14 @@
 
 let
   lib = pkgs.lib;
-  robotnixBuild = import ./default.nix { configuration={ device="arm64"; flavor="vanilla"; }; };
+  robotnixBuild = import ./default.nix {
+    configuration = {
+      device = "arm64";
+      flavor = "vanilla";
+    };
+  };
 
   # Created using jq 'with_entries(select(.value.installed | length > 0)) | keys' module-info.json
   componentNames = lib.importJSON ./components.json;
 in
-  lib.genAttrs componentNames (name: robotnixBuild.config.build.mkAndroidComponent name)
+lib.genAttrs componentNames (name: robotnixBuild.config.build.mkAndroidComponent name)

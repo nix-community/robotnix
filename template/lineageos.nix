@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   flavor = "lineageos";
 
   # device codename - FP4 for Fairphone 4 in this case.

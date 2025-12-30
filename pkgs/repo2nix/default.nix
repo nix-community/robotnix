@@ -1,4 +1,8 @@
-{ rustPlatform, pkg-config, openssl }:
+{
+  rustPlatform,
+  pkg-config,
+  openssl,
+}:
 
 rustPlatform.buildRustPackage {
   name = "repo2nix";

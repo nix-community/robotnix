@@ -57,39 +57,56 @@ let
   };
 
   # Turn an attrset into AVD text
-  toAVD = conf: builtins.concatStringsSep "\n"
-    (lib.collect builtins.isString
-      (lib.mapAttrsRecursive
-        (path: value: (builtins.concatStringsSep "." path) + "=" + (builtins.toString value))
-        conf));
+  toAVD =
+    conf:
+    builtins.concatStringsSep "\n" (
+      lib.collect builtins.isString (
+        lib.mapAttrsRecursive (
+          path: value: (builtins.concatStringsSep "." path) + "=" + (builtins.toString value)
+        ) conf
+      )
+    );
 
-  bindImg = { img, avd ? {} }: let
-    fakeSdkRoot = runCommand "fake-sdk" {} ''
-      mkdir -p $out/system-images/android
-      ln -s ${img} $out/system-images/android/x86_64
+  bindImg =
+    {
+      img,
+      avd ? { },
+    }:
+    let
+      fakeSdkRoot = runCommand "fake-sdk" { } ''
+        mkdir -p $out/system-images/android
+        ln -s ${img} $out/system-images/android/x86_64
 
-      mkdir -p $out/platforms
-      mkdir -p $out/platform-tools
+        mkdir -p $out/platforms
+        mkdir -p $out/platform-tools
+      '';
+      avdAttrs = lib.recursiveUpdate defaultAVD avd;
+    in
+    writeShellScript "bound-android-emulator" ''
+      AVD=$(pwd)/avd
+      mkdir -p $AVD/Pixel2.avd
+      cp ${writeText "config.ini" (toAVD avdAttrs)}    $AVD/Pixel2.avd/config.ini
+      echo "avd.ini.encoding=UTF-8"      > $AVD/Pixel2.ini
+      echo "target=android-29"          >> $AVD/Pixel2.ini
+      echo "path=$AVD/Pixel2.avd"       >> $AVD/Pixel2.ini
+      chmod u+w $AVD/Pixel2.ini $AVD/Pixel2.avd/config.ini
+
+      export ANDROID_SDK_ROOT=${fakeSdkRoot}
+      export ANDROID_AVD_HOME=$AVD
+
+      ${android-emulator}/emulator @Pixel2 -gpu swiftshader_indirect $@
     '';
-    avdAttrs = lib.recursiveUpdate defaultAVD avd;
-  in writeShellScript "bound-android-emulator" ''
-    AVD=$(pwd)/avd
-    mkdir -p $AVD/Pixel2.avd
-    cp ${writeText "config.ini" (toAVD avdAttrs)}    $AVD/Pixel2.avd/config.ini
-    echo "avd.ini.encoding=UTF-8"      > $AVD/Pixel2.ini
-    echo "target=android-29"          >> $AVD/Pixel2.ini
-    echo "path=$AVD/Pixel2.avd"       >> $AVD/Pixel2.ini
-    chmod u+w $AVD/Pixel2.ini $AVD/Pixel2.avd/config.ini
 
-    export ANDROID_SDK_ROOT=${fakeSdkRoot}
-    export ANDROID_AVD_HOME=$AVD
-
-    ${android-emulator}/emulator @Pixel2 -gpu swiftshader_indirect $@
-  '';
-
-  android-emulator = androidPkgs.packages.emulator.overrideAttrs ({ passthru ? {}, ...}: {
-    passthru = passthru // {
-      inherit bindImg;
-    };
-  });
-in android-emulator
+  android-emulator = androidPkgs.packages.emulator.overrideAttrs (
+    {
+      passthru ? { },
+      ...
+    }:
+    {
+      passthru = passthru // {
+        inherit bindImg;
+      };
+    }
+  );
+in
+android-emulator

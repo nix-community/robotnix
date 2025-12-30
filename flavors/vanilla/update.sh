@@ -9,10 +9,10 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 ../../modules/apv/update-carrierlist.sh
 
 args=(
-    --cache-search-path ../../
-    --ref-type tag
-    "https://android.googlesource.com/platform/manifest"
-    "$@"
+  --cache-search-path ../../
+  --ref-type tag
+  "https://android.googlesource.com/platform/manifest"
+  "$@"
 )
 
 export TMPDIR=/tmp

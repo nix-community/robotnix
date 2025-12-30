@@ -1,9 +1,9 @@
-use std::path::{Path, PathBuf};
-use std::io::{Read, Seek, BufReader};
-use zip::ZipArchive;
+use anyhow::{Context, Result, anyhow};
 use clap::Parser;
 use std::fs::File;
-use anyhow::{anyhow, Result, Context};
+use std::io::{BufReader, Read, Seek};
+use std::path::{Path, PathBuf};
+use zip::ZipArchive;
 
 const APK_PUBLIC_KEY_SUFFIX: &str = ".x509.pem";
 const APK_PRIVATE_KEY_SUFFIX: &str = ".pk8";
@@ -44,10 +44,13 @@ impl Key {
             "PRESIGNED" => Key::Presigned,
             "EXTERNAL" => Key::External,
             s => Key::Path(
-                s
-                .strip_suffix(APK_PRIVATE_KEY_SUFFIX)
-                .ok_or(anyhow!("APK private key {} doesn't end in {}", path.as_ref(), APK_PRIVATE_KEY_SUFFIX))?
-                .into()
+                s.strip_suffix(APK_PRIVATE_KEY_SUFFIX)
+                    .ok_or(anyhow!(
+                        "APK private key {} doesn't end in {}",
+                        path.as_ref(),
+                        APK_PRIVATE_KEY_SUFFIX
+                    ))?
+                    .into(),
             ),
         })
     }
@@ -57,10 +60,13 @@ impl Key {
             "PRESIGNED" => Key::Presigned,
             "EXTERNAL" => Key::External,
             s => Key::Path(
-                s
-                .strip_suffix(APK_PUBLIC_KEY_SUFFIX)
-                .ok_or(anyhow!("APK public key {} doesn't end in {}", path.as_ref(), APK_PUBLIC_KEY_SUFFIX))?
-                .into()
+                s.strip_suffix(APK_PUBLIC_KEY_SUFFIX)
+                    .ok_or(anyhow!(
+                        "APK public key {} doesn't end in {}",
+                        path.as_ref(),
+                        APK_PUBLIC_KEY_SUFFIX
+                    ))?
+                    .into(),
             ),
         })
     }
@@ -101,7 +107,7 @@ struct KeyMapping {
 
 fn parse_extra_apks(arg: &str) -> Result<Vec<Apk>> {
     match &arg.split('=').collect::<Vec<_>>()[..] {
-        [ names, key ] => {
+        [names, key] => {
             let mut apks = vec![];
             for name in names.split(",") {
                 apks.push(Apk {
@@ -110,36 +116,39 @@ fn parse_extra_apks(arg: &str) -> Result<Vec<Apk>> {
                 });
             }
             Ok(apks)
-        },
+        }
         _ => Err(anyhow!("Malformed --extra_apks argument: {}", arg)),
     }
 }
 
 fn parse_extra_apex_payload_key(arg: &str) -> Result<ApexPayloadKey> {
     match &arg.split('=').collect::<Vec<_>>()[..] {
-        [ name, payload_key ] => {
-            Ok(ApexPayloadKey {
-                name: name.to_string(),
-                payload_key: Key::from(payload_key),
-            })
-        },
-        _ => Err(anyhow!("Malformed --extra_apex_payload_key argument: {}", arg)),
+        [name, payload_key] => Ok(ApexPayloadKey {
+            name: name.to_string(),
+            payload_key: Key::from(payload_key),
+        }),
+        _ => Err(anyhow!(
+            "Malformed --extra_apex_payload_key argument: {}",
+            arg
+        )),
     }
 }
 
 fn parse_key_mapping(arg: &str) -> Result<KeyMapping> {
     match &arg.split('=').collect::<Vec<_>>()[..] {
-        [ from, to ] => {
-            Ok(KeyMapping {
-                from: from.into(),
-                to: to.into(),
-            })
-        },
+        [from, to] => Ok(KeyMapping {
+            from: from.into(),
+            to: to.into(),
+        }),
         _ => Err(anyhow!("Malformed --key_mapping argument: {}", arg)),
     }
 }
 
-fn parse_apkcerts<R>(archive: &mut ZipArchive<R>) -> Result<(Vec<Apk>, Option<String>)> where R: Seek, R: Read {
+fn parse_apkcerts<R>(archive: &mut ZipArchive<R>) -> Result<(Vec<Apk>, Option<String>)>
+where
+    R: Seek,
+    R: Read,
+{
     let mut apkcerts = archive
         .by_path(Path::new("META/apkcerts.txt"))
         .context("Failed to read META/apkcerts.txt from archive")?;
@@ -162,7 +171,11 @@ fn parse_apkcerts<R>(archive: &mut ZipArchive<R>) -> Result<(Vec<Apk>, Option<St
                     let v = v
                         .strip_prefix('"')
                         .and_then(|x| x.strip_suffix('"'))
-                        .ok_or(anyhow!("Malformed apkcerts.txt field in line {}: {}", i, line))?
+                        .ok_or(anyhow!(
+                            "Malformed apkcerts.txt field in line {}: {}",
+                            i,
+                            line
+                        ))?
                         .to_string();
                     match *k {
                         "name" => name = Some(v),
@@ -173,7 +186,13 @@ fn parse_apkcerts<R>(archive: &mut ZipArchive<R>) -> Result<(Vec<Apk>, Option<St
                         f => return Err(anyhow!("Unknown field {}", f)),
                     }
                 }
-                _ => return Err(anyhow!("Malformed field {} in apkcerts.txt line {}", field, i)),
+                _ => {
+                    return Err(anyhow!(
+                        "Malformed field {} in apkcerts.txt line {}",
+                        field,
+                        i
+                    ));
+                }
             }
         }
 
@@ -181,25 +200,36 @@ fn parse_apkcerts<R>(archive: &mut ZipArchive<R>) -> Result<(Vec<Apk>, Option<St
             let compressed = format!(".{compressed}");
             match compressed_extension {
                 None => compressed_extension = Some(compressed),
-                Some(s) => return Err(anyhow!("Conflicting compressed extensions `{}` and `{}` in apkcerts.txt", compressed, s)),
+                Some(s) => {
+                    return Err(anyhow!(
+                        "Conflicting compressed extensions `{}` and `{}` in apkcerts.txt",
+                        compressed,
+                        s
+                    ));
+                }
             }
         }
 
-        let name = name
-            .ok_or(anyhow!("Missing field `name` in apkcerts.txt line {}", i))?;
-        let certificate_path = certificate
-            .ok_or(anyhow!("Missing field `certificate` in apkcerts.txt line {}", i))?;
-        let private_key_path = private_key
-            .ok_or(anyhow!("Missing field `private_key` in apkcerts.txt line {}", i))?;
+        let name = name.ok_or(anyhow!("Missing field `name` in apkcerts.txt line {}", i))?;
+        let certificate_path = certificate.ok_or(anyhow!(
+            "Missing field `certificate` in apkcerts.txt line {}",
+            i
+        ))?;
+        let private_key_path = private_key.ok_or(anyhow!(
+            "Missing field `private_key` in apkcerts.txt line {}",
+            i
+        ))?;
 
-        let cert = Key::try_from_pubkey(certificate_path)
-            .context("Failed to parse APK public key")?;
+        let cert =
+            Key::try_from_pubkey(certificate_path).context("Failed to parse APK public key")?;
 
         if let Key::Path(_) = cert {
             let priv_key = Key::try_from_privkey(private_key_path)
                 .context("Failed to parse APK private key")?;
             if cert != priv_key {
-                return Err(anyhow!("cert name ({cert:?}) doesn't match private key name ({priv_key:?}) in apkcerts.txt line {i}"));
+                return Err(anyhow!(
+                    "cert name ({cert:?}) doesn't match private key name ({priv_key:?}) in apkcerts.txt line {i}"
+                ));
             }
         }
         apks.push(Apk {
@@ -210,7 +240,11 @@ fn parse_apkcerts<R>(archive: &mut ZipArchive<R>) -> Result<(Vec<Apk>, Option<St
 
     Ok((apks, compressed_extension))
 }
-fn parse_apexkeys<R>(archive: &mut ZipArchive<R>) -> Result<Vec<Apex>> where R: Seek, R: Read {
+fn parse_apexkeys<R>(archive: &mut ZipArchive<R>) -> Result<Vec<Apex>>
+where
+    R: Seek,
+    R: Read,
+{
     let mut apexkeys = archive
         .by_path(Path::new("META/apexkeys.txt"))
         .context("Failed to read META/apexkeys.txt from archive")?;
@@ -224,7 +258,7 @@ fn parse_apexkeys<R>(archive: &mut ZipArchive<R>) -> Result<Vec<Apex>> where R: 
         let mut name = None;
         // Yes, sign_target_files_apks compares the container
         // keys but not the payload keys.
-        let mut _public_key = None; 
+        let mut _public_key = None;
         let mut private_key = None;
         let mut container_certificate = None;
         let mut container_private_key = None;
@@ -236,7 +270,11 @@ fn parse_apexkeys<R>(archive: &mut ZipArchive<R>) -> Result<Vec<Apex>> where R: 
                     let v = v
                         .strip_prefix('"')
                         .and_then(|x| x.strip_suffix('"'))
-                        .ok_or(anyhow!("Malformed apkcerts.txt field in line {}: {}", i, line))?
+                        .ok_or(anyhow!(
+                            "Malformed apkcerts.txt field in line {}: {}",
+                            i,
+                            line
+                        ))?
                         .to_string();
                     match *k {
                         "name" => name = Some(v),
@@ -249,18 +287,29 @@ fn parse_apexkeys<R>(archive: &mut ZipArchive<R>) -> Result<Vec<Apex>> where R: 
                         f => return Err(anyhow!("Unknown field {}", f)),
                     }
                 }
-                _ => return Err(anyhow!("Malformed field {} in apexkeys.txt line {}", field, i)),
+                _ => {
+                    return Err(anyhow!(
+                        "Malformed field {} in apexkeys.txt line {}",
+                        field,
+                        i
+                    ));
+                }
             }
         }
 
-        let name = name
-            .ok_or(anyhow!("Missing field `name` in apexkeys.txt line {}", i))?;
-        let payload_private_key = private_key
-            .ok_or(anyhow!("Missing field `private_key` in apexkeys.txt line {}", i))?;
-        let container_certificate = container_certificate
-            .ok_or(anyhow!("Missing field `container_certificate` in apexkeys.txt line {}", i))?;
-        let container_private_key = container_private_key
-            .ok_or(anyhow!("Missing field `container_private_key` in apexkeys.txt line {}", i))?;
+        let name = name.ok_or(anyhow!("Missing field `name` in apexkeys.txt line {}", i))?;
+        let payload_private_key = private_key.ok_or(anyhow!(
+            "Missing field `private_key` in apexkeys.txt line {}",
+            i
+        ))?;
+        let container_certificate = container_certificate.ok_or(anyhow!(
+            "Missing field `container_certificate` in apexkeys.txt line {}",
+            i
+        ))?;
+        let container_private_key = container_private_key.ok_or(anyhow!(
+            "Missing field `container_private_key` in apexkeys.txt line {}",
+            i
+        ))?;
 
         let cert = Key::try_from_pubkey(container_certificate)
             .context("Failed to parse APK public key")?;
@@ -269,7 +318,9 @@ fn parse_apexkeys<R>(archive: &mut ZipArchive<R>) -> Result<Vec<Apex>> where R: 
             let priv_key = Key::try_from_privkey(container_private_key)
                 .context("Failed to parse APK private key")?;
             if cert != priv_key {
-                return Err(anyhow!("cert name ({cert:?}) doesn't match private key name ({priv_key:?}) in apexkeys.txt line {i}"));
+                return Err(anyhow!(
+                    "cert name ({cert:?}) doesn't match private key name ({priv_key:?}) in apexkeys.txt line {i}"
+                ));
             }
         }
         apexes.push(Apex {
@@ -282,10 +333,19 @@ fn parse_apexkeys<R>(archive: &mut ZipArchive<R>) -> Result<Vec<Apex>> where R: 
     Ok(apexes)
 }
 
-fn get_apk_names<R>(archive: &mut ZipArchive<R>, compressed_extension: &Option<String>) -> Result<Vec<String>> where R: Read, R: Seek {
+fn get_apk_names<R>(
+    archive: &mut ZipArchive<R>,
+    compressed_extension: &Option<String>,
+) -> Result<Vec<String>>
+where
+    R: Read,
+    R: Seek,
+{
     let mut apks = vec![];
     for i in 0..archive.len() {
-        let file = archive.by_index(i).context("Failed reading file from archive")?;
+        let file = archive
+            .by_index(i)
+            .context("Failed reading file from archive")?;
         let path = file
             .enclosed_name()
             .context("Failed reading enclosed filename")?;
@@ -293,18 +353,17 @@ fn get_apk_names<R>(archive: &mut ZipArchive<R>, compressed_extension: &Option<S
 
         let apk_name = match filename {
             Some(name) => {
-                let mut name = name
-                    .to_str()
-                    .ok_or(anyhow!("Error decoding file name"))?;
+                let mut name = name.to_str().ok_or(anyhow!("Error decoding file name"))?;
 
                 if let Some(compressed_extension) = compressed_extension {
-                    name = name
-                        .strip_suffix(compressed_extension)
-                        .ok_or(anyhow!("File name doesn't end in compressed extension {:?}", compressed_extension))?;
+                    name = name.strip_suffix(compressed_extension).ok_or(anyhow!(
+                        "File name doesn't end in compressed extension {:?}",
+                        compressed_extension
+                    ))?;
                 }
 
                 name.to_string()
-            },
+            }
             None => continue,
         };
         if apk_name.ends_with(".apk") {
@@ -349,10 +408,7 @@ fn main() -> Result<()> {
     let apexes = parse_apexkeys(&mut archive)?;
 
     // For each APK and APEX, mark whether their keys have already been replaced
-    let mut apks: Vec<_> = apks
-        .into_iter()
-        .map(|x| (x, false))
-        .collect();
+    let mut apks: Vec<_> = apks.into_iter().map(|x| (x, false)).collect();
 
     let mut apexes: Vec<_> = apexes
         .into_iter()
@@ -360,15 +416,9 @@ fn main() -> Result<()> {
         .collect();
 
     // For each type of flag, mark whether it has already been used
-    let mut extra_apks: Vec<_> = extra_apks
-        .into_iter()
-        .map(|x| (x, false))
-        .collect();
+    let mut extra_apks: Vec<_> = extra_apks.into_iter().map(|x| (x, false)).collect();
 
-    let mut key_mappings: Vec<_> = key_mappings
-        .into_iter()
-        .map(|x| (x, false))
-        .collect();
+    let mut key_mappings: Vec<_> = key_mappings.into_iter().map(|x| (x, false)).collect();
 
     let mut extra_apex_payload_keys: Vec<_> = extra_apex_payload_keys
         .into_iter()
@@ -452,21 +502,30 @@ fn main() -> Result<()> {
     let mut all_flags_used = true;
     for (extra_apk, used) in extra_apks.iter() {
         if !used {
-            eprintln!("extra_apks flag for APK {}, key {:?} is never used", extra_apk.name, extra_apk.key);
+            eprintln!(
+                "extra_apks flag for APK {}, key {:?} is never used",
+                extra_apk.name, extra_apk.key
+            );
             all_flags_used = false;
         }
     }
 
     for (key_mapping, used) in key_mappings.iter() {
         if !used {
-            eprintln!("key_mapping flag from {:?} to {:?} is never used", key_mapping.from, key_mapping.to);
+            eprintln!(
+                "key_mapping flag from {:?} to {:?} is never used",
+                key_mapping.from, key_mapping.to
+            );
             all_flags_used = false;
         }
     }
 
     for (extra_apex_payload_key, used) in extra_apex_payload_keys.iter() {
         if !used {
-            eprintln!("extra_apex_payload_key flag for APEX {}, payload key {:?} is never used", extra_apex_payload_key.name, extra_apex_payload_key.payload_key);
+            eprintln!(
+                "extra_apex_payload_key flag for APEX {}, payload key {:?} is never used",
+                extra_apex_payload_key.name, extra_apex_payload_key.payload_key
+            );
             all_flags_used = false;
         }
     }
@@ -475,9 +534,13 @@ fn main() -> Result<()> {
         if all_flags_used || !args.fail_on_unused_flags {
             Ok(())
         } else {
-            Err(anyhow!("Not all sign_target_files_apks flags have been used."))
+            Err(anyhow!(
+                "Not all sign_target_files_apks flags have been used."
+            ))
         }
     } else {
-        Err(anyhow!("Some keys would not be replaced by the given sign_target_files_apks flags."))
+        Err(anyhow!(
+            "Some keys would not be replaced by the given sign_target_files_apks flags."
+        ))
     }
 }
