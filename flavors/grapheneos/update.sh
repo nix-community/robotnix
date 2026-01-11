@@ -23,7 +23,8 @@ for tag in $tags; do
 done
 
 echo "Extracting build IDs..."
-repo-tool get-build-id build_ids.json "$lockfiles"
+# shellcheck disable=2086
+repo-tool get-build-id build_ids.json $lockfiles
 
 echo "Deleting unused lockfiles..."
 for lockfile in */repo.lock; do
@@ -50,7 +51,7 @@ for tag in $tags; do
   fi
   adevtool_path=$(jq -r '.entries.["vendor/adevtool"].lock.path' "$tag/repo.lock")
   echo "Ensuring that $adevtool_path is present in the Nix store..."
-  repo-tool ensure-store-paths "$tag/repo.lock vendor/adevtool"
+  repo-tool ensure-store-paths "$tag/repo.lock" "vendor/adevtool"
   echo "$tag: Prefetching yarn deps in $adevtool_path/yarn.lock"
   hash=$(prefetch-yarn-deps "$adevtool_path/yarn.lock")
   printf ' "%s": "%s"' "$tag" "$hash" >>yarn_hashes.json.part
@@ -68,7 +69,7 @@ for tag in $tags; do
   for device in $devices; do
     found=0
     for channel in stable beta alpha; do
-      if [ "$tag" = "$(jq -r ".device_info.$channel.$device.git_tag $orig_dir/channel_info.json")" ]; then
+      if [ "$tag" = "$(jq -r ".device_info.$channel.$device.git_tag" "$orig_dir/channel_info.json")" ]; then
         found=1
         break
       fi
