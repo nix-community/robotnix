@@ -22,7 +22,7 @@ jobs:
          echo "OLD_NEWEST_BUILD_NUMBER=$OLD_NEWEST_BUILD_NUMBER" | tee -a $GITHUB_ENV
 
          cd flavors/grapheneos
-         nix develop -c ./update.sh
+         nix develop -c ./update.sh --cleanup
 
          NEW_NEWEST_BUILD_NUMBER=$(jq -r ".git_tags[]" flavors/grapheneos/channel_info.json | tail -n 1)
          echo "NEW_NEWEST_BUILD_NUMBER=$NEW_NEWEST_BUILD_NUMBER" | tee -a $GITHUB_ENV

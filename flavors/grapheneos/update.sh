@@ -18,7 +18,7 @@ for tag in $tags; do
     fi
   fi
   echo "Fetching lockfile for tag $tag."
-  repo-tool fetch --tag -r "$tag" https://github.com/GrapheneOS/platform_manifest "$tag/repo.lock"
+  repo-tool fetch --tag -r "$tag" https://github.com/GrapheneOS/platform_manifest "$tag/repo.lock" "${@:1}"
   lockfiles="$lockfiles $tag/repo.lock"
 done
 
