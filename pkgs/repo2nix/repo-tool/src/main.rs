@@ -50,6 +50,9 @@ enum Args {
 
         #[arg(long)]
         muppets: bool,
+
+        #[arg(long)]
+        cleanup: bool,
     },
     GetLineageDevices {
         device_metadata_file: PathBuf,
@@ -141,6 +144,7 @@ async fn fetch(
     lineage_device_file: Vec<PathBuf>,
     missing_dep_devs_file: Option<PathBuf>,
     muppets: bool,
+    cleanup: bool,
 ) -> Result<(), FetchError> {
     if muppets || lineage_device_file.len() > 0 {
         assert!(
@@ -155,7 +159,7 @@ async fn fetch(
     } else {
         format!("refs/heads/{revision}")
     };
-    let manifest_fetch = nix_prefetch_git(&url, &git_ref, false, false).await?;
+    let manifest_fetch = nix_prefetch_git(&url, &git_ref, false, false, false).await?;
 
     let mut manifest_xml =
         recursively_read_manifest_files(&manifest_fetch.path, Path::new("default.xml"))
@@ -166,6 +170,7 @@ async fn fetch(
         let muppets_fetch = nix_prefetch_git(
             &Url::parse("https://github.com/TheMuppets/manifests")?,
             &format!("refs/heads/{revision}"),
+            false,
             false,
             false,
         )
@@ -270,7 +275,7 @@ async fn fetch(
     }
 
     lockfile
-        .update_all()
+        .update_all(cleanup)
         .await
         .map_err(FetchError::UpdateLockset)?;
     lockfile
@@ -456,6 +461,7 @@ async fn main() -> Result<(), MainError> {
             lineage_device_file,
             missing_dep_devs_file,
             muppets,
+            cleanup,
         } => {
             fetch(
                 manifest_url,
@@ -465,6 +471,7 @@ async fn main() -> Result<(), MainError> {
                 lineage_device_file,
                 missing_dep_devs_file,
                 muppets,
+                cleanup,
             )
             .await?;
         }

@@ -36,6 +36,7 @@ pub async fn fetch_hudson_devices()
         "refs/heads/main",
         false,
         false,
+        false,
     )
     .await?;
 
@@ -82,6 +83,7 @@ pub async fn get_device_repos() -> Result<Vec<(String, String)>, GetDeviceReposE
     let mirror_fetch = nix_prefetch_git(
         &Url::parse("https://github.com/LineageOS/mirror").unwrap(),
         "refs/heads/main",
+        false,
         false,
         false,
     )

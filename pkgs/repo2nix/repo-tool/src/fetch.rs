@@ -41,10 +41,10 @@ pub struct NixPrefetchGitOutput {
 
 #[derive(Debug, Error)]
 pub enum NixPrefetchGitError {
-    #[error("couldn't spawn `nix-prefetch-git` process")]
-    ProcessSpawn(#[from] io::Error),
-    #[error("`nix-prefetch-git` did not return successfully ({0:?}), stderr:\n{1}")]
-    NonzeroExitStatus(Option<i32>, String),
+    #[error("couldn't spawn `{0}` process")]
+    ProcessSpawn(String, #[source] io::Error),
+    #[error("`{0}` did not return successfully ({1:?}), stderr:\n{2}")]
+    NonzeroExitStatus(String, Option<i32>, String),
     #[error("couldn't parse `nix-prefetch-git` output")]
     Parse(#[from] serde_json::Error),
 }
@@ -54,6 +54,7 @@ pub async fn nix_prefetch_git(
     revision: &str,
     fetch_lfs: bool,
     fetch_submodules: bool,
+    cleanup: bool,
 ) -> Result<NixPrefetchGitOutput, NixPrefetchGitError> {
     eprintln!("Prefetching `{}`, revision {}...", repo_url, revision);
     let mut flag_args = vec![];
@@ -70,16 +71,37 @@ pub async fn nix_prefetch_git(
         .arg(&revision)
         .args(&flag_args)
         .output()
-        .await?;
+        .await
+        .map_err(|e| NixPrefetchGitError::ProcessSpawn("nix-prefetch-git".to_string(), e))?;
 
     if !output.status.success() {
         return Err(NixPrefetchGitError::NonzeroExitStatus(
+            "nix-prefetch-git".to_string(),
             output.status.code(),
             String::from_utf8_lossy(&output.stderr).to_string(),
         ));
     }
 
-    Ok(serde_json::from_slice(&output.stdout)?)
+    let output: NixPrefetchGitOutput = serde_json::from_slice(&output.stdout)?;
+
+    if cleanup {
+        let output = Command::new("nix-store")
+            .arg("--delete")
+            .arg(&output.path)
+            .output()
+            .await
+            .map_err(|e| NixPrefetchGitError::ProcessSpawn("nix-store".to_string(), e))?;
+
+        if !output.status.success() {
+            return Err(NixPrefetchGitError::NonzeroExitStatus(
+                "nix-store".to_string(),
+                output.status.code(),
+                String::from_utf8_lossy(&output.stderr).to_string(),
+            ));
+        }
+    }
+
+    Ok(output)
 }
 
 #[derive(Debug, Error)]

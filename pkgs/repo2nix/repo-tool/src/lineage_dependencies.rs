@@ -223,7 +223,7 @@ pub async fn prefetch_lineage_dependencies(
         };
         eprintln!("Fetching LineageOS dependencies for {}...", path.display());
 
-        let (new_deps, new_projects) = match lockfile.update(&path).await {
+        let (new_deps, new_projects) = match lockfile.update(&path, false).await {
             Ok(()) => {
                 lockfile.ensure_store_path(&path).await?;
 
