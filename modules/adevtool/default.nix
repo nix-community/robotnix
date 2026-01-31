@@ -72,7 +72,7 @@ in
   config = lib.mkIf cfg.enable {
     envPackages = with pkgs; [
       # Needed for running adevtool.
-      nodejs
+      nodejs_24
 
       # adevtool uses e2fsprogs `debugfs` to extract the vendor ext4 images.
       e2fsprogs
