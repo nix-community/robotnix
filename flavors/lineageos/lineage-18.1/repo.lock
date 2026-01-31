@@ -1,5 +1,5 @@
 {
-  "fetch_completed": true,
+  "fetch_completed": false,
   "entries": {
     "android": {
       "project": {
@@ -101,7 +101,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "df67e383c1295516b49ecb25879127926d0899c5",
@@ -122,22 +122,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "bootable/cboot/common",
-            "bootable/cboot/t18x",
-            "bootable/cboot/t19x",
-            "hardware/nvidia/hwinc"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -168,7 +154,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "00aff4588eecc9bcf239c1458d3b7cfbc241b8cc",
@@ -198,7 +184,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "c7901fc76de6de9cfe4057f9c56289615edf7005",
@@ -509,40 +495,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "deadpool"
-          },
-          {
-            "DeviceSpecific": "dopinder"
-          },
-          {
-            "DeviceSpecific": "m5"
-          },
-          {
-            "DeviceSpecific": "odroidc4"
-          },
-          {
-            "DeviceSpecific": "radxa0"
-          },
-          {
-            "DeviceSpecific": "sabrina"
-          },
-          {
-            "DeviceSpecific": "wade"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/amlogic/linux-4.9",
-            "hardware/amlogic/kernel-modules/mali-driver",
-            "hardware/amlogic/kernel-modules/media",
-            "hardware/amlogic/kernel-modules/optee",
-            "hardware/amlogic/tools/dtbtool",
-            "hardware/amlogic/tools/imagepacker",
-            "hardware/amlogic/tools/respacker"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -634,12 +588,7 @@
             "DeviceSpecific": "wade"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/amlogic/g12-common",
-            "hardware/amlogic/kernel-modules/dhd-driver"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -1406,9 +1355,6 @@
         "categories": [
           {
             "DeviceSpecific": "bonito"
-          },
-          {
-            "DeviceSpecific": "sargo"
           }
         ],
         "lineage_deps": {
@@ -1500,9 +1446,6 @@
         "categories": [
           {
             "DeviceSpecific": "coral"
-          },
-          {
-            "DeviceSpecific": "flame"
           }
         ],
         "lineage_deps": {
@@ -1533,9 +1476,6 @@
           "fetch_submodules": false
         },
         "categories": [
-          {
-            "DeviceSpecific": "blueline"
-          },
           {
             "DeviceSpecific": "crosshatch"
           }
@@ -1657,9 +1597,6 @@
         "categories": [
           {
             "DeviceSpecific": "marlin"
-          },
-          {
-            "DeviceSpecific": "sailfish"
           }
         ],
         "lineage_deps": {
@@ -1698,7 +1635,7 @@
             "device/google/wahoo"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "85fa2f9d8b07ad581637c4184d1f70385fb35106",
@@ -1719,22 +1656,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "barbet"
-          },
-          {
-            "DeviceSpecific": "bramble"
-          },
-          {
-            "DeviceSpecific": "redfin"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/google/redbull"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -1886,11 +1809,7 @@
             "DeviceSpecific": "sunfish"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/google/sunfish"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -1917,11 +1836,7 @@
             "DeviceSpecific": "taimen"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/google/wahoo"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -1984,7 +1899,7 @@
             "packages/apps/ElmyraService"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "9e1741b37c579992aa7ae8b381ac70f99cda27ee",
@@ -2010,11 +1925,7 @@
             "DeviceSpecific": "walleye"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/google/muskie"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -2098,19 +2009,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "heart"
-          },
-          {
-            "DeviceSpecific": "zippo"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/lenovo/sm8150"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -2137,11 +2037,7 @@
             "DeviceSpecific": "zippo"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/lenovo/sm8150-common"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -2331,27 +2227,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "kane"
-          },
-          {
-            "DeviceSpecific": "troika"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "device/samsung_slsi/sepolicy",
-            "hardware/motorola",
-            "hardware/samsung",
-            "hardware/samsung/nfc",
-            "hardware/samsung_slsi/fm",
-            "hardware/samsung_slsi/libbt",
-            "hardware/samsung_slsi/scsc_wifibt/wifi_hal",
-            "hardware/samsung_slsi/scsc_wifibt/wpa_supplicant_lib",
-            "kernel/motorola/exynos9610"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -2688,25 +2565,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "channel"
-          },
-          {
-            "DeviceSpecific": "ocean"
-          },
-          {
-            "DeviceSpecific": "river"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/motorola/sdm632",
-            "external/bson",
-            "hardware/motorola",
-            "system/qcom"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -2728,28 +2588,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "beckham"
-          },
-          {
-            "DeviceSpecific": "evert"
-          },
-          {
-            "DeviceSpecific": "lake"
-          },
-          {
-            "DeviceSpecific": "payton"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/motorola/msm8998",
-            "external/bson",
-            "hardware/motorola",
-            "system/qcom"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -2771,17 +2611,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nairo"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/motorola/sm7250",
-            "hardware/motorola"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -2808,11 +2639,7 @@
             "DeviceSpecific": "troika"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/motorola/exynos9610-common"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -2837,9 +2664,6 @@
         "categories": [
           {
             "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
           }
         ],
         "lineage_deps": {
@@ -2946,16 +2770,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "PL2"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/nokia/sdm660"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -3011,15 +2827,6 @@
         "categories": [
           {
             "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
           }
         ],
         "lineage_deps": {
@@ -3065,9 +2872,6 @@
         "categories": [
           {
             "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
           }
         ],
         "lineage_deps": {
@@ -3099,9 +2903,6 @@
         "categories": [
           {
             "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
           }
         ],
         "lineage_deps": {
@@ -3167,9 +2968,6 @@
         "categories": [
           {
             "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
           }
         ],
         "lineage_deps": {
@@ -3269,7 +3067,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "9c1559abfb0aeb10c15ddc88e99d3dd1fccdd0e3",
@@ -3290,27 +3088,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -3332,19 +3111,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "device/nvidia/tegra-common"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -3366,31 +3134,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "device/nvidia/tegra-common"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -3443,7 +3188,7 @@
             "device/nvidia/sepolicy"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "953bf773d716fe73d5c8c6867b1f481456fdbcdf",
@@ -3899,20 +3644,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "cheeseburger"
-          },
-          {
-            "DeviceSpecific": "dumpling"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/oneplus",
-            "kernel/oneplus/msm8998"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -3934,20 +3667,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "enchilada"
-          },
-          {
-            "DeviceSpecific": "fajita"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/oneplus",
-            "kernel/oneplus/sdm845"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -3969,26 +3690,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "guacamole"
-          },
-          {
-            "DeviceSpecific": "guacamoleb"
-          },
-          {
-            "DeviceSpecific": "hotdog"
-          },
-          {
-            "DeviceSpecific": "hotdogb"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/oneplus",
-            "kernel/oneplus/sm8150"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -4010,23 +3713,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "instantnoodle"
-          },
-          {
-            "DeviceSpecific": "instantnoodlep"
-          },
-          {
-            "DeviceSpecific": "kebab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/oneplus",
-            "kernel/oneplus/sm8250"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -4048,20 +3736,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "lemonade"
-          },
-          {
-            "DeviceSpecific": "lemonadep"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/oneplus",
-            "kernel/oneplus/sm8350"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -4533,37 +4209,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "beyond0lte"
-          },
-          {
-            "DeviceSpecific": "beyond1lte"
-          },
-          {
-            "DeviceSpecific": "beyond2lte"
-          },
-          {
-            "DeviceSpecific": "beyondx"
-          },
-          {
-            "DeviceSpecific": "d1"
-          },
-          {
-            "DeviceSpecific": "d2s"
-          },
-          {
-            "DeviceSpecific": "d2x"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "device/samsung_slsi/sepolicy",
-            "hardware/samsung",
-            "hardware/samsung/nfc",
-            "kernel/samsung/exynos9820"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -4616,24 +4263,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "gta4xl"
-          },
-          {
-            "DeviceSpecific": "gta4xlwifi"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "device/samsung_slsi/sepolicy",
-            "hardware/samsung",
-            "hardware/samsung_slsi/libbt",
-            "hardware/samsung_slsi/scsc_wifibt/wifi_hal",
-            "hardware/samsung_slsi/scsc_wifibt/wpa_supplicant_lib",
-            "kernel/samsung/gta4xl"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -4717,20 +4348,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "gts4lv"
-          },
-          {
-            "DeviceSpecific": "gts4lvwifi"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "device/samsung/qcom-common",
-            "kernel/samsung/sdm670"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -4796,7 +4415,7 @@
             "hardware/samsung"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "3f56559a5436fd7be36fc6b7010ed3506ebe6e08",
@@ -4853,7 +4472,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "9968b62f8f76c22143a8fc7491440aa11c32e6f4",
@@ -5091,31 +4710,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "discovery"
-          },
-          {
-            "DeviceSpecific": "kirin"
-          },
-          {
-            "DeviceSpecific": "mermaid"
-          },
-          {
-            "DeviceSpecific": "pioneer"
-          },
-          {
-            "DeviceSpecific": "voyager"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/sony/sdm660",
-            "hardware/sony/macaddrsetup",
-            "hardware/sony/simdetect",
-            "hardware/sony/SonyOpenTelephony"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5168,26 +4764,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "akari"
-          },
-          {
-            "DeviceSpecific": "akatsuki"
-          },
-          {
-            "DeviceSpecific": "aurora"
-          },
-          {
-            "DeviceSpecific": "xz2c"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/sony/sdm845",
-            "hardware/sony/SonyOpenTelephony"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5214,11 +4792,7 @@
             "DeviceSpecific": "voyager"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/sony/nile-common"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5245,11 +4819,7 @@
             "DeviceSpecific": "xz2c"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/sony/tama-common"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5613,20 +5183,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "gemini"
-          },
-          {
-            "DeviceSpecific": "natrium"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/xiaomi",
-            "kernel/xiaomi/msm8996"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5648,19 +5206,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "chiron"
-          },
-          {
-            "DeviceSpecific": "sagit"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/xiaomi/msm8998"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5825,6 +5372,33 @@
         "date": 1610138319
       }
     },
+    "device/xiaomi/scorpio": {
+      "project": {
+        "path": "device/xiaomi/scorpio",
+        "groups": [],
+        "linkfiles": [],
+        "copyfiles": [],
+        "repo_ref": {
+          "repo_url": "https://github.com/LineageOS/android_device_xiaomi_scorpio",
+          "revision": "refs/heads/lineage-18.1",
+          "fetch_lfs": true,
+          "fetch_submodules": false
+        },
+        "categories": [
+          {
+            "DeviceSpecific": "scorpio"
+          }
+        ],
+        "lineage_deps": null,
+        "active": true
+      },
+      "lock": {
+        "commit": "62052d7ecaeabac766e706c750bbc9328c6ad730",
+        "nix_hash": "sha256-ILkZLkny94jhySvWshzMejke8iF/RHJFNAO8X4VyS00=",
+        "path": "/nix/store/b53al9cbsndr1nd5qqvxzg6xfr824rh3-android_device_xiaomi_scorpio-62052d7",
+        "date": 1767304030
+      }
+    },
     "device/xiaomi/sdm845-common": {
       "project": {
         "path": "device/xiaomi/sdm845-common",
@@ -5837,32 +5411,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "beryllium"
-          },
-          {
-            "DeviceSpecific": "dipper"
-          },
-          {
-            "DeviceSpecific": "equuleus"
-          },
-          {
-            "DeviceSpecific": "perseus"
-          },
-          {
-            "DeviceSpecific": "polaris"
-          },
-          {
-            "DeviceSpecific": "ursa"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/xiaomi",
-            "kernel/xiaomi/sdm845"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5884,16 +5434,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "ginkgo"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "kernel/xiaomi/sm6125"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5915,17 +5457,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "miatoll"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/xiaomi",
-            "kernel/xiaomi/sm6250"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -5958,7 +5491,7 @@
             "kernel/xiaomi/sm8150"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "2f0a1297d358d15164d904af28029cfe0410114c",
@@ -5979,23 +5512,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "alioth"
-          },
-          {
-            "DeviceSpecific": "apollon"
-          },
-          {
-            "DeviceSpecific": "lmi"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/xiaomi",
-            "kernel/xiaomi/sm8250"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -6022,12 +5540,7 @@
             "DeviceSpecific": "surya"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/xiaomi",
-            "kernel/xiaomi/surya"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -6054,11 +5567,7 @@
             "DeviceSpecific": "ursa"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/xiaomi/sdm845-common"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -6085,11 +5594,7 @@
             "DeviceSpecific": "vayu"
           }
         ],
-        "lineage_deps": {
-          "Some": [
-            "device/xiaomi/sm8150-common"
-          ]
-        },
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -7179,33 +6684,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "beckham"
-          },
-          {
-            "DeviceSpecific": "channel"
-          },
-          {
-            "DeviceSpecific": "evert"
-          },
-          {
-            "DeviceSpecific": "lake"
-          },
-          {
-            "DeviceSpecific": "nash"
-          },
-          {
-            "DeviceSpecific": "ocean"
-          },
-          {
-            "DeviceSpecific": "payton"
-          },
-          {
-            "DeviceSpecific": "river"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -11224,7 +10704,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "22be1d84a526860938ea69fa7a8ae88a75db2d7b",
@@ -17502,21 +16982,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "deadpool"
-          },
-          {
-            "DeviceSpecific": "radxa0"
-          },
-          {
-            "DeviceSpecific": "sabrina"
-          },
-          {
-            "DeviceSpecific": "wade"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -17562,7 +17029,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "6938a96d68eb5fa89579adcc30f71c5239700971",
@@ -17607,7 +17074,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "9aed590709d7704b356336bd45f7d9b2bc020d97",
@@ -17652,7 +17119,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "41e2e18d3a224bc2ee418fe8bd8292fd85eae16e",
@@ -17673,12 +17140,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "m5"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -17700,15 +17163,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "dopinder"
-          },
-          {
-            "DeviceSpecific": "m5"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -17754,7 +17210,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "2774291f381ddb6b46fcb30ffebf4fac0893b237",
@@ -17799,7 +17255,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "f3f3119d20aecfdaa01eda269e327e2babebf313",
@@ -17844,7 +17300,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "0f5f7536e6dd3a5105099ba662875a163b6eeb83",
@@ -18137,15 +17593,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18354,48 +17803,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "beckham"
-          },
-          {
-            "DeviceSpecific": "channel"
-          },
-          {
-            "DeviceSpecific": "evert"
-          },
-          {
-            "DeviceSpecific": "kane"
-          },
-          {
-            "DeviceSpecific": "kiev"
-          },
-          {
-            "DeviceSpecific": "lake"
-          },
-          {
-            "DeviceSpecific": "nairo"
-          },
-          {
-            "DeviceSpecific": "nash"
-          },
-          {
-            "DeviceSpecific": "nio"
-          },
-          {
-            "DeviceSpecific": "ocean"
-          },
-          {
-            "DeviceSpecific": "payton"
-          },
-          {
-            "DeviceSpecific": "river"
-          },
-          {
-            "DeviceSpecific": "troika"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18417,15 +17826,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18447,19 +17849,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "external/libevdev"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18481,15 +17872,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18511,15 +17895,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18550,7 +17927,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "432a099f4d1af8d51492301a2312fdb7aa091f52",
@@ -18571,33 +17948,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18619,33 +17971,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18682,7 +18009,7 @@
             "hardware/nvidia/soc/t18x"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "e5b7c7c35c0bb45a8deeb7f26c8b5828e8d76345",
@@ -18703,22 +18030,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t18x/common",
-            "hardware/nvidia/soc/t18x"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18740,22 +18053,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t18x/common",
-            "hardware/nvidia/soc/t18x"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18777,22 +18076,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t210/porg",
-            "hardware/nvidia/soc/t210"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18840,7 +18125,7 @@
             "hardware/nvidia/soc/t210"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "eb0201ef6542cdfc2504ee279b7ba64d754d1586",
@@ -18861,28 +18146,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t210/common",
-            "hardware/nvidia/soc/t210"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18904,28 +18169,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t210/common",
-            "hardware/nvidia/soc/t210"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18947,22 +18192,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t210/common",
-            "hardware/nvidia/soc/t210"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -18984,22 +18215,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t210/common",
-            "hardware/nvidia/soc/t210"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -19036,7 +18253,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "59a41c245194b97459f4af8b20949427e6e6c47b",
@@ -19057,30 +18274,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t210/common",
-            "hardware/nvidia/platform/t210/foster",
-            "hardware/nvidia/soc/t210",
-            "hardware/nvidia/platform/t210b01/ers"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -19125,7 +18320,7 @@
             "hardware/nvidia/platform/t210b01/common"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "f05bdef98e3802ae4769ce5abd38bb5645455e58",
@@ -19146,30 +18341,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          }
-        ],
-        "lineage_deps": {
-          "Some": [
-            "hardware/nvidia/platform/tegra/common",
-            "hardware/nvidia/soc/tegra",
-            "hardware/nvidia/platform/t210/common",
-            "hardware/nvidia/platform/t210/foster",
-            "hardware/nvidia/soc/t210",
-            "hardware/nvidia/platform/t210b01/ers"
-          ]
-        },
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -19222,7 +18395,7 @@
             "hardware/nvidia/soc/tegra"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "a74fe5a8284cb7d083ebb8f75bd8f1e00c59a580",
@@ -19243,33 +18416,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -19304,7 +18452,7 @@
             "hardware/nvidia/soc/tegra"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "32b79f6a7db0bac7bfea3c46aa62c69306356a6c",
@@ -19350,7 +18498,7 @@
             "hardware/nvidia/soc/tegra"
           ]
         },
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "37150e9da0719cf2af130a2292f748f71478c319",
@@ -19398,7 +18546,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "3513b67d154deb7e6ffdf3f1914a9c980304057f",
@@ -19419,33 +18567,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -19563,7 +18686,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "242c57566dfdab4bf6e017d873ba01e086b92c53",
@@ -21820,15 +20943,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "dopinder"
-          },
-          {
-            "DeviceSpecific": "m5"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -21919,7 +21035,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "6710479da9e205360dc9097a7aa264bb40e6e5be",
@@ -21940,39 +21056,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "PL2"
-          },
-          {
-            "DeviceSpecific": "beyond0lte"
-          },
-          {
-            "DeviceSpecific": "beyond1lte"
-          },
-          {
-            "DeviceSpecific": "beyond2lte"
-          },
-          {
-            "DeviceSpecific": "beyondx"
-          },
-          {
-            "DeviceSpecific": "d1"
-          },
-          {
-            "DeviceSpecific": "d2s"
-          },
-          {
-            "DeviceSpecific": "d2x"
-          },
-          {
-            "DeviceSpecific": "kane"
-          },
-          {
-            "DeviceSpecific": "troika"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22003,7 +21088,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "1f85f60a7dfa6dd455b81fac47e777e93e237dbe",
@@ -22039,7 +21124,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "f63a27ddba458a81db739f2adbd42abf075b9c18",
@@ -22075,7 +21160,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "3e1ad74581c84cd4cb58968698e7f097ff2b3e43",
@@ -22111,7 +21196,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "70f4bf60f26b49401439ca56ece4c984d8c6952b",
@@ -22162,7 +21247,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "f47e454752c2767fa5be4750ca4aa73c74eae469",
@@ -22201,7 +21286,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "d2871b2041790f6d291e207bec8b0ef34029ef59",
@@ -22240,7 +21325,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "0f40dea301d470510d9a33afe53b4e46c18407a7",
@@ -22342,54 +21427,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "alioth"
-          },
-          {
-            "DeviceSpecific": "apollon"
-          },
-          {
-            "DeviceSpecific": "beryllium"
-          },
-          {
-            "DeviceSpecific": "dipper"
-          },
-          {
-            "DeviceSpecific": "equuleus"
-          },
-          {
-            "DeviceSpecific": "gauguin"
-          },
-          {
-            "DeviceSpecific": "gemini"
-          },
-          {
-            "DeviceSpecific": "lmi"
-          },
-          {
-            "DeviceSpecific": "miatoll"
-          },
-          {
-            "DeviceSpecific": "natrium"
-          },
-          {
-            "DeviceSpecific": "perseus"
-          },
-          {
-            "DeviceSpecific": "polaris"
-          },
-          {
-            "DeviceSpecific": "surya"
-          },
-          {
-            "DeviceSpecific": "ursa"
-          },
-          {
-            "DeviceSpecific": "vayu"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22435,7 +21474,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "eae01697bc8ca681fc2f4cf7657c6aedfbae9cb6",
@@ -22456,12 +21495,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "Z01R"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22483,12 +21518,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "sake"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22538,12 +21569,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "mata"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22565,12 +21592,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "FP3"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22592,12 +21615,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "pro1"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22619,15 +21638,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "coral"
-          },
-          {
-            "DeviceSpecific": "flame"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22649,15 +21661,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "marlin"
-          },
-          {
-            "DeviceSpecific": "sailfish"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22679,21 +21684,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "blueline"
-          },
-          {
-            "DeviceSpecific": "bonito"
-          },
-          {
-            "DeviceSpecific": "crosshatch"
-          },
-          {
-            "DeviceSpecific": "sargo"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22727,7 +21719,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "e469934bead0dda544379272d529308cc4f11aae",
@@ -22754,7 +21746,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "718eb2fa3c2480cdf831e8d0237d1c17f0d4893a",
@@ -22784,7 +21776,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "c9f72a1677e364231c48be7654920b4b5031b716",
@@ -22814,7 +21806,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "76929fda1d2c408b117f9b06f50c742f8f96bc70",
@@ -22844,7 +21836,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "8be9e3a4cbeb0abfbe22e9cf127cf97c7686cb56",
@@ -22865,24 +21857,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "beckham"
-          },
-          {
-            "DeviceSpecific": "evert"
-          },
-          {
-            "DeviceSpecific": "lake"
-          },
-          {
-            "DeviceSpecific": "nash"
-          },
-          {
-            "DeviceSpecific": "payton"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22916,7 +21892,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "d8bf5fa0c4450ece6d6b154432a0300848193617",
@@ -22937,15 +21913,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "kiev"
-          },
-          {
-            "DeviceSpecific": "nairo"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -22967,12 +21936,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nio"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23000,7 +21965,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "dac90093f030a125e6e4f6ca2f04fb5c08197190",
@@ -23021,12 +21986,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "TP1803"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23048,21 +22009,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23084,15 +22032,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23114,27 +22055,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23156,15 +22078,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23186,33 +22101,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23234,27 +22124,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23276,15 +22147,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23306,33 +22170,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "foster"
-          },
-          {
-            "DeviceSpecific": "foster_tab"
-          },
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          },
-          {
-            "DeviceSpecific": "porg"
-          },
-          {
-            "DeviceSpecific": "porg_tab"
-          },
-          {
-            "DeviceSpecific": "quill"
-          },
-          {
-            "DeviceSpecific": "quill_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23363,7 +22202,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "36c7d16d46170ed50d6aeee9eabecbb7313ed72f",
@@ -23393,7 +22232,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "f279bb7bb78a9c756cd5a334b358af58c561c929",
@@ -23456,7 +22295,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "bd9fe823ffe6be682ba997b9cb593abb3b50252b",
@@ -23489,7 +22328,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "33e2ddb0660b4bc75a3fb412bdc10198aa644d0e",
@@ -23519,7 +22358,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "1a8fc52217d796d999bd6291d1297b40a66a7b52",
@@ -23567,12 +22406,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "cheryl"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23594,12 +22429,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "aura"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23645,7 +22476,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "58f9a93436d4785b5689bd9a330dda61c217dfe0",
@@ -23675,7 +22506,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "f36cc24ad773e884cada8c2052add366d90900cd",
@@ -23705,7 +22536,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "12555eec59818fbea9364d8e330ac777498f6a75",
@@ -23726,12 +22557,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "axolotl"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23771,7 +22598,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "f928177cab73ca1977141378f8029fac5c5a293e",
@@ -23807,7 +22634,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "65a7e2c501e1e9c771181a0d72aa8dc3be6e8bf8",
@@ -23856,12 +22683,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "gauguin"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -23892,7 +22715,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "4aa1814c63b82ce67d0ef0434ca510be94bb8284",
@@ -23922,7 +22745,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "56500d8b2ae380772d202cb9054d56de8491144b",
@@ -23991,7 +22814,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "ce2ae62fbbf6f28633c6f12d395acc0e0aea72fd",
@@ -24018,7 +22841,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "6272e8bf5b491e88f7b0663649628c225b074703",
@@ -24045,7 +22868,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "27cc0d58ea9ed1ff16de74ff2225c90a8dca1d7d",
@@ -24072,7 +22895,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "9695abe891c892075e21993db5ecc239b2a89bb3",
@@ -24105,7 +22928,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "eacd7cd288a3f5041eb46955676ac774ec4eb42e",
@@ -24132,7 +22955,7 @@
           }
         ],
         "lineage_deps": "NoLineageDependenciesFile",
-        "active": true
+        "active": false
       },
       "lock": {
         "commit": "0eb6e1b55bf716318866b9aad99e893357dbf201",
@@ -25285,33 +24108,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "blueline"
-          },
-          {
-            "DeviceSpecific": "bonito"
-          },
-          {
-            "DeviceSpecific": "coral"
-          },
-          {
-            "DeviceSpecific": "crosshatch"
-          },
-          {
-            "DeviceSpecific": "flame"
-          },
-          {
-            "DeviceSpecific": "sargo"
-          },
-          {
-            "DeviceSpecific": "taimen"
-          },
-          {
-            "DeviceSpecific": "walleye"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -28196,15 +26994,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "nx"
-          },
-          {
-            "DeviceSpecific": "nx_tab"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
@@ -30061,33 +28852,8 @@
           "fetch_lfs": true,
           "fetch_submodules": false
         },
-        "categories": [
-          {
-            "DeviceSpecific": "beckham"
-          },
-          {
-            "DeviceSpecific": "channel"
-          },
-          {
-            "DeviceSpecific": "evert"
-          },
-          {
-            "DeviceSpecific": "lake"
-          },
-          {
-            "DeviceSpecific": "nash"
-          },
-          {
-            "DeviceSpecific": "ocean"
-          },
-          {
-            "DeviceSpecific": "payton"
-          },
-          {
-            "DeviceSpecific": "river"
-          }
-        ],
-        "lineage_deps": "NoLineageDependenciesFile",
+        "categories": [],
+        "lineage_deps": null,
         "active": true
       },
       "lock": {
