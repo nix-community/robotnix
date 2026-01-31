@@ -1,0 +1,21 @@
+diff --git a/bin/run b/bin/run
+index c7758340..94ab7723 100755
+--- a/bin/run
++++ b/bin/run
+@@ -32,16 +32,6 @@ if (!validCwd) {
+   process.exit(1)
+ }
+ 
+-let extraPathDirs = [cwd + '/prebuilts/build-tools/path/linux-x86', cwd + '/prebuilts/jdk/jdk21/linux-x86/bin']
+-for (let dir of extraPathDirs) {
+-  let stat = statSync(dir, { throwIfNoEntry: false })
+-  if (stat === undefined || !stat.isDirectory()) {
+-    throw new Error('missing prebuilts dir: ' + dir)
+-  }
+-}
+-
+-process.env.PATH = extraPathDirs.join(':') + ':' + process.env.PATH
+-
+ process.env.UV_THREADPOOL_SIZE = require('os').cpus().length.toString()
+ 
+ void (async () => {

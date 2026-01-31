@@ -33,6 +33,9 @@ let
           else
             ./adevtool-show-metadata-json.patch
         }
+        ${lib.optionalString (lib.versionAtLeast tag "2026012800") ''
+          patch -p1 < ${./adevtool-dont-check-prebuilts.patch}
+        ''}
         yarnOfflineCache=${yarnOfflineCache}
         yarnConfigHook
       '';
