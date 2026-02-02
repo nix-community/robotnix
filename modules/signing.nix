@@ -146,7 +146,7 @@ in
 
         size = mkOption {
           type = types.number;
-          default = 2048;
+          default = 4096;
           description = "Size of the SHA256 RSA keys";
         };
       };
