@@ -48,6 +48,15 @@ in
         '';
       };
 
+      keyCn = mkOption {
+        default = "Robotnix";
+        type = types.str;
+        internal = true;
+        description = ''
+          The CN to generate keys for
+        '';
+      };
+
       keyMappings = mkOption {
         default = { };
         type = types.attrsOf types.str;
@@ -453,7 +462,7 @@ in
             if [[ ! -e "$key".pk8 ]]; then
               echo "Generating $key key"
               # make_key exits with unsuccessful code 1 instead of 0
-              make_key "$key" "/CN=Robotnix ''${key/\// }/" && exit 1
+              make_key "$key" "/CN=${config.signing.keyCn} ''${key/\// }/" && exit 1
             else
               echo "Skipping generating $key key since it is already exists"
             fi
