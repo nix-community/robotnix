@@ -48,6 +48,15 @@ in
         '';
       };
 
+      keyCN = mkOption {
+        default = "Robotnix";
+        type = types.str;
+        internal = true;
+        description = ''
+          The CN to generate keys for
+        '';
+      };
+
       keyMappings = mkOption {
         default = { };
         type = types.attrsOf types.str;
@@ -457,7 +466,7 @@ in
               echo "Generating $key key"
               # echo a newline into make_key to disable key encryption, see
               # https://github.com/nix-community/robotnix/pull/355#issuecomment-3867184497
-              echo | make_key "$key" "/CN=Robotnix ''${key/\// }/"
+              echo | make_key "$key" "/CN=${config.signing.keyCN} ''${key/\// }/"
             else
               echo "Skipping generating $key key since it is already exists"
             fi
