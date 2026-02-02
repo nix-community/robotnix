@@ -21,21 +21,48 @@ Some of the outputs provided by robotnix are the following:
 - `releaseScript` - Script which produces the `img`, `ota`, and `factoryImg` products outside of Nix.
 - `generateKeysScript` - Script to generate required device / application keys for a given configuration.
 
-## Building and Signing Releases
-After creating a configuration file, you need to generate keys for your device (if you are using signed builds, with `signing.enable = true;`):
+## Generating Signing Keys
+After creating a configuration file, you need to generate keys for your device (if you are using signed builds, with `signing.enable = true;`)
+
+Next create the key generation script:
 ```console
 $ nix-build --arg configuration ./crosshatch.nix -A generateKeysScript -o generate-keys
-$ ./generate-keys ./keys
 ```
-This will create a `keys` directory containing the app and device keys needed for the build.
+
+`generate-keys` will create a directory containing the app and device keys needed for the build.
 The output of this script should be placed in the location specified by `signing.keyStorePath` in the robotnix configuration.
-If you intend to build the `img`/`factoryImg`/`ota` Nix outputs instead of using the `releaseScript`, do not apply a passphrase to your keys here.
-(You can still encrypt them at rest on your own through other means.)
-This is because we cannot prompt you for your passphrase during the Nix build, but we can outside of Nix using `generateKeysScript`.
 
 Sometimes changing your configuration will require that you generate additional new keys (e.g. for additional applications).
 Rebuilding and rerunning the generate keys script will produce the new keys (without overwriting your existing keys).
 
+There are 3 options for generating keys with this script:
+
+### Same password for all keys
+This encrypts all of your keys with the same password, which allows us to easily decrypt and sign with them later on using the `releaseScript`.
+This option cannot be used if you intend to build the `img`/`factoryImg`/`ota` Nix outputs instead of using the `releaseScript`. See [Unencrypted Keys](#unencrypted-keys) below
+```console
+$ ./generate-keys ./keys --single-password
+```
+
+### Unique password per key
+This encrypts each of your keys with a unique password.
+This option cannot be used if you intend to build the `img`/`factoryImg`/`ota` Nix outputs instead of using the `releaseScript`. See [Unencrypted Keys](#unencrypted-keys) below
+```console
+$ ./generate-keys ./keys
+```
+
+
+### Unencrypted keys
+Useful if you intend to build the `img`/`factoryImg`/`ota` Nix outputs instead of using the `releaseScript`.
+This is because we cannot prompt you for your passphrase during the Nix build, but we can outside of Nix using `generateKeysScript` and `releaseScript`.
+(You can still encrypt the keys at rest on your own through other means.)
+
+```console
+$ ./generate-keys ./keys --no-password
+```
+
+
+## Building and Signing Releases
 Next, build and sign your release.
 There are two ways to do this.
 The first option is to build the final products entirely inside Nix.

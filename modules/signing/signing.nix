@@ -8,6 +8,7 @@
   ...
 }:
 
+
 let
   inherit (lib)
     mkIf
@@ -199,6 +200,12 @@ in
           message = "The --prebuilt-image patch is only applied to Android 12";
         }
       ];
+
+      source.dirs = {
+        "external/avb".patches = [
+          ./avbtool-support-passin.patch
+        ];
+      };
 
       signing.keyStorePath = mkIf (!config.signing.enable) (mkDefault testKeysStorePath);
       signing.buildTimeKeyStorePath = mkMerge [
@@ -436,20 +443,31 @@ in
 
                 patchShebangs $out/bin
               '';
-          # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
           # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
         in
         pkgs.writeShellScript "generate_keys.sh" ''
-          set -euo pipefail
+          set -euo pipefail -o nounset
 
-          if [[ "$#" -ne 1 ]]; then
-            echo "Usage: $0 <keysdir>"
+          if [[ "$#" -lt 1 ]] || [[ "$#" -gt 2 ]]; then
+            echo "Usage: $0 <keysdir> [--single-password || --no-password]"
             echo "$#"
             exit 1
           fi
 
           mkdir -p "$1"
           cd "$1"
+
+          singlepassword=false
+          if [[ "$#" -gt 1 ]] && [[ "$2" == "--single-password" ]]; then
+            [[ "''${password+defined}" = defined ]] || read -rp "Please enter the password to encrypt all keys with (if you want an empty password use the --no-password flag instead): " -s password
+            echo
+            singlepassword=true
+          fi
+
+          nopassword=false
+          if [[ "$#" -gt 1 ]] && [[ "$2" == "--no-password" ]]; then
+            nopassword=true
+          fi
 
           export PATH=${lib.getBin pkgs.openssl}/bin:${keyTools}/bin:$PATH
 
@@ -461,8 +479,16 @@ in
           for key in "''${KEYS[@]}"; do
             if [[ ! -e "$key".pk8 ]]; then
               echo "Generating $key key"
-              # make_key exits with unsuccessful code 1 instead of 0
-              make_key "$key" "/CN=${config.signing.keyCn} ''${key/\// }/" && exit 1
+              if [ "$nopassword" = true ]; then
+                # make_key exits with unsuccessful code 1 instead of 0
+                make_key "$key" "/CN=${config.signing.keyCn} ''${key/\// }/" <<< "" && exit 1
+              elif [ "$singlepassword" = true ]; then
+                # make_key exits with unsuccessful code 1 instead of 0
+                make_key "$key" "/CN=${config.signing.keyCn} ''${key/\// }/" <<< "$password" && exit 1
+              else
+                # make_key exits with unsuccessful code 1 instead of 0
+                make_key "$key" "/CN=${config.signing.keyCn} ''${key/\// }/"&& exit 1
+              fi
             else
               echo "Skipping generating $key key since it is already exists"
             fi
@@ -471,8 +497,19 @@ in
           for key in "''${APEX_KEYS[@]}"; do
             if [[ ! -e "$key".pem ]]; then
               echo "Generating $key APEX AVB key"
-              openssl genrsa -out "$key".pem 4096
-              avbtool extract_public_key --key "$key".pem --output "$key".avbpubkey
+              if [ "$nopassword" = true ]; then
+                echo "generating $key with no password"
+                openssl genrsa 4096 | openssl pkcs8 -topk8 -nocrypt -out "$key".pem
+                avbtool extract_public_key --key "$key".pem --output "$key".avbpubkey
+              elif [ "$singlepassword" = true ]; then
+                echo "generating $key with password"
+                export password
+                openssl genrsa 4096 | openssl pkcs8 -topk8 -scrypt -passout env:password -out "$key".pem
+                avbtool extract_public_key --key "$key".pem --output "$key".avbpubkey --passin "env:password"
+              else
+                openssl genrsa 4096 | openssl pkcs8 -topk8 -scrypt -out "$key".pem
+                avbtool extract_public_key --key "$key".pem --output "$key".avbpubkey
+              fi
             else
               echo "Skipping generating $key APEX key since it is already exists"
             fi
@@ -487,12 +524,25 @@ in
           ${lib.optionalString (config.signing.avb.mode != "verity_only") ''
             if [[ ! -e "${config.device}/avb.pem" ]]; then
               echo "Generating Device AVB key"
-              openssl genrsa -out ${config.device}/avb.pem ${builtins.toString cfg.avb.size}
-              avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
+              if [ "$nopassword" = true ]; then
+                echo "generating Device AVB key with no password"
+                openssl genrsa ${builtins.toString cfg.avb.size} | openssl pkcs8 -topk8 -nocrypt -out ${config.device}/avb.pem
+                avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
+              elif [ "$singlepassword" = true ]; then
+                echo "generating Device AVB key with password"
+                export password
+                openssl genrsa ${builtins.toString cfg.avb.size} | openssl pkcs8 -topk8 -scrypt -passout env:password -out ${config.device}/avb.pem
+                avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin --passin "env:password"
+              else
+                openssl genrsa ${builtins.toString cfg.avb.size} | openssl pkcs8 -topk8 -scrypt -out ${config.device}/avb.pem
+                avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
+              fi
             else
               echo "Skipping generating device AVB key since it is already exists"
             fi
           ''}
+
+          unset password
         '';
 
       # Check that all needed keys are available.

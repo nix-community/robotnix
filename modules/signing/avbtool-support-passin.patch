@@ -1,0 +1,85 @@
+From 9dfb3bad924744a7ad5f12992fe0fb693f3b3add Mon Sep 17 00:00:00 2001
+From: Eva Emmerich <eva@evaemmerich.com>
+Date: Mon, 2 Feb 2026 18:00:04 +0100
+Subject: [PATCH] avbtool extract_public_key: support forwarding the openssl
+ -passin arg
+
+allows callers to pass a password to the internal openssl call without
+requiring user interaction
+
+https://docs.openssl.org/3.5/man1/openssl-passphrase-options/
+---
+ avbtool.py | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/avbtool.py b/avbtool.py
+index 595936c..bf081ff 100755
+--- a/avbtool.py
++++ b/avbtool.py
+@@ -359,11 +359,12 @@ class RSAPublicKey(object):
+ 
+   MODULUS_PREFIX = b'modulus='
+ 
+-  def __init__(self, key_path):
++  def __init__(self, key_path, passin=None):
+     """Loads and parses an RSA key from either a private or public key file.
+ 
+     Arguments:
+       key_path: The path to a key file.
++      passin: The arg to pass to openssl -passin
+ 
+     Raises:
+       AvbError: If RSA key parameters could not be read from file.
+@@ -379,6 +380,8 @@ class RSAPublicKey(object):
+     # instead just parse openssl(1) output to get this
+     # information. It's ugly but...
+     args = ['openssl', 'rsa', '-in', key_path, '-modulus', '-noout']
++    if passin:
++        args += ['-passin', passin]
+     p = subprocess.Popen(args,
+                          stdin=subprocess.PIPE,
+                          stdout=subprocess.PIPE,
+@@ -3273,17 +3276,18 @@ class Avb(object):
+ 
+     return header_data_blob + bytes(auth_data_blob) + bytes(aux_data_blob)
+ 
+-  def extract_public_key(self, key_path, output):
++  def extract_public_key(self, key_path, output, passin):
+     """Implements the 'extract_public_key' command.
+ 
+     Arguments:
+       key_path: The path to a RSA private key file.
+       output: The file to write to.
++      passin: arg to pass to openssl -passin
+ 
+     Raises:
+       AvbError: If the public key could not be extracted.
+     """
+-    output.write(RSAPublicKey(key_path).encode())
++    output.write(RSAPublicKey(key_path, passin).encode())
+ 
+   def extract_public_key_digest(self, key_path, output):
+     """Implements the 'extract_public_key_digest' command.
+@@ -4391,6 +4395,10 @@ class AvbTool(object):
+                             help='Output file name',
+                             type=argparse.FileType('wb'),
+                             required=True)
++    sub_parser.add_argument('--passin',
++                            help='arg to pass to openssl -passin',
++                            required=False,
++                            default=None)
+     sub_parser.set_defaults(func=self.extract_public_key)
+ 
+     sub_parser = subparsers.add_parser('extract_public_key_digest',
+@@ -4852,7 +4860,7 @@ class AvbTool(object):
+ 
+   def extract_public_key(self, args):
+     """Implements the 'extract_public_key' sub-command."""
+-    self.avb.extract_public_key(args.key, args.output)
++    self.avb.extract_public_key(args.key, args.output, args.passin)
+ 
+   def extract_public_key_digest(self, args):
+     """Implements the 'extract_public_key_digest' sub-command."""
+-- 
+2.51.2
+

@@ -77,7 +77,7 @@ let
         ./modules/pixel/driver-binaries.nix
         ./modules/release.nix
         ./modules/resources.nix
-        ./modules/signing.nix
+        ./modules/signing/signing.nix
         ./modules/source.nix
         ./modules/webview.nix
       ];
