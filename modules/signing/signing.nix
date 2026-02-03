@@ -8,7 +8,6 @@
   ...
 }:
 
-
 let
   inherit (lib)
     mkIf
@@ -47,6 +46,12 @@ in
         description = ''
           The AVB-related flags to pass to sign_target_files_apks.
         '';
+      };
+
+      decryptKeysForSigning = mkOption {
+        default = false;
+        type = types.bool;
+        description = "Whether to decrypt the keys at the start of the signing process, which allows for mostly non-interactive signing. This requires all keys to have the same password. The decrypted keys are stored securely in /dev/shm while signing, and destroyed after signing is complete.";
       };
 
       keyCn = mkOption {
@@ -606,6 +611,61 @@ in
           exit 1
         fi
         exit $RETVAL
+      '';
+
+      build.decryptKeysScript = pkgs.writeShellScript "decrypt_keys.sh" ''
+        set -o errexit -o nounset -o pipefail
+
+        if [[ "$#" -lt 1 ]] ; then
+          echo "Usage: $0 <keysdir>"
+          echo "$#"
+          exit 1
+        fi
+
+        export PATH=${lib.getBin pkgs.openssl}/bin:$PATH
+
+        KEYS=( ${toString keysToGenerate} )
+        APEX_KEYS=( ${lib.optionalString config.signing.apex.enable (toString config.signing.apex.packageNames)} )
+
+        cd $1
+
+        [[ "''${password+defined}" = defined ]] || read -rp "Enter key passphrase (empty if none): " -s password
+        echo
+
+        tmp="$(mktemp -d /dev/shm/decrypt-keys.XXXXXXXXXX)"
+        trap "rm -rf \"$tmp\"" EXIT
+
+        mkdir -p "$tmp/${config.device}"
+
+        export password
+
+        for key in "''${KEYS[@]}"; do
+            if [[ -n $password ]]; then
+                openssl pkcs8 -topk8 -inform DER -in $key.pk8 -passin env:password -outform DER -out "$tmp/$key.pk8" -nocrypt
+            else
+                openssl pkcs8 -topk8 -inform DER -in $key.pk8 -outform DER -out "$tmp/$key.pk8" -nocrypt
+            fi
+        done
+
+        for key in "''${APEX_KEYS[@]}"; do
+            if [[ -n $password ]]; then
+                openssl pkcs8 -topk8 -in $key.pem -passin env:password -out "$tmp/$key.pem" -nocrypt
+            else
+                openssl pkcs8 -topk8 -in $key.pem -out "$tmp/$key.pem" -nocrypt
+            fi
+        done
+
+        if [[ -f "${config.device}/avb.pem" ]]; then
+            if [[ -n $password ]]; then
+                openssl pkcs8 -topk8 -in "${config.device}/avb.pem" -passin env:password -out "$tmp/${config.device}/avb.pem" -nocrypt
+            else
+                openssl pkcs8 -topk8 -in "${config.device}/avb.pem" -out "$tmp/${config.device}/avb.pem" -nocrypt
+            fi
+        fi
+
+        unset password
+
+        cp -a "$tmp"/* .
       '';
     };
 

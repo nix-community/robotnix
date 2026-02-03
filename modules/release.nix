@@ -54,12 +54,15 @@ let
           echo 'Missing KEYSDIR directory, did you use "--option extra-sandbox-paths /keys=..." ?'
           exit 1
         fi
-        ${lib.optionalString config.signing.enable "${config.build.verifyKeysScript} \"$KEYSDIR\" || exit 1"}
         NEW_KEYSDIR=$(mktemp -d /dev/shm/robotnix_keys.XXXXXXXXXX)
         trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
         cp -r "$KEYSDIR"/* "$NEW_KEYSDIR"
         chmod u+w -R "$NEW_KEYSDIR"
         KEYSDIR=$NEW_KEYSDIR
+        ${lib.optionalString config.signing.decryptKeysForSigning "${config.build.decryptKeysScript} \"$KEYSDIR\" || exit 1"}
+        # checking the avb key bit size in the verification script requires the key to be decrypted (if it had encryption)
+        # so verify has to be after decryptKeysScript if we are using it
+        ${lib.optionalString config.signing.enable "${config.build.verifyKeysScript} \"$KEYSDIR\" || exit 1"}
       fi
 
       ${commands}

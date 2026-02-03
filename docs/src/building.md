@@ -38,7 +38,7 @@ Rebuilding and rerunning the generate keys script will produce the new keys (wit
 There are 3 options for generating keys with this script:
 
 ### Same password for all keys
-This encrypts all of your keys with the same password, which allows us to easily decrypt and sign with them later on using the `releaseScript`.
+This encrypts all of your keys with the same password, which allows us to easily decrypt and sign with them later on using the `releaseScript` and `signing.decryptKeysForSigning=true`.
 This option cannot be used if you intend to build the `img`/`factoryImg`/`ota` Nix outputs instead of using the `releaseScript`. See [Unencrypted Keys](#unencrypted-keys) below
 ```console
 $ ./generate-keys ./keys --single-password
@@ -46,6 +46,7 @@ $ ./generate-keys ./keys --single-password
 
 ### Unique password per key
 This encrypts each of your keys with a unique password.
+This cannot be used with `signing.decryptKeysForSigning=true` as that requires all keys to have the same password.
 This option cannot be used if you intend to build the `img`/`factoryImg`/`ota` Nix outputs instead of using the `releaseScript`. See [Unencrypted Keys](#unencrypted-keys) below
 ```console
 $ ./generate-keys ./keys
@@ -80,6 +81,8 @@ The second option involves building a "release script" with Nix, which depends o
 $ nix-build --arg configuration ./crosshatch.nix -A releaseScript -o release
 $ ./release ./keys
 ```
+The release script can use keys all encrypted with the same password, created by the key generation script in [Same password for all keys](#same-password-for-all-keys) by setting `signing.decryptKeysForSigning=true`
+
 This has the additional benefit that the build can take place on a remote machine, and the `releaseScript` could be copied using `nix-copy-closure` to a local machine which containing the keys.
 You might need to manually set certain required options like `signing.avb.fingerprint` or `apps.prebuilt.<name>.fingerprint` if you build on a remote machine that does not have access to the `signing.keyStorePath`.
 
