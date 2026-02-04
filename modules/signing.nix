@@ -529,6 +529,17 @@ in
             echo "Missing Device AVB key"
             RETVAL=1
           fi
+
+          # ensure the avb key we are using is the same as we expect in signing.avb.size
+          # there isn't a great way of getting the number of bits of an encrypted key without decyrpting it
+          # what we can do is check the size of the key file, and associate it with the bit size
+          # 4096 bit key == 3434 bytes on disk
+          # 2048 bit key == 1874 bytes on disk
+          avbkeyfilesize=$(wc -c < "${config.device}/avb.pem")
+          if [[ ${builtins.toString (config.signing.avb.size)} == "4096" ]] && [[ $avbkeyfilesize == "1874" ]]; then
+            echo "We expect a 4096 bit key, but were provided a 2048 bit key. Please set signing.avb.size=2048 in your config."
+            exit 1
+          fi
         ''}
 
         if [[ "$RETVAL" -ne 0 ]]; then
