@@ -502,40 +502,49 @@ in
         APEX_KEYS=( ${lib.optionalString config.signing.apex.enable (toString config.signing.apex.packageNames)} )
 
         RETVAL=0
+        MISSING_KEYS=0
 
         for key in "''${KEYS[@]}"; do
           if [[ ! -e "$key".pk8 ]]; then
             echo "Missing $key key"
-            RETVAL=1
+            MISSING_KEYS=1
           fi
         done
 
         for key in "''${APEX_KEYS[@]}"; do
           if [[ ! -e "$key".pem ]]; then
             echo "Missing $key APEX AVB key"
-            RETVAL=1
+            MISSING_KEYS=1
           fi
         done
 
         ${lib.optionalString (config.signing.avb.mode == "verity_only") ''
           if [[ ! -e "${config.device}/verity_key.pub" ]]; then
             echo "Missing verity_key.pub"
-            RETVAL=1
+            MISSING_KEYS=1
           fi
         ''}
 
         ${lib.optionalString (config.signing.avb.mode != "verity_only") ''
           if [[ ! -e "${config.device}/avb.pem" ]]; then
             echo "Missing Device AVB key"
-            RETVAL=1
+            MISSING_KEYS=1
+          else
+            KEYSIZE=$(${lib.getExe pkgs.openssl} rsa -in "${config.device}/avb.pem" -text 2>/dev/null | grep -E "Private-Key: \(([0-9]+) bit, 2 primes\)" | tr -d "(" | awk '{ print $2 }')
+            if [[ "$KEYSIZE" -ne ${toString config.signing.avb.size} ]]; then
+              echo "Device AVB key in $1 has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} bits were expected."
+              echo "Either rotate your AVB signing key, or set \`signing.avb.size = $KEYSIZE;\`."
+              RETVAL=1
+            fi
           fi
         ''}
 
-        if [[ "$RETVAL" -ne 0 ]]; then
+        if [[ "$MISSING_KEYS" -ne 0 ]]; then
           echo Certain keys were missing from KEYSDIR. Have you run generateKeysScript?
           echo Additionally, some robotnix configuration options require that you re-run
           echo generateKeysScript to create additional new keys.  This should not overwrite
           echo existing keys.
+          exit 1
         fi
         exit $RETVAL
       '';
