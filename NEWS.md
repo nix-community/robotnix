@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2021 Daniel Fullmer
+SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
 
@@ -7,6 +7,12 @@ Updates are added to this file approximately monthly, or whenever significant
 changes occur which require user intervention / configuration changes.  These
 are highlights since the last update, and are not meant to be an exhaustive
 listing of changes. See the git commit log for additional details.
+
+# 2026-02-05
+
+- The default for `signing.avb.size` was changed from 2048 bits to 4096 bits,
+  which means users who use AVB signing will either have to rotate the AVB key,
+  or explicitly set the AVB key size to 2048 by `signing.avb.size = 2048`;
 
 # 2023-10-23
 - Support LineageOS version 20.0 (`androidVersion=13`)
