@@ -224,7 +224,7 @@ in
                 "id" = config.buildNumber;
                 "romtype" = config.envVars.RELEASE_TYPE;
                 "size" = "ROM_SIZE";
-                # "url" = "${config.apps.updater.url}${ota.name}"; # FIXME is this supposed to always be passed? Makes otaDir fail to eval
+                "url" = "${config.apps.updater.url}${ota.name}";
                 "version" = config.flavorVersion;
               }
             ];
