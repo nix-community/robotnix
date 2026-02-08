@@ -455,7 +455,9 @@ in
           for key in "''${KEYS[@]}"; do
             if [[ ! -e "$key".pk8 ]]; then
               echo "Generating $key key"
-              make_key "$key" "/CN=Robotnix ''${key/\// }/"
+              # echo a newline into make_key to disable key encryption, see
+              # https://github.com/nix-community/robotnix/pull/355#issuecomment-3867184497
+              echo | make_key "$key" "/CN=Robotnix ''${key/\// }/"
             else
               echo "Skipping generating $key key since it is already exists"
             fi
