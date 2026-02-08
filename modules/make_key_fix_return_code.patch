@@ -1,0 +1,9 @@
+41c41,42
+< trap 'rm -rf ${tmpdir}; echo; exit 1' EXIT INT QUIT
+---
+> trap 'rm -rf ${tmpdir}; echo; exit 1' INT QUIT
+> trap 'rm -rf ${tmpdir}; echo' EXIT
+76,78d76
+< 
+< wait
+< wait

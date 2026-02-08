@@ -412,7 +412,10 @@ in
               ''
                 mkdir -p $out/bin
 
-                cp ${config.source.dirs."development".src}/tools/make_key $out/bin/make_key
+                cp --no-preserve=mode ${config.source.dirs."development".src}/tools/make_key $out/bin/make_key
+                chmod +x $out/bin/make_key
+                patch $out/bin/make_key ${./make_key_fix_return_code.patch}
+
                 substituteInPlace $out/bin/make_key --replace openssl ${lib.getBin pkgs.openssl}/bin/openssl
 
                 cc -o $out/bin/generate_verity_key \
@@ -452,8 +455,7 @@ in
           for key in "''${KEYS[@]}"; do
             if [[ ! -e "$key".pk8 ]]; then
               echo "Generating $key key"
-              # make_key exits with unsuccessful code 1 instead of 0
-              make_key "$key" "/CN=Robotnix ''${key/\// }/" && exit 1
+              make_key "$key" "/CN=Robotnix ''${key/\// }/"
             else
               echo "Skipping generating $key key since it is already exists"
             fi
