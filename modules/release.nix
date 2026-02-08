@@ -121,6 +121,10 @@ let
       export BOOTLOADER=$(get_radio_image bootloader)
       export RADIO=$(get_radio_image baseband)
 
+      ${lib.optionalString (
+        config.signing.enable && config.flavor == "grapheneos"
+      ) ''export AVB_PKMD="$KEYSDIR/${config.device}/avb_pkmd.bin"''}
+
       export PATH=${lib.getBin pkgs.zip}/bin:${lib.getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
       mv $PRODUCT-factory-$VERSION.zip ${out}

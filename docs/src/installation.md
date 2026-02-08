@@ -45,6 +45,7 @@ upstream documentation](https://source.android.com/setup/build/running).
     performs a factory reset, and will remove all user data from the device.
 
  4. Flash your custom AVB signing key using
+    NOTE: on GrapheneOS builds you can skip this step, `flash-all.sh` does it for you
     ```console
     $ fastboot erase avb_custom_key
     $ fastboot flash avb_custom_key ./avb_pkmd.bin
