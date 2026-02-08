@@ -121,6 +121,12 @@ let
       export BOOTLOADER=$(get_radio_image bootloader)
       export RADIO=$(get_radio_image baseband)
 
+      ${lib.optionalString (config.flavor == "grapheneos") ''
+        export DISABLE_UART="true"
+        export DISABLE_FIPS="true"
+        export DISABLE_DPM="true"
+      ''}
+
       export PATH=${lib.getBin pkgs.zip}/bin:${lib.getBin pkgs.unzip}/bin:$PATH
       ${pkgs.runtimeShell} ${config.source.dirs."device/common".src}/generate-factory-images-common.sh
       mv $PRODUCT-factory-$VERSION.zip ${out}
