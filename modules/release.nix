@@ -187,7 +187,7 @@ in
       mkDefault (lib.head (lib.splitString " " metadata));
     prevTargetFiles = mkDefault "${config.prevBuildDir}/${config.targetFilesName}";
 
-    otaArgs = [ "--block" ] ++ lib.optional config.retrofit "--retrofit_dynamic_partitions";
+    otaArgs = lib.optional config.retrofit "--retrofit_dynamic_partitions";
   };
 
   config.build = rec {
