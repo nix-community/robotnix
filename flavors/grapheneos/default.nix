@@ -164,14 +164,25 @@
 
           # Key for GmsCompatLib.apk
           # https://grapheneos.org/releases#2025102300
-          keyMappings = lib.mkIf (lib.versionAtLeast config.grapheneos.release "2025102300") {
-            "build/make/target/product/security/gmscompat_lib" = "${config.device}/gmscompat_lib";
-          };
+          keyMappings = lib.mkMerge [
+            (lib.mkIf (lib.versionAtLeast config.grapheneos.release "2025102300") {
+              "build/make/target/product/security/gmscompat_lib" = "${config.device}/gmscompat_lib";
+            })
+            (lib.mkIf (lib.versionAtLeast config.grapheneos.release "2026021200") {
+              "build/make/target/product/security/sdk_sandbox" = "${config.device}/sdk_sandbox";
+              "build/make/target/product/security/nfc" = "${config.device}/nfc";
+            })
+          ];
 
           # Extra packages that should use releasekey
           extraApks = {
             "OsuLogin.apk" = "${config.device}/releasekey";
             "ServiceWifiResources.apk" = "${config.device}/releasekey";
+            "com.android.appsearch.apk.apk" = "${config.device}/releasekey";
+            "Bluetooth.apk" = "${config.device}/releasekey";
+            "HealthConnectBackupRestore.apk" = "${config.device}/releasekey";
+            "HealthConnectController.apk" = "${config.device}/releasekey";
+            "FederatedCompute.apk" = "${config.device}/releasekey";
           };
         };
 
