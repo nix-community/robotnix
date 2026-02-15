@@ -405,6 +405,12 @@ in
 
               # TODO: Clean this stuff up. unshare / robotnix-build could probably be combined into a single utility.
               builder = pkgs.writeShellScript "builder.sh" ''
+                ${lib.optionalString config.ccache.enable ''
+                  # Check if we have access to the ccache dir to fail fast in
+                  # case of permission issues
+                  touch /var/cache/ccache/robotnix-test || ( echo 'The ccache Nix sandbox exception has not been properly set up. Either `extra-sandbox-paths` has not been set, or the `nixbld` group cannot access the cache dir outside of the sandbox.' && exit 1 )
+                  rm /var/cache/ccache/robotnix-test
+                ''}
                 export SAVED_UID=$(${pkgs.coreutils}/bin/id -u)
                 export SAVED_GID=$(${pkgs.coreutils}/bin/id -g)
 
