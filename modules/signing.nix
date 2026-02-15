@@ -312,11 +312,7 @@ in
               "--avb_vbmeta_system_algorithm ${algorithm}"
             ];
           }
-          .${cfg.avb.mode}
-          ++ lib.optionals ((config.androidVersion >= 10) && (cfg.avb.mode != "verity_only")) [
-            "--avb_system_other_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_system_other_algorithm ${algorithm}"
-          ];
+          .${cfg.avb.mode};
 
         keyMappings =
           {
