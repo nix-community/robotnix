@@ -262,6 +262,12 @@ in
       default = { };
       type = types.attrs;
     };
+
+    otatoolsOutPath = mkOption {
+      internal = true;
+      default = "$ANDROID_PRODUCT_OUT/otatools.zip";
+      type = types.str;
+    };
   };
 
   config = mkMerge [
@@ -524,7 +530,7 @@ in
           # Note that $ANDROID_PRODUCT_OUT is set by lunch above
           installPhase = ''
             mkdir -p $out
-            cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out/
+            cp --reflink=auto ${config.otatoolsOutPath} $out/
             cp --reflink=auto $ANDROID_PRODUCT_OUT/obj/PACKAGING/target_files_intermediates/${config.targetFilesName} $out/
           '';
         };
@@ -597,7 +603,7 @@ in
           name = "otatools.zip";
           makeTargets = [ "otatools-package" ];
           installPhase = ''
-            cp --reflink=auto $ANDROID_PRODUCT_OUT/otatools.zip $out
+            cp --reflink=auto ${config.otatoolsOutPath} $out
           '';
         });
 
