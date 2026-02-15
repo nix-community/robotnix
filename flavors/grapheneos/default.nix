@@ -142,6 +142,12 @@
           ) "Unsupported androidVersion (!= 16) for GrapheneOS");
       }
       {
+        # In https://android.googlesource.com/platform/build/+/322b51b245bc70bcbbd5538d40dd47c45565b67f,
+        # AOSP switched over to using Soong for otatools.zip. This landed in
+        # GrapheneOS in 2026021200. Right now, I don't know a cleaner way to
+        # get the file except pull it out of the intermediates dir.
+        otatoolsOutPath = lib.mkIf (lib.versionAtLeast config.grapheneos.release "2026021200") "$ANDROID_HOST_OUT/obj/ETC/otatools-packagelinux_glibc_x86_64_intermediates/otatools-packagelinux_glibc_x86_64";
+
         apps.seedvault.includedInFlavor = mkDefault true;
         apps.updater.includedInFlavor = mkDefault true;
 
