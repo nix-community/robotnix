@@ -511,6 +511,7 @@ in
                   ${lib.optionalString (makeTargets != [ ]) "m ${toString makeTargets} | cat"}
                   ${postBuild}
                   echo $ANDROID_PRODUCT_OUT > ANDROID_PRODUCT_OUT
+                  echo $ANDROID_HOST_OUT > ANDROID_HOST_OUT
 
                   EOF2
                 '';
@@ -518,6 +519,7 @@ in
               installPhase =
                 ''
                   export ANDROID_PRODUCT_OUT=$(cat ANDROID_PRODUCT_OUT)
+                  export ANDROID_HOST_OUT=$(cat ANDROID_HOST_OUT)
                 ''
                 + installPhase;
 
