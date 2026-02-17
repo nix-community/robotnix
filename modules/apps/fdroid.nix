@@ -30,6 +30,16 @@ in
   options.apps.fdroid = {
     enable = mkEnableOption "F-Droid";
 
+    fingerprint = mkOption {
+      type = types.strMatching "[0-9A-F]{64}";
+      apply = lib.toUpper;
+      description = ''
+        The certificate fingerprint of the F-Droid APK. This is required
+        because the F-Droid privileged extension checks the signature of the
+        F-Droid APK to prevent unauthorized access.
+      '';
+    };
+
     # See also `apps/src/main/java/org/fdroid/fdroid/data/DBHelper.java` in F-Droid source
     additionalRepos = mkOption {
       default = { };
@@ -96,6 +106,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    apps.fdroid.fingerprint =
+      lib.mkIf
+      (config.apps.prebuilt."F-Droid".certificate == "PRESIGNED")
+      "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB";
+
     apps.prebuilt."F-Droid" = {
       apk = pkgs.fetchurl {
         urls =
@@ -110,7 +125,6 @@ in
       };
 
       certificate = "PRESIGNED";
-      fingerprint = "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB";
       usesOptionalLibraries = [
         "androidx.window.extensions"
         "androidx.window.sidecar"
@@ -122,7 +136,7 @@ in
       src = privext;
       patches = [
         (pkgs.replaceVars ./fdroid-privext.patch {
-          fingerprint = lib.toLower config.apps.prebuilt."F-Droid".fingerprint;
+          fingerprint = lib.toLower cfg.fingerprint;
         })
       ];
     };
