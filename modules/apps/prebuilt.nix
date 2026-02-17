@@ -29,10 +29,8 @@ let
       LOCAL_CERTIFICATE := ${
         if (prebuilt.certificate == "PRESIGNED") then
           "PRESIGNED"
-        else if builtins.elem prebuilt.certificate deviceCertificates then
-          (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
         else
-          "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}"
+          (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
       }
       ${lib.optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
       ${lib.optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
@@ -47,31 +45,6 @@ let
       include $(BUILD_PREBUILT)
     '');
 
-  # Cert fingerprints from default AOSP test-keys: build/make/tools/releasetools/testdata
-  defaultDeviceCertFingerprints = {
-    "releasekey" = "A40DA80A59D170CAA950CF15C18C454D47A39B26989D8B640ECD745BA71BF5DC";
-    "platform" = "C8A2E9BCCF597C2FB6DC66BEE293FC13F2FC47EC77BC6B2B0D52C11F51192AB8";
-    "media" = "465983F7791F2ABEB43EA2CBDC7F21A8260B72BC08A55C839FC1A43BC741A81E";
-    "shared" = "28BBFE4A7B97E74681DC55C2FBB6CCB8D6C74963733F6AF6AE74D8C3A6E879FD";
-    "verity" = "8AD127ABAE8285B582EA36745F220AB8FE397FFB3B068DF19CA22D122C7B3B86";
-  };
-  deviceCertificates = lib.attrNames defaultDeviceCertFingerprints;
-
-  _keyPath =
-    keyStorePath: name:
-    if builtins.elem name deviceCertificates then
-      (
-        if config.signing.enable then
-          "${keyStorePath}/${config.device}/${name}"
-        else
-          "${keyStorePath}/${lib.replaceStrings [ "releasekey" ] [ "testkey" ] name}"
-      ) # If not signing.enable, use test keys from AOSP
-    else
-      "${keyStorePath}/${name}";
-  evalTimeKeyPath = name: _keyPath config.signing.keyStorePath name;
-  buildTimeKeyPath = name: _keyPath config.signing.buildTimeKeyStorePath name;
-
-  putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 
   enabledPrebuilts = lib.filter (p: p.enable) (lib.attrValues cfg);
 in
@@ -127,13 +100,6 @@ in
                   description = "Robotnix-signed version of APK file";
                 };
 
-                fingerprint = mkOption {
-                  description = "SHA256 fingerprint from certificate used to sign apk. Should be set automatically based on `keyStorePath` if `signing.enable = true`";
-                  type = types.strMatching "[0-9A-F]{64}"; # TODO: Type check fingerprints elsewhere
-                  apply = lib.toUpper;
-                  internal = true;
-                };
-
                 packageName = mkOption {
                   # Only used with privapp permissions
                   description = "APK's Java-style package name (applicationId). This setting only necessary to be set if also using `privappPermissions`.";
@@ -146,9 +112,8 @@ in
                   type = types.str;
                   description = ''
                     Name of certificate to sign APK with.  Defaults to the name of the prebuilt app.
-                    If it is a device-specific certificate, the cert/key should be under `''${keyStorePath}/''${device}/''${certificate}.{x509.pem,pk8}`.
-                    Otherwise, it should be `''${keyStorePath}/''${certificate}.{x509.pem,pk8}`.
-                    Finally, the special string "PRESIGNED" will just use the APK as-is.
+                    If it is a device-specific certificate, the cert/key should be in your keys dir under `''${device}/''${certificate}.{x509.pem,pk8}`.
+                    The special string "PRESIGNED" will just use the APK as-is and not replace the signature.
                   '';
                 };
 
@@ -228,58 +193,6 @@ in
 
               config = {
                 partition = mkDefault (if (_config.androidVersion >= 10) then "product" else "system");
-
-                # Uses the sandbox exception in /keys
-                signedApk = mkDefault (
-                  if config.certificate == "PRESIGNED" then
-                    config.apk
-                  else
-                    (pkgs.robotnix.signApk {
-                      inherit (config) apk;
-                      keyPath =
-                        if _config.signing.enable then
-                          buildTimeKeyPath config.certificate
-                        else
-                          "${config.snakeoilKeyPath}/${config.certificate}";
-                    })
-                );
-
-                fingerprint =
-                  let
-                    snakeoilFingerprint = pkgs.robotnix.certFingerprint "${config.snakeoilKeyPath}/${config.certificate}.x509.pem";
-                  in
-                  mkDefault (
-                    if config.certificate == "PRESIGNED" then
-                      pkgs.robotnix.apkFingerprint config.signedApk # TODO: IFD
-                    else if _config.signing.enable then
-                      pkgs.robotnix.certFingerprint (putInStore "${evalTimeKeyPath config.certificate}.x509.pem") # TODO: IFD
-                    # !_config.signing.enable
-                    else
-                      defaultDeviceCertFingerprints.${name} or (builtins.trace ''
-                        Used IFD to get fingerprint of reproducible app certificate.
-                        Recommend setting:
-                        apps.prebuilt.${config.name}.fingerprint = mkIf (!config.signing.enable) "${snakeoilFingerprint}"
-                      '' snakeoilFingerprint)
-                  );
-
-                snakeoilKeyPath = pkgs.runCommand "${config.certificate}-snakeoil-cert" { } ''
-                  echo "Generating snakeoil key for ${config.name} (will be replaced when signing target files)"
-                  # Using certtool + sha256 of the cert name as seed for reproducibility. Seed needs 28 bytes for 2048 bit keys.
-                  ${pkgs.gnutls}/bin/certtool \
-                    --generate-privkey --outfile ${config.certificate}.key \
-                    --key-type=rsa --bits=2048 \
-                    --seed=${builtins.substring 0 (28 * 2) (builtins.hashString "sha256" config.certificate)}
-                  # Set serial number and fake time for reproducibility
-                  ${pkgs.libfaketime}/bin/faketime -f "2020-01-01 00:00:01" \
-                    ${pkgs.openssl}/bin/openssl req -new -x509 -sha256 \
-                      -key ${config.certificate}.key -out ${config.certificate}.x509.pem \
-                      -days 10000 -subj "/CN=Robotnix ${config.certificate}" \
-                      -set_serial 0
-                  # Convert to DER format
-                  ${pkgs.openssl}/bin/openssl pkcs8 -in ${config.certificate}.key -topk8 -nocrypt -outform DER -out ${config.certificate}.pk8
-                  mkdir -p $out/
-                  cp ${config.certificate}.{pk8,x509.pem} $out/
-                '';
               };
             }
           )
@@ -292,7 +205,7 @@ in
       map (prebuilt: {
         name = "robotnix/prebuilt/${prebuilt.name}";
         value = {
-          src = pkgs.runCommand "prebuilt_${prebuilt.name}" { } (
+          src = pkgs.runCommand "prebuilt_${prebuilt.name}" { }
             ''
               set -euo pipefail
 
@@ -316,14 +229,7 @@ in
               if [[ "$TARGET_SDK_VERSION" -lt "${builtins.toString config.apiLevel}" ]]; then
                 echo "WARNING: APK was compiled against an older SDK API level ($TARGET_SDK_VERSION) than used in OS (${builtins.toString config.apiLevel})"
               fi
-            ''
-            +
-              lib.optionalString
-                ((prebuilt.certificate != "PRESIGNED") && !(builtins.elem prebuilt.certificate deviceCertificates))
-                ''
-                  cp ${prebuilt.snakeoilKeyPath}/${prebuilt.certificate}.{pk8,x509.pem} $out/
-                ''
-          );
+            '';
         };
       }) enabledPrebuilts
     );
