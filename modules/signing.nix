@@ -129,7 +129,7 @@ in
             "vbmeta_chained"
             "vbmeta_chained_v2"
           ];
-          default = "vbmeta_chained";
+          default = "vbmeta_simple";
           description = "Mode of AVB signing to use.";
         };
 
