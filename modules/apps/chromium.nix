@@ -95,9 +95,7 @@ in
             webviewPackageName = "org.robotnix.${name}.webview";
             trichromeLibraryPackageName = "org.robotnix.${name}.trichromelibrary";
 
-            patchedTrichromeApk =
-              componentName: apk:
-              apk; #patchTrichromeApk "${name}-${componentName}" apk config.apps.prebuilt.${name}.fingerprint;
+            patchedTrichromeApk = componentName: apk: apk; # patchTrichromeApk "${name}-${componentName}" apk config.apps.prebuilt.${name}.fingerprint;
 
             _browser =
               buildTargets:

@@ -45,7 +45,6 @@ let
       include $(BUILD_PREBUILT)
     '');
 
-
   enabledPrebuilts = lib.filter (p: p.enable) (lib.attrValues cfg);
 in
 {
@@ -205,31 +204,30 @@ in
       map (prebuilt: {
         name = "robotnix/prebuilt/${prebuilt.name}";
         value = {
-          src = pkgs.runCommand "prebuilt_${prebuilt.name}" { }
-            ''
-              set -euo pipefail
+          src = pkgs.runCommand "prebuilt_${prebuilt.name}" { } ''
+            set -euo pipefail
 
-              mkdir -p $out
-              cp ${androidmk prebuilt} $out/Android.mk
-              cp ${prebuilt.apk} $out/${prebuilt.name}.apk
+            mkdir -p $out
+            cp ${androidmk prebuilt} $out/Android.mk
+            cp ${prebuilt.apk} $out/${prebuilt.name}.apk
 
-              ### Check minSdkVersion, targetSdkVersion
-              # TODO: Also check permissions?
-              MANIFEST_DUMP=$(${pkgs.robotnix.build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${prebuilt.apk})
+            ### Check minSdkVersion, targetSdkVersion
+            # TODO: Also check permissions?
+            MANIFEST_DUMP=$(${pkgs.robotnix.build-tools}/aapt2 d xmltree --file AndroidManifest.xml ${prebuilt.apk})
 
-              # It would be better if we could convert it back into true XML and then select based on XPath
-              MIN_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep minSdkVersion | cut -d= -f2)
-              TARGET_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep targetSdkVersion | cut -d= -f2)
+            # It would be better if we could convert it back into true XML and then select based on XPath
+            MIN_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep minSdkVersion | cut -d= -f2)
+            TARGET_SDK_VERSION=$(echo "$MANIFEST_DUMP" | grep targetSdkVersion | cut -d= -f2)
 
-              if [[ "$MIN_SDK_VERSION" -gt "${builtins.toString config.apiLevel}" ]]; then
-                echo "ERROR: OS API level is (${builtins.toString config.apiLevel}) but APK requires at least $MIN_SDK_VERSION"
-                exit 1
-              fi
+            if [[ "$MIN_SDK_VERSION" -gt "${builtins.toString config.apiLevel}" ]]; then
+              echo "ERROR: OS API level is (${builtins.toString config.apiLevel}) but APK requires at least $MIN_SDK_VERSION"
+              exit 1
+            fi
 
-              if [[ "$TARGET_SDK_VERSION" -lt "${builtins.toString config.apiLevel}" ]]; then
-                echo "WARNING: APK was compiled against an older SDK API level ($TARGET_SDK_VERSION) than used in OS (${builtins.toString config.apiLevel})"
-              fi
-            '';
+            if [[ "$TARGET_SDK_VERSION" -lt "${builtins.toString config.apiLevel}" ]]; then
+              echo "WARNING: APK was compiled against an older SDK API level ($TARGET_SDK_VERSION) than used in OS (${builtins.toString config.apiLevel})"
+            fi
+          '';
         };
       }) enabledPrebuilts
     );

@@ -106,10 +106,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    apps.fdroid.fingerprint =
-      lib.mkIf
-      (config.apps.prebuilt."F-Droid".certificate == "PRESIGNED")
-      "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB";
+    apps.fdroid.fingerprint = lib.mkIf (
+      config.apps.prebuilt."F-Droid".certificate == "PRESIGNED"
+    ) "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB";
 
     apps.prebuilt."F-Droid" = {
       apk = pkgs.fetchurl {
