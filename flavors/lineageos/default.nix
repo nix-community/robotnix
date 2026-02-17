@@ -161,7 +161,6 @@ mkIf (config.flavor == "lineageos") {
   apps.updater.flavor = mkDefault "lineageos";
   apps.updater.includedInFlavor = mkDefault true;
   apps.seedvault.includedInFlavor = mkDefault true;
-  pixel.activeEdge.includedInFlavor = mkDefault true;
 
   # Needed by included kernel build for some devices (pioneer at least)
   envPackages =

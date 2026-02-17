@@ -72,9 +72,6 @@ let
         ./modules/security-pki.nix
         ./modules/kernel.nix
         ./modules/microg.nix
-        ./modules/pixel
-        ./modules/pixel/active-edge.nix
-        ./modules/pixel/driver-binaries.nix
         ./modules/release.nix
         ./modules/resources.nix
         ./modules/signing.nix
