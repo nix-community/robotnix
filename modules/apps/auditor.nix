@@ -45,8 +45,6 @@ in
       apk = apks.auditor.override {
         inherit (cfg) domain;
         inherit (config) device;
-        signatureFingerprint = config.apps.prebuilt."Auditor".fingerprint;
-        avbFingerprint = config.signing.avb.fingerprint;
       };
     };
   };

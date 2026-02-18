@@ -20,8 +20,14 @@ let
 
   otaTools = config.build.otaTools;
 
+  signedTargetFilesName = "${config.device}-signed_target_files-${config.buildNumber}.zip";
+
   wrapScript =
-    { commands, keysDir }:
+    {
+      commands,
+      keysDir,
+      verifyKeys,
+    }:
     let
       jre = if (config.androidVersion >= 11) then pkgs.jdk11_headless else pkgs.jre8_headless;
       deps = with pkgs; [
@@ -51,10 +57,10 @@ let
       export KEYSDIR=${keysDir}
       if [[ "$KEYSDIR" ]]; then
         if [[ ! -d "$KEYSDIR" ]]; then
-          echo 'Missing KEYSDIR directory, did you use "--option extra-sandbox-paths /keys=..." ?'
+          echo "Signing keys dir $KEYSDIR is missing."
           exit 1
         fi
-        ${lib.optionalString config.signing.enable "${config.build.verifyKeysScript} \"$KEYSDIR\" || exit 1"}
+        ${lib.optionalString verifyKeys "${config.build.verifyKeysScript} \"$KEYSDIR\" || exit 1"}
         NEW_KEYSDIR=$(mktemp -d /dev/shm/robotnix_keys.XXXXXXXXXX)
         trap "rm -rf \"$NEW_KEYSDIR\"" EXIT
         cp -r "$KEYSDIR"/* "$NEW_KEYSDIR"
@@ -65,11 +71,12 @@ let
       ${commands}
     '';
 
-  runWrappedCommand =
+  runWrappedCommandWithTestKeys =
     name: script: args:
     pkgs.runCommand "${config.device}-${name}-${config.buildNumber}.zip" { } (wrapScript {
       commands = script (args // { out = "$out"; });
-      keysDir = config.signing.buildTimeKeyStorePath;
+      keysDir = config.source.dirs."build/make".src + /target/product/security;
+      verifyKeys = false;
     });
 
   signedTargetFilesScript =
@@ -191,19 +198,14 @@ in
   };
 
   config.build = rec {
-    # These can be used to build these products inside nix. Requires putting the secret keys under /keys in the sandbox
-    unsignedTargetFiles = "${config.build.android}/${config.targetFilesName}";
-    signedTargetFiles = runWrappedCommand "signed_target_files" signedTargetFilesScript {
-      targetFiles = unsignedTargetFiles;
-    };
-    targetFiles = if config.signing.enable then signedTargetFiles else unsignedTargetFiles;
-    ota = runWrappedCommand "ota_update" otaScript { inherit targetFiles; };
-    incrementalOta = runWrappedCommand "incremental-${config.prevBuildNumber}" otaScript {
+    targetFiles = "${config.build.android}/${config.targetFilesName}";
+    ota = runWrappedCommandWithTestKeys "ota_update" otaScript { inherit targetFiles; };
+    incrementalOta = runWrappedCommandWithTestKeys "incremental-${config.prevBuildNumber}" otaScript {
       inherit targetFiles;
       inherit (config) prevTargetFiles;
     };
-    img = runWrappedCommand "img" imgScript { inherit targetFiles; };
-    factoryImg = runWrappedCommand "factory" factoryImgScript { inherit targetFiles img; };
+    img = runWrappedCommandWithTestKeys "img" imgScript { inherit targetFiles; };
+    factoryImg = runWrappedCommandWithTestKeys "factory" factoryImgScript { inherit targetFiles img; };
     unpackedImg = pkgs.robotnix.unpackImg config.build.img;
 
     # Pull this out of target files, because (at least) verity key gets put into boot ramdisk
@@ -264,71 +266,63 @@ in
     '';
 
     # TODO: Do this in a temporary directory. It's ugly to make build dir and ./tmp/* dir gets cleared in these scripts too.
-    releaseScript =
-      (
-        if (!config.signing.enable) then
-          lib.warn "releaseScript should be used only if signing.enable = true; Otherwise, the build might be using incorrect keys / certificate metadata"
-        else
-          lib.id
-      )
-        pkgs.writeShellScript
-        "release.sh"
-        (
-          ''
-            set -euo pipefail
+    releaseScript = pkgs.writeShellScript "release.sh" (
+      ''
+        set -euo pipefail
 
-            if [[ $# -ge 2 ]]; then
-              PREV_BUILDNUMBER="$2"
-            else
-              PREV_BUILDNUMBER=""
-            fi
+        if [[ $# -ge 2 ]]; then
+          PREV_BUILDNUMBER="$2"
+        else
+          PREV_BUILDNUMBER=""
+        fi
+      ''
+      + (wrapScript {
+        keysDir = "$1";
+        verifyKeys = true;
+        commands =
           ''
-          + (wrapScript {
-            keysDir = "$1";
-            commands =
-              ''
-                echo Signing target files
-                ${signedTargetFilesScript {
-                  targetFiles = unsignedTargetFiles;
-                  out = signedTargetFiles.name;
-                }}
-                echo Building OTA zip
-                ${otaScript {
-                  targetFiles = signedTargetFiles.name;
-                  out = ota.name;
-                }}
-                if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
-                  echo Building incremental OTA zip
-                  ${otaScript {
-                    targetFiles = signedTargetFiles.name;
-                    prevTargetFiles =
-                      "${config.device}-target_files"
-                      + lib.optionalString (config.androidVersion < 14) "-$PREV_BUILDNUMBER.zip";
-                    out = "${config.device}-incremental${
-                      lib.optionalString (config.androidVersion < 14) "-$PREV_BUILDNUMBER-${config.buildNumber}"
-                    }.zip";
-                  }}
-                fi
-                echo Building .img file
-                ${imgScript {
-                  targetFiles = signedTargetFiles.name;
-                  out = img.name;
-                }}
-                echo Building factory image
-                ${factoryImgScript {
-                  targetFiles = signedTargetFiles.name;
-                  img = img.name;
-                  out = factoryImg.name;
-                }}
-              ''
-              + lib.optionalString config.apps.updater.enable ''
-                echo Writing updater metadata
-                ${writeOtaMetadata {
-                  otaFile = ota.name;
-                  path = ".";
-                }}
-              '';
-          })
-        );
+            echo Signing target files
+            ${signedTargetFilesScript {
+              inherit targetFiles;
+              out = signedTargetFilesName;
+            }}
+            echo Building OTA zip
+            ${otaScript {
+              targetFiles = signedTargetFilesName;
+              out = ota.name;
+            }}
+            if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
+              echo Building incremental OTA zip
+              ${otaScript {
+                targetFiles = signedTargetFilesName;
+                prevTargetFiles =
+                  "${config.device}-target_files"
+                  + lib.optionalString (config.androidVersion < 14) "-$PREV_BUILDNUMBER.zip";
+                out = "${config.device}-incremental${
+                  lib.optionalString (config.androidVersion < 14) "-$PREV_BUILDNUMBER-${config.buildNumber}"
+                }.zip";
+              }}
+            fi
+            echo Building .img file
+            ${imgScript {
+              targetFiles = signedTargetFilesName;
+              out = img.name;
+            }}
+            echo Building factory image
+            ${factoryImgScript {
+              targetFiles = signedTargetFilesName;
+              img = img.name;
+              out = factoryImg.name;
+            }}
+          ''
+          + lib.optionalString config.apps.updater.enable ''
+            echo Writing updater metadata
+            ${writeOtaMetadata {
+              otaFile = ota.name;
+              path = ".";
+            }}
+          '';
+      })
+    );
   };
 }

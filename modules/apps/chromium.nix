@@ -95,9 +95,7 @@ in
             webviewPackageName = "org.robotnix.${name}.webview";
             trichromeLibraryPackageName = "org.robotnix.${name}.trichromelibrary";
 
-            patchedTrichromeApk =
-              componentName: apk:
-              patchTrichromeApk "${name}-${componentName}" apk config.apps.prebuilt.${name}.fingerprint;
+            patchedTrichromeApk = componentName: apk: apk; # patchTrichromeApk "${name}-${componentName}" apk config.apps.prebuilt.${name}.fingerprint;
 
             _browser =
               buildTargets:
@@ -192,7 +190,6 @@ in
                   isTriChrome && (config.apps.${name}.enable || config.webview.${name}.enable)
                 );
                 certificate = config.apps.prebuilt.${name}.certificate; # Share certificate with application
-                fingerprint = config.apps.prebuilt.${name}.fingerprint;
               };
             }
           ]
@@ -216,15 +213,5 @@ in
           }
         ]
     ))
-    ++ [
-      {
-        # Snakeoil key fingerprints
-        apps.prebuilt = mkIf (!config.signing.enable) {
-          chromium.fingerprint = "A9934B9FF708E2731A191453E53D961F57DA240AC50270287A8D5A0BFCC2A32F";
-          bromite.fingerprint = "84DC65839E28832CD7CEB132E484F26857A075AFF5CFEB65802B489949AA6C36";
-          vanadium.fingerprint = "67732B459F18ACD4BA86A6F1EE6D77C5AB347170A9CF29040CA874D6EE3FD61B";
-        };
-      }
-    ]
   );
 }
