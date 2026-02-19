@@ -171,6 +171,7 @@
             (lib.mkIf (lib.versionAtLeast config.grapheneos.release "2026021200") {
               "build/make/target/product/security/sdk_sandbox" = "${config.device}/sdk_sandbox";
               "build/make/target/product/security/nfc" = "${config.device}/nfc";
+              "build/make/target/product/security/bluetooth" = "${config.device}/bluetooth";
             })
           ];
 
@@ -178,8 +179,8 @@
           extraApks = {
             "OsuLogin.apk" = "${config.device}/releasekey";
             "ServiceWifiResources.apk" = "${config.device}/releasekey";
+            "Bluetooth.apk" = "${config.device}/bluetooth";
             "com.android.appsearch.apk.apk" = "${config.device}/releasekey";
-            "Bluetooth.apk" = "${config.device}/releasekey";
             "HealthConnectBackupRestore.apk" = "${config.device}/releasekey";
             "HealthConnectController.apk" = "${config.device}/releasekey";
             "FederatedCompute.apk" = "${config.device}/releasekey";
