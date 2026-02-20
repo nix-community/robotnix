@@ -69,7 +69,6 @@ in
           flavor = "vanilla";
           androidVersion = 10;
           apv.enable = false;
-          pixel.useUpstreamDriverBinaries = true;
         }; # APV not working on Android 10...
         "vanilla-11" = {
           device = "sunfish";

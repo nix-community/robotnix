@@ -124,12 +124,11 @@ in
         # TODO: Refactor
         mode = mkOption {
           type = types.enum [
-            "verity_only"
             "vbmeta_simple"
             "vbmeta_chained"
             "vbmeta_chained_v2"
           ];
-          default = "vbmeta_chained";
+          default = "vbmeta_simple";
           description = "Mode of AVB signing to use.";
         };
 
@@ -137,11 +136,6 @@ in
           type = types.strMatching "[0-9A-F]{64}";
           apply = lib.toUpper;
           description = "SHA256 hash of `avb_pkmd.bin`. Should be set automatically based on file under `keyStorePath` if `signing.enable = true`";
-        };
-
-        verityCert = mkOption {
-          type = types.path;
-          description = "Verity certificate for AVB. e.g. in x509 DER format.x509.pem. Only needed if signing.avb.mode = \"verity_only\"";
         };
 
         size = mkOption {
@@ -202,9 +196,6 @@ in
             putInStore "${config.signing.keyStorePath}/${config.device}/avb_pkmd.bin"
           )
         )
-      );
-      signing.avb.verityCert = mkIf config.signing.enable (
-        mkOptionDefault (putInStore "${config.signing.keyStorePath}/${config.device}/verity.x509.pem")
       );
 
       signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
@@ -288,11 +279,6 @@ in
       signing = {
         avbFlags =
           {
-            verity_only = [
-              "--replace_verity_public_key $KEYSDIR/${config.device}/verity_key.pub"
-              "--replace_verity_private_key $KEYSDIR/${config.device}/verity"
-              "--replace_verity_keyid $KEYSDIR/${config.device}/verity.x509.pem"
-            ];
             vbmeta_simple = [
               "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem"
               "--avb_vbmeta_algorithm ${algorithm}"
@@ -312,11 +298,7 @@ in
               "--avb_vbmeta_system_algorithm ${algorithm}"
             ];
           }
-          .${cfg.avb.mode}
-          ++ lib.optionals ((config.androidVersion >= 10) && (cfg.avb.mode != "verity_only")) [
-            "--avb_system_other_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_system_other_algorithm ${algorithm}"
-          ];
+          .${cfg.avb.mode};
 
         keyMappings =
           {
@@ -418,20 +400,12 @@ in
 
                 substituteInPlace $out/bin/make_key --replace openssl ${lib.getBin pkgs.openssl}/bin/openssl
 
-                cc -o $out/bin/generate_verity_key \
-                  ${config.source.dirs."system/extras".src}/verity/generate_verity_key.c \
-                  ${config.source.dirs."system/core".src}/libcrypto_utils/android_pubkey.c${
-                    lib.optionalString (config.androidVersion >= 12) "pp"
-                  } \
-                  -I ${config.source.dirs."system/core".src}/libcrypto_utils/include/ \
-                  -I ${pkgs.boringssl.dev}/include ${pkgs.boringssl}/lib/libssl.a ${pkgs.boringssl}/lib/libcrypto.a -lpthread
-
                 cp ${config.source.dirs."external/avb".src}/${avbtoolFilename} $out/bin/avbtool
 
                 patchShebangs $out/bin
               '';
           # TODO: avbkey is not encrypted. Can it be? Need to get passphrase into avbtool
-          # Generate either verity or avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
+          # Generate avb--not recommended to use same keys across devices. e.g. attestation relies on device-specific keys
         in
         pkgs.writeShellScript "generate_keys.sh" ''
           set -euo pipefail
@@ -473,21 +447,13 @@ in
             fi
           done
 
-          ${lib.optionalString (config.signing.avb.mode == "verity_only") ''
-            if [[ ! -e "${config.device}/verity_key.pub" ]]; then
-                generate_verity_key -convert ${config.device}/verity.x509.pem ${config.device}/verity_key
-            fi
-          ''}
-
-          ${lib.optionalString (config.signing.avb.mode != "verity_only") ''
-            if [[ ! -e "${config.device}/avb.pem" ]]; then
-              echo "Generating Device AVB key"
-              openssl genrsa -out ${config.device}/avb.pem ${builtins.toString cfg.avb.size}
-              avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
-            else
-              echo "Skipping generating device AVB key since it is already exists"
-            fi
-          ''}
+          if [[ ! -e "${config.device}/avb.pem" ]]; then
+            echo "Generating Device AVB key"
+            openssl genrsa -out ${config.device}/avb.pem ${builtins.toString cfg.avb.size}
+            avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
+          else
+            echo "Skipping generating device AVB key since it is already exists"
+          fi
         '';
 
       # Check that all needed keys are available.
@@ -522,26 +488,17 @@ in
           fi
         done
 
-        ${lib.optionalString (config.signing.avb.mode == "verity_only") ''
-          if [[ ! -e "${config.device}/verity_key.pub" ]]; then
-            echo "Missing verity_key.pub"
-            MISSING_KEYS=1
+        if [[ ! -e "${config.device}/avb.pem" ]]; then
+          echo "Missing Device AVB key"
+          MISSING_KEYS=1
+        else
+          KEYSIZE=$(${lib.getExe pkgs.openssl} rsa -in "${config.device}/avb.pem" -text 2>/dev/null | grep -E "Private-Key: \(([0-9]+) bit, 2 primes\)" | tr -d "(" | awk '{ print $2 }')
+          if [[ "$KEYSIZE" -ne ${toString config.signing.avb.size} ]]; then
+            echo "Device AVB key in $1 has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} bits were expected."
+            echo "Either rotate your AVB signing key, or set \`signing.avb.size = $KEYSIZE;\`."
+            RETVAL=1
           fi
-        ''}
-
-        ${lib.optionalString (config.signing.avb.mode != "verity_only") ''
-          if [[ ! -e "${config.device}/avb.pem" ]]; then
-            echo "Missing Device AVB key"
-            MISSING_KEYS=1
-          else
-            KEYSIZE=$(${lib.getExe pkgs.openssl} rsa -in "${config.device}/avb.pem" -text 2>/dev/null | grep -E "Private-Key: \(([0-9]+) bit, 2 primes\)" | tr -d "(" | awk '{ print $2 }')
-            if [[ "$KEYSIZE" -ne ${toString config.signing.avb.size} ]]; then
-              echo "Device AVB key in $1 has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} bits were expected."
-              echo "Either rotate your AVB signing key, or set \`signing.avb.size = $KEYSIZE;\`."
-              RETVAL=1
-            fi
-          fi
-        ''}
+        fi
 
         if [[ "$MISSING_KEYS" -ne 0 ]]; then
           echo Certain keys were missing from KEYSDIR. Have you run generateKeysScript?

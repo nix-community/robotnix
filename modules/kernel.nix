@@ -72,13 +72,6 @@ in
   };
 
   config = {
-    kernel.postPatch =
-      lib.optionalString (config.signing.enable && (config.signing.avb.mode == "verity_only"))
-        ''
-          rm -f verity_*.x509
-          openssl x509 -outform der -in ${config.signing.avb.verityCert} -out verity_user.der.x509
-        '';
-
     # We have to replace files here, instead of just using the
     # config.build.kernel drv output in place of source.dirs.${cfg.relpath}.
     # This is because there are some additional things in the prebuilt kernel
