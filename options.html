@@ -342,6 +342,13 @@ installed device--or if the F-Droid storage is cleared.</p>
 <p><em>Type</em>: boolean</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
+<h3 id="appsfdroidfingerprint"><a class="header" href="#appsfdroidfingerprint"><code>apps.fdroid.fingerprint</code></a></h3>
+<p>The certificate fingerprint of the F-Droid APK. This is required
+because the F-Droid privileged extension checks the signature of the
+F-Droid APK to prevent unauthorized access.</p>
+<p><em>Type</em>: string matching the pattern [0-9A-F]{64}</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/fdroid.nix">modules/apps/fdroid.nix</a></p>
 <h3 id="appsprebuilt"><a class="header" href="#appsprebuilt"><code>apps.prebuilt</code></a></h3>
 <p>Prebuilt APKs to include in the robotnix build</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "{ }"; }</code></p>
@@ -363,9 +370,8 @@ Disables battery optimization for this app.</p>
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/apps/prebuilt.nix">modules/apps/prebuilt.nix</a></p>
 <h3 id="appsprebuiltnamecertificate"><a class="header" href="#appsprebuiltnamecertificate"><code>apps.prebuilt.&lt;name&gt;.certificate</code></a></h3>
 <p>Name of certificate to sign APK with.  Defaults to the name of the prebuilt app.
-If it is a device-specific certificate, the cert/key should be under <code>${keyStorePath}/${device}/${certificate}.{x509.pem,pk8}</code>.
-Otherwise, it should be <code>${keyStorePath}/${certificate}.{x509.pem,pk8}</code>.
-Finally, the special string "PRESIGNED" will just use the APK as-is.</p>
+If it is a device-specific certificate, the cert/key should be in your keys dir under <code>${device}/${certificate}.{x509.pem,pk8}</code>.
+The special string "PRESIGNED" will just use the APK as-is and not replace the signature.</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "\"‹name›\""; }</code></p>
 <p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
@@ -730,11 +736,6 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p><em>Type</em>: boolean</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
-<h3 id="signingavbfingerprint"><a class="header" href="#signingavbfingerprint"><code>signing.avb.fingerprint</code></a></h3>
-<p>SHA256 hash of <code>avb_pkmd.bin</code>. Should be set automatically based on file under <code>keyStorePath</code> if <code>signing.enable = true</code></p>
-<p><em>Type</em>: string matching the pattern [0-9A-F]{64}</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingavbmode"><a class="header" href="#signingavbmode"><code>signing.avb.mode</code></a></h3>
 <p>Mode of AVB signing to use.</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "\"vbmeta_simple\""; }</code></p>
@@ -747,28 +748,10 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <p><em>Type</em>: signed integer or floating point number</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
-<h3 id="signingbuildtimekeystorepath"><a class="header" href="#signingbuildtimekeystorepath"><code>signing.buildTimeKeyStorePath</code></a></h3>
-<p>Path to generated keys for signing to use at build-time, as opposed to keyStorePath, which is used at evaluation-time.</p>
-<p><em>Type</em>: string or absolute path</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
-<h3 id="signingenable"><a class="header" href="#signingenable"><code>signing.enable</code></a></h3>
-<p>Whether to sign build using user-provided keys. Otherwise, build will be signed using insecure test-keys.</p>
-<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "false"; }</code></p>
-<p><em>Type</em>: boolean</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingextraflags"><a class="header" href="#signingextraflags"><code>signing.extraFlags</code></a></h3>
 <p>Additional non-APK-nor-APEX-related flags to pass to sign_target_files_apks.</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "[ ]"; }</code></p>
 <p><em>Type</em>: list of string</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
-<h3 id="signingkeystorepath"><a class="header" href="#signingkeystorepath"><code>signing.keyStorePath</code></a></h3>
-<p>String containing absolute path to generated keys for signing.
-This must be a <em>string</em> and not a "nix path" to ensure that your secret keys are not imported into the public <code>/nix/store</code>.</p>
-<p><em>Example</em>: <code>{"_type":"literalExpression","text":"\"/var/secrets/android-keys\""}</code></p>
-<p><em>Type</em>: string</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="sourcedirs"><a class="header" href="#sourcedirs"><code>source.dirs</code></a></h3>
