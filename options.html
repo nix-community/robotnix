@@ -654,19 +654,6 @@ See https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/m
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "[ ]"; }</code></p>
 <p><em>Type</em>: list of unspecified value</p>
 <p><em>Declared by</em>:</p>
-<h3 id="pixelactiveedgeenable"><a class="header" href="#pixelactiveedgeenable"><code>pixel.activeEdge.enable</code></a></h3>
-<p>Whether to enable Active Edge gestures using the open-source implementation from LineageOS.</p>
-<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "false"; }</code></p>
-<p><em>Example</em>: <code>{"_type":"literalExpression","text":"true"}</code></p>
-<p><em>Type</em>: boolean</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/pixel/active-edge.nix">modules/pixel/active-edge.nix</a></p>
-<h3 id="pixeluseupstreamdriverbinaries"><a class="header" href="#pixeluseupstreamdriverbinaries"><code>pixel.useUpstreamDriverBinaries</code></a></h3>
-<p>Use device vendor binaries from https://developers.google.com/android/drivers</p>
-<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "false"; }</code></p>
-<p><em>Type</em>: boolean</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/pixel/driver-binaries.nix">modules/pixel/driver-binaries.nix</a></p>
 <h3 id="productadditionalproductpackages"><a class="header" href="#productadditionalproductpackages"><code>product.additionalProductPackages</code></a></h3>
 <p><code>PRODUCT_PACKAGES</code> to add under <code>product</code> partition.</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "[ ]"; }</code></p>
@@ -750,19 +737,14 @@ See also https://source.android.com/devices/tech/ota/dynamic_partitions/ab_legac
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingavbmode"><a class="header" href="#signingavbmode"><code>signing.avb.mode</code></a></h3>
 <p>Mode of AVB signing to use.</p>
-<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "\"vbmeta_chained\""; }</code></p>
-<p><em>Type</em>: one of "verity_only", "vbmeta_simple", "vbmeta_chained", "vbmeta_chained_v2"</p>
+<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "\"vbmeta_simple\""; }</code></p>
+<p><em>Type</em>: one of "vbmeta_simple", "vbmeta_chained", "vbmeta_chained_v2"</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingavbsize"><a class="header" href="#signingavbsize"><code>signing.avb.size</code></a></h3>
 <p>Size of the SHA256 RSA keys</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "4096"; }</code></p>
 <p><em>Type</em>: signed integer or floating point number</p>
-<p><em>Declared by</em>:
-<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
-<h3 id="signingavbveritycert"><a class="header" href="#signingavbveritycert"><code>signing.avb.verityCert</code></a></h3>
-<p>Verity certificate for AVB. e.g. in x509 DER format.x509.pem. Only needed if signing.avb.mode = "verity_only"</p>
-<p><em>Type</em>: absolute path</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/signing.nix">modules/signing.nix</a></p>
 <h3 id="signingbuildtimekeystorepath"><a class="header" href="#signingbuildtimekeystorepath"><code>signing.buildTimeKeyStorePath</code></a></h3>
@@ -872,6 +854,16 @@ This must be a <em>string</em> and not a "nix path" to ensure that your secret k
 <p><em>Type</em>: null or absolute path</p>
 <p><em>Declared by</em>:
 <a href="https://github.com/danielfullmer/robotnix/blob/master/modules/source.nix">modules/source.nix</a></p>
+<h3 id="stateversion"><a class="header" href="#stateversion"><code>stateVersion</code></a></h3>
+<p>Analogously to the NixOS option <code>system.stateVersion</code>, this option
+tells the robotnix build what kind of state to expect to the device.
+Once you have flashed a robotnix build with some specific
+<code>stateVersion</code> to your device, <code>stateVersion</code> should be kept constant
+until you entirely wipe and re-flash the device.</p>
+<p><em>Default</em>: <code>{   _type = "literalExpression";   text = "\"2\""; }</code></p>
+<p><em>Type</em>: one of "1", "2"</p>
+<p><em>Declared by</em>:
+<a href="https://github.com/danielfullmer/robotnix/blob/master/modules/state-version.nix">modules/state-version.nix</a></p>
 <h3 id="systemadditionalproductpackages"><a class="header" href="#systemadditionalproductpackages"><code>system.additionalProductPackages</code></a></h3>
 <p><code>PRODUCT_PACKAGES</code> to add under <code>system</code> partition.</p>
 <p><em>Default</em>: <code>{   _type = "literalExpression";   text = "[ ]"; }</code></p>
