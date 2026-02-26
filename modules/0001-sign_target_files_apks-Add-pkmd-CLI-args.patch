@@ -1,0 +1,90 @@
+From 1f862c852cec5b7457ad6bd81be3dfe5d77a56ae Mon Sep 17 00:00:00 2001
+From: cyclopentane <cyclopentane@aidoskyneen.eu>
+Date: Wed, 18 Feb 2026 21:42:35 +0100
+Subject: [PATCH 1/3] sign_target_files_apks: Add pkmd CLI args
+
+---
+ tools/releasetools/sign_target_files_apks.py | 32 +++++++++++++++++---
+ 1 file changed, 28 insertions(+), 4 deletions(-)
+
+diff --git a/tools/releasetools/sign_target_files_apks.py b/tools/releasetools/sign_target_files_apks.py
+index 694dbb777a..d8e20bd1e2 100755
+--- a/tools/releasetools/sign_target_files_apks.py
++++ b/tools/releasetools/sign_target_files_apks.py
+@@ -122,6 +122,18 @@ Usage:  sign_target_files_apks [flags] input_target_files output_target_files
+       mounted on the partition (e.g. "--signing_helper /path/to/helper"). The
+       args will be appended to the existing ones in info dict.
+ 
++  --avb_system_other_pkmd <pkmd_file>
++      File containing the public key metadata blob of the AVB signing key of the
++      system_other partition, as obtained by running `avbtool
++      extract_public_key` on the corresponding private key file. If this option
++      is not given, this script will run `avbtool extract_public_key` by itself.
++
++  --apex_com.android.virt.apex_pkmd <pkmd_file>
++      File containing the public key metadata blob of the payload key of the
++      `com.android.virt` APEX, as obtained by running `avbtool
++      extract_public_key` on the corresponding private key file. If this option
++      is not given, this script will run `avbtool extract_public_key` by itself.
++
+   --gki_signing_algorithm <algorithm>
+   --gki_signing_key <key>
+   --gki_signing_extra_args <args>
+@@ -216,6 +228,8 @@ OPTIONS.replace_ota_keys = False
+ OPTIONS.remove_avb_public_keys = None
+ OPTIONS.tag_changes = ("-test-keys", "-dev-keys", "+release-keys")
+ OPTIONS.avb_keys = {}
++OPTIONS.avb_pkmds = {}
++OPTIONS.apex_pkmds = {}
+ OPTIONS.avb_algorithms = {}
+ OPTIONS.avb_extra_args = {}
+ OPTIONS.android_jar_path = None
+@@ -903,8 +917,10 @@ def ProcessTargetFiles(input_tf_zip: zipfile.ZipFile, output_tf_zip: zipfile.Zip
+       # key is specified via --avb_system_other_key.
+       signing_key = OPTIONS.avb_keys.get("system_other")
+       if signing_key:
+-        public_key = common.ExtractAvbPublicKey(
+-            misc_info['avb_avbtool'], signing_key)
++        public_key = OPTIONS.avb_pkmds.get("system_other")
++        if not public_key:
++          public_key = common.ExtractAvbPublicKey(
++              misc_info['avb_avbtool'], signing_key)
+         print("    Rewriting AVB public key of system_other in /product")
+         common.ZipWrite(output_tf_zip, public_key, filename)
+ 
+@@ -932,8 +948,10 @@ def ProcessTargetFiles(input_tf_zip: zipfile.ZipFile, output_tf_zip: zipfile.Zip
+             new_pubkey = GetMicrodroidVbmetaKey(virt_apex_temp_file.name,
+                                                 misc_info['avb_avbtool'])
+         else:
+-          new_pubkey_path = common.ExtractAvbPublicKey(
+-              misc_info['avb_avbtool'], payload_key)
++          new_pubkey_path = OPTIONS.apex_pkmds.get("com.android.virt.apex")
++          if not new_pubkey_path:
++            new_pubkey_path = common.ExtractAvbPublicKey(
++                misc_info['avb_avbtool'], payload_key)
+           with open(new_pubkey_path, 'rb') as f:
+             new_pubkey = f.read()
+ 
+@@ -1784,6 +1802,10 @@ def main(argv):
+       # 'oem=--signing_helper_with_files=/tmp/avbsigner.sh'.
+       partition, extra_args = a.split("=", 1)
+       OPTIONS.avb_extra_args[partition] = extra_args
++    elif o == "--avb_system_other_pkmd":
++      OPTIONS.avb_pkmds["system_other"] = a
++    elif o == "--apex_com.android.virt.apex_pkmd":
++      OPTIONS.apex_pkmds["com.android.virt.apex"] = a
+     elif o == "--vendor_otatools":
+       OPTIONS.vendor_otatools = a
+     elif o == "--vendor_partitions":
+@@ -1840,6 +1862,8 @@ def main(argv):
+           "avb_system_other_algorithm=",
+           "avb_system_other_key=",
+           "avb_system_other_extra_args=",
++          "avb_system_other_pkmd=",
++          "apex_com.android.virt.apex_pkmd=",
+           "avb_vendor_algorithm=",
+           "avb_vendor_key=",
+           "avb_vendor_extra_args=",
+-- 
+2.52.0
+

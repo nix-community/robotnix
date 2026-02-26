@@ -168,6 +168,12 @@ in
       }
     ];
 
+    source.dirs."build/make".patches = [
+      ./0001-sign_target_files_apks-Add-pkmd-CLI-args.patch
+      ./0002-Add-public_key_map-option.patch
+      ./0003-signapk-add-keyStorePinFile-option.patch
+    ];
+
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
     # TODO: Some of these apex packages share the same underlying keys. We should try to match that. See META/apexkeys.txt from  target-files
     signing.apex.packageNames = map (s: "com.android.${s}") (
