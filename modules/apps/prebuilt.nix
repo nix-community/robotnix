@@ -30,7 +30,7 @@ let
         if (prebuilt.certificate == "PRESIGNED") then
           "PRESIGNED"
         else
-          (if (prebuilt.certificate == "releasekey") then "testkey" else prebuilt.certificate)
+          "robotnix/prebuilt/${prebuilt.name}/${prebuilt.certificate}"
       }
       ${lib.optionalString (prebuilt.partition == "vendor") "LOCAL_VENDOR_MODULE := true"}
       ${lib.optionalString (prebuilt.partition == "product") "LOCAL_PRODUCT_MODULE := true"}
@@ -119,6 +119,24 @@ in
                 snakeoilKeyPath = mkOption {
                   type = types.path;
                   internal = true;
+                  default = pkgs.runCommand "${config.certificate}-snakeoil-cert" { } ''
+                    echo "Generating snakeoil key for ${config.name} (will be replaced when signing target files)"
+                    # Using certtool + sha256 of the cert name as seed for reproducibility. Seed needs 28 bytes for 2048 bit keys.
+                    ${pkgs.gnutls}/bin/certtool \
+                      --generate-privkey --outfile ${config.certificate}.key \
+                      --key-type=rsa --bits=2048 \
+                      --seed=${builtins.substring 0 (28 * 2) (builtins.hashString "sha256" config.certificate)}
+                    # Set serial number and fake time for reproducibility
+                    ${pkgs.libfaketime}/bin/faketime -f "2020-01-01 00:00:01" \
+                      ${pkgs.openssl}/bin/openssl req -new -x509 -sha256 \
+                        -key ${config.certificate}.key -out ${config.certificate}.x509.pem \
+                        -days 10000 -subj "/CN=Robotnix ${config.certificate}" \
+                        -set_serial 0
+                    # Convert to DER format
+                    ${pkgs.openssl}/bin/openssl pkcs8 -in ${config.certificate}.key -topk8 -nocrypt -outform DER -out ${config.certificate}.pk8
+                    mkdir -p $out/
+                    cp ${config.certificate}.{pk8,x509.pem} $out/
+                  '';
                 };
 
                 privileged = mkOption {
@@ -227,6 +245,10 @@ in
             if [[ "$TARGET_SDK_VERSION" -lt "${builtins.toString config.apiLevel}" ]]; then
               echo "WARNING: APK was compiled against an older SDK API level ($TARGET_SDK_VERSION) than used in OS (${builtins.toString config.apiLevel})"
             fi
+
+            ${lib.optionalString (prebuilt.certificate != "PRESIGNED") ''
+              cp ${prebuilt.snakeoilKeyPath}/${prebuilt.certificate}.{pk8,x509.pem} $out/
+            ''}
           '';
         };
       }) enabledPrebuilts
