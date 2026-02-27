@@ -25,10 +25,22 @@ let
   # TODO: Find a better way to do this?
   putInStore = path: if (lib.hasPrefix builtins.storeDir path) then path else (/. + path);
 
-  algorithm = "SHA256_RSA${builtins.toString cfg.avb.size}";
+  avbAlgorithm = "SHA256_RSA${builtins.toString cfg.avb.size}";
   keysToGenerate = lib.unique (
     (builtins.attrValues cfg.keyMappings) ++ (builtins.attrValues cfg.extraApks)
   );
+
+  signapkKeyNameMap =
+    if config.signing.pkcs11.enable then
+      (x: config.signing.pkcs11.certificateLabels.${x})
+    else
+      (x: "$KEYSDIR/${x}");
+
+  avbtoolKeyMap =
+    if config.signing.pkcs11.enable then
+      (x: config.signing.pkcs11.privateKeyLabels.${x})
+    else
+      (x: "$KEYSDIR/${x}.pem");
 in
 {
   options = {
@@ -133,6 +145,13 @@ in
           ];
           default = if lib.versionAtLeast config.stateVersion "2" then "vbmeta_simple" else "vbmeta_chained";
           description = "Mode of AVB signing to use.";
+        };
+
+        key = mkOption {
+          type = types.str;
+          default = "${config.device}/avb";
+          defaultText = "\${config.device}/avb";
+          description = "The identifier of the AVB key to use.";
         };
 
         size = mkOption {
@@ -256,30 +275,30 @@ in
       avbFlags =
         {
           vbmeta_simple = [
-            "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_vbmeta_algorithm ${algorithm}"
+            ''--avb_vbmeta_key "${avbtoolKeyMap cfg.avb.key}"''
+            "--avb_vbmeta_algorithm ${avbAlgorithm}"
           ];
           vbmeta_chained = [
-            "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_vbmeta_algorithm ${algorithm}"
-            "--avb_system_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_system_algorithm ${algorithm}"
+            ''--avb_vbmeta_key "${avbtoolKeyMap cfg.avb.key}"''
+            ''--avb_vbmeta_algorithm ${avbAlgorithm}''
+            ''--avb_system_key "${avbtoolKeyMap cfg.avb.key}"''
+            ''--avb_system_algorithm ${avbAlgorithm}''
           ];
           vbmeta_chained_v2 = [
-            "--avb_vbmeta_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_vbmeta_algorithm ${algorithm}"
-            "--avb_system_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_system_algorithm ${algorithm}"
-            "--avb_vbmeta_system_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_vbmeta_system_algorithm ${algorithm}"
+            ''--avb_vbmeta_key "${avbtoolKeyMap cfg.avb.key}"''
+            ''--avb_vbmeta_algorithm ${avbAlgorithm}''
+            ''--avb_system_key "${avbtoolKeyMap cfg.avb.key}"''
+            ''--avb_system_algorithm ${avbAlgorithm}''
+            ''--avb_vbmeta_system_key "${avbtoolKeyMap cfg.avb.key}"''
+            ''--avb_vbmeta_system_algorithm ${avbAlgorithm}''
           ];
         }
         .${cfg.avb.mode}
         ++ lib.optionals
           ((config.androidVersion >= 10) && (cfg.avb.mode != "verity_only") && config.stateVersion == "1")
           [
-            "--avb_system_other_key $KEYSDIR/${config.device}/avb.pem"
-            "--avb_system_other_algorithm ${algorithm}"
+            ''--avb_system_other_key "${avbtoolKeyMap cfg.avb.key}"''
+            ''--avb_system_other_algorithm ${avbAlgorithm}''
           ];
 
       keyMappings =

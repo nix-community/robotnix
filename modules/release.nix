@@ -281,6 +281,15 @@ in
         else
           PREV_BUILDNUMBER=""
         fi
+
+        ${lib.optionalString config.signing.pkcs11.enable ''
+          if [[ $# -ne 3 ]]; then
+            echo "Usage: $0 <keysdir> <prev-buildnumber> <pin-file>"
+            echo "If you do not want to build an incremental OTA, set <prev-buildnumber> to the empty string (\"\")."
+            exit 1
+          fi
+          PIN_FILE="$3"
+        ''}
       ''
       + (wrapScript {
         keysDir = "$1";
