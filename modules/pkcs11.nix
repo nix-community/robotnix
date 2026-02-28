@@ -211,6 +211,8 @@ in
               coreutils
               yubikey-manager
               gawk
+              openssl
+              android-tools
             ]
           )
         }
@@ -235,6 +237,14 @@ in
             ykman piv certificates export ${slot} "$KEYSDIR/${key}.x509.pem"
           '') cfg.pkcs11.presets.yubikey-piv.slotMap
         )}
+
+        # generate AVB public key metadata blob we can't just pipe from openssl
+        # to avbtool, because avbtool executes openssl on the key file
+        # internally without passing stdin...
+        TMPFILE=$(mktemp)
+        openssl x509 -in "$KEYSDIR/${cfg.avb.key}.x509.pem" -noout -pubkey > "$TMPFILE"
+        avbtool extract_public_key --key "$TMPFILE" --output "$KEYSDIR/${cfg.avb.key}_pkmd.bin"
+        rm "$TMPFILE"
       '';
     })
   ];
