@@ -104,6 +104,9 @@ in
         enable = lib.mkEnableOption "the YubiKey PIV PKCS#11 signing preset.";
         slotMap = lib.mkOption {
           type = with lib.types; attrsOf str;
+          description = ''
+            The YubiKey PIV slots to use for the individual keys.
+          '';
           default = {
             "${config.device}/releasekey" = "82";
             "${config.device}/media" = "83";
@@ -116,6 +119,18 @@ in
             # grapheneos gmscompat_lib: 8a
             # grapheneos bluetooth:     8b
           };
+          defaultText = ''
+            {
+              "''${config.device}/releasekey" = "82";
+              "''${config.device}/media" = "83";
+              "''${config.device}/shared" = "84";
+              "''${config.device}/platform" = "85";
+              "''${config.device}/sdk_sandbox" = "86";
+              "''${config.device}/nfc" = "87";
+              "''${config.device}/networkstack" = "88";
+              "''${config.device}/avb" = "89";
+            }
+          '';
         };
       };
     };
