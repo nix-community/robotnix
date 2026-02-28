@@ -45,6 +45,17 @@ in
 {
   options = {
     signing = {
+      # Currently, make_key hardcodes a key size of 4096 bits.
+      # This might change in the future and wreak havoc to our PKCS#11 signing,
+      # so we future-proof it by checking in verifyKeysScript that the key size
+      # is, indeed, still 4096 bit.
+      apkKeySize = mkOption {
+        default = 4096;
+        type = types.enum [ 4096 ];
+        internal = true;
+        description = '''';
+      };
+
       avbFlags = mkOption {
         default = [ ];
         type = types.listOf types.str;
@@ -459,6 +470,17 @@ in
     # TODO: Remove code duplicated with generate_keys.sh
     build.verifyKeysScript = pkgs.writeShellScript "verify_keys.sh" ''
       set -euo pipefail
+      PATH=${
+        lib.makeBinPath (
+          with pkgs;
+          [
+            coreutils
+            openssl
+            gnugrep
+            gawk
+          ]
+        )
+      }
 
       if [[ "$#" -ne 1 ]]; then
         echo "Usage: $0 <keysdir>"
@@ -480,6 +502,11 @@ in
           echo "Missing $key key"
           MISSING_KEYS=1
         fi
+        KEYSIZE=$(openssl x509 -in "$key" -text -noout | grep "Public-Key" | tr -d '(' | awk '{ print $2 }')
+        if [ "$KEYSIZE" != ${toString config.signing.apkKeySize} ]; then
+          echo "APK key $key has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} were expected."
+          RETVAL=1
+        fi
       done
 
       ${lib.optionalString (!lib.versionAtLeast config.stateVersion "3") ''
@@ -495,7 +522,7 @@ in
         echo "Missing Device AVB key"
         MISSING_KEYS=1
       else
-        KEYSIZE=$(${lib.getExe pkgs.openssl} rsa -in "${config.device}/avb.pem" -text 2>/dev/null | grep -E "Private-Key: \(([0-9]+) bit, 2 primes\)" | tr -d "(" | awk '{ print $2 }')
+        KEYSIZE=$(openssl rsa -in "${config.device}/avb.pem" -text 2>/dev/null | grep -E "Private-Key: \(([0-9]+) bit, 2 primes\)" | tr -d "(" | awk '{ print $2 }')
         if [[ "$KEYSIZE" -ne ${toString config.signing.avb.size} ]]; then
           echo "Device AVB key in $1 has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} bits were expected."
           echo "Either rotate your AVB signing key, or set \`signing.avb.size = $KEYSIZE;\`."
