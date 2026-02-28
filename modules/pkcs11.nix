@@ -70,6 +70,23 @@ let
 
     PKCS11_URI="pkcs11:object=$(urlencode "$KEY");type=private"
   '';
+  otaPayloadSigner = pkgs.writeShellScript "ota-payload-signer" ''
+    set -euo pipefail
+    # it would be overkill to write a full-blown arg parser here, so
+    # we only check for the exact arg order that
+    # payload_signer.py:SignHashFile invokes the payload_signer script with.
+
+    if [ $# -ne 4 || "$1" != "-in" || "$3" != "-out" ]; then
+      echo "usage: $0 -in <infile> -out <outfile>"
+      exit 1
+    fi
+    INFILE="$2"
+    OUTFILE="$4"
+
+    ${opensslEnvVars}
+
+    openssl pkeyutl -provider default -provider pkcs11prov -passin file:$PIN_FILE -inkey "$PKCS11_URI" -in "$INFILE" -out "$OUTFILE"
+  '';
 in
 {
   options.signing.pkcs11 = {
@@ -152,23 +169,6 @@ in
               name = Robotnix_PKCS11
               library = ${cfg.pkcs11.module}[prev-buildnumber]
             '';
-            otaPayloadSigner = pkgs.writeShellScript "ota-payload-signer" ''
-              set -euo pipefail
-              # it would be overkill to write a full-blown arg parser here, so
-              # we only check for the exact arg order that
-              # payload_signer.py:SignHashFile invokes the payload_signer script with.
-
-              if [ $# -ne 4 || "$1" != "-in" || "$3" != "-out" ];
-                echo "usage: $0 -in <infile> -out <outfile>"
-                exit 1
-              fi
-              INFILE="$2"
-              OUTFILE="$4"
-
-              ${opensslEnvVars}
-
-              openssl pkeyutl -provider default -provider pkcs11prov -passin file:$PIN_FILE -inkey "$PKCS11_URI" -in "$INFILE" -out "$OUTFILE"
-            '';
           in
           [
             ''--extra_signapk_args "-providerClass sun.security.pkcs11.SunPKCS11 -providerArg ${sunPKCS11Config} -loadPrivateKeysFromkeyStore PKCS11 -keyStorePinFile $PIN_FILE"''
@@ -189,6 +189,10 @@ in
             ''--avb_system_other_extra_args "--signing_helper ${avbSigningHelper}"''
             ''--avb_vbmeta_system_extra_args "--signing_helper ${avbSigningHelper}"''
           ];
+
+        otaFlags = [
+          "--payload_signer ${otaPayloadSigner}"
+        ];
       };
     })
     (lib.mkIf cfg.pkcs11.presets.yubikey-piv.enable {

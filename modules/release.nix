@@ -98,11 +98,16 @@ let
       targetFiles,
       prevTargetFiles ? null,
       out,
-      otaKey,
+      signOta,
     }:
     ''
       ota_from_target_files  \
-        -k "${otaKey}" \
+        ${
+          if signOta then
+            (toString config.signing.otaFlags)
+          else
+            ''-k "${config.source.dirs."build/make".src}/target/product/security/testkey"''
+        } \
         ${toString config.otaArgs} \
         ${lib.optionalString (prevTargetFiles != null) "-i ${prevTargetFiles}"} \
         ${targetFiles} ${out}
@@ -203,12 +208,12 @@ in
     targetFiles = "${config.build.android}/${config.targetFilesName}";
     ota = runWrappedCommandWithTestKeys "ota_update" otaScript {
       inherit targetFiles;
-      otaKey = "${config.source.dirs."build/make".src}/target/product/security/testkey";
+      signOta = false;
     };
     incrementalOta = runWrappedCommandWithTestKeys "incremental-${config.prevBuildNumber}" otaScript {
       inherit targetFiles;
       inherit (config) prevTargetFiles;
-      otaKey = "${config.source.dirs."build/make".src}/target/product/security/testkey";
+      signOta = false;
     };
     img = runWrappedCommandWithTestKeys "img" imgScript { inherit targetFiles; };
     factoryImg = runWrappedCommandWithTestKeys "factory" factoryImgScript { inherit targetFiles img; };
@@ -303,9 +308,9 @@ in
             }}
             echo Building OTA zip
             ${otaScript {
-              otaKey = "$KEYSDIR/${config.device}/releasekey";
               targetFiles = signedTargetFilesName;
               out = ota.name;
+              signOta = true;
             }}
             if [[ ! -z "$PREV_BUILDNUMBER" ]]; then
               echo Building incremental OTA zip
@@ -317,7 +322,7 @@ in
                 out = "${config.device}-incremental${
                   lib.optionalString (config.androidVersion < 14) "-$PREV_BUILDNUMBER-${config.buildNumber}"
                 }.zip";
-                otaKey = "$KEYSDIR/${config.device}/releasekey";
+                signOta = true;
               }}
             fi
             echo Building .img file

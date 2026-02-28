@@ -170,6 +170,12 @@ in
           description = "APEX packages which need to be signed";
         };
       };
+
+      otaFlags = mkOption {
+        default = [ ];
+        type = types.listOf types.str;
+        internal = true;
+      };
     };
   };
 
@@ -358,6 +364,10 @@ in
       extraFlags = map (image: "--prebuilt_image ${image}") cfg.prebuiltImages;
 
       signTargetFilesArgs = cfg.avbFlags ++ cfg.apkFlags ++ cfg.apexFlags ++ cfg.extraFlags;
+
+      otaFlags = lib.mkIf (!cfg.pkcs11.enable) [
+        "-k \"$KEYSDIR/keys/releasekey\""
+      ];
     };
 
     build.generateKeysScript =
