@@ -172,7 +172,8 @@ in
           in
           [
             ''--extra_signapk_args "-providerClass sun.security.pkcs11.SunPKCS11 -providerArg ${sunPKCS11Config} -loadPrivateKeysFromkeyStore PKCS11 -keyStorePinFile $PIN_FILE"''
-          ];
+          ]
+          ++ (lib.mapAttrsToList (from: to: "--public_key_mapping ${from}=$KEYSDIR/${to}") cfg.keyMappings);
         avbFlags =
           let
             avbSigningHelper = pkgs.writeShellScript "avb-signing-helper" ''
@@ -188,6 +189,8 @@ in
             ''--avb_system_extra_args "--signing_helper ${avbSigningHelper}"''
             ''--avb_system_other_extra_args "--signing_helper ${avbSigningHelper}"''
             ''--avb_vbmeta_system_extra_args "--signing_helper ${avbSigningHelper}"''
+            ''--avb_system_other_pkmd "$KEYSDIR/${cfg.avb.key}_pkmd.bin"''
+            ''--apex_com.android.virt.apex_pkmd "$KEYSDIR/${cfg.avb.key}_pkmd.bin"''
           ];
 
         otaFlags = [
