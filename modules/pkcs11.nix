@@ -233,16 +233,22 @@ in
         PIN_FILE="$2"
 
         ${lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (key: slot: ''
-            # TODO algorithm selection
-            echo "Generating ${key} in PIV slot ${slot}"
-            echo | ykman piv keys generate -a RSA4096 ${slot} /dev/null
-            mkdir -p $(dirname "$KEYSDIR/${key}.x509.pem")
-            cat <(echo) $PIN_FILE | ykman piv certificates generate ${slot} -s "${cfg.keyCN} ${
-              builtins.replaceStrings [ "/" ] [ "-" ] key
-            }"
-            ykman piv certificates export ${slot} "$KEYSDIR/${key}.x509.pem"
-          '') cfg.pkcs11.presets.yubikey-piv.slotMap
+          lib.mapAttrsToList (
+            key: slot:
+            let
+              algo =
+                if key == cfg.avb.key then "RSA${toString cfg.avb.size}" else "RSA${toString cfg.apkKeySize}";
+            in
+            ''
+              echo "Generating ${key} in PIV slot ${slot}"
+              echo | ykman piv keys generate -a ${algo} ${slot} /dev/null
+              mkdir -p $(dirname "$KEYSDIR/${key}.x509.pem")
+              cat <(echo) $PIN_FILE | ykman piv certificates generate ${slot} -s "${cfg.keyCN} ${
+                builtins.replaceStrings [ "/" ] [ "-" ] key
+              }"
+              ykman piv certificates export ${slot} "$KEYSDIR/${key}.x509.pem"
+            ''
+          ) cfg.pkcs11.presets.yubikey-piv.slotMap
         )}
 
         # generate AVB public key metadata blob we can't just pipe from openssl
