@@ -457,12 +457,19 @@ in
           done
         ''}
 
-        if [[ ! -e "${config.device}/avb.pem" ]]; then
+        if [[ ! -e "${cfg.avb.key}.pem" ]]; then
           echo "Generating Device AVB key"
-          openssl genrsa -out ${config.device}/avb.pem ${builtins.toString cfg.avb.size}
-          avbtool extract_public_key --key ${config.device}/avb.pem --output ${config.device}/avb_pkmd.bin
+          openssl genrsa -out ${cfg.avb.key}.pem ${builtins.toString cfg.avb.size}
+          avbtool extract_public_key --key ${cfg.avb.key}.pem --output ${cfg.avb.key}_pkmd.bin
         else
           echo "Skipping generating device AVB key since it is already exists"
+        fi
+
+        if [[ ! -e "${cfg.avb.key}.x509.pem" ]]; then
+          echo "Generating Device AVB certificate"
+          openssl req -key ${cfg.avb.key}.pem -x509 -days 3650 -subj "/CN=Robotnix avb/" -out ${cfg.avb.key}.x509.pem
+        else
+          echo "Skipping generating device AVB certificate since it is already exists"
         fi
       '';
 
