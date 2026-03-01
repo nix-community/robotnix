@@ -158,6 +158,7 @@ in
           description = "Mode of AVB signing to use.";
         };
 
+        # TODO this is still hardcoded in a number of places.
         key = mkOption {
           type = types.str;
           default = "${config.device}/avb";
@@ -505,13 +506,13 @@ in
       MISSING_KEYS=0
 
       for key in "''${KEYS[@]}"; do
-        if [[ ! -e "$key".pk8 ]]; then
-          echo "Missing $key key"
+        if [[ ! -e "$key".x509.pem ]]; then
+          echo "Missing $key certificate"
           MISSING_KEYS=1
         fi
-        KEYSIZE=$(openssl x509 -in "$key" -text -noout | grep "Public-Key" | tr -d '(' | awk '{ print $2 }')
+        KEYSIZE=$(openssl x509 -in "$key.x509.pem" -text -noout | grep "Public-Key" | tr -d '(' | awk '{ print $2 }')
         if [ "$KEYSIZE" != ${toString config.signing.apkKeySize} ]; then
-          echo "APK key $key has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} were expected."
+          echo "APK certificate $key has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} were expected."
           RETVAL=1
         fi
       done
@@ -525,14 +526,14 @@ in
         done
       ''}
 
-      if [[ ! -e "${config.device}/avb.pem" ]]; then
-        echo "Missing Device AVB key"
+      if [[ ! -e "${config.device}/avb.x509.pem" ]]; then
+        echo "Missing device AVB certificate"
         MISSING_KEYS=1
       else
-        KEYSIZE=$(openssl rsa -in "${config.device}/avb.pem" -text 2>/dev/null | grep -E "Private-Key: \(([0-9]+) bit, 2 primes\)" | tr -d "(" | awk '{ print $2 }')
+        KEYSIZE=$(openssl x509 -in "${config.device}/avb.x509.pem" -noout -text | grep "Public-Key" | tr -d "(" | awk '{ print $2 }')
         if [[ "$KEYSIZE" -ne ${toString config.signing.avb.size} ]]; then
-          echo "Device AVB key in $1 has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} bits were expected."
-          echo "Either rotate your AVB signing key, or set \`signing.avb.size = $KEYSIZE;\`."
+          echo "Device AVB certificate in $1 has wrong size ($KEYSIZE bits), but ${toString config.signing.avb.size} bits were expected."
+          echo "Either rotate your AVB certificate, or set \`signing.avb.size = $KEYSIZE;\`."
           RETVAL=1
         fi
       fi
@@ -541,7 +542,7 @@ in
         echo Certain keys were missing from KEYSDIR. Have you run generateKeysScript?
         echo Additionally, some robotnix configuration options require that you re-run
         echo generateKeysScript to create additional new keys.  This should not overwrite
-        echo existing keys.
+        echo any existing keys.
         exit 1
       fi
       exit $RETVAL
