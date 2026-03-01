@@ -241,6 +241,22 @@ in
                   if key == cfg.avb.key then "RSA${toString cfg.avb.size}" else "RSA${toString cfg.apkKeySize}";
               in
               ''
+                # Check if this slot is already occupied
+                # I wonder if there's a less dogshit hacky way to do this.
+                OUTPUT=$(ykman piv keys info ${slot} 2>&1) || FAILED=1
+                if [ $FAILED -ne 1 ]; then
+                  echo "YubiKey PIV key slot ${slot} already contains a key."
+                  echo "Either change the slot mapping via signing.pkcs11.presets.yubikey-piv.slotMap,"
+                  echo "or erase the key slot manually."
+                  exit 1
+                fi
+
+                if [[ ! "$OUTPUT" =~ "^ERROR: No key stored in slot" ]]; then
+                  echo "failed to run \"ykman piv keys info ${slot}\":"
+                  echo "stderr: $OUTPUT"
+                  exit 1
+                fi
+
                 echo "Generating ${key} in PIV slot ${slot}"
                 echo | ykman piv keys generate -a ${algo} ${slot} /dev/null
                 mkdir -p $(dirname "$KEYSDIR/${key}.x509.pem")
