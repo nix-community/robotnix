@@ -2,12 +2,13 @@
   description = "Build Android (AOSP) using Nix";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     androidPkgs.url = "github:tadfisher/android-nixpkgs/stable";
 
     flake-compat.url = "github:nix-community/flake-compat";
 
+    nixpkgs-nixfmt-old.url = "github:NixOS/nixpkgs/c7ab75210cb8cb16ddd8f290755d9558edde7ee1";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,7 +28,10 @@
       treefmtModule = inputs.treefmt-nix.lib.evalModule pkgs {
         projectRootFile = "flake.nix";
         programs = {
-          nixfmt.enable = true;
+          nixfmt = {
+            enable = true;
+            package = inputs.nixpkgs-nixfmt-old.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+          };
           shfmt.enable = true;
           shellcheck.enable = true;
           ruff-format.enable = true;
