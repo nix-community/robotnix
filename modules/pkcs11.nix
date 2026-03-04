@@ -167,7 +167,7 @@ in
           let
             sunPKCS11Config = pkgs.writeText "pkcs11.cfg" ''
               name = Robotnix_PKCS11
-              library = ${cfg.pkcs11.module}[prev-buildnumber]
+              library = ${cfg.pkcs11.module}
             '';
           in
           [
