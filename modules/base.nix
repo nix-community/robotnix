@@ -611,6 +611,7 @@ in
           name = "otatools.zip";
           makeTargets = [ "otatools-package" ];
           installPhase = ''
+            mkdir -p $out
             cp --reflink=auto ${config.otatoolsOutPath} $out/otatools.zip
           '';
         });
