@@ -361,16 +361,17 @@ in
       extraApexPayloadKeys = builtins.listToAttrs (
         map (name: {
           name = "${name}.apex";
-          value =
-            if lib.versionAtLeast config.stateVersion "3" then "${config.device}/avb.pem" else "${name}.pem";
+          value = if lib.versionAtLeast config.stateVersion "3" then "${config.device}/avb" else "${name}";
         }) cfg.apex.packageNames
       );
 
       apkFlags =
-        (lib.mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") cfg.keyMappings)
-        ++ (lib.mapAttrsToList (apk: key: "--extra_apks ${apk}=$KEYSDIR/${key}") cfg.extraApks);
+        (lib.mapAttrsToList (from: to: "--key_mapping ${from}=\"${signapkKeyNameMap to}\"") cfg.keyMappings)
+        ++ (lib.mapAttrsToList (
+          apk: key: "--extra_apks ${apk}=\"${signapkKeyNameMap key}\""
+        ) cfg.extraApks);
       apexFlags = lib.mapAttrsToList (
-        apex: key: "--extra_apex_payload_key ${apex}=$KEYSDIR/${key}"
+        apex: key: "--extra_apex_payload_key ${apex}=\"${avbtoolKeyMap key}\""
       ) cfg.extraApexPayloadKeys;
 
       extraFlags = map (image: "--prebuilt_image ${image}") cfg.prebuiltImages;
