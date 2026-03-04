@@ -59,7 +59,9 @@ in
       default = { };
       type = with types; attrsOf (attrsOf (either resourceTypeGeneric resourceTypeModule));
       description = "Additional package resources to include. The first key refers to the relative path for the package, and the second key refers to the resource name";
-      example = lib.literalExample "{ \"frameworks/base/core/res\".config_enableAutoPowerModes = true; }";
+      example = {
+        "frameworks/base/core/res".config_enableAutoPowerModes = true;
+      };
     };
   };
 
