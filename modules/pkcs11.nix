@@ -171,7 +171,7 @@ in
             '';
           in
           [
-            ''--extra_signapk_args "-providerClass sun.security.pkcs11.SunPKCS11 -providerArg ${sunPKCS11Config} -loadPrivateKeysFromkeyStore PKCS11 -keyStorePinFile $PIN_FILE"''
+            ''--extra_signapk_args "-providerClass sun.security.pkcs11.SunPKCS11 -providerArg ${sunPKCS11Config} -loadPrivateKeysFromKeyStore PKCS11 -keyStorePinFile $PIN_FILE"''
           ]
           ++ (lib.mapAttrsToList (from: to: "--public_key_mapping ${from}=$KEYSDIR/${to}") cfg.keyMappings);
         avbFlags =
