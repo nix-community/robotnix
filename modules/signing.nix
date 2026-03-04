@@ -41,6 +41,12 @@ let
       (x: config.signing.pkcs11.privateKeyLabels.${x})
     else
       (x: "$KEYSDIR/${x}.pem");
+
+  apexKeyMap =
+    if config.signing.pkcs11.enable then
+      (x: config.signing.pkcs11.privateKeyLabels.${x})
+    else
+      (x: "$KEYSDIR/${x}");
 in
 {
   options = {
@@ -367,10 +373,10 @@ in
       );
 
       apkFlags =
-        (lib.mapAttrsToList (from: to: "--key_mapping ${from}=$KEYSDIR/${to}") cfg.keyMappings)
-        ++ (lib.mapAttrsToList (apk: key: "--extra_apks ${apk}=$KEYSDIR/${key}") cfg.extraApks);
+        (lib.mapAttrsToList (from: to: "--key_mapping ${from}=${signapkKeyNameMap key}") cfg.keyMappings)
+        ++ (lib.mapAttrsToList (apk: key: "--extra_apks ${apk}=${signapkKeyNameMap key}") cfg.extraApks);
       apexFlags = lib.mapAttrsToList (
-        apex: key: "--extra_apex_payload_key ${apex}=$KEYSDIR/${key}"
+        apex: key: "--extra_apex_payload_key ${apex}=${apexKeyMap key}"
       ) cfg.extraApexPayloadKeys;
 
       extraFlags = map (image: "--prebuilt_image ${image}") cfg.prebuiltImages;
