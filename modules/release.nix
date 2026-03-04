@@ -84,12 +84,12 @@ let
     ''
       ( OUT=$(realpath ${out})
         # Validate that the `signTargetFilesArgs` replace all the test keys in targetFiles
-        ${lib.getExe pkgs.signing-validator} ${
-          toString (config.signing.apkFlags ++ config.signing.apexFlags)
-        } ${targetFiles}
+        ${lib.getExe pkgs.signing-validator} \
+          ${lib.concatStringsSep "   \\\n  " (config.signing.apkFlags ++ config.signing.apexFlags)} \
+          ${targetFiles}
         cd ${otaTools}; # Enter otaTools dir so relative paths are correct for finding original keys
         sign_target_files_apks \
-          -o ${toString config.signing.signTargetFilesArgs} \
+          -o ${lib.concatStringsSep " \\\n  " config.signing.signTargetFilesArgs} \
           ${targetFiles} $OUT
       )
     '';
