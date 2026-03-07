@@ -168,6 +168,10 @@ in
       }
     ];
 
+    source.dirs."build/make".patches = lib.mkIf (config.flavor != "grapheneos") [
+      ./0001-sign_target_files_apks-guard-against-usage-of-test-A.patch
+    ];
+
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);
     # TODO: Some of these apex packages share the same underlying keys. We should try to match that. See META/apexkeys.txt from  target-files
     signing.apex.packageNames = map (s: "com.android.${s}") (
