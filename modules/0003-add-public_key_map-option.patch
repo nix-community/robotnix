@@ -1,29 +1,45 @@
-From 72e68d625ad8705b7b279fbb1dc8a5973d684956 Mon Sep 17 00:00:00 2001
+From 93187d66631fb1e51cea5b31f5154a1728762c77 Mon Sep 17 00:00:00 2001
 From: cyclopentane <cyclopentane@aidoskyneen.eu>
-Date: Thu, 26 Feb 2026 01:15:09 +0100
-Subject: [PATCH 2/3] Add public_key_map option
+Date: Fri, 13 Mar 2026 20:27:05 +0100
+Subject: [PATCH 3/3] add public_key_map option
 
 ---
- tools/releasetools/sign_target_files_apks.py | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tools/releasetools/common.py                 |  5 ++++-
+ tools/releasetools/sign_target_files_apks.py | 12 +++++++++++-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
+diff --git a/tools/releasetools/common.py b/tools/releasetools/common.py
+index 1ea01d7de8..2e04d40300 100644
+--- a/tools/releasetools/common.py
++++ b/tools/releasetools/common.py
+@@ -2570,7 +2570,10 @@ def SignFile(input_name, output_name, key, password, min_api_level=None,
+   if min_sdk_version is not None:
+     cmd.extend(["--min-sdk-version", str(min_sdk_version)])
+ 
+-  cmd.extend([key + OPTIONS.public_key_suffix,
++
++  public_key = OPTIONS.public_key_map.get(key, key)
++
++  cmd.extend([public_key + OPTIONS.public_key_suffix,
+               key + OPTIONS.private_key_suffix,
+               input_name, output_name])
+ 
 diff --git a/tools/releasetools/sign_target_files_apks.py b/tools/releasetools/sign_target_files_apks.py
-index d8e20bd1e2..4f739c426e 100755
+index d8e20bd1e2..5273574a14 100755
 --- a/tools/releasetools/sign_target_files_apks.py
 +++ b/tools/releasetools/sign_target_files_apks.py
-@@ -45,6 +45,11 @@ Usage:  sign_target_files_apks [flags] input_target_files output_target_files
+@@ -45,6 +45,10 @@ Usage:  sign_target_files_apks [flags] input_target_files output_target_files
        (dest_key).  Option may be repeated to give multiple key
        mappings.
  
-+  --public_key_mapping
-+      Same as --key_mapping, but will only be used to read the public keys.
-+      Useful if you're using PKCS#11-based token signing. If this option is not
-+      given, this script will fall back to using
++  --public_key_mapping <priv_key=pub_key>
++      The public key file names (without suffix) corresponding to the private
++      key names. Useful for PKCS#11 signing
 +
    -d  (--default_key_mappings)  <dir>
        Set up the following key mappings:
  
-@@ -223,6 +228,7 @@ OPTIONS.extra_apks = {}
+@@ -223,6 +227,7 @@ OPTIONS.extra_apks = {}
  OPTIONS.extra_apex_payload_keys = {}
  OPTIONS.skip_apks_with_path_prefix = set()
  OPTIONS.key_map = {}
@@ -31,12 +47,13 @@ index d8e20bd1e2..4f739c426e 100755
  OPTIONS.rebuild_recovery = False
  OPTIONS.replace_ota_keys = False
  OPTIONS.remove_avb_public_keys = None
-@@ -1185,7 +1191,7 @@ def ReplaceCerts(data):
+@@ -1185,7 +1190,8 @@ def ReplaceCerts(data):
    Raises:
      AssertionError: On finding duplicate entries.
    """
 -  for old, new in OPTIONS.key_map.items():
-+  for old, new in OPTIONS.public_key_map.items():
++  for old, new_private_key in OPTIONS.key_map.items():
++    new = OPTIONS.public_key_map.get(new_private_key, new_private_key)
      if OPTIONS.verbose:
        print("    Replacing %s.x509.pem with %s.x509.pem" % (old, new))
  
@@ -58,15 +75,6 @@ index d8e20bd1e2..4f739c426e 100755
            "replace_ota_keys",
            "tag_changes=",
            "replace_verity_public_key=",
-@@ -1905,6 +1915,8 @@ def main(argv):
-           "build/make/target/product/security/testkey")
- 
-   BuildKeyMap(misc_info, key_mapping_options)
-+  if OPTIONS.public_key_map == {}:
-+      OPTIONS.public_key_map = OPTIONS.key_map
- 
-   apk_keys_info, compressed_extension = common.ReadApkCerts(input_zip)
-   apk_keys = GetApkCerts(apk_keys_info)
 -- 
 2.52.0
 

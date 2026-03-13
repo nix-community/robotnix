@@ -173,7 +173,9 @@ in
           [
             ''--extra_signapk_args "-providerClass sun.security.pkcs11.SunPKCS11 -providerArg ${sunPKCS11Config} -loadPrivateKeysFromKeyStore PKCS11 -keyStorePinFile $PIN_FILE"''
           ]
-          ++ (lib.mapAttrsToList (from: to: "--public_key_mapping ${from}=$KEYSDIR/${to}") cfg.keyMappings);
+          ++ (lib.mapAttrsToList (
+            key: label: "--public_key_mapping ${label}=$KEYSDIR/${key}"
+          ) cfg.pkcs11.privateKeyLabels);
         avbFlags =
           let
             avbSigningHelper = pkgs.writeShellScript "avb-signing-helper" ''
