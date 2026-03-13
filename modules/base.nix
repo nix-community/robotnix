@@ -461,6 +461,9 @@ in
                   ## loads bash functions for building, such as "breakfast" or "lunch"
                   source build/envsetup.sh
 
+                  # stop soong_ui in adevtool and in the main build from messing up the Nix build logs with ANSI escape sequences
+                  export TERM=dumb
+
                   # in GrapheneOS, <product name> and aosp_<product name> are two
                   # separate targets - the former has its product makefiles located in
                   # device/google, and the latter in vendor/google_devices. Therefore,
