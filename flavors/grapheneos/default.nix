@@ -153,27 +153,28 @@
         # It was enabled for all devices sometime during Android 13.
         # https://grapheneos.org/releases#2023051600
         # https://github.com/GrapheneOS/script/blob/6072d9d75c3a22f6cbc33c9ba85129513306ca00/release.sh#L68
-        signing = {
-          apex.enable = config.androidVersion >= 13;
-
-          # Key for GmsCompatLib.apk
-          # https://grapheneos.org/releases#2025102300
-          keyMappings = lib.mkMerge [
-            (lib.mkIf (lib.versionAtLeast config.grapheneos.release "2025102300") {
-              "build/make/target/product/security/gmscompat_lib" = "${config.device}/gmscompat_lib";
-            })
-            (lib.mkIf (lib.versionAtLeast config.grapheneos.release "2026021200") {
-              "build/make/target/product/security/bluetooth" = "${config.device}/bluetooth";
-            })
-          ];
-
-          extraApks = {
-            "Bluetooth.apk" = "${config.device}/bluetooth";
-          };
-        };
+        signing.apex.enable = config.androidVersion >= 13;
 
         # Leave the existing auditor in the build--just in case the user wants to
         # audit devices running the official upstream build
       }
+      (lib.mkIf (lib.versionAtLeast config.grapheneos.release "2025102300") {
+        signing = {
+          keyMappings."build/make/target/product/security/gmscompat_lib" = "${config.device}/gmscompat_lib";
+          pkcs11.presets.yubikey-piv.slotMap = lib.mkOptionDefault {
+            "${config.device}/gmscompat_lib" = "8a";
+          };
+        };
+      })
+      (lib.mkIf (lib.versionAtLeast config.grapheneos.release "2026021200") {
+        signing = {
+          keyMappings."build/make/target/product/security/bluetooth" =
+            lib.mkOptionDefault "${config.device}/bluetooth";
+          extraApks."Bluetooth.apk" = "${config.device}/bluetooth";
+          pkcs11.presets.yubikey-piv.slotMap = lib.mkOptionDefault {
+            "${config.device}/bluetooth" = "8b";
+          };
+        };
+      })
     ]);
 }
