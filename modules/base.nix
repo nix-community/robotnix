@@ -610,13 +610,13 @@ in
         # is just for debugging. We save significant time for a full build by
         # normally building target-files-package and otatools-package
         # simultaneously
-        otaToolsQuick = fixOtaTools mkAndroid {
+        otaToolsQuick = fixOtaTools (mkAndroid {
           name = "otatools.zip";
           makeTargets = [ "otatools-package" ];
           installPhase = ''
             cp --reflink=auto ${config.otatoolsOutPath} $out
           '';
-        };
+        });
 
         fixOtaTools =
           src:
