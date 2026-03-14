@@ -1,0 +1,60 @@
+From 9454b12471a96ee0fddccfdd00ec3e1e03a4fbe5 Mon Sep 17 00:00:00 2001
+From: cyclopentane <cyclopentane@aidoskyneen.eu>
+Date: Sat, 14 Mar 2026 15:00:56 +0100
+Subject: [PATCH 4/4] add dedicated private key suffix option for SignFile
+
+---
+ tools/releasetools/common.py | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/tools/releasetools/common.py b/tools/releasetools/common.py
+index 2e04d40300..9e098bc5e5 100644
+--- a/tools/releasetools/common.py
++++ b/tools/releasetools/common.py
+@@ -87,6 +87,7 @@ class Options(object):
+     self.android_jar_path = None
+     self.public_key_suffix = ".x509.pem"
+     self.private_key_suffix = ".pk8"
++    self.private_key_suffix_signing = None
+     # use otatools built boot_signer by default
+     self.verbose = False
+     self.tempfiles = []
+@@ -2574,7 +2575,7 @@ def SignFile(input_name, output_name, key, password, min_api_level=None,
+   public_key = OPTIONS.public_key_map.get(key, key)
+ 
+   cmd.extend([public_key + OPTIONS.public_key_suffix,
+-              key + OPTIONS.private_key_suffix,
++              key + OPTIONS.private_key_suffix_signing,
+               input_name, output_name])
+ 
+   proc = Run(cmd, stdin=subprocess.PIPE)
+@@ -2774,7 +2775,7 @@ def ParseOptions(argv,
+          "signapk_shared_library_path=", "extra_signapk_args=", "aapt2_path=",
+          "java_path=", "java_args=", "android_jar_path=", "public_key_suffix=",
+          "private_key_suffix=", "boot_signer_path=", "boot_signer_args=",
+-         "verity_signer_path=", "verity_signer_args=", "device_specific=",
++         "verity_signer_path=", "verity_signer_args=", "device_specific=", "private_key_suffix_signing=",
+          "extra=", "logfile="] + list(extra_long_opts))
+   except getopt.GetoptError as err:
+     Usage(docstring)
+@@ -2807,6 +2808,8 @@ def ParseOptions(argv,
+       OPTIONS.public_key_suffix = a
+     elif o in ("--private_key_suffix",):
+       OPTIONS.private_key_suffix = a
++    elif o in ("--private_key_suffix_signing",):
++      OPTIONS.private_key_suffix_signing = a
+     elif o in ("--boot_signer_path",):
+       raise ValueError(
+           "--boot_signer_path is no longer supported, please switch to AVB")
+@@ -2841,6 +2844,8 @@ def ParseOptions(argv,
+       if not success:
+         raise ValueError("unknown option \"%s\"" % (o,))
+ 
++  if OPTIONS.private_key_suffix_signing is None:
++    OPTIONS.private_key_suffix_signing = OPTIONS.private_key_suffix
+ 
+   if OPTIONS.search_path:
+     os.environ["PATH"] = (os.path.join(OPTIONS.search_path, "bin") +
+-- 
+2.52.0
+

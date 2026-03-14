@@ -209,6 +209,7 @@ in
       ./0001-sign_target_files_apks-Add-pkmd-CLI-args.patch
       ./0002-signapk-add-keyStorePinFile-option.patch
       ./0003-add-public_key_map-option.patch
+      ./0004-add-dedicated-private-key-suffix-option-for-SignFile.patch
     ];
 
     signing.apex.enable = mkIf (config.androidVersion >= 10) (mkDefault true);

@@ -171,6 +171,7 @@ in
             '';
           in
           [
+            ''--private_key_suffix_signing=''
             ''--extra_signapk_args "-providerClass sun.security.pkcs11.SunPKCS11 -providerArg ${sunPKCS11Config} -loadPrivateKeysFromKeyStore PKCS11 -keyStorePinFile $PIN_FILE"''
           ]
           ++ (lib.mapAttrsToList (
