@@ -13,7 +13,6 @@
   cachix,
   nodejs_24,
   repo2nix,
-  signing-validator,
 }:
 
 mkShell {
@@ -38,7 +37,6 @@ mkShell {
     repo2nix
     nodejs_24
     prefetch-yarn-deps
-    signing-validator
 
     cachix
   ];

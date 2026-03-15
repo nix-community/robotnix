@@ -1,0 +1,48 @@
+From 7f47761ad3e84938c687f5c08601ed85ae77581b Mon Sep 17 00:00:00 2001
+From: Dmitry Muhomor <muhomor.dmitry@gmail.com>
+Date: Thu, 12 Feb 2026 13:09:43 +0000
+Subject: [PATCH] sign_target_files_apks: guard against usage of test APK
+ certificates
+
+---
+ tools/releasetools/sign_target_files_apks.py | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/tools/releasetools/sign_target_files_apks.py b/tools/releasetools/sign_target_files_apks.py
+index 7720a85a1f..ebc2f35f57 100755
+--- a/tools/releasetools/sign_target_files_apks.py
++++ b/tools/releasetools/sign_target_files_apks.py
+@@ -294,16 +294,29 @@ def GetApkCerts(certmap):
+   if OPTIONS.override_apk_keys is not None:
+     for apk in certmap.keys():
+       certmap[apk] = OPTIONS.override_apk_keys
++    remaining_apks = set()
++  else:
++    remaining_apks = set(certmap)
+ 
+   # apply the key remapping to the contents of the file
+   for apk, cert in certmap.items():
+-    certmap[apk] = OPTIONS.key_map.get(cert, cert)
++    if cert in OPTIONS.key_map:
++      certmap[apk] = OPTIONS.key_map[cert]
++      remaining_apks.discard(apk)
++    elif cert == "PRESIGNED":
++      remaining_apks.discard(apk)
+ 
+   # apply all the -e options, overriding anything in the file
+   for apk, cert in OPTIONS.extra_apks.items():
+     if not cert:
+       cert = "PRESIGNED"
+     certmap[apk] = OPTIONS.key_map.get(cert, cert)
++    remaining_apks.discard(apk)
++
++  # drop the test certificates that weren't remapped to make signing sequence fail if there are
++  # missing release certificates
++  for apk in remaining_apks:
++    del certmap[apk]
+ 
+   return certmap
+ 
+-- 
+2.52.0
+
