@@ -145,6 +145,11 @@ mkIf (config.flavor == "lineageos") {
     "external/chromium-webview".enable = false;
   };
 
+  # LOS 23.0 hasn't switched over to Soong for otatools yet
+  otatoolsOutPath = lib.mkIf (config.flavorVersion == "23.0") (
+    lib.mkForce "$ANDROID_PRODUCT_OUT/otatools.zip"
+  );
+
   # This is the prebuilt webview apk from LineageOS. This is the only working
   # webview we have access to (robotnix' own are in disrepair), so this should
   # be used by default unless the user provides another webview themselves.
