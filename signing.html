@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Installation / Updating - Robotnix</title>
+        <title>Signing - Robotnix</title>
 
 
         <!-- Custom HTML head -->
@@ -175,157 +175,153 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <!--
-SPDX-FileCopyrightText: 2021 Daniel Fullmer and robotnix contributors
+SPDX-FileCopyrightText: 2026 cyclopentane and robotnix contributors
 SPDX-License-Identifier: MIT
 -->
-<h1 id="installing-for-the-first-time-with-optional-verified-boot"><a class="header" href="#installing-for-the-first-time-with-optional-verified-boot">Installing for the first time with (optional) verified boot</a></h1>
-<blockquote>
-<p>The following instructions are specific to Pixel phones using either the
-Vanilla or GrapheneOS flavors.  For LineageOS, please refer to upstream
-device-specific documentation on how to install LineageOS builds on your
-device.</p>
-</blockquote>
-<p>It is assumed that you have successfully built your factory image and signed it
-with your own keys, either by using the <code>factoryImg</code> Nix output or by running
-<code>releaseScript</code>.  Make sure that you know the location of the image and the AVB
-signing key.  The instructions in this document were tested on the Google Pixel
-4a (sunfish).  Other Pixel phones are similar, but please refer to <a href="https://source.android.com/setup/build/running">this
-upstream documentation</a>.</p>
-<ol start="0">
-<li>
-<p>Before you can begin you have to boot the stock OS, go to “Settings / About
-phone” and tap the “Build number” field 7 times to enable the “Developer
-options” menu.  Next go to “Settings / System / Advanced / Developer
-options” and enable “OEM unlocking”.  This option is greyed out until you connect your device to Google <a href="https://grapheneos.org/install#enabling-oem-unlocking">at least once</a>.
-This is part of Google’s so called Factory Reset Protection (FRP) for anti-theft protection. You do not need to insert a SIM or log into a Google Account to make the “OEM unlocking” option available, but connecting to the internet is required.</p>
-</li>
-<li>
-<p>First reboot into the bootloader. You can either do that physically by
-turning off your phone and then holding both the POWER and the VOLUME DOWN
-button to turn it back on, or your can connect the phone to your computer
-with USB Debugging turned on and issue</p>
-<pre><code class="language-console">$ adb reboot bootloader
+<h1 id="signing"><a class="header" href="#signing">Signing</a></h1>
+<p>AOSP builds are cryptographically signed to prevent unauthorised tampering with system components. Roughly speaking, there are three ways builds are signed:</p>
+<ul>
+<li>Android Verified Boot (AVB) signatures: The bootloader verifies the integrity of the system partitions via partition hashes and hashtrees before the Linux kernel is booted.</li>
+<li>Individual APK signatures: Every APK is signed with some key, and Android only permits you to update an app with a new APK if the new APK is signed with the same key as the old one.</li>
+<li>OTA signatures: The OTA zips distributed via update servers are signed, and the system updater app and the recovery system check the signatures before allowing you to apply an upgrade.</li>
+</ul>
+<p>In a normal AOSP build process, the components are first signed with so-called “test keys”, which are publicly known and committed to the AOSP source repositories.
+Then, as soon as the target files are built, the developer has the option to re-sign the components with their own “release keys”, which must be kept secret.
+This happens via the <code>sign_target_files_apks</code> tool.</p>
+<h2 id="generating-signing-keys"><a class="header" href="#generating-signing-keys">Generating signing keys</a></h2>
+<p>You can generate your own set of release keys with the <code>generateKeysScript</code> build target:</p>
+<pre><code class="language-shell">$ nix build .#robotnixConfigurations.foo.generateKeysScript --out-link generate-keys-script
+$ ./generate-keys-script my-keys/
+$ tree my-keys/
+my-keys
+└── tegu
+    ├── avb.pem
+    ├── avb_pkmd.bin
+    ├── avb.pub
+    ├── avb.x509.pem
+    ├── bluetooth.pk8
+    ├── bluetooth.x509.pem
+    ├── gmscompat_lib.pk8
+    ├── gmscompat_lib.x509.pem
+    ├── media.pk8
+    ├── media.x509.pem
+    ├── networkstack.pk8
+    ├── networkstack.x509.pem
+    ├── nfc.pk8
+    ├── nfc.x509.pem
+    ├── platform.pk8
+    ├── platform.x509.pem
+    ├── releasekey.pk8
+    ├── releasekey.x509.pem
+    ├── sdk_sandbox.pk8
+    ├── sdk_sandbox.x509.pem
+    ├── shared.pk8
+    └── shared.x509.pem
 </code></pre>
-</li>
-<li>
-<p>Connect your phone to your computer and run</p>
-<pre><code class="language-console">$ fastboot devices
-09071JEC217048  device
+<h2 id="signing-releases"><a class="header" href="#signing-releases">Signing releases</a></h2>
+<p>In robotnix, however, we can’t simply do so within the main build process, since the release keys are inaccessible within the Nix sandbox, and importing them into the Nix store would make them world-readable.
+Thus, we split the build process into two parts:
+The bulk of the build process that doesn’t involve any secrets is done within the Nix sandbox.
+Then, the very last step of signing the build with your own release keys is done outside of the Nix sandbox:
+Robotnix provides a build target called <code>releaseScript</code>, which is a Bash script that can be pointed at your release keys directory.
+When <code>releaseScript</code> is being run, it uses the unsigned target files that have previously been built in the Nix sandbox and your release keys to generate signed release files:</p>
+<pre><code class="language-console">$ nix build .#robotnixConfigurations.foo.releaseScript --out-link release-script
+$ ./release-script my-keys/
+$ ll tegu-*
+-rw-r--r-- 1 c5h10 users 1741206178 Mar 22 20:02 tegu-factory-2026032000.zip
+-rw-r--r-- 1 c5h10 users 1688149504 Mar 22 20:01 tegu-img-2026032000.zip
+-rw-r--r-- 1 c5h10 users 1310723050 Mar 22 20:01 tegu-ota_update-2026032000.zip
+-rw------- 1 c5h10 users 3369654024 Mar 22 19:58 tegu-signed_target_files-2026032000.zip
 </code></pre>
-</li>
-<li>
-<p>Unlock the bootloader by running</p>
-<pre><code class="language-console">$ fastboot flashing unlock
+<p>You can then either flash them via USB, or upload them to an update server to update your device over-the-air.</p>
+<h2 id="pkcs11-signing"><a class="header" href="#pkcs11-signing">PKCS#11 signing</a></h2>
+<p>Robotnix also allows you to sign your releases with keys residing on a PKCS#11 hardware token, such as an HSM or a YubiKey.
+The token needs to have enough keyslots (~10) to accomodate all of the needed keys.
+It is <strong>not</strong> permissible to reduce the number of keys by mapping multiple key aliases to a single key, since Android uses the certificate of an app to determine its SELinux context.</p>
+<p>In order to set up PKCS#11 signing, the token must contain pairs of keys (<code>CKA_CLASS = CKO_PRIVATE_KEY</code>) and certificates (<code>CKA_CLASS = CKO_CERTIFICATE</code>) with the same ID (<code>CKA_ID</code> attribute), respectively.
+This is due to how the Java Sun PKCS#11 keystore provider maps PKCS#11 keys to Java key aliases <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup>.</p>
+<p>Then, specify the PKCS#11 module, and the key and certificate labels (<code>CKA_LABEL</code> attribute) via the <code>signing.pkcs11</code> module:</p>
+<pre><code class="language-nix">{ pkgs, ... }:
+{
+    signing.pkcs11 = {
+        enable = true;
+        module = "${pkgs.yubico-piv-tool}/bin/libykcs11.so";
+        privateKeyLabels = {
+            "${config.device}/releasekey" = "Private key for Retired Key 1";
+            "${config.device}/media" = "Private key for Retired Key 2";
+            "${config.device}/shared" = "Private key for Retired Key 3";
+            "${config.device}/platform" = "Private key for Retired Key 4";
+            [...]
+        };
+        certificateLabels = {
+            "${config.device}/releasekey" = "X.509 Certificate for Retired Key 1";
+            "${config.device}/media" = "X.509 Certificate for Retired Key 2";
+            "${config.device}/shared" = "X.509 Certificate for Retired Key 3";
+            "${config.device}/platform" = "X.509 Certificate for Retired Key 4";
+            [...]
+        };
+    };
+}
 </code></pre>
-<p>Select the option to unlock the device and confirm. This step effectively
-performs a factory reset, and will remove all user data from the device.</p>
-</li>
-<li>
-<p>Flash your custom AVB signing key using</p>
-<pre><code class="language-console">$ fastboot erase avb_custom_key
-$ fastboot flash avb_custom_key ./avb_pkmd.bin
-$ fastboot reboot bootloader
+<p>The keys directory must contain all the public keys, certificates and AVB public key metadata blobs it also contains in the non-PKCS#11 case.</p>
+<p>Then, build and run <code>releaseScript</code> with the parameters <code>&lt;keysdir&gt; &lt;prev-buildnumber&gt; &lt;pin-file&gt;</code>, where <code>&lt;pin-file&gt;</code> is a file that contains the PKCS#11 token PIN:</p>
+<pre><code class="language-console">$ nix build .#robotnixConfigurations.foo.releaseScript --out-link release-script
+$ tree my-keys/
+my-keys
+└── tegu
+    ├── avb_pkmd.bin
+    ├── avb.pub
+    ├── avb.x509.pem
+    ├── bluetooth.x509.pem
+    ├── gmscompat_lib.x509.pem
+    ├── media.x509.pem
+    ├── networkstack.x509.pem
+    ├── nfc.x509.pem
+    ├── platform.x509.pem
+    ├── releasekey.x509.pem
+    ├── sdk_sandbox.x509.pem
+    └── shared.x509.pem
+$ PIN_FILE=$(mktemp)
+$ echo -n "123456" &gt; $PIN_FILE
+$ ./release-script my-keys/ "2026021200" "$PIN_FILE"
 </code></pre>
-</li>
-<li>
-<p>Unzip the factory image built by robotnix. Double check that you’re
-flashing to the correct device. To flash the image run</p>
-<pre><code class="language-console">$ ./flash-all.sh
+<p>If you do not want to build an incremental OTA, specify <code>""</code> as the previous build ID.</p>
+<h2 id="yubikey-piv-preset"><a class="header" href="#yubikey-piv-preset">YubiKey PIV preset</a></h2>
+<p>Robotnix provides a PKCS#11 preset for the YubiKey PIV mode:</p>
+<pre><code class="language-nix">{
+    signing.pkcs11 = {
+        enable = true;
+        presets.yubikey-piv.enable = true;
+    };
+}
 </code></pre>
-<p>The factory image produced by robotnix includes the bootloader and radio
-firmware in addition to the android image.  If you are certain the
-bootloader and radio are already up to date, you can instead build the
-standard <code>img</code> robotnix output, and flash the image with</p>
-<pre><code class="language-console">$ fastboot -w --skip-reboot update sunfish-img-2020.11.06.04.zip
+<p>This will set the required <code>module</code>, <code>certificateLabels</code> and <code>privateKeyLabels</code> options.
+By default, it maps the AOSP signing keys to the “retired”<sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup> PIV keyslots.
+You can change the default keyslot mapping via <code>signing.pkcs11.presets.yubikey-piv.slotMap</code>.</p>
+<p>To generate the required signing keys on your yubikey and place the public keys in your keys directory, run the <code>yubikeyGenerateKeysScript</code> target:</p>
+<pre><code class="language-console">$ nix build .#robotnixConfigurations.foo.yubikeyGenerateKeysScript --out-link yubikey-generate-keys-script
+$ ./yubikey-generate-keys-script my-keys/
 </code></pre>
-<p>This will erase the <code>userdata</code> partition (<code>-w</code>) and prevent the automatic
-reboot after flashing (<code>--skip-reboot</code>).</p>
-<p>After flashing with the <code>flash-all.sh</code> script or with <code>fastboot update</code>,
-return to the bootloader with</p>
-<pre><code class="language-console">$ fastboot reboot bootloader
+<p>You can also export the public keys from your YubiKey after they have already been created:</p>
+<pre><code class="language-console">$ nix build .#robotnixConfigurations.foo.yubikeyExportCertificatesScript --out-link yubikey-export-certificates-script
+$ ./yubikey-export-certificates-script my-keys/
 </code></pre>
-</li>
-<li>
-<p>At this point you want to relock the bootloader to enable enforcement of
-the verified boot chain.</p>
-<pre><code class="language-console">$ fastboot flashing lock
+<p>Alternatively, you can also import pre-existing keys (the ones generated with <code>generateKeysScript</code>) into your YubiKey.
+This is mainly useful if you want to provision multiple YubiKeys with the same keys as a backup.</p>
+<pre><code class="language-console">$ nix build .#robotnixConfigurations.foo.yubikeyImportKeysScript --out-link yubikey-import-keys-script
+$ ./yubikey-import-keys-script my-keys/
 </code></pre>
-<p>This step has to be confirmed on the device.</p>
+<p>Then, you can run <code>releaseScript</code> as described above.</p>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-1">
+<p>https://docs.oracle.com/javase/8/docs/technotes/guides/security/p11guide.html#KeyStoreRestrictions <a href="#fr-1-1">↩</a></p>
 </li>
-<li>
-<p>After rebooting you will be greeted with a yellow exclamation mark and a
-message like</p>
-<blockquote>
-<p>Your device is loading a different operating system.</p>
-<p>Visit this link on another device:
-g.co/ABH</p>
-<p>ID: BA135E0F</p>
-</blockquote>
-<p>This is expected because Android Verified Boot is designed to warn the user
-when not booting the stock OS, see
-https://source.android.com/security/verifiedboot/boot-flow.  In fact, the
-ID on the last line are the first eight characters of the fingerprint of
-your AVB key.</p>
-</li>
-<li>
-<p>Finally you can disable OEM unlocking and afterwards even the developer options again if you do not actively use them.
-Note that if you later lose the ability to re-enable OEM unlocking, for example by pushing a bad update that you cannot rollback,
-and you cannot push another working update because you also lost your signing keys,
-you might not even be able to recover your device by flashing a stock image, effectively bricking the device.</p>
-</li>
-</ol>
-<blockquote>
-<p>If you are unable to enroll a custom AVB key on your device, you could theoretically skip steps 4, 6 and 8. This is highly discouraged as it leaves your device in the <a href="https://source.android.com/security/verifiedboot/boot-flow#communicating-verified-boot-state-to-users">vulnerable UNLOCKED state instead of being LOCKED with a custom root of trust.</a>.</p>
-</blockquote>
-<h2 id="updating-by-sideloading-ota-files"><a class="header" href="#updating-by-sideloading-ota-files">Updating by sideloading OTA files</a></h2>
-<p>Preferably, you can update your Vanilla/GrapheneOS flavor device using true “over-the-air” mechanism provided by the <code>apps.updater</code> module with a server hosting the OTA files, as shown <a href="modules/ota.html">here</a>.
-If this is not available, it is still possible to update by sideloading the OTA file.</p>
-<blockquote>
-<p>It is recommended to update using the OTA file instead of using <code>fastboot update</code> with a new <code>img</code>.
-OTA files can also contain updates to the modem / bootloader that are not included in the <code>img</code> output.
-<code>fastboot update</code> also cannot be used with a re-locked bootloader without wiping userdata.</p>
-</blockquote>
-<p>To install OTA updates you have to put the device in sideload-mode.</p>
-<ol>
-<li>
-<p>First reboot into the bootloader. You can either do that physically by
-turning off your phone and then holding both the POWER and the VOLUME DOWN
-button to turn it back on, or your can connect the phone to your computer
-with USB Debugging turned on and issue</p>
-<pre><code class="language-console">$ adb reboot recovery
-</code></pre>
-<p>If you used the physical method, at the bootloader prompt use the VOLUME
-keys to select “Recovery Mode” and confirm with the POWER button.</p>
-</li>
-<li>
-<p>Now the recovery mode should have started and you should see a dead robot
-with a read exclamation mark on top. If you see “No command” on the screen,
-press and hold POWER. While holding POWER, press VOLUME UP and release
-both.</p>
-</li>
-<li>
-<p>At the recovery menu use the VOLUME keys to select “Apply update from ADB”
-and use POWER to confirm.</p>
-</li>
-<li>
-<p>Connect your phone to your computer and run</p>
-<pre><code class="language-console">$ adb devices
-List of devices attached
-09071JEC217048  sideload
-</code></pre>
-<p>The output should show that the device is in sideload mode.</p>
-</li>
-<li>
-<p>Now you can proceed to sideload the new update.</p>
-<pre><code class="language-console">$ adb sideload sunfish-ota_update-2021.02.06.16.zip
-</code></pre>
-<p>The sideload might terminate at 94% with “adb: failed to read command:
-Success”.  This is not an error even though it is not obvious, see also
-<a href="https://np.reddit.com/r/LineageOS/comments/dt2et4/adb_failed_to_read_command_success/f6u352m">here</a>.</p>
-</li>
-<li>
-<p>Once finished and the device doesn’t automatically reboot just select
-reboot from the menu and confirm.</p>
+<li id="footnote-2">
+<p>These key slots are called “retired” for legacy reason - originally, the PIV standard was made for personal identity cards holding four keys, each named after a purpose such as authentication, encryption, or signing.
+The PIV standard also specifies 20 so-called “retired key” slots meant to store old keys from past key rotations.
+However, from a technical point of view, there is nothing “retired” about them - they are fully usable, and they are not going to be removed in the future.
+As the keys we need wouldn’t fit into the four main key slots, we use the retired key slots instead. <a href="#fr-2-1">↩</a></p>
 </li>
 </ol>
 
@@ -333,11 +329,11 @@ reboot from the menu and confirm.</p>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="signing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="building.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="development.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -347,11 +343,11 @@ reboot from the menu and confirm.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="signing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="building.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="development.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
