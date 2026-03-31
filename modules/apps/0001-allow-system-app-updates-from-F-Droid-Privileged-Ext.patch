@@ -1,0 +1,29 @@
+From 2eeb3e19d527747c8c120ea08d2b6216c1ca1e2f Mon Sep 17 00:00:00 2001
+From: cyclopentane <cyclopentane@aidoskyneen.eu>
+Date: Mon, 30 Mar 2026 21:02:06 +0200
+Subject: [PATCH] allow system app updates from F-Droid Privileged Extension
+
+F-Droid has a mechanism for restricting updates to system apps to either
+the official GrapheneOS app store, or UID_SHELL. We add the F-Droid
+Privileged Extension as a third case.
+---
+ .../java/com/android/server/pm/PackageInstallerSession.java    | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/services/core/java/com/android/server/pm/PackageInstallerSession.java b/services/core/java/com/android/server/pm/PackageInstallerSession.java
+index 36adc149ce6b..44a4ef78b8ac 100644
+--- a/services/core/java/com/android/server/pm/PackageInstallerSession.java
++++ b/services/core/java/com/android/server/pm/PackageInstallerSession.java
+@@ -4627,7 +4627,8 @@ public class PackageInstallerSession extends IPackageInstallerSession.Stub {
+ 
+         if (existingPkgSetting != null && (existingPkgSetting.isSystem() || existingPkgSetting.isUpdatedSystemApp())) {
+             String firstPartyInstaller = android.util.PackageUtils.getFirstPartyAppSourcePackageName(mContext);
+-            boolean isFirstPartyInstaller = firstPartyInstaller.equals(mInstallSource.mInitiatingPackageName);
++            String fdroidPrivExt = "org.fdroid.fdroid.privileged";
++            boolean isFirstPartyInstaller = firstPartyInstaller.equals(mInstallSource.mInitiatingPackageName) || fdroidPrivExt.equals(mInstallSource.mInitiatingPackageName);
+             if (!isFirstPartyInstaller && mInstallerUid != Process.SHELL_UID) {
+                 String debugSysprop = "persist.allow_unknown_system_app_updates";
+                 boolean allow = Build.IS_DEBUGGABLE
+-- 
+2.53.0
+
