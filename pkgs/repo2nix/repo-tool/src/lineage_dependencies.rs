@@ -53,11 +53,19 @@ pub fn merge_lineage_devices(
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct LineageDep {
-    target_path: PathBuf,
-    repository: String,
-    remote: Option<String>,
-    branch: Option<String>,
+#[serde(untagged)]
+pub enum LineageDep {
+    Repository {
+        target_path: PathBuf,
+        repository: String,
+        remote: Option<String>,
+        branch: Option<String>,
+    },
+    Other {
+        #[serde(rename = "type")]
+        other_type: String,
+        version: String,
+    },
 }
 
 #[derive(Debug, Error)]
@@ -92,68 +100,79 @@ pub fn resolve_lineage_dependencies(
 ) -> Result<Vec<Project>, ResolveLineageDepsError> {
     let mut project_deps = vec![];
     for dep in lineage_deps {
-        let remote =
-            match &dep.remote {
+        // TODO support for {"type": "kernel", "version": "<version>"} entry?
+        if let LineageDep::Repository {
+            target_path,
+            repository,
+            remote,
+            branch,
+        } = dep
+        {
+            let remote = match &remote {
                 Some(remote_name) => manifest.remotes.get(remote_name).ok_or(
                     ResolveLineageDepsError::UnknownRemote(
                         remote_name.to_string(),
-                        dep.target_path.clone(),
+                        target_path.clone(),
                     ),
                 )?,
-                None => &manifest.default_remote.as_ref().ok_or(
-                    ResolveLineageDepsError::MissingRemote(dep.target_path.clone()),
-                )?,
+                None => &manifest
+                    .default_remote
+                    .as_ref()
+                    .ok_or(ResolveLineageDepsError::MissingRemote(target_path.clone()))?,
             };
 
-        // This behaviour is highly dubious - we should check the default branch of the
-        // remote of the dependency in question, and not the default branch of the default
-        // remote. But the LineageOS roomservice.py script does it that way, so we have
-        // to replicate its erroneous behaviour.
-        //
-        // Source:
-        // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L220
-        let revision = match &dep.branch {
-            Some(b) => format!("refs/heads/{}", b),
-            None => {
-                let rev = remote.revision.as_ref().ok_or(
-                    ResolveLineageDepsError::RemoteMissingRevision(dep.target_path.clone()),
-                )?;
-                match rev.strip_prefix("refs/heads/") {
-                    Some(branch) => format!("refs/heads/{}", hudson_to_device_repo_branch(branch)),
-                    None => rev.clone(),
+            // This behaviour is highly dubious - we should check the default branch of the
+            // remote of the dependency in question, and not the default branch of the default
+            // remote. But the LineageOS roomservice.py script does it that way, so we have
+            // to replicate its erroneous behaviour.
+            //
+            // Source:
+            // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L220
+            let revision = match &branch {
+                Some(b) => format!("refs/heads/{}", b),
+                None => {
+                    let rev = remote.revision.as_ref().ok_or(
+                        ResolveLineageDepsError::RemoteMissingRevision(target_path.clone()),
+                    )?;
+                    match rev.strip_prefix("refs/heads/") {
+                        Some(branch) => {
+                            format!("refs/heads/{}", hudson_to_device_repo_branch(branch))
+                        }
+                        None => rev.clone(),
+                    }
                 }
-            }
-        };
+            };
 
-        // The upstream mechanism for choosing whether to prepend `LineageOS/` to the repo name
-        // defined in the `repository` field is pretty broken: it just checks whether the remote
-        // name starts with `aosp-`, and if it does't, it prepends `LineageOS/` to the repo name
-        // and then changes the remote to `github` from whatever it else was previously. This
-        // breaks once you add in remotes other than `github` and the `aosp-*` ones. It's probably
-        // for the best to not try to fix this behaviour and to just consistently replicate it.
-        //
-        // Source:
-        // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L183
-        let repo_name = if !remote.name.starts_with("aosp-") {
-            format!("LineageOS/{}", dep.repository)
-        } else {
-            dep.repository.clone()
-        };
-        project_deps.push(Project {
-            path: dep.target_path.clone(),
-            groups: vec![],
-            linkfiles: vec![],
-            copyfiles: vec![],
-            repo_ref: GitRepoRef {
-                repo_url: join_repo_url(&remote.url, &repo_name),
-                revision: revision,
-                fetch_lfs: true,
-                fetch_submodules: false,
-            },
-            categories: BTreeSet::new(),
-            lineage_deps: None,
-            active: true,
-        });
+            // The upstream mechanism for choosing whether to prepend `LineageOS/` to the repo name
+            // defined in the `repository` field is pretty broken: it just checks whether the remote
+            // name starts with `aosp-`, and if it does't, it prepends `LineageOS/` to the repo name
+            // and then changes the remote to `github` from whatever it else was previously. This
+            // breaks once you add in remotes other than `github` and the `aosp-*` ones. It's probably
+            // for the best to not try to fix this behaviour and to just consistently replicate it.
+            //
+            // Source:
+            // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L183
+            let repo_name = if !remote.name.starts_with("aosp-") {
+                format!("LineageOS/{}", repository)
+            } else {
+                repository.clone()
+            };
+            project_deps.push(Project {
+                path: target_path.clone(),
+                groups: vec![],
+                linkfiles: vec![],
+                copyfiles: vec![],
+                repo_ref: GitRepoRef {
+                    repo_url: join_repo_url(&remote.url, &repo_name),
+                    revision: revision,
+                    fetch_lfs: true,
+                    fetch_submodules: false,
+                },
+                categories: BTreeSet::new(),
+                lineage_deps: None,
+                active: true,
+            });
+        }
     }
 
     Ok(project_deps)
