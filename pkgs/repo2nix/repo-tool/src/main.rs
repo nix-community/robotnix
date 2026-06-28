@@ -231,9 +231,17 @@ async fn fetch(
             merge_lineage_devices(&mut all_devices, devices)
                 .map_err(|e| FetchError::MergeLineageDevices(ldf, e))?;
         }
-        prefetch_lineage_dependencies(&mut lockfile, &all_devices, &manifest, &revision)
-            .await
-            .map_err(FetchError::PrefetchLineageDeps)?;
+        prefetch_lineage_dependencies(
+            &mut lockfile,
+            &all_devices,
+            &manifest,
+            &revision,
+            &manifest_fetch.path,
+            &url,
+            &manifest_xml,
+        )
+        .await
+        .map_err(FetchError::PrefetchLineageDeps)?;
 
         let missing_dep_devices: BTreeSet<_> = all_devices
             .keys()

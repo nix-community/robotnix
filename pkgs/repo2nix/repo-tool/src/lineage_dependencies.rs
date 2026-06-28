@@ -4,6 +4,10 @@ use crate::lock::{EnsureStorePathError, Lockset, UpdateLockError, UpdateLocksetE
 use repo_manifest::resolver::{
     Category, GitRepoRef, LineageDeps, Manifest, Project, join_repo_url,
 };
+use repo_manifest::resolver::{
+    RecursivelyReadManifestFilesError, ResolveManifestError, merge_manifests, resolve_manifest,
+};
+use repo_manifest::xml::{Manifest as XMLManifest, ManifestReadFileError, read_manifest_file};
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::collections::{BTreeMap, BTreeSet};
@@ -11,6 +15,7 @@ use std::io;
 use std::path::{Path, PathBuf};
 use thiserror::Error;
 use tokio::fs;
+use url::Url;
 
 #[derive(Debug, Error)]
 pub enum MergeLineageDevicesError {
@@ -54,10 +59,13 @@ pub fn merge_lineage_devices(
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct LineageDep {
-    target_path: PathBuf,
-    repository: String,
+    #[serde(rename = "type")]
+    dep_type: Option<String>,
+    target_path: Option<PathBuf>,
+    repository: Option<String>,
     remote: Option<String>,
     branch: Option<String>,
+    version: Option<String>,
 }
 
 #[derive(Debug, Error)]
@@ -84,76 +92,115 @@ pub enum ResolveLineageDepsError {
         "default remote in manifest has no revision set, can't infer branch of dependency `{0}`"
     )]
     RemoteMissingRevision(PathBuf),
+    #[error("error reading kernel manifest file")]
+    ReadKernelManifest(#[source] ManifestReadFileError),
+    #[error("error resolving kernel manifest remotes")]
+    ResolveManifest(#[from] ResolveManifestError),
+    #[error("error merging Muppets manifest with main manifest")]
+    MergeKernelManifest(#[source] RecursivelyReadManifestFilesError),
 }
 
-pub fn resolve_lineage_dependencies(
+pub async fn resolve_lineage_dependencies(
     manifest: &Manifest,
     lineage_deps: &[LineageDep],
+    root_path: &PathBuf,
+    url: &Url,
+    manifest_xml: &XMLManifest,
 ) -> Result<Vec<Project>, ResolveLineageDepsError> {
     let mut project_deps = vec![];
     for dep in lineage_deps {
-        let remote =
-            match &dep.remote {
+        let dep_type = match &dep.dep_type {
+            // Default dependency type is "project"
+            None => "project",
+            Some(dep_type) => dep_type.as_str(),
+        };
+
+        let version = &dep.version.clone().unwrap_or_default();
+        let target_path = &dep.target_path.clone().unwrap_or_default();
+        let repository = &dep.repository.clone().unwrap_or_default();
+
+        if dep_type == "kernel" {
+            let mut manifest_xml = manifest_xml.clone();
+            let kernel_manifest_path = format!("snippets/kernel-{}.xml", version);
+            let kernel_manifest_xml = read_manifest_file(&root_path.join(kernel_manifest_path))
+                .await
+                .map_err(ResolveLineageDepsError::ReadKernelManifest)?;
+            merge_manifests(&mut manifest_xml, &kernel_manifest_xml)
+                .map_err(ResolveLineageDepsError::MergeKernelManifest)?;
+            let manifest = resolve_manifest(&manifest_xml, &url)?;
+            for project in kernel_manifest_xml.projects {
+                let project = match manifest.projects.get(&project.path.unwrap_or_default()) {
+                    None => continue,
+                    Some(project) => project,
+                };
+                project_deps.push(project.clone());
+            }
+        } else {
+            let remote = match &dep.remote {
                 Some(remote_name) => manifest.remotes.get(remote_name).ok_or(
                     ResolveLineageDepsError::UnknownRemote(
                         remote_name.to_string(),
-                        dep.target_path.clone(),
+                        target_path.clone(),
                     ),
                 )?,
-                None => &manifest.default_remote.as_ref().ok_or(
-                    ResolveLineageDepsError::MissingRemote(dep.target_path.clone()),
-                )?,
+                None => &manifest
+                    .default_remote
+                    .as_ref()
+                    .ok_or(ResolveLineageDepsError::MissingRemote(target_path.clone()))?,
             };
 
-        // This behaviour is highly dubious - we should check the default branch of the
-        // remote of the dependency in question, and not the default branch of the default
-        // remote. But the LineageOS roomservice.py script does it that way, so we have
-        // to replicate its erroneous behaviour.
-        //
-        // Source:
-        // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L220
-        let revision = match &dep.branch {
-            Some(b) => format!("refs/heads/{}", b),
-            None => {
-                let rev = remote.revision.as_ref().ok_or(
-                    ResolveLineageDepsError::RemoteMissingRevision(dep.target_path.clone()),
-                )?;
-                match rev.strip_prefix("refs/heads/") {
-                    Some(branch) => format!("refs/heads/{}", hudson_to_device_repo_branch(branch)),
-                    None => rev.clone(),
+            // This behaviour is highly dubious - we should check the default branch of the
+            // remote of the dependency in question, and not the default branch of the default
+            // remote. But the LineageOS roomservice.py script does it that way, so we have
+            // to replicate its erroneous behaviour.
+            //
+            // Source:
+            // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L220
+            let revision = match &dep.branch {
+                Some(b) => format!("refs/heads/{}", b),
+                None => {
+                    let rev = remote.revision.as_ref().ok_or(
+                        ResolveLineageDepsError::RemoteMissingRevision(target_path.clone()),
+                    )?;
+                    match rev.strip_prefix("refs/heads/") {
+                        Some(branch) => {
+                            format!("refs/heads/{}", hudson_to_device_repo_branch(branch))
+                        }
+                        None => rev.clone(),
+                    }
                 }
-            }
-        };
+            };
 
-        // The upstream mechanism for choosing whether to prepend `LineageOS/` to the repo name
-        // defined in the `repository` field is pretty broken: it just checks whether the remote
-        // name starts with `aosp-`, and if it does't, it prepends `LineageOS/` to the repo name
-        // and then changes the remote to `github` from whatever it else was previously. This
-        // breaks once you add in remotes other than `github` and the `aosp-*` ones. It's probably
-        // for the best to not try to fix this behaviour and to just consistently replicate it.
-        //
-        // Source:
-        // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L183
-        let repo_name = if !remote.name.starts_with("aosp-") {
-            format!("LineageOS/{}", dep.repository)
-        } else {
-            dep.repository.clone()
+            // The upstream mechanism for choosing whether to prepend `LineageOS/` to the repo name
+            // defined in the `repository` field is pretty broken: it just checks whether the remote
+            // name starts with `aosp-`, and if it does't, it prepends `LineageOS/` to the repo name
+            // and then changes the remote to `github` from whatever it else was previously. This
+            // breaks once you add in remotes other than `github` and the `aosp-*` ones. It's probably
+            // for the best to not try to fix this behaviour and to just consistently replicate it.
+            //
+            // Source:
+            // https://github.com/LineageOS/android_vendor_lineage/blob/80189ed8cc193dc2ca51a7eb46a7c648a3ee4eda/build/tools/roomservice.py#L183
+            let repo_name = if !remote.name.starts_with("aosp-") {
+                format!("LineageOS/{}", repository.clone())
+            } else {
+                repository.clone()
+            };
+            project_deps.push(Project {
+                path: target_path.clone(),
+                groups: vec![],
+                linkfiles: vec![],
+                copyfiles: vec![],
+                repo_ref: GitRepoRef {
+                    repo_url: join_repo_url(&remote.url, &repo_name),
+                    revision: revision,
+                    fetch_lfs: true,
+                    fetch_submodules: false,
+                },
+                categories: BTreeSet::new(),
+                lineage_deps: None,
+                active: true,
+            });
         };
-        project_deps.push(Project {
-            path: dep.target_path.clone(),
-            groups: vec![],
-            linkfiles: vec![],
-            copyfiles: vec![],
-            repo_ref: GitRepoRef {
-                repo_url: join_repo_url(&remote.url, &repo_name),
-                revision: revision,
-                fetch_lfs: true,
-                fetch_submodules: false,
-            },
-            categories: BTreeSet::new(),
-            lineage_deps: None,
-            active: true,
-        });
     }
 
     Ok(project_deps)
@@ -186,6 +233,9 @@ pub async fn prefetch_lineage_dependencies(
     devices: &BTreeMap<String, DeviceInfo>,
     manifest: &Manifest,
     branch: &str,
+    root_path: &PathBuf,
+    url: &Url,
+    manifest_xml: &XMLManifest,
 ) -> Result<(), PrefetchLineageDepsError> {
     eprintln!("Building LineageOS-specific dependency tree...");
 
@@ -221,6 +271,7 @@ pub async fn prefetch_lineage_dependencies(
             Some(p) => p.clone(),
             None => break,
         };
+
         eprintln!("Fetching LineageOS dependencies for {}...", path.display());
 
         let (new_deps, new_projects) = match lockfile.update(&path).await {
@@ -244,8 +295,15 @@ pub async fn prefetch_lineage_dependencies(
                         &fs::read(&store_path.join("lineage.dependencies")).await?,
                     )?;
 
-                    let ldeps = resolve_lineage_dependencies(manifest, &lineage_deps)
-                        .map_err(|e| PrefetchLineageDepsError::Resolve(path.clone(), e))?;
+                    let ldeps = resolve_lineage_dependencies(
+                        manifest,
+                        &lineage_deps,
+                        &root_path,
+                        &url,
+                        &manifest_xml,
+                    )
+                    .await
+                    .map_err(|e| PrefetchLineageDepsError::Resolve(path.clone(), e))?;
                     (
                         LineageDeps::Some(ldeps.iter().map(|x| x.path.clone()).collect()),
                         Some(ldeps),
@@ -269,7 +327,9 @@ pub async fn prefetch_lineage_dependencies(
                 if !fetch_queue.contains(&new_project.path) {
                     fetch_queue.push(new_project.path.clone());
                 }
-                lockfile.add_project(new_project)?;
+                if !lockfile.entries.contains_key(&new_project.path) {
+                    lockfile.add_project(new_project)?;
+                }
             }
         }
         i += 1;
