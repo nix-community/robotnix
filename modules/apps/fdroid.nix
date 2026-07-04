@@ -130,13 +130,19 @@ in
       ];
     };
 
-    # TODO: Put this under product/
-    source.dirs."robotnix/apps/F-DroidPrivilegedExtension" = {
-      src = privext;
-      patches = [
-        (pkgs.replaceVars ./fdroid-privext.patch {
-          fingerprint = lib.toLower cfg.fingerprint;
-        })
+    source.dirs = {
+      # TODO: Put this under product/
+      "robotnix/apps/F-DroidPrivilegedExtension" = {
+        src = privext;
+        patches = [
+          (pkgs.replaceVars ./fdroid-privext.patch {
+            fingerprint = lib.toLower cfg.fingerprint;
+          })
+        ];
+      };
+
+      "frameworks/base".patches = lib.mkIf (config.flavor == "grapheneos") [
+        ./0001-allow-system-app-updates-from-F-Droid-Privileged-Ext.patch
       ];
     };
 
