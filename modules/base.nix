@@ -297,6 +297,7 @@ in
           "14" = 34;
           "15" = 35;
           "16" = 36;
+          "17" = 37;
         }
         .${builtins.toString config.androidVersion} or 32;
 
