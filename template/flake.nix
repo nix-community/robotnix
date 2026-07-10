@@ -14,5 +14,6 @@
       # This provides a convenient output which allows you to build the image by
       # simply running "nix build" on this flake.
       packages.x86_64-linux.default = self.robotnixConfigurations."myLineageOS".img;
+      packages.aarch64-darwin.default = self.robotnixConfigurations."myLineageOS".img;
     };
 }

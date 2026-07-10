@@ -1,7 +1,14 @@
 # SPDX-FileCopyrightText: 2020 Daniel Fullmer and robotnix contributors
 # SPDX-License-Identifier: MIT
 
+let
+  pkgs = import ../pkgs { };
+  androidHostOut = "out/host/${
+    if pkgs.stdenv.hostPlatform.isDarwin then "darwin-x86" else "linux-x86"
+  }";
+in
 (import ../default.nix {
+  inherit pkgs;
   configuration = {
     productName = "sdk"; # Alternatives are sdk_arm64, sdk_x86_64, sdk_x86
     variant = "eng";
@@ -21,7 +28,7 @@
     ];
     installPhase = ''
       mkdir -p $out
-      cp --reflink=auto out/host/linux-x86/sdk/sdk/*.{zip,xml} $out
+      cp --reflink=auto ${androidHostOut}/sdk/sdk/*.{zip,xml} $out
     '';
   }
 

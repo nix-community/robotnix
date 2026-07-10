@@ -9,11 +9,17 @@
 
 let
   inherit (inputs) nixpkgs androidPkgs;
+  supportedSystems = nixpkgs.lib.intersectLists (builtins.attrNames androidPkgs.packages) (
+    builtins.attrNames androidPkgs.sdk
+  );
 in
-nixpkgs.legacyPackages.x86_64-linux.appendOverlays [
-  (self: super: {
-    androidPkgs.packages = androidPkgs.packages.x86_64-linux;
-    androidPkgs.sdk = androidPkgs.sdk.x86_64-linux;
-  })
-  (import ./overlay.nix { inherit inputs; })
-]
+if !(builtins.elem system supportedSystems) then
+  throw "robotnix does not support host system `${system}`. Supported systems: ${builtins.concatStringsSep ", " supportedSystems}"
+else
+  nixpkgs.legacyPackages.${system}.appendOverlays [
+    (self: super: {
+      androidPkgs.packages = androidPkgs.packages.${system};
+      androidPkgs.sdk = androidPkgs.sdk.${system};
+    })
+    (import ./overlay.nix { inherit inputs; })
+  ]

@@ -27,9 +27,10 @@ let
     ;
 
   cfg = config.kernel;
+  hostPrebuiltTag = if pkgs.stdenv.hostPlatform.isDarwin then "darwin-x86" else "linux-x86";
   prebuiltGCC = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc";
-    src = config.source.dirs."prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9".src;
+    src = config.source.dirs."prebuilts/gcc/${hostPrebuiltTag}/aarch64/aarch64-linux-android-4.9".src;
     buildInputs = with pkgs; [
       python
       autoPatchelfHook
@@ -40,7 +41,7 @@ let
   };
   prebuiltGCCarm32 = pkgs.stdenv.mkDerivation {
     name = "prebuilt-gcc-arm32";
-    src = config.source.dirs."prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9".src;
+    src = config.source.dirs."prebuilts/gcc/${hostPrebuiltTag}/arm/arm-linux-androideabi-4.9".src;
     buildInputs = with pkgs; [
       python
       autoPatchelfHook
@@ -51,7 +52,8 @@ let
   };
   prebuiltClang = pkgs.stdenv.mkDerivation {
     name = "prebuilt-clang";
-    src = config.source.dirs."prebuilts/clang/host/linux-x86".src + "/clang-${cfg.clangVersion}";
+    src =
+      config.source.dirs."prebuilts/clang/host/${hostPrebuiltTag}".src + "/clang-${cfg.clangVersion}";
     buildInputs = with pkgs; [
       python
       autoPatchelfHook
@@ -93,8 +95,8 @@ let
     ];
     installPhase = ''
       mkdir -p $out/bin
-      cp linux-x86/dtc/* $out/bin
-      cp linux-x86/libufdt/* $out/bin
+      cp ${hostPrebuiltTag}/dtc/* $out/bin
+      cp ${hostPrebuiltTag}/libufdt/* $out/bin
 
       # Needed by redfin
       cp ${config.source.dirs."system/libufdt".src}/utils/src/mkdtboimg.py $out/bin

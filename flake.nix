@@ -24,21 +24,27 @@
       ...
     }@inputs:
     let
-      pkgs = import ./pkgs/default.nix { inherit inputs; };
-      treefmtModule = inputs.treefmt-nix.lib.evalModule pkgs {
-        projectRootFile = "flake.nix";
-        programs = {
-          nixfmt = {
-            enable = true;
-            package = inputs.nixpkgs-nixfmt-old.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      lib = nixpkgs.lib;
+      supportedSystems = builtins.attrNames androidPkgs.packages;
+      forAllSystems = lib.genAttrs supportedSystems;
+      mkPkgs = system: import ./pkgs/default.nix { inherit inputs system; };
+      pkgs = mkPkgs builtins.currentSystem;
+      mkTreefmtModule =
+        system:
+        inputs.treefmt-nix.lib.evalModule (mkPkgs system) {
+          projectRootFile = "flake.nix";
+          programs = {
+            nixfmt = {
+              enable = true;
+              package = inputs.nixpkgs-nixfmt-old.legacyPackages.${system}.nixfmt-rfc-style;
+            };
+            shfmt.enable = true;
+            shellcheck.enable = true;
+            ruff-format.enable = true;
+            ruff-check.enable = true;
+            rustfmt.enable = true;
           };
-          shfmt.enable = true;
-          shellcheck.enable = true;
-          ruff-format.enable = true;
-          ruff-check.enable = true;
-          rustfmt.enable = true;
         };
-      };
     in
     rec {
       # robotnixSystem evaluates a robotnix configuration
@@ -56,33 +62,45 @@
       nixosModule = import ./nixos; # Contains all robotnix nixos modules
       nixosModules.attestation-server = import ./nixos/attestation-server/module.nix;
 
-      packages.x86_64-linux = {
-        manual = (import ./docs { inherit pkgs; }).manual;
-        gitRepo = pkgs.gitRepo;
-      };
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = mkPkgs system;
+        in
+        {
+          manual = (import ./docs { inherit pkgs; }).manual;
+          gitRepo = pkgs.gitRepo;
+        }
+      );
 
-      devShells.x86_64-linux = rec {
-        default = pkgs.callPackage ./develop.nix { };
-        repo2nix = pkgs.mkShell {
-          name = "repo2nix";
-          nativeBuildInputs = with pkgs; [
-            cargo
-            rustc
-            pkg-config
-            openssl
-            (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix { })
-          ];
-        };
-      };
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = mkPkgs system;
+        in
+        rec {
+          default = pkgs.callPackage ./develop.nix { };
+          repo2nix = pkgs.mkShell {
+            name = "repo2nix";
+            nativeBuildInputs = with pkgs; [
+              cargo
+              rustc
+              pkg-config
+              openssl
+              (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix { })
+            ];
+          };
+        }
+      );
 
       examples = nixpkgs.lib.genAttrs [ "lineageos" "grapheneos" ] (
         name: lib.robotnixSystem (./. + "/template/${name}.nix")
       );
 
-      formatter.x86_64-linux = treefmtModule.config.build.wrapper;
+      formatter = forAllSystems (system: (mkTreefmtModule system).config.build.wrapper);
 
-      checks.x86_64-linux = {
-        formatting = treefmtModule.config.build.check self;
-      };
+      checks = forAllSystems (system: {
+        formatting = (mkTreefmtModule system).config.build.check self;
+      });
     };
 }

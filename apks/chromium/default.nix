@@ -152,10 +152,22 @@ let
         x86_64-linux = "x64";
         armv7l-linux = "arm";
         aarch64-linux = "arm64";
+        x86_64-darwin = "x64";
+        aarch64-darwin = "arm64";
       }
       .${stdenv.buildPlatform.system};
     #target_cpu = { i686-linux = "x86"; x86_64-linux = "x64"; armv7l-linux = "arm"; aarch64-linux = "arm64"; }.${stdenv.hostPlatform.system};
   } // customGnFlags;
+
+  cipdPlatform =
+    {
+      x86_64-linux = "linux-amd64";
+      x86_64-darwin = "mac-amd64";
+      aarch64-darwin = "mac-arm64";
+    }
+    .${stdenv.buildPlatform.system};
+
+  androidNdkPrebuiltTag = if stdenv.buildPlatform.isDarwin then "darwin-x86_64" else "linux-x86_64";
 
   deps =
     import (./vendor- + version + ".nix") {
@@ -166,7 +178,7 @@ let
         runCommand
         symlinkJoin
         ;
-      platform = "linux-amd64"; # TODO: Figure out mapping for cipd platform
+      platform = cipdPlatform;
     }
     // depsOverrides;
 
@@ -210,15 +222,7 @@ let
           ''
       );
 
-  # Use the prebuilt one from CIPD
-  gn = stdenv.mkDerivation {
-    name = "gn";
-    src = deps."src/buildtools/linux64";
-    nativeBuildInputs = [ autoPatchelfHook ];
-    installPhase = ''
-      install -Dm755 gn $out/bin/gn
-    '';
-  };
+  gn = buildPackages.gn;
 
 in
 stdenvNoCC.mkDerivation rec {
@@ -311,16 +315,16 @@ stdenvNoCC.mkDerivation rec {
     ''
     # Work around missing library when building md5sum_bin and monochrome. TODO: Hack
     + lib.optionalString (lib.versionAtLeast version "97" && lib.versionOlder version "100") ''
-      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/aarch64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libatomic.a
-      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/arm-linux-androideabi/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libatomic.a
-      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/x86_64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libatomic.a
-      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/i686-linux-android/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/libatomic.a
+      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/aarch64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/sysroot/usr/lib/aarch64-linux-android/libatomic.a
+      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/arm-linux-androideabi/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/sysroot/usr/lib/arm-linux-androideabi/libatomic.a
+      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/x86_64-linux-android/lib64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/sysroot/usr/lib/x86_64-linux-android/libatomic.a
+      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/i686-linux-android/lib/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/sysroot/usr/lib/i686-linux-android/libatomic.a
     ''
     + lib.optionalString (lib.versionAtLeast version "100") ''
-      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.5/lib/linux/aarch64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libatomic.a
-      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.5/lib/linux/arm/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libatomic.a
-      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.5/lib/linux/x86_64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libatomic.a
-      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.5/lib/linux/i386/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/libatomic.a
+      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/lib64/clang/12.0.5/lib/linux/aarch64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/sysroot/usr/lib/aarch64-linux-android/libatomic.a
+      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/lib64/clang/12.0.5/lib/linux/arm/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/sysroot/usr/lib/arm-linux-androideabi/libatomic.a
+      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/lib64/clang/12.0.5/lib/linux/x86_64/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/sysroot/usr/lib/x86_64-linux-android/libatomic.a
+      cp src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/lib64/clang/12.0.5/lib/linux/i386/libatomic.a src/third_party/android_ndk/toolchains/llvm/prebuilt/${androidNdkPrebuiltTag}/sysroot/usr/lib/i686-linux-android/libatomic.a
     ''
     + ''
       ( cd src

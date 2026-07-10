@@ -3,8 +3,12 @@
 
 let
   pkgs = import ../pkgs { };
+  androidHostOut = "out/host/${
+    if pkgs.stdenv.hostPlatform.isDarwin then "darwin-x86" else "linux-x86"
+  }";
   adb =
     (import ../default.nix {
+      inherit pkgs;
       configuration = {
         productName = "sdk";
         variant = "eng";
@@ -19,7 +23,7 @@ let
         ];
         installPhase = ''
           mkdir -p $out
-          cp out/host/linux-x86/bin/{adb,fastboot} $out/
+          cp ${androidHostOut}/bin/{adb,fastboot} $out/
         '';
       };
 in
