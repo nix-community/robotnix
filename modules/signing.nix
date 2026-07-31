@@ -402,7 +402,7 @@ in
           "WifiDialog.apk" = "${config.device}/releasekey";
           "Bluetooth.apk" = "${config.device}/bluetooth";
         })
-        // (lib.optionalAttrs (lib.versionAtLeast config.stateVersion "3" && config.androidVersion >= 17) {
+        // (lib.optionalAttrs (lib.versionAtLeast config.androidVersion >= 17) {
           "TelecomServiceResources.apk" = "${config.device}/releasekey";
           "TelecomUi.apk" = "${config.device}/releasekey";
           "WebAppService.apk" = "${config.device}/releasekey";
