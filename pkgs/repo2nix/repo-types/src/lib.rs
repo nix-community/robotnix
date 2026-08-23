@@ -2,6 +2,12 @@
 pub struct GitRef(pub String);
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum GitRefOrCommitId {
+    GitRef(GitRef),
+    CommitId(git2::Oid),
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct GitRefPrefix(pub String);
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]

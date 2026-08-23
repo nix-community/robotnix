@@ -1,0 +1,11 @@
+[package]
+name = "repo-manifest"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+git2.workspace = true
+repo-types.workspace = true
+serde.workspace = true
+quick-xml.workspace = true
