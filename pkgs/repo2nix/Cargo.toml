@@ -1,0 +1,20 @@
+[workspace]
+members = ["repo-fetchers","repo-tool", "repo-types"]#, "repo-manifest"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+authors = ["cyclopentane"]
+edition = "2024"
+
+[workspace.dependencies]
+anyhow = "1.0"
+git2 = "0.21"
+reqwest = "0.13"
+nix = { version = "0.31", features = ["fs"] }
+nix-compat = { git = "https://git.snix.dev/snix/snix.git" }
+tokio = { version = "1.53", features = ["full"] }
+repo-types.path = "repo-types"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+urlencoding.version = "2.1"
