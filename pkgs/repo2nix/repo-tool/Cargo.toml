@@ -1,0 +1,16 @@
+[package]
+name = "repo-tool"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+nix-compat.workspace = true
+tokio.workspace = true
+repo-types.workspace = true
+repo-manifest.workspace = true
+repo-fetchers.workspace = true
+serde.workspace = true
+urlencoding.workspace = true
