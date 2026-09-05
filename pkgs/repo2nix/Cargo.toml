@@ -1,5 +1,5 @@
 [workspace]
-members = ["repo-types", "repo-fetchers", "repo-manifest"]
+members = ["repo-types", "repo-fetchers", "repo-manifest", "repo-tool"]
 resolver = "3"
 
 [workspace.package]
@@ -9,13 +9,17 @@ edition = "2024"
 
 [workspace.dependencies]
 anyhow = "1.0"
+clap = { version = "4.6", features = ["derive"] }
+enum_dispatch = "0.3"
 git2 = "0.21"
-reqwest = "0.13"
-nix = { version = "0.31", features = ["fs"] }
+hard-xml = { version = "1.41" }
+nix = { version = "0.31", features = ["dir", "fs"] }
 nix-compat = { git = "https://git.snix.dev/snix/snix.git" }
-tokio = { version = "1.53", features = ["full"] }
+repo-fetchers.path = "repo-fetchers"
+repo-manifest.path = "repo-manifest"
 repo-types.path = "repo-types"
+reqwest = "0.13"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-quick-xml = { version = "0.42", features = ["serialize"] }
+tokio = { version = "1.53", features = ["full"] }
 urlencoding.version = "2.1"
