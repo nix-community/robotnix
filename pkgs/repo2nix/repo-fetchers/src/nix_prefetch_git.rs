@@ -1,7 +1,7 @@
-use crate::Fetcher;
 use anyhow::{Context, Result, anyhow};
+use crate::{Fetcher, FetchersHandle};
 use nix_compat::nixhash::NixHash;
-use repo_types::{ForgeSpecificRepoUrl, RepoUrl};
+use repo_types::{ForgeSpecificRepoUrl, GitRefOrCommitId, RepoUrl, FetchUrl};
 use serde::Deserialize;
 use tokio::process::Command;
 
@@ -11,36 +11,6 @@ pub(crate) struct NixPrefetchGit;
 // TODO(cyclic-pentane): implement ROBOTNIX_GIT_MIRRORS in a sensible way
 // should especially minimise code duplication between this module, get_repo_refs.rs, and the
 // robotnix NixOS module system FOD invocations
-
-enum PrefetcherCommand {
-    GitRemote {
-        repo_url: RepoUrl,
-        commit_id: git2::Oid,
-    },
-    TarballUrl(String),
-}
-
-fn convert_url(repo_url: &RepoUrl, commit_id: &git2::Oid) -> (PrefetcherCommand, String) {
-    let repo_url = ForgeSpecificRepoUrl::from_repo_url(repo_url);
-    (
-        match &repo_url {
-            ForgeSpecificRepoUrl::Generic { repo_url } => PrefetcherCommand::GitRemote {
-                repo_url: repo_url.clone(),
-                commit_id: *commit_id,
-            },
-            ForgeSpecificRepoUrl::Gitiles { instance, path } => PrefetcherCommand::TarballUrl(
-                format!("https://{instance}/{path}/+archive/{commit_id}.tar.gz"),
-            ),
-            ForgeSpecificRepoUrl::Github { owner, repo } => PrefetcherCommand::TarballUrl(format!(
-                "https://github.com/{owner}/{repo}/archive/{commit_id}.tar.gz"
-            )),
-            ForgeSpecificRepoUrl::Gitlab { instance, path } => {
-                PrefetcherCommand::TarballUrl(format!("https://{instance}/{path}/"))
-            }
-        },
-        repo_url.derivation_name(commit_id),
-    )
-}
 
 impl Fetcher for NixPrefetchGit {
     type Args = (RepoUrl, git2::Oid);
@@ -54,9 +24,11 @@ impl Fetcher for NixPrefetchGit {
     type Output = NixHash;
 
     async fn execute(&mut self, (repo_url, commit_id): &Self::Args) -> Result<NixHash> {
-        let (repo_url, derivation_name) = convert_url(repo_url, commit_id);
+        let repo_url = ForgeSpecificRepoUrl::from_repo_url(repo_url);
+        let derivation_name = repo_url.derivation_name(commit_id);
+        let repo_url = repo_url.to_fetch_url(commit_id);
         let hash = match repo_url {
-            PrefetcherCommand::GitRemote {
+            FetchUrl::GitRemote {
                 repo_url,
                 commit_id,
             } => {
@@ -86,11 +58,14 @@ impl Fetcher for NixPrefetchGit {
 
                 out.sha256
             }
-            PrefetcherCommand::TarballUrl(url) => {
+            FetchUrl::TarballUrl(url) => {
+                println!("{derivation_name} {url}");
                 let out = Command::new("nix-prefetch-url")
                     .arg("--name")
                     .arg(&derivation_name)
                     .arg("--unpack")
+                    .arg("--type")
+                    .arg("sha256")
                     .arg(&url)
                     .output()
                     .await
@@ -109,11 +84,27 @@ impl Fetcher for NixPrefetchGit {
             }
         };
 
-        NixHash::from_nix_nixbase32(&hash)
+        NixHash::from_nix_nixbase32(&format!("sha256:{hash}"))
             .ok_or(anyhow!("failed to decode outputted nixbase32 hash"))
     }
 
     fn cache_key((_, commit_id): &Self::Args) -> Self::CacheKey {
         *commit_id
+    }
+}
+
+impl FetchersHandle {
+    pub async fn prefetch_by_ref_or_commit_id(&self, repo_url: &RepoUrl, git_ref_or_commit_id: &GitRefOrCommitId) -> Result<(git2::Oid, NixHash)> {
+        let commit_id = self
+            .resolve_ref_or_commit_id(repo_url, git_ref_or_commit_id)
+            .await
+            .context("failed to resolve git ref")?;
+
+        let nix_hash = self
+            .nix_prefetch_git(&(repo_url.clone(), commit_id.clone()))
+            .await
+            .context("failed to prefetch repo by commit id")?;
+
+        Ok((commit_id, nix_hash))
     }
 }

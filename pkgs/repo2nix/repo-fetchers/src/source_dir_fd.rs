@@ -1,6 +1,6 @@
-use crate::Fetcher;
-use crate::nix_prefetch_git::NixPrefetchGit;
 use anyhow::{Context, Result, anyhow};
+use crate::{Fetcher, FetchersHandle};
+use crate::nix_prefetch_git::NixPrefetchGit;
 use nix::errno::Errno;
 use nix::fcntl::{OFlag, open};
 use nix::sys::stat::Mode;
@@ -9,7 +9,7 @@ use nix_compat::derivation::{
 };
 use nix_compat::nixhash::NixHash;
 use nix_compat::store_path::StorePath;
-use repo_types::{ForgeSpecificRepoUrl, RepoUrl};
+use repo_types::{ForgeSpecificRepoUrl, GitRefOrCommitId, RepoUrl};
 use std::collections::{BTreeMap, BTreeSet};
 use std::os::fd::OwnedFd;
 use std::path::{Path, PathBuf};
@@ -49,7 +49,7 @@ fn get_fod_path_of_nixhash(hash: &NixHash, name: &str) -> Result<StorePath, Deri
 async fn open_path_if_exists(store_path: &Path) -> Result<Option<OwnedFd>, Errno> {
     // TODO(cyclic-pentane): this should be async, but I'm too lazy to figure out how to asyncify
     // that operation right now
-    let fd = open(store_path, OFlag::O_RDONLY, Mode::empty());
+    let fd = open(store_path, OFlag::O_RDONLY | OFlag::O_CLOEXEC, Mode::empty());
     match fd {
         Ok(fd) => Ok(Some(fd)),
         Err(Errno::ENOENT) => Ok(None),
@@ -104,6 +104,28 @@ impl Fetcher for SourceDirFd {
 
     fn cache_key((_, _, content_hash): &Self::Args) -> Self::CacheKey {
         content_hash.clone()
+    }
+}
+
+impl FetchersHandle {
+    pub async fn source_dir_by_ref_or_commit_id(&self, repo_url: &RepoUrl, git_ref_or_commit_id: &GitRefOrCommitId) -> Result<(git2::Oid, NixHash, Arc<OwnedFd>)> {
+        let (commit_id, nix_hash) = self
+            .prefetch_by_ref_or_commit_id(repo_url, git_ref_or_commit_id)
+            .await
+            .context("failed to prefetch repo by GitRefOrCommitId")?;
+
+        let fd = self
+            .source_dir_fd(
+                &(
+                    repo_url.clone(),
+                    commit_id.clone(),
+                    nix_hash.clone(),
+                )
+            )
+            .await
+            .context("failed to open source dir fd")?;
+
+        Ok((commit_id, nix_hash, fd))
     }
 }
 

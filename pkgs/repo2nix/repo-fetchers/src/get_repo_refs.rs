@@ -1,26 +1,27 @@
 use crate::{Fetcher, FetchersHandle};
 use anyhow::{Context, Result, anyhow};
-use repo_types::{ForgeSpecificRepoUrl, GitRef, GitRefPrefix, RepoUrl};
+use repo_types::{ForgeSpecificRepoUrl, GitRef, GitRefSuffix, GitRefOrCommitId, GitRefType, RepoUrl};
 use serde::Deserialize;
 use std::collections::BTreeMap;
 use tokio::process::Command;
+use reqwest::header::HeaderMap;
 
 #[derive(Default)]
 pub(crate) struct GetRepoRefs;
 
 impl Fetcher for GetRepoRefs {
-    type Args = (RepoUrl, GitRefPrefix);
-    type CacheKey = (RepoUrl, GitRefPrefix);
+    type Args = (RepoUrl, GitRefType);
+    type CacheKey = (RepoUrl, GitRefType);
     type Output = BTreeMap<GitRef, git2::Oid>;
 
     async fn execute(
         &mut self,
-        (repo_url, GitRefPrefix(prefix)): &Self::Args,
+        (repo_url, GitRefType(ref_type)): &Self::Args,
     ) -> Result<Self::Output> {
         let out = Command::new("git")
             .arg("ls-remote")
             .arg(&repo_url.0)
-            .arg(&format!("refs/{prefix}/*"))
+            .arg(&format!("refs/{ref_type}/*"))
             .output()
             .await
             .context("failed to run git process")?;
@@ -54,18 +55,21 @@ impl Fetcher for GetRepoRefs {
 
 impl FetchersHandle {
     // NOTE(cyclic-pentane): Gitiles has undocumented support for filtering the refs returned by the
-    // `+refs` endpoint, e.g. calling GET https://android.googlesource.com/platform/build/+refs/heads?format=JSON returns all refs that have the prefix `refs/heads`.
+    // `+refs` endpoint, e.g. calling GET https://android.googlesource.com/platform/build/+refs/heads?format=JSON returns all refs that have the type `heads`.
     // Sauce: https://gerrit.googlesource.com/gitiles/+/67c7844b7f7f228229c037cf297296874f50692c/java/com/google/gitiles/RefServlet.java#202
     async fn get_repo_refs_gitiles(
         &self,
         instance: &str,
         path: &str,
-        GitRefPrefix(prefix): &GitRefPrefix,
+        GitRefType(ref_type): &GitRefType,
     ) -> Result<BTreeMap<GitRef, git2::Oid>> {
         let resp_json = self
             .http_get(
-                &reqwest::Url::parse(&format!("https://{instance}/{path}/+refs/{prefix}"))
+                &(
+                    reqwest::Url::parse(&format!("https://{instance}/{path}/+refs/{ref_type}"))
                     .context("failed to parse Gitiles API URL")?,
+                    HeaderMap::new(),
+                )
             )
             .await
             .context("failed to wait for http_get fetcher")?;
@@ -82,7 +86,7 @@ impl FetchersHandle {
             .into_iter()
             .map(|(x, y)| {
                 Ok((
-                    GitRef(format!("refs/{prefix}/{x}")),
+                    GitRef(format!("refs/{ref_type}/{x}")),
                     git2::Oid::from_str(y.value).context("failed to parse commit id")?,
                 ))
             })
@@ -94,14 +98,17 @@ impl FetchersHandle {
         &self,
         owner: &str,
         repo: &str,
-        GitRefPrefix(prefix): &GitRefPrefix,
+        GitRefType(ref_type): &GitRefType,
     ) -> Result<BTreeMap<GitRef, git2::Oid>> {
         let resp_json = self
             .http_get(
-                &reqwest::Url::parse(&format!(
-                    "https://api.github.com/repos/{owner}/{repo}/git/matching-refs/{prefix}"
-                ))
-                .context("failed to parse GitHub API URL")?,
+                &(
+                    reqwest::Url::parse(&format!(
+                        "https://api.github.com/repos/{owner}/{repo}/git/matching-refs/{ref_type}"
+                    ))
+                    .context("failed to parse GitHub API URL")?,
+                    HeaderMap::new(),
+                )
             )
             .await
             .context("failed to wait for http_get fetcher")?;
@@ -136,7 +143,7 @@ impl FetchersHandle {
         &self,
         instance: &str,
         path: &str,
-        GitRefPrefix(prefix): &GitRefPrefix,
+        GitRefType(ref_type): &GitRefType,
     ) -> Result<BTreeMap<GitRef, git2::Oid>> {
         #[derive(Deserialize)]
         struct GitlabCommit<'a> {
@@ -150,14 +157,17 @@ impl FetchersHandle {
         }
 
         let path = urlencoding::encode(path);
-        match &prefix[..] {
+        match &ref_type[..] {
             "heads" => {
                 let resp_json = self
                     .http_get(
-                        &reqwest::Url::parse(&format!(
-                            "https://{instance}/api/v4/projects/{path}/repository/branches"
-                        ))
-                        .context("failed to parse GitLab API URL")?,
+                        &(
+                            reqwest::Url::parse(&format!(
+                                "https://{instance}/api/v4/projects/{path}/repository/branches"
+                            ))
+                            .context("failed to parse GitLab API URL")?,
+                            HeaderMap::new(),
+                        )
                     )
                     .await
                     .context("failed to wait for http_get fetcher")?;
@@ -180,10 +190,13 @@ impl FetchersHandle {
             "tags" => {
                 let resp_json = self
                     .http_get(
-                        &reqwest::Url::parse(&format!(
-                            "https://{instance}/api/v4/projects/{path}/repository/tags"
-                        ))
-                        .context("failed to parse GitLab API URL")?,
+                        &(
+                            reqwest::Url::parse(&format!(
+                                "https://{instance}/api/v4/projects/{path}/repository/tags"
+                            ))
+                            .context("failed to parse GitLab API URL")?,
+                            HeaderMap::new(),
+                        )
                     )
                     .await
                     .context("failed to wait for http_get fetcher")?;
@@ -203,53 +216,63 @@ impl FetchersHandle {
                     .collect::<Result<BTreeMap<_, _>>>()?;
                 Ok(tags)
             }
-            prefix => Err(anyhow!("unsupported GitLab ref prefix `{prefix}`)")),
+            ref_type => Err(anyhow!("unsupported GitLab ref_type `{ref_type}`)")),
         }
     }
 
-    async fn get_repo_refs_with_apis(
+    pub async fn get_repo_refs_with_apis(
         &self,
         url: &RepoUrl,
-        prefix: &GitRefPrefix,
+        ref_type: &GitRefType,
     ) -> Result<BTreeMap<GitRef, git2::Oid>> {
         match ForgeSpecificRepoUrl::from_repo_url(url) {
             ForgeSpecificRepoUrl::Gitiles { instance, path } => {
-                self.get_repo_refs_gitiles(&instance, &path, &prefix).await
+                self.get_repo_refs_gitiles(&instance, &path, &ref_type).await
             }
             ForgeSpecificRepoUrl::Github { owner, repo } => {
-                self.get_repo_refs_github(&owner, &repo, &prefix).await
+                self.get_repo_refs_github(&owner, &repo, &ref_type).await
             }
             ForgeSpecificRepoUrl::Gitlab { instance, path } => {
-                self.get_repo_refs_gitlab(&instance, &path, &prefix).await
+                self.get_repo_refs_gitlab(&instance, &path, &ref_type).await
             }
             ForgeSpecificRepoUrl::Generic { repo_url } => {
-                self.get_repo_refs(&(repo_url, prefix.clone())).await
+                self.get_repo_refs(&(repo_url, ref_type.clone())).await
             }
         }
     }
 
-    async fn get_branches_and_tags(&self, url: &RepoUrl) -> Result<BTreeMap<GitRef, git2::Oid>> {
+    pub async fn get_branches_and_tags(&self, url: &RepoUrl) -> Result<BTreeMap<GitRef, git2::Oid>> {
         let mut refs = self
-            .get_repo_refs_with_apis(url, &GitRefPrefix("branches".to_string()))
+            .get_repo_refs_with_apis(url, &GitRefType("heads".to_string()))
             .await?;
         let mut tags = self
-            .get_repo_refs_with_apis(url, &GitRefPrefix("tags".to_string()))
+            .get_repo_refs_with_apis(url, &GitRefType("tags".to_string()))
             .await?;
         refs.append(&mut tags);
         Ok(refs)
     }
 
-    async fn get_commit_by_ref_suffix(&self, url: &RepoUrl, ref_suffix: &str) -> Result<git2::Oid> {
+    pub async fn resolve_ref_or_commit_id(&self, url: &RepoUrl, ref_or_commit: &GitRefOrCommitId) -> Result<git2::Oid> {
+        if let GitRefOrCommitId::CommitId(commit_id) = ref_or_commit {
+            return Ok(commit_id.clone())
+        }
+
         let refs = self
             .get_branches_and_tags(url)
             .await
             .context("failed to get all branches and tags of repo")?;
         let matching_refs = refs
             .into_iter()
-            .filter(|(GitRef(name), _)| name.split('/').last().unwrap() == ref_suffix)
+            .filter(|(GitRef(name), _)| {
+                match ref_or_commit {
+                    GitRefOrCommitId::GitRef(GitRef(git_ref)) => name == git_ref,
+                    GitRefOrCommitId::GitRefSuffix(GitRefSuffix(suffix)) => name.split('/').last().unwrap() == suffix,
+                    _ => panic!(),
+                }
+            })
             .collect::<Vec<_>>();
         match &matching_refs[..] {
-            [] => Err(anyhow!("ref suffix {ref_suffix} not found")),
+            [] => Err(anyhow!("ref {ref_or_commit:?} not found")),
             [(_, commit_id)] => Ok(*commit_id),
             _ => Err(anyhow!("multiple matching refs found: {matching_refs:?}")),
         }

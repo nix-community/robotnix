@@ -1,18 +1,21 @@
 use crate::Fetcher;
 use anyhow::{Context, Result, anyhow};
 use reqwest::{Client, Url};
+use reqwest::header::HeaderMap;
 
 #[derive(Default)]
 pub(crate) struct HttpGet(Client);
 
 impl Fetcher for HttpGet {
-    type Args = Url;
+    type Args = (Url, HeaderMap);
     type CacheKey = Url;
     type Output = String;
 
-    async fn execute(&mut self, url: &Self::Args) -> Result<String> {
+    async fn execute(&mut self, (url, headers): &Self::Args) -> Result<String> {
         self.0
             .get(url.clone())
+            .header("User-Agent", "robotnix repo2nix (reqwest)")
+            .headers(headers.clone())
             .send()
             .await
             .context("failed to send request")?
@@ -21,7 +24,7 @@ impl Fetcher for HttpGet {
             .context("failed to read response body")
     }
 
-    fn cache_key(url: &Url) -> Url {
+    fn cache_key((url, _): &Self::Args) -> Url {
         url.clone()
     }
 }

@@ -1,16 +1,42 @@
-use repo_types::{GitRef, GitRefOrCommitId, RepoUrl};
+use anyhow::{Error, Result};
+use crate::execute::ExecuteOnState;
+use enum_dispatch::enum_dispatch;
+use hard_xml::XmlRead;
+use repo_types::{GitRef, GitRefSuffix, GitRefOrCommitId, RepoUrl};
 use serde::{Deserialize, Serialize};
+use std::str::FromStr;
 use std::path::PathBuf;
 use std::vec::Vec;
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-pub struct RemoteName(String);
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+pub struct RemoteName(pub String);
+impl FromStr for RemoteName {
+    type Err = Error;
+
+    fn from_str(x: &str) -> Result<Self> {
+        Ok(Self(x.to_string()))
+    }
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-pub struct RemoteBaseUrl(String);
+pub struct RemoteBaseUrl(pub String);
+impl FromStr for RemoteBaseUrl {
+    type Err = Error;
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-pub struct RelativeUrl(String);
+    fn from_str(x: &str) -> Result<Self> {
+        Ok(Self(x.to_string()))
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+pub struct RelativeUrl(pub String);
+impl FromStr for RelativeUrl {
+    type Err = Error;
+
+    fn from_str(x: &str) -> Result<Self> {
+        Ok(Self(x.to_string()))
+    }
+}
 
 impl RemoteBaseUrl {
     pub fn join_parts(
@@ -40,7 +66,27 @@ impl RemoteBaseUrl {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-pub struct GitRepoRevision(String);
+pub struct GitRepoRevision(pub String);
+impl FromStr for GitRepoRevision {
+    type Err = Error;
+
+    fn from_str(x: &str) -> Result<Self> {
+        Ok(Self(x.to_string()))
+    }
+}
+
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Groups(pub Vec<String>);
+impl FromStr for Groups {
+    type Err = Error;
+
+    fn from_str(x: &str) -> Result<Self> {
+        Ok(Self(x.split(",").map(|x| x.to_string()).collect()))
+    }
+}
+
+
 
 impl GitRepoRevision {
     pub fn to_git_ref(&self) -> GitRefOrCommitId {
@@ -51,117 +97,181 @@ impl GitRepoRevision {
         } else if self.0.starts_with("refs/") {
             GitRefOrCommitId::GitRef(GitRef(self.0.clone()))
         } else {
-            GitRefOrCommitId::GitRef(GitRef(format!("refs/heads/{}", self.0)))
+            GitRefOrCommitId::GitRefSuffix(GitRefSuffix(self.0.clone()))
         }
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(tag = "remote")]
 pub struct Remote {
-    #[serde(rename = "@name")]
+    #[xml(attr = "name")]
     pub name: RemoteName,
 
-    #[serde(rename = "@fetch")]
+    #[xml(attr = "fetch")]
     pub repo_url_base: RemoteBaseUrl,
 
-    #[serde(rename = "@revision")]
+    #[xml(attr = "revision")]
     pub default_revision: Option<GitRepoRevision>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(tag = "default")]
 pub struct DefaultRemote {
-    #[serde(rename = "@remote")]
+    #[xml(attr = "remote")]
     pub remote: RemoteName,
 
-    #[serde(rename = "@revision")]
+    #[xml(attr = "revision")]
     pub default_revision: Option<GitRepoRevision>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-pub struct LinkCopyFile {
-    #[serde(rename = "@src")]
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(strict(unknown_attribute, unknown_element))]
+#[xml(tag = "linkfile")]
+pub struct LinkFile {
+    #[xml(attr = "src")]
     pub src: PathBuf,
 
-    #[serde(rename = "@dest")]
+    #[xml(attr = "dest")]
     pub dest: PathBuf,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(strict(unknown_attribute, unknown_element))]
+#[xml(tag = "copyfile")]
+pub struct CopyFile {
+    #[xml(attr = "src")]
+    pub src: PathBuf,
+
+    #[xml(attr = "dest")]
+    pub dest: PathBuf,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(tag = "project")]
 pub struct Project {
-    #[serde(rename = "@name")]
+    #[xml(attr = "name")]
     pub relative_url: RelativeUrl,
 
-    #[serde(rename = "@path")]
+    #[xml(attr = "path")]
     pub source_tree_path: Option<PathBuf>,
 
-    #[serde(rename = "@remote")]
+    #[xml(attr = "remote")]
     pub remote: Option<RemoteName>,
 
-    #[serde(rename = "@revision")]
+    #[xml(attr = "revision")]
     pub revision: Option<GitRepoRevision>,
 
-    #[serde(rename = "@groups")]
-    pub groups: Option<String>,
+    #[xml(attr = "groups", default)]
+    pub groups: Groups,
 
-    #[serde(rename = "linkfile", default)]
-    pub linkfiles: Vec<LinkCopyFile>,
+    #[xml(child = "linkfile")]
+    pub linkfiles: Vec<LinkFile>,
 
-    #[serde(rename = "copyfile", default)]
-    pub copyfiles: Vec<LinkCopyFile>,
+    #[xml(child = "copyfile")]
+    pub copyfiles: Vec<CopyFile>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(strict(unknown_attribute, unknown_element))]
+#[xml(tag = "extend-project")]
 pub struct ExtendProject {
-    #[serde(flatten)]
-    pub project: Project,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(deny_unknown_fields)]
-pub struct RemoveProject {
-    #[serde(rename = "@name")]
+    #[xml(attr = "name")]
     pub relative_url: RelativeUrl,
 
-    #[serde(rename = "@path")]
+    #[xml(attr = "path")]
+    pub match_old_source_tree_path: Option<PathBuf>,
+
+    #[xml(attr = "dest-path")]
     pub source_tree_path: Option<PathBuf>,
 
-    #[serde(rename = "@optional")]
+    #[xml(attr = "remote")]
+    pub remote: Option<RemoteName>,
+
+    #[xml(attr = "revision")]
+    pub revision: Option<GitRepoRevision>,
+
+    #[xml(attr = "groups", default)]
+    pub groups: Groups,
+
+    #[xml(child = "linkfile")]
+    pub linkfiles: Vec<LinkFile>,
+
+    #[xml(child = "copyfile")]
+    pub copyfiles: Vec<CopyFile>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(strict(unknown_attribute, unknown_element))]
+#[xml(tag = "remove-project")]
+pub struct RemoveProject {
+    #[xml(attr = "name")]
+    pub relative_url: Option<RelativeUrl>,
+
+    #[xml(attr = "path")]
+    pub source_tree_path: Option<PathBuf>,
+
+    #[xml(attr = "optional")]
     pub optional: bool,
     // unsupported attr: base-rev
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(deny_unknown_fields)]
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(strict(unknown_attribute, unknown_element))]
+#[xml(tag = "include")]
 pub struct Include {
-    #[serde(rename = "@name")]
-    pub name: PathBuf,
-
-    #[serde(rename = "@groups")]
-    pub groups: Option<String>,
-    // unsupported attr: revision (because I haven't figured out the overriding behaviour yet)
+    #[xml(attr = "name")]
+    pub path: PathBuf,
+    // unsupported attr: groups, revision (because I haven't figured out the overriding behaviour yet)
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(deny_unknown_fields)]
-pub enum ManifestInstruction {
-    #[serde(rename = "remote")]
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[enum_dispatch(ExecuteOnState)]
+pub enum Instruction {
+    #[xml(tag = "remote")]
     Remote(Remote),
 
-    #[serde(rename = "default")]
+    #[xml(tag = "default")]
     DefaultRemote(DefaultRemote),
 
-    #[serde(rename = "project")]
+    #[xml(tag = "project")]
     Project(Project),
 
-    #[serde(rename = "extend-project")]
+    #[xml(tag = "extend-project")]
     ExtendProject(ExtendProject),
 
-    #[serde(rename = "remove-project")]
+    #[xml(tag = "remove-project")]
     RemoveProject(RemoveProject),
-
-    #[serde(rename = "include")]
-    Include(Include),
     // unsupported children: notice, manifest-server, submanifest, repo-hooks, superproject, contactinfo
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+pub enum Item {
+    #[xml(
+        tag = "remote",
+        tag = "default",
+        tag = "project",
+        tag = "extend-project",
+        tag = "remove-project",
+    )]
+    Instruction(Instruction),
+
+    #[xml(tag = "include")]
+    Include(Include),
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, XmlRead)]
+#[xml(tag = "manifest")]
+pub struct Manifest {
+    #[xml(
+        child = "remote",
+        child = "default",
+        child = "project",
+        child = "extend-project",
+        child = "remove-project",
+        child = "include"
+    )]
+    pub items: Vec<Item>,
 }
 
 #[cfg(test)]
@@ -169,17 +279,106 @@ mod tests {
     use super::*;
 
     #[test]
-    fn manifest_instruction_enum_roundtrip() {
-        let xml_str =
-            "<remote name=\"github\" fetch=\"https://github.com/GrapheneOS\" revision=\"main\"/>";
-        let mi = ManifestInstruction::Remote(Remote {
+    fn newtype_fields() {
+        let remote_str = "<remote name=\"github\" fetch=\"..\" revision=\"lineage-23.2\" />";
+        let remote = Remote {
             name: RemoteName("github".to_string()),
-            repo_url_base: RemoteBaseUrl("https://github.com/GrapheneOS".to_string()),
-            default_revision: Some(GitRepoRevision("main".to_string())),
-        });
+            repo_url_base: RemoteBaseUrl("..".to_string()),
+            default_revision: Some(GitRepoRevision("lineage-23.2".to_string())),
+        };
+        assert_eq!(
+            Remote::from_str(remote_str).unwrap(),
+            remote,
+        );
+    }
 
-        assert_eq!(xml_str, quick_xml::se::to_string(&mi).unwrap(),);
+    #[test]
+    fn vecs_in_struct() {
+        let project_str = "
+          <project path=\"build/bazel\" name=\"platform/build/bazel\" groups=\"pdk,made_up_group_for_testing\" remote=\"aosp\" >
+            <linkfile src=\"bazel.WORKSPACE\" dest=\"WORKSPACE\" />
+            <linkfile src=\"bazel.BUILD\" dest=\"BUILD\" />
+          </project>
+        ";
 
-        assert_eq!(mi, quick_xml::de::from_str(xml_str).unwrap(),);
+        let project = Project {
+            relative_url: RelativeUrl("platform/build/bazel".to_string()),
+            source_tree_path: Some(PathBuf::from("build/bazel".to_string())),
+            remote: Some(RemoteName("aosp".to_string())),
+            revision: None,
+            groups: Groups(
+                vec!["pdk".to_string(), "made_up_group_for_testing".to_string()]
+            ),
+            linkfiles: vec![
+                LinkFile {
+                    src: PathBuf::from("bazel.WORKSPACE"),
+                    dest: PathBuf::from("WORKSPACE"),
+                },
+                LinkFile {
+                    src: PathBuf::from("bazel.BUILD"),
+                    dest: PathBuf::from("BUILD"),
+                },
+            ],
+            copyfiles: vec![],
+        };
+
+        assert_eq!(
+            Project::from_str(project_str).unwrap(),
+            project,
+        );
+    }
+
+    #[test]
+    fn manifest_instruction_enum() {
+        let manifest_str = "
+            <manifest>
+                <remote name=\"github\" fetch=\"https://github.com/GrapheneOS\" revision=\"main\"/>
+                <project path=\"build/bazel\" name=\"platform/build/bazel\" groups=\"pdk,made_up_group_for_testing\" remote=\"aosp\" >
+                  <linkfile src=\"bazel.WORKSPACE\" dest=\"WORKSPACE\" />
+                  <linkfile src=\"bazel.BUILD\" dest=\"BUILD\" />
+                </project>
+
+                <notice>blahblah</notice>
+
+                <include name=\"foo/bar.xml\" />
+            </manifest>
+        ";
+        let manifest = Manifest {
+            items: vec![
+                Item::Instruction(Instruction::Remote(Remote {
+                    name: RemoteName("github".to_string()),
+                    repo_url_base: RemoteBaseUrl("https://github.com/GrapheneOS".to_string()),
+                    default_revision: Some(GitRepoRevision("main".to_string())),
+                })),
+                Item::Instruction(Instruction::Project(Project {
+                    relative_url: RelativeUrl("platform/build/bazel".to_string()),
+                    source_tree_path: Some(PathBuf::from("build/bazel".to_string())),
+                    remote: Some(RemoteName("aosp".to_string())),
+                    revision: None,
+                    groups: Groups(
+                        vec!["pdk".to_string(), "made_up_group_for_testing".to_string()]
+                    ),
+                    linkfiles: vec![
+                        LinkFile {
+                            src: PathBuf::from("bazel.WORKSPACE"),
+                            dest: PathBuf::from("WORKSPACE"),
+                        },
+                        LinkFile {
+                            src: PathBuf::from("bazel.BUILD"),
+                            dest: PathBuf::from("BUILD"),
+                        },
+                    ],
+                    copyfiles: vec![],
+                })),
+                Item::Include(Include {
+                    path: PathBuf::from("foo/bar.xml"),
+                }),
+            ],
+        };
+
+        assert_eq!(
+            Manifest::from_str(manifest_str).unwrap(),
+            manifest,
+        );
     }
 }

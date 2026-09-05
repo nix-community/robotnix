@@ -1,16 +1,24 @@
+use serde::{Serialize, Deserialize};
+
+pub mod custom_serde;
+
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct GitRef(pub String);
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct GitRefSuffix(pub String);
+
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum GitRefOrCommitId {
     GitRef(GitRef),
+    GitRefSuffix(GitRefSuffix),
     CommitId(git2::Oid),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct GitRefPrefix(pub String);
+pub struct GitRefType(pub String);
 
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct RepoUrl(pub String);
 
 // TODO(cyclic-pentane): make these configurable maybe?
@@ -23,6 +31,16 @@ pub enum ForgeSpecificRepoUrl {
     Gitiles { instance: String, path: String },
     Github { owner: String, repo: String },
     Gitlab { instance: String, path: String },
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub enum FetchUrl {
+    GitRemote {
+        repo_url: RepoUrl,
+        #[serde(with = "custom_serde::oid")]
+        commit_id: git2::Oid,
+    },
+    TarballUrl(String),
 }
 
 impl ForgeSpecificRepoUrl {
@@ -95,6 +113,27 @@ impl ForgeSpecificRepoUrl {
             &self.derivation_pname(),
             &commit_id.to_string()[..7],
         )
+    }
+
+    pub fn to_fetch_url(&self, commit_id: &git2::Oid) -> FetchUrl {
+        match self {
+            ForgeSpecificRepoUrl::Generic { repo_url } => FetchUrl::GitRemote {
+                repo_url: repo_url.clone(),
+                commit_id: *commit_id,
+            },
+            ForgeSpecificRepoUrl::Gitiles { instance, path } => FetchUrl::TarballUrl(
+                format!("https://{instance}/{path}/+archive/{commit_id}.tar.gz"),
+            ),
+            ForgeSpecificRepoUrl::Github { owner, repo } => FetchUrl::TarballUrl(format!(
+                    "https://github.com/{owner}/{repo}/archive/{commit_id}.tar.gz"
+            )),
+            ForgeSpecificRepoUrl::Gitlab { instance, path } => FetchUrl::TarballUrl(format!(
+                    "https://{}/api/v4/projects/{}/repository/archive?sha={}",
+                    instance,
+                    urlencoding::encode(&path),
+                    commit_id,
+            )),
+        }
     }
 }
 
