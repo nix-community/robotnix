@@ -1,5 +1,6 @@
-use crate::Fetcher;
 use anyhow::{Context, Result, anyhow};
+use crate::Fetcher;
+use log::info;
 use reqwest::{Client, Url};
 use reqwest::header::HeaderMap;
 
@@ -12,6 +13,7 @@ impl Fetcher for HttpGet {
     type Output = String;
 
     async fn execute(&mut self, (url, headers): &Self::Args) -> Result<String> {
+        info!("GET {url}");
         self.0
             .get(url.clone())
             .header("User-Agent", "robotnix repo2nix (reqwest)")

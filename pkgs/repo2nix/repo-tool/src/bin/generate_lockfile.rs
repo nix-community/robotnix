@@ -2,7 +2,7 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use repo_fetchers::FetchersHandle;
 use repo_manifest::execute::{ExecuteOnState, ManifestState};
-use repo_tool::CommonCliArgs;
+use repo_tool::{CommonCliArgs, prefetch_projects};
 use repo_types::{GitRef, GitRefOrCommitId, RepoUrl};
 use std::os::fd::AsFd;
 use std::path::Path;
@@ -41,14 +41,25 @@ async fn run(args: CliArgs, handle: FetchersHandle) -> Result<()> {
                 .context("failed to execute manifest instruction on state")?;
             Ok(state)
         },
-    );
-    println!("{manifest_state:#?}");
+    )
+        .context("failed to apply manifest instructions")?;
+    let projects = prefetch_projects(&manifest_state, &handle)
+        .await
+        .context("failed to prefetch projects in manifest")?;
+
+    println!("{projects:#?}");
     Ok(())
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
     let args = CliArgs::parse();
+    stderrlog::new()
+        .verbosity(args.common.verbosity)
+        .show_module_names(true)
+        .init()
+        .context("failed to initialize stderrlog")?;
+
     let (handle, mut worker_jhs) = FetchersHandle::spawn_workers(
         args.common.nixhash_lockfile.as_ref().map(|x| x.as_ref()),
         args.common.fetcher_tasks,

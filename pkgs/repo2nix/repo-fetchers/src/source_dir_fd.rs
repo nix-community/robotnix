@@ -1,6 +1,7 @@
 use anyhow::{Context, Result, anyhow};
 use crate::{Fetcher, FetchersHandle};
 use crate::nix_prefetch_git::NixPrefetchGit;
+use log::info;
 use nix::errno::Errno;
 use nix::fcntl::{OFlag, open};
 use nix::sys::stat::Mode;
@@ -66,7 +67,9 @@ impl Fetcher for SourceDirFd {
         &mut self,
         (repo_url, commit_hash, nix_hash): &Self::Args,
     ) -> Result<Arc<OwnedFd>> {
-        let name = ForgeSpecificRepoUrl::from_repo_url(repo_url).derivation_name(commit_hash);
+        let fs_repo_url = ForgeSpecificRepoUrl::from_repo_url(repo_url);
+        info!("opening repo for reading: {:?}, commit {}", fs_repo_url, commit_hash);
+        let name = fs_repo_url.derivation_name(commit_hash);
         let store_path = get_fod_path_of_nixhash(nix_hash, &name)
             .context("failed to calculate FOD path of nix hash")?
             .to_absolute_path();
@@ -77,8 +80,9 @@ impl Fetcher for SourceDirFd {
         let fd = match fd {
             Some(fd) => fd,
             None => {
-                // apparently the fetcher ran on another system and we got the hash from the lockfile,
-                // or the nix garbage collector ran in the meanwhile. Let's attempt to refetch.
+                // apparently we got the hash from the lockfile, and the nix garbage collector ran
+                // in the meanwhile (or the lockfile was generated on another host). Let's attempt
+                // to refetch.
                 let new_nix_hash = NixPrefetchGit::default()
                     .execute(&(repo_url.clone(), commit_hash.clone()))
                     .await

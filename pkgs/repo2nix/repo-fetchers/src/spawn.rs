@@ -77,7 +77,7 @@ impl FetcherCaches {
             .open(nixhash_lockfile)
             .context("failed to open nixhash lockfile for writing")?;
 
-        serde_json::to_writer(
+        serde_json::to_writer_pretty(
             file,
             &hashes,
         )

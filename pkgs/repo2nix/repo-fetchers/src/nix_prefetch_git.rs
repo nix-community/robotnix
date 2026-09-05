@@ -1,5 +1,6 @@
 use anyhow::{Context, Result, anyhow};
 use crate::{Fetcher, FetchersHandle};
+use log::info;
 use nix_compat::nixhash::NixHash;
 use repo_types::{ForgeSpecificRepoUrl, GitRefOrCommitId, RepoUrl, FetchUrl};
 use serde::Deserialize;
@@ -25,6 +26,7 @@ impl Fetcher for NixPrefetchGit {
 
     async fn execute(&mut self, (repo_url, commit_id): &Self::Args) -> Result<NixHash> {
         let repo_url = ForgeSpecificRepoUrl::from_repo_url(repo_url);
+        info!("prefetching repo {:?}, commit {}", repo_url, commit_id);
         let derivation_name = repo_url.derivation_name(commit_id);
         let repo_url = repo_url.to_fetch_url(commit_id);
         let hash = match repo_url {
@@ -59,7 +61,6 @@ impl Fetcher for NixPrefetchGit {
                 out.sha256
             }
             FetchUrl::TarballUrl(url) => {
-                println!("{derivation_name} {url}");
                 let out = Command::new("nix-prefetch-url")
                     .arg("--name")
                     .arg(&derivation_name)

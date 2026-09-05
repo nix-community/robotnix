@@ -2,7 +2,7 @@ use anyhow::{Error, Result};
 use crate::execute::ExecuteOnState;
 use enum_dispatch::enum_dispatch;
 use hard_xml::XmlRead;
-use repo_types::{GitRef, GitRefSuffix, GitRefOrCommitId, RepoUrl};
+use repo_types::{GitRef, GitRefSuffix, GitRefOrCommitId, Groups, RepoUrl};
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 use std::path::PathBuf;
@@ -50,7 +50,7 @@ impl RemoteBaseUrl {
                 manifest_url
                     .0
                     .trim_end_matches('/')
-                    .rsplitn(2, '/')
+                    .rsplitn(3, '/')
                     .last()
                     .unwrap(),
                 project_relative_url.0,
@@ -74,19 +74,6 @@ impl FromStr for GitRepoRevision {
         Ok(Self(x.to_string()))
     }
 }
-
-
-#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
-pub struct Groups(pub Vec<String>);
-impl FromStr for Groups {
-    type Err = Error;
-
-    fn from_str(x: &str) -> Result<Self> {
-        Ok(Self(x.split(",").map(|x| x.to_string()).collect()))
-    }
-}
-
-
 
 impl GitRepoRevision {
     pub fn to_git_ref(&self) -> GitRefOrCommitId {

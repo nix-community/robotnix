@@ -1,5 +1,10 @@
+use anyhow::{Result, Error};
 use serde::{Serialize, Deserialize};
+use std::str::FromStr;
+use std::collections::BTreeSet;
+use std::path::PathBuf;
 
+pub mod lockfile;
 pub mod custom_serde;
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -134,6 +139,27 @@ impl ForgeSpecificRepoUrl {
                     commit_id,
             )),
         }
+    }
+
+    pub fn mirror_path(&self) -> PathBuf {
+        match self {
+            ForgeSpecificRepoUrl::Generic { repo_url } => {
+                todo!()
+            },
+            ForgeSpecificRepoUrl::Gitiles { instance, path } => PathBuf::from(instance).join(path),
+            ForgeSpecificRepoUrl::Github { owner, repo } => PathBuf::from("github.com").join(owner).join(repo),
+            ForgeSpecificRepoUrl::Gitlab { instance, path } => PathBuf::from(instance).join(path),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Groups(pub BTreeSet<String>);
+impl FromStr for Groups {
+    type Err = anyhow::Error;
+
+    fn from_str(x: &str) -> Result<Self> {
+        Ok(Self(x.split(",").map(|x| x.to_string()).collect()))
     }
 }
 

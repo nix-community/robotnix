@@ -2,7 +2,6 @@ use anyhow::{anyhow, Error, Result};
 use crate::xml::{
     DefaultRemote,
     GitRepoRevision,
-    Groups,
     Remote,
     RemoteName,
     RemoteBaseUrl,
@@ -17,30 +16,30 @@ use crate::xml::{
 use enum_dispatch::enum_dispatch;
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
-use repo_types::{GitRefOrCommitId, RepoUrl};
+use repo_types::{GitRefOrCommitId, Groups, RepoUrl};
 
 #[derive(Debug, Clone)]
 pub struct ResolvedRemote {
-    base_url: RemoteBaseUrl,
-    default_revision: Option<GitRefOrCommitId>,
+    pub base_url: RemoteBaseUrl,
+    pub default_revision: Option<GitRefOrCommitId>,
 }
 
 #[derive(Debug, Clone)]
 pub struct ResolvedProject {
-    base_url: RemoteBaseUrl,
-    revision: GitRefOrCommitId,
-    source_tree_path: PathBuf,
-    groups: Groups,
-    linkfiles: BTreeMap<PathBuf, PathBuf>, // dest -> source
-    copyfiles: BTreeMap<PathBuf, PathBuf>, // dest -> source
+    pub base_url: RemoteBaseUrl,
+    pub relative_url: RelativeUrl,
+    pub revision: GitRefOrCommitId,
+    pub groups: Groups,
+    pub linkfiles: BTreeMap<PathBuf, PathBuf>, // dest -> source
+    pub copyfiles: BTreeMap<PathBuf, PathBuf>, // dest -> source
 }
 
 #[derive(Debug, Clone)]
 pub struct ManifestState {
-    manifest_url: RepoUrl,
-    remotes: BTreeMap<RemoteName, ResolvedRemote>,
-    default_remote: Option<(RemoteName, Option<GitRefOrCommitId>)>,
-    projects: BTreeMap<RelativeUrl, ResolvedProject>,
+    pub manifest_url: RepoUrl,
+    pub remotes: BTreeMap<RemoteName, ResolvedRemote>,
+    pub default_remote: Option<(RemoteName, Option<GitRefOrCommitId>)>,
+    pub projects: BTreeMap<PathBuf, ResolvedProject>,
 }
 
 impl ManifestState {
@@ -98,8 +97,14 @@ impl ExecuteOnState for DefaultRemote {
 
 impl ExecuteOnState for Project {
     fn execute_on(&self, state: &mut ManifestState) -> Result<()> {
-        if let Some(_) = state.projects.get(&self.relative_url) {
-            return Err(anyhow!("duplicate project `{}`", self.relative_url.0));
+        let relpath = self
+            .source_tree_path
+            .as_ref()
+            .map(PathBuf::to_owned)
+            .unwrap_or(PathBuf::from(self.relative_url.0.clone()));
+
+        if let Some(_) = state.projects.get(&relpath) {
+            return Err(anyhow!("duplicate project `{}`", relpath.display()));
         }
 
         let source_tree_path = self
@@ -127,11 +132,11 @@ impl ExecuteOnState for Project {
             .ok_or(anyhow!("project `{}` is missing a revision", self.relative_url.0))?;
 
         state.projects.insert(
-            self.relative_url.clone(),
+            relpath,
             ResolvedProject {
                 base_url: resolved_remote.base_url.clone(),
+                relative_url: self.relative_url.clone(),
                 revision,
-                source_tree_path,
                 groups: self.groups.clone(),
                 linkfiles: self
                     .linkfiles
@@ -152,51 +157,53 @@ impl ExecuteOnState for Project {
 
 impl ExecuteOnState for ExtendProject {
     fn execute_on(&self, state: &mut ManifestState) -> Result<()> {
-        let Some(project) = state
+        let matching_relpaths = state
             .projects
-            .get_mut(&self.relative_url)
-        else {
-            return Err(anyhow!("unknown project `{}`", self.relative_url.0));
+            .iter_mut()
+            .filter(|(relpath, project)| self.relative_url == project.relative_url && self.match_old_source_tree_path.as_ref().map(|x| x == *relpath).unwrap_or(true))
+            .map(|(relpath, _)| relpath.clone())
+            .collect::<Vec<_>>();
+
+        let old_relpath = match &matching_relpaths[..] {
+            [] => return Err(anyhow!("no project in manifest matches <remove-project /> statement")),
+            [relpath] => relpath,
+            _ => return Err(anyhow!("<remove-project /> statement matches more than one project")),
         };
 
-        if let Some(ref match_old_source_tree_path) = self.match_old_source_tree_path && *match_old_source_tree_path != project.source_tree_path {
-            return Err(anyhow!(
-                    "`path` attribute `{}` in <extend-project /> doesn't match old source tree path `{}` of project `{}`",
-                    match_old_source_tree_path.display(),
-                    project.source_tree_path.display(),
-                    &self.relative_url.0,
-            ));
-        }
+        {
+            let project = state.projects.get_mut(old_relpath).unwrap();
+            if let Some(remote) = &self.remote {
+                project.base_url = state
+                    .remotes
+                    .get(&remote)
+                    .ok_or(anyhow!("remote `{}` not found", &remote.0))?
+                    .base_url
+                    .clone();
+            }
 
-        if let Some(new_path) = &self.source_tree_path {
-            project.source_tree_path = new_path.clone();
-        }
+            if let Some(revision) = &self.revision {
+                project.revision = revision.to_git_ref();
+            }
 
-        if let Some(remote) = &self.remote {
-            project.base_url = state
-                .remotes
-                .get(&remote)
-                .ok_or(anyhow!("remote `{}` not found", &remote.0))?
-                .base_url
-                .clone();
-        }
+            for group in &self.groups.0 {
+                project.groups.0.insert(group.clone());
+            }
 
-        if let Some(revision) = &self.revision {
-            project.revision = revision.to_git_ref();
-        }
+            for LinkFile { src, dest } in &self.linkfiles {
+                project.linkfiles.insert(dest.clone(), src.clone());
+            }
 
-        for group in &self.groups.0 {
-            if !project.groups.0.contains(group) {
-                project.groups.0.push(group.clone());
+            for CopyFile { src, dest } in &self.copyfiles {
+                project.copyfiles.insert(dest.clone(), src.clone());
             }
         }
 
-        for LinkFile { src, dest } in &self.linkfiles {
-            project.linkfiles.insert(dest.clone(), src.clone());
-        }
-
-        for CopyFile { src, dest } in &self.copyfiles {
-            project.copyfiles.insert(dest.clone(), src.clone());
+        if let Some(new_relpath) = &self.source_tree_path {
+            let project = state.projects.remove(old_relpath).unwrap();
+            state.projects.insert(
+                new_relpath.clone(),
+                project,
+            );
         }
 
         Ok(())
@@ -209,9 +216,9 @@ impl ExecuteOnState for RemoveProject {
             .projects
             .iter()
             .filter(
-                |(rel_url, project)|
-                self.relative_url.as_ref().map(|x| x == *rel_url).unwrap_or(true) &&
-                self.source_tree_path.as_ref().map(|x| *x == project.source_tree_path).unwrap_or(true)
+                |(relpath, project)|
+                self.relative_url.as_ref().map(|x| *x == project.relative_url).unwrap_or(true) &&
+                self.source_tree_path.as_ref().map(|x| x == *relpath).unwrap_or(true)
             )
             .map(|(rel_url, _)| rel_url.clone())
             .collect();
@@ -219,7 +226,7 @@ impl ExecuteOnState for RemoveProject {
         match &rel_urls_to_remove[..] {
             [] => if !self.optional { return Err(anyhow!("project to remove not found")); },
             [rel_url] => {
-                state.projects.remove(&rel_url);
+                state.projects.remove(rel_url);
             },
             _ => return Err(anyhow!("<remove-project /> statement matched several projects")),
         }

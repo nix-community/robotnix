@@ -1,5 +1,6 @@
-use crate::{Fetcher, FetchersHandle};
 use anyhow::{Context, Result, anyhow};
+use crate::{Fetcher, FetchersHandle};
+use log::info;
 use repo_types::{ForgeSpecificRepoUrl, GitRef, GitRefSuffix, GitRefOrCommitId, GitRefType, RepoUrl};
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -18,6 +19,7 @@ impl Fetcher for GetRepoRefs {
         &mut self,
         (repo_url, GitRefType(ref_type)): &Self::Args,
     ) -> Result<Self::Output> {
+        info!("git ls-remote {}", repo_url.0);
         let out = Command::new("git")
             .arg("ls-remote")
             .arg(&repo_url.0)
@@ -66,13 +68,19 @@ impl FetchersHandle {
         let resp_json = self
             .http_get(
                 &(
-                    reqwest::Url::parse(&format!("https://{instance}/{path}/+refs/{ref_type}"))
+                    reqwest::Url::parse(&format!("https://{instance}/{path}/+refs/{ref_type}?format=JSON"))
                     .context("failed to parse Gitiles API URL")?,
                     HeaderMap::new(),
                 )
             )
             .await
             .context("failed to wait for http_get fetcher")?;
+
+        // https://gerrit.googlesource.com/gitiles/+/master/Documentation/api-reference.md#formatting
+        // I have no clue why this is supposed to protect against XSS.
+        let resp_json = resp_json
+            .strip_prefix(")]}'\n")
+            .with_context(|| format!("Gitiles API response missing XSS protection prefix: {resp_json}"))?;
 
         #[derive(Deserialize)]
         struct GitilesCommit<'a> {
@@ -107,7 +115,13 @@ impl FetchersHandle {
                         "https://api.github.com/repos/{owner}/{repo}/git/matching-refs/{ref_type}"
                     ))
                     .context("failed to parse GitHub API URL")?,
-                    HeaderMap::new(),
+                    {
+                        let mut hm = HeaderMap::new();
+                        if let Ok(token) = std::env::var("ROBOTNIX_GITHUB_TOKEN") {
+                            hm.insert("Authorization", format!("Bearer {token}").parse().context("invalid GitHub API token value")?);
+                        }
+                        hm
+                    },
                 )
             )
             .await
