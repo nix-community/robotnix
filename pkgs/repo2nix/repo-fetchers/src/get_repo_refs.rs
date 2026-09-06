@@ -47,7 +47,7 @@ impl Fetcher for GetRepoRefs {
                 _ => return Err(anyhow!("invalid git ls-remote output line: {}", line)),
             }
         }
-        todo!()
+        Ok(refs)
     }
 
     fn cache_key(args: &Self::Args) -> Self::CacheKey {

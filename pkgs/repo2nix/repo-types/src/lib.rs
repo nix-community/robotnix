@@ -144,7 +144,8 @@ impl ForgeSpecificRepoUrl {
     pub fn mirror_path(&self) -> PathBuf {
         match self {
             ForgeSpecificRepoUrl::Generic { repo_url } => {
-                todo!()
+                let url_without_protocol = repo_url.0.splitn(2, "://").last().unwrap();
+                PathBuf::from(url_without_protocol.to_string())
             },
             ForgeSpecificRepoUrl::Gitiles { instance, path } => PathBuf::from(instance).join(path),
             ForgeSpecificRepoUrl::Github { owner, repo } => PathBuf::from("github.com").join(owner).join(repo),
