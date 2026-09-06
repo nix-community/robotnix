@@ -1,5 +1,5 @@
 use anyhow::{Error, Result};
-use crate::execute::ExecuteOnState;
+use crate::execute::{ExecuteOnState, ManifestState};
 use enum_dispatch::enum_dispatch;
 use hard_xml::XmlRead;
 use repo_types::{GitRef, GitRefSuffix, GitRefOrCommitId, Groups, RepoUrl};
