@@ -67,6 +67,15 @@ impl RemoteBaseUrl {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GitRepoRevision(pub String);
+impl GitRepoRevision {
+    pub fn from_git_ref_or_commit_id(x: GitRefOrCommitId) -> Self {
+        match x {
+            GitRefOrCommitId::GitRef(x) => Self(x.0),
+            GitRefOrCommitId::GitRefSuffix(x) => Self(x.0),
+            GitRefOrCommitId::CommitId(commit_id) => Self(format!("{}", commit_id)),
+        }
+    }
+}
 impl FromStr for GitRepoRevision {
     type Err = Error;
 

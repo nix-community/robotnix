@@ -8,6 +8,8 @@ use std::collections::BTreeMap;
 use std::path::PathBuf;
 use tokio::task::JoinSet;
 
+mod lineage;
+
 #[derive(Parser)]
 pub struct CommonCliArgs {
     #[arg(short = 'v', long, default_value_t = 2)]
