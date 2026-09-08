@@ -256,12 +256,14 @@ impl FetchersHandle {
     }
 
     pub async fn get_branches_and_tags(&self, url: &RepoUrl) -> Result<BTreeMap<GitRef, git2::Oid>> {
-        let mut refs = self
-            .get_repo_refs_with_apis(url, &GitRefType("heads".to_string()))
-            .await?;
-        let mut tags = self
-            .get_repo_refs_with_apis(url, &GitRefType("tags".to_string()))
-            .await?;
+        let heads_type = GitRefType("heads".to_string());
+        let tags_type = GitRefType("tags".to_string());
+        let (mut refs, mut tags) = tokio::try_join!(
+            self
+                .get_repo_refs_with_apis(url, &heads_type),
+            self
+                .get_repo_refs_with_apis(url, &tags_type),
+        )?;
         refs.append(&mut tags);
         Ok(refs)
     }
