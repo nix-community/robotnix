@@ -25,9 +25,3 @@ pub struct Project {
     pub linkfiles: BTreeMap<PathBuf, PathBuf>,
     pub copyfiles: BTreeMap<PathBuf, PathBuf>,
 }
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct ManifestLockfile {
-    pub common: BTreeMap<PathBuf, Project>,
-    pub device_specific: BTreeMap<DeviceName, BTreeMap<PathBuf, Project>>,
-}

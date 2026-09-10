@@ -11,10 +11,10 @@ pub mod source_dir_fd;
 
 pub mod spawn;
 
-use get_repo_refs::GetRepoRefs;
-use http_get::HttpGet;
-use nix_prefetch_git::NixPrefetchGit;
-use source_dir_fd::SourceDirFd;
+pub use get_repo_refs::GetRepoRefs;
+pub use http_get::HttpGet;
+pub use nix_prefetch_git::NixPrefetchGit;
+pub use source_dir_fd::SourceDirFd;
 
 pub trait Fetcher: Default {
     type Args: 'static + Send + Clone;
@@ -269,7 +269,7 @@ impl FetchersState {
 pub struct FetchersHandle(Arc<Mutex<FetchersState>>);
 
 impl FetchersHandle {
-    async fn http_get(
+    pub async fn http_get(
         &self,
         args: &<HttpGet as Fetcher>::Args,
     ) -> Result<<HttpGet as Fetcher>::Output> {
@@ -282,7 +282,7 @@ impl FetchersHandle {
         rx.await.map_err(|_| anyhow!("channel closed"))
     }
 
-    async fn get_repo_refs(
+    pub async fn get_repo_refs(
         &self,
         args: &<GetRepoRefs as Fetcher>::Args,
     ) -> Result<<GetRepoRefs as Fetcher>::Output> {
@@ -295,7 +295,7 @@ impl FetchersHandle {
         rx.await.map_err(|_| anyhow!("channel closed"))
     }
 
-    async fn nix_prefetch_git(
+    pub async fn nix_prefetch_git(
         &self,
         args: &<NixPrefetchGit as Fetcher>::Args,
     ) -> Result<<NixPrefetchGit as Fetcher>::Output> {
@@ -308,7 +308,7 @@ impl FetchersHandle {
         rx.await.map_err(|_| anyhow!("channel closed"))
     }
 
-    async fn source_dir_fd(
+    pub async fn source_dir_fd(
         &self,
         args: &<SourceDirFd as Fetcher>::Args,
     ) -> Result<<SourceDirFd as Fetcher>::Output> {

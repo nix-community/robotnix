@@ -17,7 +17,7 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 #[derive(Default)]
-pub(crate) struct SourceDirFd;
+pub struct SourceDirFd;
 
 fn get_fod_path_of_nixhash(hash: &NixHash, name: &str) -> Result<StorePath, DerivationError> {
     let fod_hash = OutputHash {

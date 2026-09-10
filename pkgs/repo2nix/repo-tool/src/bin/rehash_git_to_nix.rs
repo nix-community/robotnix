@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Context, Result};
+    use anyhow::{anyhow, Context, Result};
 use clap::Parser;
 use git2::{Repository, ObjectType, Tree};
 use nix_compat::nar::writer::sync::Directory;
@@ -40,6 +40,7 @@ fn write_tree_to_nar(repo: &Repository, tree: &Tree, dir: &mut Directory<impl Wr
                 match tree_entry.filemode() {
                     0o100644 | 0o100755 => { // normal file
                         todo!()
+                        // particularly important: LFS support!
                     },
                     0o120000 => { // symlink
                         todo!()

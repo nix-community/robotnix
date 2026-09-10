@@ -7,7 +7,7 @@ use serde::Deserialize;
 use tokio::process::Command;
 
 #[derive(Default)]
-pub(crate) struct NixPrefetchGit;
+pub struct NixPrefetchGit;
 
 // TODO(cyclic-pentane): implement ROBOTNIX_GIT_MIRRORS in a sensible way
 // should especially minimise code duplication between this module, get_repo_refs.rs, and the
@@ -99,7 +99,8 @@ impl FetchersHandle {
         let commit_id = self
             .resolve_ref_or_commit_id(repo_url, git_ref_or_commit_id)
             .await
-            .context("failed to resolve git ref")?;
+            .context("failed to resolve git ref")?
+            .ok_or(anyhow!("git ref not found in repository"))?;
 
         let nix_hash = self
             .nix_prefetch_git(&(repo_url.clone(), commit_id.clone()))

@@ -8,7 +8,7 @@ use tokio::process::Command;
 use reqwest::header::HeaderMap;
 
 #[derive(Default)]
-pub(crate) struct GetRepoRefs;
+pub struct GetRepoRefs;
 
 impl Fetcher for GetRepoRefs {
     type Args = (RepoUrl, GitRefType);
@@ -268,9 +268,9 @@ impl FetchersHandle {
         Ok(refs)
     }
 
-    pub async fn resolve_ref_or_commit_id(&self, url: &RepoUrl, ref_or_commit: &GitRefOrCommitId) -> Result<git2::Oid> {
+    pub async fn resolve_ref_or_commit_id(&self, url: &RepoUrl, ref_or_commit: &GitRefOrCommitId) -> Result<Option<git2::Oid>> {
         if let GitRefOrCommitId::CommitId(commit_id) = ref_or_commit {
-            return Ok(commit_id.clone())
+            return Ok(Some(commit_id.clone()))
         }
 
         let refs = self
@@ -288,8 +288,8 @@ impl FetchersHandle {
             })
             .collect::<Vec<_>>();
         match &matching_refs[..] {
-            [] => Err(anyhow!("ref {ref_or_commit:?} not found")),
-            [(_, commit_id)] => Ok(*commit_id),
+            [] => Ok(None),
+            [(_, commit_id)] => Ok(Some(*commit_id)),
             _ => Err(anyhow!("multiple matching refs found: {matching_refs:?}")),
         }
     }

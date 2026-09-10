@@ -19,13 +19,13 @@ use std::path::{Path, PathBuf};
 use repo_types::{GitRefOrCommitId, Groups, RepoUrl};
 
 #[derive(Debug, Clone)]
-pub struct ResolvedRemote {
+pub struct RemoteState {
     pub base_url: RemoteBaseUrl,
     pub default_revision: Option<GitRefOrCommitId>,
 }
 
 #[derive(Debug, Clone)]
-pub struct ResolvedProject {
+pub struct ProjectState {
     pub base_url: RemoteBaseUrl,
     pub relative_url: RelativeUrl,
     pub revision: GitRefOrCommitId,
@@ -35,19 +35,26 @@ pub struct ResolvedProject {
 }
 
 #[derive(Debug, Clone)]
-pub struct ManifestState {
+pub struct ManifestConfigState {
     pub manifest_url: RepoUrl,
-    pub remotes: BTreeMap<RemoteName, ResolvedRemote>,
+    pub remotes: BTreeMap<RemoteName, RemoteState>,
     pub default_remote: Option<(RemoteName, Option<GitRefOrCommitId>)>,
-    pub projects: BTreeMap<PathBuf, ResolvedProject>,
+}
+
+#[derive(Debug, Clone)]
+pub struct ManifestState {
+    pub config: ManifestConfigState,
+    pub projects: BTreeMap<PathBuf, ProjectState>,
 }
 
 impl ManifestState {
     pub fn new(manifest_url: RepoUrl) -> Self {
         ManifestState {
-            manifest_url,
-            remotes: BTreeMap::new(),
-            default_remote: None,
+            config: ManifestConfigState {
+                manifest_url,
+                remotes: BTreeMap::new(),
+                default_remote: None,
+            },
             projects: BTreeMap::new(),
         }
     }
@@ -60,12 +67,12 @@ pub trait ExecuteOnState {
 
 impl ExecuteOnState for Remote {
     fn execute_on(&self, state: &mut ManifestState) -> Result<()> {
-        if let Some(_) = state.remotes.get(&self.name) {
+        if let Some(_) = state.config.remotes.get(&self.name) {
             return Err(anyhow!("duplicate remote `{}`", self.name.0));
         }
-        state.remotes.insert(
+        state.config.remotes.insert(
             self.name.clone(),
-            ResolvedRemote {
+            RemoteState {
                 base_url: self.repo_url_base.clone(),
                 default_revision: self
                     .default_revision
@@ -80,11 +87,11 @@ impl ExecuteOnState for Remote {
 
 impl ExecuteOnState for DefaultRemote {
     fn execute_on(&self, state: &mut ManifestState) -> Result<()> {
-        if let Some(_) = state.default_remote {
+        if let Some(_) = state.config.default_remote {
             return Err(anyhow!("duplicate <default /> statement"));
         }
 
-        state.default_remote = Some(
+        state.config.default_remote = Some(
             (
                 self.remote.clone(),
                 self.default_revision.as_ref().map(GitRepoRevision::to_git_ref),
@@ -95,8 +102,8 @@ impl ExecuteOnState for DefaultRemote {
     }
 }
 
-impl ExecuteOnState for Project {
-    fn execute_on(&self, state: &mut ManifestState) -> Result<()> {
+impl Project {
+    pub fn add_to(&self, state: &mut ManifestState) -> Result<ProjectState> {
         let relpath = self
             .source_tree_path
             .as_ref()
@@ -115,10 +122,11 @@ impl ExecuteOnState for Project {
         let remote = self
             .remote
             .as_ref()
-            .or(state.default_remote.as_ref().map(|x| &x.0))
+            .or(state.config.default_remote.as_ref().map(|x| &x.0))
             .ok_or(anyhow!("project `{}` is missing a remote", self.relative_url.0))?;
 
         let resolved_remote = state
+            .config
             .remotes
             .get(&remote)
             .ok_or(anyhow!("unknown remote `{}`", &remote.0))?;
@@ -128,29 +136,38 @@ impl ExecuteOnState for Project {
             .as_ref()
             .map(GitRepoRevision::to_git_ref)
             .or(resolved_remote.default_revision.clone())
-            .or(state.default_remote.as_ref().and_then(|x| x.1.clone()))
+            .or(state.config.default_remote.as_ref().and_then(|x| x.1.clone()))
             .ok_or(anyhow!("project `{}` is missing a revision", self.relative_url.0))?;
 
-        state.projects.insert(
-            relpath,
-            ResolvedProject {
-                base_url: resolved_remote.base_url.clone(),
-                relative_url: self.relative_url.clone(),
-                revision,
-                groups: self.groups.clone(),
-                linkfiles: self
-                    .linkfiles
-                    .iter()
-                    .map(|LinkFile { src, dest }| (dest.clone(), src.clone()))
-                    .collect(),
+        let project_state = ProjectState {
+            base_url: resolved_remote.base_url.clone(),
+            relative_url: self.relative_url.clone(),
+            revision,
+            groups: self.groups.clone(),
+            linkfiles: self
+                .linkfiles
+                .iter()
+                .map(|LinkFile { src, dest }| (dest.clone(), src.clone()))
+                .collect(),
                 copyfiles: self
                     .copyfiles
                     .iter()
                     .map(|CopyFile { src, dest }| (dest.clone(), src.clone()))
                     .collect(),
-            },
+        };
+
+        state.projects.insert(
+            relpath,
+            project_state.clone(),
         );
 
+        Ok(project_state)
+    }
+}
+
+impl ExecuteOnState for Project {
+    fn execute_on(&self, state: &mut ManifestState) -> Result<()> {
+        self.add_to(state)?;
         Ok(())
     }
 }
@@ -174,6 +191,7 @@ impl ExecuteOnState for ExtendProject {
             let project = state.projects.get_mut(old_relpath).unwrap();
             if let Some(remote) = &self.remote {
                 project.base_url = state
+                    .config
                     .remotes
                     .get(&remote)
                     .ok_or(anyhow!("remote `{}` not found", &remote.0))?

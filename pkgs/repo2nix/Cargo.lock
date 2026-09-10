@@ -1486,8 +1486,10 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "enum_dispatch",
  "git2",
  "log",
+ "nix",
  "nix-compat",
  "repo-fetchers",
  "repo-manifest",
