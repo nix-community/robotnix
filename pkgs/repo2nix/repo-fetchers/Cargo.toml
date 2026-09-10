@@ -1,22 +1,18 @@
 [package]
-name = "repo-tool"
+name = "repo-fetchers"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
 
 [dependencies]
 anyhow.workspace = true
-clap.workspace = true
-enum_dispatch.workspace = true
 git2.workspace = true
 log.workspace = true
 nix.workspace = true
 nix-compat.workspace = true
 repo-types.workspace = true
-repo-manifest.workspace = true
-repo-fetchers.workspace = true
+reqwest.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-stderrlog.workspace = true
 tokio.workspace = true
 urlencoding.workspace = true

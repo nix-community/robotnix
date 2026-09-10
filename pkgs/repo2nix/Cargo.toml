@@ -1,18 +1,28 @@
 [workspace]
+members = ["repo-types", "repo-fetchers", "repo-manifest", "repo-tool"]
 resolver = "3"
-members = ["repo-manifest", "repo-tool"]
 
 [workspace.package]
 version = "0.1.0"
+authors = ["cyclopentane"]
 edition = "2024"
 
 [workspace.dependencies]
-clap = { version = "4", features = ["derive"] }
-quick-xml = { version = "0.37.5", features = ["serialize"] }
+anyhow = "1.0"
+clap = { version = "4.6", features = ["derive"] }
+enum_dispatch = "0.3"
+git2 = "0.21"
+hard-xml = { version = "1.41" }
+log = "0.4"
+nix = { version = "0.31", features = ["dir", "fs"] }
+nix-compat = { git = "https://git.snix.dev/snix/snix.git" }
+repo-fetchers.path = "repo-fetchers"
+repo-manifest.path = "repo-manifest"
+repo-types.path = "repo-types"
+reqwest = "0.13"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-thiserror = "2"
-url = { version = "2", features = ["serde"] }
-tokio = { version = "1", features = ["full"] }
-reqwest = "0.12"
-main_error = "0.1"
+sha2 = "0.11"
+stderrlog = "0.6"
+tokio = { version = "1.53", features = ["full"] }
+urlencoding.version = "2.1"
