@@ -6,7 +6,7 @@ use nix::errno::Errno;
 use nix::fcntl::{OFlag, open};
 use nix::sys::stat::Mode;
 use nix_compat::derivation::{
-    Derivation, DerivationError, Output, OutputHash, OutputHashMode, OutputName, Outputs,
+    Derivation, DerivationError, OutputHash, OutputHashMode, OutputName, Outputs,
 };
 use nix_compat::nixhash::NixHash;
 use nix_compat::store_path::StorePath;

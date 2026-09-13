@@ -1,4 +1,5 @@
 use anyhow::{Context, Result, anyhow};
+use log::*;
 use std::collections::{BTreeMap, VecDeque};
 use std::sync::{Arc, Mutex};
 use std::path::PathBuf;
@@ -17,7 +18,7 @@ pub use nix_prefetch_git::NixPrefetchGit;
 pub use source_dir_fd::SourceDirFd;
 
 pub trait Fetcher: Default {
-    type Args: 'static + Send + Clone;
+    type Args: 'static + Send + Clone + std::fmt::Debug;
     type CacheKey: 'static + Ord;
     type Output: 'static + Send + Clone;
 
@@ -66,9 +67,10 @@ impl<F: Fetcher> FetcherCache<F> {
         match state {
             Some(CachingState::EnqueuedOrRunning(senders)) => {
                 for sender in senders {
-                    sender
-                        .send(output.clone())
-                        .map_err(|_| anyhow!("failed to send output to oneshot channel"))?;
+                    let r = sender.send(output.clone());
+                    if let Err(_) = r {
+                        error!("oneshot channel dropped for args {args:?}")
+                    }
                 }
             }
             Some(CachingState::Cached(_)) | None => {

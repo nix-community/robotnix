@@ -14,7 +14,6 @@ use std::fs::{File, OpenOptions};
 use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
-use tokio::io::AsyncReadExt;
 use tokio::task::JoinSet;
 
 impl FetcherCaches {

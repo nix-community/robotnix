@@ -1,17 +1,82 @@
 use anyhow::{Context, Result, anyhow};
 use crate::{Fetcher, FetchersHandle};
-use log::info;
+use log::{info, warn};
 use nix_compat::nixhash::NixHash;
 use repo_types::{ForgeSpecificRepoUrl, GitRefOrCommitId, RepoUrl, FetchUrl};
 use serde::Deserialize;
+use std::path::Path;
 use tokio::process::Command;
 
 #[derive(Default)]
 pub struct NixPrefetchGit;
 
-// TODO(cyclic-pentane): implement ROBOTNIX_GIT_MIRRORS in a sensible way
-// should especially minimise code duplication between this module, get_repo_refs.rs, and the
-// robotnix NixOS module system FOD invocations
+async fn check_mirror_repo_for_commit(mirror_repo_path: &Path, commit_id: &git2::Oid) -> Result<bool> {
+    let out = Command::new("git")
+        .arg("-C")
+        .arg(&mirror_repo_path)
+        .arg("show")
+        .arg(&commit_id.to_string())
+        .output()
+        .await
+        .context("failed to run git show process")?;
+
+    if out.status.success() {
+        Ok(true)
+    } else {
+        if out.status.code() == Some(128) && out.stderr == format!("fatal: bad object {}", commit_id).as_bytes() {
+            Ok(false)
+        } else {
+            Err(anyhow!("git show failed with stderr: {}", String::from_utf8_lossy(&out.stderr[..])))
+        }
+    }
+}
+
+async fn maybe_prepare_mirror(repo_url: &RepoUrl, commit_id: &git2::Oid) -> Result<FetchUrl> {
+    let fs_repo_url = ForgeSpecificRepoUrl::from_repo_url(repo_url);
+    let mirror_dir = std::env::var_os("ROBOTNIX_GIT_MIRROR_DIR");
+    match mirror_dir {
+        None => Ok(fs_repo_url.to_fetch_url(commit_id)),
+        Some(mirror_dir) => {
+            let mirror_repo_path = Path::new(&mirror_dir)
+                .join(fs_repo_url.mirror_path())
+                .canonicalize()
+                .context("failed to canonicalize mirror repo path")?;
+            if tokio::fs::try_exists(&mirror_repo_path).await.context("failed to check whether mirror repo exists on disk")? {
+                if check_mirror_repo_for_commit(&mirror_repo_path, commit_id).await? == false {
+                    info!("{} doesn't seem to have commit {} yet, fetching from default remote...", mirror_repo_path.display(), commit_id);
+                    let out = Command::new("git")
+                        .arg("-C")
+                        .arg(&mirror_repo_path)
+                        .arg("fetch")
+                        .output()
+                        .await
+                        .context("failed to run git fetch process")?;
+
+                    if !out.status.success() {
+                        return Err(anyhow!("git fetch failed with stderr: {}", String::from_utf8_lossy(&out.stderr[..])));
+                    }
+                }
+            } else {
+                warn!("mirror repo {} doesn't exist yet, cloning...", mirror_repo_path.display());
+                let out = Command::new("git")
+                    .arg("clone")
+                    .arg("--bare")
+                    .arg(&repo_url.0)
+                    .arg(&mirror_repo_path)
+                    .output()
+                    .await
+                    .context("failed to run git clone process")?;
+                if !out.status.success() {
+                    return Err(anyhow!("git clone failed with stderr: {}", String::from_utf8_lossy(&out.stderr[..])));
+                }
+            }
+            Ok(FetchUrl::GitRemote {
+                repo_url: RepoUrl(mirror_repo_path.to_str().context("mirror repo path contains invalid utf8")?.to_string()),
+                commit_id: *commit_id
+            })
+        },
+    }
+}
 
 impl Fetcher for NixPrefetchGit {
     type Args = (RepoUrl, git2::Oid);
@@ -25,20 +90,25 @@ impl Fetcher for NixPrefetchGit {
     type Output = NixHash;
 
     async fn execute(&mut self, (repo_url, commit_id): &Self::Args) -> Result<NixHash> {
-        let repo_url = ForgeSpecificRepoUrl::from_repo_url(repo_url);
         info!("prefetching repo {:?}, commit {}", repo_url, commit_id);
-        let derivation_name = repo_url.derivation_name(commit_id);
-        let repo_url = repo_url.to_fetch_url(commit_id);
-        let hash = match repo_url {
+        let fs_repo_url = ForgeSpecificRepoUrl::from_repo_url(repo_url);
+        let derivation_name = fs_repo_url.derivation_name(commit_id);
+        let fetch_url = maybe_prepare_mirror(repo_url, commit_id)
+            .await
+            .context("failed to prepare local mirror repo")?;
+        let hash = match fetch_url {
             FetchUrl::GitRemote {
                 repo_url,
                 commit_id,
             } => {
+                println!("{derivation_name}");
+                println!("{repo_url:?}");
                 let out = Command::new("nix-prefetch-git")
                     .arg("--name")
                     .arg(&derivation_name)
                     .arg("--rev")
                     .arg(&commit_id.to_string())
+                    .arg("--url")
                     .arg(&repo_url.0)
                     .output()
                     .await
@@ -50,7 +120,7 @@ impl Fetcher for NixPrefetchGit {
                     ));
                 }
 
-                #[derive(serde::Deserialize)]
+                #[derive(Deserialize)]
                 struct NixPrefetchGitOutput {
                     sha256: String,
                 }

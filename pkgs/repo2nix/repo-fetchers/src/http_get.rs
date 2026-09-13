@@ -30,8 +30,8 @@ impl Fetcher for HttpGet {
                     .text()
                     .await
                     .context("failed to read response body"),
-                StatusCode::TOO_MANY_REQUESTS => {
-                    warn!("got 429 Too Many Requests for {url}, backing off for {} seconds", backoff.as_secs());
+                StatusCode::TOO_MANY_REQUESTS | StatusCode::SERVICE_UNAVAILABLE => {
+                    warn!("got {} for {url}, backing off for {} seconds", resp.status(), backoff.as_secs());
                     tokio::time::sleep(backoff)
                         .await;
                     backoff *= 2;

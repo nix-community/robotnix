@@ -18,5 +18,9 @@ repo-fetchers.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 stderrlog.workspace = true
+thiserror.workspace = true
 tokio.workspace = true
 urlencoding.workspace = true
+
+[profile.dev]
+panic = 'abort'

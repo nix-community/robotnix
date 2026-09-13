@@ -1,4 +1,4 @@
-use anyhow::{Result, Error};
+use anyhow::Result;
 use serde::{Serialize, Deserialize};
 use std::str::FromStr;
 use std::collections::BTreeSet;
@@ -27,7 +27,7 @@ pub struct GitRefType(pub String);
 pub struct RepoUrl(pub String);
 
 // TODO(cyclic-pentane): make these configurable maybe?
-const GITILES_INSTANCES: &[&str] = &["android.googlesource.com"];
+const GITILES_INSTANCES: &[&str] = &[/*"android.googlesource.com"*/];
 const GITLAB_INSTANCES: &[&str] = &["gitlab.com"];
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -143,6 +143,12 @@ impl ForgeSpecificRepoUrl {
 
     pub fn mirror_path(&self) -> PathBuf {
         match self {
+            // TODO(cyclic-pentane) normalize `.git` suffixes of urls
+            // TODO(cyclic-pentane) heuristic mechanism for repos, for instance, the following
+            // repos should be one and the same mirror repo:
+            // - https://android.googlesource.com/platform/frameworks/base/
+            // - https://github.com/LineageOS/android_frameworks_base
+            // - https://github.com/GrapheneOS/platform_frameworks_base
             ForgeSpecificRepoUrl::Generic { repo_url } => {
                 let url_without_protocol = repo_url.0.splitn(2, "://").last().unwrap();
                 PathBuf::from(url_without_protocol.to_string())

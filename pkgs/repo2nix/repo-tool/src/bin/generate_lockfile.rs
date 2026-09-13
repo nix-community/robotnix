@@ -1,13 +1,8 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use repo_fetchers::FetchersHandle;
-use repo_manifest::execute::{ExecuteOnState, ManifestState};
-use repo_tool::{CliArgs, prefetch_projects};
+use repo_tool::CliArgs;
 use repo_tool::commands::CommandLike;
-use repo_types::{GitRef, GitRefOrCommitId, RepoUrl};
-use std::fs::OpenOptions;
-use std::os::fd::AsFd;
-use std::path::{Path, PathBuf};
 use tokio::select;
 
 #[tokio::main]

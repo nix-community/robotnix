@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Error, Result};
+use anyhow::{anyhow, Result};
 use crate::xml::{
     DefaultRemote,
     GitRepoRevision,
@@ -15,7 +15,7 @@ use crate::xml::{
 };
 use enum_dispatch::enum_dispatch;
 use std::collections::BTreeMap;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use repo_types::{GitRefOrCommitId, Groups, RepoUrl};
 
 #[derive(Debug, Clone)]
@@ -24,7 +24,7 @@ pub struct RemoteState {
     pub default_revision: Option<GitRefOrCommitId>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProjectState {
     pub base_url: RemoteBaseUrl,
     pub relative_url: RelativeUrl,
@@ -103,21 +103,12 @@ impl ExecuteOnState for DefaultRemote {
 }
 
 impl Project {
-    pub fn add_to(&self, state: &mut ManifestState) -> Result<ProjectState> {
+    pub fn add_to(&self, state: &mut ManifestState, allow_identical_duplicates: bool) -> Result<ProjectState> {
         let relpath = self
             .source_tree_path
             .as_ref()
             .map(PathBuf::to_owned)
             .unwrap_or(PathBuf::from(self.relative_url.0.clone()));
-
-        if let Some(_) = state.projects.get(&relpath) {
-            return Err(anyhow!("duplicate project `{}`", relpath.display()));
-        }
-
-        let source_tree_path = self
-            .source_tree_path
-            .clone()
-            .unwrap_or(PathBuf::from(&self.relative_url.0));
 
         let remote = self
             .remote
@@ -156,6 +147,16 @@ impl Project {
                     .collect(),
         };
 
+        if let Some(other_project_state) = state.projects.get(&relpath) {
+            if allow_identical_duplicates {
+                if project_state != *other_project_state {
+                    return Err(anyhow!("project `{}` already exists and has a conflicting state", relpath.display()));
+                }
+            } else {
+                return Err(anyhow!("duplicate project `{}`", relpath.display()));
+            }
+        }
+
         state.projects.insert(
             relpath,
             project_state.clone(),
@@ -167,7 +168,7 @@ impl Project {
 
 impl ExecuteOnState for Project {
     fn execute_on(&self, state: &mut ManifestState) -> Result<()> {
-        self.add_to(state)?;
+        self.add_to(state, false)?;
         Ok(())
     }
 }

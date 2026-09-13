@@ -19,7 +19,7 @@ impl Fetcher for GetRepoRefs {
         &mut self,
         (repo_url, GitRefType(ref_type)): &Self::Args,
     ) -> Result<Self::Output> {
-        info!("git ls-remote {}", repo_url.0);
+        info!("git ls-remote {} refs/{ref_type}/*", repo_url.0);
         let out = Command::new("git")
             .arg("ls-remote")
             .arg(&repo_url.0)
@@ -37,14 +37,16 @@ impl Fetcher for GetRepoRefs {
         let stdout = str::from_utf8(&out.stdout[..]).context("invalid utf8 in stdout")?;
         let mut refs = BTreeMap::new();
         for line in stdout.split('\n') {
-            match &line.split('\t').collect::<Vec<_>>()[..] {
-                [commit, git_ref_str] => {
-                    let commit =
-                        git2::Oid::from_str(commit).context("failed to parse commit id")?;
-                    let git_ref = GitRef(git_ref_str.to_string());
-                    refs.insert(git_ref, commit);
+            if line != "" {
+                match &line.split('\t').collect::<Vec<_>>()[..] {
+                    [commit, git_ref_str] => {
+                        let commit =
+                            git2::Oid::from_str(commit).context("failed to parse commit id")?;
+                        let git_ref = GitRef(git_ref_str.to_string());
+                        refs.insert(git_ref, commit);
+                    }
+                    _ => return Err(anyhow!("invalid git ls-remote output line: {}", line)),
                 }
-                _ => return Err(anyhow!("invalid git ls-remote output line: {}", line)),
             }
         }
         Ok(refs)
