@@ -13,6 +13,7 @@ pub struct NixPrefetchGit;
 
 async fn check_mirror_repo_for_commit(mirror_repo_path: &Path, commit_id: &git2::Oid) -> Result<bool> {
     let out = Command::new("git")
+        .env("LANG", "C.utf8")
         .arg("-C")
         .arg(&mirror_repo_path)
         .arg("show")
