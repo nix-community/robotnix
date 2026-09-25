@@ -1,10 +1,11 @@
 use anyhow::{Context, Result, anyhow};
 use crate::{Fetcher, FetchersHandle};
-use log::{info, warn};
+use log::{info, warn, error};
 use nix_compat::nixhash::NixHash;
 use repo_types::{ForgeSpecificRepoUrl, GitRefOrCommitId, RepoUrl, FetchUrl};
 use serde::Deserialize;
 use std::path::Path;
+use std::time::Duration;
 use tokio::process::Command;
 
 #[derive(Default)]
@@ -23,7 +24,7 @@ async fn check_mirror_repo_for_commit(mirror_repo_path: &Path, commit_id: &git2:
     if out.status.success() {
         Ok(true)
     } else {
-        if out.status.code() == Some(128) && out.stderr == format!("fatal: bad object {}", commit_id).as_bytes() {
+        if out.status.code() == Some(128) && out.stderr == format!("fatal: bad object {}\n", commit_id).as_bytes() {
             Ok(false)
         } else {
             Err(anyhow!("git show failed with stderr: {}", String::from_utf8_lossy(&out.stderr[..])))
@@ -37,10 +38,11 @@ async fn maybe_prepare_mirror(repo_url: &RepoUrl, commit_id: &git2::Oid) -> Resu
     match mirror_dir {
         None => Ok(fs_repo_url.to_fetch_url(commit_id)),
         Some(mirror_dir) => {
-            let mirror_repo_path = Path::new(&mirror_dir)
-                .join(fs_repo_url.mirror_path())
+            let mirror_dir = Path::new(&mirror_dir)
                 .canonicalize()
-                .context("failed to canonicalize mirror repo path")?;
+                .context("failed to canonicalize mirror dir path")?;
+            let mirror_repo_path = Path::new(&mirror_dir)
+                .join(fs_repo_url.mirror_path());
             if tokio::fs::try_exists(&mirror_repo_path).await.context("failed to check whether mirror repo exists on disk")? {
                 if check_mirror_repo_for_commit(&mirror_repo_path, commit_id).await? == false {
                     info!("{} doesn't seem to have commit {} yet, fetching from default remote...", mirror_repo_path.display(), commit_id);
@@ -58,16 +60,27 @@ async fn maybe_prepare_mirror(repo_url: &RepoUrl, commit_id: &git2::Oid) -> Resu
                 }
             } else {
                 warn!("mirror repo {} doesn't exist yet, cloning...", mirror_repo_path.display());
-                let out = Command::new("git")
-                    .arg("clone")
-                    .arg("--bare")
-                    .arg(&repo_url.0)
-                    .arg(&mirror_repo_path)
-                    .output()
-                    .await
-                    .context("failed to run git clone process")?;
-                if !out.status.success() {
-                    return Err(anyhow!("git clone failed with stderr: {}", String::from_utf8_lossy(&out.stderr[..])));
+                let mut retries = 0;
+                loop {
+                    let out = Command::new("git")
+                        .arg("clone")
+                        .arg("--bare")
+                        .arg(&repo_url.0)
+                        .arg(&mirror_repo_path)
+                        .output()
+                        .await
+                        .context("failed to run git clone process")?;
+                    if !out.status.success() {
+                        let stderr = String::from_utf8_lossy(&out.stderr[..]);
+                        if retries >= 10 {
+                            return Err(anyhow!("git clone failed after 10 retries with stderr: {}", stderr));
+                        }
+                        error!("git clone failed with stderr: {}", stderr);
+                        tokio::time::sleep(Duration::from_secs(1) * 2_u32.pow(retries)).await;
+                        retries += 1;
+                    } else {
+                        break;
+                    }
                 }
             }
             Ok(FetchUrl::GitRemote {
@@ -101,9 +114,8 @@ impl Fetcher for NixPrefetchGit {
                 repo_url,
                 commit_id,
             } => {
-                println!("{derivation_name}");
-                println!("{repo_url:?}");
                 let out = Command::new("nix-prefetch-git")
+                    .arg("--fetch-lfs")
                     .arg("--name")
                     .arg(&derivation_name)
                     .arg("--rev")

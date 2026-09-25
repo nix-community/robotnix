@@ -1,4 +1,4 @@
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use crate::{
     CachingState,
     FetcherCache,
@@ -8,6 +8,8 @@ use crate::{
     GlobalConfig,
 };
 use nix_compat::nixhash::NixHash;
+use serde::de::Error;
+use serde::{Serialize, Serializer, Deserialize, Deserializer};
 use std::collections::BTreeMap;
 use std::collections::VecDeque;
 use std::fs::{File, OpenOptions};

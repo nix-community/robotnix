@@ -27,7 +27,7 @@ pub struct GitRefType(pub String);
 pub struct RepoUrl(pub String);
 
 // TODO(cyclic-pentane): make these configurable maybe?
-const GITILES_INSTANCES: &[&str] = &[/*"android.googlesource.com"*/];
+const GITILES_INSTANCES: &[&str] = &["android.googlesource.com"];
 const GITLAB_INSTANCES: &[&str] = &["gitlab.com"];
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -40,11 +40,13 @@ pub enum ForgeSpecificRepoUrl {
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum FetchUrl {
+    #[serde(rename = "git_remote")]
     GitRemote {
         repo_url: RepoUrl,
         #[serde(with = "custom_serde::oid")]
         commit_id: git2::Oid,
     },
+    #[serde(rename = "tarball_url")]
     TarballUrl(String),
 }
 
@@ -142,8 +144,7 @@ impl ForgeSpecificRepoUrl {
     }
 
     pub fn mirror_path(&self) -> PathBuf {
-        match self {
-            // TODO(cyclic-pentane) normalize `.git` suffixes of urls
+        let mut path = match self {
             // TODO(cyclic-pentane) heuristic mechanism for repos, for instance, the following
             // repos should be one and the same mirror repo:
             // - https://android.googlesource.com/platform/frameworks/base/
@@ -156,7 +157,11 @@ impl ForgeSpecificRepoUrl {
             ForgeSpecificRepoUrl::Gitiles { instance, path } => PathBuf::from(instance).join(path),
             ForgeSpecificRepoUrl::Github { owner, repo } => PathBuf::from("github.com").join(owner).join(repo),
             ForgeSpecificRepoUrl::Gitlab { instance, path } => PathBuf::from(instance).join(path),
+        };
+        if path.extension() != Some(std::ffi::OsStr::new("git")) {
+            path.add_extension("git");
         }
+        path
     }
 }
 

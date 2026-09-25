@@ -302,7 +302,7 @@ mod tests {
             remote: Some(RemoteName("aosp".to_string())),
             revision: None,
             groups: Groups(
-                vec!["pdk".to_string(), "made_up_group_for_testing".to_string()]
+                vec!["pdk".to_string(), "made_up_group_for_testing".to_string()].into_iter().collect(),
             ),
             linkfiles: vec![
                 LinkFile {
@@ -351,7 +351,7 @@ mod tests {
                     remote: Some(RemoteName("aosp".to_string())),
                     revision: None,
                     groups: Groups(
-                        vec!["pdk".to_string(), "made_up_group_for_testing".to_string()]
+                        vec!["pdk".to_string(), "made_up_group_for_testing".to_string()].into_iter().collect(),
                     ),
                     linkfiles: vec![
                         LinkFile {
