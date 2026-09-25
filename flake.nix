@@ -59,6 +59,7 @@
       packages.x86_64-linux = {
         manual = (import ./docs { inherit pkgs; }).manual;
         gitRepo = pkgs.gitRepo;
+        repo2nix = pkgs.repo2nix;
       };
 
       devShells.x86_64-linux = rec {
