@@ -77,16 +77,17 @@ pub async fn prefetch_projects(state: &ManifestState, handle: &FetchersHandle) -
         join_set.spawn(async move {
             let (repo_url, commit_id, nix_hash) = prefetch_project(&project, &config, &handle)
                 .await?;
-            let repo_url = ForgeSpecificRepoUrl::from_repo_url(&repo_url);
+            let fs_repo_url = ForgeSpecificRepoUrl::from_repo_url(&repo_url);
 
             Ok((
                 relpath.clone(),
                 Project {
                     src: Source {
-                        derivation_name: repo_url.derivation_name(&commit_id),
+                        derivation_name: fs_repo_url.derivation_name(&commit_id),
                         commit_id,
-                        fetch_url: repo_url.to_fetch_url(&commit_id),
-                        mirror_path: repo_url.mirror_path(),
+                        repo_url,
+                        fetch_url: fs_repo_url.to_fetch_url(&commit_id),
+                        mirror_path: fs_repo_url.mirror_path(),
                         hash: nix_hash,
                     },
                     linkfiles: project.linkfiles.clone(),

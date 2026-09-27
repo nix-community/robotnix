@@ -19,6 +19,7 @@ pub fn recursively_read_manifest(dir_fd: BorrowedFd, relpath: &Path) -> Result<V
         Mode::empty(),
     )
         .context("failed to open manifest file")?;
+
     let mut file = File::from(file_fd);
     let mut text = String::new();
     file.read_to_string(&mut text)

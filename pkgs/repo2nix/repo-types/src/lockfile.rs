@@ -1,4 +1,4 @@
-use crate::{FetchUrl, Groups};
+use crate::{FetchUrl, Groups, RepoUrl};
 use nix_compat::nixhash::NixHash;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -12,6 +12,7 @@ pub struct Source {
     pub derivation_name: String,
     #[serde(with = "crate::custom_serde::oid")]
     pub commit_id: git2::Oid,
+    pub repo_url: RepoUrl,
     pub fetch_url: FetchUrl,
     pub mirror_path: PathBuf,
     #[serde(with = "crate::custom_serde::nix_hash")]

@@ -4,7 +4,9 @@
   pkg-config,
   makeWrapper,
   openssl,
+  git,
   nix-prefetch-git,
+  prefetch-yarn-deps,
 }:
 
 rustPlatform.buildRustPackage {
@@ -22,6 +24,6 @@ rustPlatform.buildRustPackage {
 
   postInstall = ''
     wrapProgram $out/bin/generate_lockfile \
-    --prefix PATH : ${lib.makeBinPath [ nix-prefetch-git ]}
+    --prefix PATH : ${lib.makeBinPath [ git nix-prefetch-git prefetch-yarn-deps ]}
   '';
 }

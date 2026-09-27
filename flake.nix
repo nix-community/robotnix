@@ -72,6 +72,7 @@
             pkg-config
             openssl
             (callPackage ./pkgs/fetchgit/nix-prefetch-git.nix { })
+            prefetch-yarn-deps
           ];
         };
       };
