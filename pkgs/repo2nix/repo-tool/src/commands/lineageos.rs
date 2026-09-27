@@ -323,9 +323,13 @@ async fn recursively_read_lineage_deps(
                 let instructions = repo_manifest::recursively_read_manifest(manifest_dir, &path)
                     .context("failed to recursively read included submanifest")?;
                 for instruction in instructions {
-                    instruction.execute_on(manifest).context(
-                        "failed to apply instruction from submanifest to manifest state",
-                    )?;
+                    if let Instruction::Project(project) = instruction {
+                        project.add_to(manifest, true).context(
+                            "failed to add project from included submanifest to manifest state"
+                        )?;
+                    } else {
+                        return Err(anyhow!("included submanifest contains an unexpected instruction (other than <project />): {:?}", instruction));
+                    }
                 }
             }
         }
