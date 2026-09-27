@@ -56,6 +56,7 @@ impl FetcherCaches {
                 None => FetcherCache::empty(),
             },
             source_dir_fd: FetcherCache::empty(),
+            reproducible_command: FetcherCache::empty(),
         };
 
         Ok(cache)

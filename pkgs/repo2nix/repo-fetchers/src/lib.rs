@@ -9,6 +9,7 @@ pub mod get_repo_refs;
 pub mod http_get;
 pub mod nix_prefetch_git;
 pub mod source_dir_fd;
+pub mod reproducible_command;
 
 pub mod spawn;
 
@@ -16,6 +17,7 @@ pub use get_repo_refs::GetRepoRefs;
 pub use http_get::HttpGet;
 pub use nix_prefetch_git::NixPrefetchGit;
 pub use source_dir_fd::SourceDirFd;
+pub use reproducible_command::ReproducibleCommand;
 
 pub trait Fetcher: Default {
     type Args: 'static + Send + Clone + std::fmt::Debug;
@@ -103,6 +105,7 @@ pub struct Fetchers {
     get_repo_refs: GetRepoRefs,
     nix_prefetch_git: NixPrefetchGit,
     source_dir_fd: SourceDirFd,
+    reproducible_command: ReproducibleCommand,
 }
 
 pub struct FetcherCaches {
@@ -110,6 +113,7 @@ pub struct FetcherCaches {
     get_repo_refs: FetcherCache<GetRepoRefs>,
     nix_prefetch_git: FetcherCache<NixPrefetchGit>,
     source_dir_fd: FetcherCache<SourceDirFd>,
+    reproducible_command: FetcherCache<ReproducibleCommand>,
 }
 
 enum FetchRequest {
@@ -129,6 +133,10 @@ enum FetchRequest {
         <SourceDirFd as Fetcher>::Args,
         Sender<<SourceDirFd as Fetcher>::Output>,
     ),
+    ReproducibleCommand(
+        <ReproducibleCommand as Fetcher>::Args,
+        Sender<<ReproducibleCommand as Fetcher>::Output>,
+    ),
 }
 
 enum FetchCommand {
@@ -136,6 +144,7 @@ enum FetchCommand {
     GetRepoRefs(<GetRepoRefs as Fetcher>::Args),
     NixPrefetchGit(<NixPrefetchGit as Fetcher>::Args),
     SourceDirFd(<SourceDirFd as Fetcher>::Args),
+    ReproducibleCommand(<ReproducibleCommand as Fetcher>::Args),
 }
 
 pub struct GlobalConfig {
@@ -170,7 +179,12 @@ impl FetchersState {
                 if self.caches.source_dir_fd.enqueue(&args, sender)? {
                     self.queue.push_back(FetchCommand::SourceDirFd(args))
                 }
-            }
+            },
+            FetchRequest::ReproducibleCommand(args, sender) => {
+                if self.caches.reproducible_command.enqueue(&args, sender)? {
+                    self.queue.push_back(FetchCommand::ReproducibleCommand(args))
+                }
+            },
         };
         Ok(())
     }
@@ -262,6 +276,33 @@ impl FetchersState {
                         .finalize(args, out)
                         .context("failed to insert fetcher output into cache")?;
                 },
+                FetchCommand::ReproducibleCommand(args) => {
+                    let out = fetchers
+                        .reproducible_command
+                        .execute(&args)
+                        .await
+                        .context("failed to execute reproducible_command fetcher")?;
+                    {
+                        let mut self_locked = self_mutex
+                            .lock()
+                            .map_err(|_| anyhow!("failed to lock Self mutex"))?;
+
+                        self_locked
+                            .caches
+                            .reproducible_command
+                            .finalize(args, out)
+                            .context("failed to insert fetcher output into cache")?;
+
+                        /*
+                        if let Some(ref cachefile) = self_locked.global_config.cachefile {
+                            self_locked
+                                .caches
+                                .save(cachefile)
+                                .context("failed to save cache state to disk")?;
+                        }
+                        */
+                    }
+                },
             }
         }
     }
@@ -319,6 +360,19 @@ impl FetchersHandle {
             .lock()
             .map_err(|_| anyhow!("failed to lock mutex"))?
             .insert_request(FetchRequest::SourceDirFd(args.clone(), tx))
+            .context("failed to insert request")?;
+        rx.await.map_err(|_| anyhow!("channel closed"))
+    }
+
+    pub async fn reproducible_command(
+        &self,
+        args: &<ReproducibleCommand as Fetcher>::Args,
+    ) -> Result<<ReproducibleCommand as Fetcher>::Output> {
+        let (tx, rx) = channel();
+        self.0
+            .lock()
+            .map_err(|_| anyhow!("failed to lock mutex"))?
+            .insert_request(FetchRequest::ReproducibleCommand(args.clone(), tx))
             .context("failed to insert request")?;
         rx.await.map_err(|_| anyhow!("channel closed"))
     }
