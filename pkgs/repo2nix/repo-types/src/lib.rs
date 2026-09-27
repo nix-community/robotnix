@@ -175,6 +175,9 @@ impl FromStr for Groups {
     }
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+pub struct DeviceName(pub String);
+
 #[cfg(test)]
 mod tests {
     use super::*;

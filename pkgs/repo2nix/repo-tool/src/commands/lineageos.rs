@@ -9,7 +9,7 @@ use repo_fetchers::FetchersHandle;
 use repo_manifest::execute::{ExecuteOnState, ManifestConfigState, ManifestState};
 use repo_manifest::xml::{GitRepoRevision, Include, Instruction, Project, RelativeUrl, RemoteName};
 use repo_types::lockfile;
-use repo_types::{GitRef, GitRefOrCommitId, Groups, RepoUrl};
+use repo_types::{DeviceName, GitRef, GitRefOrCommitId, Groups, RepoUrl};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs::{File, OpenOptions};
@@ -106,9 +106,6 @@ impl Dependency {
         })
     }
 }
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
-struct DeviceName(String);
 
 async fn get_all_devices(
     branch: &str,
