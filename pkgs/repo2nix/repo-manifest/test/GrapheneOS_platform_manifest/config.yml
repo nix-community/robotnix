@@ -1,0 +1,252 @@
+aosp_revision: android-17.0.0_r1
+revision: refs/heads/17
+additional_remotes:
+  - name: grapheneos
+    fetch: https://github.com/GrapheneOS/
+  - name: grapheneos-gitlab
+    fetch: https://gitlab.com/grapheneos/
+additional_projects:
+  - path: branding
+    name: branding
+  - path: device/google/akita-kernels/6.1
+    name: device_google_akita-kernels_6.1
+    clone_depth: 1
+  - path: device/google/bluejay-kernels/6.1
+    name: device_google_bluejay-kernels_6.1
+    clone_depth: 1
+  - path: device/google/caimito-kernels/6.1
+    name: device_google_caimito-kernels_6.1
+    clone_depth: 1
+  - path: device/google/comet-kernels/6.1
+    name: device_google_comet-kernels_6.1
+    clone_depth: 1
+  - path: device/google/felix-kernels/6.1
+    name: device_google_felix-kernels_6.1
+    clone_depth: 1
+  - path: device/google/laguna-kernels/6.6
+    name: device_google_laguna-kernels_6.6
+    clone_depth: 1
+  - path: device/google/lynx-kernels/6.1
+    name: device_google_lynx-kernels_6.1
+    clone_depth: 1
+  - path: device/google/pantah-kernels/6.1
+    name: device_google_pantah-kernels_6.1
+    clone_depth: 1
+  - path: device/google/raviole-kernels/6.1
+    name: device_google_raviole-kernels_6.1
+    clone_depth: 1
+  - path: device/google/shusky-kernels/6.1
+    name: device_google_shusky-kernels_6.1
+    clone_depth: 1
+  - path: device/google/stallion-kernels/6.1
+    name: device_google_stallion-kernels_6.1
+    clone_depth: 1
+  - path: device/google/tangorpro-kernels/6.1
+    name: device_google_tangorpro-kernels_6.1
+    clone_depth: 1
+  - path: device/google/tegu-kernels/6.1
+    name: device_google_tegu-kernels_6.1
+    clone_depth: 1
+  - path: external/AppCompatConfig
+    name: platform_external_AppCompatConfig
+    groups: pdk-fs
+    clone_depth: 1
+  - path: external/AppStore
+    name: platform_external_AppStore
+    clone_depth: 1
+  - path: external/Auditor
+    name: platform_external_Auditor
+    clone_depth: 1
+  - path: external/Camera
+    name: platform_external_Camera
+    clone_depth: 1
+  - path: external/GmsCompatConfig
+    name: platform_external_GmsCompatConfig
+    groups: pdk-fs
+    clone_depth: 1
+  - path: external/hardened_malloc
+    name: hardened_malloc
+  - path: external/Info
+    name: platform_external_Info
+    groups: pdk-fs
+    clone_depth: 1
+  - path: external/Messaging
+    name: platform_external_Messaging
+    clone_depth: 1
+  - path: external/PdfViewer
+    name: platform_external_PdfViewer
+    clone_depth: 1
+  - path: external/SpeechServices
+    name: platform_external_SpeechServices
+    clone_depth: 1
+    remote: grapheneos-gitlab
+  - path: external/talkback
+    name: platform_external_talkback
+    clone_depth: 1
+  - path: external/vanadium
+    name: platform_external_vanadium
+    clone_depth: 1
+    remote: grapheneos-gitlab
+  - path: packages/apps/AppCompatConfig
+    name: platform_packages_apps_AppCompatConfig
+    groups: pdk-fs
+  - path: packages/apps/CarrierConfig2
+    name: platform_packages_apps_CarrierConfig2
+    groups: pdk-cw-fs,pdk-fs
+  - path: packages/apps/DeskClock
+    name: platform_packages_apps_DeskClock
+    groups: pdk-fs
+  - path: packages/apps/ExactCalculator
+    name: platform_packages_apps_ExactCalculator
+  - path: packages/apps/GmsCompat
+    name: platform_packages_apps_GmsCompat
+    groups: pdk-fs
+  - path: packages/apps/LogViewer
+    name: platform_packages_apps_LogViewer
+    groups: pdk-fs
+  - path: packages/apps/NetworkLocation
+    name: platform_packages_apps_NetworkLocation
+    groups: pdk-fs
+  - path: packages/apps/Seedvault
+    name: platform_packages_apps_Seedvault
+  - path: packages/apps/SetupWizard2
+    name: platform_packages_apps_SetupWizard2
+  - path: packages/apps/Updater
+    name: platform_packages_apps_Updater
+  - path: prebuilts/qemu-kernel
+    name: platform_prebuilts_qemu-kernel
+    groups: pdk
+    clone_depth: 1
+  - path: script
+    name: script
+  - path: tools/arsclib
+    name: platform_tools_arsclib
+    groups: pdk
+  - path: vendor/adevtool
+    name: adevtool
+  - path: vendor/state
+    name: vendor_state
+    clone_depth: 1
+additional_non_manifest_repos:
+  - kernel_common-6.1
+  - kernel_common-6.6
+  - kernel_common-6.12
+  - kernel_manifest-6.1
+  - kernel_manifest-6.6
+  - kernel_manifest-6.12
+  - kernel_pixel
+  - kernel_pixel_muzel
+  - platform_manifest
+forked_aosp_repos:
+  grapheneos:
+    - device/common
+    - device/generic/goldfish
+    - platform/art
+    - platform/bionic
+    - platform/bootable/recovery
+    - platform/build
+    - platform/build/release
+    - platform/build/soong
+    - platform/cts
+    - platform/development
+    - platform/external/conscrypt
+    - platform/external/freetype
+    - platform/external/libpng
+    - platform/external/protobuf
+    - platform/external/selinux
+    - platform/frameworks/av
+    - platform/frameworks/base
+    - platform/frameworks/libs/systemui
+    - platform/frameworks/native
+    - platform/frameworks/opt/net/wifi
+    - platform/frameworks/opt/telephony
+    - platform/libcore
+    - platform/packages/apps/Calendar
+    - platform/packages/apps/CellBroadcastReceiver
+    - platform/packages/apps/Contacts
+    - platform/packages/apps/Dialer
+    - platform/packages/apps/DocumentsUI
+    - platform/packages/apps/EmergencyInfo
+    - platform/packages/apps/Gallery2
+    - platform/packages/apps/Launcher3
+    - platform/packages/apps/Settings
+    - platform/packages/apps/SettingsIntelligence
+    - platform/packages/apps/StorageManager
+    - platform/packages/apps/ThemePicker
+    - platform/packages/apps/WallpaperPicker2
+    - platform/packages/inputmethods/LatinIME
+    - platform/packages/modules/adb
+    - platform/packages/modules/AdServices
+    - platform/packages/modules/AppSearch
+    - platform/packages/modules/Bluetooth
+    - platform/packages/modules/ConfigInfrastructure
+    - platform/packages/modules/Connectivity
+    - platform/packages/modules/DnsResolver
+    - platform/packages/modules/HealthFitness
+    - platform/packages/modules/NetworkStack
+    - platform/packages/modules/Nfc
+    - platform/packages/modules/Permission
+    - platform/packages/modules/RemoteKeyProvisioning
+    - platform/packages/modules/StatsD
+    - platform/packages/modules/Uwb
+    - platform/packages/modules/Virtualization
+    - platform/packages/modules/Wifi
+    - platform/packages/providers/ContactsProvider
+    - platform/packages/providers/DownloadProvider
+    - platform/packages/providers/MediaProvider
+    - platform/packages/providers/TelephonyProvider
+    - platform/packages/services/Mms
+    - platform/packages/services/Telecomm
+    - platform/packages/services/Telephony
+    - platform/system/ca-certificates
+    - platform/system/core
+    - platform/system/extras
+    - platform/system/logging
+    - platform/system/netd
+    - platform/system/sepolicy
+    - platform/system/tools/aidl
+    - platform/system/update_engine
+    - platform/system/vold
+    - platform/system/zygote
+    - platform/tools/apksig
+    - platform/tools/metalava
+clone_depth_1_aosp_repos:
+  - platform/external/deqp
+  - platform/external/icu
+  - platform/external/kotlinc
+  - platform/external/llvm
+  - platform/external/llvm-libc
+  - platform/external/openwrt-prebuilts
+  - platform/external/swiftshader
+  - platform/packages/apps/Car/CalendarPrebuilt
+  - platform/packages/apps/Car/DialerPrebuilt
+  - platform/packages/apps/Car/DriverUIPrebuilt
+  - platform/packages/apps/Car/MediaPrebuilt
+  - platform/packages/apps/Car/MessengerPrebuilt
+  - platform/packages/apps/Car/RadioPrebuilt
+  - platform/packages/apps/Car/RotaryImePrebuilt
+  - platform/tools/deviceinfra/prebuilts
+removed_aosp_repos:
+  - device/google/atv
+  - device/google/common/etm
+  - device/google/contexthub
+  - device/google/trout
+  - platform/external/chromium-webview
+  - platform/external/nos/host/generic
+  - platform/hardware/google/av
+  - platform/hardware/google/pixel
+  - platform/hardware/google/pixel-sepolicy
+  - platform/hardware/nxp/nfc
+  - platform/hardware/nxp/secure_element
+  - platform/packages/apps/Browser2
+  - platform/packages/apps/Camera2
+  - platform/packages/apps/DeskClock
+  - platform/packages/apps/Gallery
+  - platform/packages/apps/LegacyCamera
+  - platform/packages/apps/Messaging
+  - platform/packages/apps/QuickSearchBox
+  - platform/prebuilts/bazel/darwin-x86_64
+  - platform/prebuilts/clang/host/darwin-x86
+  - platform/prebuilts/go/darwin-x86
+  - platform/prebuilts/rust-toolchain/darwin
+  - platform/prebuilts/qemu-kernel
