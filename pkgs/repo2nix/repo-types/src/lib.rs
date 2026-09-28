@@ -178,6 +178,14 @@ impl FromStr for Groups {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct DeviceName(pub String);
 
+impl FromStr for DeviceName {
+    type Err = anyhow::Error;
+
+    fn from_str(x: &str) -> Result<Self> {
+        Ok(Self(x.to_string()))
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

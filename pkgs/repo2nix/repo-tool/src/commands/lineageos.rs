@@ -338,10 +338,10 @@ async fn recursively_read_lineage_deps(
 #[derive(Debug, Clone, Parser)]
 pub struct LineageOS {
     #[arg(short = 'b', long = "branch")]
-    branch: String,
+    pub branch: String,
 
     #[arg(short = 'o', long = "output")]
-    lockfile_path: PathBuf,
+    pub lockfile_path: PathBuf,
 }
 
 impl CommandLike for LineageOS {

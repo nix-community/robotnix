@@ -70,7 +70,7 @@ async fn get_vendor_image_metadata(
     adevtool_project: &lockfile::Project,
     tag: &str,
     adevtool_yarn_hash: &NixHash,
-    devices: &Vec<String>
+    devices: &Vec<DeviceName>
 ) -> Result<BTreeMap<DeviceName, Vec<VendorImage>>> {
     let nix_src = format!("
         let
@@ -178,7 +178,7 @@ async fn get_vendor_image_metadata(
         tag,
         adevtool_project.src.hash.to_sri_string(),
         adevtool_yarn_hash,
-        devices.join(" "),
+        devices.iter().map(|x| x.0.clone()).collect::<Vec<_>>().join(" "),
     );
 
     let vendor_imgs = handle.reproducible_command(
@@ -213,13 +213,13 @@ struct VendorImage {
 #[derive(Debug, Clone, Parser)]
 pub struct GrapheneOS {
     #[arg(short, long)]
-    tag: String,
+    pub tag: String,
 
     #[arg(short, long)]
-    devices: Vec<String>,
+    pub devices: Vec<DeviceName>,
 
     #[arg(short = 'o', long = "output")]
-    lockfile_path: PathBuf,
+    pub lockfile_path: PathBuf,
 }
 
 impl CommandLike for GrapheneOS {
