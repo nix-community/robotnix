@@ -6,10 +6,14 @@ use repo_fetchers::FetchersHandle;
 use repo_types::DeviceName;
 use reqwest::Url;
 use reqwest::header::HeaderMap;
+use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
 use std::pin::Pin;
+use tokio::fs::OpenOptions;
+use tokio::io::AsyncWriteExt;
 
+#[derive(Serialize)]
 struct DeviceMetadata {
     tag: String,
     build_date_time: u64,
@@ -82,6 +86,20 @@ impl CommandLike for GrapheneOSBranches {
                     );
                 }
             }
+
+            let mut md_file = OpenOptions::new()
+                .create(true)
+                .write(true)
+                .truncate(true)
+                .open(self.lockfiles_dir.join("channel_metadata.json"))
+                .await
+                .context("failed to open channel metadata file for writing")?;
+            md_file
+                .write_all(
+                    &serde_json::to_string_pretty(&metadata).context("failed to serialize channel metadata")?.as_bytes(),
+                )
+                .await
+                .context("failed to write channel metadata to file")?;
 
             for tag in tags {
                 info!("Generating lockfile for tag {tag}");
