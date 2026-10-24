@@ -91,7 +91,6 @@ impl<F: Fetcher> FetcherCache<F> {
 // - The fetcher threads can have request-variant-specific runtimes (such as reqwest::Client for
 // HttpGet connection pooling)
 // - The return types are request-variant specific too.
-// - We need
 //
 // Handling this properly would require Rust to have fancier metaprogramming features, such as for
 // loops that can iterate over all fields of a struct (and within whose function bodies only trait
