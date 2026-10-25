@@ -1,11 +1,14 @@
 [package]
 name = "repo-manifest"
 version.workspace = true
+authors.workspace = true
 edition.workspace = true
 
 [dependencies]
-quick-xml.workspace = true
+anyhow.workspace = true
+enum_dispatch.workspace = true
+git2.workspace = true
+hard-xml.workspace = true
+nix.workspace = true
+repo-types.workspace = true
 serde.workspace = true
-thiserror.workspace = true
-url.workspace = true
-tokio.workspace = true

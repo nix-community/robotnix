@@ -1,15 +1,28 @@
 [package]
 name = "repo-tool"
 version.workspace = true
+authors.workspace = true
 edition.workspace = true
 
 [dependencies]
-repo-manifest = { path = "../repo-manifest" }
-url.workspace = true
+anyhow.workspace = true
 clap.workspace = true
-thiserror.workspace = true
+enum_dispatch.workspace = true
+git2.workspace = true
+log.workspace = true
+nix.workspace = true
+nix-compat.workspace = true
+repo-types.workspace = true
+repo-manifest.workspace = true
+repo-fetchers.workspace = true
+reqwest.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+sha2.workspace = true
+stderrlog.workspace = true
+thiserror.workspace = true
 tokio.workspace = true
-reqwest.workspace = true
-main_error.workspace = true
+urlencoding.workspace = true
+
+[profile.dev]
+panic = 'abort'
