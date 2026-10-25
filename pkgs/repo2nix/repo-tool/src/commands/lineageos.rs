@@ -1,5 +1,6 @@
 use super::CommandLike;
 use crate::{PrefetchProjectError, prefetch_project, prefetch_projects};
+use crate::build_id::get_aosp_build_id;
 use anyhow::{Context, Result, anyhow};
 use clap::Parser;
 use nix::errno::Errno;
@@ -369,6 +370,10 @@ impl CommandLike for LineageOS {
                 .await
                 .context("failed to prefetch projects in git-repo manifest")?;
 
+            let build_id = get_aosp_build_id(&manifest, &handle)
+                .await
+                .context("failed to get AOSP build id of source tree")?;
+
             let (_, _, muppets_fd) = handle
                 .source_dir_by_ref_or_commit_id(
                     &RepoUrl("https://github.com/TheMuppets/manifests".to_string()),
@@ -453,6 +458,7 @@ impl CommandLike for LineageOS {
 
             #[derive(Serialize)]
             struct LineageLockfile {
+                build_id: String,
                 common: BTreeMap<PathBuf, lockfile::Project>,
                 device_specific: BTreeMap<
                     DeviceName,
@@ -461,6 +467,7 @@ impl CommandLike for LineageOS {
             }
 
             let lockfile = LineageLockfile {
+                build_id,
                 common: projects,
                 device_specific: device_repos,
             };

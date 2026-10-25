@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use crate::prefetch_projects;
+use crate::build_id::get_aosp_build_id;
 use nix::fcntl::{openat, OFlag};
 use nix::sys::stat::Mode;
 use nix_compat::nixhash::NixHash;
@@ -252,10 +253,15 @@ impl CommandLike for GrapheneOS {
             #[derive(Serialize)]
             struct GrapheneLockfile {
                 projects: BTreeMap<PathBuf, lockfile::Project>,
+                build_id: String,
                 #[serde(with = "repo_types::custom_serde::nix_hash")]
                 adevtool_yarn_hash: NixHash,
                 vendor_images: BTreeMap<DeviceName, Vec<VendorImage>>,
             }
+
+            let build_id = get_aosp_build_id(&manifest, &handle)
+                .await
+                .context("failed to get AOSP build ID of source tree")?;
 
             let adevtool_project = projects
                 .get(Path::new("vendor/adevtool"))
@@ -280,6 +286,7 @@ impl CommandLike for GrapheneOS {
 
             let lockfile = GrapheneLockfile {
                 projects,
+                build_id,
                 adevtool_yarn_hash,
                 vendor_images,
             };

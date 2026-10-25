@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use clap::Parser;
 use crate::commands::Command;
 use nix_compat::nixhash::NixHash;
@@ -7,10 +7,11 @@ use repo_manifest::execute::{ManifestConfigState, ManifestState, ProjectState};
 use repo_types::{ForgeSpecificRepoUrl, RepoUrl};
 use repo_types::lockfile::{Project, Source};
 use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 use thiserror::Error;
 use tokio::task::JoinSet;
 
+pub mod build_id;
 pub mod commands;
 
 #[derive(Parser)]
@@ -65,6 +66,11 @@ pub async fn prefetch_project(project: &ProjectState, config: &ManifestConfigSta
         .map_err(PrefetchProjectError::Prefetch)?;
 
     Ok((repo_url, commit_id, nix_hash))
+}
+
+pub async fn prefetch_project_by_relpath(state: &ManifestState, relpath: impl AsRef<Path>, handle: &FetchersHandle) -> Result<(RepoUrl, git2::Oid, NixHash)> {
+    let project = state.projects.get(relpath.as_ref()).context("relpath not found in manifest")?;
+    prefetch_project(project, &state.config, handle).await.context("failed to prefetch project")
 }
 
 pub async fn prefetch_projects(state: &ManifestState, handle: &FetchersHandle) -> Result<BTreeMap<PathBuf, Project>, PrefetchProjectError> {
