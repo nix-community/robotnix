@@ -4,7 +4,7 @@ use crate::commands::Command;
 use nix_compat::nixhash::NixHash;
 use repo_fetchers::FetchersHandle;
 use repo_manifest::execute::{ManifestConfigState, ManifestState, ProjectState};
-use repo_types::{ForgeSpecificRepoUrl, RepoUrl};
+use repo_types::{ForgeSpecificRepoUrl, RepoUrl, GitRefOrCommitId};
 use repo_types::lockfile::{Project, Source};
 use std::collections::BTreeMap;
 use std::path::{PathBuf, Path};
@@ -39,8 +39,8 @@ pub enum PrefetchProjectError {
     #[error("failed to resolve ref")]
     ResolveRef(#[source] anyhow::Error),
 
-    #[error("project ref not found in git repo")]
-    RefNotFound,
+    #[error("project ref {rev:?} not found in git repo {repo_url:?}")]
+    RefNotFound { repo_url: RepoUrl, rev: GitRefOrCommitId },
 
     #[error("failed to prefetch git repo")]
     Prefetch(#[source] anyhow::Error),
@@ -58,7 +58,7 @@ pub async fn prefetch_project(project: &ProjectState, config: &ManifestConfigSta
         .resolve_ref_or_commit_id(&repo_url, &project.revision)
         .await
         .map_err(PrefetchProjectError::ResolveRef)?
-        .ok_or(PrefetchProjectError::RefNotFound)?;
+        .ok_or(PrefetchProjectError::RefNotFound { repo_url: repo_url.clone(), rev: project.revision.clone() })?;
 
     let nix_hash = handle
         .nix_prefetch_git(&(repo_url.clone(), commit_id.clone()))

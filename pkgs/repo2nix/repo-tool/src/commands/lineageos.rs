@@ -272,7 +272,7 @@ async fn recursively_read_lineage_deps(
     let (repo_url, commit_id, nix_hash) =
         match prefetch_project(&project, &manifest.config, handle).await {
             Ok(x) => x,
-            Err(PrefetchProjectError::RefNotFound) => {
+            Err(PrefetchProjectError::RefNotFound { .. }) => {
                 return Ok(Err(LineageDepsError::BranchMissingInDependency));
             }
             Err(e) => return Err(e).context("failed to prefetch project")?,
@@ -433,7 +433,7 @@ impl CommandLike for LineageOS {
                     // resolved earlier already.
                     let mut device_projects = match prefetch_projects(&device_manifest, &handle).await {
                         Ok(device_projects) => device_projects,
-                        Err(PrefetchProjectError::RefNotFound) => return Ok((device_name, Err(LineageDepsError::MissingMuppetsRepo))),
+                        Err(PrefetchProjectError::RefNotFound { .. }) => return Ok((device_name, Err(LineageDepsError::MissingMuppetsRepo))),
                         Err(e) => return Err(e).context("failed to prefetch projects")?,
                     };
 
